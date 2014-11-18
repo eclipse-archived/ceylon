@@ -208,7 +208,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Simple.Simple(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Simple.Simple(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Simple.Simple(s1)\""));
+        }
         defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -227,7 +229,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Simple.Simple(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Simple.Simple(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Simple.Simple(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple> defRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String)", (short)-1){
             
             @.java.lang.Override
@@ -238,7 +242,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef2.$call$(.ceylon.language.String.instance("s1")).toString().equals("Simple.Simple(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Simple.Simple(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Simple.Simple(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> nullaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple()(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -256,7 +262,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef.$call$(this).$call$().toString().equals("Simple.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Simple.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Simple.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple> nullaryRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .ceylon.language.Empty.$TypeDescriptor$, "MemberClassConstructorRef.Simple()", (short)-1){
             
             @.java.lang.Override
@@ -266,7 +274,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef2.$call$().toString().equals("Simple.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Simple.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Simple.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -285,7 +295,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (unaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Simple.Unary(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Simple.Unary(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Simple.Unary(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -305,7 +317,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (binaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2")).toString().equals("Simple.Binary(s1,s2)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Simple.Binary(s1,s2)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Simple.Binary(s1,s2)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String, String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -326,7 +340,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (ternaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString().equals("Simple.Ternary(s1,s2,s3)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Simple.Ternary(s1,s2,s3)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Simple.Ternary(s1,s2,s3)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String, String, String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -348,7 +364,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (naryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString().equals("Simple.Nary(s1,s2,s3,s4)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Simple.Nary(s1,s2,s3,s4)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Simple.Nary(s1,s2,s3,s4)\""));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -766,9 +784,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$().toString().equals("Defaulted.Defaulted(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Defaulted.Defaulted(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Defaulted.Defaulted(s1)\""));
+        }
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("S1")).toString().equals("Defaulted.Defaulted(S1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        }
         defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -798,9 +820,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$().toString().equals("Defaulted.Defaulted(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Defaulted.Defaulted(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Defaulted.Defaulted(s1)\""));
+        }
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("S1")).toString().equals("Defaulted.Defaulted(S1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted> defRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "MemberClassConstructorRef.Defaulted(String=)", (short)-1){
             
             @.java.lang.Override
@@ -822,9 +848,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef2.$call$().toString().equals("Defaulted.Defaulted(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2().string == \"Defaulted.Defaulted(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2().string == \"Defaulted.Defaulted(s1)\""));
+        }
         if (defRef2.$call$(.ceylon.language.String.instance("S1")).toString().equals("Defaulted.Defaulted(S1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"S1\").string == \"Defaulted.Defaulted(S1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> nullaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted()(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -842,7 +872,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef.$call$(this).$call$().toString().equals("Defaulted.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Defaulted.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Defaulted.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted> nullaryRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .ceylon.language.Empty.$TypeDescriptor$, "MemberClassConstructorRef.Defaulted()", (short)-1){
             
             @.java.lang.Override
@@ -852,7 +884,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef2.$call$().toString().equals("Defaulted.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Defaulted.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Defaulted.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -882,9 +916,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (unaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Defaulted.Unary(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Defaulted.Unary(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Defaulted.Unary(s1)\""));
+        }
         if (unaryRef.$call$(this).$call$(.ceylon.language.String.instance("S1")).toString().equals("Defaulted.Unary(S1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"S1\").string == \"Defaulted.Unary(S1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"S1\").string == \"Defaulted.Unary(S1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=, String=)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -924,7 +962,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (binaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2")).toString().equals("Defaulted.Binary(s1,s2)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Defaulted.Binary(s1,s2)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Defaulted.Binary(s1,s2)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=, String=, String=)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -976,7 +1016,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (ternaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString().equals("Defaulted.Ternary(s1,s2,s3)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Defaulted.Ternary(s1,s2,s3)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Defaulted.Ternary(s1,s2,s3)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=, String=, String=, String=)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1042,7 +1084,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (naryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString().equals("Defaulted.Nary(s1,s2,s3,s4)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Defaulted.Nary(s1,s2,s3,s4)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Defaulted.Nary(s1,s2,s3,s4)\""));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1373,9 +1417,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        }
         if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Sequenced([])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Sequenced.Sequenced([])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Sequenced.Sequenced([])\""));
+        }
         defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String*)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1461,9 +1509,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        }
         if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Sequenced([])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Sequenced.Sequenced([])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)().string == \"Sequenced.Sequenced([])\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced> defRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String*)", (short)0){
             
             @.java.lang.Override
@@ -1541,9 +1593,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef2.$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
+        }
         if (defRef2.$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Sequenced([])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2().string == \"Sequenced.Sequenced([])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2().string == \"Sequenced.Sequenced([])\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> nullaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced()(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1561,7 +1617,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef.$call$(this).$call$().toString().equals("Sequenced.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Sequenced.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Sequenced.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced> nullaryRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .ceylon.language.Empty.$TypeDescriptor$, "MemberClassConstructorRef.Sequenced()", (short)-1){
             
             @.java.lang.Override
@@ -1571,7 +1629,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef2.$call$().toString().equals("Sequenced.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Sequenced.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Sequenced.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String*)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1657,9 +1717,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (unaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Unary([s1])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Sequenced.Unary([s1])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Sequenced.Unary([s1])\""));
+        }
         if (unaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Unary([])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)().string == \"Sequenced.Unary([])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)().string == \"Sequenced.Unary([])\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String, String*)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1745,9 +1809,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s2"))).toString().equals("Sequenced.Binary(s1,[s2])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Sequenced.Binary(s1,[s2])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Sequenced.Binary(s1,[s2])\""));
+        }
         if (binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Binary(s1,[])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\").string == \"Sequenced.Binary(s1,[])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\").string == \"Sequenced.Binary(s1,[])\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String, String, String*)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1823,9 +1891,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s3"))).toString().equals("Sequenced.Ternary(s1,s2,[s3])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Sequenced.Ternary(s1,s2,[s3])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Sequenced.Ternary(s1,s2,[s3])\""));
+        }
         if (ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Ternary(s1,s2,[])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\").string == \"Sequenced.Ternary(s1,s2,[])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\").string == \"Sequenced.Ternary(s1,s2,[])\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String, String, String, String*)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -1889,9 +1961,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s4"))).toString().equals("Sequenced.Nary(s1,s2,s3,[s4])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Sequenced.Nary(s1,s2,s3,[s4])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Sequenced.Nary(s1,s2,s3,[s4])\""));
+        }
         if (naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString().equals("Sequenced.Nary(s1,s2,s3,[])")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Sequenced.Nary(s1,s2,s3,[])\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Sequenced.Nary(s1,s2,s3,[])\""));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -2110,7 +2186,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Parameterized.Parameterized(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        }
         defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2129,7 +2207,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Parameterized.Parameterized(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>> defRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String)", (short)-1){
             
             @.java.lang.Override
@@ -2140,7 +2220,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (defRef2.$call$(.ceylon.language.String.instance("s1")).toString().equals("Parameterized.Parameterized(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Parameterized.Parameterized(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> nullaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>()(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2158,7 +2240,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef.$call$(this).$call$().toString().equals("Parameterized.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Parameterized.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef(this)().string == \"Parameterized.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>> nullaryRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "MemberClassConstructorRef.Parameterized<String>()", (short)-1){
             
             @.java.lang.Override
@@ -2168,7 +2252,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (nullaryRef2.$call$().toString().equals("Parameterized.Nullary()")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Parameterized.Nullary()\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nullaryRef2().string == \"Parameterized.Nullary()\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2187,7 +2273,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (unaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1")).toString().equals("Parameterized.Unary(s1)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Parameterized.Unary(s1)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Parameterized.Unary(s1)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2207,7 +2295,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (binaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2")).toString().equals("Parameterized.Binary(s1,s2)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Parameterized.Binary(s1,s2)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Parameterized.Binary(s1,s2)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String, String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2228,7 +2318,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (ternaryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString().equals("Parameterized.Ternary(s1,s2,s3)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Parameterized.Ternary(s1,s2,s3)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Parameterized.Ternary(s1,s2,s3)\""));
+        }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String, String, String, String)(MemberClassConstructorRef)", (short)-1){
             
             @.java.lang.Override
@@ -2250,7 +2342,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
         };
         if (naryRef.$call$(this).$call$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString().equals("Parameterized.Nary(s1,s2,s3,s4)")) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Parameterized.Nary(s1,s2,s3,s4)\""));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Parameterized.Nary(s1,s2,s3,s4)\""));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

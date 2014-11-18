@@ -417,7 +417,9 @@ final class constructorRef_ {
             }
         };
         if ("default(s1)".equals($default.$call$(.ceylon.language.String.instance("s1")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s1)\"==default(\"s1\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s1)\"==default(\"s1\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> default2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "ConstructorRef(String)", (short)-1){
             
             @.java.lang.Override
@@ -427,7 +429,9 @@ final class constructorRef_ {
             }
         };
         if ("default(s2)".equals(default2.$call$(.ceylon.language.String.instance("s2")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s2)\"==default2(\"s2\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s2)\"==default2(\"s2\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> unary = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "ConstructorRef(String)", (short)-1){
             
             @.java.lang.Override
@@ -437,7 +441,9 @@ final class constructorRef_ {
             }
         };
         if ("unary(s2)".equals(unary.$call$(.ceylon.language.String.instance("s2")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s2)\"==unary(\"s2\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s2)\"==unary(\"s2\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> unary2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "ConstructorRef(String)", (short)-1){
             
             @.java.lang.Override
@@ -447,7 +453,9 @@ final class constructorRef_ {
             }
         };
         if ("unary(s3)".equals(unary2.$call$(.ceylon.language.String.instance("s3")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s3)\"==unary2(\"s3\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s3)\"==unary2(\"s3\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> binary = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "ConstructorRef(String, String)", (short)-1){
             
             @.java.lang.Override
@@ -458,7 +466,9 @@ final class constructorRef_ {
             }
         };
         if ("binary(s2,s3)".equals(binary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(s2,s3)\"==binary(\"s2\", \"s3\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(s2,s3)\"==binary(\"s2\", \"s3\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> ternary = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ConstructorRef(String, String, String)", (short)-1){
             
             @.java.lang.Override
@@ -470,7 +480,9 @@ final class constructorRef_ {
             }
         };
         if ("ternary(s2,s3,s4)".equals(ternary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(s2,s3,s4)\"==ternary(\"s2\", \"s3\", \"s4\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(s2,s3,s4)\"==ternary(\"s2\", \"s3\", \"s4\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef> nary = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef>(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), "ConstructorRef(String, String, String, String)", (short)-1){
             
             @.java.lang.Override
@@ -483,7 +495,9 @@ final class constructorRef_ {
             }
         };
         if ("nary(s2,s3,s4,s5)".equals(nary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(s2,s3,s4,s5)\"==nary(\"s2\", \"s3\", \"s4\", \"s5\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(s2,s3,s4,s5)\"==nary(\"s2\", \"s3\", \"s4\", \"s5\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>> defaultTp = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "ConstructorRefTp<String>(String)", (short)-1){
             
             @.java.lang.Override
@@ -493,7 +507,9 @@ final class constructorRef_ {
             }
         };
         if ("defaultTp(s1)".equals(defaultTp.$call$(.ceylon.language.String.instance("s1")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"defaultTp(s1)\"==defaultTp(\"s1\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"defaultTp(s1)\"==defaultTp(\"s1\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>> unaryTp = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "ConstructorRefTp<String>(String)", (short)-1){
             
             @.java.lang.Override
@@ -503,7 +519,9 @@ final class constructorRef_ {
             }
         };
         if ("unaryTp(s2)".equals(unaryTp.$call$(.ceylon.language.String.instance("s2")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryTp(s2)\"==unaryTp(\"s2\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryTp(s2)\"==unaryTp(\"s2\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>> binaryTp = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "ConstructorRefTp<String>(String, String)", (short)-1){
             
             @.java.lang.Override
@@ -514,7 +532,9 @@ final class constructorRef_ {
             }
         };
         if ("binaryTp(s2,s3)".equals(binaryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryTp(s2,s3)\"==binaryTp(\"s2\", \"s3\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryTp(s2,s3)\"==binaryTp(\"s2\", \"s3\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>> ternaryTp = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ConstructorRefTp<String>(String, String, String)", (short)-1){
             
             @.java.lang.Override
@@ -526,7 +546,9 @@ final class constructorRef_ {
             }
         };
         if ("ternaryTp(s2,s3,s4)".equals(ternaryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryTp(s2,s3,s4)\"==ternaryTp(\"s2\", \"s3\", \"s4\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryTp(s2,s3,s4)\"==ternaryTp(\"s2\", \"s3\", \"s4\").string"));
+        }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>> naryTp = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), "ConstructorRefTp<String>(String, String, String, String)", (short)-1){
             
             @.java.lang.Override
@@ -539,7 +561,9 @@ final class constructorRef_ {
             }
         };
         if ("naryTp(s2,s3,s4,s5)".equals(naryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryTp(s2,s3,s4,s5)\"==naryTp(\"s2\", \"s3\", \"s4\", \"s5\").string"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryTp(s2,s3,s4,s5)\"==naryTp(\"s2\", \"s3\", \"s4\", \"s5\").string"));
+        }
     }
     
     public static void main(.java.lang.String[] args) {
