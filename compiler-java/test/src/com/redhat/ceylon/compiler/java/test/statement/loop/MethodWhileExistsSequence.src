@@ -11,7 +11,9 @@ class MethodWhileExistsSequence implements .com.redhat.ceylon.compiler.java.runt
             if ((y$0 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final long y$1 = y$0.longValue();
                 return y$1;
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
         return 0L;
     }

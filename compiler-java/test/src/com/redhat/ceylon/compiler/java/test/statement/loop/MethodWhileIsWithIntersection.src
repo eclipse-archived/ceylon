@@ -11,7 +11,9 @@ class MethodWhileIsIntersection implements .com.redhat.ceylon.compiler.java.runt
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x).common();
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x).foo();
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface)x).bar();
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -23,7 +25,9 @@ class MethodWhileIsIntersection implements .com.redhat.ceylon.compiler.java.runt
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x$2).common();
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x$2).foo();
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface)x$2).bar();
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     

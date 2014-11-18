@@ -9,7 +9,9 @@ class MethodWhileIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.m
         loop_0: while (true) {
             if (!(x == null)) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -19,7 +21,9 @@ class MethodWhileIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.m
             if (!((x$1 = y) == null)) {
                 final .java.lang.Object x$2 = x$1;
                 .ceylon.language.print_.print(.ceylon.language.String.instance(x$2.toString()));
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     

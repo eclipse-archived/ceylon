@@ -27,7 +27,7 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             let
             {
                 .ceylon.language.Summable<Summand> arg$2$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
-                Summand arg$2$0 = (Summand)x2;
+                Summand arg$2$0 = (Summand)(.ceylon.language.Summable)x2;
             }
             returning arg$2$callable$.plus(arg$2$0);
         );

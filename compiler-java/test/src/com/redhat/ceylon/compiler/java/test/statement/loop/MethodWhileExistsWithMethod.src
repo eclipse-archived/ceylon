@@ -15,7 +15,9 @@ class MethodWhileExistsWithMethod implements .com.redhat.ceylon.compiler.java.ru
             if ((y$0 = give$priv$()) != null) {
                 final long y$1 = y$0.longValue();
                 return y$1;
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
         return 0L;
     }

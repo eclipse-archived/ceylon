@@ -65,6 +65,8 @@ javaAnnotationAnnotation {
         threadStates={runnable, blocked};
     }};
 }
+javaAnnotationAcronym
+javaAnnotationLowercase
 class AnnotationInterop() {
     
     resource{

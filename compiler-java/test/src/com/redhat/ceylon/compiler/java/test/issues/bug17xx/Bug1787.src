@@ -10,17 +10,23 @@ final class bug1787_ {
         .java.lang.Object arg1$1 = null;
         if ((arg1$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) == null || arg1$1 instanceof .ceylon.language.String) {
             arg1$2 = (.ceylon.language.String)arg1$1;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String? arg1 = System.properties.get(\"\")"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String? arg1 = System.properties.get(\"\")"));
+        }
         final .java.lang.Object arg1b$5;
         .java.lang.Object arg1b$4 = null;
         if (!((arg1b$4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance("")))) == null || arg1b$4 instanceof .ceylon.language.String)) {
             arg1b$5 = arg1b$4;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is String? arg1b = System.properties.get(\"\")"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is String? arg1b = System.properties.get(\"\")"));
+        }
         final .java.lang.Object arg2$8;
         .java.lang.Object arg2$7 = null;
         if ((arg2$7 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) != null) {
             arg2$8 = arg2$7;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists arg2 = System.properties.get(\"\")"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists arg2 = System.properties.get(\"\")"));
+        }
         .java.lang.Object arg3$10;
         if ((arg3$10 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) == null || arg3$10 instanceof .ceylon.language.String) {
             final .ceylon.language.String arg3$11 = (.ceylon.language.String)arg3$10;

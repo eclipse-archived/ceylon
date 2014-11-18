@@ -104,7 +104,12 @@ public class Naming implements LocalId {
         $refine$,
         $sb$,
         $spreadVarargs$,
-        $TypeDescriptor$
+        $TypeDescriptor$,
+        
+        $serialize$,
+        $deserialize$,
+        deconstructor,
+        deconstructed
     }
     
     /**
@@ -144,7 +149,7 @@ public class Naming implements LocalId {
      * 
      * Should start and end with a {@code $} and contain no {@code $}
      */
-    enum Prefix implements Affix {
+    public enum Prefix implements Affix {
         $next$,
         $arg$,
         $ceylontmp$,
@@ -646,7 +651,7 @@ public class Naming implements LocalId {
         } while (!(s instanceof Package));
         Collections.reverse(l);
         
-        if (flags.contains(DeclNameFlag.QUALIFIED)) {
+        if (flags.contains(DeclNameFlag.QUALIFIED) && (!decl.isAnonymous() || decl.isNamed())) {
             final List<String> packageName;
             if(!AbstractTransformer.isJavaArray(decl))
                 packageName = ((Package) s).getName();
@@ -671,6 +676,8 @@ public class Naming implements LocalId {
             TypeDeclarationBuilder<?> typeDeclarationBuilder, Scope scope, final boolean last) {
         if (scope instanceof Class || scope instanceof TypeAlias) {
             TypeDeclaration klass = (TypeDeclaration)scope;
+            if(klass.isAnonymous() && !klass.isNamed())
+                typeDeclarationBuilder.clear();
             typeDeclarationBuilder.append(klass.getName());
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
@@ -915,6 +922,8 @@ public class Naming implements LocalId {
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
+            if(decl.isAnonymous())
+                return prefixName(Prefix.$default$, param.getName());
             return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof ClassOrInterface) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {

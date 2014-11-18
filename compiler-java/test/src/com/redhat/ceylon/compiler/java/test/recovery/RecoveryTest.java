@@ -878,9 +878,7 @@ public class RecoveryTest extends CompilerTest {
                 new CompilerError(10, "case must be a toplevel anonymous class: 'resurrected' is not toplevel"),
                 new CompilerError(12, "imported declaration not found: 'newServer_bogus'"),
                 new CompilerError(30, "function or value does not exist: 'newServer_bogus'"),
-                new CompilerError(30, "named arguments not supported for indirect invocations"),
                 new CompilerError(135, "function or value does not exist: 'array'"),
-                new CompilerError(135, "named arguments not supported for indirect invocations"),
                 new CompilerError(138, "could not determine type of function or value reference: 'cells'"),
                 new CompilerError(139, "could not determine type of function or value reference: 'c'"),
                 new CompilerError(140, "could not determine type of function or value reference: 'c'")

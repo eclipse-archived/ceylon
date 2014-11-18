@@ -41,3 +41,6 @@ package com.redhat.ceylon.compiler.java.test.interop;
     JavaAnnotationEnum annotation();
     JavaAnnotationEnum[] annotations();
 }
+
+@interface JAVAAnnotationAcronym {}
+@interface javaAnnotationLowercase {}

@@ -6,7 +6,7 @@ public final class bug1731_ {
     }
     
     public static void bug1731(final .ceylon.language.Sequential values) {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)values;
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values;
         final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
         .java.lang.Object elem$0 = null;
         final .java.lang.Object array$7;

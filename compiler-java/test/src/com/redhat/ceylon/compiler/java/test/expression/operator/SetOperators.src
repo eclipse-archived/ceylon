@@ -41,19 +41,16 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         x1.contains(.ceylon.language.Integer.instance(1L));
         x1.contains(.ceylon.language.Float.instance(1.1));
         .java.lang.Object elem$3;
-        .ceylon.language.Iterator<? extends .java.lang.Object> i$iterator$$4 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)x1).iterator();
+        .ceylon.language.Iterator<? extends .java.lang.Object> i$iterator$$4 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)x1).iterator();
         loop_0: while (!((elem$3 = i$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.Object i = (.java.lang.Object)elem$3;
             .java.lang.Object i$6;
             if ((i$6 = i) instanceof .ceylon.language.Integer) {
-                final long i$10 = ((.ceylon.language.Integer)i$6).longValue();
-                final long s = i$10 + 0L;
+                final long i$8 = ((.ceylon.language.Integer)i$6).longValue();
+                final long s = i$8 + 0L;
             } else {
-                .java.lang.Object i$8;
-                if ((i$8 = i) instanceof .ceylon.language.Float) {
-                    final double i$9 = ((.ceylon.language.Float)i$8).doubleValue();
-                    final double s = i$9 + 0L;
-                }
+                final double i$7 = ((.ceylon.language.Float)i$6).doubleValue();
+                final double s = i$7 + 0L;
             }
         }
         .ceylon.language.Set<? extends .java.lang.Object> x2 = a.<.ceylon.language.Float>intersection(.ceylon.language.Float.$TypeDescriptor$, b);
@@ -63,24 +60,24 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$11 = x4.<.ceylon.language.Float>intersection(.ceylon.language.Float.$TypeDescriptor$, b);
-                x4 = $ceylontmp$op$11;
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$9 = x4.<.ceylon.language.Float>intersection(.ceylon.language.Float.$TypeDescriptor$, b);
+                x4 = $ceylontmp$op$9;
             }
-            returning $ceylontmp$op$11;
+            returning $ceylontmp$op$9;
         );
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$12 = x4.<.ceylon.language.Float>complement(.ceylon.language.Float.$TypeDescriptor$, b);
-                x4 = $ceylontmp$op$12;
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$10 = x4.<.ceylon.language.Float>complement(.ceylon.language.Float.$TypeDescriptor$, b);
+                x4 = $ceylontmp$op$10;
             }
-            returning $ceylontmp$op$12;
+            returning $ceylontmp$op$10;
         );
         x4.contains(.ceylon.language.Integer.instance(1L));
-        .java.lang.Object elem$13;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$14 = x4.iterator();
-        loop_1: while (!((elem$13 = i$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
-            final long i = ((.ceylon.language.Integer)elem$13).longValue();
+        .java.lang.Object elem$11;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$12 = x4.iterator();
+        loop_1: while (!((elem$11 = i$iterator$$12.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$11).longValue();
             final long s = i + 0L;
         }
     }
@@ -99,13 +96,13 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = b.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, c).<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, a);
     }
     
-    private final void testSetOperatorsWithErasedTypes$priv$(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set setOfIntersectionType, final .ceylon.language.Set<? extends .java.lang.Object> setOfNothing) {
+    private final void testSetOperatorsWithErasedTypes$priv$(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .java.lang.Object> setOfIntersectionType, final .ceylon.language.Set<? extends .java.lang.Object> setOfNothing) {
         .ceylon.language.Set x1 = setOfUnionType.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)setOfUnionType.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set x4 = setOfUnionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
-        .ceylon.language.Set y1 = setOfIntersectionType.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.String> y1 = setOfIntersectionType.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> y2 = setOfIntersectionType.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
-        .ceylon.language.Set y4 = setOfIntersectionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
+        .ceylon.language.Set<? extends .java.lang.Object> y4 = setOfIntersectionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfNothing.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> z2 = setOfNothing.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> z4 = setOfNothing.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
@@ -122,26 +119,26 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$15 = sync.<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$13 = sync.<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, a);
+                sync = $ceylontmp$op$13;
+            }
+            returning $ceylontmp$op$13;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$14 = sync.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, a);
+                sync = $ceylontmp$op$14;
+            }
+            returning $ceylontmp$op$14;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$15 = sync.<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, a);
                 sync = $ceylontmp$op$15;
             }
             returning $ceylontmp$op$15;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$16 = sync.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, a);
-                sync = $ceylontmp$op$16;
-            }
-            returning $ceylontmp$op$16;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$17 = sync.<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, a);
-                sync = $ceylontmp$op$17;
-            }
-            returning $ceylontmp$op$17;
         );
     }
     
@@ -157,26 +154,26 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$18 = sync.<.java.lang.Object>union(.ceylon.language.Object.$TypeDescriptor$, a);
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$16 = sync.<.java.lang.Object>union(.ceylon.language.Object.$TypeDescriptor$, a);
+                sync = $ceylontmp$op$16;
+            }
+            returning $ceylontmp$op$16;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$17 = sync.<.java.lang.Object>intersection(.ceylon.language.Object.$TypeDescriptor$, a);
+                sync = $ceylontmp$op$17;
+            }
+            returning $ceylontmp$op$17;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$18 = sync.<.java.lang.Object>complement(.ceylon.language.Object.$TypeDescriptor$, a);
                 sync = $ceylontmp$op$18;
             }
             returning $ceylontmp$op$18;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$19 = sync.<.java.lang.Object>intersection(.ceylon.language.Object.$TypeDescriptor$, a);
-                sync = $ceylontmp$op$19;
-            }
-            returning $ceylontmp$op$19;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmp$op$20 = sync.<.java.lang.Object>complement(.ceylon.language.Object.$TypeDescriptor$, a);
-                sync = $ceylontmp$op$20;
-            }
-            returning $ceylontmp$op$20;
         );
     }
     
@@ -233,26 +230,26 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$21 = getSync().<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, getA());
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$19 = getSync().<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, getA());
+                setSync($ceylontmp$op$19);
+            }
+            returning $ceylontmp$op$19;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$20 = getSync().<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, getA());
+                setSync($ceylontmp$op$20);
+            }
+            returning $ceylontmp$op$20;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$21 = getSync().<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, getA());
                 setSync($ceylontmp$op$21);
             }
             returning $ceylontmp$op$21;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$22 = getSync().<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, getA());
-                setSync($ceylontmp$op$22);
-            }
-            returning $ceylontmp$op$22;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$23 = getSync().<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, getA());
-                setSync($ceylontmp$op$23);
-            }
-            returning $ceylontmp$op$23;
         );
         return null;
     }
@@ -277,7 +274,15 @@ class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.o
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$25 = super.getSync().<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$23 = super.getSync().<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
+                super.setSync($ceylontmp$opV$23);
+            }
+            returning $ceylontmp$opV$23;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$25 = super.getSync().<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
                 super.setSync($ceylontmp$opV$25);
             }
             returning $ceylontmp$opV$25;
@@ -285,18 +290,10 @@ class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.o
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$27 = super.getSync().<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$27 = super.getSync().<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
                 super.setSync($ceylontmp$opV$27);
             }
             returning $ceylontmp$opV$27;
-        );
-        (
-            let
-            {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$opV$29 = super.getSync().<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, super.getA());
-                super.setSync($ceylontmp$opV$29);
-            }
-            returning $ceylontmp$opV$29;
         );
         return null;
     }

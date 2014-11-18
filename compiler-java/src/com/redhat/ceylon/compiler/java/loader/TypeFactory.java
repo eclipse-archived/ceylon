@@ -25,6 +25,7 @@ import java.util.Collections;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -168,4 +169,47 @@ public class TypeFactory extends Unit {
     public TypeDeclaration getAssertionErrorDeclaration() {
         return (TypeDeclaration)getLanguageModuleDeclaration("AssertionError");
     }
+    
+    public ProducedType getReferenceType(ProducedType value) {
+        final ProducedType serializedValueType;
+        TypeDeclaration referenceTypeDecl = (TypeDeclaration)getLanguageModuleSerializationDeclaration("Reference");
+        serializedValueType = referenceTypeDecl.getProducedType(null, Collections.singletonList(value));
+        return serializedValueType;
+    }
+    
+    public ProducedType getDeconstructorType() {
+        return ((TypeDeclaration)getLanguageModuleSerializationDeclaration("Deconstructor")).getType();
+    }
+    
+    /**
+     * Copy of Unit.isTupleLengthUnbounded which is more strict on what we consider variadic. For example
+     * we do not consider Args|[] as a variadic tuple in a Callable. See https://github.com/ceylon/ceylon-compiler/issues/1908
+     */
+    public boolean isTupleOfVariadicCallable(ProducedType args) {
+        if (args!=null) {
+            Boolean simpleTupleLengthUnbounded = 
+                    isSimpleTupleLengthUnbounded(args);
+            if (simpleTupleLengthUnbounded != null) {
+                return simpleTupleLengthUnbounded.booleanValue();
+            }
+            ProducedType tst = nonemptyArgs(args)
+                    .getSupertype(getTupleDeclaration());
+            if (tst!=null) {
+                java.util.List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    return isTupleOfVariadicCallable(tal.get(2));
+                }
+            }
+            else if (isEmptyType(args)) {
+                return false;
+            }
+            else if (args.getDeclaration() instanceof ClassOrInterface 
+                     && (args.getDeclaration().equals(getSequentialDeclaration())
+                         || args.getDeclaration().equals(getSequenceDeclaration()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

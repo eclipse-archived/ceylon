@@ -60,7 +60,9 @@ final class bug1419_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$8 = null;
         if ((string4$8 = string4) != null) {
             string4$9 = string4$8;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));
+        }
         final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val a4 = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val)string4$9.bind(t);
     }
 }

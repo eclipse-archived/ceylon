@@ -134,8 +134,12 @@ public abstract class CeylonDoc extends Markup {
         writeNavBarInfoMenu();
         close("ul"); // nav
         
+        open("ul class='nav pull-right'");
+        write("<li class='divider-vertical' />");
+        writeNavBarIndexMenu();
         writeNavBarSearchMenu();
         writeNavBarFilterMenu();
+        close("ul"); // nav
 
         close("div"); // navbar-inner
         close("div"); // navbar
@@ -208,17 +212,16 @@ public abstract class CeylonDoc extends Markup {
         around("span class='info muted'", info);
         close("div");
     }
+    
+    protected void writeNavBarIndexMenu() throws IOException {
+        write("<li><a href='" + linkRenderer().getResourceUrl("../api-index.html") + "' title='Index'></i>Index</a></li>");
+    }
 
     protected void writeNavBarSearchMenu() throws IOException {
-        open("ul class='nav pull-right'");
-        write("<li class='divider-vertical' />");
         write("<li><a href='" + linkRenderer().getResourceUrl("../search.html") + "' title='Search this module [Shortcut: S]'><i class='icon-search'></i>Search</a></li>");
-        close("ul");
     }
     
     protected void writeNavBarFilterMenu() throws IOException {
-        open("ul class='nav pull-right'");
-        write("<li class='divider-vertical' />");
         open("li id='filterDropdown' class='dropdown'");
         write("<a href='#' title='Filter declarations by tags [Shortcut: F]' role='button' class='dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i>Filter <span id='filterDropdownLinkInfo'></span> <b class='caret'></b></a>");
         open("ul id='filterDropdownPanel' class='dropdown-menu'");
@@ -234,7 +237,6 @@ public abstract class CeylonDoc extends Markup {
         close("div"); // filterActions
         close("ul"); // filterDropdownPanel
         close("li"); // filterDropdown
-        close("ul"); // nav        
     }
 
     protected final void writeSubNavBarLink(String href, String text, char key, String tooltip) throws IOException {

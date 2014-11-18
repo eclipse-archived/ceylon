@@ -21,6 +21,7 @@
     <!-- The Java source files for the compiler -->
     <property name="javac.src" location="langtools/src/share/classes" />
     <property name="ceylonc.src" location="src" />
+    <property name="common.src" location="../ceylon-common/src" />
     <property name="test.src" location="test/src" />
     <property name="test.ceylond.src" location="test/ceylondoc" />
 
@@ -160,12 +161,14 @@
             <include name="com/redhat/ceylon/ant/**" />
             <include name="com/redhat/ceylon/launcher/**" />
         </delete>
-        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.5" source="1.5" includeantruntime="true">
+        <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.5" source="1.5" includeantruntime="true">
             <include name="**/Java7Checker.java" />
             <include name="com/redhat/ceylon/tools/Tool.java" />
             <include name="com/redhat/ceylon/tools/Plugin.java" />
             <include name="com/redhat/ceylon/ant/**" />
             <include name="com/redhat/ceylon/launcher/**" />
+            <include name="com/redhat/ceylon/common/*" />
+            <include name="com/redhat/ceylon/common/config/*" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${ceylonc.src}">
@@ -174,6 +177,9 @@
                 <include name="com/redhat/**/*.properties" />
                 <include name="com/redhat/ceylon/ant/antlib.xml" />
                 <include name="META-INF/**" />
+            </fileset>
+            <fileset dir="${common.src}">
+                <include name="com/redhat/ceylon/common/config/**/*.properties" />
             </fileset>
         </copy>
         <native2ascii dest="${build.classes}" src="${ceylonc.src}" encoding="UTF-8" ext=".properties">
@@ -215,6 +221,7 @@
                 <exclude name="ceylon/**" />
                 <exclude name="com/redhat/ceylon/compiler/java/test/**" />
                 <exclude name="com/redhat/ceylon/ant/**" />
+                <exclude name="com/redhat/ceylon/common/**" />
                 <exclude name="com/redhat/ceylon/launcher/**" />
             </fileset>
             <fileset dir="${javac.src}">
@@ -233,6 +240,7 @@
         <jar destfile="${build.lib}/ceylon-ant.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/ant/**" />
+                <include name="com/redhat/ceylon/common/**" />
             </fileset>
             <zipfileset src="${ceylon.bootstrap.lib}" />
         </jar>

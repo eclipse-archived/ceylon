@@ -1,0 +1,101 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class SerializableGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public SerializableGenericClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.t = null;
+    }
+    
+    SerializableGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+        this.t = t;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class, $reified$T)));
+        deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).getTypeParameterDeclaration("T"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$T));
+        deconstructor.<T>putValue($reified$T, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "t"), this.t);
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "t").invokeExact(this, (T)(
+            let
+            {
+                .java.lang.Object valueOrRef$0 = deconstructed.<T>getValue($reified$T, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "t"));
+            }
+            returning valueOrRef$0 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<T>)valueOrRef$0).$leakInstance$() : (T)valueOrRef$0;
+        ));
+    }
+    private final T t;
+    
+    public final T getT() {
+        return t;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class, $reified$T);
+    }
+}
+class SerializableGenericSubclass extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass<.ceylon.language.String> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableGenericSubclass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        super(ignored, .ceylon.language.String.$TypeDescriptor$);
+    }
+    
+    SerializableGenericSubclass(final .java.lang.String s) {
+        super(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        super.$serialize$(dtorFactory);
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        super.$deserialize$(deconstructed);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass.class);
+}
+class SerializableGenericSubclass2<U> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass<U> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableGenericSubclass2(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        super(ignored, $reified$U);
+        this.$reified$U = $reified$U;
+    }
+    
+    SerializableGenericSubclass2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final U u) {
+        super($reified$U, u);
+        this.$reified$U = $reified$U;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        super.$serialize$(dtorFactory);
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass2.class, $reified$U)));
+        deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass2.class)).getTypeParameterDeclaration("U"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$U));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        super.$deserialize$(deconstructed);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass2.class, $reified$U);
+    }
+}

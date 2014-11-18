@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -33,7 +34,9 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
+import com.redhat.ceylon.compiler.java.codegen.CodegenUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -134,15 +137,18 @@ public class LazyPackage extends Package {
                     && Character.isLowerCase(name.charAt(0))
                     && Character.isUpperCase(Character.toUpperCase(name.charAt(0)))) {
                 // Might be trying to get an annotation constructor for a Java annotation type
-                // So try to find the annotation type
-                String annotationName = Character.toUpperCase(name.charAt(0)) + (name.length() > 1 ? name.substring(1) : "");
-                Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
-                if (possibleAnnotationType != null
-                        && possibleAnnotationType instanceof LazyInterface
-                        && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
-                    // addMember() will have added a Method if we found an annotation type
-                    // so now we can look for the constructor again
-                    d = lookupMember(compiledDeclarations, name, signature, ellipsis);
+                // So try to find the annotation type with two strategies:
+                // - urlDecoder -> UrlDecover and url -> Url
+                // - urlDecoder -> URLDecoder and url -> URL
+                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name))){
+                    Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
+                    if (possibleAnnotationType != null
+                            && possibleAnnotationType instanceof LazyInterface
+                            && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
+                        // addMember() will have added a Method if we found an annotation type
+                        // so now we can look for the constructor again
+                        d = lookupMember(compiledDeclarations, name, signature, ellipsis);
+                    }
                 }
             }
             return d;
@@ -240,7 +246,7 @@ public class LazyPackage extends Package {
         ctor.setContainer(this);
         klass.setScope(this);
         ctor.setAnnotation(true);
-        ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
+        ctor.setName(CodegenUtil.getJavaBeanName(iface.getName()));
         ctor.setShared(iface.isShared());
         Annotation annotationAnnotation2 = new Annotation();
         annotationAnnotation2.setName("annotation");
@@ -258,6 +264,7 @@ public class LazyPackage extends Package {
         ctor.setAnnotationConstructor(ai);
         List<AnnotationArgument> annotationArgs = new ArrayList<AnnotationArgument>();
         for (Declaration member : iface.getMembers()) {
+            boolean isValue = member.getName().equals("value");
             if (member instanceof JavaMethod) {
                 JavaMethod m = (JavaMethod)member;
                 
@@ -277,7 +284,10 @@ public class LazyPackage extends Package {
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
-                    classpl.getParameters().add(klassParam);
+                    if(isValue)
+                        classpl.getParameters().add(0, klassParam);
+                    else
+                        classpl.getParameters().add(klassParam);
                     argument.setParameter(klassParam);
                     klass.addMember(value);
                 }
@@ -295,13 +305,19 @@ public class LazyPackage extends Package {
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
-                    ctorpl.getParameters().add(ctorParam);
+                    if(isValue)
+                        ctorpl.getParameters().add(0, ctorParam);
+                    else
+                        ctorpl.getParameters().add(ctorParam);
                     term.setSourceParameter(ctorParam);
                     ctor.addMember(value);
                     
                     AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
                     acp.setParameter(ctorParam);
-                    ai.getConstructorParameters().add(acp);
+                    if(isValue)
+                        ai.getConstructorParameters().add(0, acp);
+                    else
+                        ai.getConstructorParameters().add(acp);
                 }
                 annotationArgs.add(argument);
             }

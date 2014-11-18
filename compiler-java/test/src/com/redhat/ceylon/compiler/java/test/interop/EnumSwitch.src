@@ -109,6 +109,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             } else if (sel$2 == .java.lang.Thread.State.RUNNABLE) {
             } else if (sel$2 == .java.lang.Thread.State.BLOCKED) {
             } else {
+                final .java.lang.Thread.State e$3 = (.java.lang.Thread.State)sel$2;
             }
         }
     }

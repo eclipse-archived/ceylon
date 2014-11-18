@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+abstract class SerializableAbstractClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public SerializableAbstractClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+    }
+    
+    SerializableAbstractClass() {
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    }
+    
+    public abstract boolean getB();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.class);
+}
+class SerializableAbstractClassSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableAbstractClassSub(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        super(ignored);
+    }
+    
+    SerializableAbstractClassSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        super.$serialize$(dtorFactory);
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        super.$deserialize$(deconstructed);
+    }
+    
+    @.java.lang.Override
+    public final boolean getB() {
+        return true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.class);
+}

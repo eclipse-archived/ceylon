@@ -69,10 +69,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -112,8 +112,13 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getDeclaration() == null)
             return;
         if(that.getMemberOperator() instanceof Tree.SafeMemberOp){
-            if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
+            TypedDeclaration decl = (TypedDeclaration) that.getDeclaration();
+            if(CodegenUtil.isRaw(decl))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(decl))
                 CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(decl) || hasTypeParameterWithConstraintsOutsideScope(decl.getType(), that.getScope()))
+                CodegenUtil.markUntrustedType(that);
             // we must be boxed, since safe member op "?." returns an optional type
             return;
         }
@@ -552,5 +557,66 @@ public abstract class BoxingVisitor extends Visitor {
         if (!that.getWantsDeclaration()) {
             CodegenUtil.markRaw(that);
         }
+    }
+    
+    @Override
+    public void visit(Tree.IfExpression that){
+        super.visit(that);
+        if(that.getIfClause() == null
+                || that.getElseClause() == null)
+            return;
+        Tree.Expression ifExpr = that.getIfClause().getExpression();
+        Tree.Expression elseExpr = that.getElseClause().getExpression();
+        if(ifExpr == null || elseExpr == null)
+            return;
+        if(CodegenUtil.isUnBoxed(ifExpr) && CodegenUtil.isUnBoxed(elseExpr))
+            CodegenUtil.markUnBoxed(that);
+        if(CodegenUtil.isRaw(ifExpr) || CodegenUtil.isRaw(elseExpr))
+            CodegenUtil.markRaw(that);
+        if(CodegenUtil.hasTypeErased(ifExpr) || CodegenUtil.hasTypeErased(elseExpr))
+            CodegenUtil.markTypeErased(that);
+        if(CodegenUtil.hasUntrustedType(ifExpr) || CodegenUtil.hasUntrustedType(elseExpr))
+            CodegenUtil.markUntrustedType(that);
+    }
+
+    @Override
+    public void visit(Tree.SwitchExpression that){
+        super.visit(that);
+        SwitchCaseList caseList = that.getSwitchCaseList();
+        if(caseList == null || caseList.getCaseClauses() == null)
+            return;
+        boolean unboxed = true;
+        for(Tree.CaseClause caseClause : caseList.getCaseClauses()){
+            Expression expr = caseClause.getExpression();
+            if(expr == null)
+                return;
+            // a single boxed one makes the whole switch boxed
+            if(!CodegenUtil.isUnBoxed(expr))
+                unboxed = false;
+            // for the rest a single raw/erased/untrusted marks the switch as so
+            if(CodegenUtil.isRaw(expr))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(expr))
+                CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(expr))
+                CodegenUtil.markUntrustedType(that);
+        }
+        if(caseList.getElseClause() != null){
+            Expression expr = caseList.getElseClause().getExpression();
+            if(expr == null)
+                return;
+            // a single boxed one makes the whole switch boxed
+            if(!CodegenUtil.isUnBoxed(expr))
+                unboxed = false;
+            // for the rest a single raw/erased/untrusted marks the switch as so
+            if(CodegenUtil.isRaw(expr))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(expr))
+                CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(expr))
+                CodegenUtil.markUntrustedType(that);
+        }
+        if(unboxed)
+            CodegenUtil.markUnBoxed(that);
     }
 }

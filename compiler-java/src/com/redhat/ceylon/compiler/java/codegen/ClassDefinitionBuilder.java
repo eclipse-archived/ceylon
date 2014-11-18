@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -108,7 +109,6 @@ public class ClassDefinitionBuilder
         return builder;
     }
     
-
     public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName, boolean isLocal) {
         return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName, isLocal);
     }
@@ -387,6 +387,11 @@ public class ClassDefinitionBuilder
         this.satisfies.add(gen.makeReifiedTypeType());
         return this;
     }
+    
+    public ClassDefinitionBuilder serializable() {
+        this.satisfies.add(gen.makeSerializableType());
+        return this;
+    }
 
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));
@@ -628,16 +633,8 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getDeclarationModel());
         parameter(makeReifiedParameter(descriptorName));
-        long flags = PRIVATE;
-        if(!isCompanion)
-            flags |= FINAL;
-        List<JCAnnotation> annotations = gen.makeAtIgnore();
-        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
-                gen.makeTypeDescriptorType(), null);
-        defs(localVar);
-        init(gen.make().Exec(gen.make().Assign(
-                gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                gen.naming.makeQualIdent(null, descriptorName))));
+        defs(gen.makeReifiedTypeParameterVarDecl(param.getDeclarationModel(), isCompanion));
+        init(gen.makeReifiedTypeParameterAssignment(param.getDeclarationModel()));
         return this;
     }
 
@@ -685,8 +682,7 @@ public class ClassDefinitionBuilder
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
             String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getDeclarationModel());
             method.parameter(makeReifiedParameter(descriptorName));
-            body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                    gen.naming.makeQualIdent(null, descriptorName))));
+            body = body.prepend(gen.makeReifiedTypeParameterAssignment(tp.getDeclarationModel()));
         }
         method.body(body);
         defs(method.build());

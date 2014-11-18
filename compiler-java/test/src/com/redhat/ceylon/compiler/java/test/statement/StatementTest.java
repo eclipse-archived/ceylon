@@ -222,6 +222,12 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testConMethodIfNarrowedElse(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfNarrowedElse");
+    }
+    
+    @Test
     public void testConMethodIfConditionListBoolBool(){
         compareWithJavaSource("conditional/MethodIfConditionListBoolBool");
     }
@@ -252,6 +258,10 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testConMethodIfConditionListNonemptyIsBool(){
         compareWithJavaSource("conditional/MethodIfConditionListNonemptyIsBool");
+    }
+    @Test
+    public void testConMethodIfExpression(){
+        compareWithJavaSource("conditional/IfExpression");
     }
 
     //
@@ -494,7 +504,13 @@ public class StatementTest extends CompilerTest {
     public void testSwitchIsVarSubst(){
         compareWithJavaSource("swtch/SwitchIsVarSubst");
     }
-    
+
+    @Test
+    public void testSwitchExpression(){
+        compareWithJavaSource("swtch/SwitchExpression");
+        run("com.redhat.ceylon.compiler.java.test.statement.swtch.switchExpressionTest");
+    }
+
     @Test
     public void testSwitchMatch(){
         compareWithJavaSource("swtch/SwitchMatch");
@@ -509,7 +525,12 @@ public class StatementTest extends CompilerTest {
     public void testSwitchInlineVar(){
         compareWithJavaSource("swtch/SwitchInlineVar");
     }
-    
+
+    @Test
+    public void testSwitchNarrowedElse(){
+        compile("swtch/FooBar.ceylon");
+        compareWithJavaSource("swtch/SwitchNarrowedElse");
+    }
     
     @Test
     public void testReturnAnonFunction(){

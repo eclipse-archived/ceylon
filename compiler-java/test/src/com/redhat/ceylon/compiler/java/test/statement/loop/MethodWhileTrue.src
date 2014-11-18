@@ -9,7 +9,9 @@ final class methodWhileTrue_ {
         loop_0: while (true) {
             if (true) {
                 return "";
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
         throw new .java.lang.Error("Ceylon flow error");
     }
@@ -25,7 +27,9 @@ final class methodWhileTrue2_ {
                 if (b) {
                     return "";
                 }
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
         throw new .java.lang.Error("Ceylon flow error");
     }
@@ -41,7 +45,9 @@ final class methodWhileTrue3_ {
                 if (b) {
                     break loop_2;
                 }
-            } else break loop_2;
+            } else {
+                break loop_2;
+            }
         }
         return "";
     }

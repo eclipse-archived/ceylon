@@ -15,9 +15,15 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         return y$3 == 1L;
-                    } else break loop_0;
-                } else break loop_0;
-            } else break loop_0;
+                    } else {
+                        break loop_0;
+                    }
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
         return false;
     }

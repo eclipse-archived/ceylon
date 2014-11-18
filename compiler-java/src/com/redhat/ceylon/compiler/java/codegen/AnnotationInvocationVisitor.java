@@ -56,7 +56,7 @@ class AnnotationInvocationVisitor extends Visitor {
         Set<Declaration> ctors = new HashSet<Declaration>();
         while (declaration instanceof Method) {
             if (!ctors.add(declaration)) {
-                throw new BugException(invocation, "Recursive annotation constructor");
+                throw new BugException(invocation, "recursive annotation constructor");
             }
             declaration = ((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
         } 
@@ -75,7 +75,7 @@ class AnnotationInvocationVisitor extends Visitor {
         } else if (declaration instanceof Class) {
             return null;
         } else {
-            throw new BugException(invocation, "compiler bug: invocation primary has unexpected declaration: " + declaration);
+            throw new BugException(invocation, "invocation primary has unexpected declaration: " + declaration);
         }
     }
     

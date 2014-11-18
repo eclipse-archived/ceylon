@@ -8,7 +8,9 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void m(final .java.lang.Object x) {
         loop_0: while (true) {
             if (x == null) {
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     

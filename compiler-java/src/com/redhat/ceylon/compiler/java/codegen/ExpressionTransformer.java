@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
@@ -70,10 +71,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -471,16 +469,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                     boolean exprIsRaw = exprType.isRaw();
                     boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
 
-                    // simplify the type
-                    // (without the underlying type, because the cast is always to a non-primitive)
-                    exprType = simplifyType(expectedType).withoutUnderlyingType();
-
-                    // We will need a raw cast if the expected type has type parameters, 
-                    // unless the expr is already raw
-                    if (!exprIsRaw && hasTypeParameters(expectedType)) {
-                        JCExpression rawType = makeJavaType(expectedType, 
+                    // We will need a raw cast if either the expected type or the
+                    // expression type has type parameters while the other hasn't 
+                    // (unless the other type is already raw)
+                    if ((!exprIsRaw && hasTypeParameters(expectedType))
+                            || (!expectedTypeIsRaw && hasTypeParameters(exprType))) {
+                        ProducedType rawType = hasTypeParameters(expectedType) ? expectedType : exprType;
+                        JCExpression rawTypeExpr = makeJavaType(rawType, 
                                 AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW | companionFlags);
-                        result = make().TypeCast(rawType, result);
+                        result = make().TypeCast(rawTypeExpr, result);
                         // expr is now raw
                         exprIsRaw = true;
                         // let's not add another downcast if we got a cast: one is enough
@@ -489,6 +486,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                         exprErased = false;
                         exprUntrustedType = false;
                     }
+
+                    // simplify the type
+                    // (without the underlying type, because the cast is always to a non-primitive)
+                    exprType = simplifyType(expectedType).withoutUnderlyingType();
 
                     // if the expr is not raw, we need a cast
                     // if the expr is raw:
@@ -1118,7 +1119,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // arguments
                 containerType = ((Class)declaration.getContainer()).getType();
             }
-            JCExpression typeCall = makeTypeLiteralCall(expr, containerType, false);
+            JCExpression typeCall = makeTypeLiteralCall(containerType, false, expr.getTypeModel());
             // make sure we cast it to ClassOrInterface
             TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration("ClassOrInterface");
             JCExpression classOrInterfaceTypeExpr = makeJavaType(
@@ -1179,7 +1180,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    private JCExpression makeMemberValueOrFunctionDeclarationLiteral(Node node, Declaration declaration) {
+    JCExpression makeMemberValueOrFunctionDeclarationLiteral(Node node, Declaration declaration) {
+        return makeMemberValueOrFunctionDeclarationLiteral(node, declaration, true);
+    }
+    
+    JCExpression makeMemberValueOrFunctionDeclarationLiteral(Node node, Declaration declaration, boolean f) {
         // it's a member we get from its container declaration
         if(declaration.getContainer() instanceof ClassOrInterface == false)
             return makeErroneous(node, "compiler bug: " + declaration.getContainer() + " is not a supported type parameter container");
@@ -1206,7 +1211,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression memberType = makeJavaType(metamodelDecl.getType());
         JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
         JCExpression memberCall = make().Apply(List.of(memberType), 
-                                               makeSelect(metamodelCall, "getMemberDeclaration"), 
+                                               makeSelect(metamodelCall, f ? "getMemberDeclaration" : "getDeclaredMemberDeclaration"), 
                                                List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
         return memberCall;
     }
@@ -1309,12 +1314,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
     }
 
-    private JCExpression makeTypeLiteralCall(Tree.MetaLiteral expr, ProducedType type, boolean addCast) {
+    JCExpression makeTypeLiteralCall(ProducedType type, boolean addCast, ProducedType exprType) {
         // construct a call to typeLiteral<T>() and cast if required
         JCExpression call = makeTypeLiteralCall(type);
         if(addCast){
             // if we have a type that is not nothingType and not Type, we need to cast
-            ProducedType exprType = expr.getTypeModel().resolveAliases();
+            exprType = exprType.resolveAliases();
             TypeDeclaration typeDeclaration = exprType.getDeclaration();
             if(typeDeclaration instanceof UnionType == false
                     && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
@@ -1329,29 +1334,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.TypeLiteral expr) {
         at(expr);
         if(!expr.getWantsDeclaration()){
-            return makeTypeLiteralCall(expr, expr.getType().getTypeModel(), true);
+            return makeTypeLiteralCall(expr.getType().getTypeModel(), true, expr.getTypeModel());
         }else if(expr.getDeclaration() instanceof TypeParameter){
             // we must get it from its container
-            Declaration declaration = expr.getDeclaration();
-            Scope container = declaration.getContainer();
-            if(container instanceof Declaration){
-                JCExpression containerExpr;
-                Declaration containerDeclaration = (Declaration) container;
-                if(containerDeclaration instanceof ClassOrInterface
-                        || containerDeclaration instanceof TypeAlias){
-                    JCExpression metamodelCall = makeTypeDeclarationLiteral((TypeDeclaration) containerDeclaration);
-                    JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration("GenericDeclaration").getType(), JT_NO_PRIMITIVES);
-                    containerExpr = make().TypeCast(metamodelCast, metamodelCall);
-                }else if(containerDeclaration.isToplevel()) {
-                    containerExpr = makeTopLevelValueOrFunctionDeclarationLiteral(containerDeclaration);
-                }else{
-                    containerExpr = makeMemberValueOrFunctionDeclarationLiteral(expr, containerDeclaration);
-                }
-                // now it must be a ClassOrInterfaceDeclaration or a FunctionDeclaration, both of which have the method we need
-                return at(expr).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
-            }else{
-                return makeErroneous(expr, "compiler bug: " + container + " is not a supported type parameter container");
-            }
+            TypeParameter declaration = (TypeParameter)expr.getDeclaration();
+            Node node = expr;
+            return makeTypeParameterDeclaration(node, declaration);
         }else if(expr.getDeclaration() instanceof ClassOrInterface
                  || expr.getDeclaration() instanceof TypeAlias){
             // use the generated class to get to the declaration literal
@@ -1368,7 +1356,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    private JCExpression makeTypeDeclarationLiteral(TypeDeclaration declaration) {
+    /**
+     * Makes an expression equivalent to the result of {@code `given T`} 
+     * @param node
+     * @param declaration
+     * @return
+     */
+    JCExpression makeTypeParameterDeclaration(Node node,
+            TypeParameter declaration) {
+        Scope container = declaration.getContainer();
+        if(container instanceof Declaration){
+            JCExpression containerExpr;
+            Declaration containerDeclaration = (Declaration) container;
+            if(containerDeclaration instanceof ClassOrInterface
+                    || containerDeclaration instanceof TypeAlias){
+                JCExpression metamodelCall = makeTypeDeclarationLiteral((TypeDeclaration) containerDeclaration);
+                JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration("GenericDeclaration").getType(), JT_NO_PRIMITIVES);
+                containerExpr = make().TypeCast(metamodelCast, metamodelCall);
+            }else if(containerDeclaration.isToplevel()) {
+                containerExpr = makeTopLevelValueOrFunctionDeclarationLiteral(containerDeclaration);
+            }else{
+                containerExpr = makeMemberValueOrFunctionDeclarationLiteral(node, containerDeclaration);
+            }
+            // now it must be a ClassOrInterfaceDeclaration or a FunctionDeclaration, both of which have the method we need
+            return at(node).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
+        }else{
+            return makeErroneous(node, "compiler bug: " + container + " is not a supported type parameter container");
+        }
+    }
+
+    JCExpression makeTypeDeclarationLiteral(TypeDeclaration declaration) {
         JCExpression classLiteral = makeUnerasedClassLiteral(declaration);
         return makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
     }
@@ -1579,6 +1596,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        return makeOuterExpr(outerClass);
+    }
+
+    JCExpression makeOuterExpr(ProducedType outerClass) {
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
             return makeQualifiedDollarThis(outerClass);
@@ -4823,7 +4844,7 @@ public class ExpressionTransformer extends AbstractTransformer {
              */
             public IfComprehensionCondList(java.util.List<Tree.Condition> conditions,
                     List<JCStatement> preCheck, List<JCStatement> insideCheck, List<JCStatement> postCheck) {
-                statementGen().super(conditions, null);
+                statementGen().super(conditions, (Tree.Block)null);
                 if(preCheck == null) preCheck = List.<JCStatement>nil();
                 if(insideCheck == null) insideCheck = List.<JCStatement>nil();
                 if(postCheck == null) postCheck = List.<JCStatement>nil();
@@ -4834,49 +4855,49 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             @Override
             protected List<JCStatement> transformInnermost(Tree.Condition condition) {
-                Cond transformedCond = statementGen().transformCondition(condition, null);
+                Cond transformedCond = getConditionTransformer(condition);
                 // The innermost condition's test should be transformed before
                 // variable substitution
                 
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond);
-                return transformCommon(transformedCond,
+                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
+                return transformCommon(transformedCond.getVarTrans(),
                         test,
                         insideCheck,
                         resultVarName);
             }
             
             protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
-                Cond transformedCond = statementGen().transformCondition(condition, null);
+                Cond transformedCond = getConditionTransformer(condition);
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond);
-                return transformCommon(transformedCond, test, transformList(rest), resultVarName);
+                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
+                return transformCommon(transformedCond.getVarTrans(), test, transformList(rest), resultVarName);
             }
 
-            private SyntheticName addVarSubs(Cond transformedCond) {
-                if (transformedCond.hasResultDecl()) {
-                    Tree.Variable var = transformedCond.getVariable();
-                    SyntheticName resultVarName = naming.alias(transformedCond.getVariableName().getName());
+            private SyntheticName addVarSubs(VarTrans vartrans) {
+                if (vartrans.hasResultDecl()) {
+                    Tree.Variable var = vartrans.getVariable();
+                    SyntheticName resultVarName = naming.alias(vartrans.getVariableName().getName());
                     fieldSubst.add(naming.addVariableSubst(var.getDeclarationModel(), resultVarName.getName()));
                     return resultVarName;
                 }
                 return null;
             }
             
-            protected List<JCStatement> transformCommon(Cond transformedCond, 
+            protected List<JCStatement> transformCommon(VarTrans vartrans, 
                     JCExpression test, List<JCStatement> stmts,
                     SyntheticName resultVarName) {
                 
-                JCStatement decl = transformedCond.makeTestVarDecl(0, true);
+                JCStatement decl = vartrans.makeTestVarDecl(0, true);
                 if (decl != null) {
                     varDecls.append(decl);
                 }
-                if (transformedCond.hasResultDecl()) {
+                if (vartrans.hasResultDecl()) {
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 
-                            resultVarName.asName(), transformedCond.makeTypeExpr(), null));
+                            resultVarName.asName(), vartrans.makeTypeExpr(), null));
                     valueCaptures.add(make().VarDef(make().Modifiers(Flags.FINAL),
-                            resultVarName.asName(), transformedCond.makeTypeExpr(), resultVarName.makeIdentWithThis()));
-                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), transformedCond.makeResultExpr())));
+                            resultVarName.asName(), vartrans.makeTypeExpr(), resultVarName.makeIdentWithThis()));
+                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), vartrans.makeResultExpr())));
                 }
                 stmts = List.<JCStatement>of(make().If(
                         test, 
@@ -5687,6 +5708,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
         return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
+    }
+
+    public JCTree transform(Tree.ObjectExpression expr) {
+        at(expr);
+        List<JCTree> klass = classGen().transformObjectExpression(expr);
+        at(expr);
+        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(expr.getAnonymousClass().getName()+"_"), List.<JCTree.JCExpression>nil(), null);
+        return make().LetExpr((List)klass, newCall);
+    }
+
+    public JCExpression transform(Tree.IfExpression op) {
+        String tmpVar = naming.newTemp("ifResult");
+        Tree.Expression thenPart = op.getIfClause().getExpression();
+        Tree.Expression elsePart = op.getElseClause() != null ? op.getElseClause().getExpression() : null;
+        java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
+        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elsePart, tmpVar, op);
+        at(op);
+        JCExpression vartype = makeJavaType(op.getTypeModel());
+        return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
+    }
+
+    public JCTree transform(Tree.SwitchExpression op) {
+        String tmpVar = naming.newTemp("ifResult");
+        JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
+        at(op);
+        JCExpression vartype = makeJavaType(op.getTypeModel());
+        return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
+                              List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
 
 }
