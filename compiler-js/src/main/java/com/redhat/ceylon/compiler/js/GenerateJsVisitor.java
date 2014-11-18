@@ -1229,15 +1229,18 @@ public class GenerateJsVisitor extends Visitor
         //This is because of the new initializer syntax
         final com.redhat.ceylon.compiler.typechecker.model.Parameter param = d.isParameter() ?
                 ((Functional)d.getContainer()).getParameter(d.getName()) : null;
+        final boolean asprop = defineAsProperty(d);
         if (d.isFormal()) {
-            if (!opts.isOptimize())generateAttributeMetamodel(that, false, false);
+            if (!opts.isOptimize()) {
+                generateAttributeMetamodel(that, false, false);
+            }
         } else {
             comment(that);
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
                     || d.isVariable() || d.isLate();
-            final boolean addSetter = (d.isVariable() || d.isLate()) && !defineAsProperty(d);
+            final boolean addSetter = (d.isVariable() || d.isLate()) && !asprop;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 if ((specInitExpr != null
                         && !(specInitExpr instanceof LazySpecifierExpression)) || d.isLate()) {
@@ -1252,8 +1255,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
-                final boolean property = defineAsProperty(d);
-                if (property) {
+                if (asprop) {
                     defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
                     out("{");
                 } else {
@@ -1268,7 +1270,7 @@ public class GenerateJsVisitor extends Visitor
                     boxUnboxEnd(boxType);
                 }
                 out(";}");
-                if (property) {
+                if (asprop) {
                     Tree.AttributeSetterDefinition setterDef = null;
                     if (d.isVariable()) {
                         setterDef = associatedSetterDefinition(d);
@@ -1302,7 +1304,13 @@ public class GenerateJsVisitor extends Visitor
                     AttributeGenerator.generateAttributeSetter(that, d, this);
                 }
             }
-            generateAttributeMetamodel(that, addGetter, addSetter);
+            boolean addMeta=!opts.isOptimize() || d.isToplevel();
+            if (!d.isToplevel()) {
+                addMeta |= Util.getContainingDeclaration(d).isAnonymous();
+            }
+            if (addMeta) {
+                generateAttributeMetamodel(that, addGetter, addSetter);
+            }
         }
     }
 
@@ -1909,7 +1917,8 @@ public class GenerateJsVisitor extends Visitor
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
         final Tree.Term term = specStmt.getBaseMemberExpression();
-        final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression ? (Tree.StaticMemberOrTypeExpression)term : null;
+        final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression
+                ? (Tree.StaticMemberOrTypeExpression)term : null;
         if (dynblock > 0 && Util.isTypeUnknown(term.getTypeModel())) {
             if (smte != null && smte.getDeclaration() == null) {
                 out(smte.getIdentifier().getText());
@@ -1957,8 +1966,29 @@ public class GenerateJsVisitor extends Visitor
             }
             else if (outer != null) {
                 // "attr = expr;" in a prototype definition
+                //since #451 we now generate an attribute here
                 if (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual()) {
-                    out("delete ", names.self(outer), ".", names.name(bmeDecl));
+                    Value vdec = (Value)bmeDecl;
+                    final String atname = bmeDecl.isShared() ? names.name(bmeDecl)+"_" : names.privateName(bmeDecl);
+                    defineAttribute(names.self(outer), names.name(bmeDecl));
+                    out("{");
+                    if (vdec.isLate()) {
+                        generateUnitializedAttributeReadCheck("this."+atname, names.name(bmeDecl));
+                    }
+                    out("return this.", atname, ";}");
+                    if (vdec.isVariable() || vdec.isLate()) {
+                        final String par = getNames().createTempVariable();
+                        out(",function(", par, "){");
+                        if (vdec.isLate()) {
+                            generateImmutableAttributeReassignmentCheck("this."+atname, names.name(bmeDecl));
+                        }
+                        out("return this.", atname, "=", par, ";}");
+                    } else {
+                        out(",undefined");
+                    }
+                    out(",");
+                    TypeUtils.encodeForRuntime(expr, bmeDecl, this);
+                    out(")");
                     endLine(true);
                 }
             }
@@ -2028,8 +2058,20 @@ public class GenerateJsVisitor extends Visitor
                         // Specifier for a member attribute. This actually defines the
                         // member (e.g. in shortcut refinement syntax the attribute
                         // declaration itself can be omitted), so generate the attribute.
-                        AttributeGenerator.generateAttributeGetter(null, moval,
-                                specStmt.getSpecifierExpression(), null, this, directAccess);
+                        if (opts.isOptimize()) {
+                            //#451
+                            out(names.self(Util.getContainingClassOrInterface(moval.getScope())), ".",
+                                    names.name(moval));
+                            if (!(moval.isVariable() || moval.isLate())) {
+                                    out("_");
+                            }
+                            out("=");
+                            specStmt.getSpecifierExpression().visit(this);
+                            endLine(true);
+                        } else {
+                            AttributeGenerator.generateAttributeGetter(null, moval,
+                                    specStmt.getSpecifierExpression(), null, this, directAccess);
+                        }
                     }
                 } else {
                     // Specifier for some other attribute, or for a method.

@@ -91,6 +91,17 @@ class AliasMemberTest() {
     shared A f2() => AliasA();
 }
 
+class Test451() {
+  Integer x;
+  Integer y;
+  this.x=system.milliseconds%2;
+  switch(x)
+  case(0) { this.y=1; }
+  else { this.y=0; }
+  check(this.x+y==1, "#451.1");
+  check(this.y*2==2, "#451.2");
+}
+
 shared void test() {
     value c = Counter(0);
     check(c.count==0,"counter 1");
@@ -112,5 +123,6 @@ shared void test() {
     check(AliasMemberTest().b()=="B", "non-shared inner alias class");
     check(AliasMemberTest().f1().s=="123", "alias method member 1");
     check(AliasMemberTest().f2().s=="A", "alias method member 2");
+    Test451();
     results();
 }
