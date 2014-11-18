@@ -15,8 +15,6 @@ interface Local$local$LI$LII {
 interface Local$local$LI {
     
     public .java.lang.Object LI$impl();
-    
-    public abstract long $default$LIC$j();
 }
 interface Local$C$local2$CL$LCI {
     
