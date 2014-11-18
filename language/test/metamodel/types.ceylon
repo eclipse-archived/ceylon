@@ -1,5 +1,12 @@
 import ceylon.language.meta.declaration { ClassDeclaration }
-import ceylon.language.meta.model { Class, MemberClass }
+import ceylon.language.meta.model { 
+    Class, 
+    MemberClass, 
+    MemberClassConstructor, 
+    Constructor 
+}
+import ceylon.language.meta{ type }
+
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;
 shared Float toplevelFloat = 1.2;
@@ -410,4 +417,152 @@ class MemberObjectContainer<T>(){
 shared object obj {
     shared Integer attribute = 2;
     shared T method<T>(T t) => t;
+}
+
+shared class Constructors<T> {
+    shared Anything arg;
+    shared new Constructors(T? t=null){
+        arg = t;
+    }
+    shared new Other(Integer i){
+        arg = i;
+    }
+    new NonShared(Boolean b){
+        arg = b;
+    }
+    class Member {
+        shared new Member() {}
+        shared new Other() {}
+        new NonShared() {}
+        shared MemberClassConstructor<Constructors<T>, Member, []> nonShared => `NonShared`;
+    }
+    shared void test() {
+        testDeclarations();
+        testModels();
+        //testMemberModels();
+    }
+    shared void testModels() {
+        value def = `Constructors`;
+        value other = `Other`;
+        value nonShared = `NonShared`;
+        
+        // declaration
+        assert(`new Constructors` == def.declaration);
+        assert(`new Other` == other.declaration);
+        assert(`new NonShared` == nonShared.declaration);
+        //container
+        assert(type(this) == def.container);
+        assert(type(this) == other.container);
+        assert(type(this) == nonShared.container);
+        // parameterTypes
+        assert(def.parameterTypes.size==1);
+        assert(exists t = def.parameterTypes[0],
+            `String`.union(`Null`) == t);
+        assert(other.parameterTypes.size==1);
+        assert(exists i = other.parameterTypes[0],
+            `Integer` == i);
+        assert(nonShared.parameterTypes.size==1);
+        assert(exists b = nonShared.parameterTypes[0],
+            `Boolean` == b);
+        // call 
+        assert(! def().arg exists);
+        assert(is T a = "",
+            exists a1 = def(a).arg,
+            "" == a1);
+        assert(exists a2 = other(1).arg, 
+            1==a2);
+        assert(exists a3 = nonShared(true).arg, 
+            a3==true);
+        
+        // apply
+    }
+    shared void testMemberModels() {
+        value inst = Member();
+        value def = `Member.Member`;
+        value other = `Member.Other`;
+        value nonShared = inst.nonShared;
+        
+        // declaration
+        //containers
+        // parameterTypes
+        // call and apply
+    }
+    shared void testDeclarations() {
+        value def = `new Constructors`;
+        value other = `new Other`;
+        value nonShared = `new NonShared`;
+        
+        assert(def.defaultConstructor);
+        assert(!other.defaultConstructor);
+        assert(!nonShared.defaultConstructor);
+        
+        assert("Constructors" == def.name);
+        assert("Other" == other.name);
+        assert("NonShared" == nonShared.name);
+        
+        assert("metamodel::Constructors.Constructors" == def.qualifiedName);
+        assert("metamodel::Constructors.Other" == other.qualifiedName);
+        assert("metamodel::Constructors.NonShared" == nonShared.qualifiedName);
+        
+        assert(!def.annotation);
+        assert(!other.annotation);
+        assert(!nonShared.annotation);
+        
+        assert(def.shared);
+        assert(other.shared);
+        assert(!nonShared.shared);
+        
+        assert(def.shared);
+        assert(other.shared);
+        assert(!nonShared.shared);
+        
+        assert(is ClassDeclaration cls = `package`.getClassOrInterface("Constructors"));
+        
+        assert(cls == def.container);
+        assert(cls == other.container);
+        assert(cls == nonShared.container);
+        
+        assert(cls.openType == def.openType);
+        assert(cls.openType == other.openType);
+        assert(cls.openType == nonShared.openType);
+        
+        //parameters
+        assert(1 == def.parameterDeclarations.size);
+        assert(exists def1 = def.parameterDeclarations.first);
+        assert(def1.name == "t");
+        assert(exists def12 = def.getParameterDeclaration("t"));
+        assert(def12 == def1);
+        
+        assert(1 == other.parameterDeclarations.size);
+        assert(exists other1 = other.parameterDeclarations.first);
+        assert(other1.name == "i");
+        assert(exists other12 = other.getParameterDeclaration("i"));
+        assert(other12 == other1);
+        
+        assert(1 == nonShared.parameterDeclarations.size);
+        assert(exists nonShared1 = nonShared.parameterDeclarations.first);
+        assert(nonShared1.name == "b");
+        assert(exists nonShared12 = nonShared.getParameterDeclaration("b"));
+        assert(nonShared12 == nonShared1);
+        
+        assert(!def.annotations<SharedAnnotation>().empty);
+        assert(!other.annotations<SharedAnnotation>().empty);
+        assert(nonShared.annotations<SharedAnnotation>().empty);
+        
+        assert(exists c1 = cls.getConstructorDeclaration("Constructors"),
+            def == c1);
+        assert(exists c2 = cls.getConstructorDeclaration("Other"),
+            other == c2);
+        assert(exists c3 = cls.getConstructorDeclaration("NonShared"),
+            nonShared == c3);
+        
+        assert(exists c4 = cls.defaultConstructorDeclaration,
+            def == c4);
+        
+        value ctors = cls.constructorDeclarations();
+        assert(ctors.size == 3);
+        assert(def in ctors);
+        assert(other in ctors);
+        assert(nonShared in ctors);
+    }
 }

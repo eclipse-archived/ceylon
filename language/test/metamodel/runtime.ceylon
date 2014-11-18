@@ -21,7 +21,7 @@ import ceylon.language.meta.declaration {
 }
 
 @test
-shared void checkConstructors(){
+shared void checkInitializers(){
     // no parameters
     value noParamsType = type(NoParams());
     assert(is Class<NoParams, []> noParamsType);
@@ -1644,6 +1644,12 @@ shared void checkObjectMemberReferences(){
     MemberObjectContainer<Integer>().test();
 }
 
+@test
+shared void checkConstructors2() {
+    value inst = Constructors<String>();
+    inst.test();
+}
+
 Boolean eq(Anything a, Anything b){
     if(exists a){
         if(exists b){
@@ -1675,9 +1681,9 @@ shared void run() {
     } catch (Exception|AssertionError e) { print("Failed hierarchy"); e.printStackTrace(); }
     try {
         total++;
-        checkConstructors();    
+        checkInitializers();
         pass++;
-    } catch (Exception|AssertionError e) { print("Failed constructors"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed initializers"); e.printStackTrace(); }
     try {
         total++;
         checkMemberFunctions();
@@ -1802,6 +1808,11 @@ shared void run() {
         checkObjectMemberReferences();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed object member references"); e.printStackTrace(); }
+    try {
+        total++;
+        checkConstructors2();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed constructors"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
