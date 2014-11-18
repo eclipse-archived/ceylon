@@ -2289,12 +2289,6 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we get the first type that java will find when it looks up
         final ProducedType bestSatisfiedType = getBestSatisfiedType(model.getType(), iface);
         
-        classBuilder.field(PROTECTED | FINAL, getCompanionFieldName(iface), 
-                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false,
-                makeAtIgnore());
-
-        classBuilder.method(makeCompanionAccessor(iface, satisfiedType, model, true));
-        
         classBuilder.getInitBuilder().init(makeCompanionInstanceAssignment(model, iface, satisfiedType));
         
         classBuilder.field(PROTECTED | FINAL, getCompanionFieldName(iface), 
