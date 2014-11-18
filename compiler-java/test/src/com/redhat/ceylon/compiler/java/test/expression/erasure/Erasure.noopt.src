@@ -256,7 +256,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle)(
             let
             {
-                .java.lang.Object $ceylontmp$op$5 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle $ceylontmp$op$5 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
                 middleVar = $ceylontmp$op$5;
             }
             returning $ceylontmp$op$5;
