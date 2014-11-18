@@ -87,5 +87,14 @@ public class ReferenceCounter extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.DocLink that) {
+        super.visit(that);
+        Declaration d = that.getBase();
+        if (d!=null) {
+            referenced(d);
+        }
+    }
+
 }
 
