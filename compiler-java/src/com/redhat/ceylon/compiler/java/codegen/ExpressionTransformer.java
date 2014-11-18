@@ -5725,7 +5725,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
         List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elsePart, tmpVar, op);
         at(op);
-        JCExpression vartype = makeJavaType(op.getTypeModel());
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 
@@ -5733,7 +5733,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String tmpVar = naming.newTemp("ifResult");
         JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
         at(op);
-        JCExpression vartype = makeJavaType(op.getTypeModel());
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
