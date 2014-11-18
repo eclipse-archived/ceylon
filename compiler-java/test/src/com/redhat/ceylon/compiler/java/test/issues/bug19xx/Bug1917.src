@@ -57,3 +57,52 @@ final class bug1917works_ {
         );
     }
 }
+class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1917Interop(final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource) {
+        super();
+        this.dataSource = dataSource;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource;
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java getDataSource$priv$() {
+        return dataSource;
+    }
+    
+    public final long getLoginTimeout1() {
+        return getLoginTimeout();
+    }
+    
+    public final void setLoginTimeout1(final long loginTimeout1) {
+        (
+            let
+            {
+                long $ceylontmp$op$3 = loginTimeout1;
+                setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$3));
+            }
+            returning $ceylontmp$op$3;
+        );
+    }
+    
+    public final long getLoginTimeout2() {
+        return getDataSource$priv$().getLoginTimeout();
+    }
+    
+    public final void setLoginTimeout2(final long loginTimeout2) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java $ceylontmp$opE$4 = getDataSource$priv$();
+                long $ceylontmp$opV$5 = loginTimeout2;
+                $ceylontmp$opE$4.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$5));
+            }
+            returning $ceylontmp$opV$5;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Interop.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Interop.class);
+}

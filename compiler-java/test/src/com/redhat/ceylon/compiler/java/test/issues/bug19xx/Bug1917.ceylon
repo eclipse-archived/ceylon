@@ -35,3 +35,18 @@ void bug1917works<Result>(Result() f) {
     variable Result|Object|Null memo;
     Result x = memo = f();
 }
+
+@noanno
+class Bug1917Interop(Bug1917Java dataSource) extends Bug1917Java(){
+    shared Integer loginTimeout1
+            => loginTimeout;
+    
+    assign loginTimeout1
+            => loginTimeout = loginTimeout1;
+
+    shared Integer loginTimeout2
+            => dataSource.loginTimeout;
+
+    assign loginTimeout2
+            => dataSource.loginTimeout = loginTimeout2;
+}
