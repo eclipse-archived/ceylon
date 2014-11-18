@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1917_ {
+    
+    private bug1917_() {
+    }
+    
+    static void bug1917() {
+        .java.lang.Object a = null;
+        final long b = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$op$0 = .ceylon.language.Integer.instance(2L);
+                a = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        ).longValue();
+        a = .ceylon.language.Integer.instance(2L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1917_.bug1917();
+    }
+}
+final class bug1917fails_ {
+    
+    private bug1917fails_() {
+    }
+    
+    static <Result>void bug1917fails(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> f) {
+        .java.lang.Object memo = null;
+        final Result x = (
+            let
+            {
+                Result $ceylontmp$op$1 = f.$call$();
+                memo = $ceylontmp$op$1;
+            }
+            returning $ceylontmp$op$1;
+        );
+    }
+}
+final class bug1917works_ {
+    
+    private bug1917works_() {
+    }
+    
+    static <Result>void bug1917works(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> f) {
+        .java.lang.Object memo = null;
+        final Result x = (Result)(
+            let
+            {
+                Result $ceylontmp$op$2 = f.$call$();
+                memo = $ceylontmp$op$2;
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+}
