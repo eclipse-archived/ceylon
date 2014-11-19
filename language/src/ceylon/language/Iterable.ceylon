@@ -167,8 +167,13 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
+    "Returns `true` if the iterator for this stream produces
+     the given element, or `false` otherwise. In the case of 
+     an infinite stream, this operation never terminates;
+     furthermore, this default implementation iterates all 
+     elements, which might be very expensive."
     shared actual default Boolean contains(Object element) 
-            => any(ifExists(element.equals));
+            => any((e) => if (exists e) then e==element else false);
     
     "The first element returned by the iterator, if any, or 
      `null` if this stream is empty. For a stream with an
@@ -1284,14 +1289,3 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
 }
-
-Boolean ifExists(Boolean predicate(Object val))(Anything val) {
-    if (exists val) {
-        return predicate(val);
-    }
-    else {
-        return false;
-    }
-}
-        //TODO: compiler bug: 
-        //=> if (exists val) then predicate(val) else false;
