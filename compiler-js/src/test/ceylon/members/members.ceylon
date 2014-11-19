@@ -96,10 +96,15 @@ class Test451() {
   Integer y;
   this.x=system.milliseconds%2;
   switch(x)
-  case(0) { this.y=1; }
-  else { this.y=0; }
+  case(0) {
+    this.y=1;
+    check(this.y*2==2, "#451.2");
+  }
+  else {
+    this.y=0;
+    check(this.y+2==2, "#451.2");
+  }
   check(this.x+y==1, "#451.1");
-  check(this.y*2==2, "#451.2");
 }
 
 shared void test() {
