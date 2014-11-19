@@ -15,6 +15,4 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     
     shared formal actual ClassDeclaration declaration;
     
-    shared formal ConstructorModel<Type, Arguments> getDeclaredConstructor<Arguments=Nothing>(String name)
-        given Arguments satisfies Anything[];
 }

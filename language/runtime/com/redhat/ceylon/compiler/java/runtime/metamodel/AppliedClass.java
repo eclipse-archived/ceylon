@@ -11,7 +11,6 @@ import java.util.List;
 import ceylon.language.Array;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.model.ConstructorModel;
 import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -516,8 +515,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
     
-    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getDeclaredConstructor(TypeDescriptor reified$Arguments,String name) {
+    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,String name) {
         // TODO
+        return null;
+    }
+    
+    public <Arguments extends Sequential<?extends Object>> java.lang.Object instantiator(TypeDescriptor reified$Arguments) {
+        // TODO 
         return null;
     }
 }

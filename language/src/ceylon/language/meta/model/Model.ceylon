@@ -15,7 +15,7 @@ shared sealed interface Model of ClassOrInterface<Anything>
         satisfies Declared {
     
     "The container type of this model, or `null` if this is a toplevel model."
-    shared formal Type<Anything>? container;
+    shared actual formal Type<Anything>? container;
     
     "The declaration for this model."
     shared actual formal NestableDeclaration declaration;

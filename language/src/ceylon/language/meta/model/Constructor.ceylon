@@ -9,10 +9,13 @@ import ceylon.language.meta.model {
    you can instantiate and inspect.
    """
 shared sealed interface Constructor<out Type=Anything, in Arguments=Nothing> 
-        satisfies ConstructorModel<Type, Arguments>
-            & Callable<Type, Arguments> 
-            & Applicable<Type> 
+        satisfies Applicable<Type, Arguments>
+            & Functional 
+            & Declared 
         given Arguments satisfies Anything[] {
+        
+    "The declaration for this model."
+    shared actual formal ConstructorDeclaration declaration;
     
     "The container class of this constructor"
     shared formal actual Class<Type> container;
