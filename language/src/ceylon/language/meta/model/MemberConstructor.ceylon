@@ -9,7 +9,7 @@ import ceylon.language.meta.model {
    """
 shared sealed interface MemberConstructor<ClassContainer, out Type=Anything, in Arguments=Nothing> 
         satisfies ConstructorModel<Type, Arguments> 
-            & Member<ClassContainer, Constructor<Type,Arguments>>
+            & Bindable<ClassContainer, Constructor<Type,Arguments>>
         given Arguments satisfies Anything[] 
         given ClassContainer satisfies ClassModel<Type> {
     

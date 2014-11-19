@@ -4,6 +4,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.Class;
+import ceylon.language.meta.model.ConstructorModel;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -204,5 +205,10 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
     public ceylon.language.meta.model.Type<?> getContainer(){
         return getDeclaringType();
+    }
+    
+    public <Arguments extends Sequential<?extends Object>> ConstructorModel<Type,Arguments> getDeclaredConstructor(TypeDescriptor reified$Arguments,String name) {
+        // TODO
+        return null;
     }
 }

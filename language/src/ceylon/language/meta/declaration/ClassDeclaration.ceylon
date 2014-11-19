@@ -1,3 +1,4 @@
+import ceylon.language { AnnotationType = Annotation }
 import ceylon.language.meta.model {
     Class,
     MemberClass,
@@ -86,4 +87,9 @@ shared sealed interface ClassDeclaration
     throws(`class IncompatibleTypeException`, "If the specified container, type or value arguments are not compatible with this method.")
     shared default Anything memberInstantiate(Object container, AppliedType<Anything>[] typeArguments = [], Anything* arguments)
         => memberClassApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
+    
+    shared formal ConstructorDeclaration? getDeclaredConstructorDeclaration(String name);
+    shared formal ConstructorDeclaration[] declaredConstructorDeclarations();
+    shared formal ConstructorDeclaration[] annotatedDeclaredConstructorDeclarations<Annotation>()
+            given Annotation satisfies AnnotationType;
 }

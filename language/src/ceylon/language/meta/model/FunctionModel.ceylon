@@ -10,7 +10,7 @@ import ceylon.language.meta.model {
    A function model can be either a toplevel [[Function]] or a member [[Method]].
  """
 shared sealed interface FunctionModel<out Type=Anything, in Arguments=Nothing>
-        satisfies Model & Generic
+        satisfies Model & Generic & Functional
         given Arguments satisfies Anything[] {
 
     "This function's declaration."
@@ -18,7 +18,4 @@ shared sealed interface FunctionModel<out Type=Anything, in Arguments=Nothing>
 
     "This function's return closed type."
     shared formal ClosedType<Type> type;
-    
-    "This function's parameter closed types"
-    shared formal ClosedType<Anything>[] parameterTypes;
 }

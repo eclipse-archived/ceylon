@@ -8,6 +8,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
+import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
@@ -308,5 +309,23 @@ public class FreeClass
     @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
+    }
+    
+    @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
+    public ConstructorDeclaration getDeclaredConstructorDeclaration(
+            @Name("name")
+            String name) {
+        // TODO
+        return null;
+    }
+    
+    public Sequential<? extends ConstructorDeclaration> declaredConstructorDeclarations() {
+        // TODO
+        return null;
+    }
+    
+    public <Annotation extends ceylon.language.Annotation> Sequential<? extends ConstructorDeclaration> annotatedDeclaredConstructorDeclarations(TypeDescriptor reified$Annotation) {
+        // TODO
+        return null;
     }
 }

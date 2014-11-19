@@ -1,5 +1,6 @@
 import ceylon.language.meta.declaration {
-    ConstructorDeclaration
+    ConstructorDeclaration,
+    NestableDeclaration
 }
 import ceylon.language.meta.model {
     ClosedType=Type
@@ -9,15 +10,14 @@ import ceylon.language.meta.model {
  A constructor model can be either a [[Constructor]] (of a top level [[Class]])
  or a [[MemberConstructor]] (of a [[MemberClass]]).
  "
-shared sealed interface ConstructorModel<out Type=Anything, in Arguments=Nothing> 
-        satisfies Model
+shared sealed interface ConstructorModel<out Type=Anything, in Arguments=Nothing>
+        satisfies Functional & Declared
         given Arguments satisfies Anything[] {
     
+    "The declaration for this model."
+    shared actual formal ConstructorDeclaration declaration;
+    
     "The container class of this constructor"
-    shared formal actual ClassModel<Type> container;
+    shared formal ClassModel<Type> container;
     
-    shared formal actual ConstructorDeclaration declaration;
-    
-    "This function's parameter closed types"
-    shared formal ClosedType<Anything>[] parameterTypes;
 }
