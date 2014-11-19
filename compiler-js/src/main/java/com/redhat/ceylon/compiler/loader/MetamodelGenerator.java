@@ -127,7 +127,7 @@ public class MetamodelGenerator {
         names.remove(0); //we don't need the package key
         Map<String, Object> last = pkgmap;
         for (String name : names) {
-            if (name.startsWith("anonymous#"))continue;
+            if (name.startsWith("anon$") || name.startsWith("anonymous#"))continue;
             if (last == null) {
                 break;
             }
