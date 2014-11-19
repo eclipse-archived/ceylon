@@ -2,9 +2,11 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
@@ -124,17 +126,68 @@ public class SerializationHelper {
     static void addDeserializer(final Node that, final com.redhat.ceylon.compiler.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
+        final String cmodel = gen.getNames().createTempVariable();
         final String ni = gen.getNames().self(d);
         final String typename = gen.getNames().name(d);
-        gen.out(typename, ".deser$$=function(", dc, ",", ni, ")");
+        gen.out(typename, ".deser$$=function(", dc, ",", cmodel, ",", ni, ")");
         gen.beginBlock();
         if (d.isMember()) {
             gen.out("//TODO getOuterInstance");
             gen.endLine();
         }
         if (!d.isAbstract()) {
-            gen.out("if(", ni, "===undefined)", ni, "=new ", gen.getNames().name(d), ".$$;");
+            gen.out("if(", ni, "===undefined)");
+            gen.beginBlock();
+            gen.out(ni, "=new ", gen.getNames().name(d), ".$$;");
             gen.endLine();
+            //Set type arguments, if any
+            boolean first=true;
+            for (TypeParameter tp : d.getTypeParameters()) {
+                if (first) {
+                    gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                    first=false;
+                } else {
+                    gen.out(",");
+                }
+                gen.out(tp.getName(), "$", d.getName(), ":", cmodel, ".$$targs$$.Type$Class.a.",
+                        tp.getName(), "$", d.getName());
+            }
+            if (!first) {
+                gen.out("});");
+                gen.endLine();
+            }
+            ProducedType supertype = d.getExtendedType();
+            first=true;
+            while (supertype != null && !d.getUnit().getBasicDeclaration().equals(supertype.getDeclaration())) {
+                for (Map.Entry<TypeParameter,ProducedType> tp : supertype.getTypeArguments().entrySet()) {
+                    if (first) {
+                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                        first=false;
+                    } else {
+                        gen.out(",");
+                    }
+                    gen.out(tp.getKey().getName(), "$", supertype.getDeclaration().getName(), ":");
+                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
+                }
+                supertype = supertype.getSupertype(d);
+            }
+            for (ProducedType sat : d.getSatisfiedTypes()) {
+                for (Map.Entry<TypeParameter,ProducedType> tp : sat.getTypeArguments().entrySet()) {
+                    if (first) {
+                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                        first=false;
+                    } else {
+                        gen.out(",");
+                    }
+                    gen.out(tp.getKey().getName(), "$", sat.getDeclaration().getName(), ":");
+                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
+                }
+            }
+            if (!first) {
+                gen.out("});");
+                gen.endLine();
+            }
+            gen.endBlockNewLine();
         }
         //Call super.deser$$ if possible
         boolean create = true;
@@ -142,31 +195,14 @@ public class SerializationHelper {
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(that, et);
-                gen.out(gen.getNames().name(et), ".deser$$(", dc, ",", ni, ");");
+                gen.out(gen.getNames().name(et), ".deser$$(", dc, ",", cmodel, ",", ni, ");");
                 gen.endLine();
                 create = false;
             } else {
                 et = et.getExtendedTypeDeclaration();
             }
         }
-        if (!d.getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
-        }
-        boolean first=true;
-        for (TypeParameter tp : d.getTypeParameters()) {
-            if (first) {
-                first=false;
-            } else {
-                gen.out(",");
-            }
-            gen.out(tp.getName(), "$", d.getName(), ":", gen.getClAlias(), "ser$et$(", dc, ".getTypeArgument(",
-                    gen.getClAlias(), "OpenTypeParam$jsint(", typename, ",'",
-                    tp.getName(), "$", d.getName(), "')))");
-        }
-        if (!first) {
-            gen.out("});");
-            gen.endLine();
-        }
+        //Get the current package and module
         String pkgname = d.getUnit().getPackage().getNameAsString();
         if ("ceylon.language".equals(pkgname)) {
             pkgname = "$";
@@ -180,6 +216,7 @@ public class SerializationHelper {
         } else {
             pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
         }
+        //Deserialize each value
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
             gen.out(ni, ".", v.isParameter() ? gen.getNames().name(v)+"_" : gen.getNames().privateName(v),
