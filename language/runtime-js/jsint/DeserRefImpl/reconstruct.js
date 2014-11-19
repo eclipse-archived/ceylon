@@ -9,7 +9,7 @@ function(){
         var r=queue.shift();
         i.push(r);
         if (r.state_==1) {
-          r.inst_=this.clazz.tipo.deser$$(r.decons_);
+          r.inst_=this.clazz.tipo.deser$$(r.decons_, this.clazz);
           //TODO add outer ref if available
           r.state_=2;
         }
