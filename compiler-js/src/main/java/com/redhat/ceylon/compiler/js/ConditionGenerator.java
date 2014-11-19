@@ -255,6 +255,9 @@ public class ConditionGenerator {
                 directAccess.remove(elsevar.getDeclarationModel());
             }
         }
+        if (that.getSwitchClause().getSwitched().getExpression() == null) {
+            directAccess.remove(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        }
     }
 
     void generateSwitchExpression(Tree.SwitchExpression that) {

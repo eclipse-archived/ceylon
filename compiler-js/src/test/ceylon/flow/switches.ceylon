@@ -107,7 +107,4 @@ shared void testSwitches() {
     switch(y=test445(system.milliseconds))
     case (is Integer) { check(y>0, "#455.2"); }
     case (is String)  { check(y=="X", "#455.2"); }
-    //Still visible here
-    check(x>=0, "#455.3");
-    check(y.hash>0, "#455.4");
 }
