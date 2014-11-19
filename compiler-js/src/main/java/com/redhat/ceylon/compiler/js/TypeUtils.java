@@ -293,8 +293,6 @@ public class TypeUtils {
                 }
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
                         tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "' container " + tp.getContainer() + " y yo estoy en " + node);
-                Thread.dumpStack();
-                System.exit(0);
             }
         }
     }
@@ -629,7 +627,7 @@ public class TypeUtils {
         gen.out("[");
         boolean first = true;
         for (String p : parts) {
-            if (p.startsWith("anonymous#"))continue;
+            if (p.startsWith("anon$") || p.startsWith("anonymous#"))continue;
             if (first)first=false;else gen.out(",");
             gen.out("'", p, "'");
         }
@@ -1091,14 +1089,14 @@ public class TypeUtils {
 
     public static String modelName(Declaration d) {
         String dname = d.getName();
+        if (dname.startsWith("anonymous#")) {
+            dname = "anon$" + dname.substring(10);
+        }
         if (d.isToplevel() || d.isShared()) {
             return dname;
         }
         if (d instanceof Setter) {
             d = ((Setter)d).getGetter();
-        }
-        if (dname.startsWith("anonymous#")) {
-            dname = "anon$" + dname.substring(10);
         }
         return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
     }
