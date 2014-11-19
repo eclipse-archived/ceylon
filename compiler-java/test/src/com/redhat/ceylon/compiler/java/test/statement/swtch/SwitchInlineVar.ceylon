@@ -60,7 +60,7 @@ class SwitchInlineVar() {
             name = "NULL";
         }
         else {
-            name = (b else "?");
+            name = b;
         }
         return name;
     }
