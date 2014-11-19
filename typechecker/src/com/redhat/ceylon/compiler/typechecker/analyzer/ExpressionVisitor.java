@@ -6105,6 +6105,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable var = that.getVariable();
         if (var!=null) {
             var.visit(this);
+            initOriginalDeclaration(var);
             if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression = 
                         getSwitchedExpression(switchClause().getSwitched());
