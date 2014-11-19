@@ -4526,6 +4526,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             return transformAssignment(op, leftTerm, rhs);
         } else {
             ProducedType valueType = rightTerm.getTypeModel();
+            if(isNull(valueType))
+                valueType = leftTerm.getTypeModel();
             return transformAssignAndReturnOperation(op, leftTerm, boxing == BoxingStrategy.BOXED, 
                     leftTerm.getTypeModel(), valueType, new AssignAndReturnOperationFactory(){
                 @Override
