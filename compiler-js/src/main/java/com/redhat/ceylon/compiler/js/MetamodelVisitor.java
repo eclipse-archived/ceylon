@@ -151,4 +151,11 @@ public class MetamodelVisitor extends Visitor {
         super.visit(that);
         gen.getPackageMap(that.getUnit().getPackage());
     }
+
+    public void visit(Tree.ObjectExpression that) {
+        if (errorFree(that)) {
+            gen.encodeClass(that.getAnonymousClass());
+            super.visit(that);
+        }
+    }
 }

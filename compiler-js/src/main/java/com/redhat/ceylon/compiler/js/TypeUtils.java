@@ -1081,13 +1081,17 @@ public class TypeUtils {
     }
 
     public static String modelName(Declaration d) {
+        String dname = d.getName();
         if (d.isToplevel() || d.isShared()) {
-            return d.getName();
+            return dname;
         }
         if (d instanceof Setter) {
             d = ((Setter)d).getGetter();
         }
-        return d.getName()+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
+        if (dname.startsWith("anonymous#")) {
+            dname = "anon$" + dname.substring(10);
+        }
+        return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
     }
 
 }
