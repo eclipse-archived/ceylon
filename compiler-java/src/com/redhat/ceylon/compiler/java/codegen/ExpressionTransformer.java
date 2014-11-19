@@ -2409,8 +2409,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make sure the result is unboxed if necessary, $tmp may be boxed
             JCExpression value = make().Ident(varName);
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), boxingStrategy);
-            value = applyJavaTypeConversions(value, returnType, valueType, boxingStrategy, boxResult, 0);
+            value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
             JCExpression assignment = transformAssignment(operator, term, value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
@@ -2452,8 +2451,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), boxingStrategy);
-            value = applyJavaTypeConversions(value, returnType, valueType, boxingStrategy, boxResult, 0);
+            value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
             JCExpression assignment = transformAssignment(operator, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
