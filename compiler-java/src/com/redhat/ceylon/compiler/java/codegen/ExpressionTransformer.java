@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
@@ -2407,7 +2408,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // attr = $tmp
             // make sure the result is unboxed if necessary, $tmp may be boxed
             JCExpression value = make().Ident(varName);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
+            value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
             JCExpression assignment = transformAssignment(operator, term, value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
@@ -2448,7 +2450,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpE.attr = $tmpV
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
-            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
+            value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
             JCExpression assignment = transformAssignment(operator, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
@@ -4502,7 +4505,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (leftTerm instanceof Tree.MemberOrTypeExpression) {
             TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
             boxing = CodegenUtil.getBoxingStrategy(decl);
-            rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel(), 
+            ProducedType targetType = tmpInStatement ? leftTerm.getTypeModel() : rightTerm.getTypeModel();
+            rhs = transformExpression(rightTerm, boxing, targetType, 
                                       decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0);
         } else {
             // instanceof Tree.ParameterizedExpression
@@ -4521,9 +4525,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
         } else {
-            ProducedType valueType = leftTerm.getTypeModel();
+            ProducedType valueType = rightTerm.getTypeModel();
+            if(isNull(valueType))
+                valueType = leftTerm.getTypeModel();
             return transformAssignAndReturnOperation(op, leftTerm, boxing == BoxingStrategy.BOXED, 
-                    valueType, valueType, new AssignAndReturnOperationFactory(){
+                    leftTerm.getTypeModel(), valueType, new AssignAndReturnOperationFactory(){
                 @Override
                 public JCExpression getNewValue(JCExpression previousValue) {
                     return rhs;
@@ -5725,7 +5731,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
         List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elsePart, tmpVar, op);
         at(op);
-        JCExpression vartype = makeJavaType(op.getTypeModel());
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 
@@ -5733,7 +5739,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String tmpVar = naming.newTemp("ifResult");
         JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
         at(op);
-        JCExpression vartype = makeJavaType(op.getTypeModel());
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
