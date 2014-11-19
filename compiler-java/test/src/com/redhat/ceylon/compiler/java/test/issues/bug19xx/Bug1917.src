@@ -16,6 +16,24 @@ final class bug1917_ {
             returning $ceylontmp$op$0;
         ).longValue();
         a = .ceylon.language.Integer.instance(2L);
+        .ceylon.language.String head = null;
+        .ceylon.language.String tail = null;
+        head = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$op$1 = null;
+                tail = $ceylontmp$op$1;
+            }
+            returning $ceylontmp$op$1;
+        );
+        head = (.ceylon.language.String)(
+            let
+            {
+                .java.lang.Object $ceylontmp$op$2 = .ceylon.language.nothing_.get_();
+                tail = (.ceylon.language.String)$ceylontmp$op$2;
+            }
+            returning $ceylontmp$op$2;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,10 +51,10 @@ final class bug1917fails_ {
         final Result x = (
             let
             {
-                Result $ceylontmp$op$1 = f.$call$();
-                memo = $ceylontmp$op$1;
+                Result $ceylontmp$op$3 = f.$call$();
+                memo = $ceylontmp$op$3;
             }
-            returning $ceylontmp$op$1;
+            returning $ceylontmp$op$3;
         );
     }
 }
@@ -50,10 +68,10 @@ final class bug1917works_ {
         final Result x = (Result)(
             let
             {
-                Result $ceylontmp$op$2 = f.$call$();
-                memo = $ceylontmp$op$2;
+                Result $ceylontmp$op$4 = f.$call$();
+                memo = $ceylontmp$op$4;
             }
-            returning $ceylontmp$op$2;
+            returning $ceylontmp$op$4;
         );
     }
 }
@@ -77,10 +95,10 @@ class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19x
         (
             let
             {
-                long $ceylontmp$op$3 = loginTimeout1;
-                setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$3));
+                long $ceylontmp$op$5 = loginTimeout1;
+                setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$5));
             }
-            returning $ceylontmp$op$3;
+            returning $ceylontmp$op$5;
         );
     }
     
@@ -92,11 +110,11 @@ class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19x
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java $ceylontmp$opE$4 = getDataSource$priv$();
-                long $ceylontmp$opV$5 = loginTimeout2;
-                $ceylontmp$opE$4.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$5));
+                .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java $ceylontmp$opE$6 = getDataSource$priv$();
+                long $ceylontmp$opV$7 = loginTimeout2;
+                $ceylontmp$opE$6.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$7));
             }
-            returning $ceylontmp$opV$5;
+            returning $ceylontmp$opV$7;
         );
     }
     

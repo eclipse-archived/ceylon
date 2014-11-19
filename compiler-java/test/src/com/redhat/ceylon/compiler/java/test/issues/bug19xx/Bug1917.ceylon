@@ -22,6 +22,11 @@ void bug1917(){
     variable Object a;
     Integer b = a = 2;
     a = 2;
+    
+    variable String? head = null;
+    variable String? tail = null;
+    head = tail = null;
+    head = tail = nothing;
 }
 
 @noanno
