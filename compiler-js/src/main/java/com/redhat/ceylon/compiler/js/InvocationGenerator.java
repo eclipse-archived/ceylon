@@ -355,7 +355,7 @@ public class InvocationGenerator {
                     if (primary instanceof Tree.MemberOrTypeExpression) {
                         targs = ((Tree.MemberOrTypeExpression)primary).getTarget().getTypeArguments();
                     }
-                    TypeUtils.generateDynamicCheck(expr, pd.getType(), gen, false, targs);
+                    TypeUtils.generateDynamicCheck(primary, pd.getType(), gen, false, targs);
                 } else {
                     arg.visit(gen);
                 }
@@ -496,7 +496,7 @@ public class InvocationGenerator {
             } else {
                 seqtargs = TypeUtils.wrapAsIterableArguments(sequencedType);
             }
-            SequenceGenerator.closeSequenceWithReifiedType(that,
+            SequenceGenerator.closeSequenceWithReifiedType(primary,
                     seqtargs, gen);
         }
         return argvars;

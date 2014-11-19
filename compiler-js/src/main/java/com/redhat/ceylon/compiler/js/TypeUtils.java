@@ -284,8 +284,17 @@ public class TypeUtils {
             if (tp.getContainer() == parent) {
                 gen.out("$$$mptypes.", tp.getName(), "$", tp.getDeclaration().getName());
             } else {
+                if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
+                    if (tp.getContainer() == ((Tree.StaticMemberOrTypeExpression)node).getDeclaration()) {
+                        type = ((Tree.StaticMemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
+                        typeNameOrList(node, type, gen, skipSelfDecl);
+                        return;
+                    }
+                }
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
-                        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "'");
+                        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "' container " + tp.getContainer() + " y yo estoy en " + node);
+                Thread.dumpStack();
+                System.exit(0);
             }
         }
     }
