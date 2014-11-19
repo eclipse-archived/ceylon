@@ -10,8 +10,8 @@ function $_Array(elems,$$targs$$) {
     List({Element$List:t}, e);
     return e.rt$(t);
 }
-$_Array.deser$$=function(a){
-  var targ=ser$et$(a.getTypeArgument(OpenTypeParam$jsint($_Array,'Element$Array')));
+$_Array.deser$$=function(a,cm){
+  var targ=cm.$$targs$$.Type$Class.a.Element$Array;
   var tam=a.getValue(OpenValue$jsint(lmp$(ex$,'$'),$_Array.$$.prototype.$prop$getSize),{Instance$getValue:{t:Integer}});
   var b = new Array(tam);
   for (var i=0; i < tam; i++) {
