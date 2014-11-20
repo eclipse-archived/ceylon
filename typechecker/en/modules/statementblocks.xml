@@ -1728,18 +1728,19 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by 
-                    the compiler as having type <literal>T&amp;X</literal> inside the block that 
-                    immediately follows the condition, and, if this is the only condition in the
-                    condition list, as having type <literal>T~X</literal> inside the following 
-                    <literal>else</literal> block if any, unless</para>
+                    <para>if the condition contains a value reference, the value will be treated 
+                    by the compiler as having type <literal>T&amp;X</literal> inside the block or 
+                    expression that immediately follows the condition, and, if this is the only 
+                    condition in the condition list, as having type <literal>T~X</literal> inside 
+                    the following <literal>else</literal> block or expression if any, unless</para>
                 </listitem>
                 <listitem>
                     <para>it is a <literal>!is</literal> negated assignability condition, in which 
                     case the value will be treated by the compiler as having type <literal>T~X</literal> 
-                    inside the block that immediately follows the condition, and, if this is the 
-                    only condition in the condition list, as having type <literal>T&amp;X</literal> 
-                    inside the following <literal>else</literal> block if any.</para>
+                    inside the block or expression that immediately follows the condition, and, if 
+                    this is the only condition in the condition list, as having type 
+                    <literal>T&amp;X</literal> inside the following <literal>else</literal> block 
+                    or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1797,10 +1798,10 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
                     by the compiler as having type <literal>T&amp;Object</literal> inside the block 
-                    that immediately follows the condition, where the conditional expression is of 
-                    type <literal>T</literal>, and, if this is the only condition in the condition 
-                    list, as having the type <literal>Null</literal> inside the following 
-                    <literal>else</literal> block if any.</para>
+                    or expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal>, and, if this is the only condition 
+                    in the condition list, as having the type <literal>Null</literal> inside the 
+                    following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1813,11 +1814,12 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>Null</literal> inside the block that 
-                    immediately follows the condition, and, if this is the only condition in the
-                    condition list, as having the type <literal>T&amp;Object</literal> inside the 
-                    following <literal>else</literal> block if any, where the conditional 
-                    expression is of type <literal>T</literal>.</para>
+                    by the compiler as having type <literal>Null</literal> inside the block or 
+                    expression that immediately follows the condition, and, if this is the only 
+                    condition in the condition list, as having the type 
+                    <literal>T&amp;Object</literal> inside the following <literal>else</literal> 
+                    block or expression if any, where the conditional expression is of type 
+                    <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1832,13 +1834,13 @@ if (is Usable tx) { ... }</programlisting>
                     of <literal>[Anything+]</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by 
-                    the compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
-                    immediately follows the condition, where the conditional expression is of type 
-                    <literal>T</literal> and <literal>T</literal> has the principal instantiation 
-                    <literal>E[]?</literal>, and, if this is the only condition in the condition 
-                    list, as having the type <literal>[]</literal> inside the following 
-                    <literal>else</literal> block if any.</para>
+                    <para>if the condition contains a value reference, the value will be treated 
+                    by the compiler as having type <literal>T&amp;[E+]</literal> inside the block 
+                    or expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
+                    principal instantiation <literal>E[]?</literal>, and, if this is the only 
+                    condition in the condition list, as having the type <literal>[]</literal> 
+                    inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1851,12 +1853,12 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>[]</literal> inside the block that 
-                    immediately follows the condition, and, if this is the only condition in the
-                    condition list, as having the type <literal>T&amp;[E+]</literal> inside the 
-                    following <literal>else</literal> block if any, where the conditional 
-                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
-                    principal instantiation <literal>E[]?</literal>.</para>
+                    by the compiler as having type <literal>[]</literal> inside the block or 
+                    expression that immediately follows the condition, and, if this is the only 
+                    condition in the condition list, as having the type <literal>T&amp;[E+]</literal> 
+                    inside the following <literal>else</literal> block or expression if any, where 
+                    the conditional expression is of type <literal>T</literal> and <literal>T</literal> 
+                    has the principal instantiation <literal>E[]?</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1879,8 +1881,8 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>if the condition is an assignability condition, and the condition is not
                     negated, the value will be treated by the compiler as having type <literal>X</literal> 
-                    where <literal>X</literal> is the specified type, inside the block that immediately 
-                    follows the condition, or, otherwise</para>
+                    where <literal>X</literal> is the specified type, inside the block or expression that 
+                    immediately follows the condition, or, otherwise</para>
                 </listitem>
                 <listitem>
                     <para>the value will be treated by the compiler as having no type.</para>
@@ -2084,21 +2086,11 @@ else {
             <para>In every <literal>switch</literal> statement, all <literal>case</literal>s 
             must be mutually disjoint.</para>
             
-            <para>If an <literal>else</literal> block is specified, then the <literal>switch</literal> 
-            variable or, if there is no inline variable declared by the <literal>switch</literal>, 
-            the value referred by the <literal>switch</literal> expression, will be treated 
-            by the compiler as having the type <literal>V~U</literal> inside the 
-            <literal>case</literal> block, where <literal>V</literal> is the switched type, 
-            and <literal>U</literal> is the union type formed by the types of the case 
-            conditions of the <literal>switch</literal>.</para>
-            
             <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if there 
             are no literal values in its <literal>case</literal>s, and the union type formed 
-            by the types of the case conditions of the <literal>switch</literal> 
-            covers the switched type, as defined by <xref linkend="coverage"/>.</para>
-            
-            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
-            must be exhaustive.</para>
+            by the types of the case conditions of the <literal>switch</literal> covers the 
+            switched type, as defined by <xref linkend="coverage"/>. If no <literal>else</literal> 
+            block is specified, the <literal>switch</literal> must be exhaustive.</para>
             
             <comment><para>Note: On the other hand, even if the <literal>switch</literal> 
             <emphasis>is</emphasis> exhaustive, an <literal>else</literal> block may be 
@@ -2108,6 +2100,14 @@ else {
             <para>As a special exception to the above, if a <literal>switch</literal> occurs 
             in a <literal>dynamic</literal> block, and the <literal>switch</literal> expression
             has no type, the cases are not statically type-checked for exhaustion.</para>
+            
+            <para>If an <literal>else</literal> block is specified, then the <literal>switch</literal> 
+            variable or, if there is no inline variable declared by the <literal>switch</literal>, 
+            the value referred by the <literal>switch</literal> expression, will be treated 
+            by the compiler as having the type <literal>V~U</literal> inside the 
+            <literal>case</literal> block, where <literal>V</literal> is the switched type, 
+            and <literal>U</literal> is the union type formed by the types of the case 
+            conditions of the <literal>switch</literal>.</para>
             
             <programlisting>Boolean? maybe = ... ;
 switch (maybe) 
