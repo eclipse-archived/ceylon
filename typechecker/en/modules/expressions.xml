@@ -1454,7 +1454,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>switch</literal> expression, a list of <literal>case</literal>
             expressions, and, optionally, an <literal>else</literal> expression.</para>
             
-            <synopsis>SwitchCaseElseExpression: "switch" "(" Expression ")" CaseExpression ElseExpression</synopsis>
+            <synopsis>SwitchCaseElseExpression: Switch CaseExpression+ ElseExpression</synopsis>
             
             <para>The type of an <literal>if/then/else</literal> expression with
             <literal>case</literal> expressions of type <literal>X1</literal>,
@@ -1464,7 +1464,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>ThenExpression: "then" Expression</synopsis>
             <synopsis>ElseExpression: "else" Expression</synopsis>
-            <synopsis>CaseExpression: "case" "(" Case ")"  Expression</synopsis>
+            <synopsis>CaseExpression: "case" CaseCondition Expression</synopsis>
             
             <para>The expression following <literal>then</literal>, 
             <literal>else</literal>, and <literal>case</literal> is parsed with 
@@ -1474,7 +1474,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <xref linkend="operatorprecedence"/>.</para>
             
             <para>Each <literal>case</literal> expression includes a value case or
-            type case, as defined in <xref linkend="switchcaseelse"/>. Just like
+            type case, as defined in <xref linkend="caseconditions"/>. Just like
             in a <literal>switch/case/else</literal> conditional statement:</para>
             
             <itemizedlist>
