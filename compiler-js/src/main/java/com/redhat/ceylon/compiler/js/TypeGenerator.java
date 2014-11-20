@@ -168,7 +168,7 @@ public class TypeGenerator {
         gen.comment(that);
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, gen);
+        final boolean withTargs = generateParameters(that, null, gen);
         gen.beginBlock();
         //declareSelf(d);
         gen.referenceOuter(d);
@@ -217,12 +217,13 @@ public class TypeGenerator {
 
     /** Outputs the parameter list of the type's constructor, including surrounding parens.
      * Returns true if the type has type parameters. */
-    static boolean generateParameters(final Tree.ClassOrInterface that, final GenerateJsVisitor gen) {
+    static boolean generateParameters(final Tree.ClassOrInterface that,
+            final Tree.ParameterList plist, final GenerateJsVisitor gen) {
         gen.out("(");
         final boolean withTargs = that.getTypeParameterList() != null &&
                 !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
-        if (that instanceof Tree.ClassDefinition) {
-            for (Tree.Parameter p: ((Tree.ClassDefinition)that).getParameterList().getParameters()) {
+        if (plist != null) {
+            for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
                 gen.out(",");
             }
@@ -238,6 +239,29 @@ public class TypeGenerator {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
+        final Tree.ParameterList plist = that.getParameterList();
+        final List<Tree.Constructor> constructors;
+        final List<Tree.Statement> classBody;
+        //Find the constructors, if any
+        Tree.Constructor defconstr = null;
+        if (plist == null) {
+            constructors = new ArrayList<>(3);
+            classBody = new ArrayList<>(that.getClassBody().getStatements().size());
+            for (Tree.Statement st : that.getClassBody().getStatements()) {
+                if (st instanceof Tree.Constructor) {
+                    Tree.Constructor constr = (Tree.Constructor)st;
+                    constructors.add(constr);
+                    if (constr.getDeclarationModel().getName().equals(d.getName())) {
+                        defconstr = constr;
+                    }
+                } else {
+                    classBody.add(st);
+                }
+            }
+        } else {
+            constructors = Collections.emptyList();
+            classBody = that.getClassBody().getStatements();
+        }
         gen.comment(that);
         if (gen.shouldStitch(d)) {
             if (gen.stitchNative(d, that)) {
@@ -249,7 +273,7 @@ public class TypeGenerator {
             }
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, gen);
+        final boolean withTargs = generateParameters(that, plist, gen);
         gen.beginBlock();
         //This takes care of top-level attributes defined before the class definition
         gen.out("$init$", gen.getNames().name(d), "()");
@@ -282,7 +306,7 @@ public class TypeGenerator {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
             gen.endLine(true);
         }
-        gen.initParameters(that.getParameterList(), d, null);
+        gen.initParameters(plist, d, null);
 
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
@@ -294,7 +318,7 @@ public class TypeGenerator {
 
         if (!gen.opts.isOptimize()) {
             //Fix #231 for lexical scope
-            for (Tree.Parameter p : that.getParameterList().getParameters()) {
+            for (Tree.Parameter p : plist.getParameters()) {
                 if (!p.getParameterModel().isHidden()){
                     gen.generateAttributeForParameter(that, d, p.getParameterModel());
                 }

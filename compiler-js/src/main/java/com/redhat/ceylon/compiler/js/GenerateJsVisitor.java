@@ -949,7 +949,8 @@ public class GenerateJsVisitor extends Visitor
             out("(");
             jsout.outputFile(f);
             out(")");
-            TypeGenerator.generateParameters(coi, this);
+            TypeGenerator.generateParameters(coi, coi instanceof Tree.ClassDefinition ?
+                    ((Tree.ClassDefinition)coi).getParameterList() : null, this);
             endLine(true);
         }
         return false;
