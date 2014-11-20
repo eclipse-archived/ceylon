@@ -1,9 +1,9 @@
 @noanno
 class CtorGenericClass<T> {
-    shared new CtorGenericClass(T t) {
+    shared new CtorGenericClass(T? t=null) {
         
     }
-    new Foo(T t) {
+    new Foo(T? t=null) {
         
     }
     shared void m(T t) {
