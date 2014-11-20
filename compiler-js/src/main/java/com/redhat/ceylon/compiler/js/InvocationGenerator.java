@@ -355,7 +355,7 @@ public class InvocationGenerator {
                     if (primary instanceof Tree.MemberOrTypeExpression) {
                         targs = ((Tree.MemberOrTypeExpression)primary).getTarget().getTypeArguments();
                     }
-                    TypeUtils.generateDynamicCheck(primary, pd.getType(), gen, false, targs);
+                    TypeUtils.generateDynamicCheck(expr, pd.getType(), gen, false, targs);
                 } else {
                     arg.visit(gen);
                 }
