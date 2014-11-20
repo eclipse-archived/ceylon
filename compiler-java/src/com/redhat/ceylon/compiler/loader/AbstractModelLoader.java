@@ -2197,12 +2197,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
+        boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         Constructor constructor = new Constructor();
         constructor.setName(getCtorName(ctor));
         constructor.setContainer(klass);
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
+        setDeclarationVisibility(constructor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
         setParameters(constructor, ctor, true, klass);
         klass.addMember(constructor);
