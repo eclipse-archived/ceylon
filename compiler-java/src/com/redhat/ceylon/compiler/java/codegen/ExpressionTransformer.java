@@ -1341,9 +1341,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(!expr.getWantsDeclaration()){
             if (expr.getDeclaration() instanceof Constructor) {
                 JCExpression classLiteral = makeTypeLiteralCall(expr.getType().getTypeModel().getQualifyingType(), false, expr.getTypeModel());
-                JCTypeCast typeCast = make().TypeCast(makeJavaType(((TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("ClassModel")).getType(), JT_RAW), classLiteral);
+                JCTypeCast typeCast = make().TypeCast(makeJavaType(((TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("Class")).getType(), JT_RAW), classLiteral);
                 return make().Apply(null, 
-                        naming.makeQualIdent(typeCast, "getDeclaredConstructor"),
+                        naming.makeQualIdent(typeCast, "getConstructor"),
                         List.<JCExpression>of(
                                 makeNull(),
                                 make().Literal(expr.getDeclaration().getName())));
@@ -1371,7 +1371,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             metamodelCall = make().TypeCast(
                     makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
             return make().Apply(null, 
-                    naming.makeQualIdent(metamodelCall, "getDeclaredConstructorDeclaration"), 
+                    naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
                     List.<JCExpression>of(make().Literal(expr.getDeclaration().getName())));
         }else{
             return makeErroneous(expr, "compiler bug: " + expr.getDeclaration() + " is an unsupported declaration type");
