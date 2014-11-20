@@ -4295,12 +4295,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         methodBuilder.modifiers(modifiers);
         
-        if (container instanceof Functional) {
-            copyTypeParameters((Functional)container, methodBuilder);
-        }
-        
-        // make sure reified type parameters are accepted
-        if(container instanceof Generic)
+        if (container instanceof Constructor) {
+            copyTypeParameters((Class)container.getContainer(), methodBuilder);
+            methodBuilder.reifiedTypeParameters(((Class)container.getContainer()).getTypeParameters());
+        } else if(container instanceof Generic)
+            // make sure reified type parameters are accepted
+            copyTypeParameters((Generic)container, methodBuilder);
             methodBuilder.reifiedTypeParameters(((Generic)container).getTypeParameters());
         
         // Add any of the preceding parameters as parameters to the method
@@ -4526,7 +4526,7 @@ public class ClassTransformer extends AbstractTransformer {
         return methbuilder;
     }
     
-    void copyTypeParameters(Functional def, MethodDefinitionBuilder methodBuilder) {
+    void copyTypeParameters(Generic def, MethodDefinitionBuilder methodBuilder) {
         if (def.getTypeParameters() != null) {
             for (TypeParameter t : def.getTypeParameters()) {
                 methodBuilder.typeParameter(t);
