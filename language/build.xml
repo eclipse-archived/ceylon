@@ -400,7 +400,7 @@
             executable="${ceylon.compiler.loc}"
             fork="true"
             verbose="false"
-            suppressWarnings="ceylonNamespace"
+            suppressWarnings="ceylonNamespace,unusedDeclaration,unusedImport,expressionTypeNothing"
             encoding="UTF-8"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
@@ -506,7 +506,7 @@
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="ceylon.language.java,ceylon.language.js">
+    <target name="build" depends="ceylon.language.java">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
         <copy todir="${ide.dist}">
