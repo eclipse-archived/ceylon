@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -168,7 +169,7 @@ public class TypeGenerator {
         gen.comment(that);
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, null, gen);
+        final boolean withTargs = generateParameters(that.getTypeParameterList(), null, d, gen);
         gen.beginBlock();
         //declareSelf(d);
         gen.referenceOuter(d);
@@ -217,11 +218,11 @@ public class TypeGenerator {
 
     /** Outputs the parameter list of the type's constructor, including surrounding parens.
      * Returns true if the type has type parameters. */
-    static boolean generateParameters(final Tree.ClassOrInterface that,
-            final Tree.ParameterList plist, final GenerateJsVisitor gen) {
+    static boolean generateParameters(final Tree.TypeParameterList tparms,
+            final Tree.ParameterList plist, final TypeDeclaration d, final GenerateJsVisitor gen) {
         gen.out("(");
-        final boolean withTargs = that.getTypeParameterList() != null &&
-                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
+        final boolean withTargs = tparms != null &&
+                !tparms.getTypeParameterDeclarations().isEmpty();
         if (plist != null) {
             for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
@@ -231,7 +232,7 @@ public class TypeGenerator {
         if (withTargs) {
             gen.out("$$targs$$,");
         }
-        gen.out(gen.getNames().self(that.getDeclarationModel()), ")");
+        gen.out(gen.getNames().self(d), ")");
         return withTargs;
     }
 
@@ -273,15 +274,18 @@ public class TypeGenerator {
             }
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, plist, gen);
+        final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
         //This takes care of top-level attributes defined before the class definition
         gen.out("$init$", gen.getNames().name(d), "()");
         gen.endLine(true);
-        gen.declareSelf(d);
+        if (constructors.isEmpty()) {
+            gen.declareSelf(d);
+        }
         gen.referenceOuter(d);
+        final String me = gen.getNames().self(d);
         if (withTargs) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$targs$$)");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$)");
             gen.endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
@@ -291,7 +295,7 @@ public class TypeGenerator {
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
-                            gen.out(gen.getNames().self(d), ".$$targs$$=");
+                            gen.out(me, ".$$targs$$=");
                             TypeUtils.printTypeArguments(that, targs, gen, false, null);
                             gen.endLine(true);
                             first = false;
@@ -303,10 +307,12 @@ public class TypeGenerator {
             }
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$$mptypes)");
             gen.endLine(true);
         }
-        gen.initParameters(plist, d, null);
+        if (plist != null) {
+            gen.initParameters(plist, d, null);
+        }
 
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
@@ -327,12 +333,17 @@ public class TypeGenerator {
         if (d.isNative()) {
             gen.stitchConstructorHelper(that, "_cons_before");
         }
-        that.getClassBody().visit(gen);
+        gen.visitStatements(classBody);
         if (d.isNative()) {
             gen.stitchConstructorHelper(that, "_cons_after");
         }
-        gen.out("return ", gen.getNames().self(d), ";");
+        if (constructors.isEmpty()) {
+            gen.out("return ", me, ";");
+        }
         gen.endBlockNewLine();
+        for (Tree.Constructor cnstr : constructors) {
+            classConstructor(cnstr, defconstr, that.getTypeParameterList(), d, gen);
+        }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
@@ -642,6 +653,33 @@ public class TypeGenerator {
         gen.comment(that);
         defineObject(that, that.getDeclarationModel(), that.getSatisfiedTypes(), that.getExtendedType(),
                 that.getClassBody(), that.getAnnotationList(), gen);
+    }
+
+    static void classConstructor(final Tree.Constructor that, final Tree.Constructor defconst,
+            final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
+        Constructor d = that.getDeclarationModel();
+        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
+        final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
+        final String me = gen.getNames().self(container);
+        gen.beginBlock();
+        gen.declareSelf(container);
+        //Call self
+        //TODO always, or only when there's no delegated constructor?
+        gen.out(gen.getNames().name(container), "(");
+        if (withTargs) {
+            gen.out("$$targs$$,");
+        }
+        gen.out(me, ");");
+        gen.endLine();
+        gen.initParameters(that.getParameterList(), container, null);
+        //Call delegated constructor
+        if (that.getDelegatedConstructor() != null) {
+            gen.out("//TODO delegate to", that.getDelegatedConstructor().getType().getDeclarationModel().getQualifiedNameString());
+            gen.endLine();
+        }
+        gen.visitStatements(that.getBlock().getStatements());
+        gen.out("return ", me, ";");
+        gen.endBlockNewLine(true);
     }
 
 }
