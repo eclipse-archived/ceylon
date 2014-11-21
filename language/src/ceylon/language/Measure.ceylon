@@ -18,27 +18,18 @@ class Measure<Element>(first, size)
     "Can't be used for empty segments"
     assert (size > 0);
     
-    shared actual String string
-            => first.string + ":" + size.string;
+    string => first.string + ":" + size.string;
     
-    shared actual Element last => first.neighbour(size - 1);
+    last => first.neighbour(size - 1);
     
-    "Determines if this sized range has more elements than 
-     the given [[length]]."
-    shared actual Boolean longerThan(Integer length)
-            => size > length;
+    longerThan(Integer length) => size > length;
     
-    "Determines if this sized range has fewer elements than 
-     the given [[length]]."
-    shared actual Boolean shorterThan(Integer length)
-            => size < length;
+    shorterThan(Integer length) => size < length;
     
-    "The index of the end of the sized range."
-    shared actual Integer lastIndex => size - 1;
+    lastIndex => size - 1;
     
-    "The rest of the range, without its first element."
-    shared actual Element[] rest
-            => size == 1 then []
+    rest => size == 1 
+            then []
             else Measure(first.successor, size - 1);
     
     "The element of the range that occurs [[index]] values
@@ -50,26 +41,19 @@ class Measure<Element>(first, size)
         return first.neighbour(index);
     }
     
-    shared actual Boolean increasing => true;
-    shared actual Boolean decreasing => false;
+    increasing => true;
+    decreasing => false;
     
     "An iterator for the elements of the sized range."
-    shared actual Iterator<Element> iterator() {
-        object iterator
-                satisfies Iterator<Element> {
-            variable value count = 0;
-            variable value current = first;
-            shared actual Element|Finished next() {
-                if (++count > size) {
-                    return finished;
-                } else {
-                    return current++;
-                }
-            }
-            string => "(``outer.string``).iterator()";
-        }
-        return iterator;
-    }
+    shared actual Iterator<Element> iterator()
+            => object
+            satisfies Iterator<Element> {
+        variable value count = 0;
+        variable value current = first;
+        next() => ++count > size
+                    then finished else current++;
+        string => "(``outer.string``).iterator()";
+    };
     
     shared actual {Element+} by(Integer step) {
         "step size must be greater than zero"
@@ -86,53 +70,29 @@ class Measure<Element>(first, size)
         
         string => "(``outer.string`` by ``step``)";
         
-        shared actual Iterator<Element> iterator() {
-            object iterator
-                    satisfies Iterator<Element> {
-                variable value count = 0;
-                variable value current = first;
-                shared actual Element|Finished next() {
-                    if (++count > size) {
-                        return finished;
-                    } else {
-                        value result = current;
-                        current = current.neighbour(step);
-                        return result;
-                    }
+        iterator() => object
+                satisfies Iterator<Element> {
+            variable value count = 0;
+            variable value current = first;
+            shared actual Element|Finished next() {
+                if (++count > size) {
+                    return finished;
+                } else {
+                    value result = current;
+                    current = current.neighbour(step);
+                    return result;
                 }
-                string => "``outer.string``.iterator()";
             }
-            return iterator;
-        }
+            string => "``outer.string``.iterator()";
+        };
     }
     
-    shared actual Measure<Element> shifted(Integer shift) {
-        if (shift == 0) {
-            return this;
-        } else {
-            return Measure(first.neighbour(shift), size);
-        }
-    }
+    shifted(Integer shift) 
+            => shift == 0 
+            then this 
+            else Measure(first.neighbour(shift), size);
     
-    "Determines if this range includes the given object."
-    shared actual Boolean contains(Object element) {
-        if (is Element element) {
-            return containsElement(element);
-        } else {
-            return false;
-        }
-    }
-    
-    "Determines if this range includes the given value."
-    shared actual Boolean occurs(Anything element) {
-        if (is Element element) {
-            return containsElement(element);
-        } else {
-            return false;
-        }
-    }
-    
-    shared actual Boolean containsElement(Element x)
+    containsElement(Element x)
             => 0 <= x.offset(first) < size;
     
     shared actual Boolean includes(List<Anything> sublist) {

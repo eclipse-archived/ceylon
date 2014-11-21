@@ -15,6 +15,10 @@ shared interface Sequential<out Element>
         satisfies List<Element> & 
                   Ranged<Integer,Element,Element[]> {
     
+    "The strictly-positive length of this sequence, that is, 
+     the number of elements in this sequence."
+    shared actual formal Integer size;
+    
     "This sequence."
     shared actual default Element[] sequence() => this;
     

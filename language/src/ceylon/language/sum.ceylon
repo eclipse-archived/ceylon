@@ -7,7 +7,7 @@ shared Value sum<Value>({Value+} values)
     assert (!is Finished first = it.next());
     variable value sum = first;
     while (!is Finished val = it.next()) {
-        sum+=val;
+        sum += val;
     }
     return sum;
 }

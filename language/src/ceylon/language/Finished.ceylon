@@ -7,6 +7,6 @@ shared abstract class Finished() of finished {}
  and has no more values to return."
 see (`interface Iterator`)
 shared object finished extends Finished() {
-    shared actual String string => "finished";
+    string => "finished";
 }
 

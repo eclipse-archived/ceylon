@@ -45,6 +45,16 @@ class Range<Element>()
     "Determines if this range includes the given range."
     shared formal Boolean includesRange(Range<Element> range);
     
+    contains(Object element) 
+            => if (is Element element) 
+            then containsElement(element)
+            else false;
+    
+    occurs(Anything element)
+            => if (is Element element) 
+            then containsElement(element)
+            else false;
+    
     "Returns a range of the same length and type as this
         range, with its endpoints shifted by the given number 
         of elements, where:

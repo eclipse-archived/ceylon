@@ -16,13 +16,11 @@ class Span<Element>(first, last)
     "The end of the range."
     shared actual Element last;
     
-    shared actual String string
-            => first.string + ".." + last.string;
+    string => first.string + ".." + last.string;
     
-    shared actual Boolean increasing
-            = last.offsetSign(first) >= 0;
+    increasing = last.offsetSign(first) >= 0;
     
-    shared actual Boolean decreasing => !increasing;
+    decreasing => !increasing;
     
     "Determines if the range is of recursive values, that 
      is, if successors wrap back on themselves. All 
@@ -59,9 +57,7 @@ class Span<Element>(first, last)
             => increasing then x.offsetSign(first) > 0
             else x.offsetSign(first) < 0;
     
-    "The nonzero number of elements in the range."
-    shared actual Integer size
-            => last.offset(first).magnitude + 1;
+    size => last.offset(first).magnitude + 1;
     
     shared actual Boolean longerThan(Integer length) {
         if (length < 1) {
@@ -83,12 +79,9 @@ class Span<Element>(first, last)
         }
     }
     
-    "The index of the end of the range."
-    shared actual Integer lastIndex => size - 1;
+    lastIndex => size - 1;
     
-    "The rest of the range, without the start of the range."
-    shared actual Element[] rest
-            => first == last then [] else next(first)..last;
+    rest => first == last then [] else next(first)..last;
     
     "This range in reverse, with [[first]] and [[last]]
      interchanged.
@@ -102,7 +95,8 @@ class Span<Element>(first, last)
     //TODO: we should have a way to produce a decreasing
     //      recursive range
     shared actual [Element+] reversed
-            => recursive then super.reversed
+            => recursive 
+            then super.reversed
             else last..first;
     
     "The element of the range that occurs [[index]] values 
@@ -118,34 +112,31 @@ class Span<Element>(first, last)
         }
     }
     
-    "An iterator for the elements of the range. 
-     The returned iterator produces elements from [[first]] and 
-     continues producing elements until it reaches an element 
-     whose `offset` from [[last] is zero."
-    shared actual Iterator<Element> iterator() {
-        
-        object iterator
-                satisfies Iterator<Element> {
-            variable Element|Finished current = first;
-            shared actual Element|Finished next() {
-                if (!is Finished c = current) {
-                    if (c.offset(last) != 0) {
-                        value result = c;
-                        this.current = outer.next(c);
-                        return result;
-                    } else {
-                        value result = c;
-                        this.current = finished;
-                        return result;
-                    }
+    "An iterator for the elements of the range. The returned 
+     iterator produces elements from [[first]] and continues 
+     producing elements until it reaches an element whose 
+     `offset` from [[last] is zero."
+    shared actual Iterator<Element> iterator() 
+            => object
+            satisfies Iterator<Element> {
+        variable Element|Finished current = first;
+        shared actual Element|Finished next() {
+            if (!is Finished c = current) {
+                if (c.offset(last) != 0) {
+                    value result = c;
+                    this.current = outer.next(c);
+                    return result;
                 } else {
-                    return current;
+                    value result = c;
+                    this.current = finished;
+                    return result;
                 }
+            } else {
+                return current;
             }
-            string => "(``outer.string``).iterator()";
         }
-        return iterator;
-    }
+        string => "(``outer.string``).iterator()";
+    };
     
     shared actual {Element+} by(Integer step) {
         "step size must be greater than zero"
@@ -153,15 +144,16 @@ class Span<Element>(first, last)
         return step == 1 then this else By(step);
     }
     
-    shared actual Span<Element> shifted(Integer shift) {
-        if (shift == 0) {
-            return this;
-        } else {
-            value start = first.neighbour(shift);
-            value end = last.neighbour(shift);
-            return Span(start, end);
-        }
-    }
+    shifted(Integer shift)
+            => shift == 0
+            then this
+            else Span(first.neighbour(shift), 
+                      last.neighbour(shift));
+    
+    containsElement(Element x)
+            => recursive 
+            then x.offset(first) <= last.offset(first)
+            else !afterLast(x) && !beforeFirst(x);
     
     shared actual Integer count(Boolean selecting(Element element)) {
         variable value element = first;
@@ -174,29 +166,6 @@ class Span<Element>(first, last)
         }
         return count;
     }
-    
-    "Determines if this range includes the given object."
-    shared actual Boolean contains(Object element) {
-        if (is Element element) {
-            return containsElement(element);
-        } else {
-            return false;
-        }
-    }
-    
-    "Determines if this range includes the given value."
-    shared actual Boolean occurs(Anything element) {
-        if (is Element element) {
-            return containsElement(element);
-        } else {
-            return false;
-        }
-    }
-    
-    "Determines if the range includes the given value."
-    shared actual Boolean containsElement(Element x)
-            => recursive then x.offset(first) <= last.offset(first)
-            else !afterLast(x) && !beforeFirst(x);
     
     shared actual Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
@@ -283,7 +252,7 @@ class Span<Element>(first, last)
         
         shared actual Iterator<Element> iterator() {
             if (recursive) {
-                object iterator
+                return object
                         satisfies Iterator<Element> {
                     variable value count = 0;
                     variable value current = first;
@@ -297,10 +266,9 @@ class Span<Element>(first, last)
                         }
                     }
                     string => "``outer.string``.iterator()";
-                }
-                return iterator;
+                };
             } else {
-                object iterator
+                return object
                         satisfies Iterator<Element> {
                     variable value current = first;
                     shared actual Element|Finished next() {
@@ -313,14 +281,15 @@ class Span<Element>(first, last)
                         }
                     }
                     string => "``outer.string``.iterator()";
-                }
-                return iterator;
+                };
             }
         }
     }
     
     shared actual [Element*] measure(Integer from, Integer length)
-            => length <= 0 then [] else span(from, from + length - 1);
+            => length <= 0 
+            then [] 
+            else span(from, from + length - 1);
     
     shared actual [Element*] span(Integer from, Integer to) {
         if (from <= to) {

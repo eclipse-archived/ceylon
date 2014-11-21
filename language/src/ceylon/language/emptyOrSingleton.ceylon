@@ -17,11 +17,5 @@
      { 1.23, 5.67, -1.0 }"
 see (`class Tuple`, `interface Empty`)
 shared []|[Element&Object] emptyOrSingleton<Element>
-        (Element element) {
-    if (exists element) {
-        return [element];
-    }
-    else {
-        return [];
-    }
-}
+        (Element element)
+        => if (exists element) then [element] else [];

@@ -40,6 +40,8 @@ shared sealed interface Sequence<out Element>
     see (`value Sequence.size`)
     shared actual default Integer lastIndex => size-1;
     
+    "The non-negative length of this sequence, that is, the
+     number of elements in this sequence."
     shared actual formal Integer size;
     
     "The first element of the sequence, that is, the element

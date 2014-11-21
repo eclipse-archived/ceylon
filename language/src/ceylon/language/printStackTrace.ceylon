@@ -5,4 +5,5 @@
 shared native void printStackTrace(Throwable exception, 
         "A function that prints the given string.
          Defaults to [[process.writeError]]."
-        void write(String string) => process.writeError(string));
+        void write(String string) 
+                => process.writeError(string));
