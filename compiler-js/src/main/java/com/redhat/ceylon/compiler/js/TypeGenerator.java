@@ -274,11 +274,17 @@ public class TypeGenerator {
             }
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+        //If there's a default constructor, create a different function with this code
+        if (defconstr != null) {
+            gen.out("$$c");
+        }
         final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
-        //This takes care of top-level attributes defined before the class definition
-        gen.out("$init$", gen.getNames().name(d), "()");
-        gen.endLine(true);
+        if (constructors.isEmpty()) {
+            //This takes care of top-level attributes defined before the class definition
+            gen.out("$init$", gen.getNames().name(d), "();");
+            gen.endLine();
+        }
         if (constructors.isEmpty()) {
             gen.declareSelf(d);
         }
@@ -341,6 +347,10 @@ public class TypeGenerator {
             gen.out("return ", me, ";");
         }
         gen.endBlockNewLine();
+        if (defconstr != null) {
+            classConstructor(defconstr, defconstr, that.getTypeParameterList(), d, gen);
+            constructors.remove(defconstr);
+        }
         for (Tree.Constructor cnstr : constructors) {
             classConstructor(cnstr, defconstr, that.getTypeParameterList(), d, gen);
         }
@@ -658,14 +668,24 @@ public class TypeGenerator {
     static void classConstructor(final Tree.Constructor that, final Tree.Constructor defconst,
             final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
         Constructor d = that.getDeclarationModel();
-        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
+        if (that == defconst) {
+            gen.out(GenerateJsVisitor.function, gen.getNames().name(container));
+        } else {
+            gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
+        }
         final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
         final String me = gen.getNames().self(container);
         gen.beginBlock();
+        gen.out("$init$", gen.getNames().name(container), "();");
+        gen.endLine();
         gen.declareSelf(container);
         //Call self
         //TODO always, or only when there's no delegated constructor?
-        gen.out(gen.getNames().name(container), "(");
+        gen.out(gen.getNames().name(container));
+        if (defconst != null) {
+            gen.out("$$c");
+        }
+        gen.out("(");
         if (withTargs) {
             gen.out("$$targs$$,");
         }
