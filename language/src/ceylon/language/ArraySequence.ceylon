@@ -29,7 +29,8 @@ class ArraySequence<out Element>(array)
     shared actual Element first {
         if (exists first = array.first) {
             return first;
-        } else {
+        }
+        else {
             assert (is Element null);
             return null;
         }
@@ -38,7 +39,8 @@ class ArraySequence<out Element>(array)
     shared actual Element last {
         if (exists last = array.last) {
             return last;
-        } else {
+        }
+        else {
             assert (is Element null);
             return null;
         }
@@ -63,40 +65,35 @@ class ArraySequence<out Element>(array)
     shared actual Element[] measure(Integer from, Integer length) {
         if (from > lastIndex || length <= 0 || from + length <= 0) {
             return [];
-        } else if (from < 0) {
+        }
+        else if (from < 0) {
             return ArraySequence(array[0 : length + from]);
-        } else {
+        }
+        else {
             return ArraySequence(array[from:length]);
         }
     }
     
     shared actual Element[] span(Integer from, Integer to) {
         if (from <= to) {
-            if (to < 0 || from > lastIndex) {
-                return [];
-            }
-            return ArraySequence(array[from..to]);
-        } else {
-            if (from < 0 || to > lastIndex) {
-                return [];
-            }
-            return ArraySequence(array[from..to]);
+            return to < 0 || from > lastIndex
+                then [] 
+                else ArraySequence(array[from..to]);
+        }
+        else {
+            return from < 0 || to > lastIndex
+                then [] 
+                else ArraySequence(array[from..to]);
         }
     }
     
-    shared actual Element[] spanFrom(Integer from) {
-        if (from > lastIndex) {
-            return [];
-        } else {
-            return ArraySequence(array[from...]);
-        }
-    }
+    spanFrom(Integer from) 
+            => from > lastIndex 
+            then [] 
+            else ArraySequence(array[from...]);
     
-    shared actual Element[] spanTo(Integer to) {
-        if (to < 0) {
-            return [];
-        } else {
-            return ArraySequence(array[...to]);
-        }
-    }
+    spanTo(Integer to)
+            => to < 0
+            then []
+            else ArraySequence(array[...to]);
 }
