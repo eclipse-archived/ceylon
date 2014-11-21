@@ -1,5 +1,10 @@
 void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     
+    @type:"String" value numStr = 
+            if (num==0) then "zero" 
+            else if (num==1) then "unit" 
+            else num.string;
+    
     @type:"Integer|Float" value someStuff 
             = if (exists arg) 
                 then arg else 0.0;

@@ -1443,12 +1443,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>then</literal> expression, and an <literal>else</literal> 
             expression. The <literal>else</literal> expression is not optional.</para>
             
-            <synopsis>IfElseExpression: "if" ConditionList ThenExpression ElseExpression</synopsis>
+            <synopsis>IfElseExpression: "if" ConditionList ThenExpression (ElseExpression | ElseIfExpression)</synopsis>
+            <synopsis>ElseIfExpression: "else" IfExpression</synopsis>
             
             <para>The type of an <literal>if/then/else</literal> expression with
             <literal>then</literal> expression of type <literal>X</literal> and
-            <literal>else</literal> expression of type <literal>Y</literal> is
-            <literal>X|Y</literal>.</para>
+            <literal>else</literal> or <literal>else if</literal> expression of 
+            type <literal>Y</literal> is <literal>X|Y</literal>.</para>
             
             <para>A <literal>switch/case/else</literal> expression has a 
             <literal>switch</literal> expression or inline variable, a list of 

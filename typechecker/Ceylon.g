@@ -1163,10 +1163,7 @@ unambiguousType
     ;
 
 statement returns [Statement statement]
-    : /*(IF_CLAUSE conditions THEN_CLAUSE) => 
-      expressionOrSpecificationStatement
-      { $statement = $expressionOrSpecificationStatement.statement; }
-    |*/ directiveStatement
+    : directiveStatement
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
@@ -2092,10 +2089,17 @@ thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList
       (
         ELSE_CLAUSE
         { $elseClause = new ElseClause($ELSE_CLAUSE); }
-        de2=disjunctionExpression
-        { Expression e = new Expression(null);
-          e.setTerm($de2.term);
-          $elseClause.setExpression(e); }
+        (
+          de2=disjunctionExpression
+          { Expression e = new Expression(null);
+            e.setTerm($de2.term);
+            $elseClause.setExpression(e); }
+        | 
+          ifExpression
+          { Expression e = new Expression(null);
+            e.setTerm($ifExpression.term);
+            $elseClause.setExpression(e); }
+        )
       )?
     ;
 
@@ -2211,15 +2215,6 @@ thenElseExpression returns [Term term]
         de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
-    //TODO: enable this to add support for if (...) and 
-    //      given (...) expressions
-    //TODO: when enabling this, we'll need something
-    //      to distinguish between "if (...) then" and 
-    //      the control structure "if (...) { ... }"
-    /*| 
-      IF_CLAUSE conditions
-      THEN_CLAUSE disjunctionExpression
-      (ELSE_CLAUSE disjunctionExpression)?*/
     ;
 
 thenElseOperator returns [BinaryOperatorExpression operator]
