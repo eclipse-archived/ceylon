@@ -59,25 +59,15 @@ class Span<Element>(first, last)
     
     size => last.offset(first).magnitude + 1;
     
-    shared actual Boolean longerThan(Integer length) {
-        if (length < 1) {
-            return true;
-        } else if (recursive) {
-            return size > length;
-        } else {
-            return beforeLast(fromFirst(length - 1));
-        }
-    }
+    longerThan(Integer length) 
+            => if (length < 1) then true
+            else if (recursive) then size > length
+            else beforeLast(fromFirst(length - 1));
     
-    shared actual Boolean shorterThan(Integer length) {
-        if (length < 1) {
-            return true;
-        } else if (recursive) {
-            return size < length;
-        } else {
-            return afterLast(fromFirst(length - 1));
-        }
-    }
+    shorterThan(Integer length)
+            => if (length < 1) then true
+            else if (recursive) then size < length
+            else afterLast(fromFirst(length - 1));
     
     lastIndex => size - 1;
     
