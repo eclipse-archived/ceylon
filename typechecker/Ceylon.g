@@ -1999,13 +1999,16 @@ switchExpression returns [SwitchExpression term]
       { $term.setSwitchCaseList($caseExpressions.switchCaseList);
         //TODO: huge copy/paste job from switchCaseElse 
         Identifier id = null;
-        Expression ex = $switchHeader.clause.getSwitched().getExpression();
-        if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
-          id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
-        }
-        TypedDeclaration var = $switchHeader.clause.getSwitched().getVariable();
-        if (var!=null) {
-          id = var.getIdentifier();
+        Switched sw = $switchHeader.clause.getSwitched();
+        if (sw!=null) {
+          Expression ex = sw.getExpression();
+          if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
+            id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          }
+          TypedDeclaration var = $switchHeader.clause.getSwitched().getVariable();
+          if (var!=null) {
+            id = var.getIdentifier();
+          }
         }
         if (id!=null) {
           for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
