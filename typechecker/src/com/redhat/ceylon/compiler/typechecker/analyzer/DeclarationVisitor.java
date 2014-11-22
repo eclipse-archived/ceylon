@@ -1389,6 +1389,13 @@ public class DeclarationVisitor extends Visitor {
         if (lhs instanceof Tree.ParameterizedExpression) {
             ((Tree.ParameterizedExpression) lhs).setLeftTerm(true);
         }
+        
+        ConditionScope cb = new ConditionScope();
+        cb.setId(id++);
+        that.setScope(cb);
+        visitElement(that, cb);
+        enterScope(cb);
+        
         Specification s = new Specification();
         s.setId(id++);
         visitElement(that, s);

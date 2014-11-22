@@ -222,6 +222,7 @@ public class SpecificationVisitor extends Visitor {
             return;
         }
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+        if (member!=null) member = member.getNarrowedDeclaration();
         //TODO: check superclass members are not in declaration section!
         if (member==declaration && 
                 member.isDefinedInScope(that.getScope())) {
@@ -377,6 +378,7 @@ public class SpecificationVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
             Declaration member = mte.getDeclaration();
+            if (member!=null) member = member.getNarrowedDeclaration();
             if (member==declaration) {
             	if ((declaration.isFormal() || declaration.isDefault()) && 
             	        !isForwardReferenceable()) {
@@ -546,6 +548,7 @@ public class SpecificationVisitor extends Visitor {
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
+	        if (member!=null) member = member.getNarrowedDeclaration();
 	        if (member==declaration) {
 	        	if ((declaration.isFormal() || declaration.isDefault()) && 
 	        	        !isForwardReferenceable()) {

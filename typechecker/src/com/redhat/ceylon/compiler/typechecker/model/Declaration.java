@@ -379,7 +379,11 @@ public abstract class Declaration
             return false;
         }
     }
-
+    
+    public Declaration getNarrowedDeclaration() {
+        return this;
+    }
+    
     private Scope getAbstraction(Scope container) {
         if (container instanceof Class && 
                 isOverloadedVersion((Class) container)) {

@@ -3,6 +3,10 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A scope to hold the parameter models of a parameterized
+ * specification statement. 
+ */
 public class Specification extends Element implements Scope {
     
     private int id;

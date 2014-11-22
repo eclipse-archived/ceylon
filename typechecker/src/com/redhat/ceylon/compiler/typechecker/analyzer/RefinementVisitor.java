@@ -742,12 +742,43 @@ public class RefinementVisitor extends Visitor {
             Declaration d = getTypedDeclaration(bme.getScope(), 
                     name(bme.getIdentifier()), sig, false, that.getUnit());
             if (d instanceof TypedDeclaration) {
-                that.setDeclaration((TypedDeclaration) d);
-                Scope cs = getRealScope(that.getScope().getContainer());
-                if (cs instanceof ClassOrInterface && 
+                Scope s = that.getScope().getContainer();
+                Scope cs = getRealScope(s);
+                boolean refinement = cs instanceof ClassOrInterface && 
                         d.isClassOrInterfaceMember() &&
                         !d.getContainer().equals(cs) &&
-                        ((ClassOrInterface) cs).inherits((ClassOrInterface) d.getContainer())) {
+                        ((ClassOrInterface) cs).inherits((ClassOrInterface) d.getContainer());
+                if (!refinement && d instanceof Value) {
+                    final Value vd = (Value) d;
+                    Value v = new Value() {
+                        @Override
+                        public void setTransient(boolean trans) {
+                            vd.setTransient(trans);
+                        }
+                        @Override
+                        public boolean isTransient() {
+                            return vd.isTransient();
+                        }
+                        @Override
+                        public Declaration getNarrowedDeclaration() {
+                            return vd.getNarrowedDeclaration();
+                        }
+                        @Override
+                        public TypedDeclaration getImmediatelyNarrowedDeclaration() {
+                            return vd;
+                        }
+                    };
+                    v.setName(d.getName());
+                    v.setContainer(s);
+                    v.setVariable(vd.isVariable());
+                    v.setTransient(vd.isTransient());
+                    v.setType(vd.getType());
+                    v.setOriginalDeclaration(vd);
+                    s.getMembers().add(v);
+                    d = v;
+                }
+                that.setDeclaration((TypedDeclaration) d);
+                if (refinement) {
                     // interpret this specification as a 
                     // refinement of an inherited member
                     if (d.getContainer()==that.getScope()) {

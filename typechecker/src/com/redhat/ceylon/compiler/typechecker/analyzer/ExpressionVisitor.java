@@ -740,7 +740,7 @@ public class ExpressionVisitor extends Visitor {
         		}
         		else if (isTypeUnknown(t)) {
         		    if (sie==null) {
-        		        type.addError("value must specify an explicit type or definition", 200);
+//        		        type.addError("value must specify an explicit type or definition", 200);
         		    }
         		    else if (!hasError(sie)) {
         		        type.addError("value type could not be inferred");
@@ -842,8 +842,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.SpecifierStatement that) {
-        super.visit(that);
-
         Tree.SpecifierExpression rhs = that.getSpecifierExpression();
         Tree.Term lhs = that.getBaseMemberExpression();
 
@@ -860,8 +858,20 @@ public class ExpressionVisitor extends Visitor {
         
         assign(me);
         
+        if (lhs!=null) lhs.visit(this);
+        
         Declaration d = that.getDeclaration();
         if (d instanceof TypedDeclaration) {
+            TypedDeclaration td = (TypedDeclaration) d;
+            td.setType(td.getImmediatelyNarrowedDeclaration().getType());
+        }
+        
+        if (rhs!=null) rhs.visit(this);
+        
+        if (d instanceof TypedDeclaration) {
+            if (d instanceof Value && rhs.getExpression()!=null) {
+                ((TypedDeclaration) d).setType(rhs.getExpression().getTypeModel());
+            }
             if (that.getRefinement()) {
                 // interpret this specification as a 
                 // refinement of an inherited member
@@ -4522,6 +4532,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression smte =
                     (Tree.StaticMemberOrTypeExpression) that;
             Declaration dec = smte.getDeclaration();
+            if (dec!=null) dec = dec.getNarrowedDeclaration();
             if (dec!=null && 
                     (!isEffectivelyBaseMemberExpression(smte) ||
                      !unit.equals(dec.getUnit()))) { //Note: other cases handled in SpecificationVisitor
@@ -5257,7 +5268,8 @@ public class ExpressionVisitor extends Visitor {
             that.setTarget(pr);
             ProducedType fullType = pr.getFullType();
             if (!dynamic && !isAbstraction(member) && 
-                    isTypeUnknown(fullType)) {
+                    isTypeUnknown(fullType) && 
+                    !that.getAssigned()) {
                 that.addError("could not determine type of function or value reference: '" +
                         member.getName(unit) + "'");
             }

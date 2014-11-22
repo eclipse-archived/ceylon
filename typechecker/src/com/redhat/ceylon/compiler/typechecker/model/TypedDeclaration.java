@@ -48,6 +48,10 @@ public abstract class TypedDeclaration extends Declaration {
     public void setType(ProducedType t) {
         this.type = t;
     }
+    
+    public TypedDeclaration getImmediatelyNarrowedDeclaration() {
+        return this;
+    }
 
     @Override
     public String toString() {
