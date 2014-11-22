@@ -2030,7 +2030,8 @@ else {
             
             <synopsis>Switch: "switch" "(" SwitchVariableOrExpression ")"</synopsis>
             
-            <para>The <literal>switch</literal> clause has either:</para>
+            <para>The <literal>switch</literal> clause has a <emphasis>switched
+            expression</emphasis>, either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2047,10 +2048,16 @@ else {
             <para>The <emphasis>switched type</emphasis> is the type of the expression
             or inline variable.</para>
             
+            <comment><para>Note: there is an ambiguity here between assignment expressions
+            and inline variable declarations. This ambiguity is resolved in favor of 
+            interpreting the switched expression as a variable declaration. Therefore, a
+            switched expression in a <literal>switch</literal> clause may not be an 
+            assignment expression.</para></comment>
+            
             <para>If a <literal>switch</literal> has a type case condition, and does not
-            declare an inline variable, then the <literal>switch</literal> expression must 
-            be an unqualified value reference to a non-<literal>variable</literal>, 
-            non-<literal>default</literal> reference.</para>
+            declare an inline variable, then the switched expression must be an unqualified 
+            value reference to a non-<literal>variable</literal>, non-<literal>default</literal> 
+            reference.</para>
             
             <para>In addition, every <literal>switch</literal> conditional must include:</para>
             
@@ -2098,8 +2105,8 @@ else {
             additional cases without resulting in a compilation error.</para></comment>
             
             <para>As a special exception to the above, if a <literal>switch</literal> occurs 
-            in a <literal>dynamic</literal> block, and the <literal>switch</literal> expression
-            has no type, the cases are not statically type-checked for exhaustion.</para>
+            in a <literal>dynamic</literal> block, and the switched expression has no type, 
+            the cases are not statically type-checked for exhaustion.</para>
             
             <para>If an <literal>else</literal> block is specified, then the <literal>switch</literal> 
             variable or, if there is no inline variable declared by the <literal>switch</literal>, 
@@ -2317,6 +2324,12 @@ while (n&lt;=max) {
             </itemizedlist>
             
             <synopsis>Resource: Expression | Variable Specifier</synopsis>
+            
+            <comment><para>Note: there is an ambiguity here between assignment expressions
+            and inline variable declarations. This ambiguity is resolved in favor of 
+            interpreting the resource expression as a variable declaration. Therefore, a
+            resource expression in a <literal>try</literal> clause may not be an 
+            assignment expression.</para></comment>
             
             <para>A destroyable resource expression is:</para>
             
