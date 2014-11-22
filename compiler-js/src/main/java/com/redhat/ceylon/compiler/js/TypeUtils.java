@@ -98,6 +98,11 @@ public class TypeUtils {
         } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
             gen.out(gen.getClAlias(), "Null");
         } else if (pt.isUnknown()) {
+            if (!gen.isInDynamicBlock()) {
+                gen.out("/*WARNING unknown type");
+                gen.location(node);
+                gen.out("*/");
+            }
             gen.out(gen.getClAlias(), "Anything");
         } else {
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
@@ -202,9 +207,15 @@ public class TypeUtils {
             gen.out("{t:'u");
             subs = d.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
-            gen.out("{t:'T");
             subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
+            if (lastType.isUnknown()) {
+                //Revert to outputting normal Tuple with its type arguments
+                gen.out("{t:", gen.getClAlias(), "Tuple,a:");
+                printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                gen.out("}");
+                return true;
+            }
             if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())
                     || d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
                 //Non-empty, non-tuple tail; union it with its type parameter
@@ -213,6 +224,7 @@ public class TypeUtils {
                 subs.remove(subs.size()-1);
                 subs.add(utail.getType());
             }
+            gen.out("{t:'T");
         } else {
             return false;
         }
