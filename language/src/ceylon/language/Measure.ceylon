@@ -68,7 +68,7 @@ class Measure<Element>(first, size)
         
         first => outer.first;
         
-        string => "(``outer.string`` by ``step``)";
+        string => "(``outer``).by(``step``)";
         
         iterator() => object
                 satisfies Iterator<Element> {
@@ -83,7 +83,7 @@ class Measure<Element>(first, size)
                     return result;
                 }
             }
-            string => "``outer.string``.iterator()";
+            string => "``outer``.iterator()";
         };
     }
     

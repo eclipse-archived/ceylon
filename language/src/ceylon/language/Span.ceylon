@@ -125,7 +125,7 @@ class Span<Element>(first, last)
                 return current;
             }
         }
-        string => "(``outer.string``).iterator()";
+        string => "(``outer``).iterator()";
     };
     
     shared actual {Element+} by(Integer step) {
@@ -238,7 +238,7 @@ class Span<Element>(first, last)
         
         first => outer.first;
         
-        string => "(``outer.string`` by ``step``)";
+        string => "(``outer``).by(``step``)";
         
         shared actual Iterator<Element> iterator() {
             if (recursive) {
@@ -255,7 +255,7 @@ class Span<Element>(first, last)
                             return result;
                         }
                     }
-                    string => "``outer.string``.iterator()";
+                    string => "``outer``.iterator()";
                 };
             } else {
                 return object
@@ -270,7 +270,7 @@ class Span<Element>(first, last)
                             return finished;
                         }
                     }
-                    string => "``outer.string``.iterator()";
+                    string => "``outer``.iterator()";
                 };
             }
         }
