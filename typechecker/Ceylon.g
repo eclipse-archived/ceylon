@@ -2117,7 +2117,7 @@ ifExpression returns [IfExpression term]
                   id = v.getIdentifier();
                 }
               }
-              if (id!=null && t instanceof SyntheticVariable) { 
+              if (id!=null && ec!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
                 ev.setType(new SyntheticVariable(null));
                 SpecifierExpression ese = new SpecifierExpression(null);
@@ -3253,7 +3253,7 @@ ifElse returns [IfStatement statement]
                   id = v.getIdentifier();
                 }
               }
-              if (id!=null && t instanceof SyntheticVariable) { 
+              if (id!=null && ec!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
                 ev.setType(new SyntheticVariable(null));
                 SpecifierExpression ese = new SpecifierExpression(null);
