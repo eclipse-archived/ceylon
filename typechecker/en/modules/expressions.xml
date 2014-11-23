@@ -1489,6 +1489,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
+            <programlisting>if (exists lang) then lang.name else "Ceylon"</programlisting>
+            <programlisting>switch (seq) case (null) "null" case (is []) "empty" else "nonempty"</programlisting>
+            
         </section>
         
         <section id="letexpressions">
@@ -1528,6 +1531,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>The type of an inline anonymous class expression is the 
             intersection of the class type it extends with all interface types 
             it satisfies.</para>
+            
+            <programlisting>object 
+        satisfies {Integer+} {
+    iterator() => object 
+            satisfies Iterator&lt;Integer&gt; {
+        variable value current = 0;
+        next() => current++;
+    };
+}</programlisting>
             
         </section>
         
