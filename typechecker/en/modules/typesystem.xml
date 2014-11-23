@@ -725,14 +725,16 @@
             <synopsis>OptionalType: PrimaryType "?"</synopsis>
             <synopsis>SequenceType: PrimaryType "[" "]"</synopsis>
             
+            <para>For any type <literal>X</literal>:</para>
+            
             <itemizedlist>
                 <listitem>
-                    <para><literal>X?</literal> means <literal>Null|X</literal> for any 
-                    type <literal>X</literal>,</para>
+                    <para><literal>X?</literal> means 
+                    <literal>Null|X</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>,</para>
+                    <para><literal>X[]</literal> means 
+                    <literal>Sequential&lt;X&gt;</literal>.</para>
                 </listitem>
            </itemizedlist>
            
@@ -741,25 +743,30 @@
            &#8220;sequence of x&#8221;.</para></comment>
            
            <para>Next, there are type abbreviations for <emphasis>callable types</emphasis>
-           which represent the types of a functions.</para>
+           which represent the types of functions.</para>
            
            <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
-            
+           
+           <para>For any type <literal>X</literal>:</para>
+           
            <itemizedlist>
                 <listitem>
-                    <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
-                    where <literal>Y,Z</literal> is a list of types of any length, and</para>
+                    <para><literal>X(Y,Z)</literal> means 
+                    <literal>Callable&lt;X,[Y,Z]&gt;</literal> where 
+                    <literal>Y,Z</literal> is a list of types of any length, 
+                    and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X(*Y)</literal> means <literal>Callable&lt;X,Y&gt;</literal>
-                    for any type <literal>X</literal>, and any subtype <literal>Y</literal> of
+                    <para><literal>X(*Y)</literal> means 
+                    <literal>Callable&lt;X,Y&gt;</literal> for any subtype 
+                    <literal>Y</literal> of 
                     <literal>Sequential&lt;Anything&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
             <para>More precisely, the type meant by a callable type abbreviation is
-            <literal>Callable&lt;X,T&gt;</literal> where <literal>X</literal> is the type 
-            outside the parentheses in the the callable type abbreviation, and 
+            <literal>Callable&lt;X,T&gt;</literal> where <literal>X</literal> is the 
+            type outside the parentheses in the the callable type abbreviation, and 
             <literal>T</literal> is the tuple type formed by the types listed inside the 
             parentheses.</para>
             
@@ -768,14 +775,16 @@
             
             <synopsis>IterableType: "{" UnionType ("*"|"+") "}"</synopsis>
             
+            <para>For any type <literal>X</literal>:</para>
+            
             <itemizedlist>
                 <listitem>
-                    <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    <para><literal>{X*}</literal> means 
+                    <literal>Iterable&lt;X,Null&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{X+}</literal> means <literal>Iterable&lt;X,Nothing&gt;</literal> 
-                    for any type <literal>X</literal>.</para>
+                    <para><literal>{X+}</literal> means 
+                    <literal>Iterable&lt;X,Nothing&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
