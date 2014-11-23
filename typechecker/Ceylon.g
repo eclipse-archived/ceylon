@@ -2102,12 +2102,20 @@ ifExpression returns [IfExpression term]
               Identifier id = null;
               Type t = null;
               if (c instanceof ExistsOrNonemptyCondition) {
-                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
-                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((ExistsOrNonemptyCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
               else if (c instanceof IsCondition) {
-                t = ((IsCondition)c).getVariable().getType();
-                id = ((IsCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((IsCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
               if (id!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
@@ -3230,12 +3238,20 @@ ifElse returns [IfStatement statement]
               Identifier id = null;
               Type t = null;
               if (c instanceof ExistsOrNonemptyCondition) {
-                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
-                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((ExistsOrNonemptyCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
               else if (c instanceof IsCondition) {
-                t = ((IsCondition)c).getVariable().getType();
-                id = ((IsCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((IsCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
               if (id!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
