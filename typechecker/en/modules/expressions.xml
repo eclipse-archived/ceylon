@@ -424,9 +424,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             parameter.</para>
             
             <para>That is, if the type of the invoked expression is 
-            <literal>Callable&lt;R,T&gt;</literal> where <literal>T</literal>
+            <literal>R(*T)</literal> where <literal>T</literal>
             is a tuple type whose <literal>n</literal>th element type is 
-            <literal>Callable&lt;P,S&gt;</literal> and <literal>S</literal> is 
+            <literal>P(*S)</literal> and <literal>S</literal> is 
             in turn a tuple type whose <literal>i</literal>th element type is 
             <literal>Q</literal>, then <literal>Q</literal> is the inferred type 
             of <literal>p</literal>.</para>
@@ -644,7 +644,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a callable reference <literal>f</literal> with no explicit type 
             argument list occurs as the argument to a value parameter <literal>p</literal>
-            of type <literal>Callable&lt;Return,Args&gt;</literal> in a direct or indirect 
+            of type <literal>Return(*Args)</literal> in a direct or indirect 
             invocation expression, then the type arguments of <literal>f</literal> are 
             inferred according to the rules defined in <xref linkend="typeargumentinference"/> 
             as if <literal>Args</literal> were the type of a positional argument list, unless 
@@ -701,7 +701,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a static expression <literal>T.m</literal> for a generic type <literal>T</literal> 
             with no explicit type argument list occurs as the argument to a parameter <literal>p</literal>
-            of type <literal>Callable&lt;Return,Arg&gt;</literal> in a direct or indirect invocation 
+            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation 
             expression, then the type arguments of <literal>T</literal> are inferred according to the 
             rules defined in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> 
             were the type of a positional argument list, and <literal>[T]</literal> were the type of 
@@ -760,7 +760,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>Invocation: Primary Arguments</synopsis>
         
-        <para>The invoked expression must be of type <literal>Callable&lt;R,P&gt;</literal>
+        <para>The invoked expression must be of type <literal>R(*P)</literal>
         for some types <literal>R</literal> and <literal>P</literal>. Then the type of the 
         invocation expression is simply <literal>R</literal>.</para>
         
@@ -776,7 +776,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>Every argument list has a type, as specified below in 
         <xref linkend="positionalarguments"/> and <xref linkend="namedarguments"/>. If an 
         invocation is formed from a callable expression of type exactly 
-        <literal>Callable&lt;R,P&gt;</literal> and an argument list of type 
+        <literal>R(*P)</literal> and an argument list of type 
         <literal>A</literal>, then <literal>A</literal> must be a subtype of 
         <literal>P</literal>.</para>
             
@@ -1978,7 +1978,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Callable &lt;T,P&gt;</literal></entry>
+            <entry><literal>T(*P)</literal></entry>
             <entry>argument list of type <literal>P</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2337,9 +2337,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry></entry>
             <entry><literal>X?</literal></entry>
             <entry>a method of callable type 
-            <literal>Callable &lt;T,P&gt;</literal> 
-            of <literal>X</literal></entry>
-            <entry><literal>Callable &lt;T?,P&gt;</literal></entry>
+            <literal>T(*P)</literal> 
+            of <literal>X</literal>
+            with exactly one parameter list</entry>
+            <entry><literal>T?(*P)</literal></entry>
         </row>
         
     </tbody>
@@ -2440,9 +2441,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>compose((Iterable&lt;T,N&gt; ts)=>[*ts], lhs.spread(X.method))</literal></entry>
             <entry><literal>Iterable&lt;X,N&gt;</literal></entry>
             <entry>method of <literal>X</literal> of
-            callable type <literal>Callable &lt;T,P&gt;</literal></entry>
-            <entry><literal>Callable &lt;[T*],P&gt;</literal> or
-            <literal>Callable &lt;[T+],P&gt;</literal></entry>
+            callable type <literal>T(*P)</literal>
+            with exactly one parameter list</entry>
+            <entry><literal>[T*](*P)</literal> or
+            <literal>[T+](*P)</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Spread multiplication</emphasis></entry></row>
@@ -3067,17 +3069,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>for a toplevel function of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Function&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a toplevel class of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Class&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Class&lt;R,Nothing&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
@@ -3099,12 +3101,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>for a method of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Method&lt;T,R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a member class of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
                 </listitem>
                 <listitem>

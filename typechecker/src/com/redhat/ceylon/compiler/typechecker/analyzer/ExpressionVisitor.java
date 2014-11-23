@@ -2016,9 +2016,6 @@ public class ExpressionVisitor extends Visitor {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            //note: the following is nice, even though
-            //      it is not actually blessed by the
-            //      language spec!
             return unit.isNonemptyIterableType(receivingType) ?
                     unit.getSequenceType(pt) :
                     unit.getSequentialType(pt);
@@ -5185,6 +5182,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {*/
             that.setTarget(ptr);
+            checkSpread(member, that);
             ProducedType fullType =
                     ptr.getFullType(wrap(ptr.getType(), receivingType, that));
             if (!dynamic && !isAbstraction(member) && 
@@ -5197,6 +5195,17 @@ public class ExpressionVisitor extends Visitor {
             }
             that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
             //}
+        }
+    }
+
+    private void checkSpread(TypedDeclaration member, 
+            Tree.QualifiedMemberExpression that) {
+        if (!(that.getMemberOperator() instanceof Tree.MemberOp)) {
+            if (member instanceof Functional) {
+                if (((Functional) member).getParameterLists().size()!=1) {
+                    that.addError("spread method must have exactly one parameter list");
+                }
+            }
         }
     }
 
