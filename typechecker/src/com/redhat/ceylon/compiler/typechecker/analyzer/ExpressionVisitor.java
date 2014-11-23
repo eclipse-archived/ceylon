@@ -203,8 +203,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IfExpression that) {
         Node ose = switchStatementOrExpression;
         Node oie = ifStatementOrExpression;
-        switchStatementOrExpression = that;
-        ifStatementOrExpression = null;
+        switchStatementOrExpression = null;
+        ifStatementOrExpression = that;
         super.visit(that);
         
         List<ProducedType> list = 

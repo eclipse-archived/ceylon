@@ -2029,6 +2029,21 @@ switchExpression returns [SwitchExpression term]
               ic.setVariable(v);
             }
           } 
+          ElseClause ec = $caseExpressions.switchCaseList.getElseClause();
+          if (ec!=null) {
+            Variable ev = new Variable(null);
+            ev.setType(new SyntheticVariable(null));
+            SpecifierExpression ese = new SpecifierExpression(null);
+            Expression ee = new Expression(null);
+            BaseMemberExpression ebme = new BaseMemberExpression(null);
+            ebme.setTypeArguments( new InferredTypeArguments(null) );
+            ee.setTerm(ebme);
+            ese.setExpression(ee);
+            ev.setSpecifierExpression(ese);
+            ec.setVariable(ev);
+            ebme.setIdentifier(id);
+            ev.setIdentifier(id);
+          }
         } 
       }
     ;
@@ -2069,13 +2084,49 @@ ifExpression returns [IfExpression term]
     : IF_CLAUSE
       { $term = new IfExpression($IF_CLAUSE); }
       thenElseClauses
-      { $term.setIfClause($thenElseClauses.ifClause);
-        $term.setElseClause($thenElseClauses.elseClause);
-        if ($thenElseClauses.conditionList!=null) {
-            if ($thenElseClauses.ifClause==null) 
-                $term.setIfClause(new IfClause(null));
-            $term.getIfClause().setConditionList($thenElseClauses.conditionList); 
-        } }
+      { IfClause ic = $thenElseClauses.ifClause;
+        ElseClause ec = $thenElseClauses.elseClause;
+        ConditionList cl = $thenElseClauses.conditionList;
+        $term.setIfClause(ic);
+        $term.setElseClause(ec);
+        if (cl!=null) {
+          if (ic==null) {
+            ic = new IfClause(null);
+            $term.setIfClause(ic);
+          }
+          ic.setConditionList(cl); 
+          if (cl!=null) {
+            List<Condition> conditions = cl.getConditions();
+            if (conditions.size()==1) {
+              Condition c = conditions.get(0);
+              Identifier id = null;
+              Type t = null;
+              if (c instanceof ExistsOrNonemptyCondition) {
+                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
+                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+              }
+              else if (c instanceof IsCondition) {
+                t = ((IsCondition)c).getVariable().getType();
+                id = ((IsCondition)c).getVariable().getIdentifier();
+              }
+              if (id!=null && t instanceof SyntheticVariable) { 
+                Variable ev = new Variable(null);
+                ev.setType(new SyntheticVariable(null));
+                SpecifierExpression ese = new SpecifierExpression(null);
+                Expression ee = new Expression(null);
+                BaseMemberExpression ebme = new BaseMemberExpression(null);
+                ebme.setTypeArguments( new InferredTypeArguments(null) );
+                ee.setTerm(ebme);
+                ese.setExpression(ee);
+                ev.setSpecifierExpression(ese);
+                ec.setVariable(ev);
+                ev.setIdentifier(id);
+                ebme.setIdentifier(id);
+              }
+            }
+          }        
+        } 
+      }
     ;
 
 thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]

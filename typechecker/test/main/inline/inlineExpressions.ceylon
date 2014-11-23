@@ -80,3 +80,10 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     @type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
     @type:"Array<Basic>" value objs2 = Array {object{}};
 }
+
+void run(String? string) {
+    String val1 = if (!exists string) 
+            then "hello" else string;
+    String val2 = switch (string) 
+            case (is Null) "hello" else string;
+}
