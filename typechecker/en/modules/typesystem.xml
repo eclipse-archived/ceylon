@@ -1992,7 +1992,7 @@ interface NumberLiteral
             
             <para>is equivalent to a metatype bound of this form:</para>
             
-            <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
+            <programlisting>given X is X(A,B)</programlisting>
             
             <comment><para>Note: I suppose that types introduced to the metatype should 
             be considered to satisfy a metatype bound, allowing type class introduction.

@@ -1119,7 +1119,7 @@ else {
             <para>A callable reference followed by a parameter list is itself considered 
             a callable reference, called a <emphasis>parameterized reference</emphasis>. 
             If the parameter list has type <literal>P</literal> then the callable reference 
-            must have the exact type <literal>Callable&lt;R,P&gt;</literal> for some type 
+            must have the exact type <literal>R(*P)</literal> for some type 
             <literal>R</literal>. Then the type of the parameterized reference is
             <literal>R</literal>.</para>
             
