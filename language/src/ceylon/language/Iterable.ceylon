@@ -766,13 +766,13 @@ shared interface Iterable<out Element, out Absent=Null>
             object iterable 
                     satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
-                    //TODO: iterator has wrong string
                     value iter = outer.iterator();
                     variable value i=0;
                     while (i++<skipping &&
                             !iter.next() is Finished) {}
                     return iter;
                 }
+                string => outer.string + ".iterator()";
             }
             return iterable;
         }
