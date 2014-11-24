@@ -906,4 +906,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1918() {
         compareWithJavaSource("bug19xx/Bug1918");
     }
+
+    @Test
+    public void testBug1922() {
+        compareWithJavaSource("bug19xx/Bug1922");
+    }
 }
