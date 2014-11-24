@@ -3,7 +3,7 @@
 //the Ceylon language module
 //#METAMODEL
 
-//#COMPILE core_functions.js,Anything.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
+//#COMPILE core_functions.js,is-op.js,exists-nonempty.js,Anything.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Exception,Comparison,identityHash,impl/rethrow,impl/bases
 //#Anything
 //#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty

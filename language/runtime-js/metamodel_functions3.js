@@ -192,10 +192,14 @@ function coistr$(coi) {
   if (mm.tp) {
     qn+="<";
     var first=true;
+    var coitargs = coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
+    if (coitargs && coitargs.t==='T') {
+      coitargs = retpl$(coitargs);
+    }
     for (var tp in mm.tp) {
       var targ;
-      if (coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface && coi.$$targs$$.Type$ClassOrInterface.a && coi.$$targs$$.Type$ClassOrInterface.a[tp]) {
-        var _targ=coi.$$targs$$.Type$ClassOrInterface.a[tp];
+      if (coitargs && coitargs.a && coitargs.a[tp]) {
+        var _targ=coitargs.a[tp];
         if (typeof(_targ)==='string') {
           console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
           _targ={t:Anything};
@@ -205,7 +209,9 @@ function coistr$(coi) {
         targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
       }
       if (first)first=false; else qn+=",";
-      if (targ.declaration) {
+      if (is$(targ,{t:ClassOrInterface$meta$model})) {
+        qn+=coistr$(targ);
+      } else if (targ.declaration) {
         qn+=targ.declaration.qualifiedName;
       } else {
         qn+=targ.string;
