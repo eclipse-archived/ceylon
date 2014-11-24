@@ -142,7 +142,8 @@ public class ConditionGenerator {
 
         } else {
             Tree.Type type = ((IsCondition) condition).getType();
-            gen.generateIsOfType(variableRHS, null, type, varName, ((IsCondition)condition).getNot());
+            gen.generateIsOfType(variableRHS, null, type.getTypeModel(),
+                    varName, ((IsCondition)condition).getNot());
         }
     }
 
@@ -340,7 +341,7 @@ public class ConditionGenerator {
         Tree.Variable caseVar = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            gen.generateIsOfType(item, expvar, isCaseItem.getType(), null, false);
+            gen.generateIsOfType(item, expvar, isCaseItem.getType().getTypeModel(), null, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());

@@ -101,7 +101,7 @@ public class TryCatchGenerator {
                 }
                 firstCatch = false;
                 gen.out("if(");
-                gen.generateIsOfType(variable, catchVarName, variable.getType(), null, false);
+                gen.generateIsOfType(variable, catchVarName, variable.getType().getTypeModel(), null, false);
                 gen.out(")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
