@@ -2835,7 +2835,7 @@ public class GenerateJsVisitor extends Visitor
      * @param tmpvar (optional) a variable to which the term is assigned
      * @param negate If true, negates the generated condition
      */
-    void generateIsOfType(Node term, String termString, Type type, String tmpvar, final boolean negate) {
+    void generateIsOfType(Node term, String termString, final ProducedType type, String tmpvar, final boolean negate) {
         if (negate) {
             out("!");
         }
@@ -2846,15 +2846,23 @@ public class GenerateJsVisitor extends Visitor
             conds.specialConditionRHS(termString, tmpvar);
         }
         out(",");
-        if (type!=null) {
-            TypeUtils.typeNameOrList(term, type.getTypeModel(), this, false);
+        out("/*", type.getQualifyingType()+"*/");
+        TypeUtils.typeNameOrList(term, type, this, false);
+        if (type.getQualifyingType() != null) {
+            out(",[");
+            ProducedType outer = type.getQualifyingType();
+            while (outer != null) {
+                TypeUtils.typeNameOrList(term, outer, this, false);
+                outer = outer.getQualifyingType();
+            }
+            out("]");
         }
         out(")");
     }
 
     @Override
     public void visit(final Tree.IsOp that) {
-        generateIsOfType(that.getTerm(), null, that.getType(), null, false);
+        generateIsOfType(that.getTerm(), null, that.getType().getTypeModel(), null, false);
     }
 
     @Override public void visit(final Tree.Break that) {
