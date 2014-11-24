@@ -508,7 +508,7 @@ shared interface Iterable<out Element, out Absent=Null>
                         return finished;
                     }
                 }
-                //string => outer.string + ".iterator()";
+                string => outer.string + ".iterator()";
             };
         }
     };
@@ -769,13 +769,13 @@ shared interface Iterable<out Element, out Absent=Null>
             return object 
                     satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
-                    //TODO: iterator has wrong string
                     value iter = outer.iterator();
                     variable value i=0;
                     while (i++<skipping &&
                             !iter.next() is Finished) {}
                     return iter;
                 }
+                string => outer.string + ".iterator()";
             };
         }
     }
@@ -808,7 +808,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             return ++i>taking then finished
                                               else iter.next();
                         }
-                        //string => outer.string + ".iterator()";
+                        string => outer.string + ".iterator()";
                     };
                 }
                 first => outer.first;
@@ -844,7 +844,7 @@ shared interface Iterable<out Element, out Absent=Null>
                                 return iter.next();
                             }
                         }
-                        //string => outer.string + ".iterator()";
+                        string => outer.string + ".iterator()";
                     };
                 }
             }
@@ -880,7 +880,7 @@ shared interface Iterable<out Element, out Absent=Null>
                     }
                     return finished;
                 }
-                //string => outer.string + ".iterator()";
+                string => outer.string + ".iterator()";
             };
         }
     };
@@ -938,7 +938,7 @@ shared interface Iterable<out Element, out Absent=Null>
                                 !iter.next() is Finished) {}
                             return next;
                         }
-                        //string => outer.string + ".iterator()";
+                        string => outer.string + ".iterator()";
                     };
                 }
             };
@@ -1001,8 +1001,7 @@ shared interface Iterable<out Element, out Absent=Null>
                         return finished;
                     }
                 }
-                //TODO: compiler bug, fix!!
-                //string => outer.string + ".iterator()";
+                string => outer.string + ".iterator()";
             };
         }
     };
@@ -1199,7 +1198,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 }
                 
             }
-            //string => outer.string + ".iterator()";
+            string => outer.string + ".iterator()";
         };
     };
     
@@ -1260,7 +1259,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
-                    //string => outer.string + ".iterator()";
+                    string => outer.string + ".iterator()";
                 };
             }
         };
