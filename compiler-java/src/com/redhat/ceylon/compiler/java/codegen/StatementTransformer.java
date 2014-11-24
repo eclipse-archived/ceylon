@@ -3460,7 +3460,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (hasVariable(switchClause)) {
                 String name = switchClause.getSwitched().getVariable().getIdentifier().getText();
                 selector = makeVar(name, makeJavaType(getSwitchExpressionType(switchClause)), switchExpr);
-                JCStatement sw = transformSwitch(switchClause, caseList, tmpVar, outerExpression, switchExpr);
+                JCStatement sw = transformSwitch(switchClause, caseList, tmpVar, outerExpression, naming.makeQuotedIdent(name));
                 return at(node).Block(0, List.of(selector, sw));
             } else {
                 return transformSwitch(switchClause, caseList, tmpVar, outerExpression, switchExpr);
