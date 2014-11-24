@@ -145,6 +145,9 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
+        <para>An <literal>import</literal> statement specifies the name of a package to
+        import from, and a list of declarations to import from that package.</para>
+        
         <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
         
         <para>For a given package, there may be at most one <literal>import</literal>
@@ -329,6 +332,12 @@ TypeConstraints?
             
             <para>Two import elements occurring in the same compilation unit may not result 
             in the same imported name.</para>
+            
+            <emphasis><para>Note: if an imported declaration is already referenceable within 
+            a compilation unit without the <literal>import</literal> statement, for example, 
+            if it is defined in the same package, or in <literal>ceylon.language</literal>, 
+            then, even with the <literal>import</literal> statement, it is still referenceable 
+            via its declared name, as well as via the imported name.</para></emphasis>
             
         </section>
         
