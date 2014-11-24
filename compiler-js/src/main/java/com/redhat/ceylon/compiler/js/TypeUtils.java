@@ -98,6 +98,11 @@ public class TypeUtils {
         } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
             gen.out(gen.getClAlias(), "Null");
         } else if (pt.isUnknown()) {
+            if (!gen.isInDynamicBlock()) {
+                gen.out("/*WARNING unknown type");
+                gen.location(node);
+                gen.out("*/");
+            }
             gen.out(gen.getClAlias(), "Anything");
         } else {
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
@@ -202,9 +207,15 @@ public class TypeUtils {
             gen.out("{t:'u");
             subs = d.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
-            gen.out("{t:'T");
             subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
+            if (lastType.isUnknown()) {
+                //Revert to outputting normal Tuple with its type arguments
+                gen.out("{t:", gen.getClAlias(), "Tuple,a:");
+                printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                gen.out("}");
+                return true;
+            }
             if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())
                     || d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
                 //Non-empty, non-tuple tail; union it with its type parameter
@@ -213,6 +224,7 @@ public class TypeUtils {
                 subs.remove(subs.size()-1);
                 subs.add(utail.getType());
             }
+            gen.out("{t:'T");
         } else {
             return false;
         }
@@ -284,8 +296,15 @@ public class TypeUtils {
             if (tp.getContainer() == parent) {
                 gen.out("$$$mptypes.", tp.getName(), "$", tp.getDeclaration().getName());
             } else {
+                if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
+                    if (tp.getContainer() == ((Tree.StaticMemberOrTypeExpression)node).getDeclaration()) {
+                        type = ((Tree.StaticMemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
+                        typeNameOrList(node, type, gen, skipSelfDecl);
+                        return;
+                    }
+                }
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
-                        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "'");
+                        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "' container " + tp.getContainer() + " y yo estoy en " + node);
             }
         }
     }
@@ -620,7 +639,7 @@ public class TypeUtils {
         gen.out("[");
         boolean first = true;
         for (String p : parts) {
-            if (p.startsWith("anonymous#"))continue;
+            if (p.startsWith("anon$") || p.startsWith("anonymous#"))continue;
             if (first)first=false;else gen.out(",");
             gen.out("'", p, "'");
         }
@@ -1081,13 +1100,17 @@ public class TypeUtils {
     }
 
     public static String modelName(Declaration d) {
+        String dname = d.getName();
+        if (dname.startsWith("anonymous#")) {
+            dname = "anon$" + dname.substring(10);
+        }
         if (d.isToplevel() || d.isShared()) {
-            return d.getName();
+            return dname;
         }
         if (d instanceof Setter) {
             d = ((Setter)d).getGetter();
         }
-        return d.getName()+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
+        return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
     }
 
 }

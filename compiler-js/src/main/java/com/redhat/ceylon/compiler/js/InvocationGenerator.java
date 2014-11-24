@@ -496,7 +496,7 @@ public class InvocationGenerator {
             } else {
                 seqtargs = TypeUtils.wrapAsIterableArguments(sequencedType);
             }
-            SequenceGenerator.closeSequenceWithReifiedType(that,
+            SequenceGenerator.closeSequenceWithReifiedType(primary,
                     seqtargs, gen);
         }
         return argvars;

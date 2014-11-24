@@ -39,6 +39,8 @@ class TestIs2(Integer|String x) {
     }
 }
 
+Integer|String test445(Integer i) => i%2==0 then "X" else i;
+
 shared void testSwitches() {
     value enums = [1, 2.0];
     //is cases
@@ -98,5 +100,11 @@ shared void testSwitches() {
     case("2") { fail("it's null!"); }
     case(null) { check(true, "case with literals against optional"); }
     else { fail("how did you get here?"); }
+    //445
+    switch(x=system.milliseconds%2)
+    case (1) { check(x>0, "#455.1"); }
+    else { check(x<1, "#455.1"); }
+    switch(y=test445(system.milliseconds))
+    case (is Integer) { check(y>0, "#455.2"); }
+    case (is String)  { check(y=="X", "#455.2"); }
 }
-

@@ -92,7 +92,7 @@ public class TypeGenerator {
             if (d.isToplevel()) {
                 initname = "$init$" + _initname.substring(0, _initname.length()-2);
             } else {
-                initname = "$init$" + gen.getNames().objectName(d);
+                initname = "$init$" + _initname;
             }
         } else {
             initname = "$init$" + typename;

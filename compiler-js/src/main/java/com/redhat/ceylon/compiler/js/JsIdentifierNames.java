@@ -235,6 +235,9 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
+        if (name.startsWith("anonymous#")) {
+            name="anon$" + name.substring(10);
+        }
         boolean nonLocal = !priv;
         if (nonLocal) {
             // check if it's a shared member or a toplevel function

@@ -127,7 +127,7 @@ public class MetamodelGenerator {
         names.remove(0); //we don't need the package key
         Map<String, Object> last = pkgmap;
         for (String name : names) {
-            if (name.startsWith("anonymous#"))continue;
+            if (name.startsWith("anon$") || name.startsWith("anonymous#"))continue;
             if (last == null) {
                 break;
             }
@@ -297,6 +297,10 @@ public class MetamodelGenerator {
     /** Create a list of maps for the parameter list. Each map will be a parameter, including
      * name, type, default value (if any), and whether it's sequenced. */
     private List<Map<String,Object>> parameterListMap(ParameterList plist, Declaration from) {
+        if (plist == null) {
+            //Possibly an anonymous class for an anonymous object
+            return null;
+        }
         List<Parameter> parms = plist.getParameters();
         if (parms.size() > 0) {
             List<Map<String,Object>> p = new ArrayList<>(parms.size());

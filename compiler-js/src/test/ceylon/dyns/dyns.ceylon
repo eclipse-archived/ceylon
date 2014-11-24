@@ -97,9 +97,9 @@ shared void test() {
             fail("cannot create sequence enumerations with dynamic types");
         } catch (Exception e) {
             check(true);
-        }*/
-        value iter = testCoalesce<Anything>{n,null,n2,null,n3};
-        check(iter.first exists, "sequenced args w/dynamic types");
+        }
+        value iter = testCoalesce{n,null,n2,null,n3};
+        check(iter.first exists, "sequenced args w/dynamic types");*/
         n = dynamic[5];
         check(n.length==1, "reassign n");
         n = Singleton(1);
