@@ -935,6 +935,17 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SwitchStatement that) {
+        ControlBlock cb = new ControlBlock();
+        cb.setId(id++);
+        that.setControlBlock(cb);
+        visitElement(that, cb);
+        Scope o = enterScope(cb);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
     public void visit(Tree.Condition that) {
         ConditionScope cb = new ConditionScope();
         cb.setId(id++);

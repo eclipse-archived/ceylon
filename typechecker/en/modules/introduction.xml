@@ -465,9 +465,9 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             
             <para>
             The type of a function is expressed within the type system as an 
-            instantiation of the interface <literal>Callable</literal>. The parameter 
-            types are expressed as a tuple type. So the type of the function 
-            <literal>(String s) =&gt; s.size>1</literal> is 
+            instantiation of the interface <literal>Callable</literal>. The 
+            parameter types are expressed as a tuple type. So the type of the 
+            function <literal>(String s) =&gt; s.size>1</literal> is 
             <literal>Callable&lt;Boolean,[String]&gt;</literal>, which may be 
             abbreviated to <literal>Boolean(String)</literal>.
             </para>
