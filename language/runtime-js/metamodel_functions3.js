@@ -209,7 +209,9 @@ function coistr$(coi) {
         targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
       }
       if (first)first=false; else qn+=",";
-      if (targ.declaration) {
+      if (is$(targ,{t:ClassOrInterface$meta$model})) {
+        qn+=coistr$(targ);
+      } else if (targ.declaration) {
         qn+=targ.declaration.qualifiedName;
       } else {
         qn+=targ.string;
