@@ -4743,6 +4743,14 @@ public class ExpressionVisitor extends Visitor {
         visitInOperator(that);
     }
     
+    @Override public void visit(Tree.LetExpression that) {
+        super.visit(that);
+        Tree.Expression e = that.getLetClause().getExpression();
+        if (e!=null) {
+            that.setTypeModel(e.getTypeModel());
+        }
+    }
+    
     @Override
     public void visit(Tree.BaseType that) {
         super.visit(that);
