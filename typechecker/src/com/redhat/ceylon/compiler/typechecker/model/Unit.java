@@ -872,9 +872,13 @@ public class Unit {
     			        d.getSatisfiedTypeDeclarations();
     			List<ProducedType> list = 
     			        new ArrayList<ProducedType>(stds.size()+1);
-    			addToIntersection(list, pt.getSupertype(etd), this);
+    			if (etd!=null) {
+    			    addToIntersection(list, pt.getSupertype(etd), this);
+    			}
     			for (TypeDeclaration td: stds) {
-    				addToIntersection(list, pt.getSupertype(td), this);
+    			    if (td!=null) {
+    			        addToIntersection(list, pt.getSupertype(td), this);
+    			    }
     			}
     			IntersectionType it = new IntersectionType(this);
     			it.setSatisfiedTypes(list);
