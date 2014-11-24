@@ -77,13 +77,8 @@ class SwitchInlineVar implements .com.redhat.ceylon.compiler.java.runtime.model.
                 
                 default: 
                     {
-                        name = (
-                            let
-                            {
-                                .ceylon.language.String $ceylontmp$4 = b;
-                            }
-                            returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("?");
-                        ).toString();
+                        final .java.lang.String b$4 = ((.ceylon.language.String)b).toString();
+                        name = b$4;
                     }
                 
                 }

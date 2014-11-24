@@ -47,9 +47,10 @@ final class bug1916_2_ {
                         {
                             .java.lang.Object sel$5 = val;
                             if (sel$5 != null) {
-                                final .java.lang.Object val$6 = (.java.lang.Object)sel$5;
-                                $ceylontmp$ifResult$4 = predicate.$call$(val$6);
+                                final .java.lang.Object val$7 = (.java.lang.Object)sel$5;
+                                $ceylontmp$ifResult$4 = predicate.$call$(val$7);
                             } else {
+                                final .java.lang.Object val$6 = (.java.lang.Object)sel$5;
                                 $ceylontmp$ifResult$4 = .ceylon.language.Boolean.instance(false);
                             }
                         }
