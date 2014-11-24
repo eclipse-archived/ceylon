@@ -3494,7 +3494,19 @@ public class StatementTransformer extends AbstractTransformer {
                 cases.add(make().Case(transformCaseExpr(term), 
                         stmts));
             }
-            cases.add(make().Case(null, List.of(transformElse(null, caseList, tmpVar, outerExpression))));
+            Naming.SyntheticName elseSelectorAlias = null;
+            if(caseList.getElseClause() != null
+                    && caseList.getElseClause().getVariable() != null){
+                if (hasVariable(switchClause)) {
+                     ProducedType switchVarType = switchClause.getSwitched().getVariable().getDeclarationModel().getType();
+                     Value elseVar = caseList.getElseClause().getVariable().getDeclarationModel();
+                     ProducedType elseVarType = elseVar.getType();
+                     if(!elseVarType.isExactly(switchVarType)){
+                         elseSelectorAlias = naming.synthetic(elseVar);
+                     }
+                }
+            }
+            cases.add(make().Case(null, List.of(transformElse(elseSelectorAlias, caseList, tmpVar, outerExpression))));
             
             
             JCStatement last = make().Switch(switchExpr, cases.toList());
