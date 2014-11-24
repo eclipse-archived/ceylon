@@ -1733,12 +1733,12 @@ public abstract class AbstractTransformer implements Transformation {
             TypeDeclaration typeDeclaration = qType.getDeclaration();
             // local interfaces that are pulled to the toplevel need to cross containing methods to find
             // all the containing type parameters that it captures
-            if(Decl.isLocal(typeDeclaration)
+            if((Decl.isLocal(typeDeclaration) || !typeDeclaration.isNamed()) // local or anonymous
                     && needsQualifyingTypeArgumentsFromLocalContainers
                     && typeDeclaration instanceof ClassOrInterface){
                 ClassOrInterface container = Decl.getClassOrInterfaceContainer(typeDeclaration, false);
                 qType = container == null ? null : container.getType();
-            }else{
+            }else if(typeDeclaration.isNamed()){ // avoid anonymous types which may pretend that they have a qualifying type
                 qType = qType.getQualifyingType();
                 if(qType != null && qType.getDeclaration() instanceof ClassOrInterface == false){
                     // sometimes the typechecker throws qualifying intersections at us and
@@ -1747,6 +1747,9 @@ public abstract class AbstractTransformer implements Transformation {
                     // for example. See https://github.com/ceylon/ceylon-compiler/issues/1478
                     qType = qType.getSupertype((TypeDeclaration) typeDeclaration.getContainer());
                 }
+            }else{
+                // skip local declaration containers
+                qType = null;
             }
             // delayed allocation if we have a qualifying type
             if(qualifyingTypes == null && qType != null){
