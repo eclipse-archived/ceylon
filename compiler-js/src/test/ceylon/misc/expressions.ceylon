@@ -32,6 +32,9 @@ void testIfExpressions() {
   //TODO wasn't the "else" optional?
   check(!(if (is Integer obj) then obj.successor else null) exists, "If expressions 4");
   check(if (is String obj, exists c=obj[2], c=='y') then true else false, "If expression with multiple conditions");
+  check(if (obj=="HEY") then false else if (obj==1) then false else true, "If-else-if expression 2");
+  check(if (is Integer obj) then false else if (is String obj, exists c=obj[2], c=='y') then true else false, "if-else-if expression 2");
+  check(if (obj=="nay") then false else if (is String obj, exists c=obj[2], c=='y') then true else false, "if-else-if expression 3");
 }
 
 Boolean testSwitchExpression(Anything x) =>
