@@ -2820,7 +2820,7 @@ public class GenerateJsVisitor extends Visitor
    }
    @Override public void visit(final Tree.IfExpression that) {
        if (errVisitor.hasErrors(that))return;
-       conds.generateIfExpression(that);
+       conds.generateIfExpression(that, false);
    }
 
    @Override public void visit(final Tree.WhileStatement that) {

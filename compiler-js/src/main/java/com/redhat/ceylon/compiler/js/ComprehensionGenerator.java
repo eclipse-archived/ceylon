@@ -48,7 +48,7 @@ class ComprehensionGenerator {
                 // check the condition
                 Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause)startClause;
                 gen.conds.specialConditions(
-                        gen.conds.gatherVariables(ifClause.getConditionList()),
+                        gen.conds.gatherVariables(ifClause.getConditionList(), true),
                         ifClause.getConditionList(),
                         "if");
                 initialIfClauses++;
@@ -103,7 +103,7 @@ class ComprehensionGenerator {
                 if (clause instanceof Tree.IfComprehensionClause) {
                     Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause) clause;
                     loop.conditions.add(ifClause.getConditionList());
-                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList()));
+                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList(), true));
                     clause = ifClause.getComprehensionClause();
 
                 } else if (clause instanceof Tree.ExpressionComprehensionClause) {
