@@ -103,11 +103,4 @@ void testSpread() {
   //Issue 433
   value l433=[Spread433(1),Spread433(2)];
   check(l433*.simple(2)==[4,6], "#433 simple spread");
-  value mpl1=l433*.pl2(1);
-  check(mpl1("Two")==[5,6], "#433 spread of 2 param lists");
-  check(mpl1("Two")==l433*.pl2(1)("Hey"), "#433 2 param lists");
-  value mpl3=l433*.pl3(1);
-  value mpl4=mpl3("Three");
-  check(mpl4(5)==[12,13], "#433 spread of 3 param lists");
-  check(mpl4(5)==l433*.pl3(1)("Seven")(5), "#433 3 param lists");
 }
