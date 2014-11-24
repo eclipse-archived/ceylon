@@ -27,7 +27,9 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
                         return 1L;
                     }
                     break loop_1;
-                } else break loop_1;
+                } else {
+                    break loop_1;
+                }
             }
             doforelse$0 = false;
             break loop_0;

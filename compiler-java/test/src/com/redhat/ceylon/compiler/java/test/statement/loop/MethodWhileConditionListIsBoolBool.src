@@ -13,9 +13,15 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
                 if (x$1 > 0L) {
                     if (z < 10L) {
                         return z == 1L;
-                    } else break loop_0;
-                } else break loop_0;
-            } else break loop_0;
+                    } else {
+                        break loop_0;
+                    }
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
         return false;
     }
@@ -28,9 +34,15 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
                 if (y$3 > 0L) {
                     if (z < 10L) {
                         return z == 1L;
-                    } else break loop_1;
-                } else break loop_1;
-            } else break loop_1;
+                    } else {
+                        break loop_1;
+                    }
+                } else {
+                    break loop_1;
+                }
+            } else {
+                break loop_1;
+            }
         }
         return false;
     }

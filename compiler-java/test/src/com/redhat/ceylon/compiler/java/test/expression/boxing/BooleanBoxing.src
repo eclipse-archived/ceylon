@@ -30,9 +30,10 @@ class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final boolean negate3$priv$(final .ceylon.language.Boolean b) {
         .ceylon.language.Boolean b$4;
         if ((b$4 = b) != null) {
-            final boolean b$5 = b$4.booleanValue();
-            return !b$5;
+            final boolean b$6 = b$4.booleanValue();
+            return !b$6;
         } else {
+            final .java.lang.Object b$5 = b$4;
             return false;
         }
     }

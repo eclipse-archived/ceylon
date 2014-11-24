@@ -619,6 +619,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             clearModuleUrlAvailabilityCache();
             
             doc(module);
+            makeApiIndex(module);
             makeIndex(module);
             makeSearch(module);
             
@@ -885,6 +886,15 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         Writer writer = openWriter(new File(dir, "index.js"));
         try {
             new IndexDoc(this, writer, module).generate();
+        } finally {
+            writer.close();
+        }
+    }
+    
+    private void makeApiIndex(Module module) throws IOException {
+        Writer writer = openWriter(new File(getApiOutputFolder(module), "api-index.html"));
+        try {
+            new IndexApiDoc(this, writer, module).generate();
         } finally {
             writer.close();
         }

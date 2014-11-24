@@ -19,7 +19,7 @@ class MethodIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final long x$2 = ((.ceylon.language.Integer)x$1).longValue();
             return x$2;
         } else {
-            return owt$priv$(x);
+            return owt$priv$((.ceylon.language.Integer)x);
         }
     }
     
@@ -34,18 +34,20 @@ class MethodIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     private final long m3$priv$(final .ceylon.language.Integer x) {
-        if (x == null) {
+        .java.lang.Object x$7;
+        if ((x$7 = x) == null) {
             return nowt$priv$(x);
         } else {
-            return owt$priv$(x);
+            final long x$8 = ((.ceylon.language.Integer)x$7).longValue();
+            return owt$priv$(.ceylon.language.Integer.instance(x$8));
         }
     }
     
     private final long m4$priv$(final .ceylon.language.Integer x) {
-        .java.lang.Object y$9;
-        if ((y$9 = x) == null) {
-            final .java.lang.Object y$10 = y$9;
-            return nowt$priv$(y$10);
+        .java.lang.Object y$10;
+        if ((y$10 = x) == null) {
+            final .java.lang.Object y$11 = y$10;
+            return nowt$priv$(y$11);
         } else {
             return owt$priv$(x);
         }

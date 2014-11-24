@@ -13,9 +13,15 @@ class MethodWhileConditionListBoolIsBool implements .com.redhat.ceylon.compiler.
                     final long x$1 = ((.ceylon.language.Integer)x$0).longValue();
                     if (x$1 > 0L) {
                         return x$1 == 1L;
-                    } else break loop_0;
-                } else break loop_0;
-            } else break loop_0;
+                    } else {
+                        break loop_0;
+                    }
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
         return false;
     }
@@ -28,9 +34,15 @@ class MethodWhileConditionListBoolIsBool implements .com.redhat.ceylon.compiler.
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         return y$3 == 1L;
-                    } else break loop_1;
-                } else break loop_1;
-            } else break loop_1;
+                    } else {
+                        break loop_1;
+                    }
+                } else {
+                    break loop_1;
+                }
+            } else {
+                break loop_1;
+            }
         }
         return false;
     }

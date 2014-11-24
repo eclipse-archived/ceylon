@@ -9,7 +9,9 @@ final class bug248_ {
         loop_0: while (true) {
             if (false) {
                 throw new .ceylon.language.Exception(null, null);
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     

@@ -27,7 +27,9 @@ public final class bug1535_ {
             .java.lang.Object result$25 = null;
             if ((result$25 = .ceylon.language.Float.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$25, $reified$Value)) {
                 result$26 = result$25;
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+            }
             return (Value)result$26;
         } else {
             .java.lang.Object ints$3;
@@ -51,7 +53,9 @@ public final class bug1535_ {
                 .java.lang.Object result$18 = null;
                 if ((result$18 = .ceylon.language.Integer.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$18, $reified$Value)) {
                     result$19 = result$18;
-                } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+                }
                 return (Value)result$19;
             } else {
                 Value sum = (Value)((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getFirst();

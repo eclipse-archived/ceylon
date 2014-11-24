@@ -856,6 +856,11 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
+    public void testBug1899() {
+        compareWithJavaSource("bug18xx/Bug1899");
+    }
+
+    @Test
     public void testBug1900() {
         compareWithJavaSource("bug19xx/Bug1900");
     }
@@ -874,5 +879,36 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1908() {
         compareWithJavaSource("bug19xx/Bug1908");
         run("com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1908");
+    }
+
+    @Test
+    public void testBug1914() {
+        compareWithJavaSource("bug19xx/Bug1914");
+    }
+
+    @Test
+    public void testBug1915() {
+        compareWithJavaSource("bug19xx/Bug1915");
+    }
+
+    @Test
+    public void testBug1916() {
+        compareWithJavaSource("bug19xx/Bug1916");
+    }
+
+    @Test
+    public void testBug1917() {
+        compile("bug19xx/Bug1917Java.java");
+        compareWithJavaSource("bug19xx/Bug1917");
+    }
+
+    @Test
+    public void testBug1918() {
+        compareWithJavaSource("bug19xx/Bug1918");
+    }
+
+    @Test
+    public void testBug1922() {
+        compareWithJavaSource("bug19xx/Bug1922");
     }
 }

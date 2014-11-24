@@ -623,6 +623,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, ".resources/ceylondoc-icons.png");
         assertFileExists(destDir, ".resources/favicon.ico");
         assertFileExists(destDir, "index.html");
+        assertFileExists(destDir, "api-index.html");
         assertFileExists(destDir, "search.html");
         assertFileExists(destDir, "Types.type.html");
         assertFileExists(destDir, "SharedClass.type.html");

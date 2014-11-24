@@ -11,8 +11,12 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
             if (x > 0L) {
                 if (x < 10L) {
                     a += x;
-                } else break loop_0;
-            } else break loop_0;
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -25,9 +29,15 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
                 if (y$1 > 0L) {
                     if (z < 10L) {
                         a += y$1;
-                    } else break loop_1;
-                } else break loop_1;
-            } else break loop_1;
+                    } else {
+                        break loop_1;
+                    }
+                } else {
+                    break loop_1;
+                }
+            } else {
+                break loop_1;
+            }
         }
     }
     
@@ -40,9 +50,15 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         a += y$3;
-                    } else break loop_2;
-                } else break loop_2;
-            } else break loop_2;
+                    } else {
+                        break loop_2;
+                    }
+                } else {
+                    break loop_2;
+                }
+            } else {
+                break loop_2;
+            }
         }
     }
     
@@ -55,9 +71,15 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
                     if ((y$4 = x) instanceof .ceylon.language.Integer) {
                         final long y$5 = ((.ceylon.language.Integer)y$4).longValue();
                         a += y$5;
-                    } else break loop_3;
-                } else break loop_3;
-            } else break loop_3;
+                    } else {
+                        break loop_3;
+                    }
+                } else {
+                    break loop_3;
+                }
+            } else {
+                break loop_3;
+            }
         }
     }
     
@@ -72,9 +94,15 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
                     final long y$9 = ((.ceylon.language.Integer)y$8).longValue();
                     if (y$9 > 0L) {
                         a += y$9;
-                    } else break loop_4;
-                } else break loop_4;
-            } else break loop_4;
+                    } else {
+                        break loop_4;
+                    }
+                } else {
+                    break loop_4;
+                }
+            } else {
+                break loop_4;
+            }
         }
     }
     

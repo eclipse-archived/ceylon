@@ -2022,7 +2022,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
             // referenced in private methods but not available
-            if(isFromJDK && !fieldMirror.isPublic())
+            if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
@@ -2155,7 +2155,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
             // referenced in private methods but not available
-            if(isFromJDK && !methodMirror.isPublic())
+            if(isFromJDK && !methodMirror.isPublic() && !methodMirror.isProtected())
                 continue;
             String methodName = methodMirror.getName();
             List<MethodMirror> homonyms = methods.get(methodName);

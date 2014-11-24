@@ -37,7 +37,7 @@ shared class SetOperators() {
         for (Integer|Float i in x1) {
             if (is Integer i) {
                 Integer s = i + 0;
-            } else if (is Float i) {
+            } else {
                 Float s = i + 0;
             }
         }
