@@ -42,12 +42,5 @@ shared void test() {
     testReifiedRuntime();
     testStackTrace();
     testOptimisations();
-    //449, 453
-    testObjectExpressions();
-    testIfExpressions();
-    check(testSwitchExpression(1), "Switch expression 1");
-    check(testSwitchExpression("X"), "Switch expression 2");
-    check(!testSwitchExpression(null), "Switch expression 3");
-    testLetExpressions();//454
     results();
 }
