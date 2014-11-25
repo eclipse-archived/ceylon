@@ -1511,7 +1511,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             is, between the layers 3 and 4 defined in
             <xref linkend="operatorprecedence"/>.</para>
             
-            <synopsis>LetValueList: "(" LetValue ("," Value)* ")"</synopsis>
+            <synopsis>LetValueList: "(" LetValue ("," LetValue)* ")"</synopsis>
             
             <para>Each variable is a shortcut reference declaration, as defined
             in <xref linkend="references"/>.</para>
