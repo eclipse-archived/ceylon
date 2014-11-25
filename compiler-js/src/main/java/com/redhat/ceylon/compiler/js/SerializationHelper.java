@@ -219,8 +219,9 @@ public class SerializationHelper {
         //Deserialize each value
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
-            gen.out(ni, ".", v.isParameter() ? gen.getNames().name(v)+"_" : gen.getNames().privateName(v),
-                    "=", dc, ".getValue(", gen.getClAlias(),
+            final String valname = v.isParameter() || v.isShared() ?
+                    gen.getNames().name(v)+"_" : gen.getNames().privateName(v);
+            gen.out(ni, ".", valname, "=", dc, ".getValue(", gen.getClAlias(),
                     "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.$prop$",
                     gen.getNames().getter(v),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
