@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -3862,7 +3863,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return typeTester.andOr(typeTester.isInstanceof(varExpr, testedType), 
                         typeTester.not(typeTester.isInstanceof(varName.makeIdent(), typeFact().getAssertionErrorDeclaration().getType())), 
                         JCTree.AND);
-            } else if (testedType.getTypeArguments().isEmpty()) {
+            } else if (!hasTypeArguments(testedType)) {
                 // non-generic Class or interface, use instanceof
                 return typeTester.isInstanceof(varExpr, testedType);
             } else {// generic class or interface...
@@ -3877,7 +3878,8 @@ public abstract class AbstractTransformer implements Transformation {
                     return typeTester.isInstanceof(varExpr, testedType);
                 } else {
                     // Have to use a reified test
-                    if (!Decl.equal(declaration, expressionType.getDeclaration())) {
+                    if (!Decl.equal(declaration, expressionType.getDeclaration())
+                            && canUseFastFailTypeTest(testedType)) {
                         // do a cheap instanceof test to try to shortcircuit the expensive
                         // Util.isReified()
                         
@@ -3995,8 +3997,91 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         }
-        // they're all Anything (or supertypes of their upper bound) we can optimise
-        return true;
+        // they're all Anything (or supertypes of their upper bound) we can optimise, unless we have a container with type arguments
+        ProducedType qualifyingType = type.getQualifyingType();
+        if(qualifyingType == null
+            // ignore qualifying types of static java declarations
+            && (Decl.isCeylon(type.getDeclaration())
+                    || !type.getDeclaration().isStaticallyImportable())){
+            Declaration declaration = type.getDeclaration();
+            do{
+                // it may be contained in a function or value, and we want its type
+                Declaration enclosingDeclaration = getDeclarationContainer(declaration);
+                if(enclosingDeclaration instanceof TypedDeclaration){
+                    // must be in scope
+                    if(enclosingDeclaration instanceof Generic 
+                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                        return false;
+                    // look up the containers
+                    declaration = enclosingDeclaration;
+                }else if(enclosingDeclaration instanceof TypeDeclaration){
+                    // must be in scope
+                    // we can't optimise if that container has type arguments as they are not provided
+                    if(enclosingDeclaration instanceof Generic 
+                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                        return false;
+                    // look up the containers
+                    declaration = enclosingDeclaration;
+                }else{
+                    // that's fucked up
+                    break;
+                }
+                // go up every containing typed declaration
+            }while(declaration != null);
+            // we can optimise!
+            return true;
+        }else if(qualifyingType != null){
+            // we can only optimise if the qualifying type can also be optimised
+            return canOptimiseReifiedTypeTest(qualifyingType);
+        }else{
+            // we can optimise!
+            return true;
+        }
+    }
+
+    private boolean canUseFastFailTypeTest(ProducedType type) {
+        if(type.getDeclaration() instanceof ClassOrInterface == false)
+            return false;
+        boolean isRaw = !type.getDeclaration().getTypeParameters().isEmpty();
+        ProducedType qualifyingType = type.getQualifyingType();
+        if(qualifyingType == null
+            // ignore qualifying types of static java declarations
+            && (Decl.isCeylon(type.getDeclaration())
+                    || !type.getDeclaration().isStaticallyImportable())){
+            Declaration declaration = type.getDeclaration();
+            boolean local = false;
+            do{
+                // it may be contained in a function or value, and we want its type
+                Declaration enclosingDeclaration = getDeclarationContainer(declaration);
+                if(enclosingDeclaration instanceof TypedDeclaration){
+                    local = true;
+                    // look up the containers
+                    declaration = enclosingDeclaration;
+                }else if(enclosingDeclaration instanceof TypeDeclaration){
+                    // must be in scope
+                    // we can't do instanceof on a local whose outer types contain type parameters, unless the local is raw
+                    if(enclosingDeclaration instanceof Generic
+                            && local
+                            && !isRaw
+                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                        return false;
+                    // look up the containers
+                    declaration = enclosingDeclaration;
+                }else{
+                    // that's fucked up
+                    break;
+                }
+                // go up every containing typed declaration
+            }while(declaration != null);
+            // we can fast-fail!
+            return true;
+        }else if(qualifyingType != null){
+            // we can only fast-fail if the qualifying type can also be fast-failed
+            return canUseFastFailTypeTest(qualifyingType);
+        }else{
+            // we can fast-fail!
+            return true;
+        }
     }
 
     JCExpression makeNonEmptyTest(JCExpression firstTimeExpr) {
@@ -4517,13 +4602,17 @@ public abstract class AbstractTransformer implements Transformation {
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
             ProducedType qualifyingType = pt.getQualifyingType();
             JCExpression containerType = null;
-            if(qualifyingType == null){
+            if(qualifyingType == null
+                    // ignore qualifying types of static java declarations
+                    && (Decl.isCeylon(declaration)
+                            || !declaration.isStaticallyImportable())){
                 // it may be contained in a function or value, and we want its type
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration)
                     containerType = makeTypedDeclarationTypeDescriptorResolved((TypedDeclaration) enclosingDeclaration);
-                else if(enclosingDeclaration instanceof TypeDeclaration)
+                else if(enclosingDeclaration instanceof TypeDeclaration){
                     qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
+                }
             }
             if(qualifyingType != null){
                 containerType = makeReifiedTypeArgumentResolved(qualifyingType, true);
@@ -4572,6 +4661,36 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             throw BugException.unhandledDeclarationCase(declaration);
         }
+    }
+    
+    protected boolean hasTypeArguments(ProducedType type){
+        if(!type.getTypeArguments().isEmpty())
+            return true;
+        ProducedType qualifyingType = type.getQualifyingType();
+        if(qualifyingType == null){
+            Declaration declaration = type.getDeclaration();
+            do{
+                // it may be contained in a function or value, and we want its type
+                Declaration enclosingDeclaration = getDeclarationContainer(declaration);
+                if(enclosingDeclaration instanceof TypedDeclaration){
+                    // must be in scope
+                    if(enclosingDeclaration instanceof Generic 
+                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                        return true;
+                    // look up the containers
+                    declaration = enclosingDeclaration;
+                }else if(enclosingDeclaration instanceof TypeDeclaration){
+                    // must be in scope, recurse
+                    return hasTypeArguments(((TypeDeclaration) enclosingDeclaration).getType());
+                }else{
+                    // that's fucked up
+                    break;
+                }
+                // go up every containing typed declaration
+            }while(declaration != null);
+        }
+        // did not find any
+        return false;
     }
     
     private JCExpression makeTypedDeclarationTypeDescriptorResolved(TypedDeclaration declaration) {
