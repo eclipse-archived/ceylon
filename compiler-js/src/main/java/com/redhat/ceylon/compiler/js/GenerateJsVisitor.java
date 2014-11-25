@@ -2846,12 +2846,17 @@ public class GenerateJsVisitor extends Visitor
             conds.specialConditionRHS(termString, tmpvar);
         }
         out(",");
-        out("/*", type.getQualifyingType()+"*/");
         TypeUtils.typeNameOrList(term, type, this, false);
         if (type.getQualifyingType() != null) {
             out(",[");
             ProducedType outer = type.getQualifyingType();
+            boolean first=true;
             while (outer != null) {
+                if (first) {
+                    first=false;
+                } else{
+                    out(",");
+                }
                 TypeUtils.typeNameOrList(term, outer, this, false);
                 outer = outer.getQualifyingType();
             }
