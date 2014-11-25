@@ -52,6 +52,8 @@ void testIssues() {
     Object i409_2 = Issue409_2("2");
     check(i409_1 is Root409<String>, "Issue 409.1");
     check(i409_2 is Root409<String>, "Issue 409.2");
+    check(Outer459(1).get(Outer459("x").create()) == 1, "#459.1 Outer459<String>.Inner IS NOT Outer459<Integer>.Inner");
+    check(func459(1.0)[1](func459("x")[0]()) == 1, "#459.2 func<String>.Inner IS NOT func<Integer>.Inner");
 }
 
 class Issue231_1(shared actual String string) {}
@@ -75,4 +77,20 @@ class MyList360() extends Object() satisfies List<String> {
     spanFrom(Integer from) => nothing;
     spanTo(Integer to) => nothing;
     clone() => this;
+}
+
+class Outer459<T>(T t) {
+    class Inner() {
+        shared T get() => t;
+    }
+    shared Object create() => Inner();
+    shared T get(Object obj) => if (is Inner obj) then obj.get() else t;
+}
+[Object(), T(Object)] func459<T>(T t) {
+    class Inner() {
+        shared T get() => t;
+    }
+    Object create() => Inner();
+    T get(Object obj) => if (is Inner obj) then obj.get() else t;
+    return [create,get];
 }
