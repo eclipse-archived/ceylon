@@ -456,7 +456,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | ConditionalExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | LetExpression | ConditionalExpression</synopsis>
         
         <comment><para>Note: the grammar of operator expressions is defined by
         the table of operator precedence and associativity in 
@@ -1410,10 +1410,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="miscexpressions">
-        <title>Conditional expressions and anonymous class expressions</title>
+        <title>Conditional expressions, let expressions, and anonymous class expressions</title>
         
         <para>A <emphasis>conditional expression</emphasis> resembles a control 
         structure but is part of the expression syntax, and evaluates to a value.</para> 
+        
+        <para>A <emphasis>let expression</emphasis> allows inline definition of a 
+        reference within an expression.</para>
         
         <para>An <emphasis>inline class</emphasis> is an anonymous class defined 
         within an expression.</para>
@@ -1497,11 +1500,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="letexpressions">
             <title>Let expressions</title>
             
-            <comment>
-            <para>Should we support let expressions, possibly reusing the keyword
-            <literal>given</literal>?</para>
-            <programlisting>given (dist = sqrt(x^2+y^2)) [x/dist,y/dist]</programlisting>
-            </comment>
+            <para>A let expression comprises a list of one or more variable 
+            declarations, followed by an expression involving those variables.</para>
+            
+            <synopsis>LetExpression: "let" LetValueList Expression</synopsis>
+            
+            <para>The expression is parsed with precedence just higher than the 
+            <literal>||</literal> operator, and just lower than the 
+            <literal>then</literal> and <literal>else</literal> operators, that 
+            is, between the layers 3 and 4 defined in
+            <xref linkend="operatorprecedence"/>.</para>
+            
+            <synopsis>LetValueList: "(" LetValue ("," Value)* ")"</synopsis>
+            
+            <para>Each variable is a shortcut reference declaration, as defined
+            in <xref linkend="references"/>.</para>
+            
+            <synopsis>LetValue: Variable Specifier</synopsis>
+            
+            <para>If the variable declaration specifies an explicit type, the
+            specified expression must be assignable to that type.</para>
+            
+            <para>The variables are considered in scope in the expression.
+            A variable in the list may refer to a variable defined earlier 
+            in the list.</para>
         
         </section>
         
