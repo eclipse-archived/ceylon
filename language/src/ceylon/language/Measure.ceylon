@@ -149,23 +149,23 @@ class Measure<Element>(first, size)
         switch (sublist)
         case (is Measure<Element>) {
             value offset = sublist.first.offset(first);
-            return offset >= 0 && offset + sublist.size <= size;
+            return 0 <= offset <= size - sublist.size;
         }
         case (is Span<Element>) {
             if (sublist.decreasing) {
                 return false;
             } else {
                 value offset = sublist.first.offset(first);
-                return offset >= 0 && offset + sublist.size <= size;
+                return 0 <= offset <= size - sublist.size;
             }
         }
     }
     
     shared actual Boolean equals(Object that) {
-        if (is Measure<Object> that) {
+        if (is Measure<out Object> that) {
             //optimize for another Measure
             return that.size == size && that.first == first;
-        } else if (is Span<Object> that) {
+        } else if (is Span<out Object> that) {
             return that.increasing &&
                     that.first == first && that.size == size;
         } else {

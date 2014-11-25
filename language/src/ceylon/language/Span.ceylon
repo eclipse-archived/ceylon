@@ -201,8 +201,7 @@ class Span<Element>(first, last)
     shared actual Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
-        }
-        if (is Range<Element> sublist) {
+        } else if (is Range<Element> sublist) {
             return includesRange(sublist);
         } else {
             return super.includes(sublist);
@@ -254,16 +253,16 @@ class Span<Element>(first, last)
                 return false;
             } else {
                 value offset = sublist.first.offset(first);
-                return offset >= 0 && offset + sublist.size <= size;
+                return 0 <= offset <= size - sublist.size;
             }
         }
     }
     
     shared actual Boolean equals(Object that) {
-        if (is Span<Object> that) {
+        if (is Span<out Object> that) {
             //optimize for another Span
             return that.first == first && that.last == last;
-        } else if (is Measure<Object> that) {
+        } else if (is Measure<out Object> that) {
             return increasing &&
                     that.first == first && that.size == size;
         } else {
