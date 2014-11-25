@@ -271,95 +271,79 @@ public class ConditionGenerator {
         }
     }
 
-    void generateSwitch(Tree.SwitchStatement that) {
+    private void generateSwitch(final Tree.SwitchClause clause, final Tree.SwitchCaseList cases, final SwitchGen sgen) {
         final String expvar;
         final Expression expr;
-        if (that.getSwitchClause().getSwitched().getExpression() == null) {
-            expvar = names.name(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
-            expr = that.getSwitchClause().getSwitched().getVariable().getSpecifierExpression().getExpression();
-            directAccess.add(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        if (clause.getSwitched().getExpression() == null) {
+            expvar = names.name(clause.getSwitched().getVariable().getDeclarationModel());
+            expr = clause.getSwitched().getVariable().getSpecifierExpression().getExpression();
+            directAccess.add(clause.getSwitched().getVariable().getDeclarationModel());
         } else {
             //Put the expression in a tmp var
-            expr = that.getSwitchClause().getSwitched().getExpression();
+            expr = clause.getSwitched().getExpression();
             expvar = names.createTempVariable();
         }
-        gen.out("var ", expvar, "=");
-        expr.visit(gen);
-        gen.endLine(true);
+        sgen.gen1(expvar, expr);
         //For each case, do an if
         boolean first = true;
-        for (Tree.CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
+        for (Tree.CaseClause cc : cases.getCaseClauses()) {
             if (!first) gen.out("else ");
             caseClause(cc, expvar, expr.getTerm());
             first = false;
         }
-        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause();
+        final Tree.ElseClause anoserque = cases.getElseClause();
         if (anoserque == null) {
             if (gen.isInDynamicBlock() && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
-            gen.out("else");
             final Variable elsevar = anoserque.getVariable();
             if (elsevar != null) {
                 directAccess.add(elsevar.getDeclarationModel());
                 names.forceName(elsevar.getDeclarationModel(), expvar);
             }
-            anoserque.getBlock().visit(gen);
+            sgen.gen2(anoserque);
             if (elsevar != null) {
                 directAccess.remove(elsevar.getDeclarationModel());
                 names.forceName(elsevar.getDeclarationModel(), null);
             }
         }
-        if (that.getSwitchClause().getSwitched().getExpression() == null) {
-            directAccess.remove(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        sgen.gen3(expr);
+        if (clause.getSwitched().getExpression() == null) {
+            directAccess.remove(clause.getSwitched().getVariable().getDeclarationModel());
         }
     }
 
-    void generateSwitchExpression(Tree.SwitchExpression that) {
-        final String expvar;
-        final Expression expr;
-        if (that.getSwitchClause().getSwitched().getExpression() == null) {
-            expvar = names.name(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
-            expr = that.getSwitchClause().getSwitched().getVariable().getSpecifierExpression().getExpression();
-            directAccess.add(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
-        } else {
-            //Put the expression in a tmp var
-            expr = that.getSwitchClause().getSwitched().getExpression();
-            expvar = names.createTempVariable();
-        }
-        gen.out("function(", expvar, "){");
-        //For each case, do an if
-        boolean first = true;
-        for (Tree.CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
-            if (!first) gen.out("else ");
-            caseClause(cc, expvar, expr.getTerm());
-            first = false;
-        }
-        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause();
-        if (anoserque == null) {
-            if (gen.isInDynamicBlock() && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
-                gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
+    void switchStatement(final Tree.SwitchStatement that) {
+        generateSwitch(that.getSwitchClause(), that.getSwitchCaseList(), new SwitchGen() {
+            public void gen1(String expvar, Expression expr) {
+                gen.out("var ", expvar, "=");
+                expr.visit(gen);
+                gen.endLine(true);
             }
-        } else {
-            final Tree.Variable elsevar = anoserque.getVariable();
-            if (elsevar != null) {
-                directAccess.add(elsevar.getDeclarationModel());
-                names.forceName(elsevar.getDeclarationModel(), expvar);
+            public void gen2(Tree.ElseClause anoserque) {
+                gen.out("else");
+                anoserque.getBlock().visit(gen);
             }
-            gen.out("else return ");
-            anoserque.getExpression().visit(gen);
-            if (elsevar != null) {
-                directAccess.remove(elsevar.getDeclarationModel());
-                names.forceName(elsevar.getDeclarationModel(), null);
+            public void gen3(Expression expr) {}
+        });
+    }
+
+    void switchExpression(final Tree.SwitchExpression that) {
+        generateSwitch(that.getSwitchClause(), that.getSwitchCaseList(), new SwitchGen() {
+            public void gen1(String expvar, Expression expr) {
+                gen.out("function(", expvar, "){");
             }
-        }
-        gen.out("}(");
-        expr.visit(gen);
-        gen.out(")");
-        if (that.getSwitchClause().getSwitched().getExpression() == null) {
-            directAccess.remove(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
-        }
+            public void gen2(Tree.ElseClause anoserque) {
+                gen.out("else return ");
+                anoserque.getExpression().visit(gen);
+            }
+            public void gen3(Expression expr) {
+                gen.out("}(");
+                expr.visit(gen);
+                gen.out(")");
+            }
+        });
     }
 
     /** Generates code for a case clause, as part of a switch statement. Each case
@@ -431,5 +415,11 @@ public class ConditionGenerator {
             term = rhs;
             name = varName;
         }
+    }
+
+    private interface SwitchGen {
+        void gen1(String expvar, Expression expr);
+        void gen2(Tree.ElseClause anoserque);
+        void gen3(Expression expr);
     }
 }
