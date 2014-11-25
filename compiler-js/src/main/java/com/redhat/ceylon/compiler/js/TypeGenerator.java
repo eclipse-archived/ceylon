@@ -324,7 +324,10 @@ public class TypeGenerator {
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        callSuperclass(that.getExtendedType(), d, that, superDecs, gen);
+        if (that.getExtendedType() != null) {
+            callSuperclass(that.getExtendedType().getType(), that.getExtendedType().getInvocationExpression(),
+                    d, that, superDecs, gen);
+        }
         callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
                 d, that, superDecs, gen);
 
@@ -365,18 +368,18 @@ public class TypeGenerator {
         }
     }
 
-    static void callSuperclass(final Tree.ExtendedType extendedType, final Class d, final Node that,
+    static void callSuperclass(final Tree.SimpleType extendedType, final Tree.InvocationExpression invocation,
+            final Class d, final Node that,
             final List<Declaration> superDecs, final GenerateJsVisitor gen) {
-        if (extendedType!=null) {
-            Tree.PositionalArgumentList argList = extendedType.getInvocationExpression()
-                    .getPositionalArgumentList();
-            TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            gen.out(gen.memberAccessBase(extendedType.getType(), typeDecl, false,
+        TypeDeclaration typeDecl = extendedType.getDeclarationModel();
+        if (invocation != null) {
+            Tree.PositionalArgumentList argList = invocation.getPositionalArgumentList();
+            gen.out(gen.memberAccessBase(extendedType, typeDecl, false,
                     gen.qualifiedPath(that, typeDecl, false)),
-                    (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType.getType()) != null))
+                    (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType) != null))
                     ? ".call(this," : "(");
 
-            gen.getInvoker().generatePositionalArguments(extendedType.getInvocationExpression().getPrimary(),
+            gen.getInvoker().generatePositionalArguments(invocation.getPrimary(),
                     argList, argList.getPositionalArguments(), false, false);
             if (argList.getPositionalArguments().size() > 0) {
                 gen.out(",");
@@ -396,16 +399,16 @@ public class TypeGenerator {
             }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                extendedType.getType().getTypeArgumentList().getTypeModels();
+                extendedType.getTypeArgumentList().getTypeModels();
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getType().getTypeArgumentList().getTypeModels()), gen, false, null);
+                        extendedType.getTypeArgumentList().getTypeModels()), gen, false, null);
                 gen.out(",");
             }
             gen.out(gen.getNames().self(d), ")");
             gen.endLine(true);
-
-            copySuperMembers(typeDecl, superDecs, d, gen);
         }
+
+        copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
     static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Node that,
@@ -551,7 +554,10 @@ public class TypeGenerator {
             gen.out(gen.getNames().self(c), ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
-        TypeGenerator.callSuperclass(superType, c, that, superDecs, gen);
+        if (superType != null) {
+            TypeGenerator.callSuperclass(superType.getType(), superType.getInvocationExpression(),
+                    c, that, superDecs, gen);
+        }
         TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
         
         body.visit(gen);
