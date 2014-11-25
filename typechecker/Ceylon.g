@@ -1988,31 +1988,35 @@ functionOrExpression returns [Expression expression]
     ;
 
 let returns [LetExpression let]
-    @init { LetClause lc=null; }
+    : letClause
+      { $let = new LetExpression(null);
+        $let.setLetClause($letClause.letClause); }
+    ;
+    
+letClause returns [LetClause letClause]
     : LET
-      { $let = new LetExpression(null); 
-        lc = new LetClause($LET);
-        $let.setLetClause(lc); }
+      { $letClause = new LetClause($LET); }
       LPAREN
-      { lc.setEndToken($LPAREN); }
+      { $letClause.setEndToken($LPAREN); }
       (
         v1=specifiedVariable
-        { lc.setEndToken(null);
-          lc.addVariable($v1.variable); }
+        { $letClause.setEndToken(null);
+          $letClause.addVariable($v1.variable); }
         (
           COMMA
-          { lc.setEndToken($COMMA); }
+          { $letClause.setEndToken($COMMA); }
           v2=specifiedVariable
-          { lc.setEndToken(null); 
-            lc.addVariable($v2.variable); }
+          { $letClause.setEndToken(null); 
+            $letClause.addVariable($v2.variable); }
         )*
       )?
       RPAREN
-      { lc.setEndToken($RPAREN); }
+      { $letClause.setEndToken($RPAREN); }
       disjunctionExpression
       { Expression e = new Expression(null);
         e.setTerm($disjunctionExpression.term);
-        lc.setExpression(e); }
+        $letClause.setExpression(e); 
+        $letClause.setEndToken(null); }
     ;
 
 conditionalExpression returns [Term term]
