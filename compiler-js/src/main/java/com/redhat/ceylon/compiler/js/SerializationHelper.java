@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -156,37 +158,7 @@ public class SerializationHelper {
                 gen.out("});");
                 gen.endLine();
             }
-            ProducedType supertype = d.getExtendedType();
-            first=true;
-            while (supertype != null && !d.getUnit().getBasicDeclaration().equals(supertype.getDeclaration())) {
-                for (Map.Entry<TypeParameter,ProducedType> tp : supertype.getTypeArguments().entrySet()) {
-                    if (first) {
-                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
-                        first=false;
-                    } else {
-                        gen.out(",");
-                    }
-                    gen.out(tp.getKey().getName(), "$", supertype.getDeclaration().getName(), ":");
-                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
-                }
-                supertype = supertype.getSupertype(d);
-            }
-            for (ProducedType sat : d.getSatisfiedTypes()) {
-                for (Map.Entry<TypeParameter,ProducedType> tp : sat.getTypeArguments().entrySet()) {
-                    if (first) {
-                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
-                        first=false;
-                    } else {
-                        gen.out(",");
-                    }
-                    gen.out(tp.getKey().getName(), "$", sat.getDeclaration().getName(), ":");
-                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
-                }
-            }
-            if (!first) {
-                gen.out("});");
-                gen.endLine();
-            }
+            setDeserializedTypeArguments(d, d.getExtendedType(), true, that, ni, gen, new HashSet<TypeDeclaration>());
             gen.endBlockNewLine();
         }
         //Call super.deser$$ if possible
@@ -236,6 +208,55 @@ public class SerializationHelper {
             gen.out("return ", ni, ";");
         }
         gen.endBlockNewLine();
+    }
+
+    /** Recursively add all the type arguments from extended and satisfied types. */
+    private static void setDeserializedTypeArguments(final com.redhat.ceylon.compiler.typechecker.model.Class root,
+            ProducedType pt, boolean first, final Node that, final String ni, final GenerateJsVisitor gen,
+            final Set<TypeDeclaration> decs) {
+        if (pt == null) {
+            return;
+        }
+        final boolean start=decs.isEmpty();
+        final List<ProducedType> sats = start ? root.getSatisfiedTypes() : pt.getSatisfiedTypes();
+        decs.add(root);
+        while (pt != null && !root.getUnit().getBasicDeclaration().equals(pt.getDeclaration())) {
+            if (!decs.contains(pt.getDeclaration())) {
+                for (Map.Entry<TypeParameter,ProducedType> tp : pt.getTypeArguments().entrySet()) {
+                    if (first) {
+                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                        first=false;
+                    } else {
+                        gen.out(",");
+                    }
+                    gen.out(tp.getKey().getName(), "$", pt.getDeclaration().getName(), ":");
+                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
+                }
+                decs.add(pt.getDeclaration());
+                setDeserializedTypeArguments(root, pt, first, that, ni, gen, decs);
+            }
+            pt = pt.getSupertype(root);
+        }
+        for (ProducedType sat : sats) {
+            if (!decs.contains(sat.getDeclaration())) {
+                for (Map.Entry<TypeParameter,ProducedType> tp : sat.getTypeArguments().entrySet()) {
+                    if (first) {
+                        gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                        first=false;
+                    } else {
+                        gen.out(",");
+                    }
+                    gen.out(tp.getKey().getName(), "$", sat.getDeclaration().getName(), ":");
+                    TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
+                }
+                decs.add(sat.getDeclaration());
+            }
+            setDeserializedTypeArguments(root, sat, first, that, ni, gen, decs);
+        }
+        if (!first && start) {
+            gen.out("});");
+            gen.endLine();
+        }
     }
 
     static List<Value> serializableValues(com.redhat.ceylon.compiler.typechecker.model.Class d) {
