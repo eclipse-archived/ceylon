@@ -11,6 +11,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -56,6 +57,7 @@ public class MetamodelGenerator {
     public static final String KEY_SATISFIES    = "sts";
     public static final String KEY_DS_VARIANCE  = "dv"; //declaration-site variance
     public static final String KEY_US_VARIANCE  = "uv"; //use-site variance
+    public static final String KEY_CONSTRUCTORS = "cns";
 
     public static final String KEY_DEFAULT      = "def";
     public static final String KEY_DYNAMIC      = "dyn";
@@ -443,6 +445,31 @@ public class MetamodelGenerator {
             parent.put(TypeUtils.modelName(d), m);
         }
         return m;
+    }
+
+    public Map<String,Object> encodeConstructor(Constructor d) {
+        //First of all, find the class this thing belongs to
+        Map<String,Object> c = findParent(d);
+        if (c == null) {
+            System.out.println("WTF no parent for Constructor " + d);
+            return null;
+        }
+        Map<String,Object> m = new HashMap<>();
+        m.put(KEY_NAME, d.getName());
+        ParameterList plist = d.getParameterLists().get(0);
+        if (!plist.getParameters().isEmpty()) {
+            m.put(KEY_PARAMS, parameterListMap(plist, d));
+        }
+        if (d.getExtendedType() != null && d.getExtendedType().getDeclaration() instanceof Constructor) {
+            m.put("super", typeMap(d.getExtendedType(), d));
+        }
+        if (c.get(KEY_CONSTRUCTORS) == null) {
+            c.put(KEY_CONSTRUCTORS, new HashMap<>());
+        }
+        @SuppressWarnings("unchecked")
+        Map<String,Object> consmap = (Map<String,Object>)c.get(KEY_CONSTRUCTORS);
+        consmap.put(d.getName(), m);
+        return null;
     }
 
     @SuppressWarnings("unchecked")
