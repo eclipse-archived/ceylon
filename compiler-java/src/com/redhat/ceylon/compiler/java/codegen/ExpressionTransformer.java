@@ -5728,8 +5728,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         String tmpVar = naming.newTemp("ifResult");
         Tree.Expression thenPart = op.getIfClause().getExpression();
         Tree.Expression elsePart = op.getElseClause() != null ? op.getElseClause().getExpression() : null;
+        Tree.Variable elseVar = op.getElseClause() != null ? op.getElseClause().getVariable() : null;
         java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
-        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elsePart, tmpVar, op);
+        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elseVar, elsePart, tmpVar, op);
         at(op);
         JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));

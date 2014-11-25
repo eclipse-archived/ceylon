@@ -411,8 +411,9 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         public IfCondList(java.util.List<Tree.Condition> conditions, Tree.Expression thenPart,
-                Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
+                Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
             super(conditions, thenPart, tmpVar, outerExpression);
+            this.elseVar = elseVar;
             this.elsePart = elsePart;
         }     
 
@@ -610,8 +611,8 @@ public class StatementTransformer extends AbstractTransformer {
         return new IfCondList(conditions, thenPart, elseVar, elsePart).getResult();
     }
 
-    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Expression thenPart, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
-        return new IfCondList(conditions, thenPart, elsePart, tmpVar, outerExpression).getResult();
+    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Expression thenPart, Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
+        return new IfCondList(conditions, thenPart, elseVar, elsePart, tmpVar, outerExpression).getResult();
     }
 
     private List<JCStatement> evaluateAndAssign(String tmpVar, Tree.Expression expr, Tree.Term outerExpression){
