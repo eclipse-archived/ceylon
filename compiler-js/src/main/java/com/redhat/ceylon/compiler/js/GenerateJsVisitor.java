@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -2861,6 +2862,11 @@ public class GenerateJsVisitor extends Visitor
                 outer = outer.getQualifyingType();
             }
             out("]");
+        } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
+            Declaration d = Util.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
+            if (d != null && d instanceof Method && !((Method)d).getTypeParameters().isEmpty()) {
+                out(",$$$mptypes");
+            }
         }
         out(")");
     }
