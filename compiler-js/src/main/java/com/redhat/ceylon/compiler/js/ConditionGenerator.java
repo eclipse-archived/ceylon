@@ -178,7 +178,7 @@ public class ConditionGenerator {
             if (elsevar != null) {
                 for (VarHolder vh : vars) {
                     if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
-                        gen.getNames().forceName(elsevar.getDeclarationModel(), vh.name);
+                        names.forceName(elsevar.getDeclarationModel(), vh.name);
                         directAccess.add(elsevar.getDeclarationModel());
                         break;
                     }
@@ -187,27 +187,39 @@ public class ConditionGenerator {
             gen.out("else");
             gen.encloseBlockInFunction(anoserque.getBlock(), true);
             if (elsevar != null) {
-                directAccess.remove(anoserque.getVariable().getDeclarationModel());
+                directAccess.remove(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), null);
             }
         }
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
-            gen.getNames().forceName(v.var.getDeclarationModel(), null);
+            names.forceName(v.var.getDeclarationModel(), null);
         }
     }
 
     void generateIfExpression(Tree.IfExpression that, boolean nested) {
         final List<VarHolder> vars = gatherVariables(that.getIfClause().getConditionList(), false);
+        final Tree.ElseClause anoserque = that.getElseClause();
+        final Tree.Variable elsevar = anoserque == null ? null : anoserque.getVariable();
+        if (elsevar != null) {
+            for (VarHolder vh : vars) {
+                if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
+                    names.forceName(elsevar.getDeclarationModel(), vh.name);
+                    directAccess.add(elsevar.getDeclarationModel());
+                    break;
+                }
+            }
+        }
         if (vars.isEmpty()) {
             //No special conditions means we can use a simple ternary
             specialConditions(vars, that.getIfClause().getConditionList(), "");
             gen.out("?");
             that.getIfClause().getExpression().visit(gen);
             gen.out(":");
-            if (that.getElseClause() == null) {
+            if (anoserque == null) {
                 gen.out("null;");
             } else {
-                that.getElseClause().getExpression().visit(gen);
+                anoserque.getExpression().visit(gen);
             }
         } else {
             if (nested) {
@@ -221,27 +233,31 @@ public class ConditionGenerator {
             that.getIfClause().getExpression().visit(gen);
             for (VarHolder v : vars) {
                 directAccess.remove(v.var.getDeclarationModel());
-                gen.getNames().forceName(v.var.getDeclarationModel(), null);
+                names.forceName(v.var.getDeclarationModel(), null);
             }
-            final boolean thenIf = that.getElseClause() != null &&
-                    that.getElseClause().getExpression().getTerm() instanceof Tree.IfExpression;
+            final boolean thenIf = anoserque != null &&
+                    anoserque.getExpression().getTerm() instanceof Tree.IfExpression;
             if (thenIf) {
                 gen.out(";else");
             } else {
                 gen.out(";else return ");
             }
-            if (that.getElseClause() == null) {
+            if (anoserque == null) {
                 gen.out("null;");
             } else if (thenIf) {
-                generateIfExpression((Tree.IfExpression)that.getElseClause().getExpression().getTerm(), true);
+                generateIfExpression((Tree.IfExpression)anoserque.getExpression().getTerm(), true);
             } else {
-                that.getElseClause().getExpression().visit(gen);
+                anoserque.getExpression().visit(gen);
             }
             if (nested) {
                 gen.out("}");
             } else {
                 gen.out("}()");
             }
+        }
+        if (elsevar != null) {
+            directAccess.remove(elsevar.getDeclarationModel());
+            names.forceName(elsevar.getDeclarationModel(), null);
         }
     }
     /** Generates JS code for a WhileStatement. */
@@ -251,7 +267,7 @@ public class ConditionGenerator {
                 whileClause.getBlock(), "while");
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
-            gen.getNames().forceName(v.var.getDeclarationModel(), null);
+            names.forceName(v.var.getDeclarationModel(), null);
         }
     }
 
@@ -292,6 +308,7 @@ public class ConditionGenerator {
             anoserque.getBlock().visit(gen);
             if (elsevar != null) {
                 directAccess.remove(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), null);
             }
         }
         if (that.getSwitchClause().getSwitched().getExpression() == null) {
@@ -325,12 +342,24 @@ public class ConditionGenerator {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
+            final Tree.Variable elsevar = anoserque.getVariable();
+            if (elsevar != null) {
+                directAccess.add(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), expvar);
+            }
             gen.out("else return ");
             anoserque.getExpression().visit(gen);
+            if (elsevar != null) {
+                directAccess.remove(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), null);
+            }
         }
         gen.out("}(");
         expr.visit(gen);
         gen.out(")");
+        if (that.getSwitchClause().getSwitched().getExpression() == null) {
+            directAccess.remove(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        }
     }
 
     /** Generates code for a case clause, as part of a switch statement. Each case
@@ -387,7 +416,7 @@ public class ConditionGenerator {
         }
         if (caseVar != null) {
             directAccess.remove(caseVar.getDeclarationModel());
-            gen.getNames().forceName(caseVar.getDeclarationModel(), null);
+            names.forceName(caseVar.getDeclarationModel(), null);
         }
     }
 
