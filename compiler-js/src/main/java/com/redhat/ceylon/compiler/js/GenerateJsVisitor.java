@@ -1242,8 +1242,8 @@ public class GenerateJsVisitor extends Visitor
                     || d.isVariable() || d.isLate();
             final boolean addSetter = (d.isVariable() || d.isLate()) && !asprop;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-                if ((specInitExpr != null
-                        && !(specInitExpr instanceof LazySpecifierExpression)) || d.isLate()) {
+                if (specInitExpr != null
+                        && !(specInitExpr instanceof LazySpecifierExpression)) {
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
                     if (d.isLate()) {
