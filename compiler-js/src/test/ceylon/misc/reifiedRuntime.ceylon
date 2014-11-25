@@ -1,4 +1,5 @@
-import check { check }
+import check { check,fail }
+import ceylon.language.meta.model { Class, UnionType }
 
 shared interface Top1{}
 shared interface Middle1 satisfies Top1{}
@@ -146,4 +147,33 @@ void testReifiedRuntime(){
     //issue #309
     check(C309<String>().foo() == "ceylon.language::String", "Issue 309 - expected String got ``C309<String>().foo()``");
     Bug341("!").b(Bug341(1).b("2"));
+
+    //Issue #458
+    Composer458<String, String, []> c1 = Composer458<String, String, []>();
+    value c2 = c1.and<Integer>();
+    c2.debug();
+}
+
+class Holder458<T>() {
+  shared void debug() {
+    value t = `<T>`;
+    if (is Class t) {
+      check(t.declaration==`class Tuple`, "#458.2 expected Tuple");
+      check(t.typeArguments[`given Tuple.Element`] is UnionType<Integer|String>, "#458.3 Tuple.Element should be Integer|String");
+      check(t.typeArguments[`given Tuple.First`] is Class<Integer>, "#458.4 Tuple.First should be Integer");
+      check(t.typeArguments[`given Tuple.Rest`] is Class<[Integer,String]>, "#458.5 Tuple.Rest should be [Integer,String]");
+    } else {
+      fail("#458.1 expected Class<Tuple> found ``t``");
+    }
+  }
+}
+
+class Composer458<out Element, out First, out Rest>() given First satisfies Element given Rest satisfies Sequential<Element> {
+  value holder = Holder458<Tuple<First|Element,First,Rest>>();
+  shared void debug() {
+    holder.debug();
+  }
+  shared Composer458<Element|Other,Other,Tuple<Element|Other,Other,Tuple<First|Element,First,Rest>>>
+      and<Other>()
+      => Composer458<Element|Other,Other,Tuple<Element|Other,Other,Tuple<First|Element,First,Rest>>>();
 }
