@@ -40,3 +40,7 @@ void coverage() {
     
     @error abstract class Problem() satisfies Empty&{Nothing+} {}
 }
+
+T&<Object?> covFun0<T>(T maybe) => maybe of T&<Object?>;
+
+<T&Object>? covFun1<T>(T? maybe) => maybe of <T&Object>?;
