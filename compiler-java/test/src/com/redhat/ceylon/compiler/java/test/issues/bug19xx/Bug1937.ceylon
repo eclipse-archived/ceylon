@@ -24,4 +24,11 @@ void bug1937_check(Boolean boolean) {}
 void bug1937(){
     bug1937_check(if (true) then false else true);
     Boolean b = if (true) then false else true;
+
+    Object obj="Hey";
+    value b1 = !(if (is Integer obj) then obj.successor else null) exists;
+    value b2 = if (is String obj, exists c=obj[2], c=='y') then true else false;
+    value b3 = if (obj=="HEY") then false else if (obj==1) then false else true;
+    value b4 = if (is Integer obj) then false else if (is String obj, exists c=obj[2], c=='y') then true else false;
+    value b5 = if (obj=="nay") then false else if (is String obj, exists c=obj[2], c=='y') then true else false;
 }
