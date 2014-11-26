@@ -4301,11 +4301,11 @@ public class ClassTransformer extends AbstractTransformer {
         if (container instanceof Constructor) {
             copyTypeParameters((Class)container.getContainer(), methodBuilder);
             methodBuilder.reifiedTypeParameters(((Class)container.getContainer()).getTypeParameters());
-        } else if(container instanceof Generic)
+        } else if(container instanceof Generic) {
             // make sure reified type parameters are accepted
             copyTypeParameters((Generic)container, methodBuilder);
             methodBuilder.reifiedTypeParameters(((Generic)container).getTypeParameters());
-        
+        }
         // Add any of the preceding parameters as parameters to the method
         for (Tree.Parameter p : params.getParameters()) {
             if (p.equals(currentParam)) {
