@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -284,8 +285,6 @@ public class TypeGenerator {
             //This takes care of top-level attributes defined before the class definition
             gen.out("$init$", gen.getNames().name(d), "();");
             gen.endLine();
-        }
-        if (constructors.isEmpty()) {
             gen.declareSelf(d);
         }
         gen.referenceOuter(d);
@@ -326,7 +325,7 @@ public class TypeGenerator {
         }
         if (that.getExtendedType() != null) {
             callSuperclass(that.getExtendedType().getType(), that.getExtendedType().getInvocationExpression(),
-                    d, that, superDecs, gen);
+                    d, d.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
         }
         callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
                 d, that, superDecs, gen);
@@ -369,13 +368,23 @@ public class TypeGenerator {
     }
 
     static void callSuperclass(final Tree.SimpleType extendedType, final Tree.InvocationExpression invocation,
-            final Class d, final Node that,
+            final Class d, final ParameterList plist, final Node that,
             final List<Declaration> superDecs, final GenerateJsVisitor gen) {
         TypeDeclaration typeDecl = extendedType.getDeclarationModel();
         if (invocation != null) {
             Tree.PositionalArgumentList argList = invocation.getPositionalArgumentList();
-            gen.out(gen.memberAccessBase(extendedType, typeDecl, false,
-                    gen.qualifiedPath(that, typeDecl, false)),
+            final String qpath;
+            if (typeDecl instanceof Constructor) {
+                final String path = gen.qualifiedPath(that, (TypeDeclaration)typeDecl.getContainer(), false);
+                if (path.isEmpty()) {
+                    qpath = gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                } else {
+                    qpath = path + "." + gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                }
+            } else {
+                qpath = gen.qualifiedPath(that, typeDecl, false);
+            }
+            gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
                     (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType) != null))
                     ? ".call(this," : "(");
 
@@ -385,11 +394,9 @@ public class TypeGenerator {
                 gen.out(",");
             }
             //There may be defaulted args we must pass as undefined
-            final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams =
-                    d.getExtendedTypeDeclaration().getParameterList().getParameters();
-            if (superParams.size() > argList.getPositionalArguments().size()) {
-                for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
-                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
+            if (plist != null && plist.getParameters().size() > argList.getPositionalArguments().size()) {
+                for (int i = argList.getPositionalArguments().size(); i < plist.getParameters().size(); i++) {
+                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = plist.getParameters().get(i);
                     if (p.isSequenced()) {
                         gen.out(gen.getClAlias(), "getEmpty(),");
                     } else {
@@ -407,7 +414,6 @@ public class TypeGenerator {
             gen.out(gen.getNames().self(d), ")");
             gen.endLine(true);
         }
-
         copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
@@ -556,7 +562,7 @@ public class TypeGenerator {
         }
         if (superType != null) {
             TypeGenerator.callSuperclass(superType.getType(), superType.getInvocationExpression(),
-                    c, that, superDecs, gen);
+                    c, c.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
         }
         TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
         
@@ -685,6 +691,13 @@ public class TypeGenerator {
         gen.out("$init$", gen.getNames().name(container), "();");
         gen.endLine();
         gen.declareSelf(container);
+        if (that.getDelegatedConstructor() != null) {
+            final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
+            ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
+                ((Constructor)superdec).getParameterLists().get(0);
+            callSuperclass(that.getDelegatedConstructor().getType(), that.getDelegatedConstructor().getInvocationExpression(),
+                    container, plist, that, null, gen);
+        }
         //Call self
         //TODO always, or only when there's no delegated constructor?
         gen.out(gen.getNames().name(container));
@@ -698,11 +711,6 @@ public class TypeGenerator {
         gen.out(me, ");");
         gen.endLine();
         gen.initParameters(that.getParameterList(), container, null);
-        //Call delegated constructor
-        if (that.getDelegatedConstructor() != null) {
-            gen.out("//TODO delegate to", that.getDelegatedConstructor().getType().getDeclarationModel().getQualifiedNameString());
-            gen.endLine();
-        }
         gen.visitStatements(that.getBlock().getStatements());
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
