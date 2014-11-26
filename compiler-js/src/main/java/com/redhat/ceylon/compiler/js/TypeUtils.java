@@ -11,6 +11,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -610,6 +611,8 @@ public class TypeUtils {
                         sb.add(i, MetamodelGenerator.KEY_METHODS);
                     } else if (p instanceof TypeAlias || p instanceof Setter) {
                         sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
+                    } else if (p instanceof Constructor) {
+                        sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
                     } else { //It's a value
                         TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
                         sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
@@ -671,6 +674,9 @@ public class TypeUtils {
                 tparms = ((Method) d).getTypeParameters();
             }
 
+        } else if (d instanceof Constructor) {
+            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+            encodeParameterListForRuntime(that, ((Constructor)d).getParameterLists().get(0), gen);
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration

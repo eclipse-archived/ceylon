@@ -709,7 +709,6 @@ public class TypeGenerator {
                     container, plist, that, null, gen);
         }
         //Call common initializer
-        //TODO always, or only when there's no delegated constructor?
         gen.out(gen.getNames().name(container), "$$c(");
         if (withTargs) {
             gen.out("$$targs$$,");
@@ -720,7 +719,10 @@ public class TypeGenerator {
         gen.visitStatements(that.getBlock().getStatements());
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
-        //TODO constructor metamodel
+        //Add reference to metamodel
+        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), ".$crtmm$=");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        gen.endLine(true);
     }
 
 }
