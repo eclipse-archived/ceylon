@@ -447,7 +447,7 @@ public class MetamodelGenerator {
         return m;
     }
 
-    public Map<String,Object> encodeConstructor(Constructor d) {
+    public Map<String,Object> encodeConstructor(final Constructor d) {
         //First of all, find the class this thing belongs to
         Map<String,Object> c = findParent(d);
         if (c == null) {
@@ -456,13 +456,11 @@ public class MetamodelGenerator {
         }
         Map<String,Object> m = new HashMap<>();
         m.put(KEY_NAME, d.getName());
-        ParameterList plist = d.getParameterLists().get(0);
+        final ParameterList plist = d.getParameterLists().get(0);
         if (!plist.getParameters().isEmpty()) {
             m.put(KEY_PARAMS, parameterListMap(plist, d));
         }
-        if (d.getExtendedType() != null && d.getExtendedType().getDeclaration() instanceof Constructor) {
-            m.put("super", typeMap(d.getExtendedType(), d));
-        }
+        encodeAnnotations(d, m);
         if (c.get(KEY_CONSTRUCTORS) == null) {
             c.put(KEY_CONSTRUCTORS, new HashMap<>());
         }
