@@ -676,7 +676,7 @@ public class GenerateJsVisitor extends Visitor
     /** Returns the name of the type or its $init$ function if it's local. */
     String typeFunctionName(final Tree.StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
-        if (removeAlias && d.isAlias()) {
+        if ((removeAlias && d.isAlias()) || d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
             d = d.getExtendedTypeDeclaration();
         }
         boolean inProto = opts.isOptimize()
