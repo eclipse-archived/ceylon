@@ -1578,7 +1578,7 @@ public class Metamodel {
         return Util.apply(function, arguments);
     }
     
-    public static ceylon.language.meta.model.Model bind(ceylon.language.meta.model.Member<?,?> member, ProducedType containerType, Object container){
+    public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, ProducedType containerType, Object container){
         if(container == null)
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
         ProducedType argumentType = Metamodel.getProducedType(container);

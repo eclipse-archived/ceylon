@@ -67,9 +67,8 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
     }
 
     @Override
-    public Constructor<? extends Type, ? super Arguments> bind(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
+    public Constructor<? extends Type, ? super Arguments> bind(Object container) {
+        return (Constructor<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType().getQualifyingType(), container);
     }
 
     @TypeInfo("ceylon.language.meta.model::MemberClass<ceylon.language::Nothing,Type,ceylon.language::Nothing>")
@@ -182,108 +181,6 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
         return -1;
     }
     
-    ////////////////////////////////
-    /*
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $call$() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Sequential<?> varargs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $call$(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0, Sequential<?> varargs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $call$(Object arg0,
-            Object arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0, Object arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0, Object arg1, Sequential<?> varargs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $call$(Object arg0,
-            Object arg1, Object arg2) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0, Object arg1, Object arg2) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $call$(Object... args) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Constructor<? extends Type, ? super Arguments> $callvariadic$(
-            Object... argsAndVarargs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public short $getVariadicParameterIndex$() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-     */
     @Override
     public java.lang.String toString() {
         return Metamodel.toTypeString(getContainer()) + "." + getDeclaration().getName();
