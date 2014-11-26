@@ -744,4 +744,13 @@ void checkParseFloat() {
     check(parseFloat0("-0").string=="-0.0", "parseFloat(-0)");
     check(parseFloat0("0.0").string=="0.0", "parseFloat(0.0)");
     check(parseFloat0("-0.0").string=="-0.0", "parseFloat(-0.0)");
+    
+    check(1.leftLogicalShift(31).get(31), "logicalShift.get");
+    check(1.leftLogicalShift(32).get(32), "logicalShift.get");
+    check(1.leftLogicalShift(31).clear(31).zero, "logicalShift.get");
+    check(1.leftLogicalShift(32).clear(32).zero, "logicalShift.get");
+    check(0.set(31).get(31), "logicalShift.get");
+    check(0.set(32).get(32), "logicalShift.get");
+    check(0.flip(31).get(31), "logicalShift.get");
+    check(0.flip(32).get(32), "logicalShift.get");
 }
