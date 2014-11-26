@@ -92,7 +92,10 @@ public class AliasVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        that.setTypeModel(that.getTypeModel().resolveAliases());
+        ProducedType rt = that.getTypeModel();
+        if (rt!=null) {
+            that.setTypeModel(rt.resolveAliases());
+        }
     }
     
 }

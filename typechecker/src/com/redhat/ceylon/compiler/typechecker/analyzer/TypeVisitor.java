@@ -649,9 +649,12 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        that.setTypeModel(producedType(unit.getCallableDeclaration(),
-                that.getReturnType().getTypeModel(),
-                getTupleType(that.getArgumentTypes(), unit)));
+        Tree.StaticType rt = that.getReturnType();
+        if (rt!=null) {
+            that.setTypeModel(producedType(unit.getCallableDeclaration(),
+                    rt.getTypeModel(),
+                    getTupleType(that.getArgumentTypes(), unit)));
+        }
     }
     
     @Override

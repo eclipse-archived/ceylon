@@ -1857,27 +1857,30 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.FunctionType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType returnType = 
-                    that.getReturnType().getTypeModel();
-            ProducedType t = new LazyProducedType(unit) {
-                @Override
-                public TypeDeclaration initDeclaration() {
-                    return unit.getCallableDeclaration();
-                }
-                @Override
-                public Map<TypeParameter, ProducedType> initTypeArguments() {
-                    HashMap<TypeParameter, ProducedType> map = 
-                            new HashMap<TypeParameter, ProducedType>();
-                    List<TypeParameter> ctps = 
-                            unit.getCallableDeclaration().getTypeParameters();
-                    map.put(ctps.get(0), returnType);
-                    map.put(ctps.get(1),
-                            //TODO: holds on to reference to Tree.Type
-                            getTupleType(that.getArgumentTypes(), unit));
-                    return map;
-                }
-            };
-            that.setTypeModel(t);
+            Tree.StaticType rt = that.getReturnType();
+            if (rt!=null) {
+                final ProducedType returnType = 
+                        rt.getTypeModel();
+                ProducedType t = new LazyProducedType(unit) {
+                    @Override
+                    public TypeDeclaration initDeclaration() {
+                        return unit.getCallableDeclaration();
+                    }
+                    @Override
+                    public Map<TypeParameter, ProducedType> initTypeArguments() {
+                        HashMap<TypeParameter, ProducedType> map = 
+                                new HashMap<TypeParameter, ProducedType>();
+                        List<TypeParameter> ctps = 
+                                unit.getCallableDeclaration().getTypeParameters();
+                        map.put(ctps.get(0), returnType);
+                        map.put(ctps.get(1),
+                                //TODO: holds on to reference to Tree.Type
+                                getTupleType(that.getArgumentTypes(), unit));
+                        return map;
+                    }
+                };
+                that.setTypeModel(t);
+            }
         }
     }
     
