@@ -505,7 +505,15 @@ shared class Constructors<T> {
         nonSharedMemberNonSharedCtor(true);
 
         // bind
-        // TODO 
+        memberMember.bind(this)();
+        memberMember.bind(this)(tt);
+        memberOther.bind(this)(1);
+        memberNonShared.bind(this)(true);
+        
+        nonSharedMemberMember.bind(this)();
+        nonSharedMemberMember.bind(this)(tt);
+        nonSharedMemberOther.bind(this)(1);
+        nonSharedMemberNonShared.bind(this)(true);
     }
     shared void testModels() {
         value def = `Constructors`;
@@ -661,5 +669,52 @@ shared class Constructors<T> {
         assert(def in ctors);
         assert(other in ctors);
         assert(nonShared in ctors);
+    }
+}
+
+shared interface InterfaceConstructors<T> {
+    // basically the same as above, but with member classes 
+    // of an interface rather than a class
+    shared class Member {
+        shared new Member(T? t=null) {
+            
+        }
+        new NonShared(T? t=null) {
+            
+        }
+        shared MemberClassConstructor<InterfaceConstructors<T>, Member, [T?]> nonShared => `NonShared`; 
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    class NonSharedMember {
+        shared new NonSharedMember(T? t=null) {
+            
+        }
+        new NonShared(T? t=null) {
+            
+        }
+        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, [T?]> nonShared => `NonShared`; 
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    //shared class X(T? t = null) {} 
+    shared void test() {
+        assert(is T tt = "");
+        value memberInst = Member();
+        value nonSharedMemberInst = NonSharedMember();
+        
+        assert(`new Member.Member` == `Member.Member`.declaration);
+        assert(memberInst.nonSharedDecl == memberInst.nonShared.declaration);
+        assert(`new NonSharedMember.NonSharedMember` == `NonSharedMember.NonSharedMember`.declaration);
+        assert(nonSharedMemberInst.nonSharedDecl == nonSharedMemberInst.nonShared.declaration);
+
+        //`X`(this)();
+        
+        `Member.Member`(this)();
+        `Member.Member`(this)(tt);
+        /*`Member.NonShared`(this)();
+        `Member.NonShared`(this)(tt);
+        `NonSharedMember.NonSharedMember`(this)();
+        `NonSharedMember.NonSharedMember`(this)(tt);
+        `NonSharedMember.NonShared`(this)();
+        `NonSharedMember.NonShared`(this)(tt);*/
     }
 }
