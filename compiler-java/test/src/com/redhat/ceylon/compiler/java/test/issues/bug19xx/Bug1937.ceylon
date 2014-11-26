@@ -23,4 +23,5 @@ void bug1937_check(Boolean boolean) {}
 @noanno
 void bug1937(){
     bug1937_check(if (true) then false else true);
+    Boolean b = if (true) then false else true;
 }
