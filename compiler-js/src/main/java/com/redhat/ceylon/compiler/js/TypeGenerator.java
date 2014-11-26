@@ -350,11 +350,25 @@ public class TypeGenerator {
         }
         gen.endBlockNewLine();
         if (defconstr != null) {
-            classConstructor(defconstr, defconstr, that.getTypeParameterList(), d, gen);
-            constructors.remove(defconstr);
+            //Define a function as the class and call the default constructor in there
+            String _this = "undefined";
+            if (!d.isToplevel()) {
+                final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                if (coi != null) {
+                    if (d.isClassOrInterfaceMember()) {
+                        _this = "this";
+                    } else {
+                        _this = gen.getNames().self(coi);
+                    }
+                }
+            }
+            gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(){return ",
+                    gen.getNames().name(d), ".", gen.getNames().name(d), ".apply(",
+                    _this, ",arguments);}");
+            gen.endLine();
         }
         for (Tree.Constructor cnstr : constructors) {
-            classConstructor(cnstr, defconstr, that.getTypeParameterList(), d, gen);
+            classConstructor(cnstr, that.getTypeParameterList(), d, gen);
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
@@ -677,14 +691,10 @@ public class TypeGenerator {
                 that.getClassBody(), that.getAnnotationList(), gen);
     }
 
-    static void classConstructor(final Tree.Constructor that, final Tree.Constructor defconst,
+    static void classConstructor(final Tree.Constructor that,
             final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
         Constructor d = that.getDeclarationModel();
-        if (that == defconst) {
-            gen.out(GenerateJsVisitor.function, gen.getNames().name(container));
-        } else {
-            gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
-        }
+        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
         final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
         final String me = gen.getNames().self(container);
         gen.beginBlock();
@@ -698,13 +708,9 @@ public class TypeGenerator {
             callSuperclass(that.getDelegatedConstructor().getType(), that.getDelegatedConstructor().getInvocationExpression(),
                     container, plist, that, null, gen);
         }
-        //Call self
+        //Call common initializer
         //TODO always, or only when there's no delegated constructor?
-        gen.out(gen.getNames().name(container));
-        if (defconst != null) {
-            gen.out("$$c");
-        }
-        gen.out("(");
+        gen.out(gen.getNames().name(container), "$$c(");
         if (withTargs) {
             gen.out("$$targs$$,");
         }
@@ -714,6 +720,7 @@ public class TypeGenerator {
         gen.visitStatements(that.getBlock().getStatements());
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
+        //TODO constructor metamodel
     }
 
 }
