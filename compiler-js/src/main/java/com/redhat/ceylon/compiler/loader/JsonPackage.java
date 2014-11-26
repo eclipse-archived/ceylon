@@ -193,6 +193,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (m.containsKey(MetamodelGenerator.KEY_CONSTRUCTORS)) {
             final Map<String,Map<String,Object>> constructors = (Map<String,Map<String,Object>>)m.remove(
                     MetamodelGenerator.KEY_CONSTRUCTORS);
+            cls.setConstructors(true);
             for (Map.Entry<String, Map<String,Object>> cons : constructors.entrySet()) {
                 Constructor cnst = new Constructor();
                 cnst.setName(cons.getKey());
