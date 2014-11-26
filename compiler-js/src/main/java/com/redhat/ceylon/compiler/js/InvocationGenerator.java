@@ -32,14 +32,15 @@ public class InvocationGenerator {
     }
 
     void generateInvocation(Tree.InvocationExpression that) {
+        final Tree.Primary typeArgSource = that.getPrimary();
         if (that.getNamedArgumentList()!=null) {
             Tree.NamedArgumentList argList = that.getNamedArgumentList();
-            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.MemberOrTypeExpression
-                    && ((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration() == null) {
+            if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.MemberOrTypeExpression
+                    && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() == null) {
                 final String fname = names.createTempVariable();
                 gen.out("(", fname, "=");
                 //Call a native js constructor passing a native js object as parameter
-                that.getPrimary().visit(gen);
+                typeArgSource.visit(gen);
                 gen.out(",", fname, ".$$===undefined?new ", fname, "(");
                 nativeObject(argList);
                 gen.out("):", fname, "(");
@@ -47,19 +48,19 @@ public class InvocationGenerator {
                 gen.out("))");
             } else {
                 gen.out("(");
-                Map<String, String> argVarNames = defineNamedArguments(that.getPrimary(), argList);
-                if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
-                    BmeGenerator.generateBme((Tree.BaseMemberExpression)that.getPrimary(), gen, true);
+                Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
+                if (typeArgSource instanceof Tree.BaseMemberExpression) {
+                    BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen, true);
                 } else {
-                    that.getPrimary().visit(gen);
+                    typeArgSource.visit(gen);
                 }
-                if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+                if (typeArgSource instanceof Tree.MemberOrTypeExpression) {
+                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) typeArgSource;
                     if (mte.getDeclaration() instanceof Functional) {
                         Functional f = (Functional) mte.getDeclaration();
                         Tree.TypeArguments targs = null;
-                        if (that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
-                            targs = ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                        if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
+                            targs = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments();
                         }
                         applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
                     }
@@ -69,7 +70,6 @@ public class InvocationGenerator {
         }
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            final Tree.Primary typeArgSource = that.getPrimary();
             Tree.TypeArguments targs = typeArgSource instanceof Tree.StaticMemberOrTypeExpression
                     ? ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments() : null;
             if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
