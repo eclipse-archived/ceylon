@@ -246,7 +246,7 @@ public class TypeGenerator {
         final List<Tree.Statement> classBody;
         //Find the constructors, if any
         Tree.Constructor defconstr = null;
-        if (plist == null) {
+        if (d.hasConstructors()) {
             constructors = new ArrayList<>(3);
             classBody = new ArrayList<>(that.getClassBody().getStatements().size());
             for (Tree.Statement st : that.getClassBody().getStatements()) {
@@ -281,7 +281,7 @@ public class TypeGenerator {
         }
         final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
-        if (constructors.isEmpty()) {
+        if (!d.hasConstructors()) {
             //This takes care of top-level attributes defined before the class definition
             gen.out("$init$", gen.getNames().name(d), "();");
             gen.endLine();
