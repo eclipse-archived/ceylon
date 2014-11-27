@@ -4470,15 +4470,17 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(t);
                 Tree.Term tt = that.getTerm();
                 if (tt!=null) {
-                    if (tt!=null) {
-                        ProducedType pt = tt.getTypeModel();
-                        if (!isTypeUnknown(pt)) {
-                            if (!t.covers(pt)) {
-                                that.addError("specified type does not cover the cases of the operand expression: '" +
-                                        t.getProducedTypeName(unit) + "' does not cover '" + 
-                                        pt.getProducedTypeName(unit) + "'");
-                            }
+                    ProducedType pt = tt.getTypeModel();
+                    if (!isTypeUnknown(pt)) {
+                        if (!t.covers(pt)) {
+                            that.addError("specified type does not cover the cases of the operand expression: '" +
+                                    t.getProducedTypeName(unit) + "' does not cover '" + 
+                                    pt.getProducedTypeName(unit) + "'");
                         }
+                    }
+                    //Just especially for the IDE!
+                    if (tt instanceof Tree.Super) {
+                        ((Tree.Super) tt).setDeclarationModel(t.getDeclaration());
                     }
                 }
             }
