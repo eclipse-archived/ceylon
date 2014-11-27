@@ -212,9 +212,9 @@ shared sealed interface Sequence<out Element>
         
         spanFrom(Integer from) 
                 => let (endIndex = size-1)
-                    (if (from<=endIndex)
+                    if (from<=endIndex)
                         then outer[endIndex-from..0]
-                        else []);
+                        else [];
         
         spanTo(Integer to)
                 => to<0 
@@ -250,9 +250,9 @@ shared sealed interface Sequence<out Element>
         
         getFromFirst(Integer index)
                 => let (size = outer.size)
-                    (if (index<size*times)
+                    if (index<size*times)
                         then outer.getFromFirst(index%size)
-                        else null);
+                        else null;
         
         iterator() => CycledIterator(outer,times);
         
@@ -294,9 +294,9 @@ class JoinedSequence<Element>
     
     getFromFirst(Integer index)
             => let (cutover = firstSeq.size) 
-                (if (index<cutover)
+                if (index<cutover)
                     then firstSeq.getFromFirst(index) 
-                    else secondSeq.getFromFirst(index-cutover));
+                    else secondSeq.getFromFirst(index-cutover);
     
     slice(Integer index) 
             => if (index==firstSeq.size)
