@@ -2011,10 +2011,8 @@ letClause returns [LetClause letClause]
       )?
       RPAREN
       { $letClause.setEndToken($RPAREN); }
-      disjunctionExpression
-      { Expression e = new Expression(null);
-        e.setTerm($disjunctionExpression.term);
-        $letClause.setExpression(e); 
+      functionOrExpression
+      { $letClause.setExpression($functionOrExpression.expression); 
         $letClause.setEndToken(null); }
     ;
 

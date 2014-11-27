@@ -1503,15 +1503,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Let expressions</title>
             
             <para>A let expression comprises a list of one or more variable 
-            declarations, followed by an expression involving those variables.</para>
+            declarations, as defined in <xref linkend="controlstructurevariables"/>, 
+            followed by an expression involving those variables.</para>
             
             <synopsis>LetExpression: "let" LetValueList Expression</synopsis>
-            
-            <para>The expression is parsed with precedence just higher than the 
-            <literal>||</literal> operator, and just lower than the 
-            <literal>then</literal> and <literal>else</literal> operators, that 
-            is, between the layers 3 and 4 defined in
-            <xref linkend="operatorprecedence"/>.</para>
             
             <synopsis>LetValueList: "(" LetValue ("," LetValue)* ")"</synopsis>
             
@@ -1554,7 +1549,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The type of an inline anonymous class expression is the 
             intersection of the class type it extends with all interface types 
-            it satisfies.</para>
+            it satisfies. The type of the inline anonymous class itself is not 
+            accessible outside the body of the inline anonymous class expression.</para>
             
             <programlisting>object 
         satisfies {Integer+} {
@@ -1564,7 +1560,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         next() => current++;
     };
 }</programlisting>
-            
+        
         </section>
         
     </section>
