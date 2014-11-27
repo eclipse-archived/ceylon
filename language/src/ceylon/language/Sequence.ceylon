@@ -202,39 +202,34 @@ shared sealed interface Sequence<out Element>
         getFromFirst(Integer index) 
                 => outer.getFromFirst(size-1-index);
         
-        shared actual Element[] measure(Integer from, Integer length) {
-            if (length>1) {
-                value start = size-1-from;
-                return outer[start..start-length+1];
-            }
-            else {
-                return [];
-            }
-        }
+        measure(Integer from, Integer length) 
+                => length<=0 
+                then [] 
+                else (let (start = size-1-from)
+                        outer[start..start-length+1]);
         
         span(Integer from, Integer to) => outer[to..from];
         
-        shared actual Element[] spanFrom(Integer from) {
-            value endIndex = size-1;
-            return if (from<=endIndex)
-                then outer[endIndex-from..0]
-                else [];
-        }
+        spanFrom(Integer from) 
+                => let (endIndex = size-1)
+                    (if (from<=endIndex)
+                        then outer[endIndex-from..0]
+                        else []);
         
-        shared actual Element[] spanTo(Integer to) {
-            value endIndex = size-1;
-            return if (to>=0) 
-                then outer[endIndex..endIndex-to] 
-                else [];
-        }
+        spanTo(Integer to)
+                => to<0 
+                then []
+                else (let (endIndex = size-1) 
+                        outer[endIndex..endIndex-to]);
         
         shared actual Iterator<Element> iterator() {
             value outerList=outer;
             return object 
                     satisfies Iterator<Element> {
                 variable value index=outerList.size-1;
-                next() => index<0 then finished 
-                                  else outerList.getElement(index--);
+                next() => index<0 
+                        then finished 
+                        else outerList.getElement(index--);
                 string => "``outer.string``.iterator()";
             };
         }
@@ -253,12 +248,11 @@ shared sealed interface Sequence<out Element>
         size => outer.size*times;
         rest => sublistFrom(1).sequence(); //TODO!
         
-        shared actual Element? getFromFirst(Integer index) {
-            value size = outer.size;
-            return if (index<size*times)
-                then outer.getFromFirst(index%size)
-                else null;
-        }
+        getFromFirst(Integer index)
+                => let (size = outer.size)
+                    (if (index<size*times)
+                        then outer.getFromFirst(index%size)
+                        else null);
         
         iterator() => CycledIterator(outer,times);
         
@@ -298,30 +292,26 @@ class JoinedSequence<Element>
     
     rest => firstSeq.rest.append(secondSeq);
     
-    shared actual Element? getFromFirst(Integer index) {
-        value cutover = firstSeq.size;
-        return if (index < cutover)
-            then firstSeq.getFromFirst(index) 
-            else secondSeq.getFromFirst(index-cutover);
-    }
+    getFromFirst(Integer index)
+            => let (cutover = firstSeq.size) 
+                (if (index<cutover)
+                    then firstSeq.getFromFirst(index) 
+                    else secondSeq.getFromFirst(index-cutover));
     
-    shared actual [Element[], Element[]] slice(Integer index) {
-        return if (index==firstSeq.size)
-            then [firstSeq,secondSeq] 
+    slice(Integer index) 
+            => if (index==firstSeq.size)
+            then [firstSeq, secondSeq] 
             else super.slice(index);
-    }
     
-    shared actual Element[] spanTo(Integer to) {
-        return if (to==firstSeq.size-1) 
+    spanTo(Integer to) 
+            => if (to==firstSeq.size-1) 
             then firstSeq 
             else super.spanTo(to);
-    }
     
-    shared actual Element[] spanFrom(Integer from) {
-        return if (from==firstSeq.size)
+    spanFrom(Integer from) 
+            => if (from==firstSeq.size)
             then secondSeq 
             else super.spanFrom(from);
-    }
     
     shared actual Element[] measure(Integer from, Integer length) {
         if (from==0 && length==firstSeq.size) {
