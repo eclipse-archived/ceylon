@@ -544,9 +544,9 @@ public class TypeGenerator {
     static void defineObject(final Node that, final Value d, final Tree.SatisfiedTypes sats,
             final Tree.ExtendedType superType, final Tree.ClassBody body, final Tree.AnnotationList annots,
             final GenerateJsVisitor gen) {
-        boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
-        final Class c = (Class)(that instanceof Tree.ObjectExpression ?
-                ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration());
+        final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
+        final boolean isObjExpr = that instanceof Tree.ObjectExpression;
+        final Class c = (Class)(isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration());
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(c));
         Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
@@ -560,11 +560,21 @@ public class TypeGenerator {
         }
         gen.out(targs.isEmpty()?"()":"($$targs$$)");
         gen.beginBlock();
-        if (c.isMember()) {
-            gen.initSelf(that);
+        if (isObjExpr) {
+            final String me = gen.getNames().self(c);
+            gen.out("var ", me, "=new ", gen.getNames().name(c), ".$$;");
+            final ClassOrInterface coi = Util.getContainingClassOrInterface(c.getContainer());
+            if (coi != null) {
+                gen.out(me, ".outer$=", gen.getNames().self(coi));
+                gen.endLine(true);
+            }
+        } else {
+            if (c.isMember()) {
+                gen.initSelf(that);
+            }
+            gen.instantiateSelf(c);
+            gen.referenceOuter(c);
         }
-        gen.instantiateSelf(c);
-        gen.referenceOuter(c);
         
         final List<Declaration> superDecs = new ArrayList<Declaration>();
         if (!gen.opts.isOptimize()) {
