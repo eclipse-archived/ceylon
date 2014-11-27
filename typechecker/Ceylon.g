@@ -1571,36 +1571,40 @@ indexOrIndexRange returns [IndexExpression indexExpression]
       (
         e1=ELLIPSIS
         { $indexExpression.setEndToken($e1); }
-      i=index
-      { ElementRange er0 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er0);
-        er0.setUpperBound($i.expression); }
+        i=index
+        { ElementRange er0 = new ElementRange(null);
+          er0.setUpperBound($i.expression);
+          $indexExpression.setElementOrRange(er0); 
+          $indexExpression.setEndToken(null); }
       |
-      l=index
-      { Element e = new Element(null);
-        $indexExpression.setElementOrRange(e);
-        e.setExpression($l.expression); }
-      (
-        e2=ELLIPSIS
-        { $indexExpression.setEndToken($e2); }
-      { ElementRange er1 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er1);
-        er1.setLowerBound($l.expression); }
-      | RANGE_OP 
-        { $indexExpression.setEndToken($RANGE_OP); }
-        u=index 
-      { ElementRange er2 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er2);
-        er2.setLowerBound($l.expression); 
-        er2.setUpperBound($u.expression); }
-      | SEGMENT_OP
-        { $indexExpression.setEndToken($SEGMENT_OP); }
-        s=index 
-      { ElementRange er3 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er3);
-        er3.setLowerBound($l.expression); 
-        er3.setLength($s.expression); }
-      )?
+        l=index
+        { Element e = new Element(null);
+          e.setExpression($l.expression); 
+          $indexExpression.setElementOrRange(e); }
+        (
+          e2=ELLIPSIS
+          { $indexExpression.setEndToken($e2);
+            ElementRange er1 = new ElementRange(null);
+            er1.setLowerBound($l.expression);
+            $indexExpression.setElementOrRange(er1); }
+        | 
+          RANGE_OP 
+          { $indexExpression.setEndToken($RANGE_OP); }
+          u=index 
+          { ElementRange er2 = new ElementRange(null);
+            er2.setLowerBound($l.expression); 
+            er2.setUpperBound($u.expression); 
+            $indexExpression.setElementOrRange(er2);
+            $indexExpression.setEndToken(null); }
+        | SEGMENT_OP
+          { $indexExpression.setEndToken($SEGMENT_OP); }
+          s=index 
+          { ElementRange er3 = new ElementRange(null);
+            er3.setLowerBound($l.expression); 
+            er3.setLength($s.expression); 
+            $indexExpression.setElementOrRange(er3);
+            $indexExpression.setEndToken(null); }
+        )?
       )
       RBRACKET
       { $indexExpression.setEndToken($RBRACKET); }

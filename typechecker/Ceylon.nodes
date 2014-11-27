@@ -703,7 +703,8 @@
     EXPRESSION? length)
 
 "A reference to the outer containing instance."
-^(OUTER:ATOM)
+^(OUTER:ATOM
+   TypeDeclaration declarationModel;)
 
 "A reference to the containing package."
 ^(PACKAGE:ATOM
@@ -827,7 +828,8 @@
    List<Declaration> qualified;)
 
 "A reference to the current instance."
-^(abstract SELF_EXPRESSION:ATOM)
+^(abstract SELF_EXPRESSION:ATOM
+   TypeDeclaration declarationModel;)
 ^(THIS:SELF_EXPRESSION)
 ^(SUPER:SELF_EXPRESSION)
 

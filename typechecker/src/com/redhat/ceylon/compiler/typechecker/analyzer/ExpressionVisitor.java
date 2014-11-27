@@ -5697,12 +5697,14 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Outer that) {
-        ProducedType ci = getOuterClassOrInterface(that.getScope());
-        if (ci==null) {
+        ProducedType oci = 
+                getOuterClassOrInterface(that.getScope());
+        if (oci==null) {
             that.addError("outer appears outside a nested class or interface definition");
         }
         else {
-            that.setTypeModel(ci);
+            that.setTypeModel(oci);
+            that.setDeclarationModel(oci.getDeclaration());
         }
         /*if (defaultArgument) {
             that.addError("reference to outer from default argument expression");
@@ -5710,12 +5712,15 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.Super that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+        ClassOrInterface ci = 
+                getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
-                    that.setTypeModel(intersectionOfSupertypes(oci));
+                    ClassOrInterface cci = 
+                            (ClassOrInterface) ci.getContainer();
+                    that.setDeclarationModel(cci);
+                    that.setTypeModel(intersectionOfSupertypes(cci));
                 }
             }
         }
@@ -5725,18 +5730,22 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("super occurs outside any type definition");
             }
             else {
+                that.setDeclarationModel(ci);
                 that.setTypeModel(intersectionOfSupertypes(ci));
             }
         }
     }
 
     @Override public void visit(Tree.This that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+        ClassOrInterface ci = 
+                getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
-                    that.setTypeModel(s.getType());
+                    ClassOrInterface cci = 
+                            (ClassOrInterface) ci.getContainer();
+                    that.setDeclarationModel(cci);
+                    that.setTypeModel(cci.getType());
                 }
             }
         }
@@ -5745,6 +5754,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("this appears outside a class or interface definition");
             }
             else {
+                that.setDeclarationModel(ci);
                 that.setTypeModel(ci.getType());
             }
         }
