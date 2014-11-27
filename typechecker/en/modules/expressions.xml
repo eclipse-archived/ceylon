@@ -302,15 +302,16 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Anonymous functions</title>
         
         <para>An anonymous function is a function, as specified in 
-        <xref linkend="functions"/>, with no name, defined within an expression. 
-        It comprises one or more parameter lists, followed by an expression.</para>
+        <xref linkend="functions"/>, with no name, defined within an 
+        expression. It comprises one or more parameter lists, followed by 
+        an expression or a block of code.</para>
         
         <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
         
         <para>The parameters are the parameters of the function. The lazy 
-        specifier or block of code is the implementation of the function. If 
-        the <literal>void</literal> keyword is specified, the function is a 
-        <literal>void</literal> function. Otherwise, it is a 
+        specifier or block of code is the implementation of the function. 
+        If the <literal>void</literal> keyword is specified, the function 
+        is a <literal>void</literal> function. Otherwise, it is a 
         non-<literal>void</literal> function, and its return type is 
         inferred.</para>
         
