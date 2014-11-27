@@ -224,7 +224,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
-                object iterator 
+                return object 
                         satisfies Iterator<Element> {
                     variable value current = iter.next();
                     shared actual Element|Finished next() {
@@ -237,8 +237,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
-                }
-                return iterator;
+                };
             }
         }
         return exceptLast;
@@ -801,10 +800,9 @@ shared interface Iterable<out Element, out Absent=Null>
                     return object
                             satisfies Iterator<Element> {
                         variable value i=0;
-                        actual shared Element|Finished next() {
-                            return ++i>taking then finished
-                                              else iter.next();
-                        }
+                        next() => ++i>taking
+                                    then finished
+                                    else iter.next();
                         string => outer.string + ".iterator()";
                     };
                 }
@@ -834,7 +832,7 @@ shared interface Iterable<out Element, out Absent=Null>
                         variable Boolean first=true;
                         actual shared Element|Finished next() {
                             if (first) {
-                                first=false;
+                                first = false;
                                 return elem;
                             }
                             else {
@@ -867,7 +865,8 @@ shared interface Iterable<out Element, out Absent=Null>
                     satisfies Iterator<Element> {
                 variable Boolean alive = true;
                 actual shared Element|Finished next() {
-                    if (alive, !is Finished next = iter.next()) {
+                    if (alive,
+                        !is Finished next = iter.next()) {
                         if (taking(next)) {
                             return next;
                         }
@@ -990,14 +989,9 @@ shared interface Iterable<out Element, out Absent=Null>
             return object 
                     satisfies Iterator<Integer->Element> {
                 variable value i=0;
-                shared actual <Integer->Element>|Finished next() {
-                    if (!is Finished next = iter.next()) {
-                        return i++->next;
-                    }
-                    else {
-                        return finished;
-                    }
-                }
+                next() => if (!is Finished next = iter.next())
+                            then i++ -> next 
+                            else finished;
                 string => outer.string + ".iterator()";
             };
         }
@@ -1243,7 +1237,7 @@ shared interface Iterable<out Element, out Absent=Null>
                     variable value current = iter.next();
                     variable value count = 0;
                     shared actual Element|Other|Finished next() {
-                        if (!is Finished curr=current) {
+                        if (!is Finished curr = current) {
                             if ((step+1).divides(++count)) {
                                 return element;
                             }
