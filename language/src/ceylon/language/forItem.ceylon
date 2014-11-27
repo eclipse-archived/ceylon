@@ -6,6 +6,5 @@
      {Item?*} topItems = map.map(forItem(List<Item>.first));"
 see (`function forKey`)
 shared Result forItem<Item,Result>(Result resulting(Item item))
-            (Object->Item entry) 
-        given Item satisfies Object 
+            (Object->Item entry)
         => resulting(entry.item);

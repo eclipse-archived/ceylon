@@ -1272,19 +1272,19 @@ shared interface Iterable<out Element, out Absent=Null>
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
     shared actual default String string {
-        value strings = take(31)
-                .map((e) => e?.string else "<null>")
-                .sequence();
-        if (strings.empty) {
+        value elements = take(31).sequence();
+        if (elements.empty) {
             return "{}";
         }
-        else if (strings.size==31) {
-            return "{ " + ", ".join(strings.take(30)) + 
-                    ", ... }";
+        else if (elements.size==31) {
+            return "{ ``commaList(elements.take(30))``, ... }";
         }
         else {
-            return "{ " + ", ".join(strings) + " }";
+            return "{ ``commaList(elements)`` }";
         }
     }
     
 }
+
+String commaList({Anything*} elements)
+        => ", ".join { for (e in elements) stringify(e) };

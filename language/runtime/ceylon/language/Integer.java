@@ -589,7 +589,7 @@ public final class Integer
         if (index < 0 || index > 63) {
             return false;
         }
-        long mask = 1 << index;
+        long mask = 1l << index;
         return (value & mask) != 0;
     }
     
@@ -620,7 +620,7 @@ public final class Integer
         if (index < 0 || index > 63) {
             return value;
         }
-        long mask = 1 << index;
+        long mask = 1l << index;
         return bit ? value | mask : value & ~mask;
     }
 
@@ -634,7 +634,7 @@ public final class Integer
         if (index < 0 || index > 63) {
             return value;
         }
-        long mask = 1 << index;
+        long mask = 1l << index;
         return value & ~mask;
     }
 
@@ -648,7 +648,7 @@ public final class Integer
         if (index < 0 || index > 63) {
             return value;
         }
-        long mask = 1 << index;
+        long mask = 1l << index;
         return value ^ mask;
     }
 

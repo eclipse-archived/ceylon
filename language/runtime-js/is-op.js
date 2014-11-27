@@ -1,4 +1,4 @@
-function is$(obj,type){
+function is$(obj,type,containers){
   if(type && type.t){
     if(type.t==='i'||type.t==='u'){
       return isOfTypes(obj, type);
@@ -150,6 +150,23 @@ function is$(obj,type){
             console.log("Possible missing metamodel for " + type.t.$$.T$name + "<" + i + ">");
           } else {
             console.log("Don't know what to do about variance '" + iance + "'");
+          }
+        }
+      }
+      //TODO If the object is a member of a type with type arguments,
+      //check that the outer type arguments match
+      if (containers) {
+        var cnt=obj.outer$;
+        if (cnt) {
+          //Nested types, check all outers
+          for (var i=0; i<containers.length; i++) {
+            if (!is$(cnt,containers[i]))return false;
+            cnt=cnt.outer$;
+          }
+        } else if (obj.$$targs$$) {
+          //Method argument types
+          for (var t in containers) {
+            if (obj.$$targs$$[t] && containers[t] && !extendsType(obj.$$targs$$[t], containers[t], true))return false;
           }
         }
       }

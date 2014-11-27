@@ -6,6 +6,6 @@
      {String*} uppercaseKeys = map.map(forKey(String.uppercased));"
 see (`function forItem`)
 shared Result forKey<Key,Result>(Result resulting(Key key))
-            (Key->Object entry) 
+            (Key->Anything entry)
         given Key satisfies Object 
         => resulting(entry.key);

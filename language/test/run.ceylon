@@ -1,4 +1,5 @@
 shared void run() {
+    testInlineExpressions();
     print("Equality");
     equality();
     //complex();

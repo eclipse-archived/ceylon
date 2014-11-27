@@ -49,7 +49,10 @@
    
    - [[sort]] vs [[Iterable.sort]] and
    - [[max]] vs [[Iterable.max]]."""
-see (`class Comparison`)
+see (`class Comparison`,
+     `function sort`, 
+     `function max`, `function min`,
+     `function largest`, `function smallest`)
 by ("Gavin")
 shared interface Comparable<in Other> of Other 
         given Other satisfies Comparable<Other> {
