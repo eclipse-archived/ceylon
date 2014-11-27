@@ -1221,11 +1221,11 @@ expressionOrSpecificationStatement returns [Statement statement]
 
 directiveStatement returns [Directive directive]
     : d=directive 
-      { $directive=$d.directive; } 
-      { expecting=SEMICOLON; }
+      { $directive=$d.directive;
+        expecting=SEMICOLON; }
       SEMICOLON
-      { $directive.setEndToken($SEMICOLON); }
-      { expecting=-1; }
+      { $directive.setEndToken($SEMICOLON);
+        expecting=-1; }
     ;
 
 directive returns [Directive directive]
