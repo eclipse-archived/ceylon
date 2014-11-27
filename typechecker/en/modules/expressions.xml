@@ -439,10 +439,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Compound expressions</title>
         
         <para>An <emphasis>atom</emphasis> is a literal or self reference, a
-        string template, an iterable or tuple enumeration, or a parenthesized 
-        expression.</para>
+        string template, an iterable or tuple enumeration, and anonymous class 
+        expression, or a parenthesized expression.</para>
         
-        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple | DynamicValue</synopsis>
+        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Enumeration | ObjectExpression</synopsis>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
         member expressions and invocation expressions from an atom, base 
@@ -452,11 +452,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and using inline conditional 
-        expressions, anonymous class expressions, and anonymous functions.</para>    
+        expressions and anonymous functions.</para>    
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | LetExpression | ConditionalExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | LetExpression | ConditionalExpression</synopsis>
         
         <comment><para>Note: the grammar of operator expressions is defined by
         the table of operator precedence and associativity in 
@@ -1356,6 +1356,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             tuple and iterable object instantiation. Iterable enumerations are delimited
             using braces. Tuple enumerations are delimited by brackets.</para>
             
+            <synopsis>Enumeration: Iterable | Tuple | DynamicValue</synopsis>
             <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
             <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
             

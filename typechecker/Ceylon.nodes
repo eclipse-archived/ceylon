@@ -747,7 +747,7 @@
     Method declarationModel;)
 
 "An anonymous function."
-^(OBJECT_EXPRESSION:TERM
+^(OBJECT_EXPRESSION:PRIMARY
     EXTENDED_TYPE?
     SATISFIED_TYPES?
     CLASS_BODY

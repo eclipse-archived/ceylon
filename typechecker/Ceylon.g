@@ -344,19 +344,19 @@ objectDeclaration returns [ObjectDefinition declaration]
       )
     ;
 
-objectExpression returns [ObjectExpression term]
+objectExpression returns [ObjectExpression objectExpression]
     : OBJECT_DEFINITION
-      { $term = new ObjectExpression($OBJECT_DEFINITION); }
+      { $objectExpression = new ObjectExpression($OBJECT_DEFINITION); }
       ( 
         extendedType
-        { $term.setExtendedType($extendedType.extendedType); } 
+        { $objectExpression.setExtendedType($extendedType.extendedType); } 
       )?
       ( 
         satisfiedTypes
-        { $term.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+        { $objectExpression.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
       )?
       classBody
-      { $term.setClassBody($classBody.classBody); }
+      { $objectExpression.setClassBody($classBody.classBody); }
     ;
 
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
@@ -1333,6 +1333,8 @@ base returns [Primary primary]
       { $primary=$tuple.tuple; }
     | dynamicObject
       { $primary=$dynamicObject.dynamic; }
+    | objectExpression
+      { $primary = $objectExpression.objectExpression; }
     | selfReference
       { $primary=$selfReference.atom; }
     | parExpression
@@ -1979,9 +1981,6 @@ functionOrExpression returns [Expression expression]
         $expression.setTerm($ce.term); }
     | e=expression
       { $expression = $e.expression; }
-    | oe=objectExpression
-      { $expression = new Expression(null); 
-        $expression.setTerm($oe.term); }
     | l=let
       { $expression = new Expression(null);
         $expression.setTerm($l.let); }
