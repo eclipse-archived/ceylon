@@ -20,18 +20,13 @@ shared serializable class Singleton<out Element>(Element element)
     
     "Returns the contained element, if the specified 
      index is `0`."
-    shared actual Element? getFromFirst(Integer index) {
-        if (index == 0) {
-            return element;
-        } else {
-            return null;
-        }
-    }
+    shared actual Element? getFromFirst(Integer index)
+            => if (index == 0) then element else null;
     
     "Returns a `Singleton` with the same element."
     shared actual Singleton<Element> clone() => this;
     
-    string => "[`` element?.string else "<null>" ``]";
+    string => "[``stringify(element)``]";
     
     shared actual default Iterator<Element> iterator() {
         object iterator
@@ -55,14 +50,15 @@ shared serializable class Singleton<out Element>(Element element)
      Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> measure
             (Integer from, Integer length)
-            => from <= 0 && from + length > 0 then this else [];
+            => from <= 0 && from + length > 0 
+            then this else [];
     
     "Returns a `Singleton` if the given starting index 
      is `0`. Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> span
             (Integer from, Integer to)
             => from <= 0 && to >= 0 ||
-            from >= 0 && to <= 0
+               from >= 0 && to <= 0
             then this else [];
     
     shared actual Empty|Singleton<Element> spanTo
@@ -95,12 +91,9 @@ shared serializable class Singleton<out Element>(Element element)
     
     "Returns `true` if the specified element is this 
      `Singleton`\'s element."
-    shared actual Boolean contains(Object element) {
-        if (exists e = this.element) {
-            return e == element;
-        }
-        return false;
-    }
+    shared actual Boolean contains(Object element)
+            => if (exists e = this.element) 
+                    then e == element else false;
     
     "Returns `1` if this `Singleton`\'s element
      satisfies the predicate, or `0` otherwise."
@@ -133,12 +126,9 @@ shared serializable class Singleton<out Element>(Element element)
             => selecting(element) then this else [];
     
     shared actual Element? find
-            (Boolean selecting(Element&Object e)) {
-        if (exists element, selecting(element)) {
-            return element;
-        }
-        return null;
-    }
+            (Boolean selecting(Element&Object e))
+        => if (exists element, selecting(element))
+                then element else null;
     
     shared actual default Element? findLast
             (Boolean selecting(Element&Object elem))
@@ -162,13 +152,9 @@ shared serializable class Singleton<out Element>(Element element)
     shared actual Singleton<Element>|Empty take(Integer taking)
             => taking > 0 then this else [];
     
-    shared actual Singleton<Element&Object>|Empty coalesced {
-        if (exists element) {
-            return Singleton(element);
-        } else {
-            return [];
-        }
-    }
+    shared actual Singleton<Element&Object>|Empty coalesced
+            => if (exists element)
+                    then Singleton(element) else [];
     
     shared actual {Element|Other+}
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other)
