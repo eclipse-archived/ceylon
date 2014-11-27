@@ -250,12 +250,9 @@ shared interface Iterable<out Element, out Absent=Null>
      every element of the stream."
     shared default Element[] sequence() {
         value array = Array(this);
-        if (array.empty) {
-            return [];
-        }
-        else {
-            return ArraySequence(array);
-        }
+        return if (array.empty)
+                then [] 
+                else ArraySequence(array);
     }
     
     "The [[index]]th element returned by an iterator of this 
