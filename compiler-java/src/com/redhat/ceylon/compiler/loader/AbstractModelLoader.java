@@ -2187,6 +2187,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 name = parentClassName;
                 name += "$" + scope;
             }
+            if(name.contains("anonymous#")) continue;
             Declaration innerDecl = convertToDeclaration(module, name, DeclarationType.TYPE);
             if(innerDecl == null)
                 throw new ModelResolutionException("Failed to load local type " + name
