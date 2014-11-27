@@ -5130,6 +5130,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 member = (TypedDeclaration) handleAbstraction(member, that);
                 that.setDeclaration(member);
+                resetSuperReference(that);
                 boolean selfReference = isSelfReference(p);
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
@@ -5427,23 +5428,34 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
-//        Declaration d = that.getDeclaration();
-//        if (!d.isStaticallyImportable()) {
-            Tree.Term p = that.getPrimary();
-            while (p instanceof Tree.Expression &&
-                    p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
-                p = ((Tree.Expression) p).getTerm();
+        Tree.Term p = that.getPrimary();
+        while (p instanceof Tree.Expression &&
+                p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
+            p = ((Tree.Expression) p).getTerm();
+        }
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            Declaration pd = 
+                    ((Tree.MemberOrTypeExpression) p).getDeclaration();
+            if (!that.getStaticMethodReference() && 
+                    pd instanceof Functional) {
+                //this is a direct function ref
+                //its not a type, it can't have members
+                that.addError("direct function references do not have members");
             }
-            if (p instanceof Tree.MemberOrTypeExpression) {
-                Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
-                if (!(that.getStaticMethodReference()) && 
-                        pd instanceof Functional) {
-                    //this is a direct function ref
-                    //its not a type, it can't have members
-                    that.addError("direct function references do not have members");
-                }
+        }
+    }
+
+    void resetSuperReference(Tree.QualifiedMemberOrTypeExpression that) {
+        //Just for the IDE!
+        Tree.Term p = that.getPrimary();
+        if (p instanceof Tree.Super) {
+            Declaration dec = that.getDeclaration();
+            if (dec!=null) {
+                TypeDeclaration td = 
+                        (TypeDeclaration) dec.getContainer();
+                ((Tree.Super) p).setDeclarationModel(td);
             }
-//        }
+        }
     }
     
     @Override public void visit(Tree.QualifiedTypeExpression that) {
@@ -5549,6 +5561,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
+                resetSuperReference(that);
                 if (!isSelfReference(p) && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
