@@ -147,8 +147,9 @@ shared interface List<out Element>
                     satisfies Iterator<Element> {
                 variable Integer index = 0;
                 value size = outer.size;
-                next() => index>=size then finished 
-                                      else getElement(index++);
+                next() => index>=size 
+                    then finished 
+                    else getElement(index++);
                 string => outer.string + ".iterator()";
             };
         }
@@ -332,9 +333,9 @@ shared interface List<out Element>
         Integer from=size,
         "The length of the segment to replace." 
         Integer length=0)
-            => length>=0 && 0<=from<=size 
-                    then Patch(list, from, length)
-                    else this;
+            => length>=0 && 0<=from<=size
+            then Patch(list, from, length)
+            else this;
     
     "Determine if the given [[list|sublist]] occurs at the 
      start of this list."
@@ -670,14 +671,14 @@ shared interface List<out Element>
         if (size>0) {
             value end = size-1;
             if (from <= to) {
-                return to < 0 || from > end 
-                    then [] 
-                    else ArraySequence(Array(sublist(from,to)));
+                return to >= 0 && from <= end 
+                    then ArraySequence(Array(sublist(from,to)))
+                    else [];
             }
             else {
-                return from < 0 || to > end 
-                    then [] 
-                    else ArraySequence(Array(sublist(to,from).reversed));
+                return from >= 0 && to <= end 
+                    then ArraySequence(Array(sublist(to,from).reversed))
+                    else [];
             }
         }
         else {
@@ -763,19 +764,23 @@ shared interface List<out Element>
         
         span(Integer from, Integer to)
                 => clone()[from..to];
-        spanFrom(Integer from) => clone()[from...];
-        spanTo(Integer to) => clone()[...to];
+        
+        spanFrom(Integer from) 
+                => clone()[from...];
+        
+        spanTo(Integer to) 
+                => clone()[...to];
         
         string => if (exists endIndex=lastIndex)
-                then "{ 0, ... , ``endIndex`` }"
-                else "{}";
+            then "{ 0, ... , ``endIndex`` }"
+            else "{}";
         
-        iterator() => object
-                satisfies Iterator<Integer> {
-            variable value i=0;
-            next() => i<size then i++ else finished;
-            string => "``outer.string``.iterator()";
-        };
+        iterator() 
+                => object satisfies Iterator<Integer> {
+                variable value i=0;
+                next() => i<size then i++ else finished;
+                string => "``outer.string``.iterator()";
+            };
         
     }
     
@@ -790,33 +795,34 @@ shared interface List<out Element>
                 then null 
                 else outer.getFromFirst(index+from);
         
-        shared actual Integer? lastIndex {
-            value size = outer.size-from;
-            return size>0 then size-1;
-        }
+        lastIndex 
+                => let (size = outer.size-from) 
+                    size>0 then size-1;
         
         measure(Integer from, Integer length) 
                 => outer[from+this.from:length];
         
         span(Integer from, Integer to) 
                 => outer[from+this.from..to+this.from];
-        spanFrom(Integer from) => outer[from+this.from...];
-        spanTo(Integer to) => outer[this.from..to+this.from];
+        
+        spanFrom(Integer from) 
+                => outer[from+this.from...];
+        
+        spanTo(Integer to) 
+                => outer[this.from..to+this.from];
         
         clone() => outer.clone().Rest(from);
         
-        shared actual Iterator<Element> iterator() {
-            value iter = outer.iterator();
-            variable value i=0;
-            while (i++<from) {
-                iter.next();
-            }
-            return object 
-                    satisfies Iterator<Element> {
+        iterator() 
+                => let (iter = outer.iterator()) 
+            object satisfies Iterator<Element> {
+                variable value i=0;
+                while (i++<from) {
+                    iter.next();
+                }
                 next() => iter.next();
                 string => "``outer.string``.iterator()";
             };
-        }
         
     }
     
@@ -831,11 +837,10 @@ shared interface List<out Element>
                 then outer.getFromFirst(index)
                 else null;
         
-        shared actual Integer? lastIndex {
-            value endIndex = outer.size-1;
-            return endIndex>=0
-                then (endIndex<to then endIndex else to);
-        }
+        lastIndex 
+                => let (endIndex = outer.size-1) 
+                    endIndex>=0 then
+                        (endIndex<to then endIndex else to);
         
         measure(Integer from, Integer length) 
                 => from+length-1>to 
@@ -846,7 +851,10 @@ shared interface List<out Element>
                 => to>this.to
                     then outer[from..this.to] 
                     else outer[from..to];
-        spanFrom(Integer from) => outer[from..to];
+        
+        spanFrom(Integer from) 
+                => outer[from..to];
+        
         spanTo(Integer to)
                 => to>this.to
                     then outer[...this.to] 
@@ -854,35 +862,33 @@ shared interface List<out Element>
         
         clone() => outer.clone().Sublist(to);
         
-        shared actual Iterator<Element> iterator() {
-            value iter = outer.iterator();
-            variable value i=0;
-            return object
-                    satisfies Iterator<Element> {
-                next() => i++>to then finished else iter.next();
+        iterator() 
+                => let (iter = outer.iterator()) 
+            object satisfies Iterator<Element> {
+                variable value i=0;
+                next() => i++>to 
+                    then finished 
+                    else iter.next();
                 string => "``outer.string``.iterator()";
             };
-        }
         
     }
-    
+            
     class Repeat(Integer times)
             extends Object()
             satisfies List<Element> {
         
         size => outer.size*times;
         
-        shared actual Integer? lastIndex {
-            value size = this.size;
-            return size>0 then size-1;
-        }
+        lastIndex 
+                => let (size = this.size) 
+                    size>0 then size-1;
         
-        shared actual Element? getFromFirst(Integer index) {
-            value size = outer.size;
-            return if (index<size*times) 
-                then outer.getFromFirst(index%size)
-                else null;
-        }
+        getFromFirst(Integer index) 
+                => let (size = outer.size) 
+                    if (index<size*times) 
+                        then outer.getFromFirst(index%size)
+                        else null;
         
         clone() => outer.clone().Repeat(times);
         
@@ -902,29 +908,24 @@ shared interface List<out Element>
         
         size => outer.size+list.size-length;
         
-        shared actual Integer? lastIndex {
-            value size = this.size;
-            return size>0 then size-1;
-        }
+        lastIndex 
+                => let (size = this.size) 
+                    size>0 then size-1;
         
-        shared actual <Element|Other>? getFromFirst(Integer index) {
-            if (index<from) {
-                return outer.getFromFirst(index);
-            }
-            else if (index-from<list.size) {
-                return list.getFromFirst(index-from);
-            }
-            else {
-                return outer.getFromFirst(index-list.size+length);
-            }
-        }
+        getFromFirst(Integer index) 
+                => if (index<from) then
+                    outer.getFromFirst(index)
+                else if (index-from<list.size) then
+                    list.getFromFirst(index-from)
+                else
+                    outer.getFromFirst(index-list.size+length);
         
         clone() => outer.clone().Patch(list.clone(),from,length);
         
-        shared actual Iterator<Element|Other> iterator() {
-            value iter = outer.iterator();
-            value patchIter = list.iterator();
-            return object satisfies Iterator<Element|Other> {
+        iterator() 
+                => let (iter = outer.iterator(), 
+                        patchIter = list.iterator()) 
+            object satisfies Iterator<Element|Other> {
                 variable value index = -1;
                 shared actual Element|Other|Finished next() {
                     if (++index==from) {
@@ -932,16 +933,12 @@ shared interface List<out Element>
                             iter.next();
                         }
                     }
-                    if (0<=index-from<list.size) {
-                        return patchIter.next();
-                    }
-                    else {
-                        return iter.next();
-                    }
+                    return 0<=index-from<list.size
+                        then patchIter.next()
+                        else iter.next();
                 }
                 string => "``outer.string``.iterator()";
             };
-        }
         
     }
     
@@ -957,48 +954,42 @@ shared interface List<out Element>
         reversed => outer;
         
         getFromFirst(Integer index)
-            => if (size>0)
-            then outer.getFromFirst(size-1-index)
-            else null;
+                => if (size>0)
+                then outer.getFromFirst(size-1-index)
+                else null;
         
-        shared actual List<Element> measure(Integer from, Integer length) {
-            if (size>0, length>1) {
-                value start = size-1-from;
-                return outer[start..start-length+1];
-            }
-            else {
-                return [];
-            }
-        }
-        
-        span(Integer from, Integer to) => outer[to..from];
-        
-        shared actual List<Element> spanFrom(Integer from) {
-            value endIndex = size-1;
-            return if (endIndex>=0, from<=endIndex) 
-                then outer[endIndex-from..0]
+        measure(Integer from, Integer length)
+                => if (size>0 && length>0)
+                then (let (start = size-1-from) 
+                        outer[start..start-length+1])
                 else [];
-        }
         
-        shared actual List<Element> spanTo(Integer to) {
-            value endIndex = size-1;
-            return if (endIndex>=0, to>=0)
-                then outer[endIndex..endIndex-to]
-                else [];
-        }
+        span(Integer from, Integer to) 
+                => outer[to..from];
+        
+        spanFrom(Integer from) 
+                => let (endIndex = size-1) 
+                    if (endIndex>=0, from<=endIndex) 
+                        then outer[endIndex-from..0]
+                        else [];
+        
+        spanTo(Integer to)
+                => let (endIndex = size-1) 
+                    if (endIndex>=0 && to>=0)
+                        then outer[endIndex..endIndex-to]
+                        else [];
         
         clone() => outer.clone().reversed;
         
-        shared actual Iterator<Element> iterator() {
-            value outerList=outer;
-            return object 
-                    satisfies Iterator<Element> {
+        iterator() 
+                => let (outerList = outer) 
+            object satisfies Iterator<Element> {
                 variable value index=outerList.size-1;
-                next() => index<0 then finished 
-                                  else outerList.getElement(index--);
+                next() => index<0 
+                    then finished 
+                    else outerList.getElement(index--);
                 string => "``outer.string``.iterator()";
             };
-        }
         
     }
     

@@ -66,8 +66,14 @@ shared sealed interface Sequence<out Element>
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
+    "A sequence containing the elements of this sequence in
+     reverse order to the order in which they occur in this
+     sequence."
     shared default actual [Element+] reversed => Reverse();
     
+    "Produced a sequence formed by repeating the elements of
+     this sequence the given [[number of times|times]], or
+     the [[empty sequence|empty]] if `times<=0`."
     shared default actual Element[] repeat(Integer times) 
             => times<=0 then [] else Repeat(times);
     
@@ -208,7 +214,8 @@ shared sealed interface Sequence<out Element>
                 else (let (start = size-1-from)
                         outer[start..start-length+1]);
         
-        span(Integer from, Integer to) => outer[to..from];
+        span(Integer from, Integer to) 
+                => outer[to..from];
         
         spanFrom(Integer from) 
                 => let (endIndex = size-1)
@@ -222,18 +229,16 @@ shared sealed interface Sequence<out Element>
                 else (let (endIndex = size-1) 
                         outer[endIndex..endIndex-to]);
         
-        shared actual Iterator<Element> iterator() {
-            value outerList=outer;
-            return object 
-                    satisfies Iterator<Element> {
-                variable value index=outerList.size-1;
+        iterator() 
+                => let (outerList = outer) 
+            object satisfies Iterator<Element> {
+                variable value index = outerList.size-1;
                 next() => index<0 
-                        then finished 
-                        else outerList.getElement(index--);
+                    then finished 
+                    else outerList.getElement(index--);
                 string => "``outer.string``.iterator()";
             };
-        }
-
+        
     }
     
     class Repeat(Integer times)

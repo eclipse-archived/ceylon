@@ -221,41 +221,35 @@ shared interface Map<out Key,out Item>
     Map<Key|OtherKey,Item|OtherItem> patch<OtherKey,OtherItem>
             (Map<OtherKey,OtherItem> other) 
             given OtherKey satisfies Object 
-            given OtherItem satisfies Object {
-        object patch 
-                extends Object()
-                satisfies Map<Key|OtherKey,Item|OtherItem> {
-            
-            get(Object key) => other[key] else outer[key];
-            
-            clone() => outer.clone().patch(other.clone());
-            
-            defines(Object key) 
-                    => other.defines(key) || 
-                       outer.defines(key);
-            
-            shared actual Boolean contains(Object entry) {
-                if (is Entry<Object,Object> entry) {
-                    return entry in other || 
-                            !other.defines(entry.key) 
-                                && entry in outer;
-                }
-                else {
-                    return false;
-                }
-            }
-            
-            //efficient when map is much smaller than outer,
-            //which is probably the common case 
-            size => outer.size +
-                    other.keys.count(not(outer.defines));
-            
-            iterator() => ChainedIterator(other,
-                outer.filter(not(other.contains)));
-            
-        }
-        return patch;
-    }
+            given OtherItem satisfies Object 
+            => object 
+            extends Object()
+            satisfies Map<Key|OtherKey,Item|OtherItem> {
+        
+        get(Object key) => other[key] else outer[key];
+        
+        clone() => outer.clone().patch(other.clone());
+        
+        defines(Object key) 
+                => other.defines(key) || 
+                outer.defines(key);
+        
+        contains(Object entry)
+            => if (is Entry<Object,Object> entry)
+            then entry in other ||
+                    !other.defines(entry.key)
+                    && entry in outer
+            else false;
+        
+        //efficient when map is much smaller than outer,
+        //which is probably the common case 
+        size => outer.size +
+                other.keys.count(not(outer.defines));
+        
+        iterator() => ChainedIterator(other,
+            outer.filter(not(other.contains)));
+        
+    };
     
 }
 
