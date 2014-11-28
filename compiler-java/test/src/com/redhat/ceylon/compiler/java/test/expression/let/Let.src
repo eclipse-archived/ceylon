@@ -15,8 +15,8 @@ final class letMethod_ {
         final .java.lang.String s = (
             let
             {
-                .java.lang.String x = "hello";
-                .java.lang.String y = "world";
+                final .java.lang.String x = "hello";
+                final .java.lang.String y = "world";
             }
             returning x + " " + y;
         );
@@ -24,31 +24,31 @@ final class letMethod_ {
         final .java.lang.String s2 = (
             let
             {
-                .ceylon.language.String x = sOrNull;
-                .java.lang.String y = "world";
+                final .ceylon.language.String x = sOrNull;
+                final .java.lang.String y = "world";
             }
             returning y;
         );
         final .ceylon.language.String s3 = (
             let
             {
-                .ceylon.language.String x = sOrNull;
-                .java.lang.String y = "world";
+                final .ceylon.language.String x = sOrNull;
+                final .java.lang.String y = "world";
             }
             returning x;
         );
         final .java.lang.String s4 = (
             let
             {
-                .java.lang.Object x = .ceylon.language.String.instance("hello");
-                .java.lang.Object y = .ceylon.language.String.instance("world");
+                final .java.lang.Object x = .ceylon.language.String.instance("hello");
+                final .java.lang.Object y = .ceylon.language.String.instance("world");
             }
             returning new .java.lang.StringBuilder().append(x.toString()).append(" ").append(y.toString()).toString();
         );
         final .com.redhat.ceylon.compiler.java.test.expression.let.LetA a = (.com.redhat.ceylon.compiler.java.test.expression.let.LetA)(
             let
             {
-                .java.lang.Object x = .ceylon.language.nothing_.get_();
+                final .java.lang.Object x = .ceylon.language.nothing_.get_();
             }
             returning x;
         );
