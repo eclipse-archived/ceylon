@@ -127,8 +127,11 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
                     if(firstDefaulted != -1){
                         int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass()) 
                                 ? classModel.getTypeParameters().size() : 0;
-                        // this doesn't need to count synthetic parameters because we only use the constructor for Java types
-                        // which can't have defaulted parameters
+                        // non-shared member classes don't get instantiators, so there's the 
+                        // synthetic outerthis parameter to account for.
+                        if (javaClass.isMemberClass()) {
+                            reifiedTypeParameterCount++;
+                        }
                         int params = constr.getParameterTypes().length - reifiedTypeParameterCount;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
