@@ -18,15 +18,28 @@ shared final native class Array<Element>({Element*} elements)
     //shared actual native Element? get(Integer index);
     
     "Get the element at the specified index, where the array
-        is indexed from the _end_ of the array, or `null` if
-        the index falls outside the bounds of this array."
-    shared actual native 
-    Element? getFromLast(Integer index);
+     is indexed from the _end_ of the array, or `null` if
+     the index falls outside the bounds of this array."
+    shared actual native Element? getFromLast(Integer index);
     
     "Get the element at the specified index, or `null` if
-        the index falls outside the bounds of this array."
-    shared actual native 
-    Element? getFromFirst(Integer index);
+     the index falls outside the bounds of this array."
+    shared actual native Element? getFromFirst(Integer index);
+    
+    shared actual native Integer? lastIndex;
+    
+    shared actual native Element? first;
+    shared actual native Element? last;
+    
+    shared actual native Boolean empty;
+    shared actual native Integer size;
+    shared actual native Boolean defines(Integer index);
+    shared actual native Iterator<Element> iterator();
+    shared actual native Boolean contains(Object element);
+    shared actual native Element[] sequence();
+    
+    "A new array with the same elements as this array."
+    shared actual native Array<Element> clone();
     
     "Replace the existing element at the specified index 
      with the given element."
@@ -57,21 +70,6 @@ shared final native class Array<Element>({Element*} elements)
         "The number of elements to copy."
         Integer length = size - sourcePosition);
     
-    shared actual native Integer? lastIndex;
-    
-    shared actual native Element? first;
-    shared actual native Element? last;
-    
-    "A new array with the same elements as this array."
-    shared actual native Array<Element> clone();
-    
-    shared actual native Boolean empty;
-    shared actual native Integer size;
-    shared actual native Boolean defines(Integer index);
-    shared actual native Iterator<Element> iterator();
-    shared actual native Boolean contains(Object element);
-    shared actual native Element[] sequence();
-    
     shared actual native 
     Integer count(Boolean selecting(Element element));
     
@@ -91,13 +89,15 @@ shared final native class Array<Element>({Element*} elements)
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 
      the array."
-    shared native void reverseInPlace();
+    shared native 
+    void reverseInPlace();
     
     "Sorts the elements in this array according to the 
      order induced by the given 
      [[comparison function|comparing]]. This operation 
      works by side-effect, modifying the array."
-    shared native void sortInPlace(
+    shared native 
+    void sortInPlace(
         "A comparison function that compares pairs of
          elements of this array."
         Comparison comparing(Element x, Element y));
