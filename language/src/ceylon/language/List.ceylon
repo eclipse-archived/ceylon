@@ -57,6 +57,47 @@ shared interface List<out Element>
                   Correspondence<Integer,Element> &
                   Ranged<Integer,Element,List<Element>> {
     
+    "The first element of this `List`, if any."
+    shared actual default Element? first => getFromFirst(0);
+    
+    "The last element of this `List`, if any."
+    shared actual default Element? last => getFromLast(0);
+    
+    "Returns the element of this list with the given 
+     [[index]] if the index refers to an element of this
+     list, that is, if `0<=index<=list.lastIndex`, or `null` 
+     otherwise. The first element of the list has index `0`,
+     and the last element has index [[lastIndex]]."
+    shared actual Element? get(Integer index) 
+            => getFromFirst(index);
+    
+    "Returns the element of this list with the given 
+     [[index]] if the index refers to an element of this
+     list, that is, if `0<=index<=list.lastIndex`, or 
+     `null` otherwise. The first element of the list has 
+     index `0`, and the last element has index [[lastIndex]]."
+    see (`function getFromLast`)
+    shared actual formal Element? getFromFirst(Integer index);
+    
+    "Returns the element of this list with the given 
+     [[index]], where the list is indexed from the _end_ of 
+     the list instead of from the start, if the index refers
+     to an element of this list, or `null` otherwise. The
+     last element of the list has index `0`, and the first
+     element has index [[lastIndex]]."
+    shared default Element? getFromLast(Integer index)
+            => getFromFirst(size-1-index);
+    
+    Element getElement(Integer index) {
+        if (exists element = getFromFirst(index)) { 
+            return element;
+        }
+        else {
+            assert (is Element null);
+            return null; 
+        }
+    }
+    
     "The index of the last element of the list, or `null` if 
      the list is empty."
     see (`value List.size`)
@@ -67,23 +108,6 @@ shared interface List<out Element>
     see (`value List.lastIndex`)
     shared actual default Integer size 
             => (lastIndex else -1) + 1;
-    
-    shared actual default Boolean shorterThan(Integer length) 
-            => size<length;
-    
-    shared actual default Boolean longerThan(Integer length) 
-            => size>length;
-    
-    "Returns the first element of this `List`, if any."
-    shared actual default Element? first => getFromFirst(0);
-    
-    "Returns the last element of this `List`, if any."
-    shared actual default Element? last => getFromLast(0);
-    
-    "The rest of the list, without the first element.
-     
-     This is a lazy operation returning a view of this list."
-    shared actual default List<Element> rest => Rest(1);
     
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
@@ -106,72 +130,15 @@ shared interface List<out Element>
         }
     }
     
-    "Returns the element of this list with the given 
-     [[index]] if the index refers to an element of this
-     list, that is, if `0<=index<=list.lastIndex`, or 
-     `null` otherwise. The first element of the list has 
-     index `0`, and the last element has index [[lastIndex]]."
-    see (`function getFromLast`)
-    shared actual formal Element? getFromFirst(Integer index);
-    
-    "Returns the element of this list with the given 
-     [[index]], where the list is indexed from the _end_ of 
-     the list instead of from the start, if the index refers
-     to an element of this list, or `null` otherwise. The
-     last element of the list has index `0`, and the first
-     element has index [[lastIndex]]."
-    shared default Element? getFromLast(Integer index)
-            => getFromFirst(size-1-index);
-    
-    "Returns the element of this list with the given 
-     [[index]] if the index refers to an element of this
-     list, that is, if `0<=index<=list.lastIndex`, or `null` 
-     otherwise. The first element of the list has index `0`,
-     and the last element has index [[lastIndex]]."
-    shared actual Element? get(Integer index) 
-            => getFromFirst(index);
-    
-    Element getElement(Integer index) {
-        if (exists element = getFromFirst(index)) { 
-            return element;
-        }
-        else {
-            assert (is Element null);
-            return null; 
-        }
-    }
-    
-    shared actual default Iterator<Element> iterator() {
-        if (size>0) {
-            return object
-                    satisfies Iterator<Element> {
-                variable Integer index = 0;
-                value size = outer.size;
-                next() => index>=size 
-                    then finished 
-                    else getElement(index++);
-                string => outer.string + ".iterator()";
-            };
-        }
-        else {
-            return emptyIterator;
-        }
-    }
+    "The rest of the list, without the first element.
+     
+     This is a lazy operation returning a view of this list."
+    shared actual default List<Element> rest => Rest(1);
     
     "A list containing all indexes of this list.
      
      This is a lazy operation."
     shared actual default List<Integer> keys => Indexes();
-    
-    "A list containing the elements of this list repeated 
-     the [[given number of times|times]], or an empty list
-     if `times<=0`. For every `index` of a repeated `list`:
-     
-         list.repeat(n)[index]==list[index%n]
-     
-     This is a lazy operation returning a view of this list."
-    shared actual default List<Element> repeat(Integer times) 
-            => Repeat(times);
     
     "A list containing the elements of this list in reverse 
      order to the order in which they occur in this list. 
@@ -182,8 +149,28 @@ shared interface List<out Element>
      This is a lazy operation returning a view of this list."
     shared default List<Element> reversed => Reversed();
     
+    "A shallow copy of this list, that is, a list with the
+     same elements as this list, which do not change if the
+     elements of this list change."
     shared actual default List<Element> clone() 
             => sequence();
+    
+    shared actual default Iterator<Element> iterator() {
+        if (size>0) {
+            return object
+                    satisfies Iterator<Element> {
+                variable Integer index = 0;
+                value size = outer.size;
+                next() => index>=size 
+                then finished 
+                else getElement(index++);
+                string => outer.string + ".iterator()";
+            };
+        }
+        else {
+            return emptyIterator;
+        }
+    }
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
@@ -245,8 +232,25 @@ shared interface List<out Element>
         return hash;
     }
     
-    shared default actual Element? find(
-        Boolean selecting(Element&Object elem)) {
+    shared actual default
+    Boolean shorterThan(Integer length) => size<length;
+    
+    shared actual default 
+    Boolean longerThan(Integer length) => size>length;
+    
+    "A list containing the elements of this list repeated 
+     the [[given number of times|times]], or an empty list
+     if `times<=0`. For every `index` of a repeated `list`:
+     
+         list.repeat(n)[index]==list[index%n]
+     
+     This is a lazy operation returning a view of this list."
+    shared actual default 
+    List<Element> repeat(Integer times) => Repeat(times);
+    
+    shared default actual 
+    Element? find(
+            Boolean selecting(Element&Object elem)) {
         variable value index = 0;
         while (index<size) {
             if (exists elem = getFromFirst(index++)) {
@@ -258,7 +262,8 @@ shared interface List<out Element>
         return null;
     }
     
-    shared default actual Element? findLast(
+    shared default actual 
+    Element? findLast(
             Boolean selecting(Element&Object elem)) {
         variable value index = size-1;
         while (index >= 0) {
@@ -276,7 +281,8 @@ shared interface List<out Element>
      
      This is a lazy operation, returning a view of this list."
     see (`function skip`)
-    shared default List<Element> sublistFrom(Integer from) 
+    shared default 
+    List<Element> sublistFrom(Integer from) 
             => from<0 then this else Rest(from); 
     
     "A sublist of this list, ending at the element with the 
@@ -285,7 +291,8 @@ shared interface List<out Element>
      This is a lazy operation, returning a view of this list."
     see (`function take`,
         `function initial`)
-    shared default List<Element> sublistTo(Integer to) 
+    shared default 
+    List<Element> sublistTo(Integer to) 
             => to<0 then this else Sublist(to);
     
     "A sublist of this list, starting at the element with
@@ -293,7 +300,8 @@ shared interface List<out Element>
      [[to]].
      
      This is a lazy operation, returning a view of this list."
-    shared default List<Element> sublist(Integer from, Integer to) 
+    shared default 
+    List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
     
     "Return a list formed by patching the given [[list]] 
@@ -325,7 +333,8 @@ shared interface List<out Element>
      
      If `length<0`, or if `from` is outside the range 
      `0..size`, return this list."
-    shared default List<Element|Other> patch<Other>(
+    shared default 
+    List<Element|Other> patch<Other>(
         "The list of new elements."
         List<Other> list,
         "The index at which the elements will occur, and
@@ -340,18 +349,21 @@ shared interface List<out Element>
     "Determine if the given [[list|sublist]] occurs at the 
      start of this list."
     see (`function endsWith`)
-    shared default Boolean startsWith(List<Anything> sublist)
+    shared default 
+    Boolean startsWith(List<Anything> sublist)
             => includesAt(0, sublist);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
     see (`function startsWith`)
-    shared default Boolean endsWith(List<Anything> sublist)
+    shared default 
+    Boolean endsWith(List<Anything> sublist)
             => includesAt(size-sublist.size, sublist);
     
     "Determine if the given [[list|sublist]] occurs as a 
      sublist at the given index of this list."
-    shared default Boolean includesAt(
+    shared default 
+    Boolean includesAt(
             "The index at which the [[sublist]] might occur."
             Integer index, 
             List<Anything> sublist) {
@@ -382,7 +394,8 @@ shared interface List<out Element>
     
     "Determine if the given [[list|sublist]] occurs as a 
      sublist at some index in this list."
-    shared default Boolean includes(List<Anything> sublist) {
+    shared default 
+    Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
         }
@@ -396,13 +409,15 @@ shared interface List<out Element>
     
     "The indexes in this list at which the given 
      [[list|sublist]] occurs as a sublist."
-    shared default {Integer*} inclusions(List<Anything> sublist) 
+    shared default 
+    {Integer*} inclusions(List<Anything> sublist) 
             => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
     "The first index in this list at which the given 
      [[list|sublist]] occurs as a sublist."
-    shared default Integer? firstInclusion(List<Anything> sublist) {
+    shared default 
+    Integer? firstInclusion(List<Anything> sublist) {
         for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -415,7 +430,8 @@ shared interface List<out Element>
     
     "The last index in this list at which the given 
      [[list|sublist]] occurs as a sublist."
-    shared default Integer? lastInclusion(List<Anything> sublist) {
+    shared default 
+    Integer? lastInclusion(List<Anything> sublist) {
         for (index in (0:size-sublist.size+1).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -426,11 +442,14 @@ shared interface List<out Element>
         }
     }
     
-    "Determines if the given value occurs at the given index 
-     in this list."
-    shared default Boolean occursAt(
+    "Determines if the given [[value|element]] occurs at the 
+     given index in this list."
+    shared default 
+    Boolean occursAt(
             "The index at which the value might occur."
             Integer index, 
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
             Anything element) {
         value elem = getFromFirst(index);
         if (exists element) {
@@ -443,9 +462,13 @@ shared interface List<out Element>
         }
     }
     
-    "Determines if the given value occurs as an element of 
-     this list."
-    shared default Boolean occurs(Anything element) {
+    "Determines if the given [[value|element]] occurs as an 
+     element of this list."
+    shared default 
+    Boolean occurs(
+        "The value. If null, it is considered to occur
+         at any index in this list with a null element."
+        Anything element) {
         for (index in 0:size) {
             if (occursAt(index,element)) {
                 return true;
@@ -456,15 +479,23 @@ shared interface List<out Element>
         }
     }
     
-    "The indexes in this list at which the given [[element]] 
-     occurs."
-    shared default {Integer*} occurrences(Anything element)
+    "The indexes in this list at which the given 
+     [[value|element]] occurs."
+    shared default 
+    {Integer*} occurrences(
+        "The value. If null, it is considered to occur
+         at any index in this list with a null element."
+        Anything element)
             => { for (index in 0:size) 
                     if (occursAt(index,element)) index };
     
     "The first index in this list at which the given 
-     [[element]] occurs."
-    shared default Integer? firstOccurrence(Anything element) {
+     [[value|element]] occurs."
+    shared default 
+    Integer? firstOccurrence(
+        "The value. If null, it is considered to occur
+         at any index in this list with a null element."
+        Anything element) {
         for (index in 0:size) {
             if (occursAt(index,element)) {
                 return index;
@@ -476,8 +507,12 @@ shared interface List<out Element>
     }
     
     "The last index in this list at which the given 
-     [[element]] occurs."
-    shared default Integer? lastOccurrence(Anything element) {
+     [[value|element]] occurs."
+    shared default 
+    Integer? lastOccurrence(
+        "The value. If null, it is considered to occur
+         at any index in this list with a null element."
+        Anything element) {
         for (index in (0:size).reversed) {
             if (occursAt(index,element)) {
                 return index;
@@ -487,11 +522,12 @@ shared interface List<out Element>
             return null;
         }
     }
-        
+    
     "The indexes in this list for which the element is not
      null and satisfies the given 
      [[predicate function|selecting]]."
-    shared default {Integer*} indexesWhere(
+    shared default 
+    {Integer*} indexesWhere(
             "The predicate function the indexed elements 
              must satisfy"
             Boolean selecting(Element&Object element)) 
@@ -503,7 +539,8 @@ shared interface List<out Element>
     "The first index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
-    shared default Integer? firstIndexWhere(
+    shared default 
+    Integer? firstIndexWhere(
             "The predicate function the indexed elements 
              must satisfy"
             Boolean selecting(Element&Object element)) {
@@ -521,7 +558,8 @@ shared interface List<out Element>
     "The last index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
-    shared default Integer? lastIndexWhere(
+    shared default 
+    Integer? lastIndexWhere(
             "The predicate function the indexed elements 
              must satisfy."
             Boolean selecting(Element&Object element)) {
@@ -542,7 +580,8 @@ shared interface List<out Element>
      longer than this list.
      
      This is an eager operation."
-    shared default List<Element> trim(
+    shared default 
+    List<Element> trim(
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
@@ -583,7 +622,8 @@ shared interface List<out Element>
      this list.
      
      This is an eager operation."
-    shared default List<Element> trimLeading(
+    shared default 
+    List<Element> trimLeading(
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
@@ -605,7 +645,8 @@ shared interface List<out Element>
      this list.
      
      This is an eager operation."
-    shared default List<Element> trimTrailing(
+    shared default 
+    List<Element> trimTrailing(
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
@@ -649,7 +690,8 @@ shared interface List<out Element>
     see (`function terminal`, 
          `function sublistTo`,
          `function take`)
-    shared default List<Element> initial(Integer length)
+    shared default 
+    List<Element> initial(Integer length)
             => this[...length-1];
     
     "Select the last elements of the list, returning a list 
@@ -663,7 +705,8 @@ shared interface List<out Element>
      
      This is an eager operation."
     see (`function initial`)
-    shared default List<Element> terminal(Integer length) 
+    shared default 
+    List<Element> terminal(Integer length) 
             => this[size-length...];
     
     shared actual default 
@@ -727,7 +770,8 @@ shared interface List<out Element>
     
     "A nonempty sequence containing the results of applying 
      the given mapping to the elements of this sequence."
-    shared default actual Result[] collect<Result>(
+    shared default actual 
+    Result[] collect<Result>(
         "The transformation applied to the elements."
         Result collecting(Element element)) {
         if (empty) {
@@ -933,7 +977,7 @@ shared interface List<out Element>
                             iter.next();
                         }
                     }
-                    return 0<=index-from<list.size
+                    return if (0<=index-from<list.size)
                         then patchIter.next()
                         else iter.next();
                 }

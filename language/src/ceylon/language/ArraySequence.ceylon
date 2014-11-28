@@ -18,9 +18,11 @@ class ArraySequence<out Element>(array)
     
     assert (!array.empty);
     
-    getFromFirst(Integer index) => array.getFromFirst(index);
+    getFromFirst(Integer index) 
+            => array.getFromFirst(index);
     
-    contains(Object element) => array.contains(element);
+    contains(Object element) 
+            => array.contains(element);
     
     size => array.size;
     
@@ -46,24 +48,33 @@ class ArraySequence<out Element>(array)
         }
     }
     
-    rest => size == 1 then [] else ArraySequence(array[1...]);
+    rest => size == 1 
+        then [] 
+        else ArraySequence(array[1...]);
     
     clone() => ArraySequence(array.clone());
     
-    shared default actual [Result+] collect<Result>(
-        Result collecting(Element element)) {
-        assert (nonempty sequence = array.collect(collecting));
+    shared default actual 
+    [Result+] collect<Result>
+            (Result collecting(Element element)) {
+        assert (nonempty sequence 
+            = array.collect(collecting));
         return sequence;
     }
     
-    shared actual [Element+] sort(
-        Comparison comparing(Element x, Element y)) {
-        assert (nonempty sequence = array.sort(comparing));
+    shared actual 
+    [Element+] sort
+            (Comparison comparing(Element x, Element y)) {
+        assert (nonempty sequence 
+            = array.sort(comparing));
         return sequence;
     }
     
-    shared actual Element[] measure(Integer from, Integer length) {
-        if (from > lastIndex || length <= 0 || from + length <= 0) {
+    shared actual 
+    Element[] measure(Integer from, Integer length) {
+        if (from > lastIndex || 
+            length <= 0 || 
+            from + length <= 0) {
             return [];
         }
         else if (from < 0) {
@@ -74,7 +85,8 @@ class ArraySequence<out Element>(array)
         }
     }
     
-    shared actual Element[] span(Integer from, Integer to) {
+    shared actual 
+    Element[] span(Integer from, Integer to) {
         if (from <= to) {
             return to < 0 || from > lastIndex
                 then [] 

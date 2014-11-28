@@ -123,6 +123,14 @@ shared interface Iterable<out Element, out Absent=Null>
     "An iterator for the elements belonging to this stream."
     shared formal Iterator<Element> iterator();
     
+    "Returns `true` if the iterator for this stream produces
+     the given element, or `false` otherwise. In the case of 
+     an infinite stream, this operation never terminates;
+     furthermore, this default implementation iterates all 
+     elements, which might be very expensive."
+    shared actual default Boolean contains(Object element) 
+            => any((e) => if (exists e) then e==element else false);
+    
     "Determines if the stream is empty, that is to say, if 
      the iterator returns no elements."
     shared default Boolean empty 
@@ -167,14 +175,6 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
-    "Returns `true` if the iterator for this stream produces
-     the given element, or `false` otherwise. In the case of 
-     an infinite stream, this operation never terminates;
-     furthermore, this default implementation iterates all 
-     elements, which might be very expensive."
-    shared actual default Boolean contains(Object element) 
-            => any((e) => if (exists e) then e==element else false);
-    
     "The first element returned by the iterator, if any, or 
      `null` if this stream is empty. For a stream with an
      unstable iteration order, a different value might be
@@ -204,6 +204,34 @@ shared interface Iterable<out Element, out Absent=Null>
         return e;
     }
     
+    "The [[index]]th element returned by an iterator of this 
+     stream, or `null` if there are fewer than `index+1`
+     elements in the stream. For a stream with an unstable 
+     iteration order, a different value might be produced 
+     each time `getFromFirst(index)` is called for a given
+     integer `index`."
+    shared default Element? getFromFirst(Integer index) {
+        variable value current = 0;
+        for (element in this) {
+            if (current++==index) {
+                return element;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    "A [[sequence|Sequential]] containing all the elements 
+     of this stream, in the same order they occur in this
+     stream. This operation eagerly evaluates and collects 
+     every element of the stream."
+    shared default Element[] sequence()
+            => let (array = Array(this)) 
+                if (array.empty)
+                    then []
+                    else ArraySequence(array);
+    
     "A stream containing all but the first element of this 
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time `rest` 
@@ -219,7 +247,7 @@ shared interface Iterable<out Element, out Absent=Null>
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time 
      `exceptLast` is evaluated."
-    shared default {Element*} exceptLast 
+    shared default {Element*} exceptLast
             => object 
             satisfies {Element*} {
         iterator()
@@ -238,35 +266,6 @@ shared interface Iterable<out Element, out Absent=Null>
                 }
             };
     };
-    
-    "A [[sequence|Sequential]] containing all the elements 
-     of this stream, in the same order they occur in this
-     stream. This operation eagerly evaluates and collects 
-     every element of the stream."
-    shared default Element[] sequence() {
-        value array = Array(this);
-        return if (array.empty)
-                then [] 
-                else ArraySequence(array);
-    }
-    
-    "The [[index]]th element returned by an iterator of this 
-     stream, or `null` if there are fewer than `index+1`
-     elements in the stream. For a stream with an unstable 
-     iteration order, a different value might be produced 
-     each time `getFromFirst(index)` is called for a given
-     integer `index`."
-    shared default Element? getFromFirst(Integer index) {
-        variable value current = 0;
-        for (element in this) {
-            if (current++==index) {
-                return element;
-            }
-        }
-        else {
-            return null;
-        }
-    }
     
     "Produces a stream containing the results of applying 
      the given [[mapping|collecting]] to the elements of 
@@ -294,7 +293,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ 1, 10, 100, 1000, 10000 }`."
     see (`function collect`)
-    shared default Iterable<Result,Absent> map<Result>(
+    shared default 
+    Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element element)) 
             => { for (elem in this) collecting(elem) };
@@ -322,8 +322,9 @@ shared interface Iterable<out Element, out Absent=Null>
      
          { \"hello\", \"hola\", \"world\", \"mundo\" }"
     see (`function expand`)
-    shared default Iterable<Result,Absent|OtherAbsent> 
-            flatMap<Result,OtherAbsent>(
+    shared default 
+    Iterable<Result,Absent|OtherAbsent>
+    flatMap<Result,OtherAbsent>(
             "The mapping function to apply to the elements 
              of this stream, that produces a new stream of 
              [[Result]]s."
@@ -357,7 +358,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ 13, 26, 39, 52, 65, 78, 91 }`."
     see (`function select`)
-    shared default {Element*} filter(
+    shared default 
+    {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
@@ -386,10 +388,12 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the integer `5050`."
     see (`function reduce`, 
          `function scan`)
-    shared default Result fold<Result>(Result initial)
+    shared default 
+    Result fold<Result>(Result initial)
            ("The accumulating function that accepts an
              intermediate result, and the next element."
-            Result accumulating(Result partial, Element element)) {
+            Result accumulating(Result partial, 
+                                Element element)) {
         variable value partial = initial;
         for (elem in this) {
             partial = accumulating(partial, elem);
@@ -422,10 +426,12 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the integer `5050`." 
     see (`function fold`)
-    shared default Result|Element|Absent reduce<Result>(
+    shared default 
+    Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
-            Result accumulating(Result|Element partial, Element element)) {
+            Result accumulating(Result|Element partial, 
+                                Element element)) {
         value it = iterator();
         if (!is Finished initial = it.next()) {
             variable Result|Element partial = initial;
@@ -473,10 +479,12 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ 0, 1, 3, 6, 10 }`."
     see (`function fold`)
-    shared default {Result+} scan<Result>(Result initial)
+    shared default 
+    {Result+} scan<Result>(Result initial)
            ("The accumulating function that accepts
              the running total and the next element."
-        Result accumulating(Result partial, Element element))
+            Result accumulating(Result partial, 
+                                Element element))
             => object 
             satisfies {Result+} {
         empty => false;
@@ -514,7 +522,8 @@ shared interface Iterable<out Element, out Absent=Null>
          (-10..10).find(Integer.positive)
      
      evaluates to `1`."
-    shared default Element? find(
+    shared default 
+    Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
         for (elem in this) {
@@ -535,7 +544,8 @@ shared interface Iterable<out Element, out Absent=Null>
          (-10..10).findLast(3.divides)
      
      evaluates to `9`."
-    shared default Element? findLast(
+    shared default 
+    Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
         variable Element? last = null;
@@ -567,7 +577,8 @@ shared interface Iterable<out Element, out Absent=Null>
      and [[ceylon.language::min]] may be used to find the  
      largest and smallest values in a stream of [[Comparable]] 
      values, according to the natural order of its elements."
-    shared default Element|Absent max(
+    shared default 
+    Element|Absent max(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
         value it = iterator();
@@ -595,7 +606,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
-    shared default Iterable<Result,Absent>(*Args) 
+    shared default 
+    Iterable<Result,Absent>(*Args) 
     spread<Result,Args>(Result(*Args) method(Element element))
             given Args satisfies Anything[]
             //=> flatten((Args args) => map(shuffle(method)(*args)));
@@ -647,7 +659,8 @@ shared interface Iterable<out Element, out Absent=Null>
      according to the natural order of its elements."
     see (`function byIncreasing`, 
          `function byDecreasing`)
-    shared default Element[] sort(
+    shared default 
+    Element[] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
         value array = Array(this);
@@ -669,7 +682,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          it.collect(f) == [*it.map(f)]"
     see (`function map`)
-    shared default Result[] collect<Result>(
+    shared default 
+    Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) 
             => map(collecting).sequence();
@@ -684,7 +698,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          it.select(p) == [*it.filter(p)]"
     see (`function filter`)
-    shared default Element[] select(
+    shared default 
+    Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) 
              => filter(selecting).sequence();
@@ -692,7 +707,8 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces the number of elements in this stream that 
      satisfy the [[given predicate function|selecting]].
      For an infinite stream, this method never terminates."
-    shared default Integer count(
+    shared default 
+    Integer count(
         "The predicate satisfied by the elements to be 
          counted."
         Boolean selecting(Element element)) {
@@ -711,7 +727,8 @@ shared interface Iterable<out Element, out Absent=Null>
      `false`. For an infinite stream, this operation might 
      not terminate."
     see (`function every`)
-    shared default Boolean any(
+    shared default 
+    Boolean any(
             "The predicate that at least one element 
              must satisfy."
             Boolean selecting(Element element)) {
@@ -728,7 +745,8 @@ shared interface Iterable<out Element, out Absent=Null>
      is empty, return `true`. For an infinite stream, this 
      operation might not terminate."
     see (`function any`)
-    shared default Boolean every(
+    shared default 
+    Boolean every(
             "The predicate that all elements must 
              satisfy."
             Boolean selecting(Element element)) {
@@ -752,7 +770,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function List.sublistFrom`,
          `function skipWhile`,
          `function take`)
-    shared default {Element*} skip(Integer skipping) {
+    shared default 
+    {Element*} skip(Integer skipping) {
         if (skipping <= 0) {
             return this;
         }
@@ -783,7 +802,8 @@ shared interface Iterable<out Element, out Absent=Null>
          `function List.initial`,
          `function takeWhile`,
          `function skip`)
-    shared default {Element*} take(Integer taking) {
+    shared default 
+    {Element*} take(Integer taking) {
         if (taking <= 0) {
             return {}; 
         }
@@ -811,7 +831,8 @@ shared interface Iterable<out Element, out Absent=Null>
      given [[predicate function|skipping]] returns `false`."
     see (`function skip`,
          `function takeWhile`)
-    shared default {Element*} skipWhile(
+    shared default 
+    {Element*} skipWhile(
             "The function that returns `false` when the 
              resulting stream should stop skipping
              elements from the stream."
@@ -847,7 +868,8 @@ shared interface Iterable<out Element, out Absent=Null>
      returns `false`."
     see (`function take`,
          `function skipWhile`)
-    shared default {Element*} takeWhile(
+    shared default 
+    {Element*} takeWhile(
             "The function that returns `false` when the 
              resulting stream should stop taking elements
              from this stream."
@@ -884,7 +906,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 1, 2, 1, 2, 1, 2 }`."
     see (`value cycled`)
-    shared default {Element*} repeat(Integer times) 
+    shared default 
+    {Element*} repeat(Integer times) 
             => object 
             satisfies {Element*} {
         size => times * outer.size;
@@ -906,7 +929,8 @@ shared interface Iterable<out Element, out Absent=Null>
     throws (`class AssertionError`, 
             "if the given step size is nonpositive, 
              i.e. `step<1`")
-    shared default Iterable<Element,Absent> by(Integer step) {
+    shared default 
+    Iterable<Element,Absent> by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
         if (step == 1) {
@@ -943,10 +967,11 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ 123, 0, 456 }`."
     see (`value coalesced`)
-    shared default Iterable<Element&Object|Default,Absent>
+    shared default 
+    Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
-        "A default value that replaces `null` elements."
-        Default defaultValue)
+            "A default value that replaces `null` elements."
+            Default defaultValue)
             => { for (elem in this) elem else defaultValue };
     
     "The non-null elements of this stream, in the order in
@@ -959,7 +984,8 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"123\", \"abc\", \"456\"}.map(parseInteger).coalesced
      
      results in the stream `{ 123, 456 }`."
-    shared default {Element&Object*} coalesced 
+    shared default 
+    {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
     "A stream containing all [[entries|Entry]] of form 
@@ -972,7 +998,8 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
-    shared default Iterable<<Integer->Element>,Absent> indexed 
+    shared default 
+    Iterable<<Integer->Element>,Absent> indexed 
             => object
             satisfies Iterable<<Integer->Element>,Absent> {
         iterator() 
@@ -1005,7 +1032,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`."
-    shared default {[Element,Element]*} paired 
+    shared default 
+    {[Element,Element]*} paired 
             => object 
             satisfies {[Element,Element]*} {
         size => let (size = outer.size-1) size<0 then 0 else size;
@@ -1098,7 +1126,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          { head, *stream }"
     see (`function chain`)
-    shared default {Element|Other+} follow<Other>(Other head) 
+    shared default 
+    {Element|Other+} follow<Other>(Other head) 
             => { head, *this };
     
     "The elements of this stream, in the order in which they 
@@ -1112,7 +1141,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 1, 2, 3, 'a', 'b', 'c' }`."
     see (`function expand`)
-    shared default Iterable<Element|Other,Absent&OtherAbsent> 
+    shared default 
+    Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null 
             => object 
@@ -1133,8 +1163,10 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream 
      `{ [1,'a'], [1,'b'], [2,'a'], [2,'b'], [3,'a'], [3,'b'] }`."
-    shared default Iterable<[Element,Other],Absent|OtherAbsent>
-    product<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
+    shared default 
+    Iterable<[Element,Other],Absent|OtherAbsent>
+    product<Other,OtherAbsent>
+            (Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null
             => { for (x in this) for (y in other) [x,y] };
     
@@ -1147,7 +1179,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
     see (`function repeat`)
-    shared default Iterable<Element,Absent> cycled 
+    shared default 
+    Iterable<Element,Absent> cycled 
             => object 
             satisfies Iterable<Element,Absent> {
         value orig => outer;
@@ -1158,7 +1191,8 @@ shared interface Iterable<out Element, out Absent=Null>
         }
         iterator() 
                 => object satisfies Iterator<Element> {
-                variable Iterator<Element> iter = emptyIterator;
+                variable Iterator<Element> iter 
+                        = emptyIterator;
                 shared actual Element|Finished next() {
                     if (!is Finished next = iter.next()) {
                         return next;
@@ -1187,16 +1221,18 @@ shared interface Iterable<out Element, out Absent=Null>
      evaluates to the string `\"h e l l o\"`."
     throws (`class AssertionError`, "if `step<1`")
     see (`function interleave`)
-    shared default Iterable<Element|Other,Absent> interpose<Other>(
-        "The value to interpose between blocks of elements 
-         of this stream."
-        Other element,
-        "The step size that determines how often the given
-         [[element]] occurs in the resulting stream. The 
-         `element` occurs after each block of size `step` of 
-         elements of this stream. If `step==1`, the `element` 
-         occurs at every second position."
-        Integer step=1) {
+    shared default 
+    Iterable<Element|Other,Absent> interpose<Other>(
+            "The value to interpose between blocks of 
+             elements of this stream."
+            Other element,
+            "The step size that determines how often the 
+             given [[element]] occurs in the resulting 
+             stream. The `element` occurs after each block 
+             of size `step` of elements of this stream. If 
+             `step==1`, the `element` occurs at every second 
+             position."
+            Integer step=1) {
         "step must be strictly positive"
         assert (step>=1);
         return object

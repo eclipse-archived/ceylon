@@ -65,7 +65,8 @@ shared interface Category<in Element=Object>
     "Returns `true` if every one of the given values belongs 
      to this `Category`, or `false` otherwise."
     see (`function contains`)
-    shared default Boolean containsEvery({Element*} elements) {
+    shared default 
+    Boolean containsEvery({Element*} elements) {
         for (element in elements) {
             if (!contains(element)) {
                 return false;
@@ -79,7 +80,8 @@ shared interface Category<in Element=Object>
     "Returns `true` if any one of the given values belongs 
      to this `Category`, or `false` otherwise."
     see (`function contains`)
-    shared default Boolean containsAny({Element*} elements) {
+    shared default 
+    Boolean containsAny({Element*} elements) {
         for (element in elements) {
             if (contains(element)) {
                 return true;

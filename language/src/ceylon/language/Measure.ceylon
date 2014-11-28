@@ -15,7 +15,7 @@ class Measure<Element>(first, size)
     "The size of the range."
     shared actual Integer size;
     
-    "Can't be used for empty segments"
+    "must be nonempty"
     assert (size > 0);
     
     string => first.string + ":" + size.string;
@@ -32,22 +32,16 @@ class Measure<Element>(first, size)
             then []
             else Measure(first.successor, size - 1);
     
-    "The element of the range that occurs [[index]] values
-     after the start of the range."
-    shared actual Element? getFromFirst(Integer index) {
-        if (index < 0 || index >= size) {
-            return null;
-        }
-        return first.neighbour(index);
-    }
+    getFromFirst(Integer index) 
+            => if (index >= 0 && index < size)
+            then first.neighbour(index)
+            else null;
     
     increasing => true;
     decreasing => false;
     
-    "An iterator for the elements of the sized range."
-    shared actual Iterator<Element> iterator()
-            => object
-            satisfies Iterator<Element> {
+    iterator()
+            => object satisfies Iterator<Element> {
         variable value count = 0;
         variable value current = first;
         next() => ++count > size
@@ -55,7 +49,8 @@ class Measure<Element>(first, size)
         string => "(``outer.string``).iterator()";
     };
     
-    shared actual {Element+} by(Integer step) {
+    shared actual 
+    {Element+} by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
         return step == 1 then this else By(step);
@@ -95,7 +90,8 @@ class Measure<Element>(first, size)
     containsElement(Element x)
             => 0 <= x.offset(first) < size;
     
-    shared actual Boolean includes(List<Anything> sublist) {
+    shared actual 
+    Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
         } else if (is Range<Element> sublist) {
@@ -105,7 +101,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Boolean includesRange(Range<Element> sublist) {
+    shared actual 
+    Boolean includesRange(Range<Element> sublist) {
         switch (sublist)
         case (is Measure<Element>) {
             value offset = sublist.first.offset(first);
@@ -121,7 +118,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Boolean equals(Object that) {
+    shared actual 
+    Boolean equals(Object that) {
         if (is Measure<out Object> that) {
             //optimize for another Measure
             return that.size == size && that.first == first;
@@ -134,7 +132,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Element[] measure(Integer from, Integer length) {
+    shared actual 
+    Element[] measure(Integer from, Integer length) {
         if (length <= 0) {
             return [];
         } else {
@@ -144,7 +143,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Element[] span(Integer from, Integer to) {
+    shared actual 
+    Element[] span(Integer from, Integer to) {
         if (from <= to) {
             if (to < 0 || from >= size) {
                 return [];
@@ -164,7 +164,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Element[] spanFrom(Integer from) {
+    shared actual 
+    Element[] spanFrom(Integer from) {
         if (from <= 0) {
             return this;
         } else if (from < size) {
@@ -174,7 +175,8 @@ class Measure<Element>(first, size)
         }
     }
     
-    shared actual Element[] spanTo(Integer to) {
+    shared actual 
+    Element[] spanTo(Integer to) {
         if (to < 0) {
             return [];
         } else if (to < size - 1) {

@@ -97,7 +97,7 @@ shared interface Ranged<in Index, out Element, out Subrange>
      to this ranged stream, the behavior is implementation 
      dependent."
     shared formal Subrange span(Index from, Index to);
-   
+    
     "Obtain a span containing the elements between the given
      [[starting index|from]] and the last index of this 
      ranged object.
@@ -110,7 +110,7 @@ shared interface Ranged<in Index, out Element, out Subrange>
      When the given index does not belong to this ranged 
      stream, the behavior is implementation dependent."
     shared formal Subrange spanFrom(Index from);
-
+    
     "Obtain a span containing the elements between the first 
      index of this ranged stream and given [[end index|to]].
      
@@ -122,7 +122,7 @@ shared interface Ranged<in Index, out Element, out Subrange>
      When the given index does not belong to this ranged 
      stream, the behavior is implementation dependent."
     shared formal Subrange spanTo(Index to);
- 
+    
     "Obtain a measure containing the mapped values starting 
      from the given [[starting index|from]], with the given 
      [[length]]. If `length<=0`, the resulting measure is 

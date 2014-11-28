@@ -39,14 +39,16 @@ shared interface Correspondence<in Key, out Item>
      by this `Correspondence`."
     see (`function Correspondence.defines`)
     shared default Category<Key> keys
-            => object satisfies Category<Key> {
+            => object 
+            satisfies Category<Key> {
         contains(Key key) => defines(key);
     };
     
     "Determines if this `Correspondence` defines a value for
      every one of the given keys."
     see (`function Correspondence.defines`)
-    shared default Boolean definesEvery({Key*} keys) {
+    shared default 
+    Boolean definesEvery({Key*} keys) {
         for (key in keys) {
             if (!defines(key)) {
                 return false;
@@ -60,7 +62,8 @@ shared interface Correspondence<in Key, out Item>
     "Determines if this `Correspondence` defines a value for
      any one of the given keys."
     see (`function Correspondence.defines`)
-    shared default Boolean definesAny({Key*} keys) {
+    shared default 
+    Boolean definesAny({Key*} keys) {
         for (key in keys) {
             if (defines(key)) {
                 return true;
@@ -76,7 +79,8 @@ shared interface Correspondence<in Key, out Item>
      does not have an item defined, the resulting stream 
      contains the value `null`."
     see (`function Correspondence.get`)
-    shared default Iterable<Item?,Absent> getAll<Absent>
+    shared default 
+    Iterable<Item?,Absent> getAll<Absent>
             (Iterable<Key,Absent> keys) 
             given Absent satisfies Null
             => { for (key in keys) get(key) };

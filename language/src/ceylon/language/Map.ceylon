@@ -30,15 +30,15 @@ shared interface Map<out Key,out Item>
                   Correspondence<Object,Item>
         given Key satisfies Object {
     
-    "Determines if there is an entry in this map with the
-     given [[key]]."
-    see (`function contains`)
-    shared actual formal Boolean defines(Object key);
-    
     "Returns the item of the entry with the given [[key]], 
      or `null` if there is no entry with the given `key` in
      this map."
     shared actual formal Item? get(Object key);
+    
+    "Determines if there is an entry in this map with the
+     given [[key]]."
+    see (`function contains`)
+    shared actual formal Boolean defines(Object key);
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
@@ -46,12 +46,9 @@ shared interface Map<out Key,out Item>
     shared actual default Boolean contains(Object entry) {
         if (is Key->Anything entry, defines(entry.key)) {
             if (exists item = get(entry.key)) {
-                if (exists entryItem = entry.item) {
-                    return item==entryItem;
-                }
-                else {
-                    return false;
-                }
+                return if (exists entryItem = entry.item) 
+                    then item==entryItem 
+                    else false;
             }
             else {
                 return !entry.item exists;
@@ -62,7 +59,42 @@ shared interface Map<out Key,out Item>
         }
     }
     
+    "A shallow copy of this map, that is, a map with the
+     same entries as this map, which do not change if the
+     entries in this map change."
     shared actual formal Map<Key,Item> clone();
+    
+    "A [[Collection]] containing the keys of this map."
+    shared actual default Collection<Key> keys
+            => object
+            satisfies Collection<Key> {
+        contains(Object key) => outer.defines(key);
+        iterator() => { for (k->v in outer) k }.iterator();
+        clone() => [*this];
+        size => outer.size;
+    };
+    
+    "A [[Collection]] containing the items stored in this 
+     map. An element can be stored under more than one key 
+     in the map, and so it can occur more than once in the 
+     resulting collection."
+    shared default Collection<Item> items
+            => object
+            satisfies Collection<Item> {
+        shared actual Boolean contains(Object item) {
+            for (k->v in outer) {
+                if (exists v, v==item) {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        iterator() => { for (k->v in outer) v }.iterator();
+        clone() => [*this];
+        size => outer.size;
+    };
     
     "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
@@ -71,7 +103,7 @@ shared interface Map<out Key,out Item>
      key in the key set, the maps have equal items."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Anything> that,
-                that.size==size) {
+            that.size==size) {
             for (entry in this) {
                 value thatItem = that[entry.key];
                 if (exists thisItem = entry.item) {
@@ -105,42 +137,13 @@ shared interface Map<out Key,out Item>
         return hashCode;
     }
     
-    "A [[Collection]] containing the keys of this map."
-    actual shared default Collection<Key> keys
-            => object
-            satisfies Collection<Key> {
-        contains(Object key) => outer.defines(key);
-        iterator() => { for (k->v in outer) k }.iterator();
-        clone() => [*this];
-        size => outer.size;
-    };
-    
-    "A [[Collection]] containing the items stored in this 
-     map. An element can be stored under more than one key 
-     in the map, and so it can occur more than once in the 
-     resulting collection."
-    shared default Collection<Item> items
-            => object
-            satisfies Collection<Item> {
-        shared actual Boolean contains(Object item) {
-            for (k->v in outer) {
-                if (exists v, v==item) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        iterator() => { for (k->v in outer) v }.iterator();
-        clone() => [*this];
-        size => outer.size;
-    };
-    
     "Produces a map with the same [[keys]] as this map. 
      For every key, the item is the result of applying the 
      given [[transformation|Map.mapItems.mapping]] function 
      to its associated item in this map. This is a lazy 
      operation, returning a view of this map."
-    shared default Map<Key,Result> mapItems<Result>(
+    shared default 
+    Map<Key,Result> mapItems<Result>(
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
@@ -176,7 +179,8 @@ shared interface Map<out Key,out Item>
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
-    shared default Map<Key,Item> filterKeys(
+    shared default 
+    Map<Key,Item> filterKeys(
         "The predicate function that filters the keys of 
          this map, determining if there is a corresponding
          entry in the resulting map."
@@ -218,7 +222,8 @@ shared interface Map<out Key,out Item>
      This is a lazy operation producing a view of this map
      and the given map."
     shared default
-    Map<Key|OtherKey,Item|OtherItem> patch<OtherKey,OtherItem>
+    Map<Key|OtherKey,Item|OtherItem> 
+    patch<OtherKey,OtherItem>
             (Map<OtherKey,OtherItem> other) 
             given OtherKey satisfies Object 
             given OtherItem satisfies Object 
@@ -247,7 +252,7 @@ shared interface Map<out Key,out Item>
                 other.keys.count(not(outer.defines));
         
         iterator() => ChainedIterator(other,
-            outer.filter(not(other.contains)));
+                        outer.filter(not(other.contains)));
         
     };
     
@@ -259,10 +264,10 @@ shared object emptyMap
         satisfies Map<Nothing, Nothing> {
     
     shared actual Null get(Object key) => null;
-    shared actual Collection<Nothing> keys
-            => emptySet;
-    shared actual Collection<Nothing> items
-            => emptySet;
+    
+    shared actual Collection<Nothing> keys => emptySet;
+    
+    shared actual Collection<Nothing> items => emptySet;
     
     clone() => this;
     iterator() => emptyIterator;
@@ -275,31 +280,24 @@ shared object emptyMap
     containsAny({Object*} elements) => false;
     containsEvery({Object*} elements) => false;
     
-    shared actual Map<Nothing, Nothing> mapItems<Result>
+    shared actual 
+    Map<Nothing, Nothing> mapItems<Result>
             (Result mapping(Nothing key, Nothing item))
             given Result satisfies Object 
             => emptyMap;
     
-    shared actual Integer count
-            (Boolean selecting(Nothing->Nothing element)) 
-            => 0;
+    count(Boolean selecting(Nothing->Nothing element)) => 0;
+    any(Boolean selecting(Nothing->Nothing element)) => false;
+    every(Boolean selecting(Nothing->Nothing element)) => true;
     
-    shared actual Null find
-            (Boolean selecting(Nothing->Nothing element)) 
+    shared actual 
+    Null find(Boolean selecting(Nothing->Nothing element)) 
             => null;
     
-    shared actual Null findLast
-            (Boolean selecting(Nothing->Nothing element)) 
+    shared actual 
+    Null findLast(Boolean selecting(Nothing->Nothing element)) 
             => null;
-    
-    shared actual Boolean any
-            (Boolean selecting(Nothing->Nothing element)) 
-            => false;
-    
-    shared actual Boolean every
-            (Boolean selecting(Nothing->Nothing element)) 
-            => true;
-    
+        
     skip(Integer skipping) => this;
     take(Integer taking) => this;
     by(Integer step) => this;

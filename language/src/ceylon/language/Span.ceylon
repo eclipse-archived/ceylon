@@ -84,14 +84,16 @@ class Span<Element>(first, last)
      evaluated and collected into a new sequence."
     //TODO: we should have a way to produce a decreasing
     //      recursive range
-    shared actual [Element+] reversed
+    shared actual 
+    [Element+] reversed
             => recursive 
             then super.reversed
             else last..first;
     
     "The element of the range that occurs [[index]] values 
      after the start of the range."
-    shared actual Element? getFromFirst(Integer index) {
+    shared actual 
+    Element? getFromFirst(Integer index) {
         if (index < 0) {
             return null;
         } else if (recursive) {
@@ -106,7 +108,8 @@ class Span<Element>(first, last)
      iterator produces elements from [[first]] and continues 
      producing elements until it reaches an element whose 
      `offset` from [[last] is zero."
-    shared actual Iterator<Element> iterator() 
+    shared actual 
+    Iterator<Element> iterator() 
             => object
             satisfies Iterator<Element> {
         variable Element|Finished current = first;
@@ -128,7 +131,8 @@ class Span<Element>(first, last)
         string => "(``outer``).iterator()";
     };
     
-    shared actual {Element+} by(Integer step) {
+    shared actual 
+    {Element+} by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
         return step == 1 then this else By(step);
@@ -145,7 +149,8 @@ class Span<Element>(first, last)
             then x.offset(first) <= last.offset(first)
             else !afterLast(x) && !beforeFirst(x);
     
-    shared actual Integer count(Boolean selecting(Element element)) {
+    shared actual 
+    Integer count(Boolean selecting(Element element)) {
         variable value element = first;
         variable value count = 0;
         while (containsElement(element)) {
@@ -157,7 +162,8 @@ class Span<Element>(first, last)
         return count;
     }
     
-    shared actual Boolean includes(List<Anything> sublist) {
+    shared actual 
+    Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
         } else if (is Range<Element> sublist) {
@@ -195,7 +201,8 @@ class Span<Element>(first, last)
         }
     }
     
-    shared actual Boolean includesRange(Range<Element> sublist) {
+    shared actual 
+    Boolean includesRange(Range<Element> sublist) {
         switch (sublist)
         case (is Span<Element>) {
             if (recursive) {
@@ -217,7 +224,8 @@ class Span<Element>(first, last)
         }
     }
     
-    shared actual Boolean equals(Object that) {
+    shared actual 
+    Boolean equals(Object that) {
         if (is Span<out Object> that) {
             //optimize for another Span
             return that.first == first && that.last == last;
@@ -239,7 +247,8 @@ class Span<Element>(first, last)
         
         string => "(``outer``).by(``step``)";
         
-        shared actual Iterator<Element> iterator() {
+        shared actual 
+        Iterator<Element> iterator() {
             if (recursive) {
                 return object
                         satisfies Iterator<Element> {
@@ -275,12 +284,14 @@ class Span<Element>(first, last)
         }
     }
     
-    shared actual [Element*] measure(Integer from, Integer length)
+    shared actual 
+    [Element*] measure(Integer from, Integer length)
             => length <= 0 
             then [] 
             else span(from, from + length - 1);
     
-    shared actual [Element*] span(Integer from, Integer to) {
+    shared actual 
+    [Element*] span(Integer from, Integer to) {
         if (from <= to) {
             if (to < 0 || !longerThan(from)) {
                 return [];
@@ -297,7 +308,8 @@ class Span<Element>(first, last)
         }
     }
     
-    shared actual [Element*] spanFrom(Integer from) {
+    shared actual 
+    [Element*] spanFrom(Integer from) {
         if (from <= 0) {
             return this;
         } else if (longerThan(from)) {
@@ -308,7 +320,8 @@ class Span<Element>(first, last)
         }
     }
     
-    shared actual [Element*] spanTo(Integer to) {
+    shared actual 
+    [Element*] spanTo(Integer to) {
         if (to < 0) {
             return [];
         } else if (longerThan(to + 1)) {

@@ -36,14 +36,6 @@ shared sealed interface Sequence<out Element>
         satisfies Element[] & 
                   {Element+} {
     
-    "The index of the last element of the sequence."
-    see (`value Sequence.size`)
-    shared actual default Integer lastIndex => size-1;
-    
-    "The non-negative length of this sequence, that is, the
-     number of elements in this sequence."
-    shared actual formal Integer size;
-    
     "The first element of the sequence, that is, the element
      with index `0`."
     shared actual formal Element first;
@@ -56,8 +48,17 @@ shared sealed interface Sequence<out Element>
      least one element."
     shared actual Boolean empty => false;
     
+    "The non-negative length of this sequence, that is, the
+     number of elements in this sequence."
+    shared actual formal Integer size;
+    
+    "The index of the last element of the sequence."
+    see (`value size`)
+    shared actual default Integer lastIndex => size-1;
+    
     "A nonempty sequence containing all indexes of this 
-     sequence."
+     sequence, that is, every index in the range
+     `0..sequence.lastIndex`."
     shared actual default [Integer+] keys => 0..lastIndex;
     
     "This nonempty sequence."
@@ -75,7 +76,10 @@ shared sealed interface Sequence<out Element>
      this sequence the given [[number of times|times]], or
      the [[empty sequence|empty]] if `times<=0`."
     shared default actual Element[] repeat(Integer times) 
-            => times<=0 then [] else Repeat(times);
+            => times>0 then Repeat(times) else [];
+    
+    "This nonempty sequence."
+    shared actual default [Element+] clone() => this;
     
     /*shared actual default Element[] repeat(Integer times) {
         value resultSize = size*times;
@@ -90,7 +94,8 @@ shared sealed interface Sequence<out Element>
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 
      partial order upon the elements."
-    shared default actual [Element+] sort(
+    shared default actual 
+    [Element+] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
         value array = Array(this);
@@ -100,7 +105,8 @@ shared sealed interface Sequence<out Element>
 
     "A nonempty sequence containing the results of applying 
      the given mapping to the elements of this sequence."
-    shared default actual [Result+] collect<Result>(
+    shared default actual 
+    [Result+] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) {
         object list
@@ -146,43 +152,48 @@ shared sealed interface Sequence<out Element>
             then JoinedSequence(elements, this)
             else this;
     
-    "This nonempty sequence."
-    shared actual default [Element+] clone() => this;
-    
-    shared actual default Boolean contains(Object element) 
+    shared actual default 
+    Boolean contains(Object element) 
             => (super of List<Element>).contains(element);
     
-    shared actual default Boolean shorterThan(Integer length) 
+    shared actual default 
+    Boolean shorterThan(Integer length) 
             => (super of List<Element>).shorterThan(length);
     
-    shared actual default Boolean longerThan(Integer length) 
+    shared actual default 
+    Boolean longerThan(Integer length) 
             => (super of List<Element>).longerThan(length);
     
-    shared default actual Element? find
-                (Boolean selecting(Element&Object elem))
+    shared default actual 
+    Element? find(Boolean selecting(Element&Object elem))
             => (super of List<Element>).find(selecting);
     
-    shared default actual Element? findLast
-                (Boolean selecting(Element&Object elem))
+    shared default actual 
+    Element? findLast(Boolean selecting(Element&Object elem))
             => (super of List<Element>).findLast(selecting);
     
-    shared actual default [Element[],Element[]] slice(Integer index)
+    shared actual default 
+    [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
     
-    shared actual default Element[] measure(Integer from, Integer length) 
+    shared actual default 
+    Element[] measure(Integer from, Integer length) 
             => sublist(from, from+length-1).sequence();
     
-    shared actual default Element[] span(Integer from, Integer to) 
+    shared actual default 
+    Element[] span(Integer from, Integer to) 
             => sublist(from, to).sequence();
     
-    shared actual default Element[] spanFrom(Integer from) 
+    shared actual default 
+    Element[] spanFrom(Integer from) 
             => sublistFrom(from).sequence();
     
-    shared actual default Element[] spanTo(Integer to) 
+    shared actual default 
+    Element[] spanTo(Integer to) 
             => sublistTo(to).sequence();
     
-    shared actual default String string 
-            => (super of Sequential<Element>).string;
+    shared actual default 
+    String string => (super of Sequential<Element>).string;
     
     Element getElement(Integer index) {
         if (exists element = getFromFirst(index)) { 
@@ -318,7 +329,8 @@ class JoinedSequence<Element>
             then secondSeq 
             else super.spanFrom(from);
     
-    shared actual Element[] measure(Integer from, Integer length) {
+    shared actual 
+    Element[] measure(Integer from, Integer length) {
         if (from==0 && length==firstSeq.size) {
             return firstSeq;
         }
@@ -330,7 +342,8 @@ class JoinedSequence<Element>
         }
     }
     
-    shared actual Element[] span(Integer from, Integer to) {
+    shared actual 
+    Element[] span(Integer from, Integer to) {
         if (from<=0 && to==firstSeq.size-1) {
             return firstSeq;
         }

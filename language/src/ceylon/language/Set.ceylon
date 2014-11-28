@@ -19,6 +19,11 @@ shared interface Set<out Element>
     shared actual default Boolean contains(Object element)
             => super.contains(element);
     
+    "A shallow copy of this set, that is, a set with the
+     same elements as this set, which do not change if the
+     elements of this set change."
+    shared actual formal Set<Element> clone();
+    
     "Determines if this set is a superset of the given 
      `Set`, that is, if this set contains all of the 
      elements in the given set."
@@ -78,26 +83,28 @@ shared interface Set<out Element>
     
     "Returns a new `Set` containing all the elements of this 
      set and all the elements of the given `Set`."
-    shared formal Set<Element|Other> union<Other>(Set<Other> set)
+    shared formal 
+    Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object;
     
     "Returns a new `Set` containing only the elements that 
      are present in both this set and the given `Set`."
-    shared formal Set<Element&Other> intersection<Other>(Set<Other> set)
+    shared formal 
+    Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object;
     
     "Returns a new `Set` containing only the elements 
      contained in either this set or the given `Set`, but no 
      element contained in both sets."
-    shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
+    shared formal 
+    Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object;
     
     "Returns a new `Set` containing all the elements in this 
      set that are not contained in the given `Set`."
-    shared formal Set<Element> complement<Other>(Set<Other> set)
+    shared formal 
+    Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;
-    
-    shared actual formal Set<Element> clone();
     
 }
 
@@ -106,16 +113,23 @@ shared object emptySet
         extends Object() 
         satisfies Set<Nothing> {
     
-    shared actual Set<Other> union<Other>(Set<Other> set)
+    shared actual 
+    Set<Other> union<Other>(Set<Other> set)
             given Other satisfies Object
             => set;
-    shared actual Set<Nothing> intersection<Other>(Set<Other> set)
+    
+    shared actual 
+    Set<Nothing> intersection<Other>(Set<Other> set)
             given Other satisfies Object
             => this;
-    shared actual Set<Other> exclusiveUnion<Other>(Set<Other> set)
+    
+    shared actual 
+    Set<Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object
             => set;
-    shared actual Set<Nothing> complement<Other>(Set<Other> set)
+    
+    shared actual 
+    Set<Nothing> complement<Other>(Set<Other> set)
             given Other satisfies Object
             => this;
     
@@ -131,24 +145,17 @@ shared object emptySet
     containsAny({Object*} elements) => false;
     containsEvery({Object*} elements) => false;
     
-    shared actual Integer count
-            (Boolean selecting(Nothing element)) 
-            => 0;
+    count(Boolean selecting(Nothing element)) => 0;
+    any(Boolean selecting(Nothing element)) => false;    
+    every(Boolean selecting(Nothing element)) => true;
     
-    shared actual Null find
-            (Boolean selecting(Nothing element)) 
+    shared actual 
+    Null find(Boolean selecting(Nothing element)) 
             => null;
     
-    shared actual Null findLast(Boolean selecting(Nothing element))
+    shared actual 
+    Null findLast(Boolean selecting(Nothing element))
             => null;
-    
-    shared actual Boolean any
-            (Boolean selecting(Nothing element)) 
-            => false;
-    
-    shared actual Boolean every
-            (Boolean selecting(Nothing element)) 
-            => true;
     
     skip(Integer skipping) => this;
     take(Integer taking) => this;

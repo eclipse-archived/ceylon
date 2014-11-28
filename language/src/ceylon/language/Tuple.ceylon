@@ -53,33 +53,36 @@ native class Tuple<out Element,out First,out Rest = []>
     
     "The first element of this tuple. (The head of the 
      linked list.)"
-    shared actual native First first;
+    shared actual native 
+    First first;
     
     "A tuple with the elements of this tuple, except for the
      first element. (The tail of the linked list.)"
-    shared actual native Rest rest;
+    shared actual native 
+    Rest rest;
     
-    shared actual native Integer lastIndex => rest.size;
+    shared actual native 
+    Integer lastIndex => rest.size;
     
-    shared actual native Integer size => 1 + rest.size;
+    shared actual native 
+    Integer size => 1 + rest.size;
     
-    shared actual native Element? getFromFirst(Integer index) {
-        switch (index <=> 0)
-        case (smaller) { return null; }
-        case (equal) { return first; }
-        case (larger) { return rest.getFromFirst(index - 1); }
-    }
+    shared actual native 
+    Element? getFromFirst(Integer index) 
+            => switch (index <=> 0)
+            case (smaller) null
+            case (equal) first
+            case (larger) rest.getFromFirst(index - 1);
     
     "The last element of this tuple."
-    shared actual native Element last {
-        if (nonempty rest) {
-            return rest.last;
-        } else {
-            return first;
-        }
-    }
+    shared actual native 
+    Element last 
+            => if (nonempty rest)
+            then rest.last
+            else first;
     
-    shared actual native Element[] measure(Integer from, Integer length) {
+    shared actual native 
+    Element[] measure(Integer from, Integer length) {
         if (length <= 0) {
             return [];
         }
@@ -92,48 +95,52 @@ native class Tuple<out Element,out First,out Rest = []>
         return rest[realFrom - 1 : length];
     }
     
-    shared actual native Element[] span(Integer from, Integer end) {
+    shared actual native 
+    Element[] span(Integer from, Integer end) {
         if (from < 0 && end < 0) { return []; }
         Integer realFrom = from < 0 then 0 else from;
         Integer realEnd = end < 0 then 0 else end;
-        return realFrom <= realEnd then this[from : realEnd - realFrom + 1]
-                else this[realEnd : realFrom - realEnd + 1].reversed.sequence();
+        return realFrom <= realEnd 
+            then this[from : realEnd - realFrom + 1]
+            else this[realEnd : realFrom - realEnd + 1].reversed.sequence();
     }
     
-    shared actual native Element[] spanTo(Integer to)
+    shared actual native 
+    Element[] spanTo(Integer to)
             => to < 0 then [] else span(0, to);
     
-    shared actual native Element[] spanFrom(Integer from)
+    shared actual native 
+    Element[] spanFrom(Integer from)
             => span(from, size);
     
     "This tuple."
-    shared actual native Tuple<Element,First,Rest> clone() => this;
+    shared actual native 
+    Tuple<Element,First,Rest> clone() => this;
     
-    shared actual native Iterator<Element> iterator() {
-        object iterator satisfies Iterator<Element> {
-            variable Element[] current = outer;
-            shared actual Element|Finished next() {
-                if (nonempty c = current) {
-                    current = c.rest;
-                    return c.first;
-                } else {
-                    return finished;
-                }
+    shared actual native 
+    Iterator<Element> iterator() 
+            => object
+            satisfies Iterator<Element> {
+        variable Element[] current = outer;
+        shared actual Element|Finished next() {
+            if (nonempty c = current) {
+                current = c.rest;
+                return c.first;
             }
-            shared actual String string => "``outer.string``.iterator()";
+            else {
+                return finished;
+            }
         }
-        return iterator;
-    }
+        string => "``outer.string``.iterator()";
+    };
     
     "Determine if the given value is an element of this
      tuple."
-    shared actual native Boolean contains(Object element) {
-        if (exists first, first == element) {
-            return true;
-        } else {
-            return element in rest;
-        }
-    }
+    shared actual native 
+    Boolean contains(Object element) 
+            => if (exists first, first == element)
+            then true
+            else element in rest;
     
     "Return a new tuple that starts with the specified
      [[element]], followed by the elements of this tuple."
