@@ -455,7 +455,6 @@ shared class Constructors<T> {
     }
     
     shared void testMemberModels() {
-        // TODO test constructors of non-shared classes
         // TODO test constructors of member classes of interfaces
         value member = Member();
         value memberMember = `Member.Member`;
@@ -506,6 +505,7 @@ shared class Constructors<T> {
         nonSharedMemberNonSharedCtor(true);
 
         // bind
+        // TODO 
     }
     shared void testModels() {
         value def = `Constructors`;
