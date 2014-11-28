@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1939_ {
+    
+    private bug1939_() {
+    }
+    
+    static void bug1939() {
+        .ceylon.language.print_.print((
+            let
+            {
+                final .java.lang.String hello = "hello";
+            }
+            returning (
+                let
+                {
+                    
+                    class anonymous#0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        private anonymous#0_() {
+                            .ceylon.language.print_.print(.ceylon.language.String.instance(hello));
+                        }
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1939_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#0_.class));
+                        }
+                    }
+                }
+                returning new anonymous#0_();
+            );
+        ));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1939_.bug1939();
+    }
+}
