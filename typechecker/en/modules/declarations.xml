@@ -145,6 +145,9 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
+        <para>An <literal>import</literal> statement specifies the name of a package to
+        import from, and a list of declarations to import from that package.</para>
+        
         <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
         
         <para>For a given package, there may be at most one <literal>import</literal>
@@ -329,6 +332,12 @@ TypeConstraints?
             
             <para>Two import elements occurring in the same compilation unit may not result 
             in the same imported name.</para>
+            
+            <emphasis><para>Note: if an imported declaration is already referenceable within 
+            a compilation unit without the <literal>import</literal> statement, for example, 
+            if it is defined in the same package, or in <literal>ceylon.language</literal>, 
+            then, even with the <literal>import</literal> statement, it is still referenceable 
+            via its declared name, as well as via the imported name.</para></emphasis>
             
         </section>
         
@@ -547,7 +556,7 @@ TypeConstraints?
             <synopsis>CallableParameterPrefix: Type | "void"</synopsis>
             
             <para>If a callable parameter <literal>f</literal> has callable type 
-            <literal>Callable&lt;X,A&gt;</literal>, as specified below in 
+            <literal>X(*A)</literal>, as specified below in 
             <xref linkend="callabletypeoffunction"/>, and a parameter list has type 
             <literal>P</literal> with the principal instantiation 
             <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
@@ -555,11 +564,11 @@ TypeConstraints?
             
             <itemizedlist>
             <listitem>
-                <para><literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal>, 
+                <para><literal>Tuple&lt;Y|X(*A),X(*A),P&gt;</literal>, 
                 or</para>
             </listitem>
             <listitem>
-                <para><literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+                <para><literal>[]|Tuple&lt;Y|X(*A),X(*A),P&gt;</literal> 
                 if <literal>f</literal> is defaulted.</para>
             </listitem>
             </itemizedlist>
@@ -1008,13 +1017,14 @@ TypeConstraints?
         <section id="callabletypeofclass">
             <title>Callable type of a class</title>
             
-            <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
-            types of the class. The callable type is <literal>Callable&lt;T,P&gt;</literal>, where
-            <literal>T</literal> is the class and <literal>P</literal> is the type of the initializer
-            parameter list of the class.</para>
+            <para>The <emphasis>callable type</emphasis> of a class captures the type 
+            and parameter types of the class. The callable type is <literal>T(*P)</literal>, 
+            where <literal>T</literal> is the class and <literal>P</literal> is the type 
+            of the initializer parameter list of the class.</para>
             
             <para>An <literal>abstract</literal> class is not callable, except from the 
-            <literal>extends</literal> clause of a subclass, or the class specifier of a class alias.</para>
+            <literal>extends</literal> clause of a subclass, or the class specifier of a
+            class alias.</para>
             
         </section>
     
@@ -1820,16 +1830,16 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <itemizedlist>
             <listitem>
                 <para>The callable type of a function with a single parameter list is 
-                <literal>Callable&lt;R,P&gt;</literal> where <literal>R</literal> is the 
-                return type of the method, or <literal>Anything</literal> if the function is 
+                <literal>R(*P)</literal> where <literal>R</literal> is the return type 
+                of the method, or <literal>Anything</literal> if the function is 
                 <literal>void</literal>, and <literal>P</literal> is the type of the
                 parameter list.</para>
             </listitem>
             <listitem>
                 <para>The callable type of a function with multiple parameter lists is 
-                <literal>Callable&lt;O,P&gt;</literal>, where <literal>O</literal> is the
-                callable type of a method produced by eliminating the first parameter list, 
-                and <literal>P</literal> is the type of the first parameter list of the
+                <literal>O(*P)</literal>, where <literal>O</literal> is the callable 
+                type of a method produced by eliminating the first parameter list, and 
+                <literal>P</literal> is the type of the first parameter list of the
                 function.</para>
             </listitem>
             </itemizedlist>

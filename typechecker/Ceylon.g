@@ -344,19 +344,19 @@ objectDeclaration returns [ObjectDefinition declaration]
       )
     ;
 
-objectExpression returns [ObjectExpression term]
+objectExpression returns [ObjectExpression objectExpression]
     : OBJECT_DEFINITION
-      { $term = new ObjectExpression($OBJECT_DEFINITION); }
+      { $objectExpression = new ObjectExpression($OBJECT_DEFINITION); }
       ( 
         extendedType
-        { $term.setExtendedType($extendedType.extendedType); } 
+        { $objectExpression.setExtendedType($extendedType.extendedType); } 
       )?
       ( 
         satisfiedTypes
-        { $term.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+        { $objectExpression.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
       )?
       classBody
-      { $term.setClassBody($classBody.classBody); }
+      { $objectExpression.setClassBody($classBody.classBody); }
     ;
 
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
@@ -1206,10 +1206,7 @@ unambiguousType
     ;
 
 statement returns [Statement statement]
-    : /*(IF_CLAUSE conditions THEN_CLAUSE) => 
-      expressionOrSpecificationStatement
-      { $statement = $expressionOrSpecificationStatement.statement; }
-    |*/ directiveStatement
+    : directiveStatement
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
@@ -1267,11 +1264,11 @@ expressionOrSpecificationStatement returns [Statement statement]
 
 directiveStatement returns [Directive directive]
     : d=directive 
-      { $directive=$d.directive; } 
-      { expecting=SEMICOLON; }
+      { $directive=$d.directive;
+        expecting=SEMICOLON; }
       SEMICOLON
-      { $directive.setEndToken($SEMICOLON); }
-      { expecting=-1; }
+      { $directive.setEndToken($SEMICOLON);
+        expecting=-1; }
     ;
 
 directive returns [Directive directive]
@@ -1379,6 +1376,8 @@ base returns [Primary primary]
       { $primary=$tuple.tuple; }
     | dynamicObject
       { $primary=$dynamicObject.dynamic; }
+    | objectExpression
+      { $primary = $objectExpression.objectExpression; }
     | selfReference
       { $primary=$selfReference.atom; }
     | parExpression
@@ -1615,36 +1614,40 @@ indexOrIndexRange returns [IndexExpression indexExpression]
       (
         e1=ELLIPSIS
         { $indexExpression.setEndToken($e1); }
-      i=index
-      { ElementRange er0 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er0);
-        er0.setUpperBound($i.expression); }
+        i=index
+        { ElementRange er0 = new ElementRange(null);
+          er0.setUpperBound($i.expression);
+          $indexExpression.setElementOrRange(er0); 
+          $indexExpression.setEndToken(null); }
       |
-      l=index
-      { Element e = new Element(null);
-        $indexExpression.setElementOrRange(e);
-        e.setExpression($l.expression); }
-      (
-        e2=ELLIPSIS
-        { $indexExpression.setEndToken($e2); }
-      { ElementRange er1 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er1);
-        er1.setLowerBound($l.expression); }
-      | RANGE_OP 
-        { $indexExpression.setEndToken($RANGE_OP); }
-        u=index 
-      { ElementRange er2 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er2);
-        er2.setLowerBound($l.expression); 
-        er2.setUpperBound($u.expression); }
-      | SEGMENT_OP
-        { $indexExpression.setEndToken($SEGMENT_OP); }
-        s=index 
-      { ElementRange er3 = new ElementRange(null);
-        $indexExpression.setElementOrRange(er3);
-        er3.setLowerBound($l.expression); 
-        er3.setLength($s.expression); }
-      )?
+        l=index
+        { Element e = new Element(null);
+          e.setExpression($l.expression); 
+          $indexExpression.setElementOrRange(e); }
+        (
+          e2=ELLIPSIS
+          { $indexExpression.setEndToken($e2);
+            ElementRange er1 = new ElementRange(null);
+            er1.setLowerBound($l.expression);
+            $indexExpression.setElementOrRange(er1); }
+        | 
+          RANGE_OP 
+          { $indexExpression.setEndToken($RANGE_OP); }
+          u=index 
+          { ElementRange er2 = new ElementRange(null);
+            er2.setLowerBound($l.expression); 
+            er2.setUpperBound($u.expression); 
+            $indexExpression.setElementOrRange(er2);
+            $indexExpression.setEndToken(null); }
+        | SEGMENT_OP
+          { $indexExpression.setEndToken($SEGMENT_OP); }
+          s=index 
+          { ElementRange er3 = new ElementRange(null);
+            er3.setLowerBound($l.expression); 
+            er3.setLength($s.expression); 
+            $indexExpression.setElementOrRange(er3);
+            $indexExpression.setEndToken(null); }
+        )?
       )
       RBRACKET
       { $indexExpression.setEndToken($RBRACKET); }
@@ -2025,9 +2028,39 @@ functionOrExpression returns [Expression expression]
         $expression.setTerm($ce.term); }
     | e=expression
       { $expression = $e.expression; }
-    | oe=objectExpression
-      { $expression = new Expression(null); 
-        $expression.setTerm($oe.term); }
+    | l=let
+      { $expression = new Expression(null);
+        $expression.setTerm($l.let); }
+    ;
+
+let returns [LetExpression let]
+    : letClause
+      { $let = new LetExpression(null);
+        $let.setLetClause($letClause.letClause); }
+    ;
+    
+letClause returns [LetClause letClause]
+    : LET
+      { $letClause = new LetClause($LET); }
+      LPAREN
+      { $letClause.setEndToken($LPAREN); }
+      (
+        v1=specifiedVariable
+        { $letClause.setEndToken(null);
+          $letClause.addVariable($v1.variable); }
+        (
+          COMMA
+          { $letClause.setEndToken($COMMA); }
+          v2=specifiedVariable
+          { $letClause.setEndToken(null); 
+            $letClause.addVariable($v2.variable); }
+        )*
+      )?
+      RPAREN
+      { $letClause.setEndToken($RPAREN); }
+      functionOrExpression
+      { $letClause.setExpression($functionOrExpression.expression); 
+        $letClause.setEndToken(null); }
     ;
 
 conditionalExpression returns [Term term]
@@ -2044,9 +2077,19 @@ switchExpression returns [SwitchExpression term]
       caseExpressions
       { $term.setSwitchCaseList($caseExpressions.switchCaseList);
         //TODO: huge copy/paste job from switchCaseElse 
-        Expression ex = $switchHeader.clause.getExpression();
-        if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
-          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+        Identifier id = null;
+        Switched sw = $switchHeader.clause.getSwitched();
+        if (sw!=null) {
+          Expression ex = sw.getExpression();
+          if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
+            id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          }
+          TypedDeclaration var = $switchHeader.clause.getSwitched().getVariable();
+          if (var!=null) {
+            id = var.getIdentifier();
+          }
+        }
+        if (id!=null) {
           for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
@@ -2065,7 +2108,22 @@ switchExpression returns [SwitchExpression term]
               ic.setVariable(v);
             }
           } 
-        }
+          ElseClause ec = $caseExpressions.switchCaseList.getElseClause();
+          if (ec!=null) {
+            Variable ev = new Variable(null);
+            ev.setType(new SyntheticVariable(null));
+            SpecifierExpression ese = new SpecifierExpression(null);
+            Expression ee = new Expression(null);
+            BaseMemberExpression ebme = new BaseMemberExpression(null);
+            ebme.setTypeArguments( new InferredTypeArguments(null) );
+            ee.setTerm(ebme);
+            ese.setExpression(ee);
+            ev.setSpecifierExpression(ese);
+            ec.setVariable(ev);
+            ebme.setIdentifier(id);
+            ev.setIdentifier(id);
+          }
+        } 
       }
     ;
 
@@ -2105,13 +2163,57 @@ ifExpression returns [IfExpression term]
     : IF_CLAUSE
       { $term = new IfExpression($IF_CLAUSE); }
       thenElseClauses
-      { $term.setIfClause($thenElseClauses.ifClause);
-        $term.setElseClause($thenElseClauses.elseClause);
-        if ($thenElseClauses.conditionList!=null) {
-            if ($thenElseClauses.ifClause==null) 
-                $term.setIfClause(new IfClause(null));
-            $term.getIfClause().setConditionList($thenElseClauses.conditionList); 
-        } }
+      { IfClause ic = $thenElseClauses.ifClause;
+        ElseClause ec = $thenElseClauses.elseClause;
+        ConditionList cl = $thenElseClauses.conditionList;
+        $term.setIfClause(ic);
+        $term.setElseClause(ec);
+        if (cl!=null) {
+          if (ic==null) {
+            ic = new IfClause(null);
+            $term.setIfClause(ic);
+          }
+          ic.setConditionList(cl); 
+          if (cl!=null) {
+            List<Condition> conditions = cl.getConditions();
+            if (conditions.size()==1) {
+              Condition c = conditions.get(0);
+              Identifier id = null;
+              Type t = null;
+              if (c instanceof ExistsOrNonemptyCondition) {
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((ExistsOrNonemptyCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
+              }
+              else if (c instanceof IsCondition) {
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((IsCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
+              }
+              if (id!=null && ec!=null && t instanceof SyntheticVariable) { 
+                Variable ev = new Variable(null);
+                ev.setType(new SyntheticVariable(null));
+                SpecifierExpression ese = new SpecifierExpression(null);
+                Expression ee = new Expression(null);
+                BaseMemberExpression ebme = new BaseMemberExpression(null);
+                ebme.setTypeArguments( new InferredTypeArguments(null) );
+                ee.setTerm(ebme);
+                ese.setExpression(ee);
+                ev.setSpecifierExpression(ese);
+                ec.setVariable(ev);
+                ev.setIdentifier(id);
+                ebme.setIdentifier(id);
+              }
+            }
+          }        
+        } 
+      }
     ;
 
 thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
@@ -2128,10 +2230,17 @@ thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList
       (
         ELSE_CLAUSE
         { $elseClause = new ElseClause($ELSE_CLAUSE); }
-        de2=disjunctionExpression
-        { Expression e = new Expression(null);
-          e.setTerm($de2.term);
-          $elseClause.setExpression(e); }
+        (
+          de2=disjunctionExpression
+          { Expression e = new Expression(null);
+            e.setTerm($de2.term);
+            $elseClause.setExpression(e); }
+        | 
+          ifExpression
+          { Expression e = new Expression(null);
+            e.setTerm($ifExpression.term);
+            $elseClause.setExpression(e); }
+        )
       )?
     ;
 
@@ -2247,15 +2356,6 @@ thenElseExpression returns [Term term]
         de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
-    //TODO: enable this to add support for if (...) and 
-    //      given (...) expressions
-    //TODO: when enabling this, we'll need something
-    //      to distinguish between "if (...) then" and 
-    //      the control structure "if (...) { ... }"
-    /*| 
-      IF_CLAUSE conditions
-      THEN_CLAUSE disjunctionExpression
-      (ELSE_CLAUSE disjunctionExpression)?*/
     ;
 
 thenElseOperator returns [BinaryOperatorExpression operator]
@@ -3217,14 +3317,22 @@ ifElse returns [IfStatement statement]
               Identifier id = null;
               Type t = null;
               if (c instanceof ExistsOrNonemptyCondition) {
-                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
-                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((ExistsOrNonemptyCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
               else if (c instanceof IsCondition) {
-                t = ((IsCondition)c).getVariable().getType();
-                id = ((IsCondition)c).getVariable().getIdentifier();
+                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
+                  ((IsCondition)c).getVariable();
+                if (v!=null) {
+                  t = v.getType();
+                  id = v.getIdentifier();
+                }
               }
-              if (id!=null && t instanceof SyntheticVariable) { 
+              if (id!=null && ec!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
                 ev.setType(new SyntheticVariable(null));
                 SpecifierExpression ese = new SpecifierExpression(null);
@@ -3277,9 +3385,19 @@ switchCaseElse returns [SwitchStatement statement]
       { $statement.setSwitchClause($switchHeader.clause); }
       cases
       { $statement.setSwitchCaseList($cases.switchCaseList);
-        Expression ex = $switchHeader.clause.getExpression();
-        if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
-          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+        Identifier id = null;
+        Switched sw = $switchHeader.clause.getSwitched();
+        if (sw!=null) {
+          Expression ex = sw.getExpression();
+          if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
+            id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          }
+          TypedDeclaration var = sw.getVariable();
+          if (var!=null) {
+            id = var.getIdentifier();
+          }
+        }
+        if (id!=null) {
           for (CaseClause cc: $cases.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
@@ -3322,10 +3440,20 @@ switchHeader returns [SwitchClause clause]
       { $clause = new SwitchClause($SWITCH_CLAUSE); }
       LPAREN 
       (
-      expression 
-      { $clause.setExpression($expression.expression); }
+        switched 
+        { $clause.setSwitched($switched.switched); }
       )?
       RPAREN
+    ;
+
+switched returns [Switched switched]
+    @init { $switched = new Switched(null); }
+    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+        => specifiedVariable
+        { $switched.setVariable($specifiedVariable.variable); }
+      | expression
+        { $switched.setExpression($expression.expression); }
+      )
     ;
 
 cases returns [SwitchCaseList switchCaseList]
@@ -3480,11 +3608,11 @@ tryCatchFinally returns [TryCatchStatement statement]
       { $statement.setTryClause($tryBlock.clause); }
       (
         catchBlock
-      { $statement.addCatchClause($catchBlock.clause); }
+        { $statement.addCatchClause($catchBlock.clause); }
       )* 
       ( 
         finallyBlock
-      { $statement.setFinallyClause($finallyBlock.clause); }
+        { $statement.setFinallyClause($finallyBlock.clause); }
       )?
     ;
 
@@ -3534,15 +3662,15 @@ resources returns [ResourceList resources]
     : LPAREN 
     { $resources = new ResourceList($LPAREN); }
     (
-    r1=resource
-    { $resources.addResource($r1.resource); }
-    (
-      c=COMMA 
-      { $resources.setEndToken($c); }
-      r2=resource
-      { $resources.addResource($r2.resource);
-        $resources.setEndToken(null); }
-    )*
+      r1=resource
+      { $resources.addResource($r1.resource); }
+      (
+        c=COMMA 
+        { $resources.setEndToken($c); }
+        r2=resource
+        { $resources.addResource($r2.resource);
+          $resources.setEndToken(null); }
+      )*
     )?
     RPAREN
     { $resources.setEndToken($RPAREN); }

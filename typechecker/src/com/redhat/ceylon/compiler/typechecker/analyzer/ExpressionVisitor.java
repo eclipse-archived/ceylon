@@ -204,8 +204,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IfExpression that) {
         Node ose = switchStatementOrExpression;
         Node oie = ifStatementOrExpression;
-        switchStatementOrExpression = that;
-        ifStatementOrExpression = null;
+        switchStatementOrExpression = null;
+        ifStatementOrExpression = that;
         super.visit(that);
         
         List<ProducedType> list = 
@@ -242,23 +242,31 @@ public class ExpressionVisitor extends Visitor {
         ifStatementOrExpression = oie;
     }
     
+    @Override
+    public void visit(Tree.Switched that) {
+        Tree.Variable variable = that.getVariable();
+        if (variable!=null && 
+                variable.getSpecifierExpression()==null) {
+            that.addError("missing specified expression");
+        }
+        super.visit(that);
+    }
+    
     @Override public void visit(Tree.SwitchExpression that) {
         Node ose = switchStatementOrExpression;
         Node oie = ifStatementOrExpression;
         switchStatementOrExpression = that;
         ifStatementOrExpression = null;
+        
         super.visit(that);
 
         Tree.SwitchCaseList switchCaseList = 
                 that.getSwitchCaseList();
-        Tree.Expression switchExpression = 
-                that.getSwitchClause().getExpression();
-        if (switchCaseList!=null && switchExpression!=null) {
-            checkCases(switchCaseList);
-            if (switchCaseList.getElseClause()==null) {
-                checkCasesExhaustive(that.getSwitchClause(), 
-                        switchExpression, switchCaseList);
-            }
+        Tree.SwitchClause switchClause = 
+                that.getSwitchClause();
+        checkCasesExhaustive(switchClause, switchCaseList);
+        
+        if (switchCaseList!=null) {
             List<ProducedType> list = 
                     new ArrayList<ProducedType>();
             for (Tree.CaseClause cc: 
@@ -2009,9 +2017,6 @@ public class ExpressionVisitor extends Visitor {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            //note: the following is nice, even though
-            //      it is not actually blessed by the
-            //      language spec!
             return unit.isNonemptyIterableType(receivingType) ?
                     unit.getSequenceType(pt) :
                     unit.getSequentialType(pt);
@@ -4466,15 +4471,17 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(t);
                 Tree.Term tt = that.getTerm();
                 if (tt!=null) {
-                    if (tt!=null) {
-                        ProducedType pt = tt.getTypeModel();
-                        if (!isTypeUnknown(pt)) {
-                            if (!t.covers(pt)) {
-                                that.addError("specified type does not cover the cases of the operand expression: '" +
-                                        t.getProducedTypeName(unit) + "' does not cover '" + 
-                                        pt.getProducedTypeName(unit) + "'");
-                            }
+                    ProducedType pt = tt.getTypeModel();
+                    if (!isTypeUnknown(pt)) {
+                        if (!t.covers(pt)) {
+                            that.addError("specified type does not cover the cases of the operand expression: '" +
+                                    t.getProducedTypeName(unit) + "' does not cover '" + 
+                                    pt.getProducedTypeName(unit) + "'");
                         }
+                    }
+                    //Just especially for the IDE!
+                    if (tt instanceof Tree.Super) {
+                        ((Tree.Super) tt).setDeclarationModel(t.getDeclaration());
                     }
                 }
             }
@@ -4737,6 +4744,14 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.InOp that) {
         super.visit(that);
         visitInOperator(that);
+    }
+    
+    @Override public void visit(Tree.LetExpression that) {
+        super.visit(that);
+        Tree.Expression e = that.getLetClause().getExpression();
+        if (e!=null) {
+            that.setTypeModel(e.getTypeModel());
+        }
     }
     
     @Override
@@ -5130,6 +5145,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 member = (TypedDeclaration) handleAbstraction(member, that);
                 that.setDeclaration(member);
+                resetSuperReference(that);
                 boolean selfReference = isSelfReference(p);
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
@@ -5190,6 +5206,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {*/
             that.setTarget(ptr);
+            checkSpread(member, that);
             ProducedType fullType =
                     ptr.getFullType(wrap(ptr.getType(), receivingType, that));
             if (!dynamic && !isAbstraction(member) && 
@@ -5202,6 +5219,17 @@ public class ExpressionVisitor extends Visitor {
             }
             that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
             //}
+        }
+    }
+
+    private void checkSpread(TypedDeclaration member, 
+            Tree.QualifiedMemberExpression that) {
+        if (!(that.getMemberOperator() instanceof Tree.MemberOp)) {
+            if (member instanceof Functional) {
+                if (((Functional) member).getParameterLists().size()!=1) {
+                    that.addError("spread method must have exactly one parameter list");
+                }
+            }
         }
     }
 
@@ -5446,7 +5474,7 @@ public class ExpressionVisitor extends Visitor {
 	    }
     }
     
-   void visitExtendedTypePrimary(Tree.ExtendedTypeExpression that) {
+    void visitExtendedTypePrimary(Tree.ExtendedTypeExpression that) {
         Declaration dec = that.getDeclaration();
         if (dec instanceof Class) {
             Class c = (Class) dec;
@@ -5475,27 +5503,39 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-    
-   @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-       super.visit(that);
-       Tree.Term p = that.getPrimary();
-       //TODO: what the hell is this for:
-       while (p instanceof Tree.Expression &&
-               p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
-           p = ((Tree.Expression) p).getTerm();
-       }
-       if (p instanceof Tree.MemberOrTypeExpression) {
-           Tree.MemberOrTypeExpression mte = 
-                   (Tree.MemberOrTypeExpression) p;
-           Declaration pd = mte.getDeclaration();
-           if (!(that.getStaticMethodReference()) && 
-                   pd instanceof Functional) {
-               //this is a direct function ref
-               //it's not a type, it can't have members
-               that.addError("direct function references do not have members");
-           }
-       }
-   }
+
+    @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+        super.visit(that);
+        Tree.Term p = that.getPrimary();
+        while (p instanceof Tree.Expression &&
+                p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
+            p = ((Tree.Expression) p).getTerm();
+        }
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) p;
+            Declaration pd = mte.getDeclaration();
+            if (!that.getStaticMethodReference() && 
+                    pd instanceof Functional) {
+                //this is a direct function ref
+                //it's not a type, it can't have members
+                that.addError("direct function references do not have members");
+            }
+        }
+    }
+
+    void resetSuperReference(Tree.QualifiedMemberOrTypeExpression that) {
+        //Just for the IDE!
+        Tree.Term p = that.getPrimary();
+        if (p instanceof Tree.Super) {
+            Declaration dec = that.getDeclaration();
+            if (dec!=null) {
+                TypeDeclaration td = 
+                        (TypeDeclaration) dec.getContainer();
+                ((Tree.Super) p).setDeclarationModel(td);
+            }
+        }
+    }
 
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
@@ -5600,6 +5640,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
+                resetSuperReference(that);
                 if (!isSelfReference(p) && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
@@ -5748,12 +5789,14 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Outer that) {
-        ProducedType ci = getOuterClassOrInterface(that.getScope());
-        if (ci==null) {
+        ProducedType oci = 
+                getOuterClassOrInterface(that.getScope());
+        if (oci==null) {
             that.addError("outer appears outside a nested class or interface definition");
         }
         else {
-            that.setTypeModel(ci);
+            that.setTypeModel(oci);
+            that.setDeclarationModel(oci.getDeclaration());
         }
         /*if (defaultArgument) {
             that.addError("reference to outer from default argument expression");
@@ -5766,9 +5809,10 @@ public class ExpressionVisitor extends Visitor {
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = 
+                    ClassOrInterface cci = 
                             (ClassOrInterface) ci.getContainer();
-                    that.setTypeModel(intersectionOfSupertypes(oci));
+                    that.setDeclarationModel(cci);
+                    that.setTypeModel(intersectionOfSupertypes(cci));
                 }
             }
         }
@@ -5778,6 +5822,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("super occurs outside any type definition");
             }
             else {
+                that.setDeclarationModel(ci);
                 that.setTypeModel(intersectionOfSupertypes(ci));
             }
         }
@@ -5789,9 +5834,10 @@ public class ExpressionVisitor extends Visitor {
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface s = 
+                    ClassOrInterface cci = 
                             (ClassOrInterface) ci.getContainer();
-                    that.setTypeModel(s.getType());
+                    that.setDeclarationModel(cci);
+                    that.setTypeModel(cci.getType());
                 }
             }
         }
@@ -5800,6 +5846,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("this appears outside a class or interface definition");
             }
             else {
+                that.setDeclarationModel(ci);
                 that.setTypeModel(ci.getType());
             }
         }
@@ -5988,9 +6035,19 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
                     if (switchStatementOrExpression!=null) {
+                        Tree.Switched switched = switchClause().getSwitched();
                         Tree.Expression switchExpression = 
-                                switchClause().getExpression();
-                        if (switchExpression!=null) {
+                                switched.getExpression();
+                        Tree.Variable switchVariable = 
+                                switched.getVariable();
+                        if (switchVariable!=null) {
+                            ProducedType st = switchVariable.getType().getTypeModel();
+                            if (!isTypeUnknown(st)) {
+                                checkAssignable(t, st, e, 
+                                        "case must be assignable to switch variable type");
+                            }
+                        }
+                        else if (switchExpression!=null) {
                             ProducedType st = switchExpression.getTypeModel();
                             if (!isTypeUnknown(st)) {
                                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
@@ -6040,34 +6097,50 @@ public class ExpressionVisitor extends Visitor {
         if (t!=null) {
             t.visit(this);
         }
-        Tree.Variable v = that.getVariable();
         if (switchStatementOrExpression!=null) {
-            Tree.Expression switchExpression =
-                    switchClause().getExpression();
-            if (switchExpression!=null) {
-                ProducedType st = switchExpression.getTypeModel();
-                if (v!=null) {
-                    if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
-                        v.visit(this);
-                    }
-                    initOriginalDeclaration(v);
+            Tree.Switched switched = switchClause().getSwitched();
+            Tree.Expression switchExpression = switched.getExpression();
+            Tree.Variable switchVariable = switched.getVariable();
+            ProducedType st;
+            if (switchVariable!=null) {
+                st = switchVariable.getType().getTypeModel();
+            }
+            else if (switchExpression!=null) {
+                st = switchExpression.getTypeModel();
+            }
+            else {
+                //NOTE: early exit!
+                return;
+            }
+            Tree.Variable v = that.getVariable();
+            if (v!=null) {
+                if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
+                    v.visit(this);
                 }
-                if (t!=null) {
-                    ProducedType pt = t.getTypeModel();
-                    ProducedType it = intersectionType(pt, st, unit);
+                initOriginalDeclaration(v);
+            }
+            if (t!=null) {
+                ProducedType pt = t.getTypeModel();
+                ProducedType it = intersectionType(pt, st, unit);
+                if (switchVariable!=null) {
+                    if (it.isExactly(unit.getNothingDeclaration().getType())) {
+                        that.addError("narrows to Nothing type: '" + 
+                                pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                                st.getProducedTypeName(unit) + "'");
+                    }
+                }
+                else if (switchExpression!=null) {
                     if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                         if (it.isExactly(unit.getNothingDeclaration().getType())) {
                             that.addError("narrows to bottom type 'Nothing': '" + 
                                     pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
                                     st.getProducedTypeName(unit) + "'");
                         }
-                        /*checkAssignable(ct, switchType, cc.getCaseItem(), 
-                        "case type must be a case of the switch type");*/
                     }
-                    if (v!=null) {
-                        v.getType().setTypeModel(it);
-                        v.getDeclarationModel().setType(it);
-                    }
+                }
+                if (v!=null) {
+                    v.getType().setTypeModel(it);
+                    v.getDeclarationModel().setType(it);
                 }
             }
         }
@@ -6079,21 +6152,22 @@ public class ExpressionVisitor extends Visitor {
         Node ois = ifStatementOrExpression;
         ifStatementOrExpression = null;
         switchStatementOrExpression = that;
-        Tree.SwitchClause switchClause = 
-                that.getSwitchClause();
-        Tree.Expression switchExpression = 
-                switchClause.getExpression();
-        Tree.SwitchCaseList switchCaseList = 
-                that.getSwitchCaseList();
+        
         super.visit(that);
-        checkCasesExhaustive(switchClause, switchExpression, switchCaseList);
+        
+        checkCasesExhaustive(that.getSwitchClause(), 
+                that.getSwitchCaseList());
+        
         switchStatementOrExpression = oss;
         ifStatementOrExpression = ois;
     }
 
     private void checkCasesExhaustive(Tree.SwitchClause switchClause,
-            Tree.Expression switchExpression, 
             Tree.SwitchCaseList switchCaseList) {
+        Tree.Switched switched = 
+                switchClause.getSwitched();
+        Tree.Expression switchExpression = 
+                getSwitchedExpression(switched);
         if (switchCaseList!=null && 
                 switchExpression!=null) {
             checkCases(switchCaseList);
@@ -6117,6 +6191,22 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private static Tree.Expression getSwitchedExpression(Tree.Switched switched) {
+        Tree.Expression e = switched.getExpression();
+        Tree.Variable v = switched.getVariable();
+        if (e!=null) {
+            return e;
+        }
+        else if (v!=null) {
+            Tree.SpecifierExpression sie = 
+                    v.getSpecifierExpression();
+            if (sie!=null) {
+                return sie.getExpression();
+            }
+        }
+        return null;
+    }
     
     @Override
     public void visit(Tree.IfStatement that) {
@@ -6134,9 +6224,10 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable var = that.getVariable();
         if (var!=null) {
             var.visit(this);
+            initOriginalDeclaration(var);
             if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression = 
-                        switchClause().getExpression();
+                        getSwitchedExpression(switchClause().getSwitched());
                 Tree.SwitchCaseList switchCaseList = 
                         switchCaseList();
                 if (switchExpression!=null && 
@@ -6206,7 +6297,7 @@ public class ExpressionVisitor extends Visitor {
         if (hasIsCase) {
             if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression =
-                        switchClause().getExpression();
+                        switchClause().getSwitched().getExpression();
                 if (switchExpression!=null) {
                     Tree.Term st = switchExpression.getTerm();
                     if (st instanceof Tree.BaseMemberExpression) {

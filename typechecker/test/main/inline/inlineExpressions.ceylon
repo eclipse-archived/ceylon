@@ -1,5 +1,10 @@
 void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     
+    @type:"String" value numStr = 
+            if (num==0) then "zero" 
+            else if (num==1) then "unit" 
+            else num.string;
+    
     @type:"Integer|Float" value someStuff 
             = if (exists arg) 
                 then arg else 0.0;
@@ -36,9 +41,19 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
             satisfies Category<String> {
         contains(String that) => !that.empty;
     };
-    
-    print(if (exists arg) then arg else 0.0);
+
     print(switch (bool) case (true) "bar" case (false) "foo");
+    
+    @type:"String|Float" value a1 = 
+            if (exists arg) then arg.string else 0.0;
+    @type:"String" value s1 
+            = switch (arg) case (is Null) "null" case (is Integer) arg.string;
+    
+    @type:"String|Float" value a2 = 
+            if (exists a=arg) then a.string else 0.0;
+    @type:"String" value s2 
+            = switch (a=arg) case (is Null) "null" case (is Integer) a.string;
+    
     print(object satisfies Category<String> {
         print("creating object");
         contains(String that) => !that.empty;
@@ -64,4 +79,11 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     };
     @type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
     @type:"Array<Basic>" value objs2 = Array {object{}};
+}
+
+void run(String? string) {
+    String val1 = if (!exists string) 
+            then "hello" else string;
+    String val2 = switch (string) 
+            case (is Null) "hello" else string;
 }

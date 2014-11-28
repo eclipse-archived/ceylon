@@ -258,7 +258,7 @@ public class SelfReferenceVisitor extends Visitor {
     private void checkSelfReference(Node that, Tree.Term term) {
         Tree.Term t = eliminateParensAndWidening(term);
         if (directlyInBody() && t instanceof Tree.Super) {
-            that.addError("leaks super reference in body: '" + 
+            that.addError("leaks super reference: '" + 
                     typeDeclaration.getName() + "'");
         }    
         if (mayNotLeakThis() && t instanceof Tree.This) {

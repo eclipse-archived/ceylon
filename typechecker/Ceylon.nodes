@@ -423,6 +423,12 @@
 ^(DYNAMIC_CLAUSE:CONTROL_CLAUSE 
     BLOCK?)
 
+^(LET_EXPRESSION:TERM
+    LET_CLAUSE)
+^(LET_CLAUSE:CONTROL_CLAUSE
+    VARIABLE*
+    EXPRESSION)
+
 ^(IF_STATEMENT:CONTROL_STATEMENT
     IF_CLAUSE
     ELSE_CLAUSE?)
@@ -437,9 +443,12 @@
 
 ^(SWITCH_STATEMENT:CONTROL_STATEMENT
     SWITCH_CLAUSE
-    SWITCH_CASE_LIST)
+    SWITCH_CASE_LIST
+    ControlBlock controlBlock;)
 ^(SWITCH_CLAUSE
-    EXPRESSION)
+    SWITCHED)
+^(SWITCHED
+    VARIABLE? EXPRESSION?)
 ^(SWITCH_CASE_LIST 
     CASE_CLAUSE* 
     ELSE_CLAUSE?)
@@ -705,7 +714,8 @@
     EXPRESSION? length)
 
 "A reference to the outer containing instance."
-^(OUTER:ATOM)
+^(OUTER:ATOM
+   TypeDeclaration declarationModel;)
 
 "A reference to the containing package."
 ^(PACKAGE:ATOM
@@ -749,7 +759,7 @@
     Method declarationModel;)
 
 "An anonymous function."
-^(OBJECT_EXPRESSION:TERM
+^(OBJECT_EXPRESSION:PRIMARY
     EXTENDED_TYPE?
     SATISFIED_TYPES?
     CLASS_BODY
@@ -829,7 +839,8 @@
    List<Declaration> qualified;)
 
 "A reference to the current instance."
-^(abstract SELF_EXPRESSION:ATOM)
+^(abstract SELF_EXPRESSION:ATOM
+   TypeDeclaration declarationModel;)
 ^(THIS:SELF_EXPRESSION)
 ^(SUPER:SELF_EXPRESSION)
 

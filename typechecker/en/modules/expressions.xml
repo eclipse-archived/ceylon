@@ -302,15 +302,16 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Anonymous functions</title>
         
         <para>An anonymous function is a function, as specified in 
-        <xref linkend="functions"/>, with no name, defined within an expression. 
-        It comprises one or more parameter lists, followed by an expression.</para>
+        <xref linkend="functions"/>, with no name, defined within an 
+        expression. It comprises one or more parameter lists, followed by 
+        an expression or a block of code.</para>
         
         <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
         
         <para>The parameters are the parameters of the function. The lazy 
-        specifier or block of code is the implementation of the function. If 
-        the <literal>void</literal> keyword is specified, the function is a 
-        <literal>void</literal> function. Otherwise, it is a 
+        specifier or block of code is the implementation of the function. 
+        If the <literal>void</literal> keyword is specified, the function 
+        is a <literal>void</literal> function. Otherwise, it is a 
         non-<literal>void</literal> function, and its return type is 
         inferred.</para>
         
@@ -424,9 +425,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             parameter.</para>
             
             <para>That is, if the type of the invoked expression is 
-            <literal>Callable&lt;R,T&gt;</literal> where <literal>T</literal>
+            <literal>R(*T)</literal> where <literal>T</literal>
             is a tuple type whose <literal>n</literal>th element type is 
-            <literal>Callable&lt;P,S&gt;</literal> and <literal>S</literal> is 
+            <literal>P(*S)</literal> and <literal>S</literal> is 
             in turn a tuple type whose <literal>i</literal>th element type is 
             <literal>Q</literal>, then <literal>Q</literal> is the inferred type 
             of <literal>p</literal>.</para>
@@ -439,10 +440,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Compound expressions</title>
         
         <para>An <emphasis>atom</emphasis> is a literal or self reference, a
-        string template, an iterable or tuple enumeration, or a parenthesized 
-        expression.</para>
+        string template, an iterable or tuple enumeration, and anonymous class 
+        expression, or a parenthesized expression.</para>
         
-        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple | DynamicValue</synopsis>
+        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Enumeration | ObjectExpression</synopsis>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
         member expressions and invocation expressions from an atom, base 
@@ -452,11 +453,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and using inline conditional 
-        expressions, anonymous class expressions, and anonymous functions.</para>    
+        expressions and anonymous functions.</para>    
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | ConditionalExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | LetExpression | ConditionalExpression</synopsis>
         
         <comment><para>Note: the grammar of operator expressions is defined by
         the table of operator precedence and associativity in 
@@ -644,7 +645,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a callable reference <literal>f</literal> with no explicit type 
             argument list occurs as the argument to a value parameter <literal>p</literal>
-            of type <literal>Callable&lt;Return,Args&gt;</literal> in a direct or indirect 
+            of type <literal>Return(*Args)</literal> in a direct or indirect 
             invocation expression, then the type arguments of <literal>f</literal> are 
             inferred according to the rules defined in <xref linkend="typeargumentinference"/> 
             as if <literal>Args</literal> were the type of a positional argument list, unless 
@@ -701,7 +702,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a static expression <literal>T.m</literal> for a generic type <literal>T</literal> 
             with no explicit type argument list occurs as the argument to a parameter <literal>p</literal>
-            of type <literal>Callable&lt;Return,Arg&gt;</literal> in a direct or indirect invocation 
+            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation 
             expression, then the type arguments of <literal>T</literal> are inferred according to the 
             rules defined in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> 
             were the type of a positional argument list, and <literal>[T]</literal> were the type of 
@@ -760,7 +761,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>Invocation: Primary Arguments</synopsis>
         
-        <para>The invoked expression must be of type <literal>Callable&lt;R,P&gt;</literal>
+        <para>The invoked expression must be of type <literal>R(*P)</literal>
         for some types <literal>R</literal> and <literal>P</literal>. Then the type of the 
         invocation expression is simply <literal>R</literal>.</para>
         
@@ -776,7 +777,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>Every argument list has a type, as specified below in 
         <xref linkend="positionalarguments"/> and <xref linkend="namedarguments"/>. If an 
         invocation is formed from a callable expression of type exactly 
-        <literal>Callable&lt;R,P&gt;</literal> and an argument list of type 
+        <literal>R(*P)</literal> and an argument list of type 
         <literal>A</literal>, then <literal>A</literal> must be a subtype of 
         <literal>P</literal>.</para>
             
@@ -1356,6 +1357,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             tuple and iterable object instantiation. Iterable enumerations are delimited
             using braces. Tuple enumerations are delimited by brackets.</para>
             
+            <synopsis>Enumeration: Iterable | Tuple | DynamicValue</synopsis>
             <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
             <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
             
@@ -1410,10 +1412,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="miscexpressions">
-        <title>Conditional expressions and anonymous class expressions</title>
+        <title>Conditional expressions, let expressions, and anonymous class expressions</title>
         
         <para>A <emphasis>conditional expression</emphasis> resembles a control 
         structure but is part of the expression syntax, and evaluates to a value.</para> 
+        
+        <para>A <emphasis>let expression</emphasis> allows inline definition of a 
+        reference within an expression.</para>
         
         <para>An <emphasis>inline class</emphasis> is an anonymous class defined 
         within an expression.</para>
@@ -1443,28 +1448,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>then</literal> expression, and an <literal>else</literal> 
             expression. The <literal>else</literal> expression is not optional.</para>
             
-            <synopsis>IfElseExpression: "if" ConditionList ThenExpression ElseExpression</synopsis>
+            <synopsis>IfElseExpression: "if" ConditionList ThenExpression (ElseExpression | ElseIfExpression)</synopsis>
+            <synopsis>ElseIfExpression: "else" IfExpression</synopsis>
             
             <para>The type of an <literal>if/then/else</literal> expression with
             <literal>then</literal> expression of type <literal>X</literal> and
-            <literal>else</literal> expression of type <literal>Y</literal> is
-            <literal>X|Y</literal>.</para>
+            <literal>else</literal> or <literal>else if</literal> expression of 
+            type <literal>Y</literal> is <literal>X|Y</literal>.</para>
             
             <para>A <literal>switch/case/else</literal> expression has a 
-            <literal>switch</literal> expression, a list of <literal>case</literal>
-            expressions, and, optionally, an <literal>else</literal> expression.</para>
+            <literal>switch</literal> expression or inline variable, a list of 
+            <literal>case</literal> expressions, and, optionally, an 
+            <literal>else</literal> expression.</para>
             
-            <synopsis>SwitchCaseElseExpression: "switch" "(" Expression ")" CaseExpression ElseExpression</synopsis>
+            <synopsis>SwitchCaseElseExpression: Switch CaseExpression+ ElseExpression</synopsis>
             
-            <para>The type of an <literal>if/then/else</literal> expression with
-            <literal>case</literal> expressions of type <literal>X1</literal>,
+            <para>The type of a <literal>switch/case/else</literal> expression 
+            with <literal>case</literal> expressions of type <literal>X1</literal>,
             <literal>X2</literal>, ..., <literal>Xn</literal> and
             <literal>else</literal> expression of type <literal>Y</literal> is
             <literal>X1|X2|...|Xn|Y</literal>.</para>
             
             <synopsis>ThenExpression: "then" Expression</synopsis>
             <synopsis>ElseExpression: "else" Expression</synopsis>
-            <synopsis>CaseExpression: "case" "(" Case ")"  Expression</synopsis>
+            <synopsis>CaseExpression: "case" CaseCondition Expression</synopsis>
             
             <para>The expression following <literal>then</literal>, 
             <literal>else</literal>, and <literal>case</literal> is parsed with 
@@ -1474,7 +1481,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <xref linkend="operatorprecedence"/>.</para>
             
             <para>Each <literal>case</literal> expression includes a value case or
-            type case, as defined in <xref linkend="switchcaseelse"/>. Just like
+            type case, as defined in <xref linkend="caseconditions"/>. Just like
             in a <literal>switch/case/else</literal> conditional statement:</para>
             
             <itemizedlist>
@@ -1487,16 +1494,33 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
+            <programlisting>if (exists lang) then lang.name else "Ceylon"</programlisting>
+            <programlisting>switch (seq) case (null) "null" case (is []) "empty" else "nonempty"</programlisting>
+            
         </section>
         
         <section id="letexpressions">
             <title>Let expressions</title>
             
-            <comment>
-            <para>Should we support let expressions, possibly reusing the keyword
-            <literal>given</literal>?</para>
-            <programlisting>given (dist = sqrt(x^2+y^2)) [x/dist,y/dist]</programlisting>
-            </comment>
+            <para>A let expression comprises a list of one or more variable 
+            declarations, as defined in <xref linkend="controlstructurevariables"/>, 
+            followed by an expression involving those variables.</para>
+            
+            <synopsis>LetExpression: "let" LetValueList Expression</synopsis>
+            
+            <synopsis>LetValueList: "(" LetValue ("," LetValue)* ")"</synopsis>
+            
+            <para>Each variable is a shortcut reference declaration, as defined
+            in <xref linkend="references"/>.</para>
+            
+            <synopsis>LetValue: Variable Specifier</synopsis>
+            
+            <para>If the variable declaration specifies an explicit type, the
+            specified expression must be assignable to that type.</para>
+            
+            <para>The variables are considered in scope in the expression.
+            A variable in the list may refer to a variable defined earlier 
+            in the list.</para>
         
         </section>
         
@@ -1525,8 +1549,18 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The type of an inline anonymous class expression is the 
             intersection of the class type it extends with all interface types 
-            it satisfies.</para>
+            it satisfies. The type of the inline anonymous class itself is not 
+            accessible outside the body of the inline anonymous class expression.</para>
             
+            <programlisting>object 
+        satisfies {Integer+} {
+    iterator() => object 
+            satisfies Iterator&lt;Integer&gt; {
+        variable value current = 0;
+        next() => current++;
+    };
+}</programlisting>
+        
         </section>
         
     </section>
@@ -1976,7 +2010,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Callable &lt;T,P&gt;</literal></entry>
+            <entry><literal>T(*P)</literal></entry>
             <entry>argument list of type <literal>P</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2335,9 +2369,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry></entry>
             <entry><literal>X?</literal></entry>
             <entry>a method of callable type 
-            <literal>Callable &lt;T,P&gt;</literal> 
-            of <literal>X</literal></entry>
-            <entry><literal>Callable &lt;T?,P&gt;</literal></entry>
+            <literal>T(*P)</literal> 
+            of <literal>X</literal>
+            with exactly one parameter list</entry>
+            <entry><literal>T?(*P)</literal></entry>
         </row>
         
     </tbody>
@@ -2438,9 +2473,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>compose((Iterable&lt;T,N&gt; ts)=>[*ts], lhs.spread(X.method))</literal></entry>
             <entry><literal>Iterable&lt;X,N&gt;</literal></entry>
             <entry>method of <literal>X</literal> of
-            callable type <literal>Callable &lt;T,P&gt;</literal></entry>
-            <entry><literal>Callable &lt;[T*],P&gt;</literal> or
-            <literal>Callable &lt;[T+],P&gt;</literal></entry>
+            callable type <literal>T(*P)</literal>
+            with exactly one parameter list</entry>
+            <entry><literal>[T*](*P)</literal> or
+            <literal>[T+](*P)</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Spread multiplication</emphasis></entry></row>
@@ -3065,17 +3101,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>for a toplevel function of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Function&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a toplevel class of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Class&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Class&lt;R,Nothing&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
@@ -3097,12 +3133,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>for a method of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>Method&lt;T,R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a member class of callable type 
-                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>R(*P)</literal>, the type is 
                     <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
                 </listitem>
                 <listitem>

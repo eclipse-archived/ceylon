@@ -87,11 +87,19 @@ public abstract class ProducedReference {
     public ProducedType getFullType() {
     	return getFullType(getType());
     }
-
+    
+    /**
+     * @param wrappedType the return type of this member for
+     *                    a ?. or *. expression, i.e.
+     *                    T?, [T*], or [T+]
+     */
     public ProducedType getFullType(ProducedType wrappedType) {
         if (declaration instanceof Functional) {
             if (isAbstraction(declaration)) {
                 Unit unit = declaration.getUnit();
+                //for an unresolved overloaded method we don't 
+                //know the parameter types, but we do know that
+                //there is only one parameter list
                 return producedType(unit.getCallableDeclaration(), 
                         wrappedType,
                         new UnknownType(unit).getType());

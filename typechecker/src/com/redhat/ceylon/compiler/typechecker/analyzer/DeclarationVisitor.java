@@ -978,6 +978,18 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ControlClause that) {
         ControlBlock cb = new ControlBlock();
+        cb.setLet(that instanceof Tree.LetClause);
+        cb.setId(id++);
+        that.setControlBlock(cb);
+        visitElement(that, cb);
+        Scope o = enterScope(cb);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.SwitchStatement that) {
+        ControlBlock cb = new ControlBlock();
         cb.setId(id++);
         that.setControlBlock(cb);
         visitElement(that, cb);
@@ -1041,7 +1053,9 @@ public class DeclarationVisitor extends Visitor {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
             if (scope instanceof ControlBlock) {
-                scope = scope.getContainer();
+                if (!((ControlBlock) scope).isLet()) {
+                    scope = scope.getContainer();
+                }
             }
             that.getSpecifierExpression().visit(this);
             scope = s;
@@ -1900,27 +1914,30 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.FunctionType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType returnType = 
-                    that.getReturnType().getTypeModel();
-            ProducedType t = new LazyProducedType(unit) {
-                @Override
-                public TypeDeclaration initDeclaration() {
-                    return unit.getCallableDeclaration();
-                }
-                @Override
-                public Map<TypeParameter, ProducedType> initTypeArguments() {
-                    HashMap<TypeParameter, ProducedType> map = 
-                            new HashMap<TypeParameter, ProducedType>();
-                    List<TypeParameter> ctps = 
-                            unit.getCallableDeclaration().getTypeParameters();
-                    map.put(ctps.get(0), returnType);
-                    map.put(ctps.get(1),
-                            //TODO: holds on to reference to Tree.Type
-                            getTupleType(that.getArgumentTypes(), unit));
-                    return map;
-                }
-            };
-            that.setTypeModel(t);
+            Tree.StaticType rt = that.getReturnType();
+            if (rt!=null) {
+                final ProducedType returnType = 
+                        rt.getTypeModel();
+                ProducedType t = new LazyProducedType(unit) {
+                    @Override
+                    public TypeDeclaration initDeclaration() {
+                        return unit.getCallableDeclaration();
+                    }
+                    @Override
+                    public Map<TypeParameter, ProducedType> initTypeArguments() {
+                        HashMap<TypeParameter, ProducedType> map = 
+                                new HashMap<TypeParameter, ProducedType>();
+                        List<TypeParameter> ctps = 
+                                unit.getCallableDeclaration().getTypeParameters();
+                        map.put(ctps.get(0), returnType);
+                        map.put(ctps.get(1),
+                                //TODO: holds on to reference to Tree.Type
+                                getTupleType(that.getArgumentTypes(), unit));
+                        return map;
+                    }
+                };
+                that.setTypeModel(t);
+            }
         }
     }
     
