@@ -79,8 +79,10 @@ public class FreeValue
     })
     public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
-        if(!getToplevel())
+        if(!getToplevel()
+                && !declaration.isStaticallyImportable()) {
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        }
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
 

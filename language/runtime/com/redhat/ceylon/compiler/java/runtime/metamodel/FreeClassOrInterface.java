@@ -357,8 +357,10 @@ public abstract class FreeClassOrInterface
     })
     public <Type extends Object> ceylon.language.meta.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType,
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
-        if(!getToplevel())
+        if(!getToplevel()
+                && !declaration.isStaticallyImportable()) {
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        }
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
