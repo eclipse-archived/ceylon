@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Anything;
@@ -13,6 +16,7 @@ import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -22,7 +26,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates.Predicate;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -37,6 +44,7 @@ public class FreeClass
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClass.class);
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameters;
+    private List<ConstructorDeclaration> constructors;
     
     public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
         super(declaration);
@@ -58,16 +66,23 @@ public class FreeClass
                 }
             }
             ParameterList parameterList = classDeclaration.getParameterList();
-            List<Parameter> modelParameters = parameterList.getParameters();
-            ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
-            int i=0;
-            for(Parameter modelParameter : modelParameters){
-                parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) Metamodel.getOrCreateMetamodel(modelParameter.getModel());
-                i++;
+            if (parameterList != null) {
+                this.parameters = FunctionalUtil.getParameters(classDeclaration);
+            } else {
+                throw new RuntimeException("Class without default constructor!!");
             }
-            this.parameters = Util.sequentialWrapper(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
         }else{
             this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
+        }
+        if (((Class)declaration).hasConstructors()) {
+            this.constructors = new LinkedList<ConstructorDeclaration>();
+            for (Declaration d : declaration.getMembers()) {
+                if (d instanceof Constructor) {
+                    this.constructors.add(Metamodel.<ConstructorDeclaration>getOrCreateMetamodel(d));
+                }
+            }
+        } else {
+            this.constructors = Collections.emptyList();
         }
     }
     
@@ -124,14 +139,7 @@ public class FreeClass
     @TypeInfo("ceylon.language.meta.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         checkInit();
-        Iterator<?> iterator = parameters.iterator();
-        Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
-            if(pd.getName().equals(name))
-                return pd;
-        }
-        return null;
+        return FunctionalUtil.getParameterDeclaration(this.parameters, name);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -312,20 +320,48 @@ public class FreeClass
     }
     
     @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
-    public ConstructorDeclaration getDeclaredConstructorDeclaration(
+    public ConstructorDeclaration getConstructorDeclaration(
             @Name("name")
             String name) {
-        // TODO
+        checkInit();
+        for (ConstructorDeclaration ctor : this.constructors) {
+            if (ctor.getName().equals(name)) {
+                return ctor;
+            }
+        }
         return null;
     }
     
-    public Sequential<? extends ConstructorDeclaration> declaredConstructorDeclarations() {
-        // TODO
-        return null;
+    @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
+    public ConstructorDeclaration getDefaultConstructorDeclaration() {
+        return getConstructorDeclaration(getName());
     }
     
-    public <Annotation extends ceylon.language.Annotation> Sequential<? extends ConstructorDeclaration> annotatedDeclaredConstructorDeclarations(TypeDescriptor reified$Annotation) {
-        // TODO
-        return null;
+    @Ignore
+    private Sequential<? extends ConstructorDeclaration> filterConstructors(Predicate predicate) {
+        if (predicate == Predicates.false_()) {
+            return (Sequential)empty_.get_();
+        }
+        checkInit();
+        ArrayList<ConstructorDeclaration> ctors = new ArrayList<ConstructorDeclaration>(constructors.size());
+        for(ConstructorDeclaration decl : constructors){
+            if (predicate.accept(((FreeConstructor)decl).constructor)) {
+                ctors.add(decl);
+            }
+        }
+        java.lang.Object[] array = ctors.toArray(new ConstructorDeclaration[ctors.size()]);
+        ObjectArrayIterable<ConstructorDeclaration> iterable = 
+                new ObjectArrayIterable<ConstructorDeclaration>(ConstructorDeclaration.$TypeDescriptor$, (ConstructorDeclaration[]) array);
+        return (ceylon.language.Sequential) iterable.sequence();
+    }
+    
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
+    public Sequential<? extends ConstructorDeclaration> constructorDeclarations() {
+        return filterConstructors(Predicates.TRUE);
+    }
+    
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
+    public <A extends ceylon.language.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+        return filterConstructors(Predicates.isDeclarationAnnotatedWith(reified$Annotation));
     }
 }

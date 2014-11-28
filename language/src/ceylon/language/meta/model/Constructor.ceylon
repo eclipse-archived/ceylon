@@ -9,9 +9,8 @@ import ceylon.language.meta.model {
    you can instantiate and inspect.
    """
 shared sealed interface Constructor<out Type=Anything, in Arguments=Nothing> 
-        satisfies Applicable<Type, Arguments>
-            & Functional 
-            & Declared 
+        satisfies ConstructorModel<Type,Arguments>
+            & Applicable<Type, Arguments>  
         given Arguments satisfies Anything[] {
         
     "The declaration for this model."

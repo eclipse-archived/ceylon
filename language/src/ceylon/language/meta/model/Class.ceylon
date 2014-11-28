@@ -20,7 +20,7 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name"
-    shared formal Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
+    shared actual formal Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
             given Arguments satisfies Anything[];
     
     "An applicable way of instantiating this class via its initializer 

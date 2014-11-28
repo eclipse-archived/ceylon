@@ -10,14 +10,6 @@ shared sealed interface ConstructorDeclaration
     "True if this declaration is annotated with [[shared|ceylon.language::shared]]."
     shared formal Boolean shared;
     
-    /*
-    "This declaration's package container."
-    shared formal Package containingPackage;
-    
-    "This declaration's module container."
-    shared formal Module containingModule;
-    */
-    //"This declaration's immediate container, which can be either a [[NestableDeclaration]]
-    // or a [[Package]]."
-    //shared formal NestableDeclaration|Package container;
+    // TODO need to know the extended constructor. Should we go via OpenType a la ClassDeclaration.extendedType
+    // that would imply adding an OpenConstructorType case to OpenType 
 }

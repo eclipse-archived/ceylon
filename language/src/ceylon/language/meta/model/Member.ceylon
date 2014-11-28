@@ -18,16 +18,16 @@ import ceylon.language.meta.model { AppliedType = Type }
        }
    """
 shared sealed interface Member<in Container, out Kind>
-        satisfies Kind(Container) 
+        satisfies Qualified<Kind,Container> 
         given Kind satisfies Model {
     
     "The declaring closed type. This is the type that declared this member."
     shared formal AppliedType<Anything> declaringType;
     
-    "Type-unsafe container binding, to be used when the container type is unknown until runtime.
+    /*"Type-unsafe container binding, to be used when the container type is unknown until runtime.
      
      This has the same behaviour as invoking this `Member` directly, but exchanges compile-time type
      safety with runtime checks."
     throws(`class IncompatibleTypeException`, "If the container is not assignable to this member's container")
-    shared formal Kind bind(Object container);
+    shared formal Kind bind(Object container);*/
 }

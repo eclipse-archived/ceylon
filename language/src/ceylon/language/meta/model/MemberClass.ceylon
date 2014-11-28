@@ -23,4 +23,9 @@ shared sealed interface MemberClass<in Container, out Type=Anything, in Argument
         given Arguments satisfies Anything[] {
     
     shared actual formal Class<Type, Arguments> bind(Object container);
+    
+    "The constructor with the given name, or null if this class lacks 
+     a constructor of the given name"
+    shared actual formal MemberClassConstructor<Nothing,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
+            given Arguments satisfies Anything[];
 }

@@ -6,6 +6,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Array;
@@ -18,10 +19,12 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeAlias;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassOrInterface.MemberLookup;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -74,7 +77,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // anonymous classes don't have constructors
         // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
         // FIXME: so we really want to disallow that in the metamodel?
-        if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
+        if(!decl.isAnonymous() 
+                && !Metamodel.isLocalType(decl)
+                && !decl.hasConstructors()){
             initConstructor(decl);
         }else{
             this.parameterTypes = (Sequential) empty_.get_();
@@ -182,8 +187,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, 
-                                                  ProducedType producedType, List<ProducedType> parameterProducedTypes,
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance, 
+                                                  ProducedType producedType,
+                                                  List<ProducedType> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
@@ -515,13 +521,27 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
     
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
+    @TypeInfo("ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
     public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,String name) {
-        // TODO
-        return null;
+        checkInit();
+        final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
+        if(ctor == null)
+            return null;
+        return new AppliedConstructor<>(this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
     }
     
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
+    @TypeInfo("ceylon.language.meta.model.Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
     public <Arguments extends Sequential<?extends Object>> java.lang.Object instantiator(TypeDescriptor reified$Arguments) {
-        // TODO 
-        return null;
+        com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class)((FreeClass)getDeclaration()).declaration;
+        if (c.hasConstructors()) {
+            return getConstructor(reified$Arguments, getDeclaration().getName());
+        } else if (c.getParameterLists().get(0) != null) {
+            return this;
+        } else {
+            return null;
+        }
     }
+    
 }

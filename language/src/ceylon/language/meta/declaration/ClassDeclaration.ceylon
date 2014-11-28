@@ -88,8 +88,23 @@ shared sealed interface ClassDeclaration
     shared default Anything memberInstantiate(Object container, AppliedType<Anything>[] typeArguments = [], Anything* arguments)
         => memberClassApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
     
-    shared formal ConstructorDeclaration? getDeclaredConstructorDeclaration(String name);
-    shared formal ConstructorDeclaration[] declaredConstructorDeclarations();
-    shared formal ConstructorDeclaration[] annotatedDeclaredConstructorDeclarations<Annotation>()
+    "Looks up a constructor declaration directly declared on this class, by name. 
+     Returns `null` if no such constructor matches. 
+     This includes unshared constructors but not inherited constructors 
+     (since constructors are not members)."
+    shared formal ConstructorDeclaration? getConstructorDeclaration(String name);
+    
+    "The default constructor declaration of this class. 
+     Returns null if this class lacks a default constructor.
+     The default constructor is the one with the same name as its 
+     containing class."
+    shared formal ConstructorDeclaration? defaultConstructorDeclaration;
+    
+    "Returns the list of constructors declared on this class. This includes unshared constructors."
+    shared formal ConstructorDeclaration[] constructorDeclarations();
+    
+    "Returns the list of constructors declared on this class that are annotated with the 
+     given `Annotation` type argument. This includes unshared constructors."
+    shared formal ConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType;
 }

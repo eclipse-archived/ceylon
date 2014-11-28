@@ -88,7 +88,7 @@ public abstract class FreeClassOrInterface
         this.declaredDeclarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(isSupportedType(memberModelDeclaration))
-                declaredDeclarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
+                declaredDeclarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
         }
 
         Collection<com.redhat.ceylon.compiler.typechecker.model.Declaration> inheritedModelDeclarations = 
@@ -96,7 +96,7 @@ public abstract class FreeClassOrInterface
         this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : inheritedModelDeclarations){
             if(isSupportedType(memberModelDeclaration))
-                declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
+                declarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
         }
     }
 

@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
@@ -100,8 +101,8 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration> typeCheckModelToRuntimeModel
-        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration>();
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, Object>();
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage>();
@@ -255,9 +256,9 @@ public class Metamodel {
         return getAppliedMetamodel(pt);
     }
     
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
+    public static <R> R getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
         synchronized(getLock()){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
+            Object ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure its module is loaded
                 com.redhat.ceylon.compiler.typechecker.model.Package pkg = getPackage(declaration);
@@ -281,12 +282,15 @@ public class Metamodel {
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Setter){
                     com.redhat.ceylon.compiler.typechecker.model.Setter value = (com.redhat.ceylon.compiler.typechecker.model.Setter)declaration;
                     ret = new FreeSetter(value);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+                    com.redhat.ceylon.compiler.typechecker.model.Constructor value = (com.redhat.ceylon.compiler.typechecker.model.Constructor)declaration;
+                    ret = new FreeConstructor(value);
                 }else{
                     throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
                 }
                 typeCheckModelToRuntimeModel.put(declaration, ret);
             }
-            return ret;
+            return (R)ret;
         }
     }
 
@@ -413,6 +417,9 @@ public class Metamodel {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt.getQualifyingType());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceType(pt);
@@ -549,6 +556,18 @@ public class Metamodel {
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
         }
         throw Metamodel.newModelError("Unsupported declaration type: " + declaration + " of type "+declaration.getClass());
+    }
+    
+    public static java.lang.reflect.Constructor<?> getJavaConstructor(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
+        Constructor<?>[] ctors = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getDeclaredConstructors();
+        for (java.lang.reflect.Constructor<?> ctor : ctors) {
+            Name name = ctor.getAnnotation(Name.class);
+            if (name != null 
+                    && declaration.getName().equals(name.value())) {
+                return ctor;
+            }
+        }
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
     }
 
     public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
