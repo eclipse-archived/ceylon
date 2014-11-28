@@ -26,6 +26,6 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     "An applicable way of instantiating this class via its initializer 
      or default constructor, or null if this class lacks both an initializer 
      and default constructor."
-    shared formal Functional&Applicable<Type>? instantiator<Arguments>()
+    shared formal <Functional&Applicable<Type>>? instantiator<Arguments>()
             given Arguments satisfies Anything[];
 }

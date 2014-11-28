@@ -534,7 +534,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
-    @TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Function&ceylon.language.meta.model.Applicable<Type>|ceylon.language::Null")
+    //@TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
     public <Arguments extends Sequential<?extends Object>> java.lang.Object instantiator(TypeDescriptor reified$Arguments) {
         com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class)((FreeClass)getDeclaration()).declaration;
         if (c.hasConstructors()) {
