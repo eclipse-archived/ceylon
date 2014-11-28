@@ -332,6 +332,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -360,6 +361,56 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     final long i) {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(final boolean b) {
+        return new Member(b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other $name$, final boolean b) {
+        return new Member($name$, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class Member$Other {
+        
+        private Member$Other() {
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other Member$Other = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
+        public Member(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+        final boolean b) {
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
+        public Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+        final boolean b) {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member.class));
+        }
+    }
+    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -374,8 +425,10 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class LitParameterisedClassWithConstructors<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        constructors = true,
+        extendsType = "com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors")
+class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
@@ -385,6 +438,7 @@ class LitParameterisedClassWithConstructors<T> implements .com.redhat.ceylon.com
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
+        super(1L);
         this.$reified$T = $reified$T;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -405,6 +459,7 @@ class LitParameterisedClassWithConstructors<T> implements .com.redhat.ceylon.com
     .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
+        super(1L);
         this.$reified$T = $reified$T;
     }
     
@@ -532,14 +587,14 @@ final class literals_ {
         final .ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> parameterisedClassType = (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class, .ceylon.language.Integer.$TypeDescriptor$));
         final .ceylon.language.meta.declaration.ClassDeclaration parameterisedMemberClassDecl = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.Member.class);
         final .ceylon.language.meta.model.MemberClass<? super .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>.Member<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>> parameterisedMemberClassType = (.ceylon.language.meta.model.MemberClass<? super .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>.Member<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>)(.ceylon.language.meta.model.MemberClass)(.ceylon.language.meta.model.MemberClass<? super .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>.Member<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.Member.class, .ceylon.language.String.$TypeDescriptor$)));
-        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> ctor = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$)).getDeclaredConstructor(null, "LitClassWithConstructors");
-        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDecl = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)).getDeclaredConstructorDeclaration("LitClassWithConstructors");
-        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> ctorOther = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$)).getDeclaredConstructor(null, "Other");
-        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorOtherDecl = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)).getDeclaredConstructorDeclaration("Other");
-        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>> ctor2 = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class, .ceylon.language.String.$TypeDescriptor$))).getDeclaredConstructor(null, "LitParameterisedClassWithConstructors");
-        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDecl2 = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class)).getDeclaredConstructorDeclaration("LitParameterisedClassWithConstructors");
-        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>> ctorOther2 = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class, .ceylon.language.String.$TypeDescriptor$))).getDeclaredConstructor(null, "Other");
-        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDeclOther2 = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class)).getDeclaredConstructorDeclaration("Other");
+        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> ctor = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$)).getConstructor(null, "LitClassWithConstructors");
+        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDecl = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)).getConstructorDeclaration("LitClassWithConstructors");
+        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> ctorOther = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$)).getConstructor(null, "Other");
+        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorOtherDecl = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)).getConstructorDeclaration("Other");
+        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>> ctor2 = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class, .ceylon.language.String.$TypeDescriptor$))).getConstructor(null, "LitParameterisedClassWithConstructors");
+        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDecl2 = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class)).getConstructorDeclaration("LitParameterisedClassWithConstructors");
+        final .ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>> ctorOther2 = (.ceylon.language.meta.model.Constructor<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors<.ceylon.language.String>, ? super .ceylon.language.Sequence<? extends .ceylon.language.String>>)(.ceylon.language.meta.model.Constructor)((.ceylon.language.meta.model.ClassModel).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class, .ceylon.language.String.$TypeDescriptor$))).getConstructor(null, "Other");
+        final .ceylon.language.meta.declaration.ConstructorDeclaration ctorDeclOther2 = ((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.class)).getConstructorDeclaration("Other");
         final .ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface> interfaceType = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface>)(.ceylon.language.meta.model.Interface)(.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.$TypeDescriptor$);
         final .ceylon.language.meta.declaration.InterfaceDeclaration interfaceType2 = (.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class);
         final .ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface> interfaceType3 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface>)(.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.$TypeDescriptor$);
