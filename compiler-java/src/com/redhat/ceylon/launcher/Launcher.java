@@ -1,5 +1,8 @@
 package com.redhat.ceylon.launcher;
 
+import static com.redhat.ceylon.launcher.CeylonDebugEvaluationThread.START_EVALUATION_THREAD_PROPERTY;
+import static com.redhat.ceylon.launcher.CeylonDebugEvaluationThread.startDebugEvaluationThread;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
@@ -44,7 +47,10 @@ public class Launcher {
     // FIXME: perhaps we should clear all the properties we set in there on exit?
     // this may not work for run, if they leave threads running 
     public static int runInJava7Checked(CeylonClassLoader loader, String... args) throws Throwable {
-
+        if (Boolean.getBoolean(START_EVALUATION_THREAD_PROPERTY)) {
+            startDebugEvaluationThread();
+        }
+        
         // If the --sysrep option was set on the command line we set the corresponding system property
         String ceylonSystemRepo = getArgument(args, "--sysrep", false);
         if (ceylonSystemRepo != null) {
