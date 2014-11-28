@@ -5752,7 +5752,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
             JCExpression init = transformExpression(var.getSpecifierExpression().getExpression(), boxingStrategy, var.getType().getTypeModel());
             at(var);
-            JCVariableDecl def = make().VarDef(make().Modifiers(0), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
+            JCVariableDecl def = make().VarDef(make().Modifiers(Flags.FINAL), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
             defs.add(def);
         }
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(op.getLetClause().getExpression());
