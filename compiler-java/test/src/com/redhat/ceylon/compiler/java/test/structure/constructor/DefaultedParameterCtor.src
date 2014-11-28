@@ -2,12 +2,23 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    DefaultedParameterCtor() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$s();
+                this($ceylontmp$s$0);
+            }
+            returning null;
+        );
+    }
+    
     DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One $name$) {
         (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
-                this($name$, $ceylontmp$s$0);
+                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
+                this($name$, $ceylontmp$s$1);
             }
             returning null;
         );
@@ -17,9 +28,9 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$s();
-                long $ceylontmp$i$2 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i($ceylontmp$s$1);
-                this($name$, $ceylontmp$s$1, $ceylontmp$i$2);
+                .java.lang.String $ceylontmp$s$2 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$s();
+                long $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i($ceylontmp$s$2);
+                this($name$, $ceylontmp$s$2, $ceylontmp$i$3);
             }
             returning null;
         );
@@ -29,11 +40,18 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                long $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i(s);
-                this($name$, s, $ceylontmp$i$3);
+                long $ceylontmp$i$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i(s);
+                this($name$, s, $ceylontmp$i$4);
             }
             returning null;
         );
+    }
+    
+    public static final .java.lang.String DefaultedParameterCtor$s() {
+        return "";
+    }
+    
+    public DefaultedParameterCtor(final .java.lang.String s) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One One = null;
     
@@ -76,31 +94,36 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .java.lang.String arg$4$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One, arg$4$0);
-        );
-        (
-            let
-            {
-                .java.lang.String arg$5$0 = "";
+                .java.lang.String arg$5$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One, arg$5$0);
         );
         (
             let
             {
-                .java.lang.String arg$6$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
+                .java.lang.String arg$6$0 = "";
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One, arg$6$0);
         );
         (
             let
             {
-                .java.lang.String arg$7$0 = "";
+                .java.lang.String arg$7$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$One$s();
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One, arg$7$0);
         );
+        (
+            let
+            {
+                .java.lang.String arg$8$0 = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One, arg$8$0);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor();
     }
     
     @.java.lang.Override
