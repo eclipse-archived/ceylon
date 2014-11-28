@@ -1705,7 +1705,8 @@ public class GenerateJsVisitor extends Visitor
             sb.append('.');
         }
         Scope scope = getSuperMemberScope(node);
-        if (opts.isOptimize() && (scope != null)) {
+        if (opts.isOptimize() && (scope != null) &&
+                decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor == false) {
             sb.append("getT$all()['");
             sb.append(scope.getQualifiedNameString());
             sb.append("']");
