@@ -522,17 +522,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
-    @TypeInfo("ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Constructor<Type,Arguments>|ceylon.language::Null")
     public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,String name) {
         checkInit();
         final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        return new AppliedConstructor<>(this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
+        TypeDescriptor reifiedType = null;//TODO
+        TypeDescriptor reifiedArguments = null;//TODO
+        return new AppliedConstructor<>(reifiedType, reifiedArguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor, null);
     }
     
     @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
-    @TypeInfo("ceylon.language.meta.model.Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
     public <Arguments extends Sequential<?extends Object>> java.lang.Object instantiator(TypeDescriptor reified$Arguments) {
         com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class)((FreeClass)getDeclaration()).declaration;
         if (c.hasConstructors()) {

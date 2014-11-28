@@ -216,7 +216,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        return new AppliedMemberClassConstructor(this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
+        return new AppliedMemberClassConstructor(this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
     }
     
 }
