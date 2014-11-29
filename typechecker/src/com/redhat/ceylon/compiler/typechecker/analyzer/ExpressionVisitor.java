@@ -3418,10 +3418,10 @@ public class ExpressionVisitor extends Visitor {
                 .getSupertype(unit.getIterableDeclaration());
         if (!isTypeUnknown(att) && !isTypeUnknown(paramType)) {
             checkAssignable(att, paramType, sa, 
-                    "iterable arguments must be assignable to iterable parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
+                    "iterable arguments must be assignable to iterable parameter '" + 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'");
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit) + "'"));
         }
     }
     
