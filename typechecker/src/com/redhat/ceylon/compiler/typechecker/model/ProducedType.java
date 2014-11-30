@@ -576,6 +576,17 @@ public class ProducedType extends ProducedReference {
                 ut.setCaseTypes(types);
                 return ut.getType();
             }
+            else if (getDeclaration() instanceof IntersectionType) {
+                List<ProducedType> cts = ucts.getSatisfiedTypes();
+                List<ProducedType> types = 
+                        new ArrayList<ProducedType>(cts.size());
+                for (ProducedType ct: cts) {
+                    addToIntersection(types, ct.minus(pt), unit);
+                }
+                IntersectionType ut = new IntersectionType(unit);
+                ut.setSatisfiedTypes(types);
+                return ut.canonicalize().getType();
+            }
             else if (getDeclaration() instanceof TypeParameter) {
                 ProducedType upperBoundsMinus = 
                         intersectionOfSupertypes(getDeclaration())
