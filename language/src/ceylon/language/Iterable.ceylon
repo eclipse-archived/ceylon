@@ -1144,10 +1144,12 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function expand`)
     shared default 
     Iterable<Element|Other,Absent&OtherAbsent> 
-    chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
+    chain<Other,OtherAbsent>
+            (Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null 
             => object 
-            satisfies Iterable<Element|Other,Absent&OtherAbsent> {
+            satisfies Iterable<Element|Other,
+                               Absent&OtherAbsent> {
         iterator() => ChainedIterator(outer, other);
     };
     
