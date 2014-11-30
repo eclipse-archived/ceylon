@@ -9,6 +9,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelAnonymousClass;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelClassConstructor;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.notOverloaded;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -306,14 +308,23 @@ public class TypeVisitor extends Visitor {
     }
     
     private void importMembers(Tree.ImportMemberOrType member, Declaration d) {
-        Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
+        Tree.ImportMemberOrTypeList imtl = 
+                member.getImportMemberOrTypeList();
         if (imtl!=null) {
+            if (d instanceof Value) {
+                TypeDeclaration td = 
+                        ((Value) d).getTypeDeclaration();
+                if (td.isAnonymous()) {
+                    d = td;
+                }
+            }
             if (d instanceof TypeDeclaration) {
                 Set<String> names = new HashSet<String>();
                 ImportList til = imtl.getImportList();
                 TypeDeclaration td = (TypeDeclaration) d;
                 til.setImportedScope(td);
-                for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
+                for (Tree.ImportMemberOrType submember: 
+                        imtl.getImportMemberOrTypes()) {
                     names.add(importMember(submember, td, til));
                 }
                 if (imtl.getImportWildcard()!=null) {
@@ -448,7 +459,8 @@ public class TypeVisitor extends Visitor {
             }
             i.setTypeDeclaration(td);
             if (!m.isStaticallyImportable() && 
-                    !(m instanceof Constructor)) {
+                    !isToplevelClassConstructor(td, m) &&
+                    !isToplevelAnonymousClass(m.getContainer())) {
                 if (alias==null) {
                     member.addError("does not specify an alias");
                 }
@@ -461,7 +473,8 @@ public class TypeVisitor extends Visitor {
             }
             else {
                 if (m.isStaticallyImportable() ||
-                        (td.isToplevel() && m instanceof Constructor)) {
+                        isToplevelClassConstructor(td, m) ||
+                        isToplevelAnonymousClass(m.getContainer())) {
                     if (!checkForHiddenToplevel(id, i, alias)) {
                         addImport(member, il, i);
                     }
@@ -476,7 +489,7 @@ public class TypeVisitor extends Visitor {
         //imtl.addError("member aliases may not have member aliases");
         return name;
     }
-    
+
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
         String alias = i.getAlias();

@@ -6,6 +6,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelAnonymousClass;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelClassConstructor;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -165,7 +167,8 @@ public class Unit {
     static boolean isToplevelImport(Import i, Declaration d) {
         return d.isToplevel() || 
             d.isStaticallyImportable() ||
-            (i.getTypeDeclaration().isToplevel() && d instanceof Constructor);
+            isToplevelClassConstructor(i.getTypeDeclaration(), d) ||
+            isToplevelAnonymousClass(i.getTypeDeclaration());
     }
     
     /**

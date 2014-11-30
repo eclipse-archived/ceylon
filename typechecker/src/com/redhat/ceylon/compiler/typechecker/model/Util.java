@@ -1644,4 +1644,14 @@ public class Util {
 
     static final Map<TypeParameter, ProducedType> EMPTY_TYPE_ARG_MAP = 
             Collections.<TypeParameter,ProducedType>emptyMap();
+
+    public static boolean isToplevelClassConstructor(TypeDeclaration td, Declaration m) {
+        return td.isToplevel() && m instanceof Constructor;
+    }
+
+    public static boolean isToplevelAnonymousClass(Scope s) {
+        return s instanceof TypeDeclaration &&
+                ((TypeDeclaration)s).isAnonymous() &&
+                ((TypeDeclaration)s).isToplevel();
+    }
 }
