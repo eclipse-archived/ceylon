@@ -1764,6 +1764,12 @@ else {
                     the union,</para>
                 </listitem>
                 <listitem>
+                    <para>if <literal>T</literal> is a type parameter, then <literal>T~X</literal> 
+                    is <literal>T&amp;&lt;U~X&gt;</literal> when <literal>U</literal> is the 
+                    intersection of all upper bounds on <literal>T</literal>, or <literal>Anything</literal> 
+                    if <literal>T</literal> has no declared upper bounds,</para>
+                </listitem>
+                <listitem>
                     <para>if <literal>T</literal> is an enumerated type or an instantiation of a 
                     generic enumerated type, then <literal>T~X</literal> is the union of all 
                     <literal>C~X</literal> for every case <literal>C</literal> of 

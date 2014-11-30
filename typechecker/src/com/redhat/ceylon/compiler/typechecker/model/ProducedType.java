@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
@@ -574,6 +575,23 @@ public class ProducedType extends ProducedReference {
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(types);
                 return ut.getType();
+            }
+            else if (getDeclaration() instanceof IntersectionType) {
+                List<ProducedType> cts = ucts.getSatisfiedTypes();
+                List<ProducedType> types = 
+                        new ArrayList<ProducedType>(cts.size());
+                for (ProducedType ct: cts) {
+                    addToIntersection(types, ct.minus(pt), unit);
+                }
+                IntersectionType ut = new IntersectionType(unit);
+                ut.setSatisfiedTypes(types);
+                return ut.canonicalize().getType();
+            }
+            else if (getDeclaration() instanceof TypeParameter) {
+                ProducedType upperBoundsMinus = 
+                        intersectionOfSupertypes(getDeclaration())
+                                .minusInternal(pt);
+                return intersectionType(upperBoundsMinus, this, unit);
             }
             else {
                 return this;
