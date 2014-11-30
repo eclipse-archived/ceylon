@@ -1081,10 +1081,11 @@ shared interface Iterable<out Element, out Absent=Null>
         assert (length>0);
         return object
                 satisfies Iterable<[Element+],Absent> {
-            size => let (outerSize = outer.size) 
+            size => let (outerSize = outer.size,
+                          quotient = outerSize/length)
                         length.divides(outerSize) 
-                            then outerSize/length 
-                            else outerSize/length+1;
+                            then quotient 
+                            else quotient+1;
             empty => outer.empty;
             iterator() 
                     => let (iter = outer.iterator()) 
