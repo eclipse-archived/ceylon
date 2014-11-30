@@ -99,10 +99,10 @@ void switchOnTypeParameter<T>(T t) {
     
     switch (t)
     case (is Null) {}
-    else { @error print(t.string); }
+    else { print(t.string); }
     
     if (is Null t) {}
-    else { @error print(t.string); }
+    else { print(t.string); }
     
     switch (t)
     case (is Null) {}
