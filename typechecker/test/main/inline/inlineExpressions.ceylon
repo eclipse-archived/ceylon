@@ -87,3 +87,28 @@ void run(String? string) {
     String val2 = switch (string) 
             case (is Null) "hello" else string;
 }
+
+void switchOnTypeParameter<T>(T t) {
+    switch (Anything ref = t)
+    case (null) {}
+    else { print(ref.string); }
+    
+    switch (Anything ref = t)
+    case (null) {}
+    case (is Object) { print(ref.string); }
+    
+    switch (t)
+    case (is Null) {}
+    else { @error print(t.string); }
+    
+    if (is Null t) {}
+    else { @error print(t.string); }
+    
+    switch (t)
+    case (is Null) {}
+    case (is Object) { print(t.string); }
+    
+    if (!exists t) {}
+    else { print(t.string); }
+}
+
