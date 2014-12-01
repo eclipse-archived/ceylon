@@ -1323,25 +1323,37 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    void checkExtendedTypeExpression(Tree.Type type) {
+        if (type instanceof Tree.QualifiedType) {
+            Tree.QualifiedType qualifiedType = (Tree.QualifiedType) type;
+            Tree.StaticType outerType = qualifiedType.getOuterType();
+            if (!(outerType instanceof Tree.SuperType)) {
+                TypeDeclaration otd = qualifiedType.getDeclarationModel();
+                if (otd.isStaticallyImportable() || 
+                        otd instanceof Constructor) {
+                    checkExtendedTypeExpression(outerType);
+                }
+                else {
+                    outerType.addError("illegal qualifier in constructor delegation (must be super)");
+                }
+            }
+        }
+    }
+    
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
         inDelegatedConstructor = true;
         super.visit(that);
         inDelegatedConstructor = false;
-        /*Tree.SimpleType type = that.getType();
-        if (type instanceof Tree.QualifiedType) {
-            Tree.StaticType outerType = ((Tree.QualifiedType)type).getOuterType();
-            if (!(outerType instanceof Tree.SuperType)) {
-                outerType.addError("illegal qualifier in constructor delegation (must be super)");
-            }
-        }*/
+        checkExtendedTypeExpression(that.getType());
     }
-    
+
     @Override 
     public void visit(Tree.ClassSpecifier that) {
         inExtendsOrClassAlias = true;
         super.visit(that);
         inExtendsOrClassAlias = false;
+        checkExtendedTypeExpression(that.getType());
     }
     
     @Override 
@@ -1349,6 +1361,7 @@ public class TypeVisitor extends Visitor {
         inExtendsOrClassAlias = that.getInvocationExpression()!=null;
         super.visit(that);
         inExtendsOrClassAlias = false;
+        checkExtendedTypeExpression(that.getType());
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();

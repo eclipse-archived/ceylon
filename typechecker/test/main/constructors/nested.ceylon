@@ -41,6 +41,14 @@ class ClassMemberCtorChaining() {
 class ClassMemberCtorChainingSub() 
         extends ClassMemberCtorChaining() {
     shared class Sub 
+            extends super.Member {
+        shared new Other(Integer i) 
+                extends super.Other(i) {}
+    }
+}
+class ClassMemberCtorChainingSubBroken() 
+        extends ClassMemberCtorChaining() {
+    @error shared class Sub 
             extends ClassMemberCtorChaining.Member {
         shared new Other(Integer i) 
                 extends super.Other(i) {}
@@ -55,3 +63,20 @@ class XX {
 class ZZ() extends XX() {}
 class WW() extends XX.XX() {}
 @error class UU() extends XX.YY() {}
+
+class Class<T> {
+    shared new New() {}
+    shared default class Inner() {}
+}
+class Subclass<T>() extends Class<T>.New() {
+    @error shared actual class Inner() extends Class<T>.Inner() {}
+}
+class BrokenSubclass<T>() extends Class<T>.New() {
+    @error shared actual class Inner() extends Class<String>.Inner() {}
+}
+
+void testInstantiationArgs() {
+    Class<List<String>>.New();
+    Class<Class<List<String>>>.New();
+    @error Class<Class<List<String>>.New>.New();
+}
