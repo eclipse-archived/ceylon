@@ -455,6 +455,14 @@ public class StatementTest extends CompilerTest {
     public void testConMethodWhileConditionListNonemptyIsBool(){
         compareWithJavaSource("loop/MethodWhileConditionListNonemptyIsBool");
     }
+    @Test
+    public void testLopBug1878A(){
+        compareWithJavaSource("loop/Bug1878A");
+    }
+    @Test
+    public void testLopBug1878B(){
+        compareWithJavaSource("loop/Bug1878B");
+    }
 
     
     //
