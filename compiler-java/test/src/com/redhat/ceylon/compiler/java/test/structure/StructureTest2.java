@@ -406,4 +406,9 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("concrete/ConcreteString");
         run("com.redhat.ceylon.compiler.java.test.structure.concrete.concreteString");
     }
+    
+    @Test
+    public void testCncAppliedTypeDefaultedParameter(){
+        compareWithJavaSource("concrete/AppliedTypeDefaultedParameter");
+    }
 }
