@@ -31,4 +31,7 @@ void bug1937(){
     value b3 = if (obj=="HEY") then false else if (obj==1) then false else true;
     value b4 = if (is Integer obj) then false else if (is String obj, exists c=obj[2], c=='y') then true else false;
     value b5 = if (obj=="nay") then false else if (is String obj, exists c=obj[2], c=='y') then true else false;
+    
+    bug1937_check(switch (1) case (1) false else true);
+    Boolean s = switch (1) case (1) false else true;
 }

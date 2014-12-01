@@ -193,6 +193,36 @@ final class bug1937_ {
             }
             returning $ceylontmp$ifResult$28;
         );
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1937_check_.bug1937_check((
+            let
+            {
+                boolean $ceylontmp$ifResult$36;
+                {
+                    long sel$37 = 1L;
+                    if (sel$37 == 1L) {
+                        $ceylontmp$ifResult$36 = false;
+                    } else {
+                        $ceylontmp$ifResult$36 = true;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$36;
+        ));
+        final boolean s = (
+            let
+            {
+                boolean $ceylontmp$ifResult$38;
+                {
+                    long sel$39 = 1L;
+                    if (sel$39 == 1L) {
+                        $ceylontmp$ifResult$38 = false;
+                    } else {
+                        $ceylontmp$ifResult$38 = true;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$38;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
