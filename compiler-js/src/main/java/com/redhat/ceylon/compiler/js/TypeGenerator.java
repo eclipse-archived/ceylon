@@ -276,7 +276,7 @@ public class TypeGenerator {
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
         //If there's a default constructor, create a different function with this code
-        if (defconstr != null) {
+        if (d.hasConstructors()) {
             gen.out("$$c");
         }
         final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
@@ -286,8 +286,8 @@ public class TypeGenerator {
             gen.out("$init$", gen.getNames().name(d), "();");
             gen.endLine();
             gen.declareSelf(d);
+            gen.referenceOuter(d);
         }
-        gen.referenceOuter(d);
         final String me = gen.getNames().self(d);
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$)");
@@ -363,7 +363,7 @@ public class TypeGenerator {
                 }
             }
             gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(){return ",
-                    gen.getNames().name(d), ".", gen.getNames().name(d), ".apply(",
+                    gen.getNames().name(d), "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
                     _this, ",arguments);}");
             gen.endLine();
         }
@@ -704,13 +704,15 @@ public class TypeGenerator {
     static void classConstructor(final Tree.Constructor that,
             final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
         Constructor d = that.getDeclarationModel();
-        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), "=function");
+        final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
+        gen.out(fullName, "=function");
         final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
         final String me = gen.getNames().self(container);
         gen.beginBlock();
         gen.out("$init$", gen.getNames().name(container), "();");
         gen.endLine();
         gen.declareSelf(container);
+        gen.referenceOuter(container);
         if (that.getDelegatedConstructor() != null) {
             final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
             ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
@@ -730,9 +732,13 @@ public class TypeGenerator {
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
         //Add reference to metamodel
-        gen.out(gen.getNames().name(container), ".", gen.getNames().name(d), ".$crtmm$=");
+        gen.out(fullName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.endLine(true);
+        if (gen.outerSelf(container)) {
+            gen.out(".", fullName, "=", fullName);
+            gen.endLine(true);
+        }
     }
 
 }

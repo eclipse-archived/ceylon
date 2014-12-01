@@ -1702,7 +1702,7 @@ public class GenerateJsVisitor extends Visitor
                     return sb.toString();
                 }
             }
-            sb.append('.');
+            sb.append(decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? '_':'.');
         }
         Scope scope = getSuperMemberScope(node);
         if (opts.isOptimize() && (scope != null) &&
@@ -1777,6 +1777,8 @@ public class GenerateJsVisitor extends Visitor
             super.visit(that);
             if (isInDynamicBlock() && that.getDeclaration() == null) {
                 out(".", that.getIdentifier().getText());
+            } else if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                out("_", names.name(that.getDeclaration()));
             } else {
                 out(".", names.name(that.getDeclaration()));
             }
@@ -2203,8 +2205,8 @@ public class GenerateJsVisitor extends Visitor
                     id = (TypeDeclaration) d.getContainer();
                 }
                 Scope scope = that.getScope();
-                if ((scope != null) && ((that instanceof ClassDeclaration)
-                                        || (that instanceof InterfaceDeclaration))) {
+                if ((scope != null) && (that instanceof Tree.ClassDeclaration
+                        || that instanceof Tree.InterfaceDeclaration || that instanceof Tree.Constructor)) {
                     // class/interface aliases have no own "this"
                     scope = scope.getContainer();
                 }
