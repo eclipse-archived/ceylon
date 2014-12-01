@@ -48,7 +48,8 @@ public class DefiniteAssignmentVisitor extends Visitor {
         // We're interested in non-variable, deferred AttributeDeclarations 
         // that are declared outside a for/else loop, but specified inside it
         if (that.getSpecifierOrInitializerExpression() == null
-                && !that.getDeclarationModel().isVariable()) {
+                && !that.getDeclarationModel().isVariable()
+                && !that.getDeclarationModel().isLate()) {
             tracked.put(that.getDeclarationModel(), forBlock);
         }
     }
