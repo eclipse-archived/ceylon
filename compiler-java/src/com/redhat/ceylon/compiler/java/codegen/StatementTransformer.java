@@ -2698,6 +2698,10 @@ public class StatementTransformer extends AbstractTransformer {
                     step, 
                     make().Block(0, blockStatements))));
             
+            if (getBlock().getDefinitelyReturns()) {
+                result.append(makeFlowAppeaser(getBlock()));
+            }
+            
             return result;
         }
         private JCExpression makeIncreasingIncrement(SyntheticName by) {
