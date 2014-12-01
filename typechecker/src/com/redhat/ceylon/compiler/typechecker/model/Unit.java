@@ -1344,8 +1344,7 @@ public class Unit {
             return null;
         }
         else {
-            if (pr.getQualifyingType() != null && 
-                    !d.isStaticallyImportable()) {
+            if (pr.getQualifyingType() != null) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
                         pr.getQualifyingType(), returnType, parameterTuple);
             }
