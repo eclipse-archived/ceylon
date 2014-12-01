@@ -277,6 +277,12 @@ public class TypeGenerator {
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
         //If there's a default constructor, create a different function with this code
         if (d.hasConstructors()) {
+            if (defconstr == null) {
+                gen.out("(){");
+                gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
+                gen.out(";}"); gen.endLine();
+                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            }
             gen.out("$$c");
         }
         final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
