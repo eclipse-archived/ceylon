@@ -46,3 +46,12 @@ class ClassMemberCtorChainingSub()
                 extends super.Other(i) {}
     }
 }
+
+class XX {
+    shared new XX() {}
+    shared class YY() {}
+}
+
+class ZZ() extends XX() {}
+class WW() extends XX.XX() {}
+@error class UU() extends XX.YY() {}

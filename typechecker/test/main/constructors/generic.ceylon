@@ -31,6 +31,23 @@ class Foo<T> {
     shared new Bar() {}
 }
 
+class Baz0a extends Foo<List<String>> {
+    shared new New() extends Foo<List<String>>.Bar() {}
+}
+
+class Baz0b extends Foo<Foo<String>> {
+    shared new New() extends Foo<Foo<String>>.Bar() {}
+}
+
+class Baz1 extends Foo<List<String>> {
+    @error shared new New() extends Foo<List<Integer>>.Bar() {}
+}
+
+class Baz2 extends Foo<Foo<String>> {
+    @error shared new New() extends Foo<Foo<String>.Bar>.Bar() {}
+}
+
+
 void check() {
     value bar1 = `Foo<String>.Bar`;
     value bar2 = `new Foo.Bar`;

@@ -50,3 +50,11 @@ class C6 extends B {
 class C7 extends B {
     new New() extends Pt(1.0) {}
 }
+
+class Oops1 extends Point {
+    new New() extends Point.Diagonal(0.0) {}
+}
+
+class Oops2 extends E {
+    @error new New() extends Point.Diagonal(0.0) {}
+}

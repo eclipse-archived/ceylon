@@ -1328,6 +1328,13 @@ public class TypeVisitor extends Visitor {
         inDelegatedConstructor = true;
         super.visit(that);
         inDelegatedConstructor = false;
+        /*Tree.SimpleType type = that.getType();
+        if (type instanceof Tree.QualifiedType) {
+            Tree.StaticType outerType = ((Tree.QualifiedType)type).getOuterType();
+            if (!(outerType instanceof Tree.SuperType)) {
+                outerType.addError("illegal qualifier in constructor delegation (must be super)");
+            }
+        }*/
     }
     
     @Override 

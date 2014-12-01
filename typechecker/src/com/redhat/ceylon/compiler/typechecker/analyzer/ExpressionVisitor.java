@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
@@ -6707,7 +6708,8 @@ public class ExpressionVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
-        visitExtendedOrAliasedType(that.getType(), 
+        Tree.SimpleType type = that.getType();
+        visitExtendedOrAliasedType(type, 
                 that.getInvocationExpression());
         
         inExtendsClause = true;
@@ -6718,24 +6720,36 @@ public class ExpressionVisitor extends Visitor {
         Scope container = constructor.getContainer();
         if (constructor instanceof Constructor) {
             if (container instanceof Class) {
-                Class c = (Class) container;
-                Class superclass = c.getExtendedTypeDeclaration();
+                Class containingClass = (Class) container;
+                Class superclass = 
+                        containingClass.getExtendedTypeDeclaration();
                 if (superclass!=null) {
-                    Declaration delegate = that.getType().getDeclarationModel();
+                    ProducedType extendedType = containingClass.getExtendedType();
+                    ProducedType constructedType = type.getTypeModel();
+                    Declaration delegate = type.getDeclarationModel();
                     if (delegate instanceof Constructor) {
                         ClassOrInterface delegatedType = 
                                 ((Constructor) delegate).getExtendedTypeDeclaration();
                         if (!superclass.equals(delegatedType)) {
-                            that.getType().addError("not a constructor of the immediate superclass: '" +
+                            type.addError("not a constructor of the immediate superclass: '" +
                                     delegate.getName(unit) + "' is not a constructor of '" + 
                                     superclass.getName(unit) + "'");
+                        }
+                        else {
+                            checkIsExactly(constructedType.getExtendedType(), 
+                                    extendedType, type, 
+                                    "type arguments must match type arguments in extended class expression");
                         }
                     }
                     else if (delegate instanceof Class) {
                         if (!superclass.equals(delegate)) {
-                            that.getType().addError("does not instantiate the immediate superclass: '" +
+                            type.addError("does not instantiate the immediate superclass: '" +
                                     delegate.getName(unit) + "' is not '" + 
                                     superclass.getName(unit) + "'");
+                        }
+                        else {
+                            checkIsExactly(constructedType, extendedType, type, 
+                                    "type arguments must match type arguments in extended class expression");
                         }
                     }
                 }
@@ -7062,8 +7076,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType qt = type.getQualifyingType();
         if (qt!=null && td instanceof ClassOrInterface) {
             TypeDeclaration d = type.getDeclaration();
-            if (!d.isStaticallyImportable() &&
-                    !(d instanceof Constructor)) {
+            if (d.isStaticallyImportable() ||
+                    d instanceof Constructor) {
+                checkExtensionOfMemberType(that, td, qt);
+            }
+            else {
                 Scope s = td;
                 while (s!=null) {
                     s = s.getContainer();
