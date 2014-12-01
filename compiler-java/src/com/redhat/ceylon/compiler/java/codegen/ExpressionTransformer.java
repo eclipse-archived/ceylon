@@ -3817,6 +3817,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return term;
     }
     
+    private static boolean isThis(Tree.Primary primary) {
+        return Util.eliminateParensAndWidening(primary) instanceof Tree.This;
+    }
+    
     /** 
      * Is the given primary a {@code super of Foo}
      * expression (modulo parentheses and multiple {@code of} 
@@ -4554,6 +4558,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
                 expr = transformSuperOf(qualified);
+            } else if (isThis(qualified.getPrimary())
+                    && !qualified.getDeclaration().isCaptured() 
+                    && !qualified.getDeclaration().isShared() ) {
+                expr = null;
             } else if (!qualified.getDeclaration().isStaticallyImportable()) {
                 expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
