@@ -87,10 +87,9 @@ public class MetamodelHelper {
             if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
                 if (((Class)d.getContainer()).isMember()) {
                     outputPathToDeclaration(that, (Class)d.getContainer(), gen);
-                } else {
-                    gen.out(gen.getNames().name((Class)d.getContainer()));
                 }
-                gen.out("_", gen.getNames().name(d), ")");
+                gen.out(gen.getNames().name((Class)d.getContainer()),
+                        "_", gen.getNames().name(d), ")");
                 return;
             } else {
                 outputPathToDeclaration(that, d, gen);
