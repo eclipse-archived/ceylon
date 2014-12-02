@@ -17,4 +17,5 @@ shared native class AppliedConstructor<out Type=Anything, in Arguments=Nothing>
   //Applicable
   shared actual native Type apply(Anything* arguments);
   shared actual native Type namedApply({<String->Anything>*} arguments);
+  shared actual native String string;
 }

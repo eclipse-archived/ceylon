@@ -15,6 +15,9 @@ function OpenConstructor$jsint(pkg, meta, that){
       that.meta_ = get_model(_mm);
     }
     that.name_=(that.meta&&that.meta.nm)||_mm.d[_mm.d.length-1];
+    if (that.name_.indexOf('$')>0) {
+      that.name_=that.name_.substring(0,that.name_.indexOf('$'));
+    }
     ConstructorDeclaration$meta$declaration(that);
     return that;
 }

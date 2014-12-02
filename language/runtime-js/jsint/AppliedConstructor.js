@@ -1,6 +1,6 @@
 function AppliedConstructor$jsint(tipo,$$targs$$,that,myTargs) {
-  if ($$targs$$.Type$AppliedConstructor===undefined)$$targs$$.Type$AppliedConstructor=$$targs$$.Type$Function;
-  if ($$targs$$.Arguments$AppliedConstructor===undefined)$$targs$$.Arguments$AppliedConstructor=$$targs$$.Type$Function;
+  if ($$targs$$.Type$AppliedConstructor===undefined)$$targs$$.Type$AppliedConstructor=$$targs$$.Type$Constructor;
+  if ($$targs$$.Arguments$AppliedConstructor===undefined)$$targs$$.Arguments$AppliedConstructor=$$targs$$.Type$Constructor;
   $init$AppliedConstructor$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);

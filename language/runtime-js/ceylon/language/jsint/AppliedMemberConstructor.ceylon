@@ -17,4 +17,5 @@ shared native class AppliedMemberConstructor<Container=Nothing,out Type=Anything
   shared actual native Constructor<Type,Arguments> bind(Object container);
   //Functional
   shared actual native ClosedType<Anything>[] parameterTypes;
+  shared actual native String string;
 }
