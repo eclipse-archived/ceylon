@@ -172,6 +172,14 @@ public class MainTest {
         
     }
 
+    @Test
+    public void testJdkDependencies() throws ModuleNotFoundException {
+        ArrayList<File> jars = new ArrayList<File>(1);
+        ClassPath classPath = new Main.ClassPath(jars);
+        Module module = classPath.loadModule("java.base", "7");
+        assertNotNull(module);
+    }
+
     private File jar(String file, String destDir) throws IOException {
         // relative to this file
         File sourceFile = new File(getCurrentPackagePath(), file);
