@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -69,9 +70,25 @@ public class InvocationGenerator {
             }
         }
         else {
-            Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            Tree.TypeArguments targs = typeArgSource instanceof Tree.StaticMemberOrTypeExpression
-                    ? ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments() : null;
+            final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
+            final Map<TypeParameter, ProducedType> targs;
+            if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
+                if (smote.getDeclaration() instanceof Constructor) {
+                    targs = smote.getTarget().getTypeArguments();
+                } else if (smote.getDeclaration() instanceof Functional) {
+                    targs = TypeUtils.matchTypeParametersWithArguments(
+                            ((Functional)smote.getDeclaration()).getTypeParameters(),
+                            smote.getTypeArguments().getTypeModels());
+                    if (targs == null) {
+                        gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
+                    }
+                } else {
+                    targs = null;
+                }
+            } else {
+                targs = null;
+            }
             if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
                     && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
                 gen.out("(");
@@ -193,7 +210,7 @@ public class InvocationGenerator {
                 }
                 generatePositionalArguments(typeArgSource, argList, argList.getPositionalArguments(), false, false);
             }
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()
+            if (targs != null && !targs.isEmpty()
                     && typeArgSource instanceof Tree.StaticMemberOrTypeExpression
                     && ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration() instanceof Functional) {
                 if (argList.getPositionalArguments().size() > 0) {
@@ -212,14 +229,8 @@ public class InvocationGenerator {
                         gen.out("undefined,");
                     }
                 }
-                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                    Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                            ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
-                    if (invargs != null) {
-                        TypeUtils.printTypeArguments(typeArgSource, invargs, gen, false, null);
-                    } else {
-                        gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
-                    }
+                if (targs != null && !targs.isEmpty()) {
+                    TypeUtils.printTypeArguments(typeArgSource, targs, gen, false, null);
                 }
             }
             gen.out(")");
