@@ -243,10 +243,11 @@ public class TypeUtils {
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
     static void resolveTypeParameter(final Node node, final TypeParameter tp,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        Scope parent = node.getScope();
+        Scope parent = Util.getRealScope(node.getScope());
         int outers = 0;
         while (parent != null && parent != tp.getContainer()) {
-            if (parent instanceof TypeDeclaration && !((TypeDeclaration) parent).isAnonymous()) {
+            if (parent instanceof TypeDeclaration &&
+                    !(parent instanceof Constructor || ((TypeDeclaration) parent).isAnonymous())) {
                 outers++;
             }
             parent = parent.getScope();
@@ -254,9 +255,9 @@ public class TypeUtils {
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
                 if (!skipSelfDecl) {
-                    ClassOrInterface ontoy = Util.getContainingClassOrInterface(node.getScope());
+                    TypeDeclaration ontoy = Util.getContainingClassOrInterface(node.getScope());
                     while (ontoy.isAnonymous())ontoy=Util.getContainingClassOrInterface(ontoy.getScope());
-                    gen.out(gen.getNames().self((TypeDeclaration)ontoy));
+                    gen.out(gen.getNames().self(ontoy));
                     for (int i = 0; i < outers; i++) {
                         gen.out(".outer$");
                     }
