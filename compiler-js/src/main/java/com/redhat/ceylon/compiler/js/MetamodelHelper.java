@@ -32,8 +32,10 @@ public class MetamodelHelper {
         }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             gen.out("Interface$jsint");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        } else if (d instanceof Class) {
             gen.out("Class$jsint");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            gen.out("Constructor$jsint");
         } else if (d instanceof Method) {
             gen.out("Function");
         } else if (d instanceof Value) {
@@ -82,7 +84,17 @@ public class MetamodelHelper {
         }
         gen.out("ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
         if (d.isMember()) {
-            outputPathToDeclaration(that, d, gen);
+            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                if (((Class)d.getContainer()).isMember()) {
+                    outputPathToDeclaration(that, (Class)d.getContainer(), gen);
+                } else {
+                    gen.out(gen.getNames().name((Class)d.getContainer()));
+                }
+                gen.out("_", gen.getNames().name(d), ")");
+                return;
+            } else {
+                outputPathToDeclaration(that, d, gen);
+            }
         }
         if (d instanceof Value) {
             if (!d.isMember()) gen.qualify(that, d);
@@ -109,7 +121,7 @@ public class MetamodelHelper {
         final ProducedType ltype = that.getType().getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
-        if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        if (td instanceof Class) {
             if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
                 gen.out(gen.getClAlias(), "$init$AppliedClass$meta$model()(");
             } else {
@@ -123,6 +135,23 @@ public class MetamodelHelper {
                 TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             }
             gen.out(",");
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                    that.getTypeModel().getVarianceOverrides());
+            if (targs != null && !targs.isEmpty()) {
+                gen.out(",undefined,");
+                TypeUtils.printTypeArguments(that, targs, gen, false,
+                        that.getType().getTypeModel().getVarianceOverrides());
+            }
+            gen.out(")");
+        } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            Class _pc = (Class)td.getContainer();
+            if (_pc.isToplevel()) {
+                gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
+            } else {
+                gen.out(gen.getClAlias(), "$init$AppliedMemberConstructor$jsint()(");
+            }
+            TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
+            gen.out("_", gen.getNames().name(td), ",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                     that.getTypeModel().getVarianceOverrides());
             if (targs != null && !targs.isEmpty()) {
