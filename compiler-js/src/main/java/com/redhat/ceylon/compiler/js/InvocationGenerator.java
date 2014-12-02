@@ -74,7 +74,8 @@ public class InvocationGenerator {
             final Map<TypeParameter, ProducedType> targs;
             if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
                 Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
-                if (smote.getDeclaration() instanceof Constructor) {
+                if (smote.getDeclaration() instanceof Constructor &&
+                        !((Functional)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
                     targs = smote.getTarget().getTypeArguments();
                 } else if (smote.getDeclaration() instanceof Functional) {
                     targs = TypeUtils.matchTypeParametersWithArguments(
