@@ -28,12 +28,12 @@ class Measure<Element>(first, size)
     
     lastIndex => size - 1;
     
-    rest => size == 1 
-            then []
-            else Measure(first.successor, size - 1);
+    rest => size > 1 
+            then Measure(first.successor, size - 1)
+            else [];
     
     getFromFirst(Integer index) 
-            => if (index >= 0 && index < size)
+            => index >= 0 && index < size
             then first.neighbour(index)
             else null;
     
@@ -137,7 +137,8 @@ class Measure<Element>(first, size)
         if (length <= 0) {
             return [];
         } else {
-            value len = from + length < size then length
+            value len = from + length < size 
+                    then length
                     else size - from;
             return Measure(first.neighbour(from), len);
         }
@@ -149,7 +150,8 @@ class Measure<Element>(first, size)
             if (to < 0 || from >= size) {
                 return [];
             } else {
-                value len = to < size then to - from + 1
+                value len = to < size 
+                        then to - from + 1
                         else size - from;
                 return Measure(first.neighbour(from), len);
             }
@@ -157,7 +159,8 @@ class Measure<Element>(first, size)
             if (from < 0 || to >= size) {
                 return [];
             } else {
-                value len = from < size then from - to + 1
+                value len = from < size 
+                        then from - to + 1
                         else size - to;
                 return Measure(first.neighbour(to), len).reversed;
             }

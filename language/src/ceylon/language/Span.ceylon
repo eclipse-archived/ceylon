@@ -27,34 +27,41 @@ class Span<Element>(first, last)
      recursive ranges are [[increasing]]."
     Boolean recursive
             = first.offsetSign(first.successor) > 0 &&
-            last.predecessor.offsetSign(last) > 0;
+              last.predecessor.offsetSign(last) > 0;
     
     Element next(Element x)
-            => increasing then x.successor
+            => increasing 
+            then x.successor
             else x.predecessor;
     
     Element nextStep(Element x, Integer step)
-            => increasing then x.neighbour(step)
+            => increasing 
+            then x.neighbour(step)
             else x.neighbour(-step);
     
     Element fromFirst(Integer offset)
-            => increasing then first.neighbour(offset)
+            => increasing 
+            then first.neighbour(offset)
             else first.neighbour(-offset);
     
     Boolean afterLast(Element x)
-            => increasing then x.offsetSign(last) > 0
+            => increasing 
+            then x.offsetSign(last) > 0
             else x.offsetSign(last) < 0;
     
     Boolean beforeLast(Element x)
-            => increasing then x.offsetSign(last) < 0
+            => increasing 
+            then x.offsetSign(last) < 0
             else x.offsetSign(last) > 0;
     
     Boolean beforeFirst(Element x)
-            => increasing then x.offsetSign(first) < 0
+            => increasing 
+            then x.offsetSign(first) < 0
             else x.offsetSign(first) > 0;
     
     Boolean afterFirst(Element x)
-            => increasing then x.offsetSign(first) > 0
+            => increasing 
+            then x.offsetSign(first) > 0
             else x.offsetSign(first) < 0;
     
     size => last.offset(first).magnitude + 1;
