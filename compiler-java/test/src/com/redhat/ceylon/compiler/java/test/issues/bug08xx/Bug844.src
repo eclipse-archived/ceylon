@@ -199,8 +199,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public boolean defines(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.defines(index);
+    public final Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
@@ -209,8 +209,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public final Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public boolean defines(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.defines(index);
     }
     
     @.java.lang.Override
@@ -368,13 +368,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
+    public Element getFromFirst(final long index) {
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
-    public Element getFromFirst(final long index) {
-        return $ceylon$language$Iterable$this$.getFromFirst(index);
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

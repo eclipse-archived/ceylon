@@ -98,21 +98,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public long getSize() {
-        return $ceylon$language$List$this$.getSize();
-    }
-    
-    @.java.lang.Override
-    public boolean shorterThan(final long length) {
-        return $ceylon$language$List$this$.shorterThan(length);
-    }
-    
-    @.java.lang.Override
-    public boolean longerThan(final long length) {
-        return $ceylon$language$List$this$.longerThan(length);
-    }
-    
-    @.java.lang.Override
     public T getFirst() {
         return (T)$ceylon$language$List$this$.getFirst();
     }
@@ -123,8 +108,18 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends T> getRest() {
-        return $ceylon$language$List$this$.getRest();
+    public final T get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
+    }
+    
+    @.java.lang.Override
+    public T getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$List$this$.getSize();
     }
     
     @.java.lang.Override
@@ -138,28 +133,13 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public T getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
-    }
-    
-    @.java.lang.Override
-    public final T get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends T> iterator() {
-        return $ceylon$language$List$this$.iterator();
+    public .ceylon.language.List<? extends T> getRest() {
+        return $ceylon$language$List$this$.getRest();
     }
     
     @.java.lang.Override
     public .ceylon.language.List<? extends .ceylon.language.Integer> getKeys() {
         return $ceylon$language$List$this$.getKeys();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends T> repeat(final long times) {
-        return $ceylon$language$List$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -170,6 +150,26 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public .ceylon.language.List<? extends T> $clone() {
         return $ceylon$language$List$this$.$clone();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterator<? extends T> iterator() {
+        return $ceylon$language$List$this$.iterator();
+    }
+    
+    @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$List$this$.shorterThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$List$this$.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> repeat(final long times) {
+        return $ceylon$language$List$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -367,13 +367,13 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
+    public .ceylon.language.Sequential<? extends T> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

@@ -136,8 +136,8 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public boolean defines(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.defines(index);
+    public final .ceylon.language.Integer get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
@@ -146,8 +146,8 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Integer get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public boolean defines(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.defines(index);
     }
     
     @.java.lang.Override

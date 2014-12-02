@@ -142,8 +142,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public boolean defines(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.defines(index);
+    public final Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
@@ -152,8 +152,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public boolean defines(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.defines(index);
     }
     
     @.java.lang.Override
