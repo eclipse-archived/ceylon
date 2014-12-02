@@ -25,4 +25,5 @@ shared native class OpenConstructor(containingPackage, shared Anything meta) sat
   shared actual native String name;
   shared actual native String qualifiedName;
   shared actual String string => "new ``qualifiedName``";
+  shared actual native Boolean equals(Object other);
 }

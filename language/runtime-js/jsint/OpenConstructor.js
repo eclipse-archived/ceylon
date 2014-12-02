@@ -2,7 +2,7 @@ function OpenConstructor$jsint(pkg, meta, that){
     if (meta===undefined)throw new Error("Constructor reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
     $init$OpenConstructor$jsint();
     if (that===undefined)that=new OpenConstructor$jsint.$$;
-    that.containingPackage_ = pkg;
+    that.containingPackage_=pkg;
     var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
       //it's a metamodel

@@ -1,4 +1,4 @@
 if (this.qn$===undefined) {
-  this.qn$=qname$(getrtmm$$(getrtmm$$(this.tipo).$cont));
+  this.qn$=qname$(getrtmm$$(this.tipo));
 }
 return this.qn$;
