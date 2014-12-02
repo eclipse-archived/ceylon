@@ -201,6 +201,7 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
         Declaration model = that.getDeclaration();
         if(model != null
                 && (model instanceof Method || model instanceof Class)
+                && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
                 && !that.getDirectlyInvoked()){
             String prefix = this.prefix;
             enterAnonymousClass();
