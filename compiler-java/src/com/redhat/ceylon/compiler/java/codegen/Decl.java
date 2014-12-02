@@ -893,4 +893,13 @@ public class Decl {
                 && model.getContainer() instanceof Package
                 && !model.isNamed();
     }
+
+    /**
+     * Returns true if the given model is an object expression type.
+     */
+    public static boolean isObjectExpressionType(Declaration model) {
+        return model instanceof Class
+                && model.isAnonymous()
+                && !model.isNamed();
+    }
 }

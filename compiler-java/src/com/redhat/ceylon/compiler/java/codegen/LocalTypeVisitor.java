@@ -68,7 +68,8 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
     }
 
     private void collect(Node that, Declaration model) {
-        if(model != null && (!model.isMember() || Decl.isTopLevelObjectExpressionType(model))){
+        if(model != null && (!model.isMember() 
+                || Decl.isObjectExpressionType(model))){
             String name = model.getName();
             Set<String> locals = this.locals;
             // FIXME: better name processing
