@@ -28,6 +28,7 @@ import org.jboss.jandex.Indexer;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryException;
@@ -85,7 +86,7 @@ public class Main {
         }
 
         private enum Type {
-            CEYLON, JBOSS_MODULES, MAVEN, OSGi, UNKNOWN;
+            CEYLON, JBOSS_MODULES, MAVEN, OSGi, UNKNOWN, JDK;
         }
         
         static class Dependency extends AbstractArtifactResult {
@@ -216,6 +217,7 @@ public class Main {
                 case CEYLON:
                 case JBOSS_MODULES:
                 case OSGi:
+                case JDK:
                     return ArtifactResultType.CEYLON;
                 case MAVEN:
                     return ArtifactResultType.MAVEN;
@@ -276,6 +278,11 @@ public class Main {
             Module module = modules.get(key);
             if(module != null)
                 return module;
+            if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
+                module = new Module(name, JDKUtils.jdk.version, Type.JDK, null);
+                modules.put(key, module);
+                return module;
+            }
             Iterator<File> iterator = potentialJars.iterator();
             while(iterator.hasNext()){
                 File file = iterator.next();
@@ -546,6 +553,9 @@ public class Main {
             throw new RuntimeException(e);
         }
         if(!visited.add(module))
+            return;
+        // skip JDK modules which are already in the metamodel
+        if(module.type == ClassPath.Type.JDK)
             return;
         Metamodel.loadModule(name, version, module, ClassLoader.getSystemClassLoader());
         // also register its dependencies
