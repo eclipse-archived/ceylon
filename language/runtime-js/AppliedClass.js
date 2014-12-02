@@ -96,17 +96,18 @@ function $init$AppliedClass(){
     (function($$clase){
 
       $$clase.$_apply=function(a){
-        var mdl=get_model(this.tipo.$crtmm$);
+        var mm=getrtmm$$(this.tipo);
+        var mdl=get_model(mm);
         if (mdl&&mdl.mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
-        a=convert$params(this.tipo.$crtmm$,a);
+        a=convert$params(mm,a);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
       };$$clase.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',ps:[{nm:'arguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Anything}}},an:function(){return[];}}],$cont:Applicable$meta$model,an:function(){return[doc$('ceylon.language.meta.model:Applicable:$m:apply'),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','apply']};};
 
       $$clase.namedApply=function(args){
-        var mdl=get_model(this.tipo.$crtmm$);
-        if (mdl&&mdl.mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
         var mm=getrtmm$$(this.tipo);
+        var mdl=get_model(mm);
+        if (mdl&&mdl.mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
         if (mm.ps===undefined)throw InvocationException$meta$model("Applied function does not have metamodel parameter info for named args call");
         var mapped={};
         var iter=args.iterator();var a;while((a=iter.next())!==getFinished()) {
@@ -131,10 +132,6 @@ function $init$AppliedClass(){
           ordered.push(this.$targs);
         }
         return this.tipo.apply(undefined,ordered);
-
-
-
-
 
       };$$clase.namedApply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',ps:[{nm:'arguments',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Entry,a:{Item$Entry:{t:$Object},Key$Entry:{t:$_String}}},Absent$Iterable:{t:Null}}},an:function(){return[];}}],$cont:Applicable$meta$model,an:function(){return[doc$('ceylon.language.meta.model:Applicable:$m:namedApply'),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','namedApply']};};
     })(AppliedClass.$$.prototype);
