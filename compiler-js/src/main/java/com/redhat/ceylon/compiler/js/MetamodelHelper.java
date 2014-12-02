@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
 
 public class MetamodelHelper {
 
-    static void generateOpenType(final Node that, Declaration d, final GenerateJsVisitor gen) {
+    static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
         if (d instanceof TypeParameter == false) {
             if (JsCompiler.isCompilingLanguageModule()) {
@@ -45,7 +45,7 @@ public class MetamodelHelper {
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
             gen.out("Union");
         } else if (d instanceof TypeParameter) {
-            generateOpenType(that, ((TypeParameter)d).getDeclaration(),gen);
+            generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen);
             gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
             return;
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
