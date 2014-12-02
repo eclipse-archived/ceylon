@@ -57,7 +57,7 @@ public class MetamodelGenerator {
     public static final String KEY_SATISFIES    = "sts";
     public static final String KEY_DS_VARIANCE  = "dv"; //declaration-site variance
     public static final String KEY_US_VARIANCE  = "uv"; //use-site variance
-    public static final String KEY_CONSTRUCTORS = "cns";
+    public static final String KEY_CONSTRUCTORS = "$cn";
 
     public static final String KEY_DEFAULT      = "def";
     public static final String KEY_DYNAMIC      = "dyn";
