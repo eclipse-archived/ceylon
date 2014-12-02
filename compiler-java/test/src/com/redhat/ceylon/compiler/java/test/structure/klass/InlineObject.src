@@ -318,7 +318,10 @@ final class inlineObject_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous#5_"})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1anonymous#3_",
+        "1anonymous#4_",
+        "1anonymous#5_"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -565,6 +568,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous#6_"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::InlineObjectInDefaultClassParam<ceylon.language::String>")
 class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> {
     
