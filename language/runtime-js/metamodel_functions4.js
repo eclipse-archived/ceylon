@@ -1,3 +1,5 @@
+//OpenClassOrInterface.typeArguments
+//(implementations are called FreeClass, FreeInterface)
 function ocoitarg$(coi) {
   var tps=coi.declaration.tipo.$crtmm$.tp;
   if (tps) {
@@ -31,6 +33,7 @@ function ocoitarg$(coi) {
   }
   return getEmpty();
 }
+//OpenClassOrInterface.string
 function ocoistr$(coi){
   var s=coi.declaration.qualifiedName;
   var tps=coi.declaration.tipo.$crtmm$.tp;
