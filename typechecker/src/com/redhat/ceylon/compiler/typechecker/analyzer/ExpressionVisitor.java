@@ -341,8 +341,8 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Destructure that) {
         super.visit(that);
-        List<Tree.Variable> variables = 
-                that.getVariableTuple().getVariables();
+        Tree.DestructuredVariables ds = 
+                that.getDestructuredVariables();
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
         if (se!=null) {
@@ -350,29 +350,58 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType et = e.getTypeModel();
                 if (et!=null) {
-                    if (et.getSupertype(unit.getTupleDeclaration())==null) {
-                        se.addError("assigned expression is not a tuple type: '"
-                                + et.getProducedTypeName(unit) + 
-                                "' is not a tuple type");
+                    if (ds instanceof Tree.VariableTuple) {
+                        Tree.VariableTuple variableTuple = (Tree.VariableTuple) ds;
+                        List<Tree.Variable> variables =
+                                variableTuple.getVariables();
+                        if (et.getSupertype(unit.getTupleDeclaration())==null) {
+                            se.addError("assigned expression is not a tuple type: '"
+                                    + et.getProducedTypeName(unit) + 
+                                    "' is not a tuple type");
+                        }
+                        else {
+                            List<ProducedType> types = 
+                                    unit.getTupleElementTypes(et);
+                            if (types.size()>variables.size()) {
+                                se.addError("assigned tuple has too many elements");
+                            }
+                            for (int i=0; i<types.size() && i<variables.size(); i++) {
+                                ProducedType type = types.get(i);
+                                Variable var = variables.get(i);
+                                inferValueType(var, type);
+                                ProducedType declaredType = 
+                                        var.getType().getTypeModel();
+                                checkAssignable(type, declaredType, var, 
+                                        "type of element of assigned tuple must be a subtype of declared type");
+                            }
+                            for (int i=types.size(); i<variables.size(); i++) {
+                                Variable var = variables.get(i);
+                                var.addError("assigned tuple has too few elements");
+                            }
+                        }
                     }
-                    else {
-                        List<ProducedType> types = 
-                                unit.getTupleElementTypes(et);
-                        if (types.size()>variables.size()) {
-                            se.addError("assigned tuple has too many elements");
+                    else if (ds instanceof Tree.KeyValue) {
+                        Tree.KeyValue keyValue = (Tree.KeyValue) ds;
+                        Tree.Variable key = keyValue.getKey();
+                        Tree.Variable value = keyValue.getValue();
+                        if (et.getSupertype(unit.getEntryDeclaration())==null) {
+                            se.addError("assigned expression is not an entry type: '"
+                                    + et.getProducedTypeName(unit) + 
+                                    "' is not an entry type");
                         }
-                        for (int i=0; i<types.size() && i<variables.size(); i++) {
-                            ProducedType type = types.get(i);
-                            Variable var = variables.get(i);
-                            inferValueType(var, type);
-                            ProducedType declaredType = 
-                                    var.getType().getTypeModel();
-                            checkAssignable(type, declaredType, var, 
-                                    "type of element of assigned tuple must be a subtype of declared type");
-                        }
-                        for (int i=types.size(); i<variables.size(); i++) {
-                            Variable var = variables.get(i);
-                            var.addError("assigned tuple has too few elements");
+                        else {
+                            ProducedType keyType = unit.getKeyType(et);
+                            ProducedType valueType = unit.getValueType(et);
+                            inferValueType(key, keyType);
+                            inferValueType(value, valueType);
+                            ProducedType keyVarType = 
+                                    key.getType().getTypeModel();
+                            ProducedType valueVarType = 
+                                    value.getType().getTypeModel();
+                            checkAssignable(keyType, keyVarType, key, 
+                                    "type of key of assigned entry must be a subtype of declared type");
+                            checkAssignable(valueType, valueVarType, value, 
+                                    "type of item of assigned entry must be a subtype of declared type");
                         }
                     }
                 }
