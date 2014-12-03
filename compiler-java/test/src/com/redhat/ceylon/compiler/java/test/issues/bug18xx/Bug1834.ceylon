@@ -26,14 +26,18 @@ class Left() extends Top() {}
 @noanno
 abstract class Right() extends Top() {
     shared formal Top[] children;
+    shared formal Top[] children2;
 }
 
 @noanno
 class Bottom(Right? mid, Left[] sides) extends Right() {
     shared actual Left[]|[Right,Left*] children;
+    shared actual [Right,Left*] children2;
     if (exists mid) {
         children = [mid, *sides];
+        children2 = [mid, *sides];
     } else {
         children = sides;
+        children2 = [nothing, *sides];
     }
 }

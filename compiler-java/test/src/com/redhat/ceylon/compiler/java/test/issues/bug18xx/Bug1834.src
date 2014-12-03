@@ -36,6 +36,8 @@ abstract class Right extends .com.redhat.ceylon.compiler.java.test.issues.bug18x
     
     public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> getChildren();
     
+    public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> getChildren2();
+    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$;
@@ -51,9 +53,11 @@ class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right 
         if ((mid$1 = mid) != null) {
             final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid$3 = mid$1;
             children = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());
+            children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());
         } else {
             final .java.lang.Object mid$2 = mid$1;
             children = getSides$priv$();
+            children2 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.nothing_.get_()}, getSides$priv$());
         }
     }
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides;
@@ -66,6 +70,12 @@ class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right 
     @.java.lang.Override
     public final .ceylon.language.Sequential getChildren() {
         return children;
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> children2;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential getChildren2() {
+        return children2;
     }
     
     @.java.lang.Override
