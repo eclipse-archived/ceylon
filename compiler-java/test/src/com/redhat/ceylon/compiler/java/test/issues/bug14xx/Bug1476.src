@@ -6,7 +6,7 @@ public final class run_ {
     }
     
     public static void run(final .ceylon.language.meta.model.Value nameValue) {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(
+        final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(
             let
             {
                 final .ceylon.language.meta.model.Value $instance$ = nameValue;

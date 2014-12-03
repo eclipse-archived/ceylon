@@ -102,12 +102,12 @@ final class unionSelfType_ {
     }
     
     static void unionSelfType(final .java.lang.Object i) {
-        ((.ceylon.language.Comparable)i).compare((.ceylon.language.Comparable)i);
+        ((.ceylon.language.Comparable)i).compare((.ceylon.language.Comparable)(.ceylon.language.Comparable)i);
         (
             let
             {
                 .ceylon.language.Comparable arg$0$callable$ = (.ceylon.language.Comparable)i;
-                .ceylon.language.Comparable arg$0$0 = (.ceylon.language.Comparable)i;
+                .ceylon.language.Comparable arg$0$0 = (.ceylon.language.Comparable)(.ceylon.language.Comparable)i;
             }
             returning arg$0$callable$.compare(arg$0$0);
         );
