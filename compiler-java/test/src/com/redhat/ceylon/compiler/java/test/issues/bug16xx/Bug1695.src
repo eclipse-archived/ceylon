@@ -64,12 +64,12 @@ class Bug1695B extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1
     }
     
     private final .ceylon.language.Sequence f$c1() {
-        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)getC();
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)getC();
     }
     
     private void f$priv$$canonical$(final .ceylon.language.Sequence c1) {
-        final .ceylon.language.Sequence c2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)getC();
-        final .ceylon.language.Sequence c3 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)this.getC();
+        final .ceylon.language.Sequence c2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)getC();
+        final .ceylon.language.Sequence c3 = (.ceylon.language.Sequence<? extends .java.lang.Object>)this.getC();
     }
     
     private final void f$priv$(final .ceylon.language.Sequence c1) {
