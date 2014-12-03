@@ -82,10 +82,13 @@ compilationUnit returns [CompilationUnit compilationUnit]
         { $compilationUnit.addPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
         ca2=compilerAnnotations declaration
-        { if ($declaration.declaration!=null)
-              $compilationUnit.addDeclaration($declaration.declaration); 
-          if ($declaration.declaration!=null)
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); }
+        { if ($declaration.declaration instanceof 
+                  com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) {
+              com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration dec = 
+                  (com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) 
+                      $declaration.declaration;
+              $compilationUnit.addDeclaration(dec); 
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } }
       | RBRACE
         { displayRecognitionError(getTokenNames(),
               new MismatchedTokenException(EOF, input)); }
@@ -455,13 +458,31 @@ variableTuple returns [VariableTuple variableTuple]
       { $variableTuple.setEndToken($RBRACKET); }
     ;
 
+keyValue returns [KeyValue keyValue]
+    : v1=var
+      { $keyValue = new KeyValue(null);
+        $keyValue.setKey($v1.variable); }
+      ENTRY_OP
+      { $keyValue.setEndToken($ENTRY_OP); }
+      (
+        v2=var
+        { $keyValue.setValue($v2.variable); 
+          $keyValue.setEndToken(null); }
+      )?
+    ;
+
 destructure returns [Destructure destructure]
     : VALUE_MODIFIER
       { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
         $destructure = new Destructure(null);
         $destructure.setType(vm); }
-      variableTuple
-      { $destructure.setVariableTuple($variableTuple.variableTuple); }
+      (
+        (var ENTRY_OP) => keyValue
+        { $destructure.setDestructuredVariables($keyValue.keyValue); }
+      |
+        variableTuple
+        { $destructure.setDestructuredVariables($variableTuple.variableTuple); }
+      )
       (
         specifier
         { $destructure.setSpecifierExpression($specifier.specifierExpression); }
@@ -1128,7 +1149,7 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
 
 annotationListStart
     : (stringLiteral|annotation) 
-      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VOID_MODIFIER)
+      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VALUE_MODIFIER|VOID_MODIFIER)
     ;
 
 declarationOrStatement returns [Statement statement]
@@ -1148,10 +1169,11 @@ declarationOrStatement returns [Statement statement]
             $statement.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
-declaration returns [Declaration declaration]
-    @init { $declaration = new MissingDeclaration(null); }
+declaration returns [Statement declaration]
+    @init { MissingDeclaration md = new MissingDeclaration(null); 
+            $declaration = md; }
     : annotations
-      { $declaration.setAnnotationList($annotations.annotationList); }
+      { md.setAnnotationList($annotations.annotationList); }
     ( 
       classDeclaration
       { $declaration=$classDeclaration.declaration; }
@@ -1161,6 +1183,10 @@ declaration returns [Declaration declaration]
       { $declaration=$aliasDeclaration.declaration; }
     | objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
+    | (VALUE_MODIFIER LBRACKET) => d1=destructure
+      { $declaration = $d1.destructure; }
+    | (VALUE_MODIFIER var ENTRY_OP) => d2=destructure
+      { $declaration = $d2.destructure; }
     | setterDeclaration
       { $declaration=$setterDeclaration.declaration; }
     | voidOrInferredMethodDeclaration
@@ -1176,7 +1202,10 @@ declaration returns [Declaration declaration]
       SEMICOLON
       { $declaration=new BrokenDeclaration($SEMICOLON); }*/
     )
-    { $declaration.setAnnotationList($annotations.annotationList);  }
+    { if ($declaration instanceof com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) {
+          com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration dec =
+              (com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) $declaration;
+          dec.setAnnotationList($annotations.annotationList); } }
     ;
 
 annotatedDeclarationStart
@@ -1192,7 +1221,7 @@ annotatedAssertionStart
 //that distinguish declarations from
 //expressions
 declarationStart
-    : VALUE_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate dynamic objects
+    : VALUE_MODIFIER
     | FUNCTION_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | VOID_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | ASSIGN
@@ -1248,8 +1277,6 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
-    | destructure
-      { $statement = $destructure.destructure; }
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
