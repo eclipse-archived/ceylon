@@ -5728,7 +5728,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         List<JCTree> klass = classGen().transformObjectExpression(expr);
         at(expr);
-        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(expr.getAnonymousClass().getName()+"_"), List.<JCTree.JCExpression>nil(), null);
+        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(naming.escapeClassName(expr.getAnonymousClass().getName())+"_"), List.<JCTree.JCExpression>nil(), null);
         return make().LetExpr((List)klass, newCall);
     }
 

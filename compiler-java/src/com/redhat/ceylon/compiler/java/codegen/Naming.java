@@ -678,7 +678,7 @@ public class Naming implements LocalId {
             TypeDeclaration klass = (TypeDeclaration)scope;
             if(klass.isAnonymous() && !klass.isNamed())
                 typeDeclarationBuilder.clear();
-            typeDeclarationBuilder.append(klass.getName());
+            typeDeclarationBuilder.append(escapeClassName(klass.getName()));
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
                     && Decl.isLocalNotInitializer(klass)
@@ -1396,9 +1396,13 @@ public class Naming implements LocalId {
         }
     }
     
-    
+    static String escapeClassName(String name) {
+        // escape # of anonymous class names with underscore, we will save the name in @Name anyways
+        return name.replace('#', '_');
+    }
 
     static String quoteClassName(String name) {
+        name = escapeClassName(name);
         return Util.isInitialLowerCase(name) ? name + "_" : name;
     }
     
