@@ -789,7 +789,12 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1831() {
         compareWithJavaSource("bug18xx/Bug1831");
     }
-    
+
+    @Test
+    public void testBug1834() {
+        compareWithJavaSource("bug18xx/Bug1834");
+    }
+
     @Test
     public void testBug1836() {
         ErrorCollector collector = new ErrorCollector();
