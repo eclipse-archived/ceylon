@@ -433,6 +433,42 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       )
     ;
 
+variableTuple returns [VariableTuple variableTuple]
+    : LBRACKET
+      { $variableTuple = new VariableTuple($LBRACKET); }
+      (
+        ca1=compilerAnnotations
+        v1=var
+        { $v1.variable.getCompilerAnnotations().addAll($ca1.annotations);
+          $variableTuple.addVariable($v1.variable); }
+        (
+          c=COMMA
+          { $variableTuple.setEndToken($c); }
+          ca2=compilerAnnotations
+          v2=var
+          { $v2.variable.getCompilerAnnotations().addAll($ca2.annotations);
+            $variableTuple.addVariable($v2.variable);
+            $variableTuple.setEndToken(null); }
+        )*
+      )?
+      RBRACKET
+      { $variableTuple.setEndToken($RBRACKET); }
+    ;
+
+destructure returns [Destructure destructure]
+    : VALUE_MODIFIER
+      { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
+        $destructure = new Destructure(null);
+        $destructure.setType(vm); }
+      variableTuple
+      { $destructure.setVariableTuple($variableTuple.variableTuple); }
+      (
+        specifier
+        { $destructure.setSpecifierExpression($specifier.specifierExpression); }
+      )?
+      SEMICOLON
+    ;
+
 inferredAttributeDeclaration returns [AnyAttribute declaration]
     @init { AttributeGetterDefinition def=null;
             AttributeDeclaration dec=null; }
@@ -1212,6 +1248,8 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
+    | destructure
+      { $statement = $destructure.destructure; }
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
