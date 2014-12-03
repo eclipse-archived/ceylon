@@ -11,26 +11,28 @@ function get_model(mm) {
   return map;
 }
 
-function pushTypes(list, types) {
+function pushTypes(list, types,targ$2) {
   for (var i=0; i<types.length; i++) {
     var t = types[i];
     if (t.t === 'u') {
-      list.push(applyUnionType(t, t.l));
+      list.push(applyUnionType(t, targ$2));
     } else if (t.t === 'i') {
-      list.push(applyIntersectionType(t, t.l));
+      list.push(applyIntersectionType(t, targ$2));
+    } else if (typeof(t)==='string') {
+      list.push(typeLiteral$meta({Type$typeLiteral:targ$2[t]},targ$2));
     } else {
-      list.push(typeLiteral$meta({Type$typeLiteral:t}));
+      list.push(typeLiteral$meta({Type$typeLiteral:t},targ$2));
     }
   }
   return list;
 }
 
-function applyUnionType(ut) { //return AppliedUnionType
-  var cases = pushTypes([], ut.l);
+function applyUnionType(ut,targ$2) { //return AppliedUnionType
+  var cases = pushTypes([], ut.l,targ$2);
   return AppliedUnionType$jsint(ut, cases.rt$(ut), {Union$AppliedUnionType:ut});
 }
-function applyIntersectionType(it) { //return AppliedIntersectionType
-  var sats = pushTypes([], it.l);
+function applyIntersectionType(it,targ$2) { //return AppliedIntersectionType
+  var sats = pushTypes([], it.l,targ$2);
   return AppliedIntersectionType$jsint(it, sats.rt$(it), {Union$AppliedIntersectionType:it});
 }
 

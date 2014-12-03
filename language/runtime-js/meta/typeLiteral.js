@@ -1,4 +1,4 @@
-function typeLiteral$meta($$targs$$) {
+function typeLiteral$meta($$targs$$,targ$2) {
   if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
     throw new Error("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
   } else if ($$targs$$.Type$typeLiteral.$crtmm$ == undefined) {
@@ -14,7 +14,7 @@ function typeLiteral$meta($$targs$$) {
       }
       throw new Error("'Type' argument should be an open or closed type");
     } else if (t==='u' || t==='i') {
-      return (t==='u'?applyUnionType:applyIntersectionType)($$targs$$.Type$typeLiteral);
+      return (t==='u'?applyUnionType:applyIntersectionType)($$targs$$.Type$typeLiteral,targ$2);
     } else if (t==='T') {
       //TODO arguments
       var _tt=retpl$($$targs$$.Type$typeLiteral);
