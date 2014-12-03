@@ -164,6 +164,10 @@ public abstract class BoxingVisitor extends Visitor {
                 && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
             CodegenUtil.markTypeErased(that);
         }
+        if (isRaw(that.getPrimary().getTypeModel())
+                && !that.getTypeModel().getDeclaration().getTypeParameters().isEmpty()) {
+            CodegenUtil.markRaw(that);
+        }
     }
 
     @Override
@@ -203,14 +207,17 @@ public abstract class BoxingVisitor extends Visitor {
             propagateFromTerm(that, that.getPrimary());
         
         // Specifically for method invocations we check if the return type is
-        // a type parameter and if so if one of the type arguments is erased,
-        // in that case we mark the expression itself as erased as well
+        // a type parameter and if so 
+        // * if any of the type arguments is erased, or
+        // * if the invocation itself has a raw type
+        // then we mark the expression itself as erased as well
         if (that.getPrimary() instanceof StaticMemberOrTypeExpression) {
             StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
             if (expr.getDeclaration() instanceof Method) {
                 Method mth = (Method)expr.getDeclaration();
                 if (isTypeParameter(mth.getType()) 
-                        && hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments().getTypeModels())) {
+                        && (hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments().getTypeModels())
+                        || CodegenUtil.isRaw(that))) {
                     CodegenUtil.markTypeErased(that);
                     CodegenUtil.markUntrustedType(that);
                 }

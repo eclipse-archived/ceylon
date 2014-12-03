@@ -508,7 +508,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         // forced erasure may require a previous cast to Object if we were not able to insert a raw cast
                         // because for instance Sequential<String> cannot be cast forcibly to Empty because Java is so smart
                         // it figures out that there's no intersection between the two types, but we know better
-                        if(exprUntrustedType){
+                        if(exprUntrustedType && !exprIsRaw){
                             result = make().TypeCast(syms().objectType, result);
                         }
                         // Do the actual cast
