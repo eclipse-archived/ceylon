@@ -77,6 +77,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -338,14 +339,58 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.Destructure that) {
+        super.visit(that);
+        List<Tree.Variable> variables = 
+                that.getVariableTuple().getVariables();
+        Tree.SpecifierExpression se = 
+                that.getSpecifierExpression();
+        if (se!=null) {
+            Tree.Expression e = se.getExpression();
+            if (e!=null) {
+                ProducedType et = e.getTypeModel();
+                if (et!=null) {
+                    if (et.getSupertype(unit.getTupleDeclaration())==null) {
+                        se.addError("assigned expression is not a tuple type: '"
+                                + et.getProducedTypeName(unit) + 
+                                "' is not a tuple type");
+                    }
+                    else {
+                        List<ProducedType> types = 
+                                unit.getTupleElementTypes(et);
+                        if (types.size()>variables.size()) {
+                            se.addError("assigned tuple has too many elements");
+                        }
+                        for (int i=0; i<types.size() && i<variables.size(); i++) {
+                            ProducedType type = types.get(i);
+                            Variable var = variables.get(i);
+                            inferValueType(var, type);
+                            ProducedType declaredType = 
+                                    var.getType().getTypeModel();
+                            checkAssignable(type, declaredType, var, 
+                                    "type of element of assigned tuple must be a subtype of declared type");
+                        }
+                        for (int i=types.size(); i<variables.size(); i++) {
+                            Variable var = variables.get(i);
+                            var.addError("assigned tuple has too few elements");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
-        if (that.getSpecifierExpression()!=null) {
-            inferType(that, that.getSpecifierExpression());
+        Tree.SpecifierExpression se = 
+                that.getSpecifierExpression();
+        if (se!=null) {
+            inferType(that, se);
             if (that.getType()!=null) {
-                ProducedType t = that.getType().getTypeModel();
+                ProducedType t = 
+                        that.getType().getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    checkType(t, that.getSpecifierExpression());
+                    checkType(t, se);
                 }
             }
         }
@@ -1750,6 +1795,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void inferValueType(Tree.Variable value, 
+            ProducedType t) {
+        if (value.getType() instanceof Tree.LocalModifier) {
+            Tree.ValueModifier local = 
+                    (Tree.ValueModifier) value.getType();
+            if (t!=null) {
+                setValueType(local, t, value);
+            }
+        }
+    }
+    
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
         Tree.Expression e = se.getExpression();
@@ -1879,6 +1935,15 @@ public class ExpressionVisitor extends Visitor {
                 that.getDeclarationModel().setType(t);
             }
         }
+    }
+        
+    private void setValueType(Tree.ValueModifier local, 
+            ProducedType et, Tree.TypedDeclaration that) {
+        ProducedType t = 
+                unit.denotableType(et)
+                    .withoutUnderlyingType();
+        local.setTypeModel(t);
+        that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
