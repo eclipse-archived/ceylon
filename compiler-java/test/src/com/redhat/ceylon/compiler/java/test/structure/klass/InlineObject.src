@@ -21,8 +21,8 @@ final class testInlineObjects_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "1anonymous#0_",
-        "1anonymous#1_"})
+        "1anonymous_0_",
+        "1anonymous_1_"})
 final class inlineObject_ {
     
     private inlineObject_() {
@@ -53,9 +53,9 @@ final class inlineObject_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#0_() {
+                    private anonymous_0_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -77,11 +77,11 @@ final class inlineObject_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#0_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
                     }
                 }
             }
-            returning new anonymous#0_();
+            returning new anonymous_0_();
         );
     }
     
@@ -167,9 +167,9 @@ final class inlineObject_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#1_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_1_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#1_() {
+                    private anonymous_1_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -191,11 +191,11 @@ final class inlineObject_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#1_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
                     }
                 }
             }
-            returning new anonymous#1_();
+            returning new anonymous_1_();
         );
         if (check) {
             if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).typeOf(p)) {
@@ -319,9 +319,9 @@ final class inlineObject_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "1anonymous#3_",
-        "1anonymous#4_",
-        "1anonymous#5_"})
+        "1anonymous_3_",
+        "1anonymous_4_",
+        "1anonymous_5_"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -356,9 +356,9 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#4_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_4_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#4_() {
+                    private anonymous_4_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -380,11 +380,11 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#4_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_4_.class));
                     }
                 }
             }
-            returning new anonymous#4_();
+            returning new anonymous_4_();
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -409,9 +409,9 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#3_() {
+                    private anonymous_3_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -434,11 +434,11 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#3_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_3_.class));
                     }
                 }
             }
-            returning new anonymous#3_();
+            returning new anonymous_3_();
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -472,9 +472,9 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#5_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_5_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#5_() {
+                    private anonymous_5_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -496,11 +496,11 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#5_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_5_.class));
                     }
                 }
             }
-            returning new anonymous#5_();
+            returning new anonymous_5_();
         );
     }
     
@@ -568,7 +568,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous#6_"})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_6_"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::InlineObjectInDefaultClassParam<ceylon.language::String>")
 class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> {
     
@@ -581,9 +581,9 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous#6_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_6_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    private anonymous#6_() {
+                    private anonymous_6_() {
                         this.a = 2L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -605,11 +605,11 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#6_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_6_.class));
                     }
                 }
             }
-            returning new anonymous#6_();
+            returning new anonymous_6_();
         ));
     }
     
@@ -630,7 +630,7 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("inlineObjectTopLevel")
-@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous#2_"})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_2_"})
 final class inlineObjectTopLevel_ {
     
     private inlineObjectTopLevel_() {
@@ -648,9 +648,9 @@ final class inlineObjectTopLevel_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(isPackageLocal = true)
                     @.com.redhat.ceylon.compiler.java.metadata.Object
-                    class anonymous#2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class anonymous_2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
-                        private anonymous#2_() {
+                        private anonymous_2_() {
                             this.a = 2L;
                         }
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -672,11 +672,11 @@ final class inlineObjectTopLevel_ {
                         @.java.lang.Override
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
                         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#2_.class);
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_2_.class);
                         }
                     }
                 }
-                returning new anonymous#2_();
+                returning new anonymous_2_();
             );
             $initException$ = null;
             $init$value = true;

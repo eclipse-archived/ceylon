@@ -15,19 +15,19 @@ final class bug1939_ {
                 let
                 {
                     
-                    class anonymous#0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
-                        private anonymous#0_() {
+                        private anonymous_0_() {
                             .ceylon.language.print_.print(.ceylon.language.String.instance(hello));
                         }
                         
                         @.java.lang.Override
                         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1939_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous#0_.class));
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1939_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
                         }
                     }
                 }
-                returning new anonymous#0_();
+                returning new anonymous_0_();
             );
         ));
     }
