@@ -68,7 +68,7 @@ atr$(f,'declaration',function(){
     return f.$parent;
   },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedFunction,d:['ceylon.language.meta.model','Model','$at','container']};});
   f.$_apply=function(a){
-    a=convert$params(mm,a);
+    a=convert$params(mm,a,ttargs);
     if (ttargs) {
       var _a=[];
       for (var i=0;i<a.size;i++)_a.push(a.$_get(i));

@@ -30,10 +30,6 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
     that.$$=AppliedClass.$$;
     that.getT$all=function(){return dummy.getT$all();};
     that.getT$name=function(){return dummy.getT$name();};
-    that.equals=function(o){
-      var eq=is$(o,{t:AppliedClass}) && o.tipo===tipo;
-      return eq;
-    };
     that.$_apply=function(x){return AppliedClass.$$.prototype.$_apply.call(that,x);};
     that.$_apply.$crtmm$=AppliedClass.$$.prototype.$_apply.$crtmm$;
     that.namedApply=function(x){return AppliedClass.$$.prototype.namedApply.call(that,x);};
@@ -99,7 +95,7 @@ function $init$AppliedClass(){
         var mm=getrtmm$$(this.tipo);
         var mdl=get_model(mm);
         if (mdl&&mdl.mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
-        a=convert$params(mm,a);
+        a=convert$params(mm,a,this.$targs);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
       };$$clase.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',ps:[{nm:'arguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Anything}}},an:function(){return[];}}],$cont:Applicable$meta$model,an:function(){return[doc$('ceylon.language.meta.model:Applicable:$m:apply'),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','apply']};};
