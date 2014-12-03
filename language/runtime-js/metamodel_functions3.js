@@ -83,7 +83,7 @@ function clsparamtypes(cls) {
       if (!pt)throw TypeApplicationException$meta$model("Class model is missing type argument for "
         + cls.string + "<" + ps[i].$t + ">");
     }
-    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
