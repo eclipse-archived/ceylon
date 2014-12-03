@@ -4258,11 +4258,15 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
     
-    boolean hasConstrainedTypeParameters(ProducedType type) {
+    boolean hasConstrainedTypeParameters(Parameter parameter) {
+        ProducedType type = parameter.getType();
+        return hasConstrainedTypeParameters(type);
+    }
+    private boolean hasConstrainedTypeParameters(ProducedType type) {
         TypeDeclaration declaration = type.getDeclaration();
         if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
-            return !tp.getSatisfiedTypes().isEmpty();
+            return !tp.getSatisfiedTypes().isEmpty() && !tp.isContravariant();
         }
         if(declaration instanceof UnionType){
             for(ProducedType m : declaration.getCaseTypes())

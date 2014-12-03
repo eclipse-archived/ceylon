@@ -170,8 +170,7 @@ abstract class Invocation {
     }
     
     protected boolean isParameterWithConstrainedTypeParameters(Parameter param) {
-        ProducedType type = param.getType();
-        return gen.hasConstrainedTypeParameters(type);
+        return gen.hasConstrainedTypeParameters(param);
     }
 
     protected boolean isParameterWithDependentCovariantTypeParameters(Parameter param) {

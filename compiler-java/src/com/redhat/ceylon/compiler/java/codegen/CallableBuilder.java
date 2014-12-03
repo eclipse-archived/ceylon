@@ -293,7 +293,7 @@ public class CallableBuilder {
             // this works on the parameter type as declared
             if(!parameterType.isRaw())
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
-            if(gen.hasConstrainedTypeParameters(parameterType))
+            if(gen.hasConstrainedTypeParameters(parameter))
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
             if(gen.hasDependentCovariantTypeParameters(parameterType))
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
