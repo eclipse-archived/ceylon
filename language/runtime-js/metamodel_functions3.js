@@ -71,6 +71,7 @@ function coimoddcl$(ifc) {
   ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(_mod.findPackage(mm.d[0]), ifc.tipo);
   return ifc._decl;
 }
+//Class.parameterTypes (works also for constructors)
 function clsparamtypes(cls) {
   var ps=cls.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
@@ -87,6 +88,7 @@ function clsparamtypes(cls) {
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
+//Basically the same as clsparamtypes but for functions
 function funparamtypes(fun) {
   var ps=fun.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
@@ -99,10 +101,11 @@ function funparamtypes(fun) {
       if (!pt)throw TypeApplicationException$meta$model("Function model is missing type argument for "
         + fun.string + "<" + ps[i].$t + ">");
     }
-    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt},fun.$targs));
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
+//FunctionModel.string
 function funmodstr$(fun) {
   var mm=fun.tipo.$crtmm$;
   var qn;
@@ -140,6 +143,7 @@ function funmodstr$(fun) {
   }
   return qn;
 }
+//Function.typeArguments
 function funtypearg$(fun) {
   var mm = fun.tipo.$crtmm$;
   if (mm) {
@@ -164,6 +168,7 @@ function funtypearg$(fun) {
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+//ClassOrInterface.container
 function coicont$(coi) {
   if (coi.$parent)return coi.$parent;
   var cont = getrtmm$$(coi.tipo).$cont;
@@ -186,6 +191,7 @@ function coicont$(coi) {
   if (_out)rv.src$=_out;
   return rv;
 }
+//ClassOrInterface.string
 function coistr$(coi) {
   var mm = getrtmm$$(coi.tipo);
   var qn=coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name ? coi.tipo.$$.prototype.getT$name() : qname$(mm);
@@ -221,6 +227,7 @@ function coistr$(coi) {
   }
   return qn;
 }
+//ClassOrInterface.hash
 function coihash$(coi) {
   var mm = getrtmm$$(coi.tipo);
   var h=qname$(mm).hash;
@@ -243,6 +250,7 @@ function coihash$(coi) {
   if (coi.$bound)h+=coi.$bound.hash;
   return h;
 }
+//ClassOrInterface.typeArguments
 function coitarg$(coi){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
@@ -287,6 +295,7 @@ function coirestarg$(root,type) {
   }
   return type;
 }
+//ClassOrInterface.extendedType
 function coiexttype$(coi){
   var mm = getrtmm$$(coi.tipo);
   var sc = mm['super'];
@@ -302,6 +311,7 @@ function coiexttype$(coi){
   if (_t.a)ac.$targs=_t.a;
   return ac;
 }
+//ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
   var ints = coi.tipo.$crtmm$.sts;
   if (ints && ints.length) {
@@ -319,6 +329,7 @@ function coisattype$(coi){
   }
   return getEmpty();
 }
+//ClassOrInterface.getClassOrInterface
 function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClassOrInterface);
