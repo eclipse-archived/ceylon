@@ -4510,6 +4510,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
             boxing = CodegenUtil.getBoxingStrategy(decl);
             ProducedType targetType = tmpInStatement ? leftTerm.getTypeModel() : rightTerm.getTypeModel();
+            // if we're dealing with widening do not trust the type of the declaration and get the real type
+            if(CodegenUtil.hasUntrustedType(decl)){
+                ProducedTypedReference typedRef = (ProducedTypedReference) ((Tree.MemberOrTypeExpression)leftTerm).getTarget();
+                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                targetType = nonWideningType(typedRef, nonWideningTypedRef);
+            }
             rhs = transformExpression(rightTerm, boxing, targetType, 
                                       decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0);
         } else {
