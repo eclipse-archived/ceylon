@@ -6,9 +6,9 @@ final class bug641_ {
     }
     
     static void bug641(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .java.lang.Object> b) {
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.<.java.lang.Object>union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.<.java.lang.Object>intersection(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.<.java.lang.Object>exclusiveUnion(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.<.java.lang.Object>union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.<.java.lang.Object>intersection(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.<.java.lang.Object>exclusiveUnion(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
         final .ceylon.language.Set<? extends .ceylon.language.Integer> foo4 = a.<.java.lang.Object>complement(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Set)b);
     }
 }
