@@ -78,5 +78,10 @@ public class MetamodelTest extends CompilerTest {
         compile("JavaType.java");
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bugCL426", "bugCL426.ceylon");
     }
+
+    @Test
+    public void testBug1926() {
+        compareWithJavaSource("bug1926");
+    }
 }
 
