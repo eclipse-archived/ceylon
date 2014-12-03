@@ -474,7 +474,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // expression type has type parameters while the other hasn't 
                     // (unless the other type is already raw)
                     if ((!exprIsRaw && hasTypeParameters(expectedType))
-                            || (!expectedTypeIsRaw && hasTypeParameters(exprType))) {
+                            || (downCast && !expectedTypeIsRaw && hasTypeParameters(exprType))) {
                         ProducedType rawType = hasTypeParameters(expectedType) ? expectedType : exprType;
                         JCExpression rawTypeExpr = makeJavaType(rawType, 
                                 AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW | companionFlags);
