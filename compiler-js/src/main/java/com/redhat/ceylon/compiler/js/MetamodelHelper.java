@@ -150,7 +150,7 @@ public class MetamodelHelper {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberConstructor$jsint()(");
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
-            gen.out("_", gen.getNames().name(td), ",");
+            gen.out(".", gen.getNames().name(_pc), "_", gen.getNames().name(td), ",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                     that.getTypeModel().getVarianceOverrides());
             if (targs != null && !targs.isEmpty()) {

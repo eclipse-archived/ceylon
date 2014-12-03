@@ -336,7 +336,7 @@ public class TypeGenerator {
         callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
                 d, that, superDecs, gen);
 
-        if (!gen.opts.isOptimize()) {
+        if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
             for (Tree.Parameter p : plist.getParameters()) {
                 if (!p.getParameterModel().isHidden()){
@@ -740,6 +740,8 @@ public class TypeGenerator {
         //Add reference to metamodel
         gen.out(fullName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        gen.endLine(true);
+        gen.out(gen.getNames().name(container), ".", fullName, "=", fullName);
         gen.endLine(true);
         if (gen.outerSelf(container)) {
             gen.out(".", fullName, "=", fullName);
