@@ -18,7 +18,7 @@ function typeLiteral$meta($$targs$$,targ$2) {
     } else if (t==='T') {
       //TODO arguments
       var _tt=retpl$($$targs$$.Type$typeLiteral);
-      return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
+      return AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
     } else if (t.$crtmm$ === undefined) {
       throw new Error("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
@@ -26,7 +26,7 @@ function typeLiteral$meta($$targs$$,targ$2) {
       var mdl = get_model(mm);
       if (mdl.mt==='c' || mdl.mt==='o') {
         //TODO tupleize Arguments
-        var r=AppliedClass(t,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+        var r=AppliedClass$jsint(t,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['mt'] === 'i') {

@@ -187,7 +187,7 @@ function coicont$(coi) {
   if (get_model(cmm).mt === 'i')
     rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
   //TODO tipos de parametros
-  rv=AppliedClass(cont,{Type$Class:_t,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   if (_out)rv.src$=_out;
   return rv;
 }
@@ -306,7 +306,7 @@ function coiexttype$(coi){
   if (scmm.$cont) {
     ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
   } else {
-    ac=AppliedClass(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    ac=AppliedClass$jsint(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
   if (_t.a)ac.$targs=_t.a;
   return ac;

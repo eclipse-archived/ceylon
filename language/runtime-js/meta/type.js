@@ -1,13 +1,13 @@
 function type$meta(x,$$targs$$) {
   if (x===null){
-    return AppliedClass(getNull(),{Type$Class:{t:Null},Arguments$Class:{t:Empty}});
+    return AppliedClass$jsint(getNull(),{Type$AppliedClass:{t:Null},Arguments$AppliedClass:{t:Empty}});
   }
   if ($$targs$$.Type$type.t===Nothing) {
     return getNothingType$meta$model();
   }
   if (x===true||x===false) {
     var cls=x?$_true:$_false;
-    return AppliedClass(cls,{Type$Class:{t:cls},Arguments$Class:{t:Empty}});
+    return AppliedClass$jsint(cls,{Type$AppliedClass:{t:cls},Arguments$AppliedClass:{t:Empty}});
   }
   var mm=getrtmm$$(x);
   var _t=$$targs$$.Type$type.t;
@@ -30,14 +30,14 @@ function type$meta(x,$$targs$$) {
       return AppliedFunction(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }
     var rv=mm.$cont?AppliedMemberClass(mm.$t.t, {Type$MemberClass:mm.$t,Arguments$MemberClass:{t:Nothing},Container$MemberClass:{t:mm.$cont}})
-           : AppliedClass(mm.$t.t, {Type$Class:mm.$t,Arguments$Class:{t:Nothing}});
+           : AppliedClass$jsint(mm.$t.t, {Type$AppliedClass:mm.$t,Arguments$AppliedClass:{t:Nothing}});
     rv.src$=x;
     return rv;
   }
   var c;
   if ($$targs$$.Type$type.t==='T') {
     var rt=retpl$($$targs$$.Type$type);
-    c=AppliedClass(Tuple,{Type$Class:$$targs$$.Type$type, Arguments$Class:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest$Tuple]}});
+    c=AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$type, Arguments$AppliedClass:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest$Tuple]}});
   } else {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
     if (x.$$targs$$)_ta.T.a=x.$$targs$$;
@@ -48,7 +48,7 @@ function type$meta(x,$$targs$$) {
     if (mm.$cont) {
       c=AppliedMemberClass(_t, {Type$MemberClass:_ta.T,Arguments$MemberClass:_ta.A,Container$MemberClass:_ta.C});
     } else {
-      c=AppliedClass(_t, {Type$Class:_ta.T,Arguments$Class:_ta.A});
+      c=AppliedClass$jsint(_t, {Type$AppliedClass:_ta.T,Arguments$AppliedClass:_ta.A});
     }
   }
   if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;

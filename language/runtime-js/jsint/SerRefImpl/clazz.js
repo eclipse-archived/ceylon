@@ -14,4 +14,4 @@
   } else {
     args={t:Empty};
   }
-  return AppliedClass(_inst.t,{Type$AppliedClass:_inst,Arguments$AppliedClass:args},_inst.a);
+  return AppliedClass$jsint(_inst.t,{Type$AppliedClass:_inst,Arguments$AppliedClass:args},_inst.a);

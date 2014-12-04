@@ -18,7 +18,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
           if (!nt.a)nt.a={};
           for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
         }
-        rv=AppliedClass(rv,{Type$AppliedClass:nt,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
+        rv=AppliedClass$jsint(rv,{Type$AppliedClass:nt,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
         if (nt.a)rv.$targs=nt.a;
         rv.$bound=x;
         return rv;
@@ -27,7 +27,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
       throw IncompatibleTypeException$meta$model("Invalid metamodel data for MemberClass");
     }
   }
-  AppliedClass(tipo,{Type$AppliedClass:$$targs$$.Type$AppliedMemberClass,Arguments$AppliedClass:$$targs$$.Arguments$AppliedMemberClass},that);
+  AppliedClass$jsint(tipo,{Type$AppliedClass:$$targs$$.Type$AppliedMemberClass,Arguments$AppliedClass:$$targs$$.Arguments$AppliedMemberClass},that);
   var dummy = new AppliedMemberClass.$$;
   that.$$=AppliedMemberClass.$$;
   that.getT$all=function(){return dummy.getT$all();};

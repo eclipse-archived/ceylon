@@ -235,7 +235,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types
     throw IncompatibleTypeException$meta$model("ClassOrInterface<"+this.name+"> is not compatible with expected type: ClassOrInterface<" + qname$($mptypes.Type$apply)+">. Try passing the type argument explicitly with: apply<" + this.name+">");
   if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
   var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$AppliedInterface:_t}):
-    AppliedClass(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
+    AppliedClass$jsint(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
