@@ -16,7 +16,6 @@ import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.GenericDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.meta.model.Type;
 import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;
 
@@ -37,8 +36,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Basic")
@@ -345,6 +344,7 @@ public final class Array<Element>
         case CeylonInteger:
             long[] longPrecisionArray = new long[size];
             arraycopy(elements.array, 0, longPrecisionArray, 0, size);
+            return longPrecisionArray;
         case CeylonFloat:
             double[] doublePrecisionArray = new double[size];
             arraycopy(elements.array, 0, doublePrecisionArray, 0, size);
