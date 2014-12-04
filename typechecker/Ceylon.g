@@ -64,36 +64,47 @@ compilationUnit returns [CompilationUnit compilationUnit]
             ImportList importList = new ImportList(null); 
             $compilationUnit.setImportList(importList); }
     : ( 
-        ca1=compilerAnnotations
+        ca=compilerAnnotations
         SEMICOLON
-        { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
+        { $compilationUnit.getCompilerAnnotations().addAll($ca.annotations); }
       )?
       ( 
         importDeclaration 
         { importList.addImport($importDeclaration.importDeclaration); 
           $compilationUnit.connect(importList); }
       |
-        (compilerAnnotations annotations MODULE)=>
+        (annotatedModuleDescriptorStart) =>
         moduleDescriptor 
         { $compilationUnit.addModuleDescriptor($moduleDescriptor.moduleDescriptor); }
       |
-        (compilerAnnotations annotations PACKAGE)=>
+        (annotatedPackageDescriptorStart) =>
         packageDescriptor
         { $compilationUnit.addPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
-        ca2=compilerAnnotations declaration
-        { if ($declaration.declaration instanceof 
-                  com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) {
-              com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration dec = 
-                  (com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) 
-                      $declaration.declaration;
-              $compilationUnit.addDeclaration(dec); 
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } }
+        toplevelDeclaration
+        { if ($toplevelDeclaration.declaration!=null)
+              $compilationUnit.addDeclaration($toplevelDeclaration.declaration); }
       | RBRACE
         { displayRecognitionError(getTokenNames(),
               new MismatchedTokenException(EOF, input)); }
       )*
       EOF
+    ;
+
+toplevelDeclaration returns [Declaration declaration]
+    : ca=compilerAnnotations 
+      d=declaration
+      { $declaration = $d.declaration;
+        if ($declaration!=null)
+            $declaration.getCompilerAnnotations().addAll($ca.annotations); }
+    ;
+
+annotatedModuleDescriptorStart
+    : compilerAnnotations annotations MODULE
+    ;
+
+annotatedPackageDescriptorStart
+    : compilerAnnotations annotations PACKAGE
     ;
 
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
@@ -1116,12 +1127,16 @@ declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
       ( 
-        (annotatedDeclarationStart) => d=declaration
-        { $statement=$d.declaration; }
+        (VALUE_MODIFIER LBRACKET) => d1=destructure
+        { $statement=$d1.destructure; }
+      | (VALUE_MODIFIER var ENTRY_OP) => d2=destructure
+        { $statement=$d2.destructure; }
+      | (annotatedDeclarationStart) => d3=declaration
+        { $statement=$d3.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotationListStart) => d1=declaration
-        { $statement=$d1.declaration; }
+      | (annotationListStart) => d4=declaration
+        { $statement=$d4.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
@@ -1129,7 +1144,7 @@ declarationOrStatement returns [Statement statement]
             $statement.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
-declaration returns [Statement declaration]
+declaration returns [Declaration declaration]
     @init { MissingDeclaration md = new MissingDeclaration(null); 
             $declaration = md; }
     : annotations
@@ -1143,10 +1158,6 @@ declaration returns [Statement declaration]
       { $declaration=$aliasDeclaration.declaration; }
     | objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
-    | (VALUE_MODIFIER LBRACKET) => d1=destructure
-      { $declaration = $d1.destructure; }
-    | (VALUE_MODIFIER var ENTRY_OP) => d2=destructure
-      { $declaration = $d2.destructure; }
     | setterDeclaration
       { $declaration=$setterDeclaration.declaration; }
     | voidOrInferredMethodDeclaration
@@ -1160,10 +1171,8 @@ declaration returns [Statement declaration]
       SEMICOLON
       { $declaration=new BrokenDeclaration($SEMICOLON); }*/
     )
-    { if ($declaration instanceof com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) {
-          com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration dec =
-              (com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration) $declaration;
-          dec.setAnnotationList($annotations.annotationList); } }
+    { if ($declaration!=null)
+          $declaration.setAnnotationList($annotations.annotationList); }
     ;
 
 annotatedDeclarationStart
