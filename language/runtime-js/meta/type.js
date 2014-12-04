@@ -25,7 +25,7 @@ function type$meta(x,$$targs$$) {
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
       if (mm.$cont) {
-        return AppliedMethod(x,undefined,{Type$Method:mm.$t,Arguments$Method:{t:Nothing}});
+        return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}});
       }
       return AppliedFunction(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }

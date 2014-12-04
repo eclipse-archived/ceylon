@@ -518,7 +518,7 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
     var mm=getrtmm$$(fun);
     if (mm && mm.$cont!==coi.tipo)return null;
   }
-  return AppliedMethod(fun, types, {Container$Method:{t:_tipo},Type$Method:_t,Arguments$Method:_a});
+  return AppliedMethod$jsint(fun, types, {Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -538,7 +538,8 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
-          mems.push(AppliedMethod(mem,undefined,{Container$Method:{t:_tipo},Type$Method:mm.$t,Arguments$Method:types}));
+          mems.push(AppliedMethod$jsint(mem,undefined,{Container$AppliedMethod:{t:_tipo},
+                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types}));
         }
       }
     }

@@ -57,8 +57,8 @@ atr$($$openFunction,'annotation',function(){
         validate$params(mm.ps,$mptypes.Arguments$memberApply,"Wrong number of Arguments for memberApply");
         var ta={t:this.tipo};
         validate$typeparams(ta,mm.tp,types);
-        return AppliedMethod(this.tipo,types,{Container$Method:$mptypes.Container$memberApply,
-          Type$Method:mm.$t,Arguments$Method:tupleize$params(mm.ps,ta.a)});
+        return AppliedMethod$jsint(this.tipo,types,{Container$AppliedMethod:$mptypes.Container$memberApply,
+          Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:tupleize$params(mm.ps,ta.a)});
       };$$openFunction.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},ps:[{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model}}}}],$cont:OpenFunction,tp:{Container:{},MethodType:{},Arguments:{'sts':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}]}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
