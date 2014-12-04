@@ -46,7 +46,7 @@ final class do_ {
                 }
             }
         };
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>follow(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>follow(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -64,7 +64,7 @@ final class bug1579_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1579() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

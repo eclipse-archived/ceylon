@@ -27,9 +27,9 @@ Two1935<Key,Item&Object> two1935<Key,Item>(Two1935<Key,Item> t)
 
 interface Parameter1935<Key,Item,X,Y> 
         given Key satisfies Object {
-    //shared formal void oneObject(One1935<Item&Object> t);
-    //shared formal void oneXy(One1935<X&Y> t);
-    //shared formal void twoObject(Two1935<Key,Item&Object> t);
+    shared formal void oneObject(One1935<Item&Object> t);
+    shared formal void oneXy(One1935<X&Y> t);
+    shared formal void twoObject(Two1935<Key,Item&Object> t);
     shared formal void twoXy(Two1935<Key,X&Y> t);
 }
 class ParameterSub1935<Key,Item,X,Y>()
@@ -37,8 +37,8 @@ class ParameterSub1935<Key,Item,X,Y>()
         given Key satisfies Object 
         given Item satisfies Object 
         given X satisfies Y{
-    //shared actual void oneObject(One1935<Item> t) {}
-    //shared actual void oneXy(One1935<X> t) {}
-    //shared actual void twoObject(Two1935<Key,Item> t) {}
+    shared actual void oneObject(One1935<Item> t) {}
+    shared actual void oneXy(One1935<X> t) {}
+    shared actual void twoObject(Two1935<Key,Item> t) {}
     shared actual void twoXy(Two1935<Key,X> t) {}
 }
