@@ -145,7 +145,7 @@ final class erasureCasting_ {
             }.sequence();
         );
         .java.lang.Object elem$13;
-        .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence).iterator();
+        .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable)erasedSequence).iterator();
         loop_0: while (!((elem$13 = erasedValue$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.Object erasedValue = (.java.lang.Object)elem$13;
         }
@@ -177,9 +177,9 @@ final class erasureCasting_ {
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.String.instance("2"),
                 new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
-        final .ceylon.language.Sequential t2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)t).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer> nonRawTuple = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
-        final long nonRawTupleFirst = ((.ceylon.language.Integer)(.java.lang.Object)((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple)nonRawTuple).getFirst()).longValue();
+        final .ceylon.language.Sequential t2 = t.span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple nonRawTuple = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final long nonRawTupleFirst = ((.ceylon.language.Integer)(.java.lang.Object)nonRawTuple.getFirst()).longValue();
         final int unboxedInteger = ((.ceylon.language.Character)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.sequence("abc").<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(100))).getFirst()).intValue();
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -244,8 +244,8 @@ final class erasureCasting_ {
             }
         }.sequence();
         final .ceylon.language.Sequence tupleOfSequentialSomething = (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)tupleOfSequentialSomething).get(.ceylon.language.Integer.instance(1L));
-        final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequenceOfSequenceOfStrings = (.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom((.ceylon.language.Ranged<? super .ceylon.language.Integer, .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tupleOfSequentialSomething.get(.ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequenceOfSequenceOfStrings = (.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom(tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> callableOfCallable = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
         final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.<.java.lang.Object, .ceylon.language.Empty, .ceylon.language.Empty>ec_callableWithBonds(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, callableOfCallable).$call$();
         final .java.lang.Object n1 = .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable).ceylon.language.empty_.get_());

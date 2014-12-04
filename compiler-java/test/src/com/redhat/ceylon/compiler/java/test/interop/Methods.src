@@ -445,7 +445,7 @@ final class tupleSpreading_ {
         (
             let
             {
-                .ceylon.language.Sequential tuple$19 = (.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple).getRest();
+                .ceylon.language.Sequential tuple$19 = (.ceylon.language.Sequential)tuple.getRest();
                 java.takeAll(true, ((.ceylon.language.Byte)tuple$19.get(.ceylon.language.Integer.instance(0L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(1L))).longValue()), .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(2L))).longValue()), ((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(3L))).longValue(), (float)((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(4L))).doubleValue(), ((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(5L))).doubleValue(), (char)((.ceylon.language.Character)tuple$19.get(.ceylon.language.Integer.instance(6L))).intValue(), ((.ceylon.language.String)tuple$19.get(.ceylon.language.Integer.instance(7L))).toString(), tuple$19.get(.ceylon.language.Integer.instance(8L)));
             }
             returning null;

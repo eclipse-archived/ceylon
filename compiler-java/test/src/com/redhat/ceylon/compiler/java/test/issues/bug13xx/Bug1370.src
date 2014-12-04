@@ -58,7 +58,7 @@ public final class bug1370_ {
     }
     
     public static void bug1370() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370 a = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370 a = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
@@ -68,7 +68,7 @@ public final class bug1370_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370 a2 = (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call$() {
@@ -89,7 +89,7 @@ public final class bug1370_ {
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call$() {

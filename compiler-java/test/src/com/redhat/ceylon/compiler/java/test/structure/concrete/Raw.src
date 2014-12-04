@@ -98,14 +98,14 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
     RawInImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<? super .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$impl() {
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$;
     }
     
@@ -201,14 +201,14 @@ class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtim
     RawOutImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<? extends .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$impl() {
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$;
     }
     

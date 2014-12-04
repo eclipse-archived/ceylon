@@ -6,7 +6,7 @@ final class bug1536_ {
     }
     
     static void bug1536(final .java.lang.Object it) {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> v = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, 1, true){
+        final .ceylon.language.Iterable v = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -17,7 +17,7 @@ final class bug1536_ {
                         public final .ceylon.language.Iterator iterator() {
                             return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)){
                                 {
-                                    $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it).iterator();
+                                    $iterator$0 = ((.ceylon.language.Iterable)it).iterator();
                                 }
                                 private final .ceylon.language.Iterator $iterator$0;
                                 private .java.lang.Object e;

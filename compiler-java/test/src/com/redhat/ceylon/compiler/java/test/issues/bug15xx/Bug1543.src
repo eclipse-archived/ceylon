@@ -51,7 +51,7 @@ public interface My1543Iterable<Element, Absent> extends .ceylon.language.Catego
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public abstract <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <Other>.ceylon.language.Iterable withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("element")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     @.ceylon.language.DocAnnotation$annotation$(description = "The first element of the resulting sequence.")

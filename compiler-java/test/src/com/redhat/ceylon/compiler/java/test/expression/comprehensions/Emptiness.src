@@ -440,7 +440,7 @@ final class emptinessParameterised_ {
                 case 0: 
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
                         
-                        public final .ceylon.language.Iterator iterator() {
+                        public final .ceylon.language.Iterator<Element> iterator() {
                             return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Element>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$)){
                                 {
                                     $iterator$0 = it.iterator();

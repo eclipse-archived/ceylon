@@ -10,7 +10,7 @@ class IndexingTuples implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.String.instance("2"),
                 new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
-        final long v1 = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))).longValue();
+        final long v1 = ((.ceylon.language.Integer)(.java.lang.Object)t.get(.ceylon.language.Integer.instance(0L))).longValue();
     }
     
     public static void main(.java.lang.String[] args) {

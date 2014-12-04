@@ -16,7 +16,7 @@ final class bug1905_ {
             }
             returning safe$0 != null ? safe$0.getFirst() : null;
         );
-        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905 f2 = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)bar2).getFirst();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905 f2 = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905)(.java.lang.Object)bar2.getFirst();
         final .ceylon.language.Integer g = (.ceylon.language.Integer)(.java.lang.Object)(
             let
             {

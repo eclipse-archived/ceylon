@@ -48,10 +48,10 @@ final class tupleTypeTest_ {
     }
     
     static void tupleTypeTest() {
-        final .ceylon.language.Sequence tup = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
-        final .java.lang.String a = ((.ceylon.language.String)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tup).getFirst()).toString();
-        final long b = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tup).getRest()).getFirst()).longValue();
-        final double c = ((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tup).getRest()).getRest()).getFirst()).doubleValue();
+        final .ceylon.language.Sequence tup = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
+        final .java.lang.String a = ((.ceylon.language.String)(.java.lang.Object)tup.getFirst()).toString();
+        final long b = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)tup.getRest()).getFirst()).longValue();
+        final double c = ((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)((.ceylon.language.Sequence<? extends .java.lang.Object>)tup.getRest()).getRest()).getFirst()).doubleValue();
         final long sum = ((.ceylon.language.Summable<.ceylon.language.Integer>)(.ceylon.language.Summable)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
@@ -76,7 +76,7 @@ final class tupleTypeTest_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> strings = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)hibye;
         final .ceylon.language.Sequence<? extends .ceylon.language.String> hibye1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)hibye;
         final .ceylon.language.Sequential<? extends .ceylon.language.String> hibye2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)hibye;
-        final .ceylon.language.Sequence<? extends .java.lang.Object> trip = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
+        final .ceylon.language.Sequence<? extends .java.lang.Object> trip = (.ceylon.language.Sequence<? extends .java.lang.Object>).com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
         final .ceylon.language.Empty emptyTuple = .ceylon.language.empty_.get_();
         final .ceylon.language.Sequence<? extends .ceylon.language.String> oneTuple = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")});
         final .ceylon.language.Sequence twoTuple = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{

@@ -20,7 +20,7 @@ final class bug1165_ {
         
         class P implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            P(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> params) {
+            P(final .ceylon.language.Iterable params) {
             }
             
             @.java.lang.Override

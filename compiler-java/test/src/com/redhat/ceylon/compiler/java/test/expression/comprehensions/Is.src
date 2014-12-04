@@ -309,7 +309,7 @@ final class isCond_ {
         }.sequence();
         final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
-            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+            public final .ceylon.language.Iterator iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$){
                     {
                         $iterator$0 = seq.iterator();

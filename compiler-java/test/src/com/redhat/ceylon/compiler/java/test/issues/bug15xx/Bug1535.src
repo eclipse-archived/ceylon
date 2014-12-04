@@ -8,10 +8,10 @@ public final class bug1535_ {
     public static <Value extends .ceylon.language.Summable<Value>>Value bug1535(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> values) {
         .java.lang.Object floats$1;
         if (.com.redhat.ceylon.compiler.java.Util.isReified(floats$1 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
-            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> floats$20 = (.ceylon.language.Iterable)floats$1;
+            final .ceylon.language.Iterable floats$20 = (.ceylon.language.Iterable)floats$1;
             double product = 0.0;
             .java.lang.Object elem$21;
-            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)floats$20).iterator();
+            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = ((.ceylon.language.Iterable)floats$20).iterator();
             loop_0: while (!((elem$21 = val$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
                 final .java.lang.Object val = (.java.lang.Object)elem$21;
                 (
@@ -34,10 +34,10 @@ public final class bug1535_ {
         } else {
             .java.lang.Object ints$3;
             if (.com.redhat.ceylon.compiler.java.Util.isReified(ints$3 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
-                final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> ints$13 = (.ceylon.language.Iterable)ints$3;
+                final .ceylon.language.Iterable ints$13 = (.ceylon.language.Iterable)ints$3;
                 long product = 0L;
                 .java.lang.Object elem$14;
-                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)ints$13).iterator();
+                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ((.ceylon.language.Iterable)ints$13).iterator();
                 loop_1: while (!((elem$14 = val$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
                     final .java.lang.Object val = (.java.lang.Object)elem$14;
                     (

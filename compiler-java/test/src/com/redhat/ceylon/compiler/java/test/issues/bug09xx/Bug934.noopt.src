@@ -32,7 +32,7 @@ final class bug934_ {
     }
     
     static void bug934() {
-        final .ceylon.language.Sequence results = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug934_collectMatches_.<.ceylon.language.String>bug934_collectMatches(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequence results = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug934_collectMatches_.<.ceylon.language.String>bug934_collectMatches(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("Merry Christmas"),
                 .ceylon.language.String.instance("Happy Holidays")}), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(String)", (short)-1){
             
@@ -48,7 +48,7 @@ final class bug934_ {
             protected final .java.lang.Object $evaluate$(int $index$) {
                 switch ($index$) {
                 case 0: 
-                    return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)results).get(.ceylon.language.Integer.instance(1L));
+                    return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)results.get(.ceylon.language.Integer.instance(1L));
                 
                 default: 
                     return null;

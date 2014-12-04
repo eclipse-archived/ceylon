@@ -6,7 +6,7 @@ final class bug1548_ {
     }
     
     static void bug1548() {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> values = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+        final .ceylon.language.Iterable values = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -43,7 +43,7 @@ final class bug1548_ {
                         public final .ceylon.language.Iterator<.ceylon.language.Callable<? extends .java.lang.Object>> iterator() {
                             return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$)){
                                 {
-                                    $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).iterator();
+                                    $iterator$0 = values.iterator();
                                 }
                                 private final .ceylon.language.Iterator $iterator$0;
                                 private .java.lang.Object v;

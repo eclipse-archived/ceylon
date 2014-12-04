@@ -9,8 +9,8 @@ final class bug1154_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean> b1 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(true));
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String> b2 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello"));
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154 first = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, b1, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>> step = (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>>)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)((.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)first).<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor$, b2);
-        final .ceylon.language.Sequence t = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)((.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>>)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)step).getTuple();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154 step = (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>>)((.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)first).<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor$, b2);
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence)step.getTuple();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -59,8 +59,8 @@ public class Bug1154<Element, First extends Element, Rest extends .ceylon.langua
         return tuple;
     }
     
-    public final <NewFirst>.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, NewFirst, .ceylon.language.Sequence<? extends Element>> withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$NewFirst, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<NewFirst> newFirst) {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, NewFirst, .ceylon.language.Sequence<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$NewFirst, $reified$Element), $reified$NewFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$First, $reified$Rest), newFirst, (.ceylon.language.Sequence)getTuple());
+    public final <NewFirst>.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154 withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$NewFirst, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<NewFirst> newFirst) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$NewFirst, $reified$Element), $reified$NewFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$First, $reified$Rest), newFirst, (.ceylon.language.Sequence)getTuple());
     }
     
     public final void juu(final .ceylon.language.Callable<? extends .java.lang.Object> f) {

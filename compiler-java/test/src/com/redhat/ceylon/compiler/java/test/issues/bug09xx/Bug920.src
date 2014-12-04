@@ -26,9 +26,9 @@ final class bug920_ {
     }
     
     static void bug920(final .ceylon.language.Sequence p) {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer> t = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple<.java.lang.Object, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
-        final long s = ((.ceylon.language.Integer)(.java.lang.Object)((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple)t).getFirst()).longValue();
-        final .java.lang.String s1 = ((.ceylon.language.String)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)p).getFirst()).toString();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Character> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)p).getRest()).getFirst();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple t = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final long s = ((.ceylon.language.Integer)(.java.lang.Object)t.getFirst()).longValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)(.java.lang.Object)p.getFirst()).toString();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Character> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>)p.getRest()).getFirst();
     }
 }
