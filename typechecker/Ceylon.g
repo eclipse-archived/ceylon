@@ -506,8 +506,11 @@ destructure returns [Destructure destructure]
       (
         specifier
         { $destructure.setSpecifierExpression($specifier.specifierExpression); }
+        { expecting=SEMICOLON; }
       )?
       SEMICOLON
+      { $destructure.setEndToken($SEMICOLON); 
+        expecting=-1; }
     ;
 
 inferredAttributeDeclaration returns [AnyAttribute declaration]
