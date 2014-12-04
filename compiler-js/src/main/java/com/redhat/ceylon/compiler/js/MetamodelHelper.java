@@ -124,7 +124,7 @@ public class MetamodelHelper {
             if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
                 gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedMemberClass$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
             }
             //Tuple is a special case, otherwise gets gen'd as {t:'T'...
             if (that.getUnit().getTupleDeclaration().equals(td)) {
