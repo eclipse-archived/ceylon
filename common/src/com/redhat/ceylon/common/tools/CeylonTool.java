@@ -296,7 +296,8 @@ public class CeylonTool implements Tool {
         Exception error = null;
         CeylonConfig oldConfig = null;
         try {
-            for(String singleToolName : getToolNames()){
+            String[] names = (toolName != null) ? getToolNames() : new String[] { null };
+            for(String singleToolName : names){
                 ToolModel<Tool> model = getToolModel(singleToolName);
                 Tool tool = getTool(model);
                 oldConfig = setupConfig(tool);
