@@ -1,5 +1,5 @@
 import ceylon.language.meta.model {
-  ClosedType=Type, UnionType, IntersectionType,
+  ClosedType=Type,
   Member, Interface, Class, ClassOrInterface, Attribute, Method, Value, Function,
   MemberInterface,MemberClass
 }
@@ -44,14 +44,7 @@ shared class AppliedAttribute<in Container, out Get=Anything, in Set=Nothing>() 
     shared actual Value<Get,Set> bind(Object container) { throw Exception("AppliedAttribute.bind"); }
 }
 
-
-shared abstract class AppliedMemberClass<in Container, out Type=Anything, in Arguments=Nothing>()
-        satisfies MemberClass<Container,Type,Arguments>
-        given Arguments satisfies Anything[] {
-    shared actual Class<Type,Arguments> bind(Object container) { throw Exception("IMPL MemberClass.bind"); }
-}
 shared abstract class AppliedMemberInterface<in Container, out Type=Anything>()
         satisfies MemberInterface<Container,Type> {
     shared actual Interface<Type> bind(Object container) { throw Exception("IMPL MemberInterface.bind"); }
 }
-
