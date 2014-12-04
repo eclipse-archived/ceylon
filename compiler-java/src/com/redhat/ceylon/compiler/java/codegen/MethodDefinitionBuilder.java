@@ -420,6 +420,9 @@ public class MethodDefinitionBuilder
                 // if the supertype method itself got erased to Object, we can't do better than this
                 if(gen.willEraseToObject(refinedParameterType) && !gen.willEraseToBestBounds(param))
                     nonWideningType = gen.typeFact().getObjectDeclaration().getType();
+                else if (CodegenUtil.isRaw(refinedParameter)) {
+                    flags |= AbstractTransformer.JT_RAW;
+                }
             }
         }
         return parameter(mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);

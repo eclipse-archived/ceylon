@@ -1403,10 +1403,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(type.getTypeArguments().isEmpty())
             return false;
 
-        // we only go raw if every type param is an erased union/intersection
-        
-        boolean everyTypeArgumentIsErasedUnionIntersection = true;
-        
+        // we only go raw if any type param is an erased union/intersection
         // start with type but consider ever qualifying type
         ProducedType singleType = type;
         do{
@@ -1424,7 +1421,9 @@ public abstract class AbstractTransformer implements Transformation {
                 if(singleType.isContravariant(tp) && ta.getDeclaration() instanceof NothingType)
                     return true;
                 
-                everyTypeArgumentIsErasedUnionIntersection &= isErasedUnionOrIntersection(ta);
+                if (isErasedUnionOrIntersection(ta)) {
+                    return true;
+                }
 
                 // Callable really has a single type arg in Java
                 if(isCallable)
@@ -1435,7 +1434,7 @@ public abstract class AbstractTransformer implements Transformation {
         }while((singleType = singleType.getQualifyingType()) != null);
         
         // we're only raw if every type param is an erased union/intersection
-        return everyTypeArgumentIsErasedUnionIntersection;
+        return false;
     }
 
     private boolean isErasedUnionOrIntersection(ProducedType producedType) {
@@ -2054,7 +2053,6 @@ public abstract class AbstractTransformer implements Transformation {
     private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
             int flags, Map<TypeParameter, ProducedType> tas,
             java.util.List<TypeParameter> tps, ProducedType simpleType) {
-        boolean onlyErasedUnions = true;
         ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         
         for (TypeParameter tp : tps) {
@@ -2076,6 +2074,8 @@ public abstract class AbstractTransformer implements Transformation {
                 // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
                 ta = getNonNullType(ta);
             }
+            // In a type argument Foo<X&Object> or Foo<X?> transform to just Foo<X>
+            ta = simplifyType(ta);
             if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
                 // For any other union type U|V (U nor V is Optional):
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
@@ -2090,12 +2090,11 @@ public abstract class AbstractTransformer implements Transformation {
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                     typeArgs = null;
                     break;
-                } else if((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0) {
-                    onlyErasedUnions = false;
+                } else if ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0) {
+                    typeArgs = null;
+                    break;
                 }
                 // otherwise just go on
-            } else {
-                onlyErasedUnions = false;
             }
             if (isCeylonBoolean(ta)
                     && !isTypeParameter(ta)) {
@@ -2211,9 +2210,6 @@ public abstract class AbstractTransformer implements Transformation {
                 // In the runtime Callable only has a single type param
                 break;
             }
-        }
-        if (onlyErasedUnions) {
-            typeArgs = null;
         }
         return typeArgs;
     }
