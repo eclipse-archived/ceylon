@@ -122,7 +122,7 @@ public class MetamodelHelper {
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         if (td instanceof Class) {
             if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
-                gen.out(gen.getClAlias(), "$init$AppliedClass$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
             } else {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$meta$model()(");
             }
