@@ -29,7 +29,7 @@ function type$meta(x,$$targs$$) {
       }
       return AppliedFunction(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }
-    var rv=mm.$cont?AppliedMemberClass(mm.$t.t, {Type$MemberClass:mm.$t,Arguments$MemberClass:{t:Nothing},Container$MemberClass:{t:mm.$cont}})
+    var rv=mm.$cont?AppliedMemberClass$jsint(mm.$t.t, {Type$AppliedMemberClass:mm.$t,Arguments$AppliedMemberClass:{t:Nothing},Container$AppliedMemberClass:{t:mm.$cont}})
            : AppliedClass$jsint(mm.$t.t, {Type$AppliedClass:mm.$t,Arguments$AppliedClass:{t:Nothing}});
     rv.src$=x;
     return rv;
@@ -46,7 +46,7 @@ function type$meta(x,$$targs$$) {
       if (x.outer$.$$targs$$)_ta.C.a=x.outer$.$$targs$$;
     }
     if (mm.$cont) {
-      c=AppliedMemberClass(_t, {Type$MemberClass:_ta.T,Arguments$MemberClass:_ta.A,Container$MemberClass:_ta.C});
+      c=AppliedMemberClass$jsint(_t, {Type$AppliedMemberClass:_ta.T,Arguments$AppliedMemberClass:_ta.A,Container$AppliedMemberClass:_ta.C});
     } else {
       c=AppliedClass$jsint(_t, {Type$AppliedClass:_ta.T,Arguments$AppliedClass:_ta.A});
     }

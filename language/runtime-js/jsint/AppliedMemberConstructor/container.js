@@ -3,7 +3,7 @@ if (this.cont$===undefined) {
   var mm=getrtmm$$(cc);
   var _t={t:cc};
   if (this.$targs)_t.a=this.$targs;
-  this.cont$=AppliedMemberClass(cc,{Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Nothing},
+  this.cont$=AppliedMemberClass$jsint(cc,{Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Nothing},
     Container$AppliedMemberClass:this.$$targs$$.Container$AppliedMemberConstructor},undefined,this.$targs);
 }
 return this.cont$;

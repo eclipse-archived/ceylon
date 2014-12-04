@@ -7,7 +7,8 @@ function(cont,targs,$mptypes){
   var _t={t:this.tipo};
   validate$typeparams(_t,mm.tp,targs);
   validate$params(mm.ps,$mptypes.Arguments$memberClassApply,"Wrong number of Arguments for classApply");
-  var rv=AppliedMemberClass(this.tipo,{Container$MemberClass:{t:mm.$cont},Type$MemberClass:_t,Arguments$MemberClass:tupleize$params(mm.ps)});
+  var rv=AppliedMemberClass$jsint(this.tipo,{Container$AppliedMemberClass:{t:mm.$cont},
+    Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:tupleize$params(mm.ps)});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }

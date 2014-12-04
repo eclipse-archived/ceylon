@@ -249,7 +249,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   if (!extendsType(_t, $mptypes.Type$memberApply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this.string);
   var rv=this.meta.mt==='i'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
-    :AppliedMemberClass(_t.t, {Container$MemberClass:$mptypes.Container$memberApply, Type$MemberClass:_t, Arguments$MemberClass:$mptypes.Arguments$memberApply});
+    :AppliedMemberClass$jsint(_t.t, {Container$AppliedMemberClass:$mptypes.Container$memberApply, Type$AppliedMemberClass:_t, Arguments$AppliedMemberClass:$mptypes.Arguments$memberApply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};

@@ -304,7 +304,7 @@ function coiexttype$(coi){
   var _t=coirestarg$(coi,sc);
   var ac;
   if (scmm.$cont) {
-    ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
+    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
   } else {
     ac=AppliedClass$jsint(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
@@ -361,7 +361,7 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
     } else if (md.mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$crtmm$.tp,types$3);
-      rv=AppliedMemberClass(ic, {Container$MemberClass:_cont,Type$MemberClass:ict, Arguments$MemberClass:$$$mptypes.Arguments$getClassOrInterface});
+      rv=AppliedMemberClass$jsint(ic, {Container$AppliedMemberClass:_cont,Type$AppliedMemberClass:ict, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClassOrInterface});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
@@ -390,7 +390,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType({t:mem},$$$mptypes.Type$getClasses))continue;
         var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getClasses,'',1)) {
-          mems.push(AppliedMemberClass(mem, {Container$MemberClass:_tipo,Type$MemberClass:{t:mem}, Arguments$MemberClass:$$$mptypes.Arguments$getClasses}));
+          mems.push(AppliedMemberClass$jsint(mem, {Container$AppliedMemberClass:_tipo,Type$AppliedMemberClass:{t:mem}, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClasses}));
         }
       }
     }
@@ -400,7 +400,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
     Kind$getClassOrInterface:Class$meta$model},noInherit);
-  if (rv && !is$(rv, {t:AppliedMemberClass})) {
+  if (rv && !is$(rv, {t:AppliedMemberClass$jsint})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not a class");
   }
   return rv;
