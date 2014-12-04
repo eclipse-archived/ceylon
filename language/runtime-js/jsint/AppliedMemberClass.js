@@ -50,9 +50,9 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'declaration',function(){
     return coimoddcl$(that);
   },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
-  that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
-  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
-  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
+  that.$_bind=AppliedMemberClass$jsint.$$.prototype.$_bind;
+  atr$(that,'string',function(){return coistr$(that); },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getString.$crtmm$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'container',function(){return coicont$(that); },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getContainer.$crtmm$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,
                          Type$MemberClass:that.$$targs$$.Type$AppliedMemberClass,
