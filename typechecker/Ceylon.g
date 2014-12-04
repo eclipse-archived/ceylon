@@ -470,16 +470,25 @@ variableTuple returns [VariableTuple variableTuple]
     ;
 
 keyValue returns [KeyValue keyValue]
-    : v1=var
+    : ca1=compilerAnnotations
+      v1=var
       { $keyValue = new KeyValue(null);
-        $keyValue.setKey($v1.variable); }
+        $keyValue.setKey($v1.variable); 
+        $v1.variable.getCompilerAnnotations().addAll($ca1.annotations); }
       ENTRY_OP
       { $keyValue.setEndToken($ENTRY_OP); }
       (
+        ca2=compilerAnnotations
         v2=var
         { $keyValue.setValue($v2.variable); 
-          $keyValue.setEndToken(null); }
+          $keyValue.setEndToken(null); 
+          $v2.variable.getCompilerAnnotations().addAll($ca2.annotations); }
       )?
+    ;
+
+keyValueStart
+    : compilerAnnotations 
+      (LIDENTIFIER ENTRY_OP|UIDENTIFIER|VALUE_MODIFIER|VOID_MODIFIER|FUNCTION_MODIFIER)
     ;
 
 destructure returns [Destructure destructure]
@@ -488,7 +497,7 @@ destructure returns [Destructure destructure]
         $destructure = new Destructure(null);
         $destructure.setType(vm); }
       (
-        (var ENTRY_OP) => keyValue
+        (keyValueStart) => keyValue
         { $destructure.setDestructuredVariables($keyValue.keyValue); }
       |
         variableTuple
@@ -1163,14 +1172,16 @@ annotationListStart
       (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VALUE_MODIFIER|VOID_MODIFIER)
     ;
 
+destructureStart
+    : VALUE_MODIFIER compilerAnnotations (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
+    ;
+
 declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
-      ( 
-        (VALUE_MODIFIER LBRACKET) => d1=destructure
+      (
+        (destructureStart) => d1=destructure
         { $statement=$d1.destructure; }
-      | (VALUE_MODIFIER var ENTRY_OP) => d2=destructure
-        { $statement=$d2.destructure; }
       | (annotatedDeclarationStart) => d3=declaration
         { $statement=$d3.declaration; }
       | (annotatedAssertionStart) => assertion
