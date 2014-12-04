@@ -256,6 +256,26 @@ shared interface Map<out Key,out Item>
         
     };
     
+    /*shared default
+    Map<Key,Item&Object> coalescedMap 
+            => object
+            extends Object()
+            satisfies Map<Key,Item&Object> {
+        
+        defines(Object key) => outer[key] exists;
+        
+        get(Object key) => outer[key] of <Item&Object>?;
+        
+        iterator()
+                => { for (entry in outer) 
+                     if (exists it=entry.item) 
+                            entry.key->it }
+                        .iterator();
+        
+        clone() => outer.clone().coalescedMap;
+        
+    };*/
+    
 }
 
 "An immutable [[Map]] with no entries."
@@ -263,11 +283,10 @@ shared object emptyMap
         extends Object() 
         satisfies Map<Nothing, Nothing> {
     
-    shared actual Null get(Object key) => null;
+    get(Object key) => null;
     
-    shared actual Collection<Nothing> keys => emptySet;
-    
-    shared actual Collection<Nothing> items => emptySet;
+    keys => emptySet;
+    items => emptySet;
     
     clone() => this;
     iterator() => emptyIterator;
