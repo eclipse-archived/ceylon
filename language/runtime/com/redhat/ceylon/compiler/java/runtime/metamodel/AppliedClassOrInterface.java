@@ -16,7 +16,6 @@ import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.Attribute;
-import ceylon.language.meta.model.Function;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 
@@ -126,36 +125,7 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         return superclass;
     }
-    
-    /** Public, but not part of the Ceylon API: Called only for `Java.staticMethod` */
-    public <Type, Arguments extends Sequential<? extends Object>> 
-    ceylon.language.meta.model.Function<Type, Arguments> getStaticMethod(@Ignore TypeDescriptor $reifiedReturn, 
-            @Ignore TypeDescriptor $reifiedArguments, 
-            String name){
-        return getStaticMethod($reifiedReturn, $reifiedArguments, name, 
-                (Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
-    }
-    /** Public, but not part of the Ceylon API: Called only for `Java.staticMethod` */
-    private <Type, Arguments extends Sequential<? extends Object>>
-    ceylon.language.meta.model.Function<Type, Arguments> getStaticMethod(
-            TypeDescriptor $reifiedReturn, TypeDescriptor $reifiedArguments,
-            String name,
-            Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
-        checkInit();
-        FreeFunction staticMethod = declaration.findMethod(name);
-        return staticMethod.apply($reifiedReturn, $reifiedArguments, types);
-    }
 
-    /** Public, but not part of the Ceylon API: Called only for `Java.staticMethod` */
-    public <Get,Set>
-    ceylon.language.meta.model.Value<Get,Set> getStaticValue(@Ignore TypeDescriptor $reifiedGet,
-            @Ignore TypeDescriptor $reifiedSet,
-            String name){
-        checkInit();
-        FreeValue staticValue = declaration.findValue(name);
-        return staticValue.apply($reifiedGet, $reifiedSet);
-    }
-    
     @SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
     @Ignore
     @Override
@@ -234,32 +204,7 @@ public abstract class AppliedClassOrInterface<Type>
         return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                 (ceylon.language.meta.model.Type<Container>)this, types);
     }
-/*
-    / * Public, but not part of the Ceylon API: Called only for `Java.staticMethod` * /
-    @Ignore
-    public <Type,Arguments extends Sequential<? extends Object>>
-    ceylon.language.meta.model.Class<Type,Arguments> getStaticClass( 
-            @Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedArguments,
-            String name){
-        return getStaticClass($reifiedType, $reifiedArguments, name, 
-                (Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
-    }
-    
-    
-    / * Public, but not part of the Ceylon API: Called only for `Java.staticMethod` * /
-    @Ignore
-    public <Type,Arguments extends Sequential<? extends Object>>
-    ceylon.language.meta.model.Class<Type,Arguments> getStaticClass( 
-            @Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedArguments,
-            String name,
-            Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
-        checkInit();
-        final FreeClass type = (FreeClass)declaration.findType(name);
-        if(type == null)
-            return null;
-        return (ceylon.language.meta.model.Class)type.apply($reifiedType, types);
-    }*/
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
@@ -286,8 +231,7 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
-        if(type == null
-                || type.declaration.isStaticallyImportable())
+        if(type == null)
             return null;
         MemberLookup<FreeClassOrInterface, Container> lookup = lookupMember(FreeClassOrInterface.$TypeDescriptor$, $reifiedContainer, type);
         if(lookup == null)
@@ -321,8 +265,7 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
-        if(type == null
-                || type.declaration.isStaticallyImportable())
+        if(type == null)
             return null;
         // do not return the attribute if the container is not a subtype of this type
         ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
