@@ -23,6 +23,17 @@ class Entry<out Key,out Item>(key, item)
          entry.pair == [entry.key,entry.item]"
     shared [Key, Item] pair => [key, item];
     
+    "An `entry` with the key and item of this entry if item
+     is non-null, or `null` if item is null."
+    shared <Key->Item&Object>? normalized {
+        if (exists item) {
+            return key->item;
+        } 
+        else {
+            return null;
+        }
+    }
+    
     "Determines if this entry is equal to the given entry. 
      Two entries are equal if they have the same key and 
      the same item. 
