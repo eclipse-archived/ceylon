@@ -3957,7 +3957,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression getExpr = makeQualIdent(tmpVarName.makeIdent(), "get");
             Tree.VariableTuple tuple = (Tree.VariableTuple)vars;
             for (Variable var : tuple.getVariables()) {
-                JCExpression idxExpr = boxType(makeInteger(idx), typeFact().getIntegerDeclaration().getType());
+                JCExpression idxExpr = boxType(makeInteger(idx++), typeFact().getIntegerDeclaration().getType());
                 JCExpression fullGetExpr = make().Apply(null, getExpr, List.of(idxExpr));
                 result = result.append(transformDestructuredVariable(var, fullGetExpr));
             }
