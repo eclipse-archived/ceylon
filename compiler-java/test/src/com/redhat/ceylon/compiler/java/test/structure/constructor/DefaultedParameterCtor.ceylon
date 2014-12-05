@@ -17,8 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@noanno
+
 class DefaultedParameterCtor {
+    shared new DefaultedParameterCtor(String s="") {
+    }
     new One(String s="") {
     }
     new Two(String s="", Integer i=0) {

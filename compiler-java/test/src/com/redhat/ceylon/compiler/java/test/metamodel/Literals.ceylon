@@ -49,10 +49,17 @@ class LitParameterisedClass<T>(T t){
 class LitClassWithConstructors {
     shared new LitClassWithConstructors(Integer i) {}
     shared new Other(Integer i) {}
+    
+    shared class Member {
+        shared new Member(Boolean b) {
+        }
+        shared new Other(Boolean b) {
+        }
+    }
 }
-class LitParameterisedClassWithConstructors<T> {
-    shared new LitParameterisedClassWithConstructors(T t) {}
-    shared new Other(T t) {}
+class LitParameterisedClassWithConstructors<T> extends LitClassWithConstructors{
+    shared new LitParameterisedClassWithConstructors(T t) extends LitClassWithConstructors(1) {}
+    shared new Other(T t) extends LitClassWithConstructors(1) {}
 }
 interface LitInterface{
     shared interface Member{}

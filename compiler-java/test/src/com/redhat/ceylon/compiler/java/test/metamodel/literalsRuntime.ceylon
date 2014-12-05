@@ -1,4 +1,6 @@
 import ceylon.language.meta.model { Class }
+import ceylon.language.meta.declaration { ConstructorDeclaration }
+import ceylon.language.meta{type}
 
 void literalsRuntime(){
    literalsRuntime2<Integer>();
@@ -74,11 +76,21 @@ void literalsRuntime2<T>(){
 
     assert(`function obj.method`.name == "method");
     assert(`obj.method<Integer>`.declaration == `function obj.method`);
+
+    // ConstructorDeclarations
     
-    assert("LitClassWithConstructors" == `new LitClassWithConstructors.LitClassWithConstructors`.name);
-    assert(`class LitClassWithConstructors` == `new LitClassWithConstructors.LitClassWithConstructors`.container);
+    assert(`new LitClassWithConstructors.LitClassWithConstructors`.name == "LitClassWithConstructors");
+    assert(`new LitClassWithConstructors.Other`.name == "Other");
+    assert(`new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors`.name == "LitParameterisedClassWithConstructors"); 
+    assert(`new LitParameterisedClassWithConstructors.Other`.name == "Other");
     
+    // Constructor models
     assert(`new LitClassWithConstructors.LitClassWithConstructors` == `LitClassWithConstructors.LitClassWithConstructors`.declaration);
-    assert("LitClassWithConstructors" == `LitClassWithConstructors.LitClassWithConstructors`.declaration.name);
+    assert(`new LitClassWithConstructors.Other` == `LitClassWithConstructors.Other`.declaration);
+    assert(`new LitClassWithConstructors.Member.Member` == `LitClassWithConstructors.Member.Member`.declaration);
+    assert(`new LitClassWithConstructors.Member.Other` == `LitClassWithConstructors.Member.Other`.declaration);
+    
+    assert(`new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors` == `LitParameterisedClassWithConstructors<String>.LitParameterisedClassWithConstructors`.declaration);
+    assert(`new LitParameterisedClassWithConstructors.Other` == `LitParameterisedClassWithConstructors<String>.Other`.declaration);
 }
 
