@@ -6,18 +6,18 @@ final class tupleVar_ {
     }
     
     static void tupleVar(final .ceylon.language.Sequence tuple) {
-        final .ceylon.language.Sequence destructure$0 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final .ceylon.language.Sequence destructure$0 = tuple;
         final long i1 = ((.ceylon.language.Integer)destructure$0.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f1 = ((.ceylon.language.Float)destructure$0.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s1 = ((.ceylon.language.String)destructure$0.get(.ceylon.language.Integer.instance(0))).toString();
-        final .ceylon.language.Sequence destructure$1 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final double f1 = ((.ceylon.language.Float)destructure$0.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$0.get(.ceylon.language.Integer.instance(2))).toString();
+        final .ceylon.language.Sequence destructure$1 = tuple;
         final long i2 = ((.ceylon.language.Integer)destructure$1.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f2 = ((.ceylon.language.Float)destructure$1.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s2 = ((.ceylon.language.String)destructure$1.get(.ceylon.language.Integer.instance(0))).toString();
-        final .ceylon.language.Sequence destructure$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final double f2 = ((.ceylon.language.Float)destructure$1.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$1.get(.ceylon.language.Integer.instance(2))).toString();
+        final .ceylon.language.Sequence destructure$2 = tuple;
         final long i3 = ((.ceylon.language.Integer)destructure$2.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f3 = ((.ceylon.language.Float)destructure$2.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s3 = ((.ceylon.language.String)destructure$2.get(.ceylon.language.Integer.instance(0))).toString();
+        final double f3 = ((.ceylon.language.Float)destructure$2.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$2.get(.ceylon.language.Integer.instance(2))).toString();
     }
 }
 final class tupleLiteral_ {
@@ -31,22 +31,22 @@ final class tupleLiteral_ {
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.String.instance("foo")});
         final long i1 = ((.ceylon.language.Integer)destructure$3.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f1 = ((.ceylon.language.Float)destructure$3.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s1 = ((.ceylon.language.String)destructure$3.get(.ceylon.language.Integer.instance(0))).toString();
+        final double f1 = ((.ceylon.language.Float)destructure$3.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$3.get(.ceylon.language.Integer.instance(2))).toString();
         final .ceylon.language.Sequence destructure$4 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(0L),
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.String.instance("foo")});
         final long i2 = ((.ceylon.language.Integer)destructure$4.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f2 = ((.ceylon.language.Float)destructure$4.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s2 = ((.ceylon.language.String)destructure$4.get(.ceylon.language.Integer.instance(0))).toString();
+        final double f2 = ((.ceylon.language.Float)destructure$4.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$4.get(.ceylon.language.Integer.instance(2))).toString();
         final .ceylon.language.Sequence destructure$5 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(0L),
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.String.instance("foo")});
         final long i3 = ((.ceylon.language.Integer)destructure$5.get(.ceylon.language.Integer.instance(0))).longValue();
-        final double f3 = ((.ceylon.language.Float)destructure$5.get(.ceylon.language.Integer.instance(0))).doubleValue();
-        final .java.lang.String s3 = ((.ceylon.language.String)destructure$5.get(.ceylon.language.Integer.instance(0))).toString();
+        final double f3 = ((.ceylon.language.Float)destructure$5.get(.ceylon.language.Integer.instance(1))).doubleValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$5.get(.ceylon.language.Integer.instance(2))).toString();
     }
     
     public static void main(.java.lang.String[] args) {
