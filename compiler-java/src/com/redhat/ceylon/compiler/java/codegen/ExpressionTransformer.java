@@ -4108,6 +4108,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // true for default parameter methods
         boolean mustUseParameter = false;
         if (decl instanceof Functional
+                && (!(decl instanceof Class) || ((Class)decl).getParameterList() != null)
                 && (!(decl instanceof Method) || !decl.isParameter() 
                         || functionalParameterRequiresCallable((Method)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
