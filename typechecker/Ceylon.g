@@ -64,33 +64,47 @@ compilationUnit returns [CompilationUnit compilationUnit]
             ImportList importList = new ImportList(null); 
             $compilationUnit.setImportList(importList); }
     : ( 
-        ca1=compilerAnnotations
+        ca=compilerAnnotations
         SEMICOLON
-        { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
+        { $compilationUnit.getCompilerAnnotations().addAll($ca.annotations); }
       )?
       ( 
         importDeclaration 
         { importList.addImport($importDeclaration.importDeclaration); 
           $compilationUnit.connect(importList); }
       |
-        (compilerAnnotations annotations MODULE)=>
+        (annotatedModuleDescriptorStart) =>
         moduleDescriptor 
         { $compilationUnit.addModuleDescriptor($moduleDescriptor.moduleDescriptor); }
       |
-        (compilerAnnotations annotations PACKAGE)=>
+        (annotatedPackageDescriptorStart) =>
         packageDescriptor
         { $compilationUnit.addPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
-        ca2=compilerAnnotations declaration
-        { if ($declaration.declaration!=null)
-              $compilationUnit.addDeclaration($declaration.declaration); 
-          if ($declaration.declaration!=null)
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); }
+        toplevelDeclaration
+        { if ($toplevelDeclaration.declaration!=null)
+              $compilationUnit.addDeclaration($toplevelDeclaration.declaration); }
       | RBRACE
         { displayRecognitionError(getTokenNames(),
               new MismatchedTokenException(EOF, input)); }
       )*
       EOF
+    ;
+
+toplevelDeclaration returns [Declaration declaration]
+    : ca=compilerAnnotations 
+      d=declaration
+      { $declaration = $d.declaration;
+        if ($declaration!=null)
+            $declaration.getCompilerAnnotations().addAll($ca.annotations); }
+    ;
+
+annotatedModuleDescriptorStart
+    : compilerAnnotations annotations MODULE
+    ;
+
+annotatedPackageDescriptorStart
+    : compilerAnnotations annotations PACKAGE
     ;
 
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
@@ -431,6 +445,72 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
         { $declaration.setEndToken($SEMICOLON); 
           expecting=-1; }
       )
+    ;
+
+variableTuple returns [VariableTuple variableTuple]
+    : LBRACKET
+      { $variableTuple = new VariableTuple($LBRACKET); }
+      (
+        ca1=compilerAnnotations
+        v1=var
+        { $v1.variable.getCompilerAnnotations().addAll($ca1.annotations);
+          $variableTuple.addVariable($v1.variable); }
+        (
+          c=COMMA
+          { $variableTuple.setEndToken($c); }
+          ca2=compilerAnnotations
+          v2=var
+          { $v2.variable.getCompilerAnnotations().addAll($ca2.annotations);
+            $variableTuple.addVariable($v2.variable);
+            $variableTuple.setEndToken(null); }
+        )*
+      )?
+      RBRACKET
+      { $variableTuple.setEndToken($RBRACKET); }
+    ;
+
+keyValue returns [KeyValue keyValue]
+    : ca1=compilerAnnotations
+      v1=var
+      { $keyValue = new KeyValue(null);
+        $keyValue.setKey($v1.variable); 
+        $v1.variable.getCompilerAnnotations().addAll($ca1.annotations); }
+      ENTRY_OP
+      { $keyValue.setEndToken($ENTRY_OP); }
+      (
+        ca2=compilerAnnotations
+        v2=var
+        { $keyValue.setValue($v2.variable); 
+          $keyValue.setEndToken(null); 
+          $v2.variable.getCompilerAnnotations().addAll($ca2.annotations); }
+      )?
+    ;
+
+keyValueStart
+    : compilerAnnotations 
+      (LIDENTIFIER ENTRY_OP|UIDENTIFIER|VALUE_MODIFIER|VOID_MODIFIER|FUNCTION_MODIFIER)
+    ;
+
+destructure returns [Destructure destructure]
+    : VALUE_MODIFIER
+      { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
+        $destructure = new Destructure(null);
+        $destructure.setType(vm); }
+      (
+        (keyValueStart) => keyValue
+        { $destructure.setDestructuredVariables($keyValue.keyValue); }
+      |
+        variableTuple
+        { $destructure.setDestructuredVariables($variableTuple.variableTuple); }
+      )
+      (
+        specifier
+        { $destructure.setSpecifierExpression($specifier.specifierExpression); }
+        { expecting=SEMICOLON; }
+      )?
+      SEMICOLON
+      { $destructure.setEndToken($SEMICOLON); 
+        expecting=-1; }
     ;
 
 inferredAttributeDeclaration returns [AnyAttribute declaration]
@@ -1092,19 +1172,25 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
 
 annotationListStart
     : (stringLiteral|annotation) 
-      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VOID_MODIFIER)
+      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VALUE_MODIFIER|VOID_MODIFIER)
+    ;
+
+destructureStart
+    : VALUE_MODIFIER compilerAnnotations (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
     ;
 
 declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
-      ( 
-        (annotatedDeclarationStart) => d=declaration
-        { $statement=$d.declaration; }
+      (
+        (destructureStart) => d1=destructure
+        { $statement=$d1.destructure; }
+      | (annotatedDeclarationStart) => d3=declaration
+        { $statement=$d3.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotationListStart) => d1=declaration
-        { $statement=$d1.declaration; }
+      | (annotationListStart) => d4=declaration
+        { $statement=$d4.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
@@ -1113,9 +1199,10 @@ declarationOrStatement returns [Statement statement]
     ;
 
 declaration returns [Declaration declaration]
-    @init { $declaration = new MissingDeclaration(null); }
+    @init { MissingDeclaration md = new MissingDeclaration(null); 
+            $declaration = md; }
     : annotations
-      { $declaration.setAnnotationList($annotations.annotationList); }
+      { md.setAnnotationList($annotations.annotationList); }
     ( 
       classDeclaration
       { $declaration=$classDeclaration.declaration; }
@@ -1140,7 +1227,8 @@ declaration returns [Declaration declaration]
       SEMICOLON
       { $declaration=new BrokenDeclaration($SEMICOLON); }*/
     )
-    { $declaration.setAnnotationList($annotations.annotationList);  }
+    { if ($declaration!=null)
+          $declaration.setAnnotationList($annotations.annotationList); }
     ;
 
 annotatedDeclarationStart
@@ -1156,7 +1244,7 @@ annotatedAssertionStart
 //that distinguish declarations from
 //expressions
 declarationStart
-    : VALUE_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate dynamic objects
+    : VALUE_MODIFIER
     | FUNCTION_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | VOID_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | ASSIGN
