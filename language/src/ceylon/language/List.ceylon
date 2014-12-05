@@ -161,9 +161,9 @@ shared interface List<out Element>
                     satisfies Iterator<Element> {
                 variable Integer index = 0;
                 value size = outer.size;
-                next() => index>=size 
-                then finished 
-                else getElement(index++);
+                next() => index<size
+                    then getElement(index++)
+                    else finished;
                 string => outer.string + ".iterator()";
             };
         }
