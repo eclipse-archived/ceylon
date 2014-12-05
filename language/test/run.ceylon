@@ -51,13 +51,15 @@ shared void run() {
     print("Callables & Curries");
     callables();
     testCurries();
-
     print("Resources");
     testResources();
-    // ATTENTION!
-    // When you add new test methods here make sure they are "shared" and marked "@test"!
     print("Predicates");
     testPredicates();
+    print("Destructuring");
+    testDestructuring();
+
+    // ATTENTION!
+    // When you add new test methods here make sure they are "shared" and marked "@test"!
 
     results();
 }
