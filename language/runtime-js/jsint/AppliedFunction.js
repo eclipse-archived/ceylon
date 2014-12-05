@@ -15,9 +15,9 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
       i++;
     }
   }
-  var f = o===undefined&&mm.$cont?function(x){
+  var f = o===undefined&&mm.$cont?function AppliedFun1(x){
     return AppliedFunction$jsint(m,$$targs$$,x,mptypes);
-  }:function(){
+  }:function AppliedFun2(){
     var _fu=(o&&o[mm.d[mm.d.length-1]])||m;//Get the object's method if possible
     if (mm.tp) {
       var _a=[];

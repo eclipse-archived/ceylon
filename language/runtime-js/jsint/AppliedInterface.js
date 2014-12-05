@@ -4,7 +4,7 @@ function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
   if (that===undefined){
     var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
-      that=function(x){
+      that=function AppliedIface1(x){
         that.tipo=function(){return tipo.apply(x,arguments);};
         that.$bound=x;
         return that;

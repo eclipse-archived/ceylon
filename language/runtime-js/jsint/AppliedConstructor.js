@@ -5,7 +5,7 @@ function AppliedConstructor$jsint(tipo,$$targs$$,that,myTargs) {
   if (that===undefined){
     var mm=getrtmm$$(tipo);
     if (mm) {
-      that=function(){
+      that=function AppliedConstr1(){
         var _a=[].slice.call(arguments,0);
         _a=convert$params(mm,_a,that.$targs);
         if (that.$targs) {

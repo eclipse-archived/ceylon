@@ -4,7 +4,7 @@ function(cont,targs,$mptypes){
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   var _t={t:this.tipo};
   validate$typeparams(_t,mm.tp,targs);
-  var rv=AppliedMemberInterface(this.tipo,{Container$MemberInterface:{t:mm.$cont},Type$MemberInterface:_t});
+  var rv=AppliedMemberInterface$jsint(this.tipo,{Container$AppliedMemberInterface:{t:mm.$cont},Type$AppliedMemberInterface:_t});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }

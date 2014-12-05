@@ -5,7 +5,7 @@ function AppliedMemberConstructor$jsint(tipo,$$targs$$,that,myTargs) {
   $init$AppliedMemberConstructor$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
-    that=function(x){
+    that=function AppliedMemConstr1(x){
       var rv=tipo.bind(x);
       rv.$crtmm$=tipo.$crtmm$;
       var nt={t:tipo};

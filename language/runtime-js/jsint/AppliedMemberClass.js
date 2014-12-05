@@ -6,7 +6,7 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   if (that===undefined) {
     var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
-      that=function(x){
+      that=function AppliedMemClass1(x){
         var rv=tipo.bind(x);
         rv.$crtmm$=tipo.$crtmm$;
         var nt={t:tipo};

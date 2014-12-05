@@ -5,7 +5,7 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   if (that===undefined){
     var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
-      that=function(x){/*Class*/
+      that=function AppliedClass1(x){/*Class*/
         if (that.$targs) {
           var _a=[];
           for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
@@ -15,7 +15,7 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
         return tipo.apply(x,arguments);
       }
     } else {
-      that=function(){
+      that=function AppliedClass2(){
         if (that.$targs) {
           var _a=[];
           for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
@@ -50,31 +50,31 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   },undefined,AppliedClass$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
   atr$(that,'caseValues',function(){return coicase$(that);
   },undefined,AppliedClass$jsint.$$.prototype.$prop$getCaseValues.$crtmm$);
-  that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
-  that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
-  that.getMethods=ClassOrInterface$meta$model.$$.prototype.getMethods;
-  that.getDeclaredMethods=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods;
-  that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
-  that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
-  that.getAttributes=ClassOrInterface$meta$model.$$.prototype.getAttributes;
-  that.getDeclaredAttributes=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes;
-  that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
-  that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
-  that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
-  that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
-  that.getClasses=ClassOrInterface$meta$model.$$.prototype.getClasses;
-  that.getDeclaredClasses=ClassOrInterface$meta$model.$$.prototype.getDeclaredClasses;
-  that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
-  that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
-  that.getInterfaces=ClassOrInterface$meta$model.$$.prototype.getInterfaces;
-  that.getDeclaredInterfaces=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces;
+  that.getMethod=AppliedClass$jsint.$$.prototype.getMethod;
+  that.getDeclaredMethod=AppliedClass$jsint.$$.prototype.getDeclaredMethod;
+  that.getMethods=AppliedClass$jsint.$$.prototype.getMethods;
+  that.getDeclaredMethods=AppliedClass$jsint.$$.prototype.getDeclaredMethods;
+  that.getAttribute=AppliedClass$jsint.$$.prototype.getAttribute;
+  that.getDeclaredAttribute=AppliedClass$jsint.$$.prototype.getDeclaredAttribute;
+  that.getAttributes=AppliedClass$jsint.$$.prototype.getAttributes;
+  that.getDeclaredAttributes=AppliedClass$jsint.$$.prototype.getDeclaredAttributes;
+  that.getClassOrInterface=AppliedClass$jsint.$$.prototype.getClassOrInterface;
+  that.getDeclaredClassOrInterface=AppliedClass$jsint.$$.prototype.getDeclaredClassOrInterface;
+  that.getClass=AppliedClass$jsint.$$.prototype.getClass;
+  that.getDeclaredClass=AppliedClass$jsint.$$.prototype.getDeclaredClass;
+  that.getClasses=AppliedClass$jsint.$$.prototype.getClasses;
+  that.getDeclaredClasses=AppliedClass$jsint.$$.prototype.getDeclaredClasses;
+  that.getInterface=AppliedClass$jsint.$$.prototype.getInterface;
+  that.getDeclaredInterface=AppliedClass$jsint.$$.prototype.getDeclaredInterface;
+  that.getInterfaces=AppliedClass$jsint.$$.prototype.getInterfaces;
+  that.getDeclaredInterfaces=AppliedClass$jsint.$$.prototype.getDeclaredInterfaces;
   that.equals=AppliedClass$jsint.$$.prototype.equals;
-  that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
-  that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
-  that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
-  that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
-  that.union=function(t,$mpt){return coiut$(that,t,$mpt.Other$union);}
-  that.intersection=function(t,$mpt){return coiit$(that,t,$mpt.Other$intersection);}
+  that.typeOf=AppliedClass$jsint.$$.prototype.typeOf;
+  that.supertypeOf=AppliedClass$jsint.$$.prototype.supertypeOf;
+  that.subtypeOf=AppliedClass$jsint.$$.prototype.subtypeOf;
+  that.exactly=AppliedClass$jsint.$$.prototype.exactly;
+  that.union=AppliedClass$jsint.$$.prototype.union;
+  that.intersection=AppliedClass$jsint.$$.prototype.intersection;
   that.getConstructor=AppliedClass$jsint.$$.prototype.getConstructor;
   that.instantiator=AppliedClass$jsint.$$.prototype.instantiator;
   that.$targs=classTargs;

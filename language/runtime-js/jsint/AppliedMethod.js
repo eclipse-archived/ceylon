@@ -5,8 +5,9 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $init$AppliedMethod$jsint();
   var mm = getrtmm$$(tipo);
   if (mm.tp) {
-    if (typeArgs===undefined || typeArgs.size<1)
+    if (typeArgs===undefined || typeArgs.size<1) {
       throw TypeApplicationException$meta$model("Missing type arguments in call to FunctionDeclaration.apply");
+    }
     var _ta={}; var i=0;
     for (var tp in mm.tp) {
       if (typeArgs.$_get(i)===undefined)
@@ -29,7 +30,7 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
     }
   }
   if ($$appliedMethod===undefined){
-    $$appliedMethod=function(x){
+    $$appliedMethod=function AppliedMtd1(x){
       return AppliedFunction$jsint(tipo,{Type$Function:$$targs$$.Type$Method,Arguments$Function:$$targs$$.Arguments$Method,
         Container$Function:$$targs$$.Container$Method},x,typeArgs);
     }
