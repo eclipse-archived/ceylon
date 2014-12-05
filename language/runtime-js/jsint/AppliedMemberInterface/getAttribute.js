@@ -1,1 +1,1 @@
-ClassOrInterface$meta$model.$$.prototype.getAttribute
+function getAttribute(name,m){return coiatr$(this,name,m);}

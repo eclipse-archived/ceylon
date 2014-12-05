@@ -70,6 +70,9 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
   },undefined,AppliedMemberInterface$jsint.$$.prototype.$prop$getExtendedType.$crtmm$);
   atr$(that,'satisfiedTypes',function(){return coisattype$(that);
   },undefined,AppliedMemberInterface$jsint.$$.prototype.$prop$getSatisfiedTypes.$crtmm$);
+  atr$(that,'caseValues',function(){
+    return AppliedMemberInterface$jsint.$$.prototype.$prop$getCaseValues.get.call(that);
+  },undefined,AppliedMemberInterface$jsint.$$.prototype.$prop$getCaseValues.$crtmm$);
   that.$_bind=AppliedMemberInterface$jsint.$$.prototype.$_bind;
   return that;
 }

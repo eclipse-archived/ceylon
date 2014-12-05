@@ -1,1 +1,1 @@
-ClassOrInterface$meta$model.$$.prototype.getClassOrInterface
+function(a,b,c){return coigetcoi$(this,a,b,c);}
