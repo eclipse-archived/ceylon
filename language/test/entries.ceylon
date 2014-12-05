@@ -29,8 +29,8 @@ void test_entries_function() {
     check((e[2] else _e).item=="c", "entries [2]");
     check(1->"a" == 1->"a", "entry.equals [1]");
     check(1->"a" != 1->"b", "entry.equals [2]");
-    check(((1->"a").normalized else _e) == 1->"a", "entry.normalized [1]");
-    check(!(1->null).normalized exists, "entry.normalized [2]");
+    check(((1->"a").coalesced else _e) == 1->"a", "entry.normalized [1]");
+    check(!(1->null).coalesced exists, "entry.normalized [2]");
 }
 
 @test
