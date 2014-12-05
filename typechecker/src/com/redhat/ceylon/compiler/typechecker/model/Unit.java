@@ -1356,7 +1356,7 @@ public class Unit {
             }
             if (qualifyingType!=null) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
-                        pr.getQualifyingType(), returnType, parameterTuple);
+                        qualifyingType, returnType, parameterTuple);
             }
             else {
                 return producedType(getLanguageModuleModelTypeDeclaration("Function"),
