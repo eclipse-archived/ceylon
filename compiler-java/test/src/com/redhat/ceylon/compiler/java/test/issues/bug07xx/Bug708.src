@@ -218,6 +218,12 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     public <OtherKey, OtherItem>.ceylon.language.Map patch(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherItem, final .ceylon.language.Map<? extends OtherKey, ? extends OtherItem> other) {
         return (.ceylon.language.Map)$ceylon$language$Map$this$.patch($reified$OtherKey, $reified$OtherItem, other);
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Map getCoalescedMap() {
+        return (.ceylon.language.Map)$ceylon$language$Map$this$.getCoalescedMap();
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this$;
     
