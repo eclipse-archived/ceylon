@@ -67,8 +67,7 @@ function coimoddcl$(ifc) {
   var mm = getrtmm$$(ifc.tipo);
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
   var cls = is$(ifc,{t:ClassModel$meta$model});
-  var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
-  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(_mod.findPackage(mm.d[0]), ifc.tipo);
+  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), ifc.tipo);
   return ifc._decl;
 }
 //Class.parameterTypes (works also for constructors)
@@ -587,3 +586,11 @@ function coiit$(coi,t,ot){
   var _ut={t:'i',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
   return AppliedIntersectionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedIntersectionType:_ut});
 }
+function memberDeclaringType$($$member){
+  var mm = getrtmm$$($$member.tipo);
+  var m2 = get_model(mm);
+  var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+  return (m2['mt']==='c'?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), $$member.tipo);
+}
+
+

@@ -18,6 +18,8 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   set_type_args(that,$$targs$$,AppliedAttribute);
   that.tipo=atr;
   that.pname=pname;
+  atr$(that,'declaringType',function(){return memberDeclaringType$(that);
+  },undefined,Member$meta$model.$$.prototype.$prop$getDeclaringType.$crtmm$);
   atr$(that,'type',function(){
     var t = getrtmm$$(atr);
     if (t===undefined)throw Exception("Attribute reference not found. Metamodel doesn't work in modules compiled in lexical scope style.");

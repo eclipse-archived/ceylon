@@ -1,4 +1,4 @@
 if (this.declaringType$===undefined) {
-  this.declaringType$=Member$meta$model.$$.prototype.$prop$getDeclaringType.get.call(this);
+  this.declaringType$=memberDeclaringType$(this);
 }
 return this.declaringType$;

@@ -68,6 +68,8 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   atr$(that,'container',function(){
     return coicont$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
+  atr$(that,'declaringType',function(){return memberDeclaringType$(that);
+  },undefined,Member$meta$model.$$.prototype.$prop$getDeclaringType.$crtmm$);
   that.$_bind=function(x){return AppliedMemberInterface.$$.prototype.$_bind.call(that,x);}
   return that;
 }

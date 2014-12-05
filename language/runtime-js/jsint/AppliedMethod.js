@@ -65,7 +65,7 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
     return AppliedMethod$jsint.$$.prototype.$prop$getHash.get.call($$appliedMethod);
   },undefined,AppliedMethod$jsint.$$.prototype.$prop$getHash.$crtmm$);
   atr$($$appliedMethod,'declaringType',function(){
-    return Member$meta$model.$$.prototype.$prop$getDeclaringType.get.call($$appliedMethod);
+    return AppliedMethod$jsint.$$.prototype.$prop$getDeclaringType.get.call($$appliedMethod);
   },undefined,AppliedMethod$jsint.$$.prototype.$prop$getDeclaringType.$crtmm$);
   atr$($$appliedMethod,'container',function(){
     return AppliedMethod$jsint.$$.prototype.$prop$getContainer.get.call($$appliedMethod);
