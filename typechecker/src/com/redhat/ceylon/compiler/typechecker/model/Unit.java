@@ -1320,9 +1320,14 @@ public class Unit {
         ProducedType setType = variable ? 
                 denotableType(pr.getType()) : 
                 new NothingType(this).getType();
-        if (pr.getQualifyingType() != null) {
+        ProducedType qualifyingType = pr.getQualifyingType();
+        while (qualifyingType!=null && 
+                qualifyingType.getDeclaration().isAnonymous()) {
+            qualifyingType = qualifyingType.getQualifyingType();
+        }
+        if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("Attribute"),
-                    pr.getQualifyingType(), getType, setType);
+                    qualifyingType, getType, setType);
         }
         else {
             return producedType(getLanguageModuleModelTypeDeclaration("Value"),
@@ -1344,7 +1349,12 @@ public class Unit {
             return null;
         }
         else {
-            if (pr.getQualifyingType() != null) {
+            ProducedType qualifyingType = pr.getQualifyingType();
+            while (qualifyingType!=null && 
+                    qualifyingType.getDeclaration().isAnonymous()) {
+                qualifyingType = qualifyingType.getQualifyingType();
+            }
+            if (qualifyingType!=null) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
                         pr.getQualifyingType(), returnType, parameterTuple);
             }
