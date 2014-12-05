@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collections;
+
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.Class;
+import ceylon.language.meta.model.MemberClassConstructor;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -205,4 +208,15 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     public ceylon.language.meta.model.Type<?> getContainer(){
         return getDeclaringType();
     }
+    
+    public <Arguments extends Sequential<? extends Object>> MemberClassConstructor<Object,Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,
+            @Name("name")
+            String name) {
+        checkInit();
+        final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
+        if(ctor == null)
+            return null;
+        return new AppliedMemberClassConstructor(this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
+    }
+    
 }

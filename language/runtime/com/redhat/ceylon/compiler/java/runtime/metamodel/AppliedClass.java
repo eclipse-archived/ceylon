@@ -6,6 +6,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Array;
@@ -18,10 +19,12 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeAlias;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassOrInterface.MemberLookup;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -74,7 +77,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // anonymous classes don't have constructors
         // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
         // FIXME: so we really want to disallow that in the metamodel?
-        if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
+        if(!decl.isAnonymous() 
+                && !Metamodel.isLocalType(decl)
+                && !decl.hasConstructors()){
             initConstructor(decl);
         }else{
             this.parameterTypes = (Sequential) empty_.get_();
@@ -86,6 +91,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
+        boolean invokeOnCompanionInstance = this.instance != null 
+                && decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
+                && !decl.isShared();
+        if (invokeOnCompanionInstance) {
+            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration.declaration.getContainer());
+        }
+        
         Object[] defaultedMethods = null;
         if(firstDefaulted != -1){
             // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
@@ -114,11 +126,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
-                        int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass()) 
-                                ? decl.getTypeParameters().size() : 0;
+                        int implicitParameterCount = 0;
+                        if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
+                            implicitParameterCount += decl.getTypeParameters().size();
+                        }
+                        if (decl.isClassMember() && javaClass.isMemberClass() 
+                                || decl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()*/) { 
+                            // non-shared member classes don't get instantiators, so there's the 
+                            // synthetic outerthis parameter to account for.
+                            implicitParameterCount++;
+                        }
                         // this doesn't need to count synthetic parameters because we only use the constructor for Java types
                         // which can't have defaulted parameters
-                        int params = constr.getParameterTypes().length - reifiedTypeParameterCount;
+                        int params = constr.getParameterTypes().length - implicitParameterCount;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
                     continue;
@@ -160,7 +180,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
         if(found != null){
             boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
-            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, false);
+            constructor = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, false);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
@@ -168,7 +188,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     if(defaultedMethods[i] == null)
                         throw Metamodel.newModelError("Missing defaulted constructor for "+ declaration.getName()
                                 +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameterProducedTypes, variadic, false);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, producedType, parameterProducedTypes, variadic, false);
                 }
                 dispatch[i] = constructor;
             }else if(variadic){
@@ -176,14 +196,15 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 // we treat variadic methods as if the last parameter is optional
                 firstDefaulted = parameters.size() - 1;
                 dispatch = new MethodHandle[2];
-                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, true);
+                dispatch[0] = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, true);
                 dispatch[1] = constructor;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, 
-                                                  ProducedType producedType, List<ProducedType> parameterProducedTypes,
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass,  
+                                                  ProducedType producedType,
+                                                  List<ProducedType> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
@@ -457,7 +478,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
 
         // AFAIK default value methods cannot be Java-variadic 
-        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, false, false);
+        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, false, false);
         // sucks that we have to copy the array, but that's the MH API
         java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
         System.arraycopy(values.toArray(), 0, arguments, 0, collectedValueCount);
@@ -514,4 +535,31 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
+    
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
+    @TypeInfo("ceylon.language.meta.model::Constructor<Type,Arguments>|ceylon.language::Null")
+    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,String name) {
+        checkInit();
+        final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
+        if(ctor == null)
+            return null;
+        TypeDescriptor reifiedType = null;//TODO
+        TypeDescriptor reifiedArguments = null;//TODO
+        return new AppliedConstructor<>(reifiedType, reifiedArguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor, null);
+    }
+    
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
+    @TypeInfo("ceylon.language.meta.model::Function&ceylon.language.meta.model.Applicable<Type>|ceylon.language::Null")
+    //@TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language.meta.model.Constructor<Type,Arguments>|ceylon.language::Null")
+    public <Arguments extends Sequential<?extends Object>> java.lang.Object instantiator(TypeDescriptor reified$Arguments) {
+        com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class)((FreeClass)getDeclaration()).declaration;
+        if (c.hasConstructors()) {
+            return getConstructor(reified$Arguments, getDeclaration().getName());
+        } else if (c.getParameterLists().get(0) != null) {
+            return this;
+        } else {
+            return null;
+        }
+    }
+    
 }

@@ -34,6 +34,10 @@ public class MethodHandleUtil {
         }
         return MethodHandles.insertArguments(constructor, insertAt, typeDescriptors);
     }
+    
+    public static MethodHandle insertConstructorNameArgument(MethodHandle constructor, int insertAt, com.redhat.ceylon.compiler.typechecker.model.Constructor ctor) {
+        return MethodHandles.insertArguments(constructor, insertAt, new Object[]{null});
+    }
 
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
             java.lang.Class<?>[] parameterTypes,

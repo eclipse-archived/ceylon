@@ -8,7 +8,7 @@ function AppliedValue$jsint(obj,attr,$$targs$$,$$appliedValue){
   if ($$appliedValue===undefined){
     if (obj||mm.$cont===undefined)$$appliedValue=new AppliedValue$jsint.$$;
     else {
-      $$appliedValue=function(x){return AppliedValue$jsint(x,attr,$$targs$$);};
+      $$appliedValue=function AppliedVal1(x){return AppliedValue$jsint(x,attr,$$targs$$);};
       $$appliedValue.$$=AppliedValue$jsint.$$;
       var dummy=new AppliedValue$jsint.$$;
       $$appliedValue.getT$all=function(){return dummy.getT$all();};

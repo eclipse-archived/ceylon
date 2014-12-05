@@ -47,6 +47,27 @@ function restype$(root,t) {
   }
   return r;
 }
+//Replace type parameter references with type arguments found in the specified map
+function restype2$(t,targs) {
+  if (t===undefined)return undefined;
+  if (!thutarg$(t))return t;
+  if (typeof t === 'string'){
+    return restype2$(targs[t])||t;
+  }
+  var r={t:t.t};
+  if (t.t === 'u' || t.t === 'i'){
+    r.l=[];
+    for (var i=0;i<t.l.length;i++){
+      r.l.push(restype2$(t.l[i],targs));
+    }
+  } else if (t.a){
+    r.a={};
+    for (var i in t.a){
+      r.a[i]=restype2$(t.a[i],targs);
+    }
+  }
+  return r;
+}
 //Extract type for serialization (and whatever else needs it)
 function ser$et$(t) {
   if (t===getNothingType$meta$model())return{t:Nothing};

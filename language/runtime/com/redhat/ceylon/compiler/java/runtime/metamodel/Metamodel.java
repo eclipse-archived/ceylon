@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -56,6 +57,8 @@ import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
@@ -100,8 +103,8 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration> typeCheckModelToRuntimeModel
-        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration>();
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, Object>();
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage>();
@@ -255,9 +258,9 @@ public class Metamodel {
         return getAppliedMetamodel(pt);
     }
     
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
+    public static <R> R getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
         synchronized(getLock()){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
+            Object ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure its module is loaded
                 com.redhat.ceylon.compiler.typechecker.model.Package pkg = getPackage(declaration);
@@ -281,12 +284,15 @@ public class Metamodel {
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Setter){
                     com.redhat.ceylon.compiler.typechecker.model.Setter value = (com.redhat.ceylon.compiler.typechecker.model.Setter)declaration;
                     ret = new FreeSetter(value);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+                    com.redhat.ceylon.compiler.typechecker.model.Constructor value = (com.redhat.ceylon.compiler.typechecker.model.Constructor)declaration;
+                    ret = new FreeConstructor(value);
                 }else{
                     throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
                 }
                 typeCheckModelToRuntimeModel.put(declaration, ret);
             }
-            return ret;
+            return (R)ret;
         }
     }
 
@@ -414,6 +420,9 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt);
         }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt.getQualifyingType());
+        }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceType(pt);
         }
@@ -482,6 +491,20 @@ public class Metamodel {
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
+        /*if (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+            TypeDescriptor reifiedArguments;
+            if(!declaration.isAnonymous() && !isLocalType(declaration))
+                reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration.getContainer(), pt.getQualifyingType());
+            else
+                reifiedArguments = TypeDescriptor.NothingType;
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+            if(declaration.isToplevel() || isLocalType(declaration))
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedConstructor(reifiedType, reifiedArguments, pt, null, null);
+            
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClassConstructor(reifiedContainer, reifiedType, reifiedArguments, pt);
+            
+        }*/
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel() || isLocalType(declaration))
@@ -549,6 +572,129 @@ public class Metamodel {
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
         }
         throw Metamodel.newModelError("Unsupported declaration type: " + declaration + " of type "+declaration.getClass());
+    }
+    
+    public static java.lang.reflect.Constructor<?> getJavaConstructor(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
+        Constructor<?>[] ctors = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getDeclaredConstructors();
+        for (java.lang.reflect.Constructor<?> ctor : ctors) {
+            Name name = ctor.getAnnotation(Name.class);
+            if (name != null 
+                    && declaration.getName().equals(name.value())) {
+                return ctor;
+            }
+        }
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
+    }
+    
+    public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration, String methodName) {
+        com.redhat.ceylon.compiler.typechecker.model.Class cls = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
+        Class<?> javaCls = getJavaClass(cls);
+        Class<?> terJavaCls = getJavaClass((Declaration)cls.getContainer());
+        java.lang.reflect.Method[] methods = terJavaCls.getDeclaredMethods();
+        // the instantiator method is @Ignore'd and not @Name'd
+        // So we search for the method:
+        // * with the instantiator name
+        // * with or without a constructor class name parameter and
+        // * with the longest signature
+        // This really is horrible.
+        int numReified = cls.getTypeParameters().size();
+        boolean defaultCtor = isDefaultConstructor(declaration);
+        java.lang.reflect.Method longestSig = null;
+        for (java.lang.reflect.Method method : methods) {
+            if (method.getName().equals(methodName)) {
+                Class<?>[] sig = method.getParameterTypes();
+                if (longestSig == null 
+                        || longestSig.getParameterTypes().length < sig.length) {
+                    Class<?> possibleCtorNameCls;
+                    if (sig.length > numReified) {
+                        possibleCtorNameCls = sig[numReified];
+                    } else {
+                        possibleCtorNameCls = null;
+                    }
+                    boolean ctorNameParam = possibleCtorNameCls != null
+                            && possibleCtorNameCls.getAnnotation(Ignore.class) != null;
+                            //&& possibleCtorNameCls.getAnnotation(Name.class) != null
+                            //&& declaration.equals(possibleCtorNameCls.getAnnotation(Name.class).value());
+                    if (defaultCtor && !ctorNameParam) {
+                        longestSig = method;
+                    } else if (!defaultCtor && ctorNameParam){
+                        longestSig = method;
+                    }
+                }
+            }
+        }
+        if (longestSig == null) {
+            throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
+        } else {
+            return longestSig;
+        }
+    }
+    
+    /** 
+     * Return all the Java constructors for the given named Ceylon constructor, 
+     * including the overloaded ones.
+     */
+    public static List<java.lang.reflect.Constructor<?>> getJavaConstructors(
+            com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
+        Class<?> javaClass = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer());
+        Constructor<?>[] ctors = javaClass.getDeclaredConstructors();
+        ArrayList<java.lang.reflect.Constructor<?>> result = new ArrayList<java.lang.reflect.Constructor<?>>();
+        // find the appropriate ultimate constructor
+        java.lang.reflect.Constructor<?> ultimate = getJavaConstructor(declaration);
+        result.add(ultimate);
+        List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        Class<?>[] javapl = ultimate.getParameterTypes();
+        // find all the overloads of the ultimate that we expect, 
+        // according to the parameter list 
+        for (int ii = parameters.size()-1, jj=javapl.length; ii >= 0; ii--, jj--) {
+            Parameter p = parameters.get(ii);
+            if (p.isDefaulted()
+                    || (p.isSequenced() && !p.isAtLeastOne())) {
+                Class<?>[] sig = Arrays.copyOfRange(javapl, 0, jj-1);
+                try {
+                    Constructor<?> overloaded = javaClass.getDeclaredConstructor(sig);
+                    result.add(overloaded);
+                } catch (NoSuchMethodException e) {
+                    throw Metamodel.newModelError("Could not find overloaded constructor with signature " + Arrays.toString(sig), e);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static List<java.lang.reflect.Method> getJavaInstantiators(
+            com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
+        com.redhat.ceylon.compiler.typechecker.model.Class classModel = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
+        Class<?> javaClass = getJavaClass(classModel);
+        Class<?> outerJavaClass = getJavaClass((Declaration)classModel.getContainer()); 
+        java.lang.reflect.Method[] ctors = outerJavaClass.getDeclaredMethods();
+        ArrayList<java.lang.reflect.Method> result = new ArrayList<java.lang.reflect.Method>();
+        // find the appropriate ultimate constructor
+        String methodName = classModel.getName() + "$new$";
+        java.lang.reflect.Method ultimate = getJavaInstantiator(declaration, methodName);
+        result.add(ultimate);
+        List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        Class<?>[] javapl = ultimate.getParameterTypes();
+        // find all the overloads of the ultimate that we expect, 
+        // according to the parameter list 
+        for (int ii = parameters.size()-1, jj=javapl.length; ii >= 0; ii--, jj--) {
+            Parameter p = parameters.get(ii);
+            if (p.isDefaulted()
+                    || (p.isSequenced() && !p.isAtLeastOne())) {
+                Class<?>[] sig = Arrays.copyOfRange(javapl, 0, jj-1);
+                try {
+                    java.lang.reflect.Method overloaded = outerJavaClass.getDeclaredMethod(methodName, sig);
+                    result.add(overloaded);
+                } catch (NoSuchMethodException e) {
+                    throw Metamodel.newModelError("Could not find overloaded constructor with signature " + Arrays.toString(sig), e);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static boolean isDefaultConstructor(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
+        return declaration.getName().equals(((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getName());
     }
 
     public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
@@ -1432,7 +1578,7 @@ public class Metamodel {
         return Util.apply(function, arguments);
     }
     
-    public static ceylon.language.meta.model.Model bind(ceylon.language.meta.model.Member<?,?> member, ProducedType containerType, Object container){
+    public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, ProducedType containerType, Object container){
         if(container == null)
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
         ProducedType argumentType = Metamodel.getProducedType(container);
@@ -1483,5 +1629,19 @@ public class Metamodel {
             throw new ceylon.language.AssertionError("Module "+spec+" is not available");
         }
         return module;
+    }
+    
+    public static Object getCompanionInstance(java.lang.Object instance, com.redhat.ceylon.compiler.typechecker.model.Interface iface) {
+        if (instance == null) {
+            return null;
+        }
+        try {
+            java.lang.reflect.Method implAccessor = instance.getClass().getMethod("$" + 
+        iface.getQualifiedNameString().replace('.', '$').replace("::", "$") + "$impl");
+            implAccessor.setAccessible(true);
+            return implAccessor.invoke(instance);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

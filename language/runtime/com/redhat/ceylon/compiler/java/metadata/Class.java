@@ -26,4 +26,10 @@ public @interface Class {
      * Set to false if this class does not implement ceylon.language::Identifiable. Defaults to true.
      */
     boolean identifiable() default true;
+    
+    /**
+     * true if this class has (named) constructor(s), false if it has an initializer.
+     * @return
+     */
+    boolean constructors() default false;
 }

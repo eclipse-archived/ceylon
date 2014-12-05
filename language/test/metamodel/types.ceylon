@@ -1,5 +1,16 @@
-import ceylon.language.meta.declaration { ClassDeclaration }
-import ceylon.language.meta.model { Class, MemberClass }
+import ceylon.language.meta.declaration { 
+    ClassDeclaration, 
+    ConstructorDeclaration 
+}
+import ceylon.language.meta.model { 
+    Class, 
+    MemberClass, 
+    MemberClassConstructor, 
+    Constructor,
+    InvocationException
+}
+import ceylon.language.meta{ type }
+
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;
 shared Float toplevelFloat = 1.2;
@@ -410,4 +421,297 @@ class MemberObjectContainer<T>(){
 shared object obj {
     shared Integer attribute = 2;
     shared T method<T>(T t) => t;
+}
+
+shared class Constructors<T> {
+    shared Anything arg;
+    shared new Constructors(T? t=null){
+        arg = t;
+    }
+    shared new Other(Integer i){
+        arg = i;
+    }
+    new NonShared(Boolean b){
+        arg = b;
+    }
+    shared class Member {
+        shared new Member(T? t=null) {}
+        shared new Other(Integer i) {}
+        new NonShared(Boolean b) {}
+        shared MemberClassConstructor<Constructors<T>, Member, [Boolean]> nonShared => `NonShared`;
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    class NonSharedMember {
+        shared new NonSharedMember(T? t=null) {}
+        shared new Other(Integer i) {}
+        new NonShared(Boolean b) {}
+        shared MemberClassConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared => `NonShared`;
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    shared void test() {
+        testDeclarations();
+        testModels();
+        testMemberModels();
+    }
+    
+    shared void testMemberModels() {
+        // TODO test constructors of member classes of interfaces
+        value member = Member();
+        value memberMember = `Member.Member`;
+        value memberOther = `Member.Other`;
+        value memberNonShared = member.nonShared;
+        
+        value nonSharedMember = NonSharedMember();
+        value nonSharedMemberMember = `NonSharedMember.NonSharedMember`;
+        value nonSharedMemberOther = `NonSharedMember.Other`;
+        value nonSharedMemberNonShared = nonSharedMember.nonShared;
+        
+        // declaration
+        assert(`new Member.Member` == memberMember.declaration);
+        assert(`new Member.Other` == memberOther.declaration);
+        assert(member.nonSharedDecl == memberNonShared.declaration);
+        //containers
+        assert(type(member) == memberMember.container);
+        assert(type(member) == memberOther.container);
+        assert(type(member) == memberNonShared.container);
+        
+        // parameterTypes
+        assert(memberMember.parameterTypes.size==1);
+        assert(exists t = memberMember.parameterTypes[0],
+            `String`.union(`Null`) == t);
+        assert(memberOther.parameterTypes.size==1);
+        assert(exists i = memberOther.parameterTypes[0],
+            `Integer` == i);
+        assert(memberNonShared.parameterTypes.size==1);
+        assert(exists b = memberNonShared.parameterTypes[0],
+            `Boolean` == b);
+        
+        // call
+        Constructor<Member, []|[T?]> memberMemberCtor = memberMember(this);
+        memberMemberCtor();
+        assert(is T tt = "");
+        memberMemberCtor(tt);
+        Constructor<Member, [Integer]> memberOtherCtor = memberOther(this);
+        memberOtherCtor(1);
+        Constructor<Member, [Boolean]> memberNonSharedCtor = memberNonShared(this);
+        memberNonSharedCtor(true);
+        
+        Constructor<NonSharedMember, []|[T?]> nonSharedMemberMemberCtor = nonSharedMemberMember(this);
+        nonSharedMemberMemberCtor();
+        nonSharedMemberMemberCtor(tt);
+        Constructor<NonSharedMember, [Integer]> nonSharedMemberOtherCtor = nonSharedMemberOther(this);
+        nonSharedMemberOtherCtor(1);
+        Constructor<NonSharedMember, [Boolean]> nonSharedMemberNonSharedCtor = nonSharedMemberNonShared(this);
+        nonSharedMemberNonSharedCtor(true);
+
+        // bind
+        memberMember.bind(this)();
+        memberMember.bind(this)(tt);
+        memberOther.bind(this)(1);
+        memberNonShared.bind(this)(true);
+        
+        nonSharedMemberMember.bind(this)();
+        nonSharedMemberMember.bind(this)(tt);
+        nonSharedMemberOther.bind(this)(1);
+        nonSharedMemberNonShared.bind(this)(true);
+    }
+    shared void testModels() {
+        value def = `Constructors`;
+        value other = `Other`;
+        value nonShared = `NonShared`;
+        
+        // declaration
+        assert(`new Constructors` == def.declaration);
+        assert(`new Other` == other.declaration);
+        assert(`new NonShared` == nonShared.declaration);
+        //container
+        assert(type(this) == def.container);
+        assert(type(this) == other.container);
+        assert(type(this) == nonShared.container);
+        // parameterTypes
+        assert(def.parameterTypes.size==1);
+        assert(exists t = def.parameterTypes[0],
+            `String`.union(`Null`) == t);
+        assert(other.parameterTypes.size==1);
+        assert(exists i = other.parameterTypes[0],
+            `Integer` == i);
+        assert(nonShared.parameterTypes.size==1);
+        assert(exists b = nonShared.parameterTypes[0],
+            `Boolean` == b);
+        // call
+        "calling Constructor model of default constructor with defaulted argument" 
+        assert(! def().arg exists);
+        "calling Constructor model of default constructor with given argument"
+        assert(is T a = "",
+            exists a1 = def(a).arg,
+            "" == a1);
+        "calling Constructor model of non-default constructor"
+        assert(exists a2 = other(1).arg, 
+            1==a2);
+        "calling Constructor model of non-shared, non-default constructor"
+        assert(exists a3 = nonShared(true).arg, 
+            a3==true);
+        
+        // apply
+        //Anything xx = def.apply();
+        "apply()ing Constructor model of default constructor with defaulted argument"
+        assert(is Constructors<String> x1 = def.apply(),
+            ! x1.arg exists);
+        //assert(! def.apply().arg exists); TODO enable when https://github.com/ceylon/ceylon-compiler/issues/1928 is fixed
+        assert(is Constructors<String> x2 = def.apply(""),
+            exists y2 = x2.arg,
+            "" == y2);
+        try {
+            def.apply("", "");
+            throw;
+        } catch (InvocationException e) {
+        }
+        
+        //assert(is Constructors<String> x3 = other.apply(),
+        //    ! x3.arg exists);
+        assert(is Constructors<String> x4 = other.apply(1),
+            exists y4 = x4.arg,
+            1 == y4);
+        try {
+            other.apply("", "");
+            throw;
+        } catch (InvocationException e) {
+        }
+        
+        //assert(is Constructors<String> x5 = nonShared.apply(),
+            //! x5.arg exists);
+        assert(is Constructors<String> x6 = nonShared.apply(true),
+            exists y6 = x6.arg,
+            true == y6);
+        try {
+            nonShared.apply("", "");
+            throw;
+        } catch (InvocationException e) {
+        }
+        
+        // TODO namedApply()
+    }
+    
+    shared void testDeclarations() {
+        value def = `new Constructors`;
+        value other = `new Other`;
+        value nonShared = `new NonShared`;
+        
+        assert(def.defaultConstructor);
+        assert(!other.defaultConstructor);
+        assert(!nonShared.defaultConstructor);
+        
+        assert("Constructors" == def.name);
+        assert("Other" == other.name);
+        assert("NonShared" == nonShared.name);
+        
+        assert("metamodel::Constructors.Constructors" == def.qualifiedName);
+        assert("metamodel::Constructors.Other" == other.qualifiedName);
+        assert("metamodel::Constructors.NonShared" == nonShared.qualifiedName);
+        
+        assert(!def.annotation);
+        assert(!other.annotation);
+        assert(!nonShared.annotation);
+        
+        assert(def.shared);
+        assert(other.shared);
+        assert(!nonShared.shared);
+        
+        assert(def.shared);
+        assert(other.shared);
+        assert(!nonShared.shared);
+        
+        assert(is ClassDeclaration cls = `package`.getClassOrInterface("Constructors"));
+        
+        assert(cls == def.container);
+        assert(cls == other.container);
+        assert(cls == nonShared.container);
+        
+        assert(cls.openType == def.openType);
+        assert(cls.openType == other.openType);
+        assert(cls.openType == nonShared.openType);
+        
+        //parameters
+        assert(1 == def.parameterDeclarations.size);
+        assert(exists def1 = def.parameterDeclarations.first);
+        assert(def1.name == "t");
+        assert(exists def12 = def.getParameterDeclaration("t"));
+        assert(def12 == def1);
+        
+        assert(1 == other.parameterDeclarations.size);
+        assert(exists other1 = other.parameterDeclarations.first);
+        assert(other1.name == "i");
+        assert(exists other12 = other.getParameterDeclaration("i"));
+        assert(other12 == other1);
+        
+        assert(1 == nonShared.parameterDeclarations.size);
+        assert(exists nonShared1 = nonShared.parameterDeclarations.first);
+        assert(nonShared1.name == "b");
+        assert(exists nonShared12 = nonShared.getParameterDeclaration("b"));
+        assert(nonShared12 == nonShared1);
+        
+        assert(!def.annotations<SharedAnnotation>().empty);
+        assert(!other.annotations<SharedAnnotation>().empty);
+        assert(nonShared.annotations<SharedAnnotation>().empty);
+        
+        assert(exists c1 = cls.getConstructorDeclaration("Constructors"),
+            def == c1);
+        assert(exists c2 = cls.getConstructorDeclaration("Other"),
+            other == c2);
+        assert(exists c3 = cls.getConstructorDeclaration("NonShared"),
+            nonShared == c3);
+        
+        assert(exists c4 = cls.defaultConstructorDeclaration,
+            def == c4);
+        
+        value ctors = cls.constructorDeclarations();
+        assert(ctors.size == 3);
+        assert(def in ctors);
+        assert(other in ctors);
+        assert(nonShared in ctors);
+    }
+}
+
+shared interface InterfaceConstructors<T> {
+    // basically the same as above, but with member classes 
+    // of an interface rather than a class
+    shared class Member {
+        shared new Member(T? t=null) {
+            
+        }
+        new NonShared(T? t=null) {
+            
+        }
+        shared MemberClassConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared => `NonShared`; 
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    class NonSharedMember {
+        shared new NonSharedMember(T? t=null) {
+            
+        }
+        new NonShared(T? t=null) {
+            
+        }
+        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared => `NonShared`; 
+        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+    }
+    shared void test() {
+        assert(is T tt = "");
+        value memberInst = Member();
+        value nonSharedMemberInst = NonSharedMember();
+        
+        assert(`new Member.Member` == `Member.Member`.declaration);
+        assert(memberInst.nonSharedDecl == memberInst.nonShared.declaration);
+        assert(`new NonSharedMember.NonSharedMember` == `NonSharedMember.NonSharedMember`.declaration);
+        assert(nonSharedMemberInst.nonSharedDecl == nonSharedMemberInst.nonShared.declaration);
+    
+        `Member.Member`(this)();
+        `Member.Member`(this)(tt);
+        memberInst.nonShared(this)();
+        memberInst.nonShared(this)(tt);
+        `NonSharedMember.NonSharedMember`(this)();
+        `NonSharedMember.NonSharedMember`(this)(tt);
+        nonSharedMemberInst.nonShared(this)();
+        nonSharedMemberInst.nonShared(this)(tt);
+    }
 }

@@ -16,4 +16,9 @@ public @interface Alias {
      * The aliased type signature
      */
     String value();
+    /**
+     * The name of the constructor when this alias is to a class constructor 
+     * (which is not the default constructor). Otherwise empty.
+     */
+    String constructor() default "";
 }

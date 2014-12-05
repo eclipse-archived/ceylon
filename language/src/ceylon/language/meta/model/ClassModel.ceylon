@@ -10,11 +10,15 @@ import ceylon.language.meta.model {
  A class model can be either a toplevel [[Class]] or a member [[MemberClass]].
  "
 shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
-    satisfies ClassOrInterface<Type>
+    satisfies ClassOrInterface<Type> & Functional
     given Arguments satisfies Anything[] {
     
     shared formal actual ClassDeclaration declaration;
     
-    "This function's parameter closed types"
-    shared formal ClosedType<Anything>[] parameterTypes;
+    "The constructor with the given name, or null if this class lacks 
+     a constructor of the given name"
+    shared formal ConstructorModel<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
+            given Arguments satisfies Anything[];
+    
+    // TODO declare instantiator here?
 }

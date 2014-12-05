@@ -67,10 +67,10 @@ function coimoddcl$(ifc) {
   var mm = getrtmm$$(ifc.tipo);
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
   var cls = is$(ifc,{t:ClassModel$meta$model});
-  var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
-  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(_mod.findPackage(mm.d[0]), ifc.tipo);
+  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), ifc.tipo);
   return ifc._decl;
 }
+//Class.parameterTypes (works also for constructors)
 function clsparamtypes(cls) {
   var ps=cls.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
@@ -83,10 +83,11 @@ function clsparamtypes(cls) {
       if (!pt)throw TypeApplicationException$meta$model("Class model is missing type argument for "
         + cls.string + "<" + ps[i].$t + ">");
     }
-    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
+//Basically the same as clsparamtypes but for functions
 function funparamtypes(fun) {
   var ps=fun.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
@@ -99,10 +100,11 @@ function funparamtypes(fun) {
       if (!pt)throw TypeApplicationException$meta$model("Function model is missing type argument for "
         + fun.string + "<" + ps[i].$t + ">");
     }
-    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt},fun.$targs));
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
+//FunctionModel.string
 function funmodstr$(fun) {
   var mm=fun.tipo.$crtmm$;
   var qn;
@@ -140,6 +142,7 @@ function funmodstr$(fun) {
   }
   return qn;
 }
+//Function.typeArguments
 function funtypearg$(fun) {
   var mm = fun.tipo.$crtmm$;
   if (mm) {
@@ -164,6 +167,7 @@ function funtypearg$(fun) {
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+//ClassOrInterface.container
 function coicont$(coi) {
   if (coi.$parent)return coi.$parent;
   var cont = getrtmm$$(coi.tipo).$cont;
@@ -182,10 +186,11 @@ function coicont$(coi) {
   if (get_model(cmm).mt === 'i')
     rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
   //TODO tipos de parametros
-  rv=AppliedClass(cont,{Type$Class:_t,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   if (_out)rv.src$=_out;
   return rv;
 }
+//ClassOrInterface.string
 function coistr$(coi) {
   var mm = getrtmm$$(coi.tipo);
   var qn=coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name ? coi.tipo.$$.prototype.getT$name() : qname$(mm);
@@ -221,6 +226,7 @@ function coistr$(coi) {
   }
   return qn;
 }
+//ClassOrInterface.hash
 function coihash$(coi) {
   var mm = getrtmm$$(coi.tipo);
   var h=qname$(mm).hash;
@@ -243,6 +249,7 @@ function coihash$(coi) {
   if (coi.$bound)h+=coi.$bound.hash;
   return h;
 }
+//ClassOrInterface.typeArguments
 function coitarg$(coi){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
@@ -287,6 +294,7 @@ function coirestarg$(root,type) {
   }
   return type;
 }
+//ClassOrInterface.extendedType
 function coiexttype$(coi){
   var mm = getrtmm$$(coi.tipo);
   var sc = mm['super'];
@@ -295,13 +303,14 @@ function coiexttype$(coi){
   var _t=coirestarg$(coi,sc);
   var ac;
   if (scmm.$cont) {
-    ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
+    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
   } else {
-    ac=AppliedClass(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    ac=AppliedClass$jsint(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
   if (_t.a)ac.$targs=_t.a;
   return ac;
 }
+//ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
   var ints = coi.tipo.$crtmm$.sts;
   if (ints && ints.length) {
@@ -310,15 +319,16 @@ function coisattype$(coi){
       var ifc = coirestarg$(coi,ints[i]);
       var mm=getrtmm$$(ifc.t);
       if (mm.$cont) {
-        rv.push(AppliedMemberInterface(ifc.t, {Type$MemberInterface:ifc}));
+        rv.push(AppliedMemberInterface$jsint(ifc.t, {Type$AppliedMemberInterface:ifc,Container$AppliedMemberInterface:{t:mm.$cont}}));
       } else {
-        rv.push(AppliedInterface$jsint(ifc.t, {Type$Interface:ifc}));
+        rv.push(AppliedInterface$jsint(ifc.t, {Type$AppliedInterface:ifc}));
       }
     }
     return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
   return getEmpty();
 }
+//ClassOrInterface.getClassOrInterface
 function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClassOrInterface);
@@ -346,11 +356,11 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
     if (md.mt==='i') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       validate$typeparams(ict,ic.$crtmm$.tp,types$3);
-      rv=AppliedMemberInterface(ic, {Container$MemberInterface:_cont,Type$MemberInterface:ict});
+      rv=AppliedMemberInterface$jsint(ic, {Container$AppliedMemberInterface:_cont,Type$AppliedMemberInterface:ict});
     } else if (md.mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$crtmm$.tp,types$3);
-      rv=AppliedMemberClass(ic, {Container$MemberClass:_cont,Type$MemberClass:ict, Arguments$MemberClass:$$$mptypes.Arguments$getClassOrInterface});
+      rv=AppliedMemberClass$jsint(ic, {Container$AppliedMemberClass:_cont,Type$AppliedMemberClass:ict, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClassOrInterface});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
@@ -379,7 +389,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType({t:mem},$$$mptypes.Type$getClasses))continue;
         var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getClasses,'',1)) {
-          mems.push(AppliedMemberClass(mem, {Container$MemberClass:_tipo,Type$MemberClass:{t:mem}, Arguments$MemberClass:$$$mptypes.Arguments$getClasses}));
+          mems.push(AppliedMemberClass$jsint(mem, {Container$AppliedMemberClass:_tipo,Type$AppliedMemberClass:{t:mem}, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClasses}));
         }
       }
     }
@@ -389,7 +399,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
     Kind$getClassOrInterface:Class$meta$model},noInherit);
-  if (rv && !is$(rv, {t:AppliedMemberClass})) {
+  if (rv && !is$(rv, {t:AppliedMemberClass$jsint})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not a class");
   }
   return rv;
@@ -408,7 +418,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType({t:mem},$$$mptypes.Type$getInterfaces))continue;
         var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats)) {
-          mems.push(AppliedMemberInterface(mem, {Container$MemberInterface:_tipo,Type$MemberInterface:{t:mem}}));
+          mems.push(AppliedMemberInterface$jsint(mem, {Container$AppliedMemberInterface:_tipo,Type$AppliedMemberInterface:{t:mem}}));
         }
       }
     }
@@ -418,7 +428,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
     Kind$getClassOrInterface:Interface$meta$model},noInherit);
-  if (rv && !is$(rv, {t:AppliedMemberInterface})) {
+  if (rv && !is$(rv, {t:AppliedMemberInterface$jsint})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
   return rv;
@@ -507,7 +517,7 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
     var mm=getrtmm$$(fun);
     if (mm && mm.$cont!==coi.tipo)return null;
   }
-  return AppliedMethod(fun, types, {Container$Method:{t:_tipo},Type$Method:_t,Arguments$Method:_a});
+  return AppliedMethod$jsint(fun, types, {Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -527,7 +537,8 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
-          mems.push(AppliedMethod(mem,undefined,{Container$Method:{t:_tipo},Type$Method:mm.$t,Arguments$Method:types}));
+          mems.push(AppliedMethod$jsint(mem,undefined,{Container$AppliedMethod:{t:_tipo},
+                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types}));
         }
       }
     }
@@ -574,4 +585,30 @@ function coiit$(coi,t,ot){
   }
   var _ut={t:'i',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
   return AppliedIntersectionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedIntersectionType:_ut});
+}
+function memberDeclaringType$($$member){
+  var mm = getrtmm$$($$member.tipo);
+  var m2 = get_model(mm);
+  var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+  return (m2['mt']==='c'?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), $$member.tipo);
+}
+//Get annotations from ClassOrInterface, based on the specified annotation types
+function coi$get$anns(anntypes) {
+  var ats=[];
+  if (!anntypes)return ats;
+  var iter=anntypes.iterator();
+  var a;while((a=iter.next())!==getFinished()){
+    ats.push({t:a.tipo});
+  }
+  return ats;
+}
+function coi$is$anns(anns,ats) {
+  for (var i=0;i<ats.length;i++) {
+    var f=false;
+    for (var j=0;j<anns.length;j++) {
+      f|=(is$(anns[j],ats[i]));
+    }
+    if (!f)return false;
+  }
+  return true;
 }

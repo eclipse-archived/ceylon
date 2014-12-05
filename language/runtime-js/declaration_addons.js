@@ -235,7 +235,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types
     throw IncompatibleTypeException$meta$model("ClassOrInterface<"+this.name+"> is not compatible with expected type: ClassOrInterface<" + qname$($mptypes.Type$apply)+">. Try passing the type argument explicitly with: apply<" + this.name+">");
   if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
   var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$AppliedInterface:_t}):
-    AppliedClass(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
+    AppliedClass$jsint(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
@@ -248,8 +248,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   validate$typeparams(_t,mm.tp,types);
   if (!extendsType(_t, $mptypes.Type$memberApply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this.string);
-  var rv=this.meta.mt==='i'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
-    :AppliedMemberClass(_t.t, {Container$MemberClass:$mptypes.Container$memberApply, Type$MemberClass:_t, Arguments$MemberClass:$mptypes.Arguments$memberApply});
+  var rv=this.meta.mt==='i'?AppliedMemberInterface$jsint(_t.t, {Container$AppliedMemberInterface:$mptypes.Container$memberApply, Type$AppliedMemberInterface:_t})
+    :AppliedMemberClass$jsint(_t.t, {Container$AppliedMemberClass:$mptypes.Container$memberApply, Type$AppliedMemberClass:_t, Arguments$AppliedMemberClass:$mptypes.Arguments$memberApply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};

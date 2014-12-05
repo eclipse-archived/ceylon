@@ -8,6 +8,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.FunctionDeclaration$impl;
+import ceylon.language.meta.declaration.FunctionalDeclaration;
 import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -58,17 +59,7 @@ public class FreeFunction
         this.typeParameters = Util.sequentialWrapper(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
         
         this.type = Metamodel.getMetamodel(declaration.getType());
-        
-        List<ParameterList> parameterLists = ((Functional)declaration).getParameterLists();
-        ParameterList parameterList = parameterLists.get(0);
-        List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
-        i=0;
-        for(Parameter modelParameter : modelParameters){
-            parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter.getModel());
-            i++;
-        }
-        this.parameterList = Util.sequentialWrapper(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
+        this.parameterList = FunctionalUtil.getParameters((Functional)declaration);
     }
 
     @Override
@@ -86,14 +77,7 @@ public class FreeFunction
     @Override
     @TypeInfo("ceylon.language.meta.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
-        Iterator<?> iterator = parameterList.iterator();
-        Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
-            if(pd.getName().equals(name))
-                return pd;
-        }
-        return null;
+        return FunctionalUtil.getParameterDeclaration(this.parameterList, name);
     }
 
     @Override

@@ -97,9 +97,15 @@ function qname$(mm) {
   }
   return qn;
 }
-//Resolve a type argument by looking into the metamodel
-function resolve$typearg(ta,mm) {
-  var r=mm.tp?mm.tp[ta]:undefined;
+//Resolve a type argument by looking into the metamodel,
+//as well as the type arguments provided (if any)
+function resolve$typearg(ta,mm,$$targs$$) {
+  var r;
+  if ($$targs$$ && $$targs$$[ta]) {
+    r=$$targs$$[ta];
+    if (typeof(t)!=='string')return r;
+  }
+  r=mm.tp?mm.tp[ta]:undefined;
   while (!r && mm.$cont) {
     mm=mm.$cont;
     if (mm.tp)r=mm.tp[ta];
@@ -113,7 +119,7 @@ function resolve$typearg(ta,mm) {
   return {t:Anything};
 }
 
-function convert$params(mm,a) {
+function convert$params(mm,a,$$targs$$) {
   var ps=mm.ps;
   if (ps===undefined || ps.length===0){
     if (a && a.size>0)
@@ -125,8 +131,8 @@ function convert$params(mm,a) {
   var sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
-    var val_t=sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,mm;
-    if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
+    var val_t=restype2$(sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,$$targs$$);
+    if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$$targs$$);
     if (a[i]===undefined) {
       if (p.def||p.seq)fa.push(undefined);
       else {
@@ -136,17 +142,17 @@ function convert$params(mm,a) {
       sarg.push(a[i]);
     } else if (p.seq) {
       for (var eta in p.$t.a)if(eta.startsWith("Element$"))val_t=p.$t.a[eta];
-      if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
+      if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$$targs$$);
       sarg=[].rt$(val_t); fa.push(sarg);
       for (var j=i; j<a.size;j++){
-        if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[j]));
+        if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
         sarg.push(a[j]);
       }
       i=j;
     } else {
       fa.push(a[i]);
     }
-    if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[i]));
+    if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[i]));
   }
   if (a.size>i)throw InvocationException$meta$model("Too many arguments");
   a = fa;

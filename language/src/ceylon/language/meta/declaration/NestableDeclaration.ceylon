@@ -5,7 +5,7 @@ shared sealed interface NestableDeclaration of FunctionOrValueDeclaration |
                                         ClassOrInterfaceDeclaration |
                                         SetterDeclaration |
                                         AliasDeclaration
-        satisfies AnnotatedDeclaration & TypedDeclaration {
+        satisfies AnnotatedDeclaration & TypedDeclaration & Contained {
 
     "True if this declaration is annotated with [[actual|ceylon.language::actual]]."
     shared formal Boolean actual;
@@ -19,16 +19,5 @@ shared sealed interface NestableDeclaration of FunctionOrValueDeclaration |
     "True if this declaration is annotated with [[shared|ceylon.language::shared]]."
     shared formal Boolean shared;
 
-    "This declaration's package container."
-    shared formal Package containingPackage;
-
-    "This declaration's module container."
-    shared formal Module containingModule;
-
-    "This declaration's immediate container, which can be either a [[NestableDeclaration]]
-     or a [[Package]]."
-    shared formal NestableDeclaration|Package container;
     
-    "True if this declaration is a toplevel declaration."
-    shared formal Boolean toplevel;
 }
