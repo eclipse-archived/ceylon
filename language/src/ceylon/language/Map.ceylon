@@ -256,7 +256,7 @@ shared interface Map<out Key,out Item>
         
     };
     
-    /*shared default
+    shared default
     Map<Key,Item&Object> coalescedMap 
             => object
             extends Object()
@@ -274,7 +274,7 @@ shared interface Map<out Key,out Item>
         
         clone() => outer.clone().coalescedMap;
         
-    };*/
+    };
     
 }
 
