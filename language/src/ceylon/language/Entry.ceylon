@@ -56,7 +56,7 @@ class Entry<out Key,out Item>(key, item)
     }
     
     shared actual Integer hash 
-            => (31 + key.hash) * 31 + (item.hash else 0);
+            => (31 + key.hash) * 31 + (item?.hash else 0);
     
     "A description of the entry in the form `key->item`. If 
      [[item]] is `null`, its string representation is the 

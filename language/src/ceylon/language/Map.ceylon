@@ -198,11 +198,8 @@ shared interface Map<out Key,out Item>
                 => if (is Key key, filtering(key))
                 then outer.defines(key) 
                 else false;
-             
-        function filterEntry(Key->Item entry) 
-                => filtering(entry.key);
         
-        iterator() => outer.filter(filterEntry).iterator();
+        iterator() => outer.filter(forKey(filtering)).iterator();
         
         clone() => outer.clone().filterKeys(filtering);
         
