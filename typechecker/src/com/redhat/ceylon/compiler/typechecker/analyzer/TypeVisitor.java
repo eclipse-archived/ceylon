@@ -292,9 +292,16 @@ public class TypeVisitor extends Visitor {
     private boolean checkForHiddenToplevel(Tree.Identifier id, Import i, Tree.Alias alias) {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
+            Declaration idec = i.getDeclaration();
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n) &&
-                    !i.getDeclaration().equals(d)) {
+                    !idec.equals(d) && 
+                    //it is legal to import an object declaration 
+                    //in the current package without providing an
+                    //alias:
+                    !(idec instanceof Value && 
+                            ((Value) idec).getTypeDeclaration().isAnonymous() &&
+                            ((Value) idec).getTypeDeclaration().equals(d))) {
                 if (alias==null) {
                     id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
