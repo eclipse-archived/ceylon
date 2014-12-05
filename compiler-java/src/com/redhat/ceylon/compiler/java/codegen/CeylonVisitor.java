@@ -646,6 +646,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         appendList(gen.statementGen().transform(that));
     }
 
+    public void visit(Tree.Destructure that) {
+        appendList(gen.statementGen().transform(that));
+    }
+
     public void visit(Tree.Dynamic that) {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement

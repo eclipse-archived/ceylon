@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -3929,5 +3930,57 @@ public class StatementTransformer extends AbstractTransformer {
     
     public Name getLabel(Tree.ForClause loop) {
         return getLabel(loop.getControlBlock());
+    }
+    
+    
+    /**
+     * Transforms a Ceylon destructuring assignment to Java code.
+     * @param stmt The Ceylon destructure
+     * @return The Java tree
+     */
+    List<JCStatement> transform(Tree.Destructure stmt) {
+        List<JCStatement> result = List.nil();
+        
+        // Create temp var to hold result of expression
+        Naming.SyntheticName tmpVarName = naming.alias("destructure");
+        Expression destExpr = stmt.getSpecifierExpression().getExpression();
+        JCExpression typeExpr = makeJavaType(destExpr.getTypeModel());
+        JCExpression expr = expressionGen().transformExpression(destExpr);
+        at(stmt);
+        JCVariableDecl tmpVar = makeVar(Flags.FINAL, tmpVarName, typeExpr, expr);
+        result = result.append(tmpVar);
+        
+        Tree.DestructuredVariables vars = stmt.getDestructuredVariables();
+        if (vars instanceof Tree.VariableTuple) {
+            // For a Tuple we get the value of each of its items and assign it to a local value
+            int idx = 0;
+            JCExpression getExpr = makeQualIdent(tmpVarName.makeIdent(), "get");
+            Tree.VariableTuple tuple = (Tree.VariableTuple)vars;
+            for (Variable var : tuple.getVariables()) {
+                JCExpression idxExpr = boxType(makeInteger(idx), typeFact().getIntegerDeclaration().getType());
+                JCExpression fullGetExpr = make().Apply(null, getExpr, List.of(idxExpr));
+                result = result.append(transformDestructuredVariable(var, fullGetExpr));
+            }
+        } else if (vars instanceof Tree.KeyValue) {
+            // For an Entry we create two local values, one for the key and one for the value
+            Tree.KeyValue entry = (Tree.KeyValue)vars;
+            JCExpression getKeyExpr = make().Apply(null, makeQualIdent(tmpVarName.makeIdent(), "getKey"), List.<JCExpression>nil());
+            result = result.append(transformDestructuredVariable(entry.getKey(), getKeyExpr));
+            JCExpression getItemExpr = make().Apply(null, makeQualIdent(tmpVarName.makeIdent(), "getItem"), List.<JCExpression>nil());
+            result = result.append(transformDestructuredVariable(entry.getValue(), getItemExpr));
+        } else {
+            throw new BugException(vars, "Unknown destructure type, should be Tuple or Entry");
+        }
+        
+        return result;
+    }
+
+    private JCStatement transformDestructuredVariable(Variable var, JCExpression init) {
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+        init = expressionGen().applyErasureAndBoxing(init, typeFact().getObjectDeclaration().getType(), true, boxingStrategy, var.getType().getTypeModel());
+        at(var);
+        JCExpression type = makeJavaType(var.getType().getTypeModel());
+        JCVariableDecl def = make().VarDef(make().Modifiers(Flags.FINAL), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
+        return def;
     }
 }
