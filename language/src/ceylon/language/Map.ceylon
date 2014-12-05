@@ -256,6 +256,8 @@ shared interface Map<out Key,out Item>
         
     };
     
+    "A map with every entry of this map whose item is
+     non-null."
     shared default
     Map<Key,Item&Object> coalescedMap 
             => object
