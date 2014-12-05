@@ -398,7 +398,7 @@ class MemberObjectContainer<T>(){
         assert(fooDecl == `class MemberObjectContainer`);
         
         assert(`memberObject.attribute`.declaration == `value memberObject.attribute`);
-        assert(`memberObject.attribute`.get() == 2);
+        assert(`memberObject.attribute`(this).get() == 2);
         assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass = `memberObject.attribute`.container);
         assert(is Class<MemberObjectContainer<T>,[]> fooClass = memberObjectClass.container);
         assert(fooClass == `MemberObjectContainer<T>`);
@@ -410,7 +410,7 @@ class MemberObjectContainer<T>(){
         assert(fooDecl2 == `class MemberObjectContainer`);
         
         assert(`memberObject.method<Integer>`.declaration == `function memberObject.method`);
-        assert(`memberObject.method<Integer>`(3) == 3);
+        assert(`memberObject.method<Integer>`(this)(3) == 3);
         assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass2 = `memberObject.method<Integer>`.container);
         assert(is Class<MemberObjectContainer<T>,[]> fooClass2 = memberObjectClass2.container);
         assert(fooClass2 == `MemberObjectContainer<T>`);
