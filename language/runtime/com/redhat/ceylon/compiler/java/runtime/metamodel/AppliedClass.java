@@ -91,6 +91,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
+        boolean invokeOnCompanionInstance = this.instance != null 
+                && decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
+                && !decl.isShared();
+        if (invokeOnCompanionInstance) {
+            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration.declaration.getContainer());
+        }
+        
         Object[] defaultedMethods = null;
         if(firstDefaulted != -1){
             // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
@@ -119,11 +126,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
-                        int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass()) 
-                                ? decl.getTypeParameters().size() : 0;
+                        int implicitParameterCount = 0;
+                        if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
+                            implicitParameterCount += decl.getTypeParameters().size();
+                        }
+                        if (decl.isClassMember() && javaClass.isMemberClass() 
+                                || decl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()*/) { 
+                            // non-shared member classes don't get instantiators, so there's the 
+                            // synthetic outerthis parameter to account for.
+                            implicitParameterCount++;
+                        }
                         // this doesn't need to count synthetic parameters because we only use the constructor for Java types
                         // which can't have defaulted parameters
-                        int params = constr.getParameterTypes().length - reifiedTypeParameterCount;
+                        int params = constr.getParameterTypes().length - implicitParameterCount;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
                     continue;
@@ -165,7 +180,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
         if(found != null){
             boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
-            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, false);
+            constructor = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, false);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
@@ -173,7 +188,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     if(defaultedMethods[i] == null)
                         throw Metamodel.newModelError("Missing defaulted constructor for "+ declaration.getName()
                                 +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameterProducedTypes, variadic, false);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, producedType, parameterProducedTypes, variadic, false);
                 }
                 dispatch[i] = constructor;
             }else if(variadic){
@@ -181,13 +196,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 // we treat variadic methods as if the last parameter is optional
                 firstDefaulted = parameters.size() - 1;
                 dispatch = new MethodHandle[2];
-                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, true);
+                dispatch[0] = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, true);
                 dispatch[1] = constructor;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance, 
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass,  
                                                   ProducedType producedType,
                                                   List<ProducedType> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
@@ -463,7 +478,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
 
         // AFAIK default value methods cannot be Java-variadic 
-        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, false, false);
+        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, false, false);
         // sucks that we have to copy the array, but that's the MH API
         java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
         System.arraycopy(values.toArray(), 0, arguments, 0, collectedValueCount);

@@ -589,7 +589,7 @@ public class Metamodel {
     public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration, String methodName) {
         com.redhat.ceylon.compiler.typechecker.model.Class cls = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
         Class<?> javaCls = getJavaClass(cls);
-        Class<?> terJavaCls = javaCls.getEnclosingClass();
+        Class<?> terJavaCls = getJavaClass((Declaration)cls.getContainer());
         java.lang.reflect.Method[] methods = terJavaCls.getDeclaredMethods();
         // the instantiator method is @Ignore'd and not @Name'd
         // So we search for the method:
@@ -666,7 +666,7 @@ public class Metamodel {
             com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
         com.redhat.ceylon.compiler.typechecker.model.Class classModel = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
         Class<?> javaClass = getJavaClass(classModel);
-        Class<?> outerJavaClass = javaClass.getEnclosingClass(); 
+        Class<?> outerJavaClass = getJavaClass((Declaration)classModel.getContainer()); 
         java.lang.reflect.Method[] ctors = outerJavaClass.getDeclaredMethods();
         ArrayList<java.lang.reflect.Method> result = new ArrayList<java.lang.reflect.Method>();
         // find the appropriate ultimate constructor
@@ -1629,5 +1629,19 @@ public class Metamodel {
             throw new ceylon.language.AssertionError("Module "+spec+" is not available");
         }
         return module;
+    }
+    
+    public static Object getCompanionInstance(java.lang.Object instance, com.redhat.ceylon.compiler.typechecker.model.Interface iface) {
+        if (instance == null) {
+            return null;
+        }
+        try {
+            java.lang.reflect.Method implAccessor = instance.getClass().getMethod("$" + 
+        iface.getQualifiedNameString().replace('.', '$').replace("::", "$") + "$impl");
+            implAccessor.setAccessible(true);
+            return implAccessor.invoke(instance);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

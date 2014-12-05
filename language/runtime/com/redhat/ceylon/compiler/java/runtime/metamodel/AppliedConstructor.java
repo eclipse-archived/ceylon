@@ -102,8 +102,23 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
 
     private void initConstructor() {
         com.redhat.ceylon.compiler.typechecker.model.Constructor constructorModel = this.declaration.constructor;
+        
         com.redhat.ceylon.compiler.typechecker.model.Class classModel = (com.redhat.ceylon.compiler.typechecker.model.Class)constructorModel.getContainer();
+        
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(classModel);
+
+        boolean useInstantiator = javaClass.isMemberClass() 
+                && Metamodel.isCeylon(classModel)
+                // private ceylon member classes don't have any outer constructor method so treat them like java members
+                && constructorModel.isShared()
+                && classModel.isShared();
+        boolean invokeOnCompanionInstance = this.instance != null 
+                && classModel.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
+                && !(constructorModel.isShared() && classModel.isShared());
+        if (invokeOnCompanionInstance) {
+            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.compiler.typechecker.model.Interface)classModel.getContainer());
+        }
+        
         List<Parameter> parameters = constructorModel.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
@@ -115,24 +130,27 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
             this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
             defaultedMethods = new Object[dispatch.length];
         }
-        if(!(javaClass.isMemberClass() 
-                && Metamodel.isCeylon(classModel)
-                // private ceylon member classes don't have any outer constructor method so treat them like java members
-                && constructorModel.isShared()
-                && classModel.isShared())) {
+        if(!useInstantiator) {
             for(java.lang.reflect.Constructor<?> constr : Metamodel.getJavaConstructors(constructorModel)){
                 if(constr.isAnnotationPresent(Ignore.class)){
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
-                        int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass()) 
-                                ? classModel.getTypeParameters().size() : 0;
-                        // non-shared member classes don't get instantiators, so there's the 
-                        // synthetic outerthis parameter to account for.
-                        if (javaClass.isMemberClass()) {
-                            reifiedTypeParameterCount++;
+                        int implicitParameterCount = 0;
+                        if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
+                            implicitParameterCount += classModel.getTypeParameters().size();
                         }
-                        int params = constr.getParameterTypes().length - reifiedTypeParameterCount;
+                        if (classModel.isClassMember() && javaClass.isMemberClass() 
+                                || classModel.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()*/) { 
+                            // non-shared member classes don't get instantiators, so there's the 
+                            // synthetic outerthis parameter to account for.
+                            implicitParameterCount++;
+                        }
+                        if (!Metamodel.isDefaultConstructor(constructorModel)) {
+                            // constructor name parameter
+                            implicitParameterCount++;
+                        }
+                        int params = constr.getParameterTypes().length - implicitParameterCount;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
                     continue;
@@ -155,9 +173,20 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
                     continue;
                 // FIXME: proper checks
                 if(firstDefaulted != -1){
-                    int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(meth, true) 
-                            ? classModel.getTypeParameters().size() : 0;
-                    int params = meth.getParameterTypes().length - reifiedTypeParameterCount;
+                    int implicitParameterCount = 0;
+                    if (MethodHandleUtil.isReifiedTypeSupported(meth, true)) {
+                        implicitParameterCount += classModel.getTypeParameters().size();
+                    }
+                    if (classModel.isInterfaceMember() && !declaration.constructor.isShared()) { 
+                        // non-shared member classes don't get instantiators, so there's the 
+                        // synthetic outerthis parameter to account for.
+                        implicitParameterCount++;
+                    }
+                    if (!Metamodel.isDefaultConstructor(constructorModel)) {
+                        // constructor name parameter
+                        implicitParameterCount++;
+                    }
+                    int params = meth.getParameterTypes().length - implicitParameterCount;
                     if(params != parameters.size()){
                         defaultedMethods[params - firstDefaulted] = meth;
                         continue;
