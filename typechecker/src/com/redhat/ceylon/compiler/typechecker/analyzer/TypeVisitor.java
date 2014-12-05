@@ -292,9 +292,16 @@ public class TypeVisitor extends Visitor {
     private boolean checkForHiddenToplevel(Tree.Identifier id, Import i, Tree.Alias alias) {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
+            Declaration idec = i.getDeclaration();
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n) &&
-                    !i.getDeclaration().equals(d)) {
+                    !idec.equals(d) && 
+                    //it is legal to import an object declaration 
+                    //in the current package without providing an
+                    //alias:
+                    !(idec instanceof Value && 
+                            ((Value) idec).getTypeDeclaration().isAnonymous() &&
+                            ((Value) idec).getTypeDeclaration().equals(d))) {
                 if (alias==null) {
                     id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
@@ -771,28 +778,31 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
-                name(that.getIdentifier()), null, false, that.getUnit());
         String name = name(that.getIdentifier());
+        Scope scope = that.getScope();
+        TypeDeclaration type = 
+                getTypeDeclaration(scope, name, null, false, unit);
         if (type==null) {
             that.addError("type declaration does not exist: '" + name + "'", 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
-            ProducedType outerType = that.getScope().getDeclaringType(type);
+            ProducedType outerType = scope.getDeclaringType(type);
             visitSimpleType(that, outerType, type);
         }
     }
     
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
-            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+            ClassOrInterface ci = 
+                    getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (that.getScope() instanceof Constructor) {
                     that.setTypeModel(intersectionOfSupertypes(ci));
                 }
                 else if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                    ClassOrInterface oci = 
+                            (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
                 }
                 else {
@@ -840,7 +850,8 @@ public class TypeVisitor extends Visitor {
             }
             TypeDeclaration d = pt.getDeclaration();
             String name = name(that.getIdentifier());
-            TypeDeclaration type = getTypeMember(d, name, null, false, unit);
+            TypeDeclaration type = 
+                    getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
                     that.addError("member type declaration is ambiguous: '" + 
