@@ -55,17 +55,6 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
         return new Sub(i);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub2 $name$, final long i) {
-        return new Sub($name$, i);
-    }
-    
-    public static final class Sub$Sub2 {
-        
-        private Sub$Sub2() {
-        }
-    }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub2 Sub$Sub2 = null;
-    
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 $name$, final long i) {
         return new Sub($name$, i);
     }
@@ -102,10 +91,6 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member {
         
         public Sub(final long i) {
-            super(i);
-        }
-        
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub2 $name$, final long i) {
             super(i);
         }
         

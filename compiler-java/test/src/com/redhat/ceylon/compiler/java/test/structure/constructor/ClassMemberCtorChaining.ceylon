@@ -9,10 +9,8 @@ class ClassMemberCtorChaining() {
 }
 @noanno
 class ClassMemberCtorChainingSub() extends ClassMemberCtorChaining() {
-    shared class Sub extends ClassMemberCtorChaining.Member {
+    shared class Sub extends super.Member {
         shared new Sub(Integer i) extends super.Member(i) {
-        }
-        shared new Sub2(Integer i) extends ClassMemberCtorChaining.Member(i) {
         }
         shared new Sub3(Integer i) extends Member(i) {
         }

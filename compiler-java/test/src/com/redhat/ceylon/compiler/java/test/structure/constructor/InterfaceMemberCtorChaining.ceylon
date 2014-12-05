@@ -9,10 +9,8 @@ interface InterfaceMemberCtorChaining {
 }
 @noanno
 interface InterfaceMemberCtorChainingSub satisfies InterfaceMemberCtorChaining {
-    shared class Sub extends InterfaceMemberCtorChaining.Member {
+    shared class Sub extends super.Member {
         shared new Sub(Integer i) extends super.Member(i) {
-        }
-        shared new Sub2(Integer i) extends InterfaceMemberCtorChaining.Member(i) {
         }
         shared new Sub3(Integer i) extends Member(i) {
         }
