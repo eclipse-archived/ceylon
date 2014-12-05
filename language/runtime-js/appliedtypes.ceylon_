@@ -20,22 +20,6 @@ shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,A
   shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("unimplemented"); }
 }
 
-shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing>()
-    satisfies Method<Container,Type,Arguments>
-    given Arguments satisfies Anything[] {
-
-  shared actual ClosedType<Anything>[] parameterTypes => [];
-  shared actual Function<Type, Arguments> bind(Object container) { throw Exception("AppliedMethod.bind"); }
-
-    shared actual FunctionDeclaration declaration { throw Exception("unimplemented"); }
-    shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
-    shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
-
-    shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
-
-    shared actual Map<TypeParameter, ClosedType<Anything>> typeArguments { throw Exception("unimplemented"); }
-}
-
 shared class AppliedAttribute<in Container, out Get=Anything, in Set=Nothing>() satisfies Attribute<Container,Get,Set> {
     shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
     shared actual default ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }

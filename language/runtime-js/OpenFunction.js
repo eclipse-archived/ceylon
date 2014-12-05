@@ -45,8 +45,8 @@ atr$($$openFunction,'annotation',function(){
         var ta={t:this.tipo};
         validate$typeparams(ta,mm.tp,types);
         validate$params(mm.ps,$mptypes.Arguments$apply,"Wrong number of arguments when applying function");
-        return ta.a?AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.ps,ta.a)},undefined,ta.a):
-          AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.ps)});
+        return ta.a?AppliedFunction$jsint(this.tipo,{Type$AppliedFunction:mm.$t,Arguments$AppliedFunction:tupleize$params(mm.ps,ta.a)},undefined,ta.a):
+          AppliedFunction$jsint(this.tipo,{Type$AppliedFunction:mm.$t,Arguments$AppliedFunction:tupleize$params(mm.ps)});
       };$$openFunction.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},ps:[{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model}}}}],$cont:OpenFunction,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){

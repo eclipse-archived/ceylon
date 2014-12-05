@@ -30,7 +30,7 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   }
   if ($$appliedMethod===undefined){
     $$appliedMethod=function(x){
-      return AppliedFunction(tipo,{Type$Function:$$targs$$.Type$Method,Arguments$Function:$$targs$$.Arguments$Method,
+      return AppliedFunction$jsint(tipo,{Type$Function:$$targs$$.Type$Method,Arguments$Function:$$targs$$.Arguments$Method,
         Container$Function:$$targs$$.Container$Method},x,typeArgs);
     }
     var dummy=new AppliedMethod$jsint.$$;

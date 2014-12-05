@@ -34,7 +34,8 @@ function typeLiteral$meta($$targs$$,targ$2) {
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['mt'] === 'm') {
-        return AppliedFunction(t,{Type$Function:$$targs$$.Type$typeLiteral,Arguments$Function:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+        return AppliedFunction$jsint(t,{Type$AppliedFunction:$$targs$$.Type$typeLiteral,
+               Arguments$AppliedFunction:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
       } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g' || mdl.mt==='s') {
         return AppliedValue$jsint(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
       } else {
