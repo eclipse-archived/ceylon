@@ -8,4 +8,6 @@ shared object foo {
 
 shared object bar {
     shared class Bar(shared String bar) {}
+    @type:"bar.Bar" Bar b = bar.Bar("");
+    @type:"bar.Bar" bar.Bar("");
 }

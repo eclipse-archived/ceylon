@@ -144,6 +144,13 @@ public class Package
 
     @Override
     public ProducedType getDeclaringType(Declaration d) {
+        if (d.isClassMember()) {
+            Class containingAnonClass =
+                    (Class) d.getContainer();
+            if (containingAnonClass.isAnonymous()) {
+                return containingAnonClass.getType();
+            }
+        }
         return null;
     }
 

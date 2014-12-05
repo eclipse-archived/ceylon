@@ -778,28 +778,31 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
-                name(that.getIdentifier()), null, false, that.getUnit());
         String name = name(that.getIdentifier());
+        Scope scope = that.getScope();
+        TypeDeclaration type = 
+                getTypeDeclaration(scope, name, null, false, unit);
         if (type==null) {
             that.addError("type declaration does not exist: '" + name + "'", 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
-            ProducedType outerType = that.getScope().getDeclaringType(type);
+            ProducedType outerType = scope.getDeclaringType(type);
             visitSimpleType(that, outerType, type);
         }
     }
     
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
-            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+            ClassOrInterface ci = 
+                    getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (that.getScope() instanceof Constructor) {
                     that.setTypeModel(intersectionOfSupertypes(ci));
                 }
                 else if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                    ClassOrInterface oci = 
+                            (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
                 }
                 else {
@@ -847,7 +850,8 @@ public class TypeVisitor extends Visitor {
             }
             TypeDeclaration d = pt.getDeclaration();
             String name = name(that.getIdentifier());
-            TypeDeclaration type = getTypeMember(d, name, null, false, unit);
+            TypeDeclaration type = 
+                    getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
                     that.addError("member type declaration is ambiguous: '" + 
