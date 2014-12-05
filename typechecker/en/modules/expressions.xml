@@ -1449,7 +1449,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             expression. The <literal>else</literal> expression is not optional.</para>
             
             <synopsis>IfElseExpression: "if" ConditionList ThenExpression (ElseExpression | ElseIfExpression)</synopsis>
-            <synopsis>ElseIfExpression: "else" IfExpression</synopsis>
+            <synopsis>ElseIfExpression: "else" IfElseExpression</synopsis>
             
             <para>The type of an <literal>if/then/else</literal> expression with
             <literal>then</literal> expression of type <literal>X</literal> and
