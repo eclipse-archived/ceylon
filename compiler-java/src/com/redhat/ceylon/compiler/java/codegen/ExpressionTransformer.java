@@ -3718,34 +3718,39 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // make sure we don't die of a missing declaration too
                     + (expr.getDeclaration() != null ? expr.getDeclaration().getName() : expr)
                     + " has a null target");
-        // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
-        // only useful for the typechecker resolving
-        Tree.Primary primary = expr.getPrimary();
-        if(primary instanceof Tree.Package)
-            return null;
-        ProducedType type = expr.getTarget().getQualifyingType();
-        if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
-            ProducedType optionalType = typeFact().getOptionalType(type);
-            optionalType.setUnderlyingType(type.getUnderlyingType());
-            type = optionalType;
+        // do not consider the primary to be an invocation since in foo.x() we're invoking x, not foo.
+        boolean previousWithinInvocation = withinInvocation(false);
+        try{
+            // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
+            // only useful for the typechecker resolving
+            Tree.Primary primary = expr.getPrimary();
+            if(primary instanceof Tree.Package)
+                return null;
+            ProducedType type = expr.getTarget().getQualifyingType();
+            if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
+                ProducedType optionalType = typeFact().getOptionalType(type);
+                optionalType.setUnderlyingType(type.getUnderlyingType());
+                type = optionalType;
+            }
+            BoxingStrategy boxing = expr.getMemberOperator() instanceof Tree.SafeMemberOp == false 
+                    && Decl.isValueTypeDecl(primary)
+                    && CodegenUtil.isUnBoxed(primary)
+                    ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+            JCExpression result;
+            if (isSuper(primary)) {
+                result = transformSuper(expr);
+            } else if (isSuperOf(primary)) {
+                result = transformSuperOf(expr);
+            } else if (Decl.isJavaStaticPrimary(primary)) {
+                // Java static field or method access
+                result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
+            } else {
+                result = transformExpression(primary, boxing, type);
+            }
+            return result;
+        }finally{
+            withinInvocation(previousWithinInvocation);
         }
-        BoxingStrategy boxing = expr.getMemberOperator() instanceof Tree.SafeMemberOp == false 
-                && Decl.isValueTypeDecl(primary)
-                && CodegenUtil.isUnBoxed(primary)
-                ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-        JCExpression result;
-        if (isSuper(primary)) {
-            result = transformSuper(expr);
-        } else if (isSuperOf(primary)) {
-            result = transformSuperOf(expr);
-        } else if (Decl.isJavaStaticPrimary(primary)) {
-            // Java static field or method access
-            result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
-        } else {
-            result = transformExpression(primary, boxing, type);
-        }
-        
-        return result;
     }
 
     private JCExpression transformJavaStaticMember(Tree.QualifiedMemberOrTypeExpression qmte, ProducedType staticType) {
