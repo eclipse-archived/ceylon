@@ -74,7 +74,7 @@ final class bug_935_test_ {
         .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> result$iterator$$9 = isTuple$11 ? null : iterable$10.iterator();
         loop_1: while (isTuple$11 ? i$13 < length$14 : !((elem$8 = result$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$11) elem$8 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$12, i$13++);
-            final .ceylon.language.Sequence result = (.ceylon.language.Sequence)elem$8;
+            final .ceylon.language.Sequence result = (.ceylon.language.Sequence)(.ceylon.language.Sequence)elem$8;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Size: ").append(((.ceylon.language.Integer)((.ceylon.language.Correspondence)result).get(.ceylon.language.Integer.instance(0L))).longValue()).append(", for: \'").append(((.ceylon.language.String)((.ceylon.language.Correspondence)result).get(.ceylon.language.Integer.instance(1L))).toString()).append("\'").toString()));
         }
     }
