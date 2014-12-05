@@ -4359,7 +4359,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             } else if (decl.isMember() && !expr.getStaticMethodReference()) {
-                throw new BugException(expr, decl.getQualifiedNameString() + " was unexepctecly a member");
+                throw new BugException(expr, decl.getQualifiedNameString() + " was unexpectedly a member");
             }
         }
         return qualExpr;
