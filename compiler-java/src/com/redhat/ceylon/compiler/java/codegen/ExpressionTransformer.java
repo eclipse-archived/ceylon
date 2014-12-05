@@ -2237,8 +2237,15 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // attr++
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
-        if(term instanceof Tree.BaseMemberExpression){
-            JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
+        if(term instanceof Tree.BaseMemberExpression
+                // special case for java statics Foo.attr where Foo does not need to be evaluated
+                || (term instanceof Tree.QualifiedMemberExpression
+                        && ((Tree.QualifiedMemberExpression)term).getStaticMethodReference())){
+            JCExpression getter;
+            if(term instanceof Tree.BaseMemberExpression)
+                getter = transform((Tree.BaseMemberExpression)term, null);
+            else
+                getter = transformMemberExpression((Tree.QualifiedMemberExpression)term, null, null);
             at(expr);
             // Type $tmp = attr
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
@@ -2392,8 +2399,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression result = null;
         // attr
         // (let $tmp = OP(attr); attr = $tmp; $tmp)
-        if(term instanceof Tree.BaseMemberExpression){
-            JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
+        if(term instanceof Tree.BaseMemberExpression
+            // special case for java statics Foo.attr where Foo does not need to be evaluated
+            || (term instanceof Tree.QualifiedMemberExpression
+                    && ((Tree.QualifiedMemberExpression)term).getStaticMethodReference())){
+            JCExpression getter;
+            if(term instanceof Tree.BaseMemberExpression)
+                getter = transform((Tree.BaseMemberExpression)term, null);
+            else
+                getter = transformMemberExpression((Tree.QualifiedMemberExpression)term, null, null);
             at(operator);
             // Type $tmp = OP(attr);
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
@@ -3744,6 +3758,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (Decl.isJavaStaticPrimary(primary)) {
                 // Java static field or method access
                 result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
+            } else if (expr.getStaticMethodReference()) {
+                result = null;
             } else {
                 result = transformExpression(primary, boxing, type);
             }
@@ -4242,7 +4258,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         qualExpr = applyVarianceCasts(qualExpr, targetType, varianceCastResult, 0);
                     }
                 }
-            } else if (decl.isMember()) {
+            } else if (decl.isMember() && !expr.getStaticMethodReference()) {
                 throw new BugException(expr, decl.getQualifiedNameString() + " was unexepctecly a member");
             }
         }
