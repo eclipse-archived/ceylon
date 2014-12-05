@@ -6867,10 +6867,10 @@ public class ExpressionVisitor extends Visitor {
                 Tree.InvocationExpression ie = that.getInvocationExpression();
                 Class clazz = (Class) td;
                 if (ie==null && (!clazz.hasConstructors() || clazz.isAnonymous())) {
-                    that.addError("missing instantiation arguments");
+                    et.addError("missing instantiation arguments");
                 }
                 else if (ie!=null && clazz.hasConstructors() && !clazz.isAnonymous()) {
-                    that.addError("unnecessary instantiation arguments");
+                    et.addError("unnecessary instantiation arguments");
                 }
                 
                 ProducedType type = et.getTypeModel();

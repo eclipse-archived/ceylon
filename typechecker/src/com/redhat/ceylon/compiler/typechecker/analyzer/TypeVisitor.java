@@ -1078,12 +1078,12 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ParameterList pl = that.getParameterList();
         if (pl!=null && cd.hasConstructors()) {
-            pl.addError("class with parameters may not declare constructors: class " + 
-                    cd.getName() + " has a parameter list and a constructor");
+            pl.addError("class with parameters may not declare constructors: class '" + 
+                    cd.getName() + "' has a parameter list and a constructor");
         }
         if (pl==null && !cd.hasConstructors()) {
-            that.addError("class without parameters must declare constructors: class " + 
-                    cd.getName() + " has neither parameter list nor constructors");
+            that.addError("class without parameters must declare constructors: class '" + 
+                    cd.getName() + "' has neither parameter list nor constructors");
         }
     }
 
