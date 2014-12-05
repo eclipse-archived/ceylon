@@ -391,6 +391,10 @@ class MemberObjectContainer<T>(){
         shared T method<T>(T t) => t;
     }
     shared void test(){
+        assert (`memberObject`.declaration==`value memberObject`);
+        assert (`memberObject`.declaration.container==`class memberObject`);
+        assert(`memberObject`(this)==memberObject);
+        
         assert(`value memberObject.attribute`.name == "attribute");
         assert(is ClassDeclaration memberObjectDecl = `value memberObject.attribute`.container);
         assert(memberObjectDecl == `class memberObject`);
