@@ -36,6 +36,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     
     private final ModuleSet moduleSet = new ModuleSet();
     private String compileFlags;
+    private String version;
     private Boolean tap = false;
     private Boolean report = false;
     
@@ -74,6 +75,13 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     }
     
     /**
+     * Sets the ceylon.test module version.
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    
+    /**
      * Enables the Test Anything Protocol v13.
      * @param tap
      */
@@ -109,6 +117,9 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
         
         if(compileFlags != null){
             appendOptionArgument(cmd, "--compile", compileFlags);
+        }
+        if(version != null) {
+            appendOptionArgument(cmd, "--version", version);
         }
         if(tap) {
             appendOption(cmd, "--tap");
