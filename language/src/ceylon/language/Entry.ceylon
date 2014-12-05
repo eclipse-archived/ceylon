@@ -23,16 +23,10 @@ class Entry<out Key,out Item>(key, item)
          entry.pair == [entry.key,entry.item]"
     shared [Key, Item] pair => [key, item];
     
-    "An `entry` with the key and item of this entry if item
-     is non-null, or `null` if item is null."
-    shared <Key->Item&Object>? normalized {
-        if (exists item) {
-            return key->item;
-        } 
-        else {
-            return null;
-        }
-    }
+    "An `Entry` with the key and item of this entry if this 
+     entry's item is non-null, or `null` otherwise."
+    shared <Key->Item&Object>? coalesced
+            => if (exists item) then key->item else null;
     
     "Determines if this entry is equal to the given entry. 
      Two entries are equal if they have the same key and 
@@ -61,15 +55,8 @@ class Entry<out Key,out Item>(key, item)
         }
     }
     
-    shared actual Integer hash {
-        value keyHash = (31 + key.hash) * 31;
-        if (exists item) {
-            return keyHash + item.hash;
-        }
-        else {
-            return keyHash;
-        }
-    }
+    shared actual Integer hash 
+            => (31 + key.hash) * 31 + (item.hash else 0);
     
     "A description of the entry in the form `key->item`. If 
      [[item]] is `null`, its string representation is the 
