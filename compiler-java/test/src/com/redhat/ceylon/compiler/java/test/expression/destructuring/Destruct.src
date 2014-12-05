@@ -1,0 +1,190 @@
+package com.redhat.ceylon.compiler.java.test.expression.destructuring;
+
+final class tupleVar_ {
+    
+    private tupleVar_() {
+    }
+    
+    static void tupleVar(final .ceylon.language.Sequence tuple) {
+        final .ceylon.language.Sequence destructure$0 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final long i1 = ((.ceylon.language.Integer)destructure$0.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f1 = ((.ceylon.language.Float)destructure$0.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$0.get(.ceylon.language.Integer.instance(0))).toString();
+        final .ceylon.language.Sequence destructure$1 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final long i2 = ((.ceylon.language.Integer)destructure$1.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f2 = ((.ceylon.language.Float)destructure$1.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$1.get(.ceylon.language.Integer.instance(0))).toString();
+        final .ceylon.language.Sequence destructure$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tuple;
+        final long i3 = ((.ceylon.language.Integer)destructure$2.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f3 = ((.ceylon.language.Float)destructure$2.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$2.get(.ceylon.language.Integer.instance(0))).toString();
+    }
+}
+final class tupleLiteral_ {
+    
+    private tupleLiteral_() {
+    }
+    
+    static void tupleLiteral() {
+        final .ceylon.language.Sequence destructure$3 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(0L),
+                .ceylon.language.Float.instance(1.0),
+                .ceylon.language.String.instance("foo")});
+        final long i1 = ((.ceylon.language.Integer)destructure$3.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f1 = ((.ceylon.language.Float)destructure$3.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$3.get(.ceylon.language.Integer.instance(0))).toString();
+        final .ceylon.language.Sequence destructure$4 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(0L),
+                .ceylon.language.Float.instance(1.0),
+                .ceylon.language.String.instance("foo")});
+        final long i2 = ((.ceylon.language.Integer)destructure$4.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f2 = ((.ceylon.language.Float)destructure$4.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$4.get(.ceylon.language.Integer.instance(0))).toString();
+        final .ceylon.language.Sequence destructure$5 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(0L),
+                .ceylon.language.Float.instance(1.0),
+                .ceylon.language.String.instance("foo")});
+        final long i3 = ((.ceylon.language.Integer)destructure$5.get(.ceylon.language.Integer.instance(0))).longValue();
+        final double f3 = ((.ceylon.language.Float)destructure$5.get(.ceylon.language.Integer.instance(0))).doubleValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$5.get(.ceylon.language.Integer.instance(0))).toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleLiteral_.tupleLiteral();
+    }
+}
+final class tupleGeneric_ {
+    
+    private tupleGeneric_() {
+    }
+    
+    static void tupleGeneric() {
+        
+        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                this.$reified$T = $reified$T;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class, $reified$T));
+            }
+        }
+        
+        class FooSub<T> extends Foo<T> {
+            
+            FooSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                super($reified$T);
+                this.$reified$T = $reified$T;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, $reified$T));
+            }
+        }
+        final .ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>> destructure$6 = (.ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), new .java.lang.Object[]{new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$)});
+        final FooSub<.ceylon.language.Integer> f1 = (FooSub<.ceylon.language.Integer>)(FooSub)destructure$6.get(.ceylon.language.Integer.instance(0));
+        final .ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>> destructure$7 = (.ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), new .java.lang.Object[]{new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$)});
+        final FooSub<.ceylon.language.Integer> f2 = (FooSub<.ceylon.language.Integer>)(FooSub)destructure$7.get(.ceylon.language.Integer.instance(0));
+        final .ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>> destructure$8 = (.ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), new .java.lang.Object[]{new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$)});
+        final Foo<.ceylon.language.Integer> f3 = (Foo<.ceylon.language.Integer>)(Foo)destructure$8.get(.ceylon.language.Integer.instance(0));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.tupleGeneric();
+    }
+}
+final class entryVar_ {
+    
+    private entryVar_() {
+    }
+    
+    static void entryVar(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> entry) {
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$9 = entry;
+        final long i1 = ((.ceylon.language.Integer)destructure$9.getKey()).longValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$9.getItem()).toString();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$10 = entry;
+        final long i2 = ((.ceylon.language.Integer)destructure$10.getKey()).longValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$10.getItem()).toString();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$11 = entry;
+        final long i3 = ((.ceylon.language.Integer)destructure$11.getKey()).longValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$11.getItem()).toString();
+    }
+}
+final class entryLiteral_ {
+    
+    private entryLiteral_() {
+    }
+    
+    static void entryLiteral() {
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$12 = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.String.instance("foo"));
+        final long i1 = ((.ceylon.language.Integer)destructure$12.getKey()).longValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)destructure$12.getItem()).toString();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$13 = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.String.instance("foo"));
+        final long i2 = ((.ceylon.language.Integer)destructure$13.getKey()).longValue();
+        final .java.lang.String s2 = ((.ceylon.language.String)destructure$13.getItem()).toString();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> destructure$14 = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.String.instance("foo"));
+        final long i3 = ((.ceylon.language.Integer)destructure$14.getKey()).longValue();
+        final .java.lang.String s3 = ((.ceylon.language.String)destructure$14.getItem()).toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.destructuring.entryLiteral_.entryLiteral();
+    }
+}
+final class entryGeneric_ {
+    
+    private entryGeneric_() {
+    }
+    
+    static void entryGeneric() {
+        
+        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                this.$reified$T = $reified$T;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class, $reified$T));
+            }
+        }
+        
+        class FooSub<T> extends Foo<T> {
+            
+            FooSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                super($reified$T);
+                this.$reified$T = $reified$T;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, $reified$T));
+            }
+        }
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends FooSub<.ceylon.language.Integer>> destructure$15 = new .ceylon.language.Entry<.ceylon.language.Integer, FooSub<.ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.instance(0L), new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        final long i1 = ((.ceylon.language.Integer)destructure$15.getKey()).longValue();
+        final FooSub<.ceylon.language.Integer> f1 = (FooSub<.ceylon.language.Integer>)(FooSub)destructure$15.getItem();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends FooSub<.ceylon.language.Integer>> destructure$16 = new .ceylon.language.Entry<.ceylon.language.Integer, FooSub<.ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.instance(0L), new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        final long i2 = ((.ceylon.language.Integer)destructure$16.getKey()).longValue();
+        final FooSub<.ceylon.language.Integer> f2 = (FooSub<.ceylon.language.Integer>)(FooSub)destructure$16.getItem();
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends FooSub<.ceylon.language.Integer>> destructure$17 = new .ceylon.language.Entry<.ceylon.language.Integer, FooSub<.ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.instance(0L), new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        final long i3 = ((.ceylon.language.Integer)destructure$17.getKey()).longValue();
+        final Foo<.ceylon.language.Integer> f3 = (Foo<.ceylon.language.Integer>)(Foo)destructure$17.getItem();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.entryGeneric();
+    }
+}
