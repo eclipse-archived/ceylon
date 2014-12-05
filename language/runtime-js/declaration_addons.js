@@ -248,7 +248,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   validate$typeparams(_t,mm.tp,types);
   if (!extendsType(_t, $mptypes.Type$memberApply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this.string);
-  var rv=this.meta.mt==='i'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
+  var rv=this.meta.mt==='i'?AppliedMemberInterface$jsint(_t.t, {Container$AppliedMemberInterface:$mptypes.Container$memberApply, Type$AppliedMemberInterface:_t})
     :AppliedMemberClass$jsint(_t.t, {Container$AppliedMemberClass:$mptypes.Container$memberApply, Type$AppliedMemberClass:_t, Arguments$AppliedMemberClass:$mptypes.Arguments$memberApply});
   if (_t.a)rv.$targs=_t.a;
   return rv;

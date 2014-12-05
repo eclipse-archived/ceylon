@@ -319,9 +319,9 @@ function coisattype$(coi){
       var ifc = coirestarg$(coi,ints[i]);
       var mm=getrtmm$$(ifc.t);
       if (mm.$cont) {
-        rv.push(AppliedMemberInterface(ifc.t, {Type$MemberInterface:ifc}));
+        rv.push(AppliedMemberInterface$jsint(ifc.t, {Type$AppliedMemberInterface:ifc,Container$AppliedMemberInterface:{t:mm.$cont}}));
       } else {
-        rv.push(AppliedInterface$jsint(ifc.t, {Type$Interface:ifc}));
+        rv.push(AppliedInterface$jsint(ifc.t, {Type$AppliedInterface:ifc}));
       }
     }
     return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
@@ -356,7 +356,7 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
     if (md.mt==='i') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       validate$typeparams(ict,ic.$crtmm$.tp,types$3);
-      rv=AppliedMemberInterface(ic, {Container$MemberInterface:_cont,Type$MemberInterface:ict});
+      rv=AppliedMemberInterface$jsint(ic, {Container$AppliedMemberInterface:_cont,Type$AppliedMemberInterface:ict});
     } else if (md.mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$crtmm$.tp,types$3);
@@ -418,7 +418,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType({t:mem},$$$mptypes.Type$getInterfaces))continue;
         var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats)) {
-          mems.push(AppliedMemberInterface(mem, {Container$MemberInterface:_tipo,Type$MemberInterface:{t:mem}}));
+          mems.push(AppliedMemberInterface$jsint(mem, {Container$AppliedMemberInterface:_tipo,Type$AppliedMemberInterface:{t:mem}}));
         }
       }
     }
@@ -428,7 +428,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
     Kind$getClassOrInterface:Interface$meta$model},noInherit);
-  if (rv && !is$(rv, {t:AppliedMemberInterface})) {
+  if (rv && !is$(rv, {t:AppliedMemberInterface$jsint})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
   return rv;
