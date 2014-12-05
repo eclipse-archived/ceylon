@@ -142,7 +142,10 @@ public class FunctionHelper {
         if (!gen.opts.isOptimize()) {
             new GenerateJsVisitor.SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        TypeGenerator.callSuperclass(xt, c, that, superDecs, gen);
+        if (xt != null) {
+            TypeGenerator.callSuperclass(xt.getType(), xt.getInvocationExpression(), c, c.getParameterList(),
+                    that, superDecs, gen);
+        }
         TypeGenerator.callInterfaces(sts == null ? null : sts.getTypes(), c, that, superDecs, gen);
         
         body.visit(gen);

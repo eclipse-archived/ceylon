@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -189,10 +190,31 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
         }
 
-        ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_PARAMS),
-                cls, allparms);
-        plist.setNamedParametersSupported(true);
-        cls.setParameterList(plist);
+        if (m.containsKey(MetamodelGenerator.KEY_CONSTRUCTORS)) {
+            final Map<String,Map<String,Object>> constructors = (Map<String,Map<String,Object>>)m.remove(
+                    MetamodelGenerator.KEY_CONSTRUCTORS);
+            cls.setConstructors(true);
+            for (Map.Entry<String, Map<String,Object>> cons : constructors.entrySet()) {
+                Constructor cnst = new Constructor();
+                cnst.setName(cons.getKey());
+                cnst.setContainer(cls);
+                cnst.setScope(cls);
+                cnst.setUnit(cls.getUnit());
+                cnst.setExtendedType(cls.getType());
+                setAnnotations(cnst, (Integer)cons.getValue().remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                        (Map<String,Object>)cons.getValue().remove(MetamodelGenerator.KEY_ANNOTATIONS));
+                final ParameterList plist = parseParameters((List<Map<String,Object>>)cons.getValue().remove(
+                        MetamodelGenerator.KEY_PARAMS), cnst, allparms);
+                plist.setNamedParametersSupported(true);
+                cnst.addParameterList(plist);
+                cls.addMember(cnst);
+            }
+        } else {
+            ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_PARAMS),
+                    cls, allparms);
+            plist.setNamedParametersSupported(true);
+            cls.setParameterList(plist);
+        }
         if (m.containsKey("of") && cls.getCaseTypes() == null) {
             cls.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
             m.remove("of");

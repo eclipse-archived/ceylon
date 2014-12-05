@@ -676,7 +676,7 @@ public class GenerateJsVisitor extends Visitor
     /** Returns the name of the type or its $init$ function if it's local. */
     String typeFunctionName(final Tree.StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
-        if (removeAlias && d.isAlias()) {
+        if ((removeAlias && d.isAlias()) || d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
             d = d.getExtendedTypeDeclaration();
         }
         boolean inProto = opts.isOptimize()
@@ -949,7 +949,8 @@ public class GenerateJsVisitor extends Visitor
             out("(");
             jsout.outputFile(f);
             out(")");
-            TypeGenerator.generateParameters(coi, this);
+            TypeGenerator.generateParameters(coi.getTypeParameterList(), coi instanceof Tree.ClassDefinition ?
+                    ((Tree.ClassDefinition)coi).getParameterList() : null, coi.getDeclarationModel(), this);
             endLine(true);
         }
         return false;
@@ -1701,10 +1702,11 @@ public class GenerateJsVisitor extends Visitor
                     return sb.toString();
                 }
             }
-            sb.append('.');
+            sb.append(decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? '_':'.');
         }
         Scope scope = getSuperMemberScope(node);
-        if (opts.isOptimize() && (scope != null)) {
+        if (opts.isOptimize() && (scope != null) &&
+                decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor == false) {
             sb.append("getT$all()['");
             sb.append(scope.getQualifiedNameString());
             sb.append("']");
@@ -1775,6 +1777,8 @@ public class GenerateJsVisitor extends Visitor
             super.visit(that);
             if (isInDynamicBlock() && that.getDeclaration() == null) {
                 out(".", that.getIdentifier().getText());
+            } else if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                out("_", names.name(that.getDeclaration()));
             } else {
                 out(".", names.name(that.getDeclaration()));
             }
@@ -2200,29 +2204,29 @@ public class GenerateJsVisitor extends Visitor
                     //perhaps in an outer scope
                     id = (TypeDeclaration) d.getContainer();
                 }
-                String path = "";
                 Scope scope = that.getScope();
-                if ((scope != null) && ((that instanceof ClassDeclaration)
-                                        || (that instanceof InterfaceDeclaration))) {
+                if ((scope != null) && (that instanceof Tree.ClassDeclaration
+                        || that instanceof Tree.InterfaceDeclaration || that instanceof Tree.Constructor)) {
                     // class/interface aliases have no own "this"
                     scope = scope.getContainer();
                 }
+                final StringBuilder path = new StringBuilder();
                 while (scope != null) {
                     if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
-                            path += ".outer$";
+                            path.append(".outer$");
                         } else {
-                            path += names.self((TypeDeclaration) scope);
+                            path.append(names.self((TypeDeclaration) scope));
                         }
                     } else {
-                        path = "";
+                        path.setLength(0);
                     }
                     if (scope == id) {
                         break;
                     }
                     scope = scope.getContainer();
                 }
-                return path;
+                return path.toString();
             }
         }
         else {

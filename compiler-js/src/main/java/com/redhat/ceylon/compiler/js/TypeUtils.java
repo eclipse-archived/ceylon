@@ -11,6 +11,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -242,10 +243,11 @@ public class TypeUtils {
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
     static void resolveTypeParameter(final Node node, final TypeParameter tp,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        Scope parent = node.getScope();
+        Scope parent = Util.getRealScope(node.getScope());
         int outers = 0;
         while (parent != null && parent != tp.getContainer()) {
-            if (parent instanceof TypeDeclaration && !((TypeDeclaration) parent).isAnonymous()) {
+            if (parent instanceof TypeDeclaration &&
+                    !(parent instanceof Constructor || ((TypeDeclaration) parent).isAnonymous())) {
                 outers++;
             }
             parent = parent.getScope();
@@ -253,9 +255,9 @@ public class TypeUtils {
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
                 if (!skipSelfDecl) {
-                    ClassOrInterface ontoy = Util.getContainingClassOrInterface(node.getScope());
+                    TypeDeclaration ontoy = Util.getContainingClassOrInterface(node.getScope());
                     while (ontoy.isAnonymous())ontoy=Util.getContainingClassOrInterface(ontoy.getScope());
-                    gen.out(gen.getNames().self((TypeDeclaration)ontoy));
+                    gen.out(gen.getNames().self(ontoy));
                     for (int i = 0; i < outers; i++) {
                         gen.out(".outer$");
                     }
@@ -622,6 +624,8 @@ public class TypeUtils {
                         sb.add(i, MetamodelGenerator.KEY_METHODS);
                     } else if (p instanceof TypeAlias || p instanceof Setter) {
                         sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
+                    } else if (p instanceof Constructor) {
+                        sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
                     } else { //It's a value
                         TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
                         sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
@@ -683,6 +687,9 @@ public class TypeUtils {
                 tparms = ((Method) d).getTypeParameters();
             }
 
+        } else if (d instanceof Constructor) {
+            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+            encodeParameterListForRuntime(that, ((Constructor)d).getParameterLists().get(0), gen);
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration

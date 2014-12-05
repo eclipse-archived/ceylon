@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -32,14 +33,15 @@ public class InvocationGenerator {
     }
 
     void generateInvocation(Tree.InvocationExpression that) {
+        final Tree.Primary typeArgSource = that.getPrimary();
         if (that.getNamedArgumentList()!=null) {
             Tree.NamedArgumentList argList = that.getNamedArgumentList();
-            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.MemberOrTypeExpression
-                    && ((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration() == null) {
+            if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.MemberOrTypeExpression
+                    && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() == null) {
                 final String fname = names.createTempVariable();
                 gen.out("(", fname, "=");
                 //Call a native js constructor passing a native js object as parameter
-                that.getPrimary().visit(gen);
+                typeArgSource.visit(gen);
                 gen.out(",", fname, ".$$===undefined?new ", fname, "(");
                 nativeObject(argList);
                 gen.out("):", fname, "(");
@@ -47,19 +49,19 @@ public class InvocationGenerator {
                 gen.out("))");
             } else {
                 gen.out("(");
-                Map<String, String> argVarNames = defineNamedArguments(that.getPrimary(), argList);
-                if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
-                    BmeGenerator.generateBme((Tree.BaseMemberExpression)that.getPrimary(), gen, true);
+                Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
+                if (typeArgSource instanceof Tree.BaseMemberExpression) {
+                    BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen, true);
                 } else {
-                    that.getPrimary().visit(gen);
+                    typeArgSource.visit(gen);
                 }
-                if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+                if (typeArgSource instanceof Tree.MemberOrTypeExpression) {
+                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) typeArgSource;
                     if (mte.getDeclaration() instanceof Functional) {
                         Functional f = (Functional) mte.getDeclaration();
                         Tree.TypeArguments targs = null;
-                        if (that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
-                            targs = ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                        if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
+                            targs = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments();
                         }
                         applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
                     }
@@ -68,23 +70,39 @@ public class InvocationGenerator {
             }
         }
         else {
-            Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            Tree.Primary typeArgSource = that.getPrimary();
-            Tree.TypeArguments targs = typeArgSource instanceof Tree.StaticMemberOrTypeExpression
-                    ? ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments() : null;
-            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
-                    && ((Tree.BaseTypeExpression)that.getPrimary()).getDeclaration() == null) {
+            final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
+            final Map<TypeParameter, ProducedType> targs;
+            if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
+                if (smote.getDeclaration() instanceof Constructor &&
+                        !((Functional)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
+                    targs = smote.getTarget().getTypeArguments();
+                } else if (smote.getDeclaration() instanceof Functional) {
+                    targs = TypeUtils.matchTypeParametersWithArguments(
+                            ((Functional)smote.getDeclaration()).getTypeParameters(),
+                            smote.getTypeArguments().getTypeModels());
+                    if (targs == null) {
+                        gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
+                    }
+                } else {
+                    targs = null;
+                }
+            } else {
+                targs = null;
+            }
+            if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
+                    && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
                 gen.out("(");
                 //Could be a dynamic object, or a Ceylon one
                 //We might need to call "new" so we need to get all the args to pass directly later
-                final List<String> argnames = generatePositionalArguments(that.getPrimary(),
+                final List<String> argnames = generatePositionalArguments(typeArgSource,
                         argList, argList.getPositionalArguments(), false, true);
                 if (!argnames.isEmpty()) {
                     gen.out(",");
                 }
                 final String fname = names.createTempVariable();
                 gen.out(fname,"=");
-                that.getPrimary().visit(gen);
+                typeArgSource.visit(gen);
                 String fuckingargs = "";
                 if (!argnames.isEmpty()) {
                     fuckingargs = argnames.toString().substring(1);
@@ -94,8 +112,8 @@ public class InvocationGenerator {
                 //TODO we lose type args for now
                 return;
             } else {
-                if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
-                    final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)that.getPrimary();
+                if (typeArgSource instanceof Tree.BaseMemberExpression) {
+                    final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
                     if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
                             "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
                         Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
@@ -108,9 +126,9 @@ public class InvocationGenerator {
                     }
                     BmeGenerator.generateBme(_bme, gen, true);
                 } else {
-                    that.getPrimary().visit(gen);
+                    typeArgSource.visit(gen);
                 }
-                if (gen.opts.isOptimize() && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
+                if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
                     gen.out(".call(this");
                     if (!argList.getPositionalArguments().isEmpty()) {
                         gen.out(",");
@@ -125,7 +143,7 @@ public class InvocationGenerator {
                 }
                 if (fillInParams) {
                     //Get the callable and try to assign params from there
-                    ProducedType callable = that.getPrimary().getTypeModel().getSupertype(
+                    ProducedType callable = typeArgSource.getTypeModel().getSupertype(
                             that.getUnit().getCallableDeclaration());
                     if (callable != null) {
                         //This is a tuple with the arguments to the callable
@@ -151,7 +169,7 @@ public class InvocationGenerator {
                             if (p == null) {
                                 p = new Parameter();
                                 p.setName("arg"+c);
-                                p.setDeclaration(that.getPrimary().getTypeModel().getDeclaration());
+                                p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
                                 Value v = new Value();
                                 v.setContainer(that.getPositionalArgumentList().getScope());
                                 v.setType(argtype);
@@ -191,9 +209,9 @@ public class InvocationGenerator {
                         }
                     }
                 }
-                generatePositionalArguments(that.getPrimary(), argList, argList.getPositionalArguments(), false, false);
+                generatePositionalArguments(typeArgSource, argList, argList.getPositionalArguments(), false, false);
             }
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()
+            if (targs != null && !targs.isEmpty()
                     && typeArgSource instanceof Tree.StaticMemberOrTypeExpression
                     && ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration() instanceof Functional) {
                 if (argList.getPositionalArguments().size() > 0) {
@@ -212,14 +230,8 @@ public class InvocationGenerator {
                         gen.out("undefined,");
                     }
                 }
-                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                    Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                            ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
-                    if (invargs != null) {
-                        TypeUtils.printTypeArguments(typeArgSource, invargs, gen, false, null);
-                    } else {
-                        gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
-                    }
+                if (targs != null && !targs.isEmpty()) {
+                    TypeUtils.printTypeArguments(typeArgSource, targs, gen, false, null);
                 }
             }
             gen.out(")");

@@ -12,9 +12,11 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -168,7 +170,7 @@ public class TypeGenerator {
         gen.comment(that);
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, gen);
+        final boolean withTargs = generateParameters(that.getTypeParameterList(), null, d, gen);
         gen.beginBlock();
         //declareSelf(d);
         gen.referenceOuter(d);
@@ -217,12 +219,13 @@ public class TypeGenerator {
 
     /** Outputs the parameter list of the type's constructor, including surrounding parens.
      * Returns true if the type has type parameters. */
-    static boolean generateParameters(final Tree.ClassOrInterface that, final GenerateJsVisitor gen) {
+    static boolean generateParameters(final Tree.TypeParameterList tparms,
+            final Tree.ParameterList plist, final TypeDeclaration d, final GenerateJsVisitor gen) {
         gen.out("(");
-        final boolean withTargs = that.getTypeParameterList() != null &&
-                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
-        if (that instanceof Tree.ClassDefinition) {
-            for (Tree.Parameter p: ((Tree.ClassDefinition)that).getParameterList().getParameters()) {
+        final boolean withTargs = tparms != null &&
+                !tparms.getTypeParameterDeclarations().isEmpty();
+        if (plist != null) {
+            for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
                 gen.out(",");
             }
@@ -230,7 +233,7 @@ public class TypeGenerator {
         if (withTargs) {
             gen.out("$$targs$$,");
         }
-        gen.out(gen.getNames().self(that.getDeclarationModel()), ")");
+        gen.out(gen.getNames().self(d), ")");
         return withTargs;
     }
 
@@ -238,6 +241,29 @@ public class TypeGenerator {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
+        final Tree.ParameterList plist = that.getParameterList();
+        final List<Tree.Constructor> constructors;
+        final List<Tree.Statement> classBody;
+        //Find the constructors, if any
+        Tree.Constructor defconstr = null;
+        if (d.hasConstructors()) {
+            constructors = new ArrayList<>(3);
+            classBody = new ArrayList<>(that.getClassBody().getStatements().size());
+            for (Tree.Statement st : that.getClassBody().getStatements()) {
+                if (st instanceof Tree.Constructor) {
+                    Tree.Constructor constr = (Tree.Constructor)st;
+                    constructors.add(constr);
+                    if (constr.getDeclarationModel().getName().equals(d.getName())) {
+                        defconstr = constr;
+                    }
+                } else {
+                    classBody.add(st);
+                }
+            }
+        } else {
+            constructors = Collections.emptyList();
+            classBody = that.getClassBody().getStatements();
+        }
         gen.comment(that);
         if (gen.shouldStitch(d)) {
             if (gen.stitchNative(d, that)) {
@@ -249,15 +275,28 @@ public class TypeGenerator {
             }
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that, gen);
+        //If there's a default constructor, create a different function with this code
+        if (d.hasConstructors()) {
+            if (defconstr == null) {
+                gen.out("(){");
+                gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
+                gen.out(";}"); gen.endLine();
+                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            }
+            gen.out("$$c");
+        }
+        final boolean withTargs = generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
-        //This takes care of top-level attributes defined before the class definition
-        gen.out("$init$", gen.getNames().name(d), "()");
-        gen.endLine(true);
-        gen.declareSelf(d);
-        gen.referenceOuter(d);
+        if (!d.hasConstructors()) {
+            //This takes care of top-level attributes defined before the class definition
+            gen.out("$init$", gen.getNames().name(d), "();");
+            gen.endLine();
+            gen.declareSelf(d);
+            gen.referenceOuter(d);
+        }
+        final String me = gen.getNames().self(d);
         if (withTargs) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$targs$$)");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$)");
             gen.endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
@@ -267,7 +306,7 @@ public class TypeGenerator {
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
-                            gen.out(gen.getNames().self(d), ".$$targs$$=");
+                            gen.out(me, ".$$targs$$=");
                             TypeUtils.printTypeArguments(that, targs, gen, false, null);
                             gen.endLine(true);
                             first = false;
@@ -279,22 +318,27 @@ public class TypeGenerator {
             }
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$$mptypes)");
             gen.endLine(true);
         }
-        gen.initParameters(that.getParameterList(), d, null);
+        if (plist != null) {
+            gen.initParameters(plist, d, null);
+        }
 
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        callSuperclass(that.getExtendedType(), d, that, superDecs, gen);
+        if (that.getExtendedType() != null) {
+            callSuperclass(that.getExtendedType().getType(), that.getExtendedType().getInvocationExpression(),
+                    d, d.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
+        }
         callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
                 d, that, superDecs, gen);
 
-        if (!gen.opts.isOptimize()) {
+        if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
-            for (Tree.Parameter p : that.getParameterList().getParameters()) {
+            for (Tree.Parameter p : plist.getParameters()) {
                 if (!p.getParameterModel().isHidden()){
                     gen.generateAttributeForParameter(that, d, p.getParameterModel());
                 }
@@ -303,12 +347,35 @@ public class TypeGenerator {
         if (d.isNative()) {
             gen.stitchConstructorHelper(that, "_cons_before");
         }
-        that.getClassBody().visit(gen);
+        gen.visitStatements(classBody);
         if (d.isNative()) {
             gen.stitchConstructorHelper(that, "_cons_after");
         }
-        gen.out("return ", gen.getNames().self(d), ";");
+        if (constructors.isEmpty()) {
+            gen.out("return ", me, ";");
+        }
         gen.endBlockNewLine();
+        if (defconstr != null) {
+            //Define a function as the class and call the default constructor in there
+            String _this = "undefined";
+            if (!d.isToplevel()) {
+                final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                if (coi != null) {
+                    if (d.isClassOrInterfaceMember()) {
+                        _this = "this";
+                    } else {
+                        _this = gen.getNames().self(coi);
+                    }
+                }
+            }
+            gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(){return ",
+                    gen.getNames().name(d), "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
+                    _this, ",arguments);}");
+            gen.endLine();
+        }
+        for (Tree.Constructor cnstr : constructors) {
+            classConstructor(cnstr, that.getTypeParameterList(), d, gen);
+        }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
@@ -320,28 +387,36 @@ public class TypeGenerator {
         }
     }
 
-    static void callSuperclass(final Tree.ExtendedType extendedType, final Class d, final Node that,
+    static void callSuperclass(final Tree.SimpleType extendedType, final Tree.InvocationExpression invocation,
+            final Class d, final ParameterList plist, final Node that,
             final List<Declaration> superDecs, final GenerateJsVisitor gen) {
-        if (extendedType!=null) {
-            Tree.PositionalArgumentList argList = extendedType.getInvocationExpression()
-                    .getPositionalArgumentList();
-            TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            gen.out(gen.memberAccessBase(extendedType.getType(), typeDecl, false,
-                    gen.qualifiedPath(that, typeDecl, false)),
-                    (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType.getType()) != null))
+        TypeDeclaration typeDecl = extendedType.getDeclarationModel();
+        if (invocation != null) {
+            Tree.PositionalArgumentList argList = invocation.getPositionalArgumentList();
+            final String qpath;
+            if (typeDecl instanceof Constructor) {
+                final String path = gen.qualifiedPath(that, (TypeDeclaration)typeDecl.getContainer(), false);
+                if (path.isEmpty()) {
+                    qpath = gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                } else {
+                    qpath = path + "." + gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                }
+            } else {
+                qpath = gen.qualifiedPath(that, typeDecl, false);
+            }
+            gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
+                    (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType) != null))
                     ? ".call(this," : "(");
 
-            gen.getInvoker().generatePositionalArguments(extendedType.getInvocationExpression().getPrimary(),
+            gen.getInvoker().generatePositionalArguments(invocation.getPrimary(),
                     argList, argList.getPositionalArguments(), false, false);
             if (argList.getPositionalArguments().size() > 0) {
                 gen.out(",");
             }
             //There may be defaulted args we must pass as undefined
-            final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams =
-                    d.getExtendedTypeDeclaration().getParameterList().getParameters();
-            if (superParams.size() > argList.getPositionalArguments().size()) {
-                for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
-                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
+            if (plist != null && plist.getParameters().size() > argList.getPositionalArguments().size()) {
+                for (int i = argList.getPositionalArguments().size(); i < plist.getParameters().size(); i++) {
+                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = plist.getParameters().get(i);
                     if (p.isSequenced()) {
                         gen.out(gen.getClAlias(), "getEmpty(),");
                     } else {
@@ -351,16 +426,15 @@ public class TypeGenerator {
             }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                extendedType.getType().getTypeArgumentList().getTypeModels();
+                extendedType.getTypeArgumentList().getTypeModels();
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getType().getTypeArgumentList().getTypeModels()), gen, false, null);
+                        extendedType.getTypeArgumentList().getTypeModels()), gen, false, null);
                 gen.out(",");
             }
             gen.out(gen.getNames().self(d), ")");
             gen.endLine(true);
-
-            copySuperMembers(typeDecl, superDecs, d, gen);
         }
+        copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
     static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Node that,
@@ -516,7 +590,10 @@ public class TypeGenerator {
             gen.out(gen.getNames().self(c), ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
-        TypeGenerator.callSuperclass(superType, c, that, superDecs, gen);
+        if (superType != null) {
+            TypeGenerator.callSuperclass(superType.getType(), superType.getInvocationExpression(),
+                    c, c.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
+        }
         TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
         
         body.visit(gen);
@@ -628,6 +705,48 @@ public class TypeGenerator {
         gen.comment(that);
         defineObject(that, that.getDeclarationModel(), that.getSatisfiedTypes(), that.getExtendedType(),
                 that.getClassBody(), that.getAnnotationList(), gen);
+    }
+
+    static void classConstructor(final Tree.Constructor that,
+            final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
+        Constructor d = that.getDeclarationModel();
+        final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
+        gen.out(fullName, "=function");
+        final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
+        final String me = gen.getNames().self(container);
+        gen.beginBlock();
+        gen.out("$init$", gen.getNames().name(container), "();");
+        gen.endLine();
+        gen.declareSelf(container);
+        gen.referenceOuter(container);
+        if (that.getDelegatedConstructor() != null) {
+            final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
+            ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
+                ((Constructor)superdec).getParameterLists().get(0);
+            callSuperclass(that.getDelegatedConstructor().getType(), that.getDelegatedConstructor().getInvocationExpression(),
+                    container, plist, that, null, gen);
+        }
+        //Call common initializer
+        gen.out(gen.getNames().name(container), "$$c(");
+        if (withTargs) {
+            gen.out("$$targs$$,");
+        }
+        gen.out(me, ");");
+        gen.endLine();
+        gen.initParameters(that.getParameterList(), container, null);
+        gen.visitStatements(that.getBlock().getStatements());
+        gen.out("return ", me, ";");
+        gen.endBlockNewLine(true);
+        //Add reference to metamodel
+        gen.out(fullName, ".$crtmm$=");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        gen.endLine(true);
+        gen.out(gen.getNames().name(container), ".", fullName, "=", fullName);
+        gen.endLine(true);
+        if (gen.outerSelf(container)) {
+            gen.out(".", fullName, "=", fullName);
+            gen.endLine(true);
+        }
     }
 
 }
