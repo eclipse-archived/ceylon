@@ -2301,8 +2301,9 @@ public class StatementTransformer extends AbstractTransformer {
                 loopVarType = variable.getDeclarationModel().getType();
                 loopVarInit = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("key")), List.<JCExpression> nil());
             }
+            
             JCVariableDecl itemOrKeyDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loopVarName.asName(), makeJavaType(loopVarType), 
-                    boxUnboxIfNecessary(loopVarInit, true, loopVarType, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
+                    expressionGen().applyErasureAndBoxing(loopVarInit, loopVarType, isTurnedToRaw(sequenceElementType), true, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel()), loopVarType, 0));
             final SyntheticName iteratorVarName = loopVarName.suffixedBy(Suffix.$iterator$).alias();
             List<JCStatement> itemDecls = List.<JCStatement> of(itemOrKeyDecl);
 
@@ -2313,7 +2314,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression valueVarInitExpr = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("item")), List.<JCExpression> nil());
                 String valueVarName = valueVariable.getIdentifier().getText();
                 JCVariableDecl valueDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(valueVarName), valueVarTypeExpr, 
-                        boxUnboxIfNecessary(valueVarInitExpr, true, valueVarType, CodegenUtil.getBoxingStrategy(valueVariable.getDeclarationModel())));
+                        expressionGen().applyErasureAndBoxing(valueVarInitExpr, valueVarType, isTurnedToRaw(sequenceElementType), true, CodegenUtil.getBoxingStrategy(valueVariable.getDeclarationModel()), valueVarType, 0));
                 itemDecls = itemDecls.append(valueDecl);
             }
 
