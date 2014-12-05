@@ -682,7 +682,7 @@ shared interface InterfaceConstructors<T> {
         new NonShared(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, Member, [T?]> nonShared => `NonShared`; 
+        shared MemberClassConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared => `NonShared`; 
         shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
     }
     class NonSharedMember {
@@ -692,10 +692,9 @@ shared interface InterfaceConstructors<T> {
         new NonShared(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, [T?]> nonShared => `NonShared`; 
+        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared => `NonShared`; 
         shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
     }
-    //shared class X(T? t = null) {} 
     shared void test() {
         assert(is T tt = "");
         value memberInst = Member();
@@ -705,16 +704,14 @@ shared interface InterfaceConstructors<T> {
         assert(memberInst.nonSharedDecl == memberInst.nonShared.declaration);
         assert(`new NonSharedMember.NonSharedMember` == `NonSharedMember.NonSharedMember`.declaration);
         assert(nonSharedMemberInst.nonSharedDecl == nonSharedMemberInst.nonShared.declaration);
-
-        //`X`(this)();
-        
+    
         `Member.Member`(this)();
         `Member.Member`(this)(tt);
-        /*`Member.NonShared`(this)();
-        `Member.NonShared`(this)(tt);
+        memberInst.nonShared(this)();
+        memberInst.nonShared(this)(tt);
         `NonSharedMember.NonSharedMember`(this)();
         `NonSharedMember.NonSharedMember`(this)(tt);
-        `NonSharedMember.NonShared`(this)();
-        `NonSharedMember.NonShared`(this)(tt);*/
+        nonSharedMemberInst.nonShared(this)();
+        nonSharedMemberInst.nonShared(this)(tt);
     }
 }
