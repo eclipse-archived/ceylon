@@ -1,1 +1,1 @@
-ClassOrInterface$meta$model.$$.prototype.getAttributes
+function(a,m){return coigetatr$(this,a,m);}

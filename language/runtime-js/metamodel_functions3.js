@@ -592,5 +592,23 @@ function memberDeclaringType$($$member){
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
   return (m2['mt']==='c'?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), $$member.tipo);
 }
-
-
+//Get annotations from ClassOrInterface, based on the specified annotation types
+function coi$get$anns(anntypes) {
+  var ats=[];
+  if (!anntypes)return ats;
+  var iter=anntypes.iterator();
+  var a;while((a=iter.next())!==getFinished()){
+    ats.push({t:a.tipo});
+  }
+  return ats;
+}
+function coi$is$anns(anns,ats) {
+  for (var i=0;i<ats.length;i++) {
+    var f=false;
+    for (var j=0;j<anns.length;j++) {
+      f|=(is$(anns[j],ats[i]));
+    }
+    if (!f)return false;
+  }
+  return true;
+}
