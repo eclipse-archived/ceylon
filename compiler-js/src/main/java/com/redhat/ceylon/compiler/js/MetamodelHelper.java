@@ -163,7 +163,7 @@ public class MetamodelHelper {
             if (td.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedMemberInterface$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedMemberInterface$jsint()(");
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
