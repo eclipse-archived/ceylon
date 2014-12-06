@@ -127,3 +127,12 @@ void scopeContainingSwitchesAndConditions(Object? obj) {
     value z1 = switch (o=obj) case (null) 1 case (is Object) 2;
     value z2 = switch (o=obj) case (is Null) 1 else 2;
 }
+
+void destructuringLet([String, Float, Integer] tuple, String->Object entry) {
+    value x1 = let ([s, f, i]=tuple) s.size + f*i;
+    value y2 = let ([String s, Float f, Integer i]=tuple) s.size + f*i;
+    value z3 = let ([s, @error Integer f, Integer i]=tuple) s.size + f*i;
+    value e1 = let (k->v=entry) k+v.string;
+    value f2 = let (String k->Object v=entry) k+v.string;
+    value g3 = let (String k->@error String v=entry) k+v;
+}

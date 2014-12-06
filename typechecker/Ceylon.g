@@ -451,17 +451,13 @@ variableTuple returns [VariableTuple variableTuple]
     : LBRACKET
       { $variableTuple = new VariableTuple($LBRACKET); }
       (
-        ca1=compilerAnnotations
-        v1=var
-        { $v1.variable.getCompilerAnnotations().addAll($ca1.annotations);
-          $variableTuple.addVariable($v1.variable); }
+        v1=variable
+        { $variableTuple.addVariable($v1.variable); }
         (
           c=COMMA
           { $variableTuple.setEndToken($c); }
-          ca2=compilerAnnotations
-          v2=var
-          { $v2.variable.getCompilerAnnotations().addAll($ca2.annotations);
-            $variableTuple.addVariable($v2.variable);
+          v2=variable
+          { $variableTuple.addVariable($v2.variable);
             $variableTuple.setEndToken(null); }
         )*
       )?
@@ -470,19 +466,15 @@ variableTuple returns [VariableTuple variableTuple]
     ;
 
 keyValue returns [KeyValue keyValue]
-    : ca1=compilerAnnotations
-      v1=var
+    : v1=variable
       { $keyValue = new KeyValue(null);
-        $keyValue.setKey($v1.variable); 
-        $v1.variable.getCompilerAnnotations().addAll($ca1.annotations); }
+        $keyValue.setKey($v1.variable); }
       ENTRY_OP
       { $keyValue.setEndToken($ENTRY_OP); }
       (
-        ca2=compilerAnnotations
-        v2=var
+        v2=variable
         { $keyValue.setValue($v2.variable); 
-          $keyValue.setEndToken(null); 
-          $v2.variable.getCompilerAnnotations().addAll($ca2.annotations); }
+          $keyValue.setEndToken(null); }
       )?
     ;
 
@@ -2126,22 +2118,52 @@ let returns [LetExpression let]
       { $let = new LetExpression(null);
         $let.setLetClause($letClause.letClause); }
     ;
-    
+
+letVariable returns [Statement statement]
+    @init { Destructure d = null; Variable v = null; }
+    : 
+    (
+      (LBRACKET (LIDENTIFIER|declarationStart)) => 
+      variableTuple
+      { d = new Destructure(null);
+        d.setType(new ValueModifier(null)); 
+        d.setDestructuredVariables($variableTuple.variableTuple);
+        $statement = d; }
+    | (variable ENTRY_OP) =>
+      keyValue
+      { d = new Destructure(null);
+        d.setType(new ValueModifier(null)); 
+        d.setDestructuredVariables($keyValue.keyValue);
+        $statement = d; }
+    |
+      variable
+      { v = $variable.variable;
+        $statement = v; }
+    )
+    (
+      specifier
+      { if (d!=null)
+            d.setSpecifierExpression($specifier.specifierExpression);
+        else if (v!=null)
+            v.setSpecifierExpression($specifier.specifierExpression); }
+    )?
+    ;
+
 letClause returns [LetClause letClause]
     : LET
       { $letClause = new LetClause($LET); }
       LPAREN
       { $letClause.setEndToken($LPAREN); }
       (
-        v1=specifiedVariable
+        v1=letVariable
         { $letClause.setEndToken(null);
-          $letClause.addVariable($v1.variable); }
+          $letClause.addVariable($v1.statement); }
         (
           COMMA
           { $letClause.setEndToken($COMMA); }
-          v2=specifiedVariable
+          v2=letVariable
           { $letClause.setEndToken(null); 
-            $letClause.addVariable($v2.variable); }
+            $letClause.addVariable($v2.statement); }
         )*
       )?
       RPAREN
