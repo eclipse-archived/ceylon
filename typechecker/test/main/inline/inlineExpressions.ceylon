@@ -112,3 +112,16 @@ void switchOnTypeParameter<T>(T t) {
     else { print(t.string); }
 }
 
+void scopeContainingLets() {
+    value x = let(y=1) y;
+    value z = let(y=1) y;
+    value w = let(y=1, @error y=3) y;
+    value u = let(@error u=1) u;
+}
+
+void scopeContainingSwitchesAndConditions(Object? obj) {
+    value x1 = if (exists o=obj) then obj else "";
+    value x2 = if (exists o=obj) then obj else "";
+    value z1 = switch (o=obj) case (null) 1 case (is Object) 2;
+    value z2 = switch (o=obj) case (is Null) 1 else 2;
+}

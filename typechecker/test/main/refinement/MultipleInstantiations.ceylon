@@ -132,7 +132,7 @@ class MethodIfNonEmptySequence() {
     shared void m1(String s) {
         if (nonempty chars = s.sequence()) {
             Character c = chars.first;
-            Character[] chars = chars.rest;
+            Character[] charsRest = chars.rest;
         }
     }
     shared void m2(String[] s) {

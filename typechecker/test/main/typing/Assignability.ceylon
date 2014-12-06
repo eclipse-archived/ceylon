@@ -414,9 +414,9 @@ class Assignability() {
     @type:"String" value so = o.hello;
     @error value soo = oo.hello;
     
-    object x extends X() {}
-    X xx = x;
-    @error X xxx = o;
+    object ox extends X() {}
+    X xxx1 = ox;
+    @error X xxx2 = o;
     
     Iterable<Entry<Integer,Integer>>? map = null;
     if (exists map) {

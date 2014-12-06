@@ -237,11 +237,11 @@ public class DeclarationVisitor extends Visitor {
                             ((Method) model).setOverloaded(true);
                             abstraction.getOverloads().add(model);
                         }
-                        else {
+                        /*else {
                             that.addError("duplicate declaration name: '" + 
                                     name + "'");
                         }
-                        unit.getDuplicateDeclarations().add(member);
+                        unit.getDuplicateDeclarations().add(member);*/
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();
@@ -1000,6 +1000,16 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SwitchExpression that) {
+        ControlBlock cb = new ControlBlock();
+        cb.setId(id++);
+        visitElement(that, cb);
+        Scope o = enterScope(cb);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
     public void visit(Tree.Condition that) {
         ConditionScope cb = new ConditionScope();
         cb.setId(id++);
@@ -1064,7 +1074,8 @@ public class DeclarationVisitor extends Visitor {
         
         Value v = new Value();
         that.setDeclarationModel(v);
-        visitDeclaration(that, v, !(that.getType() instanceof Tree.SyntheticVariable));
+        visitDeclaration(that, v, 
+                !(that.getType() instanceof Tree.SyntheticVariable));
         setVisibleScope(v);
         
         if (that.getType()!=null) {

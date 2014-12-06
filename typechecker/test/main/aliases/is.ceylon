@@ -3,7 +3,7 @@ void testis() {
     if (is Bar baz) {
         @type:"Bar" value b = baz;
     }
-    Bar b = Qux();
+    Bar bb = Qux();
 }
 
 interface Foo<out T> {}

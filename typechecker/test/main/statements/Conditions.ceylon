@@ -16,12 +16,12 @@ class Conditions(String* elems) {
     
     void z(Anything o) {
         if (is Object o) {
-            class Inner() {
+            class Inner1() {
                 Object x = o;
                 assert (is String x);
                 shared String s = x;
             }
-            print(Inner().s);
+            print(Inner1().s);
             
         }
         assert (is Object o);

@@ -53,7 +53,7 @@ satisfies Summable<LeaksThis>&Iterable<String> {
     function h() { @error return this of Object; }
     @error value z => (this);
     
-    @error value x = this+this;
+    @error value xx = this+this;
     
     @error value str = "``this``";
     
@@ -83,7 +83,7 @@ satisfies Summable<LeaksSuper>&Iterable<String> {
     function h() { @error return super of Object; }
     @error value z => (super);
     
-    @error value x = super+super;
+    @error value xx = super+super;
     
     @error value str = "``super``";
 

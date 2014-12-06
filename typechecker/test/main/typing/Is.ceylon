@@ -143,17 +143,17 @@ class Is() {
     @error Boolean c10 = e is String?;
     Boolean c11 = e is <Sized|Category>;
     
-    String? s = null;
+    String? ss = null;
     
-    switch (s)
+    switch (ss)
     case (is String) {
-        process.writeLine(s);
+        process.writeLine(ss);
     }
     case (null) {}
 
-    switch (s)
+    switch (ss)
     case (is String) {
-        process.writeLine(s);
+        process.writeLine(ss);
     }
     else {}
     
