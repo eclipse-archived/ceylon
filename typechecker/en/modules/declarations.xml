@@ -601,7 +601,7 @@ TypeConstraints?
                 </listitem>
             </itemizedlist>
             
-            <synopsis>VariadicParameter: Annotations ParameterPrefix MemberName</synopsis>
+            <synopsis>VariadicParameter: Annotations VariadicParameterPrefix MemberName</synopsis>
             
             <synopsis>VariadicParameterPrefix: UnionType ("*" | "+")</synopsis>
             

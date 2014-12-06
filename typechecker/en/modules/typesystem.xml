@@ -1590,7 +1590,7 @@ interface NumberLiteral
             <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
             over a constrained set of types.</para>
             
-            <synopsis>TypeParameter: Variance TypeName ("=" Type)</synopsis>
+            <synopsis>TypeParameter: Variance TypeName ("=" Type)?</synopsis>
             
             <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
             
