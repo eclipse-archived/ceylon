@@ -172,31 +172,32 @@ public class DeclarationVisitor extends Visitor {
     
     private static void checkForDuplicateDeclaration(Tree.Declaration that, 
             final Declaration model) {
-        if (model.getName()!=null) {
+        String name = model.getName();
+        if (name!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
                 //a setter must have a matching getter
                 Declaration member = 
-                        model.getContainer().getDirectMember(model.getName(), 
-                                null, false);
+                        model.getContainer()
+                             .getDirectMember(name, null, false);
                 if (member==null) {
                     that.addError("setter with no matching getter: '" + 
-                            model.getName() + "'");
+                            name + "'");
                 }
                 else if (!(member instanceof Value)) {
                     that.addError("setter name does not resolve to matching getter: '" + 
-                            model.getName() + "'");
+                            name + "'");
                 }
                 else if (!((Value) member).isTransient()) {
                     that.addError("matching value is a reference or is forward-declared: '" + 
-                            model.getName() + "'");
+                            name + "'");
                 }
                 else {
                     Value getter = (Value) member;
                     setter.setGetter(getter);
                     if (getter.isVariable()) {
                         that.addError("duplicate setter for getter: '" + 
-                                model.getName() + "'");
+                                name + "'");
                     }
                     else {
                         getter.setSetter(setter);
@@ -208,7 +209,7 @@ public class DeclarationVisitor extends Visitor {
                 boolean isControl;
                 do {
                     Declaration member = 
-                            s.getDirectMember(model.getName(), null, false);
+                            s.getDirectMember(name, null, false);
                     if (member!=null) {
                         Unit unit = model.getUnit();
                         if (member instanceof Method && 
@@ -219,7 +220,7 @@ public class DeclarationVisitor extends Visitor {
                                 abstraction = new Method();
                                 abstraction.setAbstraction(true);
                                 abstraction.setType(new UnknownType(unit).getType());
-                                abstraction.setName(model.getName());
+                                abstraction.setName(name);
                                 abstraction.setShared(true);
                                 abstraction.setActual(true);
                                 abstraction.setContainer(s);
@@ -238,7 +239,7 @@ public class DeclarationVisitor extends Visitor {
                         }
                         else {
                             that.addError("duplicate declaration name: '" + 
-                                    model.getName() + "'");
+                                    name + "'");
                         }
                         unit.getDuplicateDeclarations().add(member);
                     }
