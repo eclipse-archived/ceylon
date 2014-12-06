@@ -7,7 +7,8 @@ import ceylon.language.meta.model {
     MemberClass, 
     MemberClassConstructor, 
     Constructor,
-    InvocationException
+    InvocationException,
+    IncompatibleTypeException
 }
 import ceylon.language.meta{ type }
 
@@ -579,7 +580,7 @@ shared class Constructors<T> {
         try {
             other.apply("", "");
             throw;
-        } catch (InvocationException e) {
+        } catch (IncompatibleTypeException e) {
         }
         
         //assert(is Constructors<String> x5 = nonShared.apply(),
@@ -590,7 +591,7 @@ shared class Constructors<T> {
         try {
             nonShared.apply("", "");
             throw;
-        } catch (InvocationException e) {
+        } catch (IncompatibleTypeException e) {
         }
         
         // TODO namedApply()

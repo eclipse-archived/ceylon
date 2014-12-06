@@ -447,9 +447,9 @@ shared void sequences() {
     check(seq.first==1, "sequence first");
     check(seq.rest.string=="[2, 3, 4]", "sequence.rest.string " + seq.rest.string);
     variable value i=0;
-    for (s in seq) {
+    for (s0 in seq) {
         if (exists it=seq[i]) {
-            check(it==s, "sequence iteration");
+            check(it==s0, "sequence iteration");
         }
         else {
             fail("sequence iteration");

@@ -51,9 +51,9 @@ shared void comprehensions() {
   test=2;
   check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
   check(test==3, "comprehensions starting with if 8: evaluation 2 expected 3, got ``test``");
-  value c = {if (f()) if (!f()) 1};
+  value c1 = {if (f()) if (!f()) 1};
   check(test==3, "comprehensions starting with if 8: lazy evaluation 3 expected 3, got ``test``");
-  check(c.size==0, "comprehensions starting with if 8: emptiness");
+  check(c1.size==0, "comprehensions starting with if 8: emptiness");
   check(test==5, "comprehensions starting with if 8: reevaluation expected 5 got ``test``");
   value c2 = {if (f()) if (!f()) if (f()) 1};
   check(test==5, "comprehensions starting with if 9: lazy evaluation expected 5 got ``test``");

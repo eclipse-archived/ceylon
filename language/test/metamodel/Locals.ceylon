@@ -50,13 +50,13 @@ shared class Locals_OuterLocalClass<Outer>(){
             assert(lm.container == `class Locals_OuterLocalClass`);
             classDecl4 = d;
         }
-        value attr = localAttribute;
+        value attr0 = localAttribute;
         localAttribute = 1;
         assert(exists cd3 = classDecl3, exists cd4 = classDecl4, cd3 != cd4);
     }
     
-    variable ClassDeclaration? classDecl3 = null;
-    variable ClassDeclaration? classDecl4 = null;
+    variable ClassDeclaration? classDecl3_1 = null;
+    variable ClassDeclaration? classDecl4_1 = null;
     Integer privateAttribute {
         class LocalClassInLocalAttribute<Inner>(){}
         value d = `class LocalClassInLocalAttribute`;
@@ -64,7 +64,7 @@ shared class Locals_OuterLocalClass<Outer>(){
         assert(lm.variable);
         assert(lm.name == "privateAttribute");
         assert(lm.container == `class Locals_OuterLocalClass`);
-        classDecl3 = d;
+        classDecl3_1 = d;
         
         // make sure types contained in getter are supported in type parser
         class LocalClass<Inner>(){}
@@ -84,7 +84,7 @@ shared class Locals_OuterLocalClass<Outer>(){
         assert(is SetterDeclaration lm = d.container);
         assert(lm.name == "privateAttribute");
         assert(lm.container == `class Locals_OuterLocalClass`);
-        classDecl4 = d;
+        classDecl4_1 = d;
 
         // make sure types contained in setter are supported in type parser
         class LocalClass<Inner>(){}
@@ -100,7 +100,7 @@ shared class Locals_OuterLocalClass<Outer>(){
     value attr = privateAttribute;
     privateAttribute = 1;
     
-    assert(exists cd3 = classDecl3, exists cd4 = classDecl4, cd3 != cd4);
+    assert(exists cd3 = classDecl3_1, exists cd4 = classDecl4_1, cd3 != cd4);
     
     // this method turns privateAttribute from a local declaration to a member
     shared void capture(){

@@ -10,9 +10,9 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     
     Iterator<T> bIterator = bIterable.iterator();
     for(T a in aIterable){
-        T|Finished b = bIterator.next();
-        check(b != finished, "``message``: Iterator B empty while expecting '``a``'");
-        check(a == b, "``message``: Element '``a``' != '``b``'");
+        T|Finished b0 = bIterator.next();
+        check(b0 != finished, "``message``: Iterator B empty while expecting '``a``'");
+        check(a == b0, "``message``: Element '``a``' != '``b0``'");
     }
     T|Finished b = bIterator.next();
     check(b == finished, "``message``: Iterator B not empty: extra '``b``'");
