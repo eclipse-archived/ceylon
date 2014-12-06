@@ -64,14 +64,16 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     print { val = switch (bool) case (true) "bar" case (false) "foo"; };
     print { switch (bool) case (true) "bar" case (false) "foo"; };
     print { 
-        object extends Object() satisfies Category<String> {
+        object extends Object() 
+                satisfies Category<String> {
             contains(String that) => !that.empty;
             equals(Object that) => false;
             hash => 0;
         };
     };
     print { 
-        val = object extends Object() satisfies Category<String> {
+        val = object extends Object() 
+                satisfies Category<String> {
             contains(String that) => !that.empty;
             equals(Object that) => false;
             hash => 0;
