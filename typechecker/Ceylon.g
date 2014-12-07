@@ -436,7 +436,8 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       ( 
         block
         { $declaration.setBlock($block.block); }
-      | (
+      | 
+        (
           functionSpecifier
           { $declaration.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
@@ -484,13 +485,13 @@ tuplePattern returns [TuplePattern pattern]
     : LBRACKET
       { $pattern = new TuplePattern($LBRACKET); }
       (
-        v1=pattern
+        v1=variadicPattern
         { $pattern.addPattern($v1.pattern); }
         (
-          c=COMMA
-          { $pattern.setEndToken($c); }
+          c1=COMMA
+          { $pattern.setEndToken($c1); }
           (
-            v2=pattern
+            v2=variadicPattern
             { $pattern.addPattern($v2.pattern);
               $pattern.setEndToken(null); }
           )
@@ -498,6 +499,47 @@ tuplePattern returns [TuplePattern pattern]
       )?
       RBRACKET
       { $pattern.setEndToken($RBRACKET); }
+    ;
+
+variadicPattern returns [Pattern pattern]
+    : (
+        (compilerAnnotations unionType? (PRODUCT_OP|SUM_OP)) =>
+        variadicVariable
+        { VariablePattern vp = new VariablePattern(null);
+          vp.setVariable($variadicVariable.variable); 
+          $pattern = vp; }
+	    |
+        p=pattern
+        { $pattern = $p.pattern; }
+	    )
+    ;
+
+variadicVariable returns [Variable variable]
+    @init { $variable = new Variable(null); 
+            Type t = new ValueModifier(null); }
+    : compilerAnnotations
+      { $variable.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      (
+        unionType
+        { t = $unionType.type; }
+      )?
+      (
+        PRODUCT_OP
+        { SequencedType st = new SequencedType($PRODUCT_OP);
+          st.setType(t);
+          st.setAtLeastOne(false);
+          $variable.setType(st); }
+      |
+        SUM_OP
+        { SequencedType st = new SequencedType($SUM_OP);
+          st.setType(t);
+          st.setAtLeastOne(true);
+          $variable.setType(st); }
+      )
+      (
+        memberName
+        { $variable.setIdentifier($memberName.identifier); }
+      )?
     ;
 
 keyItemPattern returns [KeyValuePattern pattern]
