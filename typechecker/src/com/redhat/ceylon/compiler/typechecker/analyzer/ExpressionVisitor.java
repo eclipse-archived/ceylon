@@ -79,7 +79,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DestructuredVariables;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -334,8 +333,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
         that.setPossiblyEmpty(true);
-        that.setFirstTypeModel(unit.getType(unit.getNullDeclaration()));
-        Tree.ComprehensionClause cc = that.getComprehensionClause();
+        ProducedType nt = 
+                unit.getType(unit.getNullDeclaration());
+        that.setFirstTypeModel(nt);
+        Tree.ComprehensionClause cc = 
+                that.getComprehensionClause();
         if (cc!=null) {
             that.setTypeModel(cc.getTypeModel());
         }
@@ -343,109 +345,81 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Destructure that) {
         super.visit(that);
-        Tree.DestructuredVariables ds = 
-                that.getDestructuredVariables();
+        Tree.Pattern pattern = that.getPattern();
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
-        if (se == null) {
-            if (that.getToplevel()) {
-                that.addError("missing specifier expression");
-            }
-        }
-        else {
+        if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                destructure(ds, se, e.getTypeModel());
+                destructure(pattern, se, e.getTypeModel());
             }
         }
     }
 
-    private void destructure(Tree.DestructuredVariables ds,
-            Tree.SpecifierExpression se, ProducedType et) {
-        if (et!=null) {
-            if (ds instanceof Tree.VariableTuple) {
-                destructure(se, et, (Tree.VariableTuple) ds);
+    private void destructure(Tree.Pattern pattern,
+            Tree.SpecifierExpression se, ProducedType type) {
+        if (type!=null) {
+            if (pattern instanceof Tree.TuplePattern) {
+                destructure(se, type, 
+                        (Tree.TuplePattern) pattern);
             }
-            else if (ds instanceof Tree.KeyValue) {
-                destructure(se, et, (Tree.KeyValue) ds);
+            else if (pattern instanceof Tree.KeyValuePattern) {
+                destructure(se, type, 
+                        (Tree.KeyValuePattern) pattern);
+            }
+            else {
+                Tree.VariablePattern vp = 
+                        (Tree.VariablePattern) pattern;
+                Tree.Variable var = vp.getVariable();
+                inferValueType(var, type);
+                ProducedType declaredType = 
+                        var.getType().getTypeModel();
+                checkAssignable(type, declaredType, var, 
+                        "type of element of assigned value must be a subtype of declared type of pattern variable");
             }
         }
     }
 
     private void destructure(Tree.SpecifierExpression se, ProducedType et,
-            Tree.KeyValue keyValue) {
-        Tree.Statement key = keyValue.getKey();
-        Tree.Statement value = keyValue.getValue();
+            Tree.KeyValuePattern keyValuePattern) {
+        Tree.Pattern key = keyValuePattern.getKey();
+        Tree.Pattern value = keyValuePattern.getValue();
         if (et.getSupertype(unit.getEntryDeclaration())==null) {
             se.addError("assigned expression is not an entry type: '"
                     + et.getProducedTypeName(unit) + 
                     "' is not an entry type");
         }
         else {
-            ProducedType keyType = unit.getKeyType(et);
-            if (key instanceof Tree.Variable) {
-                inferValueType((Tree.Variable) key, keyType);
-                ProducedType keyVarType = 
-                        ((Tree.Variable)key).getType().getTypeModel();
-                checkAssignable(keyType, keyVarType, key, 
-                        "type of key of assigned entry must be a subtype of declared type");
-            }
-            else {
-                DestructuredVariables destructuredVariables = 
-                        ((Tree.Destructure) key).getDestructuredVariables();
-                destructure(destructuredVariables, se, keyType);
-            }
-            ProducedType valueType = unit.getValueType(et);
-            if (value instanceof Tree.Variable) {
-                inferValueType((Tree.Variable) value, valueType);
-                ProducedType valueVarType = 
-                        ((Tree.Variable)value).getType().getTypeModel();
-                checkAssignable(valueType, valueVarType, value, 
-                        "type of item of assigned entry must be a subtype of declared type");
-            }
-            else {
-                DestructuredVariables destructuredVariables = 
-                        ((Tree.Destructure) value).getDestructuredVariables();
-                destructure(destructuredVariables, se, valueType);
-            }
+            destructure(key, se, unit.getKeyType(et));
+            destructure(value, se, unit.getValueType(et));
         }
     }
 
     private void destructure(Tree.SpecifierExpression se, ProducedType et,
-            Tree.VariableTuple variableTuple) {
+            Tree.TuplePattern tuplePattern) {
         if (et.getSupertype(unit.getTupleDeclaration())==null) {
             se.addError("assigned expression is not a tuple type: '"
                     + et.getProducedTypeName(unit) + 
                     "' is not a tuple type");
         }
         else {
-            List<Tree.Statement> variables = 
-                    variableTuple.getVariables();
+            List<Tree.Pattern> patterns = 
+                    tuplePattern.getPatterns();
             List<ProducedType> types = 
                     unit.getTupleElementTypes(et);
-            if (types.size()>variables.size()) {
+            if (types.size()>patterns.size()) {
                 se.addError("assigned tuple has too many elements");
             }
-            for (int i=0; i<types.size() && i<variables.size(); i++) {
+            for (int i=0; i<types.size() && i<patterns.size(); i++) {
                 ProducedType type = types.get(i);
-                Tree.Statement st = variables.get(i);
-                if (st instanceof Tree.Destructure) {
-                    Tree.Destructure ds = (Tree.Destructure) st;
-                    destructure(ds.getDestructuredVariables(), 
-                            se, type);
-                }
-                else {
-                    Tree.Variable var = (Tree.Variable) st;
-                    inferValueType(var, type);
-                    ProducedType declaredType = 
-                            var.getType().getTypeModel();
-                    checkAssignable(type, declaredType, var, 
-                            "type of element of assigned tuple must be a subtype of declared type");
-                }
+                Tree.Pattern pattern = patterns.get(i);
+                destructure(pattern, se, type);
             }
-            for (int i=types.size(); i<variables.size(); i++) {
-                Tree.Statement st = variables.get(i);
-                st.addError("assigned tuple has too few elements");
+            for (int i=types.size(); i<patterns.size(); i++) {
+                Tree.Pattern pattern = patterns.get(i);
+                Node errNode = pattern instanceof Tree.VariablePattern ?
+                        ((Tree.VariablePattern) pattern).getVariable() : pattern;
+                errNode.addError("assigned tuple has too few elements");
             }
         }
     }

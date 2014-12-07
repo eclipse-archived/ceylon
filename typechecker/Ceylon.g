@@ -447,66 +447,70 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       )
     ;
 
-variableOrVariableTuple returns [Statement statement]
-    : (LBRACKET (LIDENTIFIER|declarationStart)) => 
-      variableTuple
-      { Destructure d = new Destructure(null);
-        d.setType(new ValueModifier(null)); 
-        d.setDestructuredVariables($variableTuple.variableTuple);
-        $statement = d; }
+tuplePatternStart
+    : LBRACKET (LIDENTIFIER|declarationStart)
+    ;
+
+variableOrTuplePattern returns [Pattern pattern]
+    : 
+      (tuplePatternStart) => tuplePattern
+      { $pattern = $tuplePattern.pattern; }
     | 
-      variable
-      { $statement = $variable.variable; }
+      variablePattern
+      { $pattern = $variablePattern.pattern; }
     ;
 
-variableOrDestructure returns [Statement statement]
-    : (variable ENTRY_OP) =>
-      variableKeyItem
-      { Destructure d = new Destructure(null);
-        d.setType(new ValueModifier(null)); 
-        d.setDestructuredVariables($variableKeyItem.keyValue);
-        $statement = d; }
+pattern returns [Pattern pattern]
+    : 
+      (variable ENTRY_OP) =>
+      keyItemPattern
+      { $pattern = $keyItemPattern.pattern; }
     |
-      variableOrVariableTuple
-      { $statement = $variableOrVariableTuple.statement; }
+      (tuplePatternStart) => 
+      tuplePattern
+      { $pattern = $tuplePattern.pattern; }
+    | 
+      variablePattern
+      { $pattern = $variablePattern.pattern; }
     ;
 
-variableTuple returns [VariableTuple variableTuple]
+variablePattern returns [VariablePattern pattern]
+    : variable
+      { $pattern = new VariablePattern(null);
+        $pattern.setVariable($variable.variable); }
+    ;
+
+tuplePattern returns [TuplePattern pattern]
     : LBRACKET
-      { $variableTuple = new VariableTuple($LBRACKET); }
+      { $pattern = new TuplePattern($LBRACKET); }
       (
-        v1=variableOrDestructure
-        { $variableTuple.addVariable($v1.statement); }
+        v1=pattern
+        { $pattern.addPattern($v1.pattern); }
         (
           c=COMMA
-          { $variableTuple.setEndToken($c); }
+          { $pattern.setEndToken($c); }
           (
-            v2=variableOrDestructure
-            { $variableTuple.addVariable($v2.statement);
-              $variableTuple.setEndToken(null); }
+            v2=pattern
+            { $pattern.addPattern($v2.pattern);
+              $pattern.setEndToken(null); }
           )
         )*
       )?
       RBRACKET
-      { $variableTuple.setEndToken($RBRACKET); }
+      { $pattern.setEndToken($RBRACKET); }
     ;
 
-variableKeyItem returns [KeyValue keyValue]
-    : v1=variableOrVariableTuple
-      { $keyValue = new KeyValue(null);
-        $keyValue.setKey($v1.statement); }
+keyItemPattern returns [KeyValuePattern pattern]
+    : v1=variableOrTuplePattern
+      { $pattern = new KeyValuePattern(null);
+        $pattern.setKey($v1.pattern); }
       ENTRY_OP
-      { $keyValue.setEndToken($ENTRY_OP); }
+      { $pattern.setEndToken($ENTRY_OP); }
       (
-        v2=variableOrVariableTuple
-        { $keyValue.setValue($v2.statement); 
-          $keyValue.setEndToken(null); }
+        v2=variableOrTuplePattern
+        { $pattern.setValue($v2.pattern); 
+          $pattern.setEndToken(null); }
       )?
-    ;
-
-variableKeyItemStart
-    : compilerAnnotations 
-      (LIDENTIFIER ENTRY_OP|UIDENTIFIER|VALUE_MODIFIER|VOID_MODIFIER|FUNCTION_MODIFIER)
     ;
 
 destructure returns [Destructure destructure]
@@ -514,13 +518,8 @@ destructure returns [Destructure destructure]
       { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
         $destructure = new Destructure(null);
         $destructure.setType(vm); }
-      (
-        (variableKeyItemStart) => variableKeyItem
-        { $destructure.setDestructuredVariables($variableKeyItem.keyValue); }
-      |
-        variableTuple
-        { $destructure.setDestructuredVariables($variableTuple.variableTuple); }
-      )
+      pattern
+      { $destructure.setPattern($pattern.pattern); }
       (
         specifier
         { $destructure.setSpecifierExpression($specifier.specifierExpression); }
@@ -1203,8 +1202,7 @@ declarationOrStatement returns [Statement statement]
     : compilerAnnotations
       (
         (destructureStart) => destructure
-        { $destructure.destructure.setToplevel(true);
-          $statement=$destructure.destructure; }
+        { $statement=$destructure.destructure; }
       | (annotatedDeclarationStart) => d1=declaration
         { $statement=$d1.declaration; }
       | (annotatedAssertionStart) => assertion
@@ -2147,11 +2145,21 @@ let returns [LetExpression let]
         $let.setLetClause($letClause.letClause); }
     ;
 
+patternStart
+    : (variable ENTRY_OP) => variable ENTRY_OP | 
+      tuplePatternStart
+    ;
+
 letVariable returns [Statement statement]
-    : variableOrDestructure
-      { $statement=$variableOrDestructure.statement; 
-        if ($statement instanceof Destructure)
-            ((Destructure) $statement).setToplevel(true); }
+    : (
+        (patternStart) => pattern
+        { Destructure d = new Destructure(null);
+          d.setPattern($pattern.pattern);
+          $statement = d; }
+      |
+        variable
+        { $statement=$variable.variable; }
+      )
       (
         specifier
         { if ($statement instanceof Destructure)
