@@ -461,10 +461,10 @@ variableOrVariableTuple returns [Statement statement]
 
 variableOrDestructure returns [Statement statement]
     : (variable ENTRY_OP) =>
-      keyValue
+      variableKeyItem
       { Destructure d = new Destructure(null);
         d.setType(new ValueModifier(null)); 
-        d.setDestructuredVariables($keyValue.keyValue);
+        d.setDestructuredVariables($variableKeyItem.keyValue);
         $statement = d; }
     |
       variableOrVariableTuple
@@ -491,7 +491,7 @@ variableTuple returns [VariableTuple variableTuple]
       { $variableTuple.setEndToken($RBRACKET); }
     ;
 
-keyValue returns [KeyValue keyValue]
+variableKeyItem returns [KeyValue keyValue]
     : v1=variableOrVariableTuple
       { $keyValue = new KeyValue(null);
         $keyValue.setKey($v1.statement); }
@@ -504,7 +504,7 @@ keyValue returns [KeyValue keyValue]
       )?
     ;
 
-keyValueStart
+variableKeyItemStart
     : compilerAnnotations 
       (LIDENTIFIER ENTRY_OP|UIDENTIFIER|VALUE_MODIFIER|VOID_MODIFIER|FUNCTION_MODIFIER)
     ;
@@ -515,8 +515,8 @@ destructure returns [Destructure destructure]
         $destructure = new Destructure(null);
         $destructure.setType(vm); }
       (
-        (keyValueStart) => keyValue
-        { $destructure.setDestructuredVariables($keyValue.keyValue); }
+        (variableKeyItemStart) => variableKeyItem
+        { $destructure.setDestructuredVariables($variableKeyItem.keyValue); }
       |
         variableTuple
         { $destructure.setDestructuredVariables($variableTuple.variableTuple); }
@@ -1202,15 +1202,15 @@ declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
       (
-        (destructureStart) => d1=destructure
-        { $d1.destructure.setToplevel(true);
-          $statement=$d1.destructure; }
-      | (annotatedDeclarationStart) => d3=declaration
-        { $statement=$d3.declaration; }
+        (destructureStart) => destructure
+        { $destructure.destructure.setToplevel(true);
+          $statement=$destructure.destructure; }
+      | (annotatedDeclarationStart) => d1=declaration
+        { $statement=$d1.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotationListStart) => d4=declaration
-        { $statement=$d4.declaration; }
+      | (annotationListStart) => d2=declaration
+        { $statement=$d2.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
