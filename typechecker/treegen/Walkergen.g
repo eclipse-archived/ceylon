@@ -8,7 +8,7 @@ grammar Walkergen;
     package com.redhat.ceylon.compiler.typechecker.treegen; 
 }
 
-nodeList : 
+nodeList :
     {
     println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
     println("import java.util.List;");

@@ -8,7 +8,7 @@ grammar Treegen;
     package com.redhat.ceylon.compiler.typechecker.treegen; 
 }
 
-nodeList : { 
+nodeList : {
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Walker.*;\n");
            println("import org.antlr.runtime.Token;\n");
