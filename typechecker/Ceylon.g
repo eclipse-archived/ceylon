@@ -1789,8 +1789,8 @@ namedArguments returns [NamedArgumentList namedArgumentList]
 
 sequencedArgument returns [SequencedArgument sequencedArgument]
     : compilerAnnotations
-      { sequencedArgument = new SequencedArgument(null);
-        sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      { $sequencedArgument = new SequencedArgument(null);
+        $sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
         (
           (FOR_CLAUSE | IF_CLAUSE conditions ~THEN_CLAUSE)=>
           c1=comprehension
@@ -3682,30 +3682,25 @@ failBlock returns [ElseClause clause]
 
 forIterator returns [ForIterator iterator]
     @init { ValueIterator vi = null;
-            KeyValueIterator kvi = null; }
+            PatternIterator pi = null; }
     : LPAREN
     { vi = new ValueIterator($LPAREN); 
-      kvi = new KeyValueIterator($LPAREN); 
+      pi = new PatternIterator($LPAREN); 
       $iterator = vi; }
-    compilerAnnotations
     ( 
-      v1=var
       (
-        { vi.setVariable($v1.variable); }
-        c1=containment
-        { vi.setSpecifierExpression($c1.specifierExpression); }
-      | 
-        { $iterator = kvi; }
-        ENTRY_OP
-        { kvi.setKeyVariable($v1.variable); }
-        v2=var
-        { kvi.setValueVariable($v2.variable); }
-        c2=containment
-        {  kvi.setSpecifierExpression($c2.specifierExpression); }
+        (patternStart) => pattern
+        { pi.setPattern($pattern.pattern);
+          $iterator = pi; }
+      |
+        variable
+        { vi.setVariable($variable.variable); }
+      )
+      (
+        containment
+        { $iterator.setSpecifierExpression($containment.specifierExpression); }
       )?
     )?
-    { if ($iterator!=null)
-          $iterator.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     RPAREN
     { $iterator.setEndToken($RPAREN); }
     ;

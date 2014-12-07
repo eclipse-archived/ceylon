@@ -785,7 +785,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.KeyValueIterator that) {
+    @Override public void visit(Tree.PatternIterator that) {
         super.visit(that);
         Tree.SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null) {
@@ -795,21 +795,10 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(et)) {
                     ProducedType it = unit.getIteratedType(et);
                     if (it!=null && !isTypeUnknown(it)) {
-                        if (!unit.isEntryType(it)) {
-                            se.addError("iterated element type is not an entry type: '" + 
-                                    it.getProducedTypeName(unit) + 
-                                    "' is not a subtype of 'Entry'");
-                        }
+                        destructure(that.getPattern(), se, it);
                     }
                 }
             }
-        }
-        Tree.Variable kv = that.getKeyVariable();
-        Tree.Variable vv = that.getValueVariable();
-        if (kv!=null && vv!=null) {
-            inferKeyType(kv, that.getSpecifierExpression());
-            inferValueType(vv, that.getSpecifierExpression());
-            checkKeyValueType(kv, vv, that.getSpecifierExpression());
         }
     }
     
@@ -1376,15 +1365,17 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkContainedType(Tree.Variable var, 
             Tree.SpecifierExpression se) {
-        if (var.getType()!=null) {
+        if (var.getType()!=null && se!=null && se.getExpression()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            if (!isTypeUnknown(vt)) {
-                checkType(unit.getIterableType(vt), se);
+            ProducedType t = se.getExpression().getTypeModel();
+            if (!isTypeUnknown(vt) && !isTypeUnknown(t)) {
+                checkAssignable(unit.getIteratedType(t), vt, var, 
+                        "iterable element type must be assignable to iterator variable type");
             }
         }
     }
 
-    private void checkKeyValueType(Tree.Variable key, Tree.Variable value, 
+    /*private void checkKeyValueType(Tree.Variable key, Tree.Variable value, 
             Tree.SpecifierExpression se) {
         if (key.getType()!=null && value.getType()!=null) {
             ProducedType kt = key.getType().getTypeModel();
@@ -1393,7 +1384,7 @@ public class ExpressionVisitor extends Visitor {
                 checkType(unit.getIterableType(unit.getEntryType(kt, vt)), se);
             }
         }
-    }
+    }*/
     
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type type = that.getType();
@@ -1817,7 +1808,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void inferKeyType(Tree.Variable key, 
+    /*private void inferKeyType(Tree.Variable key, 
             Tree.SpecifierExpression se) {
         if (key.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = 
@@ -1837,7 +1828,7 @@ public class ExpressionVisitor extends Visitor {
                 setTypeFromValueType(local, se, value);
             }
         }
-    }
+    }*/
     
     private void inferValueType(Tree.Variable value, 
             ProducedType t) {
@@ -1908,7 +1899,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void setTypeFromKeyType(Tree.LocalModifier local,
+    /*private void setTypeFromKeyType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
@@ -1947,7 +1938,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-    }
+    }*/
     
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 

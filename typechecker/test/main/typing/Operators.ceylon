@@ -371,9 +371,9 @@ class Operators() {
     //Integer bin4 = bin1 and (bin2 or bin1);
     
     Object set = nothing;
-    for (@error me in set) {}
+    @error for (me in set) {}
     {Object*} map = nothing;
-    for (@error k->v in map) {}
+    @error for (k->v in map) {}
     
     Cat cat_ = Cat();
     Boolean incat1 = "" in cat_;

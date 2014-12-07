@@ -72,10 +72,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             return;
         }
         if (that instanceof Tree.Variable) {
-            if ( ((Tree.Variable) that).getType() instanceof Tree.SyntheticVariable ) {
+            if (((Tree.Variable) that).getType() 
+                    instanceof Tree.SyntheticVariable) {
                 super.visit(that);
                 return;
             }
+        }
+        if (that instanceof Tree.ForIterator) {
+            super.visit(that);
+            return;
         }
         boolean b = expectingError;
         List<Message> f = foundErrors;
