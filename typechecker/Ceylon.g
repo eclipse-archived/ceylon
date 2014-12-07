@@ -447,18 +447,44 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       )
     ;
 
+variableOrVariableTuple returns [Statement statement]
+    : (LBRACKET (LIDENTIFIER|declarationStart)) => 
+      variableTuple
+      { Destructure d = new Destructure(null);
+        d.setType(new ValueModifier(null)); 
+        d.setDestructuredVariables($variableTuple.variableTuple);
+        $statement = d; }
+    | 
+      variable
+      { $statement = $variable.variable; }
+    ;
+
+variableOrDestructure returns [Statement statement]
+    : (variable ENTRY_OP) =>
+      keyValue
+      { Destructure d = new Destructure(null);
+        d.setType(new ValueModifier(null)); 
+        d.setDestructuredVariables($keyValue.keyValue);
+        $statement = d; }
+    |
+      variableOrVariableTuple
+      { $statement = $variableOrVariableTuple.statement; }
+    ;
+
 variableTuple returns [VariableTuple variableTuple]
     : LBRACKET
       { $variableTuple = new VariableTuple($LBRACKET); }
       (
-        v1=variable
-        { $variableTuple.addVariable($v1.variable); }
+        v1=variableOrDestructure
+        { $variableTuple.addVariable($v1.statement); }
         (
           c=COMMA
           { $variableTuple.setEndToken($c); }
-          v2=variable
-          { $variableTuple.addVariable($v2.variable);
-            $variableTuple.setEndToken(null); }
+          (
+            v2=variableOrDestructure
+            { $variableTuple.addVariable($v2.statement);
+              $variableTuple.setEndToken(null); }
+          )
         )*
       )?
       RBRACKET
@@ -466,14 +492,14 @@ variableTuple returns [VariableTuple variableTuple]
     ;
 
 keyValue returns [KeyValue keyValue]
-    : v1=variable
+    : v1=variableOrVariableTuple
       { $keyValue = new KeyValue(null);
-        $keyValue.setKey($v1.variable); }
+        $keyValue.setKey($v1.statement); }
       ENTRY_OP
       { $keyValue.setEndToken($ENTRY_OP); }
       (
-        v2=variable
-        { $keyValue.setValue($v2.variable); 
+        v2=variableOrVariableTuple
+        { $keyValue.setValue($v2.statement); 
           $keyValue.setEndToken(null); }
       )?
     ;
@@ -1168,7 +1194,8 @@ annotationListStart
     ;
 
 destructureStart
-    : VALUE_MODIFIER compilerAnnotations (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
+    : VALUE_MODIFIER compilerAnnotations 
+      (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
     ;
 
 declarationOrStatement returns [Statement statement]
@@ -1176,7 +1203,8 @@ declarationOrStatement returns [Statement statement]
     : compilerAnnotations
       (
         (destructureStart) => d1=destructure
-        { $statement=$d1.destructure; }
+        { $d1.destructure.setToplevel(true);
+          $statement=$d1.destructure; }
       | (annotatedDeclarationStart) => d3=declaration
         { $statement=$d3.declaration; }
       | (annotatedAssertionStart) => assertion
@@ -2120,33 +2148,17 @@ let returns [LetExpression let]
     ;
 
 letVariable returns [Statement statement]
-    @init { Destructure d = null; Variable v = null; }
-    : 
-    (
-      (LBRACKET (LIDENTIFIER|declarationStart)) => 
-      variableTuple
-      { d = new Destructure(null);
-        d.setType(new ValueModifier(null)); 
-        d.setDestructuredVariables($variableTuple.variableTuple);
-        $statement = d; }
-    | (variable ENTRY_OP) =>
-      keyValue
-      { d = new Destructure(null);
-        d.setType(new ValueModifier(null)); 
-        d.setDestructuredVariables($keyValue.keyValue);
-        $statement = d; }
-    |
-      variable
-      { v = $variable.variable;
-        $statement = v; }
-    )
-    (
-      specifier
-      { if (d!=null)
-            d.setSpecifierExpression($specifier.specifierExpression);
-        else if (v!=null)
-            v.setSpecifierExpression($specifier.specifierExpression); }
-    )?
+    : variableOrDestructure
+      { $statement=$variableOrDestructure.statement; 
+        if ($statement instanceof Destructure)
+            ((Destructure) $statement).setToplevel(true); }
+      (
+        specifier
+        { if ($statement instanceof Destructure)
+            ((Destructure) $statement).setSpecifierExpression($specifier.specifierExpression);
+          else if ($statement instanceof Variable)
+            ((Variable) $statement).setSpecifierExpression($specifier.specifierExpression); }
+      )?
     ;
 
 letClause returns [LetClause letClause]
