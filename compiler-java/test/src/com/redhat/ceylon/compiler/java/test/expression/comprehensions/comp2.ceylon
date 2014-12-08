@@ -19,5 +19,5 @@
  */
 @noanno
 void comp2(Integer[] ints) {
-    value i = {for (i in ints) for (j in ints) i*2+3/j };
+    value i2 = {for (i in ints) for (j in ints) i*2+3/j };
 }

@@ -25,7 +25,7 @@ class ExceptionAttributes() {
             Throwable? cc = cause.cause;
             String? message = cause.message;
         }
-        String message = e.message;
+        String message2 = e.message;
         
         variable Throwable[] s = e.suppressed;
         e.addSuppressed(Exception());

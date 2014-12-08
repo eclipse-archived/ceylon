@@ -19,8 +19,8 @@ void javaExceptionMessage2() {
     value factory = JavaExceptionsAndThrowable();
     try {
         factory.throwRuntimeException(null);
-    } catch (Throwable t) {
-        assert(t.message == "");
+    } catch (Throwable t2) {
+        assert(t2.message == "");
     }
     
     value ref = Exception.message;

@@ -13,7 +13,7 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
             final .java.lang.Throwable cc = cause$2.getCause();
             final .ceylon.language.String message = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.throwableMessage(cause$2));
         }
-        final .java.lang.String message = .com.redhat.ceylon.compiler.java.Util.throwableMessage(e);
+        final .java.lang.String message2 = .com.redhat.ceylon.compiler.java.Util.throwableMessage(e);
         .ceylon.language.Sequential<? extends .java.lang.Throwable> s = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(e);
         e.addSuppressed(new .ceylon.language.Exception());
         e.addSuppressed(new .ceylon.language.Exception());
