@@ -3334,7 +3334,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
         // apply the default parameters
         if (invocation.getVars() != null && !invocation.getVars().isEmpty()) {
-            if (invocation.getReturnType() == null || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())) {
+            if ((invocation.getReturnType() == null 
+                    || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration()))
+                    && !Decl.isMpl((Functional) invocation.getPrimaryDeclaration())) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 resultExpr = make().LetExpr( 
                         invocation.getVars().append(make().Exec(resultExpr)).toList(), 
