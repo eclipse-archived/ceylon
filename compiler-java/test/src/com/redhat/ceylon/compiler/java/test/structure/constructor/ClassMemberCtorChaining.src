@@ -22,10 +22,10 @@ class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtim
     
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        public Member(final long i) {
+        public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other $name$, final long i) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override
@@ -90,20 +90,20 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     
     public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member {
         
-        public Sub(final long i) {
-            super(i);
+        public Sub(final long i$param$) {
+            super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 $name$, final long i) {
-            super(i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 $name$, final long i$param$) {
+            super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 $name$, final long i) {
-            super(i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 $name$, final long i$param$) {
+            super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other $name$, final long i) {
-            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other, i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other $name$, final long i$param$) {
+            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other, i$param$);
         }
         
         @.java.lang.Override

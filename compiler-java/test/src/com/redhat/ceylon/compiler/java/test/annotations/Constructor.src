@@ -65,7 +65,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"ctor param doc"})})
-    final .java.lang.String s) {
+    final .java.lang.String s$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.annotations.Constructor.Other Other = null;
@@ -88,7 +88,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"ctor param doc"})})
-    final .java.lang.String s) {
+    final .java.lang.String s$param$) {
     }
     
     @.java.lang.Override

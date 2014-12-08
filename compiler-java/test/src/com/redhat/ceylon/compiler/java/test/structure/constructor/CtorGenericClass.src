@@ -29,7 +29,7 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         return null;
     }
     
-    public CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+    public CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t$param$) {
         this.$reified$T = $reified$T;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo Foo = null;
@@ -44,7 +44,7 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         }
     }
     
-    private CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $name$, final T t) {
+    private CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $name$, final T t$param$) {
         this.$reified$T = $reified$T;
     }
     

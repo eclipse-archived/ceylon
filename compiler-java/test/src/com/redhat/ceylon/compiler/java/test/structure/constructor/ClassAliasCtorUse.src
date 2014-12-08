@@ -131,8 +131,8 @@ class ClassAliasCtorAliasSub2 extends .com.redhat.ceylon.compiler.java.test.stru
     @.com.redhat.ceylon.compiler.java.metadata.Name("ClassAliasCtorAliasSub2")
     public ClassAliasCtorAliasSub2(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long j) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, j);
+    final long j$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, j$param$);
     }
     
     @.java.lang.Override

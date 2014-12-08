@@ -44,10 +44,10 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             );
         }
         
-        public Member(final long i) {
+        public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $name$, final long i) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override
@@ -101,10 +101,10 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        public SharedMember(final long i) {
+        public SharedMember(final long i$param$) {
         }
         
-        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i) {
+        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override

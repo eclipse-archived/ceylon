@@ -20,7 +20,7 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         }
     }
     
-    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s$param$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty NonEmpty = null;
     
@@ -30,7 +30,7 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         }
     }
     
-    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty $name$, final .ceylon.language.Sequence<? extends .ceylon.language.String> s) {
+    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty $name$, final .ceylon.language.Sequence<? extends .ceylon.language.String> s$param$) {
     }
     
     private final void use$priv$() {

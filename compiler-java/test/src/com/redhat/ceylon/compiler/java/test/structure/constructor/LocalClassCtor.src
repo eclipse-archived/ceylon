@@ -9,9 +9,9 @@ final class localClassCtor_ {
         
         abstract class LocalClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            private LocalClassCtor(final long j) {
+            private LocalClassCtor(final long j$param$) {
                 final long sum;
-                sum = i + j;
+                sum = i + j$param$;
             }
             
             class Other {
@@ -20,9 +20,9 @@ final class localClassCtor_ {
                 }
             }
             
-            private LocalClassCtor(LocalClassCtor.Other $name$, final long j) {
+            private LocalClassCtor(LocalClassCtor.Other $name$, final long j$param$) {
                 final long sum;
-                sum = i + j;
+                sum = i + j$param$;
             }
             
             @.java.lang.Override
@@ -33,8 +33,8 @@ final class localClassCtor_ {
         
         class LocalClassCtorSub extends LocalClassCtor {
             
-            private LocalClassCtorSub(final long j) {
-                super(j);
+            private LocalClassCtorSub(final long j$param$) {
+                super(j$param$);
             }
             
             class Other {
@@ -43,8 +43,8 @@ final class localClassCtor_ {
                 }
             }
             
-            private LocalClassCtorSub(LocalClassCtorSub.Other $name$, final long j) {
-                super((LocalClassCtor.Other)null, j);
+            private LocalClassCtorSub(LocalClassCtorSub.Other $name$, final long j$param$) {
+                super((LocalClassCtor.Other)null, j$param$);
             }
             
             @.java.lang.Override

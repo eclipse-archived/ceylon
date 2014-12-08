@@ -128,8 +128,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return string;
     }
     
-    public ConstructorRef(final .java.lang.String s) {
-        string = new .java.lang.StringBuilder().append("default(").append(s).append(")").toString();
+    public ConstructorRef(final .java.lang.String s$param$) {
+        string = new .java.lang.StringBuilder().append("default(").append(s$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Unary Unary = null;
     
@@ -139,8 +139,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Unary $name$, final .java.lang.String s) {
-        string = new .java.lang.StringBuilder().append("unary(").append(s).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Unary $name$, final .java.lang.String s$param$) {
+        string = new .java.lang.StringBuilder().append("unary(").append(s$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Binary Binary = null;
     
@@ -150,8 +150,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Binary $name$, final .java.lang.String s1, final .java.lang.String s2) {
-        string = new .java.lang.StringBuilder().append("binary(").append(s1).append(",").append(s2).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Binary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
+        string = new .java.lang.StringBuilder().append("binary(").append(s1$param$).append(",").append(s2$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Ternary Ternary = null;
     
@@ -161,8 +161,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Ternary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        string = new .java.lang.StringBuilder().append("ternary(").append(s1).append(",").append(s2).append(",").append(s3).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
+        string = new .java.lang.StringBuilder().append("ternary(").append(s1$param$).append(",").append(s2$param$).append(",").append(s3$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Nary Nary = null;
     
@@ -172,8 +172,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        string = new .java.lang.StringBuilder().append("nary(").append(s1).append(",").append(s2).append(",").append(s3).append(",").append(s4).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .java.lang.String s4$param$) {
+        string = new .java.lang.StringBuilder().append("nary(").append(s1$param$).append(",").append(s2$param$).append(",").append(s3$param$).append(",").append(s4$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.UnaryDefaulted UnaryDefaulted = null;
     
@@ -187,8 +187,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.UnaryDefaulted $name$, final .java.lang.String s) {
-        string = new .java.lang.StringBuilder().append("unaryDefaulted(").append(s).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.UnaryDefaulted $name$, final .java.lang.String s$param$) {
+        string = new .java.lang.StringBuilder().append("unaryDefaulted(").append(s$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.BinaryDefaulted BinaryDefaulted = null;
     
@@ -206,8 +206,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.BinaryDefaulted $name$, final .java.lang.String s1, final .java.lang.String s2) {
-        string = new .java.lang.StringBuilder().append("binaryDefaulted(").append(s1).append(", ").append(s2).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.BinaryDefaulted $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
+        string = new .java.lang.StringBuilder().append("binaryDefaulted(").append(s1$param$).append(", ").append(s2$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.TernaryDefaulted TernaryDefaulted = null;
     
@@ -229,8 +229,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.TernaryDefaulted $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        string = new .java.lang.StringBuilder().append("ternaryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.TernaryDefaulted $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
+        string = new .java.lang.StringBuilder().append("ternaryDefaulted(").append(s1$param$).append(", ").append(s2$param$).append(", ").append(s3$param$).append(")").toString();
     }
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.NaryDefaulted NaryDefaulted = null;
     
@@ -256,8 +256,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.NaryDefaulted $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        string = new .java.lang.StringBuilder().append("naryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString();
+    public ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.NaryDefaulted $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .java.lang.String s4$param$) {
+        string = new .java.lang.StringBuilder().append("naryDefaulted(").append(s1$param$).append(", ").append(s2$param$).append(", ").append(s3$param$).append(", ").append(s4$param$).append(")").toString();
     }
     
     @.java.lang.Override
@@ -295,9 +295,9 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     public ConstructorRefTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s) {
+    final T s$param$) {
         this.$reified$T = $reified$T;
-        string = new .java.lang.StringBuilder().append("defaultTp(").append(s.toString()).append(")").toString();
+        string = new .java.lang.StringBuilder().append("defaultTp(").append(s$param$.toString()).append(")").toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.UnaryTp UnaryTp = null;
@@ -316,9 +316,9 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.UnaryTp $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s) {
+    final T s$param$) {
         this.$reified$T = $reified$T;
-        string = new .java.lang.StringBuilder().append("unaryTp(").append(s.toString()).append(")").toString();
+        string = new .java.lang.StringBuilder().append("unaryTp(").append(s$param$.toString()).append(")").toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.BinaryTp BinaryTp = null;
@@ -337,11 +337,11 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.BinaryTp $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s1, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
+    final T s1$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s2) {
+    final T s2$param$) {
         this.$reified$T = $reified$T;
-        string = new .java.lang.StringBuilder().append("binaryTp(").append(s1.toString()).append(",").append(s2.toString()).append(")").toString();
+        string = new .java.lang.StringBuilder().append("binaryTp(").append(s1$param$.toString()).append(",").append(s2$param$.toString()).append(")").toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.TernaryTp TernaryTp = null;
@@ -360,13 +360,13 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.TernaryTp $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s1, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
+    final T s1$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s2, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
+    final T s2$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s3) {
+    final T s3$param$) {
         this.$reified$T = $reified$T;
-        string = new .java.lang.StringBuilder().append("ternaryTp(").append(s1.toString()).append(",").append(s2.toString()).append(",").append(s3.toString()).append(")").toString();
+        string = new .java.lang.StringBuilder().append("ternaryTp(").append(s1$param$.toString()).append(",").append(s2$param$.toString()).append(",").append(s3$param$.toString()).append(")").toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.NaryTp NaryTp = null;
@@ -385,15 +385,15 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.NaryTp $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s1, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
+    final T s1$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s2, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
+    final T s2$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s3, @.com.redhat.ceylon.compiler.java.metadata.Name("s4")
+    final T s3$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("s4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T s4) {
+    final T s4$param$) {
         this.$reified$T = $reified$T;
-        string = new .java.lang.StringBuilder().append("naryTp(").append(s1.toString()).append(",").append(s2.toString()).append(",").append(s3.toString()).append(",").append(s4.toString()).append(")").toString();
+        string = new .java.lang.StringBuilder().append("naryTp(").append(s1$param$.toString()).append(",").append(s2$param$.toString()).append(",").append(s3$param$.toString()).append(",").append(s4$param$.toString()).append(")").toString();
     }
     
     @.java.lang.Override

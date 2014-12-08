@@ -63,10 +63,10 @@ final class InterfaceMemberClassCtor$impl {
             );
         }
         
-        public Member(final long i) {
+        public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other $name$, final long i) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override
@@ -120,10 +120,10 @@ final class InterfaceMemberClassCtor$impl {
     
     public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        public SharedMember(final long i) {
+        public SharedMember(final long i$param$) {
         }
         
-        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$, final long i) {
+        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override

@@ -71,7 +71,7 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         .ceylon.language.print_.print(.ceylon.language.String.instance(capturedByCtor));
     }
     
-    public CtorCaptureInit(final long initial) {
+    public CtorCaptureInit(final long initial$param$) {
         final .java.lang.String name = "Trompon";
         this.sharedName = "Trompon";
         .ceylon.language.print_.print(.ceylon.language.String.instance(name));
@@ -86,10 +86,10 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
             }
             returning $ceylontmp$op$0;
         );
-        setCount$priv$(initial);
-        setSharedCount(initial);
-        init = initial;
-        sharedInit = initial;
+        setCount$priv$(initial$param$);
+        setSharedCount(initial$param$);
+        init = initial$param$;
+        sharedInit = initial$param$;
         captured = "ConstWithParameter";
     }
     

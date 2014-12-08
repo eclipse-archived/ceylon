@@ -8,7 +8,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Name("ClassAliasCtor")
     public ClassAliasCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
+    final long i$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other Other = null;
@@ -26,7 +26,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public ClassAliasCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
+    final long i$param$) {
     }
     
     @.java.lang.Override

@@ -51,7 +51,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         return "";
     }
     
-    public DefaultedParameterCtor(final .java.lang.String s) {
+    public DefaultedParameterCtor(final .java.lang.String s$param$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One One = null;
     
@@ -65,7 +65,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         }
     }
     
-    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One $name$, final .java.lang.String s) {
+    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One $name$, final .java.lang.String s$param$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two Two = null;
     
@@ -83,7 +83,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         }
     }
     
-    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two $name$, final .java.lang.String s, final long i) {
+    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two $name$, final .java.lang.String s$param$, final long i$param$) {
     }
     
     private final void use$priv$() {

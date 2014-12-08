@@ -17,8 +17,8 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.Name("UnaryCtor")
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    final .java.lang.String s1) {
-        s = s1;
+    final .java.lang.String s1$param$) {
+        s = s1$param$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger FromInteger = null;
@@ -35,8 +35,8 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     private UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
-        s = .ceylon.language.Integer.toString(i);
+    final long i$param$) {
+        s = .ceylon.language.Integer.toString(i$param$);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger SharedFromInteger = null;
@@ -54,8 +54,8 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
-        s = .ceylon.language.Integer.toString(i);
+    final long i$param$) {
+        s = .ceylon.language.Integer.toString(i$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")

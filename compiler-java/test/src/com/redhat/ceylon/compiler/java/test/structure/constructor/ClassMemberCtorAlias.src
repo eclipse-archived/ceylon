@@ -14,10 +14,10 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        public Member(final long i) {
+        public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other $name$, final long i) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override

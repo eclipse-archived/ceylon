@@ -33,10 +33,10 @@ final class InterfaceMemberCtorChaining$impl {
     
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        public Member(final long i) {
+        public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other $name$, final long i) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other $name$, final long i$param$) {
         }
         
         @.java.lang.Override
@@ -104,20 +104,20 @@ final class InterfaceMemberCtorChainingSub$impl {
     
     public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member {
         
-        public Sub(final long i) {
-            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        public Sub(final long i$param$) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 $name$, final long i) {
-            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 $name$, final long i$param$) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 $name$, final long i) {
-            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 $name$, final long i$param$) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i$param$);
         }
         
-        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other $name$, final long i) {
-            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other, i);
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other $name$, final long i$param$) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other, i$param$);
         }
         
         @.java.lang.Override
