@@ -942,4 +942,15 @@ public class Decl {
             return null;
         }
     }
+
+    public static Declaration getDeclarationScope(Scope scope) {
+        while (true) {
+            if (scope instanceof Declaration) {
+                return (Declaration)scope;
+            } else if (scope instanceof Package) {
+                return null;
+            }
+            scope = scope.getContainer();
+        }
+    }
 }

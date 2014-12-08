@@ -3854,6 +3854,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = transformSuper(expr);
             } else if (isSuperOf(primary)) {
                 result = transformSuperOf(expr);
+            } else if (isThis(primary)
+                    && !expr.getDeclaration().isCaptured() 
+                    && !expr.getDeclaration().isShared()
+                    && Decl.getDeclarationScope(expr.getScope()) instanceof Constructor) {
+                result = null;
             } else if (Decl.isJavaStaticPrimary(primary)) {
                 // Java static field or method access
                 result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
