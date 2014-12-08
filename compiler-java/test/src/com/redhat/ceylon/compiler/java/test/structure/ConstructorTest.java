@@ -87,4 +87,9 @@ public class ConstructorTest extends CompilerTest {
         compareWithJavaSource("constructor/ClassAliasCtor");
         compareWithJavaSource("constructor/ClassAliasCtorUse");
     }
+    
+    @Test
+    public void testCtorShadowing(){
+        compareWithJavaSource("constructor/Shadowing");
+    }
 }
