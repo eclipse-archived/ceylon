@@ -529,12 +529,12 @@ variadicVariable returns [Variable variable]
           st.setType(t);
           st.setAtLeastOne(false);
           $variable.setType(st); }
-      |
+      /*|
         SUM_OP
         { SequencedType st = new SequencedType($SUM_OP);
           st.setType(t);
           st.setAtLeastOne(true);
-          $variable.setType(st); }
+          $variable.setType(st); }*/
       )
       (
         memberName
