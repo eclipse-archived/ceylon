@@ -414,13 +414,13 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return this;
+                            return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
                         
                         case 1: 
-                            return this;
+                            return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
                         
                         case 2: 
-                            return this;
+                            return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
                         
                         default: 
                             return null;

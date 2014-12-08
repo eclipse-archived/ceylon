@@ -66,7 +66,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
                     return (
                         let
                         {
-                            .ceylon.language.String $ceylontmp$3 = getFirstName$priv$();
+                            .ceylon.language.String $ceylontmp$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.this.getFirstName$priv$();
                         }
                         returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.String.instance("");
                     );
@@ -75,7 +75,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
                     return (
                         let
                         {
-                            .ceylon.language.String $ceylontmp$4 = getLastName$priv$();
+                            .ceylon.language.String $ceylontmp$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.this.getLastName$priv$();
                         }
                         returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("");
                     );
