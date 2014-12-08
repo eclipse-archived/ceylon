@@ -87,8 +87,8 @@ void testIfExists() {
         fail("if (exists x=expr)");
     }
     variable Integer cnt = 0;
-    String? s5 { ++cnt; return "ok"; }
-    if (exists x = s5) {
+    String? s6 { ++cnt; return "ok"; }
+    if (exists x = s6) {
         check(x=="ok", "if (exists x=y) with getter [value: ``x``]");
     } else {
         fail("if (exists x=y) with getter [exists]");

@@ -16,8 +16,8 @@ void testStackTrace() {
   try {
     print("Coming up, a strack trace...");
     m3();
-  } catch (Exception e) {
-    e.printStackTrace();
+  } catch (Exception ex) {
+    ex.printStackTrace();
   }
   print("You should have seen a stack trace");
   value e = Exception();
