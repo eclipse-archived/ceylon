@@ -340,7 +340,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Name("LitClassWithConstructors")
     public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
+    final long i$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other Other = null;
@@ -358,7 +358,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
+    final long i$param$) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -393,7 +393,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
         @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
         public Member(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
-        final boolean b) {
+        final boolean b$param$) {
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -401,7 +401,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
         public Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
-        final boolean b) {
+        final boolean b$param$) {
         }
         
         @.java.lang.Override
@@ -437,7 +437,7 @@ class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compil
     public LitParameterisedClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T t) {
+    final T t$param$) {
         super(1L);
         this.$reified$T = $reified$T;
     }
@@ -458,7 +458,7 @@ class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compil
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithConstructors.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    final T t) {
+    final T t$param$) {
         super(1L);
         this.$reified$T = $reified$T;
     }
