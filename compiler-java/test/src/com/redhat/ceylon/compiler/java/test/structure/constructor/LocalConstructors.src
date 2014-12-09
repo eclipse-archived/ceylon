@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+final class localConstructors_ {
+    
+    private localConstructors_() {
+    }
+    
+    static <X>void localConstructors(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$localConstructors$X, final X x) {
+        
+        final class C$impl<Y> {
+            
+            public final <Y>Y C$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x) {
+                return null;
+            }
+        }
+        
+        class C<Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x) {
+                (
+                    let
+                    {
+                        C$impl<Y> $ceylontmp$impl$0 = new C$impl<Y>();
+                        Y $ceylontmp$y$1 = $ceylontmp$impl$0.C$y($reified$Y, x);
+                        this($reified$Y, x, $ceylontmp$y$1);
+                    }
+                    returning null;
+                );
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+            
+            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$, final Y y$param$) {
+                this.$reified$Y = $reified$Y;
+            }
+            
+            class NonDefault {
+                
+                private NonDefault() {
+                }
+            }
+            
+            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, C.NonDefault $name$, final Y y$param$) {
+                this.$reified$Y = $reified$Y;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localConstructors_.class, $reified$localConstructors$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$Y));
+            }
+        }
+        C<.ceylon.language.String> c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x);
+        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x, .ceylon.language.String.instance(""));
+        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (C.NonDefault)null, .ceylon.language.String.instance(""));
+        
+        class Sub<Z> extends C<Z> {
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z;
+            
+            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final Z z$param$) {
+                super($reified$Z, x, z$param$);
+                this.$reified$Z = $reified$Z;
+            }
+            
+            class NonDefault {
+                
+                private NonDefault() {
+                }
+            }
+            
+            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, Sub.NonDefault $name$, final Z z$param$) {
+                super($reified$Z, (C.NonDefault)null, z$param$);
+                this.$reified$Z = $reified$Z;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localConstructors_.class, $reified$localConstructors$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Sub.class, $reified$Z));
+            }
+        }
+    }
+}

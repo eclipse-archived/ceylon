@@ -92,4 +92,9 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorShadowing(){
         compareWithJavaSource("constructor/Shadowing");
     }
+    
+    @Test
+    public void testCtorLocalConstructors(){
+        compareWithJavaSource("constructor/LocalConstructors");
+    }
 }
