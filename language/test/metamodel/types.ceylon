@@ -580,6 +580,11 @@ shared class Constructors<T> {
         try {
             other.apply("", "");
             throw;
+        } catch (InvocationException e) {
+        }
+        try {
+            other.apply("");
+            throw;
         } catch (IncompatibleTypeException e) {
         }
         
@@ -590,6 +595,11 @@ shared class Constructors<T> {
             true == y6);
         try {
             nonShared.apply("", "");
+            throw;
+        } catch (InvocationException e) {
+        }
+        try {
+            nonShared.apply("");
             throw;
         } catch (IncompatibleTypeException e) {
         }
