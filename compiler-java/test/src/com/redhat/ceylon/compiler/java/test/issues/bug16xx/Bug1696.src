@@ -53,7 +53,7 @@ class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .ceylon.language.Sequence getPaired2() {
-        final .ceylon.language.Sequence r = (.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
+        final .ceylon.language.Sequence r = $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
         return r;
     }
     
