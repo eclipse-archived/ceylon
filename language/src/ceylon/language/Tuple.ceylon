@@ -88,9 +88,10 @@ native class Tuple<out Element,out First,out Rest = []>
         }
         Integer realFrom = from < 0 then 0 else from;
         if (realFrom == 0) {
-            return length == 1 then [first]
+            return length == 1 
+                    then [first]
                     else rest[0 : length + realFrom - 1]
-                .withLeading(first);
+                            .withLeading(first);
         }
         return rest[realFrom - 1 : length];
     }
@@ -102,7 +103,8 @@ native class Tuple<out Element,out First,out Rest = []>
         Integer realEnd = end < 0 then 0 else end;
         return realFrom <= realEnd 
             then this[from : realEnd - realFrom + 1]
-            else this[realEnd : realFrom - realEnd + 1].reversed.sequence();
+            else this[realEnd : realFrom - realEnd + 1]
+                        .reversed.sequence();
     }
     
     shared actual native 
@@ -147,8 +149,8 @@ native class Tuple<out Element,out First,out Rest = []>
     shared actual native
     Tuple<Element|Other,Other,Tuple<Element,First,Rest>>
     withLeading<Other>(
-        "The first element of the resulting tuple."
-        Other element)
+            "The first element of the resulting tuple."
+            Other element)
             => Tuple(element, this);
     
     "Return a new tuple containing the elements of this 
