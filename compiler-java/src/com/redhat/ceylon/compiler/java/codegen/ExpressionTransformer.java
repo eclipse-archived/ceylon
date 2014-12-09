@@ -1114,7 +1114,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // it's a member we get from its container type
             ProducedType containerType = producedReference.getQualifyingType();
             // if we have no container type it means we have an object member
-            boolean objectMember = containerType == null;
+            boolean objectMember = containerType.getDeclaration().isAnonymous();
             
             JCExpression memberCall;
 
