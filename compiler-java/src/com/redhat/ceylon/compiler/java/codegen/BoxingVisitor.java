@@ -158,13 +158,21 @@ public abstract class BoxingVisitor extends Visitor {
                 }
             }
         }
-        if(that.getPrimary().getTypeModel() != null
-                && isRaw(that.getPrimary().getTypeModel())
+        ProducedType primaryType;
+        if (that.getPrimary() instanceof Tree.Package
+                || that.getTarget() == null) {
+            primaryType = that.getPrimary().getTypeModel();
+        } else {
+            primaryType = that.getTarget().getQualifyingType();
+        }
+        
+        if(primaryType != null
+                && isRaw(primaryType)
                 && that.getTarget().getDeclaration() instanceof TypedDeclaration
                 && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
             CodegenUtil.markTypeErased(that);
         }
-        if (isRaw(that.getPrimary().getTypeModel())
+        if (isRaw(primaryType)
                 && !that.getTypeModel().getDeclaration().getTypeParameters().isEmpty()) {
             CodegenUtil.markRaw(that);
         }
