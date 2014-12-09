@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -13,6 +14,7 @@ public class Destructurer extends Visitor {
     private final String expvar;
     private final Set<Declaration> directAccess;
     private boolean first;
+    private final Set<Declaration> added = new HashSet<>();
 
     public Destructurer(final Tree.Pattern that, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess, final String expvar, boolean first) {
@@ -38,7 +40,8 @@ public class Destructurer extends Visitor {
                     gen.out(Integer.toString(idx++), ")");
                 }
             } else {
-                new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")", first && idx==0);
+                added.addAll(new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")",
+                        first && idx==0).getDeclarations());
             }
         }
     }
@@ -50,7 +53,7 @@ public class Destructurer extends Visitor {
                 gen.out(".key");
             }
         } else {
-            new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first);
+            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first).getDeclarations());
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);
@@ -58,12 +61,13 @@ public class Destructurer extends Visitor {
                 gen.out(".item");
             }
         } else {
-            new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false);
+            added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false).getDeclarations());
         }
     }
 
     public void visit(final Tree.VariablePattern that) {
         directAccess.add(that.getVariable().getDeclarationModel());
+        added.add(that.getVariable().getDeclarationModel());
         if (first) {
             first=false;
         } else if (gen != null) {
@@ -72,6 +76,10 @@ public class Destructurer extends Visitor {
         if (gen != null) {
             gen.out(names.name(that.getVariable().getDeclarationModel()), "=",expvar);
         }
+    }
+
+    public Set<Declaration> getDeclarations() {
+        return added;
     }
 
 }
