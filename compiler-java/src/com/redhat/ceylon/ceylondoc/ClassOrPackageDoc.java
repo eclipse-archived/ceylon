@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -149,30 +150,37 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("tr");
     }
 
-    protected final void doc(TypedDeclaration d) throws IOException {
+    protected final void doc(Declaration d) throws IOException {
         // put the id on the td because IE8 doesn't support id attributes on tr (yeah right)
         open("tr");
         
         open("td id='" + d.getName() + "' nowrap");
         writeIcon(d);
-        around("code class='decl-label'", d.getName());
-        close("td");
+        if( !(d instanceof Constructor) ) {
+            around("code class='decl-label'", d.getName());
+            close("td");
+            open("td");
+        }
         
-        open("td");
         writeLinkOneSelf(d);
         writeLinkSource(d);
         writeTagged(d);
         
-        if(d instanceof Functional)
+        if(d instanceof Functional) {
             writeParameterLinksIfRequired((Functional) d);
+        }
         open("code class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         
-        if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
-            around("span class='void'", "void");
-        } else {
-            linkRenderer().to(d.getType()).write();    
+        if( !(d instanceof Constructor) ) {
+            if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
+                around("span class='void'", "void");
+            } else if ( d instanceof TypedDeclaration) {
+                linkRenderer().to(((TypedDeclaration) d).getType()).write();
+            } else {
+                linkRenderer().to(d).write();
+            }
         }
         
         write(" ");

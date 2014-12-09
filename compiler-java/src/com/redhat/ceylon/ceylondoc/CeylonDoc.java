@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -181,6 +182,7 @@ public abstract class CeylonDoc extends Markup {
         writeKeyboardShortcutInfo("l", "Jump to aliases");
         writeKeyboardShortcutInfo("n", "Jump to annotations");
         writeKeyboardShortcutInfo("z", "Jump to initializer");
+        writeKeyboardShortcutInfo("t", "Jump to constructors");
         if( getFromObject() instanceof Module || getFromObject() instanceof Package ) {
             writeKeyboardShortcutInfo("v", "Jump to values");
             writeKeyboardShortcutInfo("f", "Jump to functions");
@@ -360,7 +362,7 @@ public abstract class CeylonDoc extends Markup {
                 icons.add("icon-decoration-deprecated");
             }
 
-            if( decl instanceof ClassOrInterface ) {
+            if( decl instanceof ClassOrInterface || decl instanceof Constructor ) {
                 if (decl instanceof Interface) {
                     icons.add("icon-interface");
                     if (Util.isEnumerated((ClassOrInterface) decl)) {
@@ -383,6 +385,9 @@ public abstract class CeylonDoc extends Markup {
                     if (Util.isEnumerated(klass)) {
                         icons.add("icon-decoration-enumerated");
                     }
+                }
+                if (decl instanceof Constructor) {
+                    icons.add("icon-class");
                 }
                 if (!decl.isShared() ) {
                     icons.add("icon-decoration-local");

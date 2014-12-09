@@ -221,6 +221,7 @@ public class CeylonDocToolTest {
         
         assertFileExists(destDir, includeNonShared);
         assertBasicContent(destDir, includeNonShared);
+        assertConstructors(destDir, includeNonShared);
         assertBy(destDir);
         assertLicense(destDir);
         assertParametersDocumentation(destDir);
@@ -674,6 +675,22 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a class='link-one-self' title='Link to this declaration' href='index.html#StubClass'><i class='icon-link'></i></a>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<a class='link-source-code' href='StubClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a>"));
+    }
+    
+    private void assertConstructors(File destDir, boolean includeNonShared) throws Exception {
+        assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
+                Pattern.compile("Ctor1"));
+        assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
+                Pattern.compile("Ctor2"));
+        
+        if( includeNonShared ) {
+            assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
+                    Pattern.compile("CtorInternal"));
+        }
+        else {
+            assertNoMatchInFile(destDir, "StubClassWithConstructors.type.html", 
+                    Pattern.compile("CtorInternal"));
+        }
     }
 
     private void assertBy(File destDir) throws Exception {

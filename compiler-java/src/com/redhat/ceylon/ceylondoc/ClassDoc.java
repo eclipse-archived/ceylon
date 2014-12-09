@@ -40,6 +40,7 @@ import com.redhat.ceylon.ceylondoc.Util.ProducedTypeComparatorByName;
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -54,6 +55,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 public class ClassDoc extends ClassOrPackageDoc {
 
     private TypeDeclaration klass;
+    private List<Constructor> constructors;
     private List<Method> methods;
     private List<TypedDeclaration> attributes;
     private List<Interface> innerInterfaces;
@@ -90,6 +92,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void loadMembers() {
+        constructors = new ArrayList<Constructor>();
         methods = new ArrayList<Method>();
         attributes = new ArrayList<TypedDeclaration>();
         innerInterfaces = new ArrayList<Interface>();
@@ -101,7 +104,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         for (Declaration m : klass.getMembers()) {
             if (tool.shouldInclude(m)) {
-                if (m instanceof Value) {
+                if (m instanceof Constructor) {
+                    constructors.add((Constructor) m);
+                } else if (m instanceof Value) {
                     attributes.add((Value) m);
                 } else if (m instanceof Method) {
                     methods.add((Method) m);
@@ -120,6 +125,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
         }
 
+        Collections.sort(constructors, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(superInterfaces, ProducedTypeComparatorByName.INSTANCE);
@@ -193,7 +199,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private boolean hasInitializer() {
-        return klass instanceof Class && !isObject();
+        return klass instanceof Class && !isObject() && constructors.isEmpty();
     }
 
     /**
@@ -241,6 +247,10 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeInitializer((Class) klass);
         }
 
+        if( !constructors.isEmpty() ) {
+            writeConstructors();
+        }
+        
         if (hasAnyAttributes()) {
             open("div id='section-attributes'");
             writeAttributes();
@@ -287,11 +297,14 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='sub-navbar-menu'");
         writeSubNavBarLink(linkRenderer().to(module).getUrl(), "Overview", 'O', "Jump to module documentation");
         writeSubNavBarLink(linkRenderer().to(pkg).getUrl(), "Package", 'P', "Jump to package documentation");
-        if (hasAnyAttributes()) {
-            writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
-        }
         if (hasInitializer()) {
             writeSubNavBarLink("#section-initializer", "Initializer", 'z', "Jump to initializer");
+        }
+        if (!constructors.isEmpty()) {
+            writeSubNavBarLink("#section-constructors", "Constructors", 't', "Jump to constructors");
+        }
+        if (hasAnyAttributes()) {
+            writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
         if (hasAnyMethods()) {
             writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
@@ -664,7 +677,18 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("td", "tr");
         closeTable();
     }
-
+    
+    private void writeConstructors() throws IOException {
+        if (constructors.isEmpty()){
+            return;
+        }
+        openTable("section-constructors", "Constructors", 1, true);
+        for (Constructor constructor : constructors) {
+            doc(constructor);
+        }
+        closeTable();
+    }
+    
     private void writeAttributes() throws IOException {
         if (attributes.isEmpty()){
             return;
@@ -695,6 +719,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         if (hasInitializer()) {
             registerKeyboardShortcut('z', "#section-initializer");
+        }
+        if (!constructors.isEmpty()) {
+            registerKeyboardShortcut('t', "#section-constructors");
         }
         if (hasAnyMethods()) {
             registerKeyboardShortcut('m', "#section-methods");

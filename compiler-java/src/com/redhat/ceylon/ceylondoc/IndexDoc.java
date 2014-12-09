@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -123,7 +124,8 @@ public class IndexDoc extends CeylonDoc {
         } else if ((decl instanceof MethodOrValue
                     && decl instanceof Setter == false
                     && !((MethodOrValue)decl).isParameter()) 
-                || decl instanceof TypeAlias) {
+                || decl instanceof TypeAlias
+                || decl instanceof Constructor) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
             if (decl.isMember()) {
                 name = ((ClassOrInterface) container).getName() + "." + name;
@@ -220,6 +222,8 @@ public class IndexDoc extends CeylonDoc {
             return "package";
         } else if (obj instanceof Module) {
             return "module";
+        } else if (obj instanceof Constructor) {
+            return "constructor";
         }
         throw new RuntimeException(CeylondMessages.msg("error.unexpected", obj));
     }
