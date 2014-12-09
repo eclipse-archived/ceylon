@@ -11,7 +11,7 @@ public final class bug1535_ {
             final .ceylon.language.Iterable floats$20 = (.ceylon.language.Iterable)floats$1;
             double product = 0.0;
             .java.lang.Object elem$21;
-            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = ((.ceylon.language.Iterable)floats$20).iterator();
+            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = floats$20.iterator();
             loop_0: while (!((elem$21 = val$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
                 final .java.lang.Object val = (.java.lang.Object)elem$21;
                 (
@@ -37,7 +37,7 @@ public final class bug1535_ {
                 final .ceylon.language.Iterable ints$13 = (.ceylon.language.Iterable)ints$3;
                 long product = 0L;
                 .java.lang.Object elem$14;
-                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ((.ceylon.language.Iterable)ints$13).iterator();
+                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ints$13.iterator();
                 loop_1: while (!((elem$14 = val$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
                     final .java.lang.Object val = (.java.lang.Object)elem$14;
                     (

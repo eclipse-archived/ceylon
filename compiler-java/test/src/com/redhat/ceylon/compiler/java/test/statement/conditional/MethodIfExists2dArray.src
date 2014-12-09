@@ -44,9 +44,9 @@ class MethodIfExists2dArray implements .com.redhat.ceylon.compiler.java.runtime.
     private final void union$priv$(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$)), 2L, .ceylon.language.arrayOfSize_.<.java.lang.Object>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), 2L, obj));
         .ceylon.language.Array r$13;
-        if ((r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
+        if ((r$13 = (.ceylon.language.Array<.java.lang.Object>)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array r$14 = r$13;
-            ((.ceylon.language.Array)r$14).set(0L, obj);
+            r$14.set(0L, obj);
         }
     }
     
