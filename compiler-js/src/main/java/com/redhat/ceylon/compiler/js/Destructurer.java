@@ -17,7 +17,7 @@ public class Destructurer extends Visitor {
     public Destructurer(final Tree.Pattern that, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess, final String expvar, boolean first) {
         this.gen = gen;
-        names = gen.getNames();
+        names = gen == null ? null : gen.getNames();
         this.directAccess = directAccess;
         this.expvar = expvar;
         this.first=first;
@@ -29,12 +29,14 @@ public class Destructurer extends Visitor {
         for (Tree.Pattern p : that.getPatterns()) {
             if (p instanceof Tree.VariablePattern) {
                 p.visit(this);
-                if (((Tree.VariablePattern)p).getVariable().getType() instanceof Tree.SequencedType) {
-                    gen.out(".spanFrom(");
-                } else {
-                    gen.out(".$_get(");
+                if (gen != null) {
+                    if (((Tree.VariablePattern)p).getVariable().getType() instanceof Tree.SequencedType) {
+                        gen.out(".spanFrom(");
+                    } else {
+                        gen.out(".$_get(");
+                    }
+                    gen.out(Integer.toString(idx++), ")");
                 }
-                gen.out(Integer.toString(idx++), ")");
             } else {
                 new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")", first && idx==0);
             }
@@ -44,13 +46,17 @@ public class Destructurer extends Visitor {
     public void visit(final Tree.KeyValuePattern that) {
         if (that.getKey() instanceof Tree.VariablePattern) {
             that.getKey().visit(this);
-            gen.out(".key");
+            if (gen != null) {
+                gen.out(".key");
+            }
         } else {
             new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first);
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);
-            gen.out(".item");
+            if (gen != null) {
+                gen.out(".item");
+            }
         } else {
             new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false);
         }
@@ -60,10 +66,12 @@ public class Destructurer extends Visitor {
         directAccess.add(that.getVariable().getDeclarationModel());
         if (first) {
             first=false;
-        } else {
+        } else if (gen != null) {
             gen.out(",");
         }
-        gen.out(names.name(that.getVariable().getDeclarationModel()), "=",expvar);
+        if (gen != null) {
+            gen.out(names.name(that.getVariable().getDeclarationModel()), "=",expvar);
+        }
     }
 
 }
