@@ -120,9 +120,8 @@ public abstract class BoxingVisitor extends Visitor {
             if(CodegenUtil.hasUntrustedType(decl) || hasTypeParameterWithConstraintsOutsideScope(decl.getType(), that.getScope()))
                 CodegenUtil.markUntrustedType(that);
             // we must be boxed, since safe member op "?." returns an optional type
-            return;
-        }
-        if (Decl.isValueTypeDecl(that.getPrimary()) && CodegenUtil.isUnBoxed(that.getPrimary())) {
+            //return;
+        } else if (Decl.isValueTypeDecl(that.getPrimary()) && CodegenUtil.isUnBoxed(that.getPrimary())) {
             // it's unboxed iff it's an unboxable type
             if(Decl.isValueTypeDecl((TypedDeclaration)that.getDeclaration()))
                 CodegenUtil.markUnBoxed(that);
