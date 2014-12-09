@@ -309,6 +309,7 @@ public class RecoveryTest extends CompilerTest {
     }
     
     @Test
+    @Ignore("#1960")
     public void testRcvExpressionRecoveryClassExtendsMissingParens(){
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassExtendsMissingParens.ceylon",
