@@ -503,7 +503,7 @@ tuplePattern returns [TuplePattern pattern]
 
 variadicPattern returns [Pattern pattern]
     : (
-        (compilerAnnotations unionType? (PRODUCT_OP|SUM_OP)) =>
+        (compilerAnnotations unionType? PRODUCT_OP) =>
         variadicVariable
         { VariablePattern vp = new VariablePattern(null);
           vp.setVariable($variadicVariable.variable); 
