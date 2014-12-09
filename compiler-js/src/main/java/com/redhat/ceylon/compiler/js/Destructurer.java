@@ -12,13 +12,15 @@ public class Destructurer extends Visitor {
     private final JsIdentifierNames names;
     private final String expvar;
     private final Set<Declaration> directAccess;
+    private boolean first;
 
     public Destructurer(final Tree.Pattern that, final GenerateJsVisitor gen,
-            final Set<Declaration> directAccess, final String expvar) {
+            final Set<Declaration> directAccess, final String expvar, boolean first) {
         this.gen = gen;
         names = gen.getNames();
         this.directAccess = directAccess;
         this.expvar = expvar;
+        this.first=first;
         that.visit(this);
     }
 
@@ -34,7 +36,7 @@ public class Destructurer extends Visitor {
                 }
                 gen.out(Integer.toString(idx++), ")");
             } else {
-                new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")");
+                new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")", first && idx==0);
             }
         }
     }
@@ -44,19 +46,24 @@ public class Destructurer extends Visitor {
             that.getKey().visit(this);
             gen.out(".key");
         } else {
-            new Destructurer(that.getKey(), gen, directAccess, expvar+".item");
+            new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first);
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);
             gen.out(".item");
         } else {
-            new Destructurer(that.getValue(), gen, directAccess, expvar+".item");
+            new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false);
         }
     }
 
     public void visit(final Tree.VariablePattern that) {
         directAccess.add(that.getVariable().getDeclarationModel());
-        gen.out(",", names.name(that.getVariable().getDeclarationModel()), "=",expvar);
+        if (first) {
+            first=false;
+        } else {
+            gen.out(",");
+        }
+        gen.out(names.name(that.getVariable().getDeclarationModel()), "=",expvar);
     }
 
 }

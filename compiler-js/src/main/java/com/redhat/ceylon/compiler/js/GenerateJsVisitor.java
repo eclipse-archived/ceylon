@@ -3222,7 +3222,7 @@ public class GenerateJsVisitor extends Visitor
         final String expvar = names.createTempVariable();
         out("var ", expvar, "=");
         that.getSpecifierExpression().visit(this);
-        new Destructurer(that.getPattern(), this, directAccess, expvar);
+        new Destructurer(that.getPattern(), this, directAccess, expvar, false);
         endLine(true);
     }
 
