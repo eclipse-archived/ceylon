@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
+import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ceylon.language.impl.BaseIterable;
 import ceylon.language.impl.BaseIterator;
 import ceylon.language.impl.BaseList;
 import ceylon.language.impl.rethrow_;
@@ -978,6 +980,65 @@ public final class Array<Element>
     public boolean defines(@Name("index") Integer key) {
         long ind = key.longValue();
         return ind >= 0 && ind < size;
+    }
+    
+    @Ignore
+    private final class CoalescedArrayIterator 
+    extends BaseIterator<Element> {
+
+        private int index = 0;
+        // ok to cast here, since we know the size must fit in an int
+        
+        CoalescedArrayIterator(TypeDescriptor $reified$Element) {
+            super($reified$Element);
+        }
+        
+        @Override
+        public java.lang.Object next() {
+            if (index<size) {
+                Element result;
+                boolean isNull;
+                do {
+                    result = unsafeItem(index++);
+                    isNull = result==null;
+                }
+                while (isNull && index<size);
+                return isNull ? finished_.get_() : result;
+            }
+            else {
+                return finished_.get_();
+            }
+        }
+
+        @Override
+        public java.lang.String toString() {
+            return Array.this.toString() + ".coalesced.iterator()";
+        }
+    }
+    
+    @Ignore
+    private final class CoalescedArrayIterable 
+    extends BaseIterable<Element, java.lang.Object>
+    implements Iterable<Element, java.lang.Object> {
+        
+        private final TypeDescriptor $reifiedElement;
+        
+        CoalescedArrayIterable(TypeDescriptor $reifiedElement) {
+            super($reifiedElement, Null.$TypeDescriptor$);
+            this.$reifiedElement = $reifiedElement;
+        }
+        
+        @Override
+        public Iterator<? extends Element> iterator() {
+            return new CoalescedArrayIterator($reifiedElement);
+        }
+        
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object,ceylon.language::Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
+        return new CoalescedArrayIterable(intersection($reifiedElement, Object.$TypeDescriptor$));
     }
     
     @Ignore

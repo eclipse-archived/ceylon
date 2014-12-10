@@ -37,6 +37,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);
     shared actual native Element[] sequence();
+    shared actual native {Element&Object*} coalesced;
     
     "A new array with the same elements as this array."
     shared actual native Array<Element> clone();
