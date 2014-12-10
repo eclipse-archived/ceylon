@@ -62,8 +62,8 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     private ProducedType producedType;
     
     public AppliedConstructor(
-            TypeDescriptor reified$Type,
-            TypeDescriptor reified$Arguments,
+            @Ignore TypeDescriptor reified$Type,
+            @Ignore TypeDescriptor reified$Arguments,
             Class<Type, ? extends Object> container,
             ProducedType appliedFunction,
             FreeConstructor declaration,
