@@ -394,7 +394,7 @@ class MemberObjectContainer<T>(){
     shared void test(){
         assert (`memberObject`.declaration==`value memberObject`);
         assert (`memberObject`.declaration.container==`class MemberObjectContainer`);
-        assert(`memberObject`(this)==memberObject);
+        assert(`memberObject`(this).get()==memberObject);
         
         assert(`value memberObject.attribute`.name == "attribute");
         assert(is ClassDeclaration memberObjectDecl = `value memberObject.attribute`.container);
@@ -402,11 +402,12 @@ class MemberObjectContainer<T>(){
         assert(is ClassDeclaration fooDecl = memberObjectDecl.container);
         assert(fooDecl == `class MemberObjectContainer`);
         
-        assert(`memberObject.attribute`.declaration == `value memberObject.attribute`);
-        assert(`memberObject.attribute`(this).get() == 2);
-        assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass = `memberObject.attribute`.container);
-        assert(is Class<MemberObjectContainer<T>,[]> fooClass = memberObjectClass.container);
-        assert(fooClass == `MemberObjectContainer<T>`);
+        // Commented until https://github.com/ceylon/ceylon-spec/issues/1162 is cleared up
+        //assert(`memberObject.attribute`.declaration == `value memberObject.attribute`);
+        //assert(`memberObject.attribute`(this).get() == 2);
+        //assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass = `memberObject.attribute`.container);
+        //assert(is Class<MemberObjectContainer<T>,[]> fooClass = memberObjectClass.container);
+        //assert(fooClass == `MemberObjectContainer<T>`);
         
         assert(`function memberObject.method`.name == "method");
         assert(is ClassDeclaration memberObjectDecl2 = `function memberObject.method`.container);
@@ -414,11 +415,12 @@ class MemberObjectContainer<T>(){
         assert(is ClassDeclaration fooDecl2 = memberObjectDecl2.container);
         assert(fooDecl2 == `class MemberObjectContainer`);
         
-        assert(`memberObject.method<Integer>`.declaration == `function memberObject.method`);
-        assert(`memberObject.method<Integer>`(this)(3) == 3);
-        assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass2 = `memberObject.method<Integer>`.container);
-        assert(is Class<MemberObjectContainer<T>,[]> fooClass2 = memberObjectClass2.container);
-        assert(fooClass2 == `MemberObjectContainer<T>`);
+        // Commented until https://github.com/ceylon/ceylon-spec/issues/1162 is cleared up
+        //assert(`memberObject.method<Integer>`.declaration == `function memberObject.method`);
+        //assert(`memberObject.method<Integer>`(this)(3) == 3);
+        //assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass2 = `memberObject.method<Integer>`.container);
+        //assert(is Class<MemberObjectContainer<T>,[]> fooClass2 = memberObjectClass2.container);
+        //assert(fooClass2 == `MemberObjectContainer<T>`);
         
     }
 }
