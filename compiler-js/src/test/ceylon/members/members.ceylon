@@ -1,4 +1,8 @@
 import check {...}
+import misc {
+  testObject461 { objectTest=test },
+  TestClass461 { TestConstructor }
+}
 
 shared class Counter(Integer initCount=0) {
     variable value currentCount=initCount;
@@ -129,5 +133,7 @@ shared void test() {
     check(AliasMemberTest().f1().s=="123", "alias method member 1");
     check(AliasMemberTest().f2().s=="A", "alias method member 2");
     Test451();
+    objectTest();
+    TestConstructor().test();
     results();
 }
