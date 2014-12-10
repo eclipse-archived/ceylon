@@ -580,7 +580,7 @@ shared class Constructors<T> {
             exists y4 = x4.arg,
             1 == y4);
         try {
-            other.apply("", "");
+            other.apply(1, "");
             throw;
         } catch (InvocationException e) {
         }
@@ -596,7 +596,7 @@ shared class Constructors<T> {
             exists y6 = x6.arg,
             true == y6);
         try {
-            nonShared.apply("", "");
+            nonShared.apply(true, "");
             throw;
         } catch (InvocationException e) {
         }
