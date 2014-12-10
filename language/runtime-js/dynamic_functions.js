@@ -2,7 +2,7 @@
 //(which should be a Ceylon dynamic interface)
 function dre$$(object, type, loc) {
   //If it's already dressed up as the type, leave it alone
-  if (is$(object, type))return;
+  if (is$(object, type))return object;
   //If it's already of another type, throw
   if (object.$$ !== undefined)throw new Error("Cannot modify the type of an object at runtime " + loc);
   //Check members
