@@ -4,6 +4,7 @@ import ceylon.language.meta.declaration {
     Import,
     ClassDeclaration,
     ClassOrInterfaceDeclaration,
+    ConstructorDeclaration,
     FunctionDeclaration,
     Declaration,
     ValueDeclaration,
@@ -24,7 +25,7 @@ shared annotation AnnotationAnnotation annotation()
 "The annotation class for [[shared]]."
 shared final annotation class SharedAnnotation()
         satisfies OptionalAnnotation<SharedAnnotation,
-                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
+                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
 
 "Annotation to mark a type or member as shared. A `shared` 
  member is visible outside the block of code in which it is 
@@ -181,7 +182,7 @@ shared final annotation class ThrownExceptionAnnotation(
      that cause this exception to be thrown."
     shared String when)
         satisfies SequencedAnnotation<ThrownExceptionAnnotation,
-                FunctionOrValueDeclaration|ClassDeclaration> {}
+                FunctionOrValueDeclaration|ClassDeclaration|ConstructorDeclaration> {}
 
 "Annotation to mark a program element that throws an 
  exception."
@@ -252,7 +253,7 @@ shared annotation OptionalImportAnnotation optional()
 
 shared final annotation class SuppressWarningsAnnotation([String*] warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
-            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
+            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
 
 "Annotation to suppress the given warnings when typechecking the annotated element"
 shared annotation SuppressWarningsAnnotation suppressWarnings(String* warnings) 
