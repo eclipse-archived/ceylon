@@ -51,6 +51,7 @@ public final class Array<Element>
         implements List<Element>, Serializable {
     
     private final java.lang.Object array;
+    private final java.lang.Object[] objectArray;
     private final int size;
     private final TypeDescriptor $reifiedElement;
     private final ArrayType elementType;
@@ -530,7 +531,14 @@ public final class Array<Element>
         assert(array.getClass().isArray());
         this.array = array;
         this.elementType = elementType($reifiedElement);
-        this.size = java.lang.reflect.Array.getLength(array);
+        if (elementType==ArrayType.Other) {
+            this.objectArray = (java.lang.Object[]) array;
+            this.size = this.objectArray.length;
+        }
+        else {
+            this.objectArray = null;
+            this.size = java.lang.reflect.Array.getLength(array);
+        }
     }
     
     @Ignore
@@ -987,39 +995,49 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
+    @SuppressWarnings("unchecked")
     public Element getFromFirst(@Name("index") long index) {
         if (index < 0 || index >= size) {
             return null;
         }
         else {
-            //typecast is safe because we just checked
-            return unsafeItem((int) index);
+            if (objectArray!=null) {
+                return (Element) objectArray[(int) index];
+            }
+            else {
+                //typecast is safe because we just checked
+                return unsafeItem((int) index);
+            }
         }
     }
     
     // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")
     @Ignore
-    public Element unsafeItem(int index) {
+    public final Element unsafeItem(int index) {
         switch (elementType) {
+        case Other:
+            return (Element) objectArray[index];
         case CeylonInteger:
             return (Element) Integer.instance(((long[])array)[index]);
-        case JavaLong:
-            return (Element) (java.lang.Long) ((long[])array)[index];
         case CeylonFloat:
             return (Element) Float.instance(((double[])array)[index]);
-        case JavaDouble:
-            return (Element) (java.lang.Double) ((double[])array)[index];
-        case CeylonCharacter:
-            return (Element) Character.instance(((int[])array)[index]);
-        case JavaInteger:
-            return (Element) (java.lang.Integer) ((int[])array)[index];
         case CeylonByte:
             return (Element) Byte.instance(((byte[])array)[index]);
-        case JavaByte:
-            return (Element) (java.lang.Byte) ((byte[])array)[index];
         case CeylonBoolean:
             return (Element) Boolean.instance(((boolean[])array)[index]);
+        case CeylonString:
+            return (Element) String.instance(((java.lang.String[])array)[index]);
+        case CeylonCharacter:
+            return (Element) Character.instance(((int[])array)[index]);
+        case JavaLong:
+            return (Element) (java.lang.Long) ((long[])array)[index];
+        case JavaDouble:
+            return (Element) (java.lang.Double) ((double[])array)[index];
+        case JavaInteger:
+            return (Element) (java.lang.Integer) ((int[])array)[index];
+        case JavaByte:
+            return (Element) (java.lang.Byte) ((byte[])array)[index];
         case JavaBoolean:
             return (Element) (java.lang.Boolean) ((boolean[])array)[index];
         case JavaCharacter:
@@ -1028,12 +1046,8 @@ public final class Array<Element>
             return (Element) (java.lang.Short) ((short[])array)[index];
         case JavaFloat:
             return (Element) (java.lang.Float) ((float[])array)[index];
-        case CeylonString:
-            return (Element) String.instance(((java.lang.String[])array)[index]);
         case JavaString:
             return (Element) ((java.lang.String[])array)[index];
-        case Other:
-            return (Element) ((java.lang.Object[])array)[index];
         default: 
             throw new AssertionError("unknown element type");
         }
@@ -1053,32 +1067,38 @@ public final class Array<Element>
         else {
             int idx = (int) index; //typecast is safe 'cos we just checked above
             switch (elementType) {
+            case Other:
+                objectArray[idx] = element;
+                break;
             case CeylonInteger:
                 ((long[]) array)[idx] = ((Integer) element).value;
-                break;
-            case JavaLong:
-                ((long[]) array)[idx] = (java.lang.Long) element;
                 break;
             case CeylonFloat:
                 ((double[]) array)[idx] = ((Float) element).value;
                 break;
-            case JavaDouble:
-                ((double[]) array)[idx] = (java.lang.Double) element;
+            case CeylonByte:
+                ((byte[]) array)[idx] = ((Byte)element).value;
+                break;
+            case CeylonBoolean:
+                ((boolean[]) array)[idx] = ((Boolean) element).booleanValue();
+                break;
+            case CeylonString:
+                ((java.lang.String[]) array)[idx] = ((String) element).value;
                 break;
             case CeylonCharacter:
                 ((int[]) array)[idx] = ((Character) element).codePoint;
                 break;
+            case JavaLong:
+                ((long[]) array)[idx] = (java.lang.Long) element;
+                break;
+            case JavaDouble:
+                ((double[]) array)[idx] = (java.lang.Double) element;
+                break;
             case JavaInteger:
                 ((int[]) array)[idx] = (java.lang.Integer) element;
                 break;
-            case CeylonByte:
-                ((byte[]) array)[idx] = ((Byte)element).value;
-                break;
             case JavaByte:
                 ((byte[]) array)[idx] = (java.lang.Byte) element;
-                break;
-            case CeylonBoolean:
-                ((boolean[]) array)[idx] = ((Boolean) element).booleanValue();
                 break;
             case JavaBoolean:
                 ((boolean[]) array)[idx] = (java.lang.Boolean) element;
@@ -1092,14 +1112,8 @@ public final class Array<Element>
             case JavaFloat:
                 ((float[]) array)[idx] = (java.lang.Float) element;
                 break;
-            case CeylonString:
-                ((java.lang.String[]) array)[idx] = ((String) element).value;
-                break;
             case JavaString:
                 ((java.lang.String[]) array)[idx] = (java.lang.String) element;
-                break;
-            case Other:
-                ((java.lang.Object[]) array)[idx] = element;
                 break;
             default:
                 throw new AssertionError("unknown element type");
@@ -1577,6 +1591,7 @@ public final class Array<Element>
         this.$reifiedElement = $reifiedElement;
         this.elementType = elementType($reifiedElement);
         this.array = null;
+        this.objectArray = null;
         this.size = 0;
         
     }
