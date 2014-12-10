@@ -21,6 +21,14 @@ function dre$$(object, type, loc) {
   object.$$=type.t.$$;
   object.getT$name=function(){return type.t.$$.T$name};
   object.getT$all=function(){return type.t.$$.T$all};
+  if (actual.indexOf('string')<0) {
+    atr$(object,'string',function(){return object.toString();},undefined,
+         $_Object.$$.prototype.$prop$getString.$crtmm$);
+  }
+  if (actual.indexOf('hash')<0) {
+    atr$(object,'hash',function(){return identityHash(object);},undefined,
+         $_Object.$$.prototype.$prop$getHash.$crtmm$);
+  }
   return object;
 }
 ex$.dre$$=dre$$;
