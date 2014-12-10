@@ -33,6 +33,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -702,7 +703,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         List<JCTree> result;
         if (isSequencedAnnotation(klass)) {
-            result = annoBuilder.annotations(makeAtAnnotationTarget()).build();
+            result = annoBuilder.annotations(makeAtAnnotationTarget(EnumSet.noneOf(ElementType.class))).build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
             // annotations are never explicitely final in Java
@@ -736,7 +737,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Makes {@code @java.lang.annotation.Target(types)} 
      * where types are the given element types.
      */
-    private List<JCAnnotation> makeAtAnnotationTarget(ElementType... types) {
+    private List<JCAnnotation> makeAtAnnotationTarget(EnumSet<ElementType> types) {
         List<JCExpression> typeExprs = List.<JCExpression>nil();
         for (ElementType type : types) {
             typeExprs = typeExprs.prepend(naming.makeQuotedQualIdent(make().Type(syms().elementTypeType), type.name()));
@@ -750,20 +751,34 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCAnnotation> transformAnnotationConstraints(Class klass) {
         TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleDeclaration("ConstrainedAnnotation");
         ProducedType constrainedType = klass.getType().getSupertype(meta);
+        EnumSet<ElementType> types = EnumSet.noneOf(ElementType.class);
         if (constrainedType != null) {
             ProducedType programElement = constrainedType.getTypeArgumentList().get(2);
-            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Package")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Module")).getType())) {
-                return makeAtAnnotationTarget(ElementType.TYPE);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ValueDeclaration")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("FunctionDeclaration")).getType())) {
-                return makeAtAnnotationTarget(ElementType.METHOD, ElementType.PARAMETER);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Import")).getType())) {
-                return makeAtAnnotationTarget(ElementType.FIELD);
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("InterfaceDeclaration")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassDeclaration")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Package")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Module")).getType())) {
+                types.add(ElementType.TYPE);
+            } 
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ValueDeclaration")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("FunctionDeclaration")).getType())) {
+                types.add(ElementType.METHOD);
+                types.add(ElementType.PARAMETER);
+            } 
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ConstructorDeclaration")).getType())) {
+                types.add(ElementType.CONSTRUCTOR);
+            } 
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Import")).getType())) {
+                types.add(ElementType.FIELD);
+            }
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("SetterDeclaration")).getType())) {
+                types.add(ElementType.METHOD);
+            }
+            if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("AliasDeclaration")).getType())) {
+                types.add(ElementType.TYPE);
             }
         }
-        return List.<JCAnnotation>nil();
+        return makeAtAnnotationTarget(types);
     }
 
     private JCExpression transformAnnotationParameterDefault(Tree.Parameter p) {
