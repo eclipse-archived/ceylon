@@ -97,4 +97,9 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorLocalConstructors(){
         compareWithJavaSource("constructor/LocalConstructors");
     }
+    
+    @Test
+    public void testCtorBug1961(){
+        compareWithJavaSource("constructor/Bug1961");
+    }
 }
