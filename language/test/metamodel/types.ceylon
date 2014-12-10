@@ -393,7 +393,7 @@ class MemberObjectContainer<T>(){
     }
     shared void test(){
         assert (`memberObject`.declaration==`value memberObject`);
-        assert (`memberObject`.declaration.container==`class memberObject`);
+        assert (`memberObject`.declaration.container==`class MemberObjectContainer`);
         assert(`memberObject`(this)==memberObject);
         
         assert(`value memberObject.attribute`.name == "attribute");
