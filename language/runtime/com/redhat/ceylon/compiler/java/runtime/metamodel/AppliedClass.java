@@ -68,6 +68,11 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return (ceylon.language.meta.declaration.ClassDeclaration) super.getDeclaration();
     }
 
+    protected boolean hasConstructors() {
+        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+        return decl.hasConstructors();
+    }
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void init() {
@@ -79,7 +84,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // FIXME: so we really want to disallow that in the metamodel?
         if(!decl.isAnonymous() 
                 && !Metamodel.isLocalType(decl)
-                && !decl.hasConstructors()){
+                && !hasConstructors()){
             initConstructor(decl);
         }else{
             this.parameterTypes = (Sequential) empty_.get_();
@@ -266,40 +271,51 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call$() {
         checkInit();
-        checkConstructor();
-        try {
-            if(firstDefaulted == -1)
-                return (Type)constructor.invokeExact();
-            // FIXME: proper checks
-            return (Type)dispatch[0].invokeExact();
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.$call$();
+        } else {
+            try {
+                if(firstDefaulted == -1)
+                    return (Type)constructor.invokeExact();
+                // FIXME: proper checks
+                return (Type)dispatch[0].invokeExact();
+            } catch (Throwable e) {
+                Util.rethrow(e);
+                return null;
+            }
         }
     }
 
-    private void checkConstructor() {
+    private ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> checkConstructor() {
         if(((FreeClass)declaration).getAbstract())
             throw new InvocationException("Abstract class cannot be instantiated");
         if(((FreeClass)declaration).getAnonymous())
             throw new InvocationException("Object class cannot be instantiated");
-        if(constructor == null)
+        if (hasConstructors()) {
+            return getConstructor(this.$reifiedArguments, declaration.getName());
+        } else if(constructor == null)
             throw Metamodel.newModelError("No constructor found for: "+declaration.getName());
+        return null;
     }
 
     @Ignore
     @Override
     public Type $call$(Object arg0) {
         checkInit();
-        checkConstructor();
-        try {
-            if(firstDefaulted == -1)
-                return (Type)constructor.invokeExact(arg0);
-            // FIXME: proper checks
-            return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.$call$(arg0);
+        } else {
+            try {
+                if(firstDefaulted == -1)
+                    return (Type)constructor.invokeExact(arg0);
+                // FIXME: proper checks
+                return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
+            } catch (Throwable e) {
+                Util.rethrow(e);
+                return null;
+            }
         }
     }
 
@@ -307,15 +323,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call$(Object arg0, Object arg1) {
         checkInit();
-        checkConstructor();
-        try {
-            if(firstDefaulted == -1)
-                return (Type)constructor.invokeExact(arg0, arg1);
-            // FIXME: proper checks
-            return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.$call$(arg0, arg1);
+        } else {
+            try {
+                if(firstDefaulted == -1)
+                    return (Type)constructor.invokeExact(arg0, arg1);
+                // FIXME: proper checks
+                return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
+            } catch (Throwable e) {
+                Util.rethrow(e);
+                return null;
+            }
         }
     }
 
@@ -323,15 +343,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call$(Object arg0, Object arg1, Object arg2) {
         checkInit();
-        checkConstructor();
-        try {
-            if(firstDefaulted == -1)
-                return (Type)constructor.invokeExact(arg0, arg1, arg2);
-            // FIXME: proper checks
-            return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.$call$(arg0, arg1, arg2);
+        } else {
+            try {
+                if(firstDefaulted == -1)
+                    return (Type)constructor.invokeExact(arg0, arg1, arg2);
+                // FIXME: proper checks
+                return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
+            } catch (Throwable e) {
+                Util.rethrow(e);
+                return null;
+            }
         }
     }
 
@@ -340,16 +364,20 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call$(Object... args) {
         checkInit();
-        checkConstructor();
-        try {
-            if(firstDefaulted == -1)
-                // FIXME: this does not do invokeExact and does boxing/widening
-                return (Type)constructor.invokeWithArguments(args);
-            // FIXME: proper checks
-            return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.$call$(args);
+        } else {
+            try {
+                if(firstDefaulted == -1)
+                    // FIXME: this does not do invokeExact and does boxing/widening
+                    return (Type)constructor.invokeWithArguments(args);
+                // FIXME: proper checks
+                return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
+            } catch (Throwable e) {
+                Util.rethrow(e);
+                return null;
+            }
         }
     }
     
@@ -429,8 +457,12 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
         Sequential<?> arguments){
         checkInit();
-        checkConstructor();
-        return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.apply(arguments);
+        } else {
+            return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
+        }
     }
 
     @Override
@@ -438,11 +470,14 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Anything>,ceylon.language::Null>")
         ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
         checkInit();
-        checkConstructor();
-        
-        return Metamodel.namedApply(this, this, 
-                (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
-                arguments, parameterProducedTypes);
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.namedApply(arguments);
+        } else {
+            return Metamodel.namedApply(this, this, 
+                    (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
+                    arguments, parameterProducedTypes);
+        }
     }
     
     @Override

@@ -69,7 +69,7 @@ public class FreeClass
             if (parameterList != null) {
                 this.parameters = FunctionalUtil.getParameters(classDeclaration);
             } else {
-                throw new RuntimeException("Class without default constructor!!");
+                this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
             }
         }else{
             this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
