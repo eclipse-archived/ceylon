@@ -53,6 +53,12 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
 @interface Bug1676_2_B$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
