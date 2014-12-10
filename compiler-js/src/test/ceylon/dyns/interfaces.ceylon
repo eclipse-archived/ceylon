@@ -39,6 +39,8 @@ void testDynamicInterfaces() {
       fail("Dynamic interfaces #3");
     }
     check(!n.children[1] exists, "Dynamic interfaces #6");
+    check(n.string == "[object Object]", "string attribute");
+    check(n.hash > 0, "hash attribute");
   } else {
     fail("Dynamic interfaces #1");
   }
