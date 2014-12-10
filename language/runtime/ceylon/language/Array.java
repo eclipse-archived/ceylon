@@ -52,6 +52,14 @@ public final class Array<Element>
         extends BaseList<Element>
         implements List<Element>, Serializable {
     
+    private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];    
+    private static final java.lang.String[] EMPTY_STRING_ARRAY = new java.lang.String[0];
+    private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
+    private static final int[] EMPTY_INT_ARRAY = new int[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final double[] EMPTY_DOUBLE_ARRAY = new double[0];
+    private static final long[] EMPTY_LONG_ARRAY = new long[0];
+    
     private final java.lang.Object array;
     private final java.lang.Object[] objectArray;
     private final java.lang.String[] stringArray;
@@ -537,7 +545,6 @@ public final class Array<Element>
         super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
-        this.array = array;
         elementType = elementType($reifiedElement);
         switch(elementType) {
         case Other:
@@ -551,6 +558,8 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonInteger:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_LONG_ARRAY;
             longArray = (long[]) array;
             size = longArray.length;
             objectArray = null;
@@ -561,6 +570,8 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonFloat:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_DOUBLE_ARRAY;
             doubleArray = (double[]) array;
             size = doubleArray.length;
             objectArray = null;
@@ -571,9 +582,11 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonByte:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_BYTE_ARRAY;
             byteArray = (byte[]) array;
             intArray = null;
-            size = intArray.length;
+            size = byteArray.length;
             objectArray = null;
             longArray = null;
             doubleArray = null;
@@ -581,6 +594,8 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonCharacter:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_INT_ARRAY;
             intArray = (int[]) array;
             size = intArray.length;
             objectArray = null;
@@ -591,6 +606,8 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonBoolean:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_BOOLEAN_ARRAY;
             booleanArray = (boolean[]) array;
             size = booleanArray.length;
             objectArray = null;
@@ -601,6 +618,8 @@ public final class Array<Element>
             stringArray = null;
             break;
         case CeylonString:
+            if (array==EMPTY_ARRAY) 
+                array = EMPTY_STRING_ARRAY;
             stringArray = (java.lang.String[]) array;
             size = stringArray.length;
             objectArray = null;
@@ -620,6 +639,7 @@ public final class Array<Element>
             byteArray =  null;
             stringArray = null;
         }
+        this.array = array;
     }
     
     @Ignore
@@ -762,8 +782,6 @@ public final class Array<Element>
     public Array<Element> spanTo(@Name("to") Integer to) {
         return span(Integer.instance(0), to);
     }
-    
-    private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];
     
     @Override
     public Array<Element> span(@Name("from") Integer from,
