@@ -49,9 +49,7 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
 
   shared actual native Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
     given Arguments satisfies Anything[];
-  shared actual native <Functional&Applicable<Type>>? instantiator<Arguments>()
-    given Arguments satisfies Anything[];
-
+  
   shared actual native ClosedType<Type|Other> union<Other>(ClosedType<Other> other);
   shared actual native ClosedType<Type&Other> intersection<Other>(ClosedType<Other> other);
 

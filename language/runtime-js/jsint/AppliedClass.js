@@ -76,7 +76,6 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.union=AppliedClass$jsint.$$.prototype.union;
   that.intersection=AppliedClass$jsint.$$.prototype.intersection;
   that.getConstructor=AppliedClass$jsint.$$.prototype.getConstructor;
-  that.instantiator=AppliedClass$jsint.$$.prototype.instantiator;
   that.$targs=classTargs;
   set_type_args(that,$$targs$$,AppliedClass$jsint);
   Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,

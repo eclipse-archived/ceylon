@@ -22,10 +22,4 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
      a constructor of the given name."
     shared actual formal Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
             given Arguments satisfies Anything[];
-    
-    "An [[Applicable]] for instantiating this class via its initializer 
-     or default constructor, or null if this class lacks both an initializer 
-     and default constructor."
-    shared formal <Functional&Applicable<Type>>? instantiator<Arguments>()
-            given Arguments satisfies Anything[];
 }
