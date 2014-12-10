@@ -2934,7 +2934,7 @@ public class StatementTransformer extends AbstractTransformer {
                 initialValue = makeDefaultExprForType(t);
             }
             
-            List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
+            List<JCAnnotation> annots = List.<JCAnnotation>nil();
             
             int modifiers = transformLocalFieldDeclFlags(decl);
             result.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, makeJavaType(t), initialValue));
