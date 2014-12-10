@@ -449,7 +449,8 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
     ;
 
 tuplePatternStart
-    : LBRACKET (LIDENTIFIER|declarationStart)
+    : LBRACKET compilerAnnotations 
+      (LIDENTIFIER|declarationStart)
     ;
 
 variableOrTuplePattern returns [Pattern pattern]
