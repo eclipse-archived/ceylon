@@ -730,3 +730,39 @@ shared interface InterfaceConstructors<T> {
         nonSharedMemberInst.nonShared(this)(tt);
     }
 }
+class ClassWithInitializer(String s) {
+    
+}
+class ClassWithDefaultConstructor {
+    shared new ClassWithDefaultConstructor(String s) {
+        
+    }
+}
+class ClassWithNonDefaultConstructor {
+    shared new New(String s) {
+    }
+}
+class UninstantiableClass {
+    shared new New(String s) {
+    }
+}
+class ClassConstructorsOfEveryArity {
+    shared new Fixed0() {}
+    shared new Fixed1(String s1) {}
+    shared new Fixed2(String s1, String s2) {}
+    shared new Fixed3(String s1, String s2, String s3) {}
+    shared new Fixed4(String s1, String s2, String s3, String s4) {}
+    shared new Fixed5(String s1, String s2, String s3, String s4, String s5) {}
+    
+    shared new Star1(String* s1) {}
+    shared new Star2(String s1, String* s2) {}
+    shared new Star3(String s1, String s2, String* s3) {}
+    shared new Star4(String s1, String s2, String s3, String* s4) {}
+    shared new Star5(String s1, String s2, String s3, String s4, String* s5) {}
+    
+    shared new Plus1(String+ s1) {}
+    shared new Plus2(String s1, String+ s2) {}
+    shared new Plus3(String s1, String s2, String+ s3) {}
+    shared new Plus4(String s1, String s2, String s3, String+ s4) {}
+    shared new Plus5(String s1, String s2, String s3, String s4, String+ s5) {}
+}
