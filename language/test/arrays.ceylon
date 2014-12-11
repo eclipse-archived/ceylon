@@ -166,5 +166,5 @@ shared void testArrays() {
     
     check(Array { 4,1,3,2 }.sort(byIncreasing((Integer e) => e))==[1,2,3,4], "integer array sort");
     check(Array {"world", "hello", "" }.sort(byIncreasing((String e) => e))==["", "hello", "world"], "string array sort");
-    check(Array {"Hello", null, "World"}.coalesced == {"Hello", "World"}, "Array.coalesced");
+    check(Array {"Hello", null, "World"}.coalesced.sequence() == {"Hello", "World"}.sequence(), "Array.coalesced");
 }
