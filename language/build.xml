@@ -611,6 +611,20 @@
                 resultproperty="test.ceylon.result.5">
                 <rep url="${build.test}"/>
             </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="resmod/0.1"
+            resultproperty="test.ceylon.result.6">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="serialization/0.1"
+            resultproperty="test.ceylon.result.7">
+            <rep url="${build.test}"/>
+        </ceylon-run>
         
         <condition property="test.fail.ceylon">
             <and>
@@ -619,6 +633,8 @@
                 <not><equals arg1="${test.ceylon.result.3}" arg2="0"/></not>
                 <not><equals arg1="${test.ceylon.result.4}" arg2="0"/></not>
                 <not><equals arg1="${test.ceylon.result.5}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.6}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.7}" arg2="0"/></not>
             </and>
         </condition>
         
@@ -689,6 +705,18 @@
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="annotations/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="resmod/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="serialization/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
     </target>
