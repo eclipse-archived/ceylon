@@ -2354,16 +2354,15 @@ ifExpression returns [IfExpression term]
               Identifier id = null;
               Type t = null;
               if (c instanceof ExistsOrNonemptyCondition) {
-                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
-                  ((ExistsOrNonemptyCondition)c).getVariable();
-                if (v!=null) {
+                Statement s = ((ExistsOrNonemptyCondition)c).getVariable();
+                if (s instanceof Variable) {
+                  Variable v = (Variable) s;
                   t = v.getType();
                   id = v.getIdentifier();
                 }
               }
               else if (c instanceof IsCondition) {
-                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
-                  ((IsCondition)c).getVariable();
+                Variable v = (Variable) ((IsCondition)c).getVariable();
                 if (v!=null) {
                   t = v.getType();
                   id = v.getIdentifier();
@@ -3372,15 +3371,16 @@ existsCondition returns [ExistsCondition condition]
       EXISTS 
       { if ($condition==null)
             $condition = new ExistsCondition($EXISTS); }
-    ( (compilerAnnotations (declarationStart|specificationStart)) =>
-        specifiedVariable 
-        { $condition.setVariable($specifiedVariable.variable); }
-      | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
+      ( 
+        ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
+        letVariable 
+        { $condition.setVariable($letVariable.statement); }
+      |
         (LIDENTIFIER)=> impliedVariable
         { $condition.setVariable($impliedVariable.variable); }
       | expression
         { $condition.setBrokenExpression($expression.expression); }
-    )
+      )
     ;
     
 nonemptyCondition returns [NonemptyCondition condition]
@@ -3392,14 +3392,15 @@ nonemptyCondition returns [NonemptyCondition condition]
       NONEMPTY 
       { if ($condition==null)
             $condition = new NonemptyCondition($NONEMPTY); }
-    ( (compilerAnnotations (declarationStart|specificationStart)) =>
-      specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); }
-    | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
-      (LIDENTIFIER)=> impliedVariable 
-      { $condition.setVariable($impliedVariable.variable); }
-    | expression
-      { $condition.setBrokenExpression($expression.expression); }
+      ( 
+        ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
+        letVariable 
+        { $condition.setVariable($letVariable.statement); }
+      |
+        (LIDENTIFIER)=> impliedVariable 
+        { $condition.setVariable($impliedVariable.variable); }
+      | expression
+        { $condition.setBrokenExpression($expression.expression); }
     )
     ;
 
@@ -3490,16 +3491,15 @@ ifElse returns [IfStatement statement]
               Identifier id = null;
               Type t = null;
               if (c instanceof ExistsOrNonemptyCondition) {
-                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
-                  ((ExistsOrNonemptyCondition)c).getVariable();
-                if (v!=null) {
+                Statement s = ((ExistsOrNonemptyCondition)c).getVariable();
+                if (s instanceof Variable) {
+                  Variable v = (Variable) s;
                   t = v.getType();
                   id = v.getIdentifier();
                 }
               }
               else if (c instanceof IsCondition) {
-                com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable v = 
-                  ((IsCondition)c).getVariable();
+                Variable v = (Variable) ((IsCondition)c).getVariable();
                 if (v!=null) {
                   t = v.getType();
                   id = v.getIdentifier();
