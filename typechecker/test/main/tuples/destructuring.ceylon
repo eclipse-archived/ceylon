@@ -62,15 +62,15 @@ void destructureInFor({[String, Float, String->String]*} iter) {
 }
 
 void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
-    if (exists [x, i] = maybePair) {
+    if (exists [@type:"Float" x, @type:"Integer" i] = maybePair) {
         Float c = x;
         Integer j = i;
     }
-    if (nonempty [name, *rest] = names) {
+    if (nonempty [@type:"String" name, *rest] = names) {
         String n = name;
         String[] ns = rest;
     }
-    if (exists k->v = maybeEntry) {
+    if (exists @type:"String" k -> @type:"Object" v = maybeEntry) {
         String key = k;
         Object item = v;
     }
