@@ -186,6 +186,19 @@ shared void issues() {
     } catch (Exception e) {
         check(e.message == "Undefined or null reference: foo");
     }
+    value test465=["a","b"];
+    dynamic {
+        dynamic n465_1=dynamic[*test465];
+        dynamic n465_2=dynamic[1,2,*test465];
+        check(n465_1.length==2, "Spread in native array 1");
+        check(n465_1[0]=="a", "Spread in native array 2");
+        check(n465_1[1]=="b", "Spread in native array 3");
+        check(n465_2.length==4, "Spread in native array 4");
+        check(n465_2[0]==1, "#465.5");
+        check(n465_2[1]==2, "#465.6");
+        check(n465_2[2]=="a", "#465.7");
+        check(n465_2[3]=="b", "#465.8");
+    }
     /*try {
         dynamic {
             foo.bar |= 1;
