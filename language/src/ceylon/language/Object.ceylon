@@ -18,7 +18,14 @@
    
    A concrete subclass of `Object` must refine [[equals]] 
    and [[hash]] (or inherit concrete refinements), providing 
-   a concrete definition of value equality for the class."""
+   a concrete definition of value equality for the class.
+   
+   In extreme cases it is acceptable for two values to be
+   equal, even if they are not instances of the same class.
+   For example, the [[Integer]] value `1` and the [[Float]]
+   value `1.0` are considered equal. Except in these extreme
+   cases, instances of different classes are considered
+   unequal."""
 see (`class Basic`, `class Null`)
 by ("Gavin")
 shared abstract class Object() 

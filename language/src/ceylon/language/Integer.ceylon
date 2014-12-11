@@ -57,7 +57,22 @@ shared native final class Integer(Integer integer)
     shared actual native Integer remainder(Integer other);
     shared actual native Integer power(Integer other);
     
+    "Determines if the given object is equal to this `Integer`,
+     that is, if:
+     
+     - the given object is an `Integer` representing the 
+       same whole number.
+     
+     Or if:
+     
+     - the given object is a [[Float]],
+     - its value is neither [[undefined]], nor [[infinite]],
+     - the [[fractional part|Float.fractionalPart]] of its 
+       value equals `0.0`, and
+     - the [[integer part|Float.integer]] part of its value 
+       equals this integer."
     shared actual native Boolean equals(Object that);
+    
     shared actual native Integer hash;
     shared actual native Comparison compare(Integer other);
     
