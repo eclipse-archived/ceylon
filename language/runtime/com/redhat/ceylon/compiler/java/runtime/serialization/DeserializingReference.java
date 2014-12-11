@@ -74,7 +74,9 @@ public class DeserializingReference<Instance>
     /** The state associated with this reference. May be null */
     private Deconstructed deconstructed;
     
-    DeserializingReference(@Ignore TypeDescriptor reified$Instance, 
+
+    @Ignore
+    DeserializingReference(TypeDescriptor reified$Instance, 
             DeserializationContextImpl context, 
             Object id, 
             ClassModel classModel, Reference<?> outerReference) {
@@ -84,7 +86,8 @@ public class DeserializingReference<Instance>
                 (Instance)createInstance(context, id, classModel, outerReference));
     }
     
-    DeserializingReference(@Ignore  TypeDescriptor reified$Instance, 
+    @Ignore
+    DeserializingReference(TypeDescriptor reified$Instance, 
             Object id, 
             @SuppressWarnings("rawtypes") ClassModel classModel, Instance instance) {
         this.reified$Instance = reified$Instance;

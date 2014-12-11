@@ -68,6 +68,16 @@ public class SerializationContextImpl
         }
         return ref;
     }
+    
+    @Override
+    public <Instance> SerializableReference<Instance> getReference(TypeDescriptor reified$Instance, Instance instance) {
+        Object id = instanceToId.get(instance);
+        if (id == null) {
+            return null;
+        }
+        SerializableReference reference = idToReference.get(id);
+        return reference;
+    }
 
     @Override
     public Iterator<? extends SerializableReference<Object>> iterator() {

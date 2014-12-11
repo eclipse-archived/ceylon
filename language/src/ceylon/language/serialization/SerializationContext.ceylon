@@ -12,8 +12,7 @@
  "
 shared sealed
 interface SerializationContext
-        satisfies {SerializableReference<Anything>*} /*& Category<Object>*/ {
-    // XXX Category<Object> but ought to be Category<Object?>, surely?
+        satisfies {SerializableReference<Anything>*} {
     "Create a reference to the given [[instance]], assigning it 
      the given [[identifer|id]]."
     throws (`class AssertionError`,
@@ -22,14 +21,12 @@ interface SerializationContext
     shared formal
     SerializableReference<Instance> reference<Instance>(Object id, Instance instance);
     
+    "The reference for the given (previously [[registered|reference]]) instance, 
+     or null if the given instance has not been [[registered|reference]]."
+    shared formal SerializableReference<Instance>? getReference<Instance>(Instance instance);
+    
     "An iterator over each of the objects which have 
      been [[registered|reference]] with this context."
     shared actual formal
     Iterator<SerializableReference<Anything>> iterator();
-    
-    /*"Whether the given instance has been registered with this context"
-    shared actual formal
-    Boolean contains(Object instance);*/
-    
-    // TODO What happens if reference is called during an iteration?
 }
