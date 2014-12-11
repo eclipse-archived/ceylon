@@ -533,6 +533,10 @@ public class InvocationGenerator {
         } else {
             String arr = null;
             boolean isComp = false;
+            boolean isSpread = argList.getSequencedArgument() != null &&
+                    !argList.getSequencedArgument().getPositionalArguments().isEmpty() &&
+                    argList.getSequencedArgument().getPositionalArguments().get(
+                            argList.getSequencedArgument().getPositionalArguments().size() -1) instanceof Tree.SpreadArgument;
             if (nargs.size() > 0) {
                 gen.out("function()");
                 gen.beginBlock();
@@ -544,17 +548,25 @@ public class InvocationGenerator {
             }
             if (isComp) {
                 gen.out(gen.getClAlias(), "nfor$(");
+            } else if (isSpread) {
+                gen.out(gen.getClAlias(), "tpl$([");
             } else {
                 gen.out("[");
             }
             boolean first = true;
             for (Tree.PositionalArgument arg : argList.getSequencedArgument().getPositionalArguments()) {
-                if (first) { first = false; } else { gen.out(","); }
-                arg.visit(gen);
+                if (arg instanceof Tree.SpreadArgument) {
+                    gen.out("],undefined,");
+                    arg.visit(gen);
+                    gen.out(").nativeArray()");
+                } else {
+                    if (first) { first = false; } else { gen.out(","); }
+                    arg.visit(gen);
+                }
             }
             if (isComp) {
                 gen.out(")");
-            } else {
+            } else if (!isSpread) {
                 gen.out("]");
             }
             if (nargs.size() > 0) {
