@@ -36,6 +36,8 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
     srcDirectory="../ceylon.language/test",
     resDirectory="../ceylon.language/test-resource",
     modules={"default", "jvm", "metamodel", "annotations", "resmod", "serialization"},
+    modulesUsingCheckFunction="default",
+    modulesUsingCheckModule={"jvm", "annotations", "resmod", "serialization"},
     dependencies={"check", "modules.imported", "modules.optional", "modules.required"},
     options={"-suppress-warnings", "unusedDeclaration,unusedImport,compilerAnnotation,expressionTypeNothing"},
     removeAtRuntime={"modules.optional"},

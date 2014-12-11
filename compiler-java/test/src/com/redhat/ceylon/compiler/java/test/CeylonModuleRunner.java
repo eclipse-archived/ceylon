@@ -123,7 +123,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             Set<String> removeAtRuntime = new HashSet<String>();
             Collections.addAll(removeAtRuntime, testModule.removeAtRuntime());
-            compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), testModule.options(), removeAtRuntime);
+            compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), 
+                          testModule.options(), removeAtRuntime, 
+                          testModule.modulesUsingCheckFunction(),
+                          testModule.modulesUsingCheckModule());
             
             for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
                 makeModuleRunnerInNewJvm(module);
@@ -193,7 +196,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.assertTrue(exit == 0);
     }
 
-    private void compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, String[] options, Set<String> removeAtRuntime) throws Exception {
+    private void compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, 
+            String[] options, Set<String> removeAtRuntime, 
+            String[] modulesUsingCheckFunction, String[] modulesUsingCheckModule) throws Exception {
         // Compile all the .ceylon files into a .car
         Context context = new Context();
         final ErrorCollector listener = new ErrorCollector();
@@ -239,11 +244,13 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
 
         for(String module : modules){
-            postCompile(context, listener, module, srcDir, dependencies, removeAtRuntime);
+            postCompile(context, listener, module, srcDir, dependencies, removeAtRuntime,
+                    modulesUsingCheckFunction, modulesUsingCheckModule);
         }
     }
     
-    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies, Set<String> removeAtRuntime) throws Exception {
+    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies, Set<String> removeAtRuntime, 
+            String[] modulesUsingCheckFunction, String[] modulesUsingCheckModule) throws Exception {
         // now fetch stuff from the context
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
@@ -256,7 +263,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Runnable moduleInitialiser = getModuleInitialiser(moduleName, carUrls, dependencies, removeAtRuntime, cl);
         
         if (cl != null) {
-            loadCompiledTests(moduleRunners, srcDir, cl, phasedUnits, moduleName);
+            loadCompiledTests(moduleRunners, srcDir, cl, phasedUnits, moduleName,
+                    modulesUsingCheckFunction, modulesUsingCheckModule);
         }
         CeylonTestGroup ceylonTestGroup = new CeylonTestGroup(moduleRunners, moduleName, moduleInitialiser);
         children.put(ceylonTestGroup, ceylonTestGroup.getDescription());
@@ -285,15 +293,29 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         moduleRunners.add(runner);
     }
     
-    private void loadCompiledTests(List<Runner> moduleRunners, File srcDir, URLClassLoader cl, PhasedUnits phasedUnits, String moduleName)
+    private void loadCompiledTests(List<Runner> moduleRunners, File srcDir, URLClassLoader cl, PhasedUnits phasedUnits, String moduleName, 
+            String[] modulesUsingCheckFunction, String[] modulesUsingCheckModule)
                 throws InitializationError {
         Map<String, List<String>> testMethods = testLoader.loadTestMethods(moduleRunners, this, phasedUnits, moduleName);
         if (testMethods.isEmpty() && errorIfNoTests) {
             createFailingTest(moduleRunners, "No tests!", new Exception("contains no tests"));
         }
         Method failureCountGetter = null;
-        if(ModuleUtil.isDefaultModule(moduleName)){
-            failureCountGetter = getFailureCountGetter(moduleRunners, cl);
+        String checkCountName = null;
+        for(String m : modulesUsingCheckFunction){
+            if(moduleName.equals(m)){
+                checkCountName = "failureCount_";
+                break;
+            }
+        }
+        for(String m : modulesUsingCheckModule){
+            if(moduleName.equals(m)){
+                checkCountName = "check.failures_";
+                break;
+            }
+        }
+        if(checkCountName != null){
+            failureCountGetter = getFailureCountGetter(checkCountName, moduleRunners, cl);
             // check if an error was produced
             if(failureCountGetter == null)
                 return;
@@ -320,17 +342,17 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
     }
     
-    private Method getFailureCountGetter(List<Runner> moduleRunners, URLClassLoader cl) {
+    private Method getFailureCountGetter(String className, List<Runner> moduleRunners, URLClassLoader cl) {
         Class<?> failureCountClass;
         try {
-            failureCountClass = cl.loadClass("failureCount_");
+            failureCountClass = cl.loadClass(className);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             failureCountClass = null;
         }
         if(failureCountClass == null) {
             // Create a fake (failing) test for classes we couldn't find the failure count
-            createFailingTest(moduleRunners, "Initialisation error", new CompilationException("Count not find test.failureCount class"));
+            createFailingTest(moduleRunners, "Initialisation error", new CompilationException("Could not find test.failureCount class"));
             return null;
         }
         // get the method for getting the failure count

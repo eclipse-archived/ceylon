@@ -50,4 +50,7 @@ public @interface TestModule {
     ModuleSpecifier[] runModulesInNewJvm() default {};
     
     String[] removeAtRuntime() default {}; 
+    
+    String[] modulesUsingCheckModule() default {};
+    String[] modulesUsingCheckFunction() default {};
 }
