@@ -43,7 +43,7 @@ public class SerializationHelper {
         if (JsCompiler.isCompilingLanguageModule()) {
             gen.out("Applied", classOrMemberClass);
         } else {
-            gen.out(gen.getClAlias(), "$init$Applied", classOrMemberClass, "$meta$model()");
+            gen.out(gen.getClAlias(), "$init$Applied", classOrMemberClass, "$jsint()");
         }
         gen.out("(", gen.getNames().name(d), ",{Type$Applied", classOrMemberClass, ":{t:",
                 gen.getNames().name(d));
