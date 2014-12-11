@@ -7,13 +7,14 @@ import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.SerializableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major=7, minor=1)
+@Ceylon(major=7)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters(@TypeParameter("Instance"))
 @SatisfiedTypes({"ceylon.language.serialization::SerializableReference<Instance>"})
@@ -23,7 +24,7 @@ implements SerializableReference<Instance>, ReifiedType {
     private final Object id;
     private final Instance instance;
 
-    SerializableReferenceImpl(TypeDescriptor reified$Instance, SerializationContextImpl context, Object id, Instance instance) {
+    SerializableReferenceImpl(@Ignore TypeDescriptor reified$Instance, SerializationContextImpl context, Object id, Instance instance) {
         this.reified$Instance = reified$Instance;
         this.id = id;
         this.instance = instance;
