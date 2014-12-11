@@ -1598,15 +1598,15 @@ public class Util {
      *  @throws ceylon.language.OverflowException
      */
     public static int toInt(long value) {
-        if (value <= java.lang.Integer.MAX_VALUE
-                && value >= java.lang.Integer.MIN_VALUE) {
-            return (int)value;
+        int result = (int) value;
+        if (result != value) {
+            throw new OverflowException();
         }
-        throw new OverflowException();
+        return result;
     }
     
     /** 
-     * <p>Typecast a {@code long} to a {@code shot}, or throw if the {@code long} 
+     * <p>Typecast a {@code long} to a {@code short}, or throw if the {@code long}
      * cannot be safely converted.</p>
      *   
      * <p>We need to do this:</p>
@@ -1617,11 +1617,11 @@ public class Util {
      *  @throws ceylon.language.OverflowException
      */
     public static short toShort(long value) {
-        if (value <= java.lang.Short.MAX_VALUE
-                && value >= java.lang.Short.MIN_VALUE) {
-            return (short)value;
+        short result = (short) value;
+        if (result != value) {
+            throw new OverflowException();
         }
-        throw new OverflowException();
+        return result;
     }
     
     /** 
@@ -1637,11 +1637,11 @@ public class Util {
      *  @throws ceylon.language.OverflowException
      */
     public static byte toByte(long value) {
-        if (value <= java.lang.Byte.MAX_VALUE
-                && value >= java.lang.Byte.MIN_VALUE) {
-            return (byte)value;
+        byte result = (byte) value;
+        if (result != value) {
+            throw new OverflowException();
         }
-        throw new OverflowException();
+        return result;
     }
 
     /**
