@@ -21,7 +21,7 @@
    a concrete definition of value equality for the class.
    
    In extreme cases it is acceptable for two values to be
-   equal, even if they are not instances of the same class.
+   equal even when they are not instances of the same class.
    For example, the [[Integer]] value `1` and the [[Float]]
    value `1.0` are considered equal. Except in these extreme
    cases, instances of different classes are considered
