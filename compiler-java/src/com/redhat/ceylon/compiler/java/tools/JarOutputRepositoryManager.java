@@ -205,7 +205,7 @@ public class JarOutputRepositoryManager {
                 Set<String> copiedSourceFiles = srcCreator.copy(modifiedSourceFiles);
                 resourceCreator.copy(modifiedResourceFilesFull);
     
-                if (writeOsgiManifest && !manifestWritten) {
+                if (writeOsgiManifest && !manifestWritten && !module.isDefault()) {
                     Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
                     writeManifestJarEntry(manifest);
                 }
@@ -328,7 +328,7 @@ public class JarOutputRepositoryManager {
             } else {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
-                if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName)) {
+                if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName) && !module.isDefault()) {
                     this.manifestWritten = true;
                     return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, entryName, module);
                 }
