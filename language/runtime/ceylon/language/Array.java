@@ -60,16 +60,27 @@ public final class Array<Element>
     private static final double[] EMPTY_DOUBLE_ARRAY = new double[0];
     private static final long[] EMPTY_LONG_ARRAY = new long[0];
     
+    /** The array, could be Object[], int[], boolean[] etc. Never null. */
     private final java.lang.Object array;
+    /** The array if it's an Object[], otherwise null */
     private final java.lang.Object[] objectArray;
+    /** The array if it's a String[], otherwise null */
     private final java.lang.String[] stringArray;
+    /** The array if it's a long[], otherwise null */
     private final long[] longArray;
+    /** The array if it's a double[], otherwise null */
     private final double[] doubleArray;
+    /** The array if it's a boolean[], otherwise null */
     private final boolean[] booleanArray;
+    /** The array if it's an int[], otherwise null */
     private final int[] intArray;
+    /** The array if it's a byte[], otherwise null */
     private final byte[] byteArray;
+    /** The array.length, cached for speed */
     private final int size;
+    /** The reified element type */
     private final TypeDescriptor $reifiedElement;
+    /** The element type, for switching */
     private final ArrayType elementType;
 
     
@@ -1778,7 +1789,6 @@ public final class Array<Element>
     @Ignore
     @Override
     public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
-        //super.$serialize$(deconstructor);
         Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral($getType$()));
         
         ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
@@ -1798,7 +1808,6 @@ public final class Array<Element>
     @Ignore
     @Override
     public void $deserialize$(Deconstructed dted) {
-        //super.$deserialize$(dted);
         try {
             //ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
             //TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
@@ -1807,7 +1816,34 @@ public final class Array<Element>
             ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
             Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
             Util.setter(MethodHandles.lookup(), "size").invokeExact(this, Util.toInt(size.value));
-            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null));
+            java.lang.Object a = createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null);
+            
+            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, a);
+            switch (this.elementType) {
+            case Other:
+                Util.setter(MethodHandles.lookup(), "objectArray").invoke(this, a);
+                break;
+            case CeylonInteger:
+                Util.setter(MethodHandles.lookup(), "longArray").invoke(this, a);
+                break;
+            case CeylonFloat:
+                Util.setter(MethodHandles.lookup(), "doubleArray").invoke(this, a);
+                break;
+            case CeylonByte:
+                Util.setter(MethodHandles.lookup(), "byteArray").invoke(this, a);
+                break;
+            case CeylonCharacter:
+                Util.setter(MethodHandles.lookup(), "intArray").invoke(this, a);
+                break;
+            case CeylonBoolean:
+                Util.setter(MethodHandles.lookup(), "booleanArray").invoke(this, a);
+                break;
+            case CeylonString:
+                Util.setter(MethodHandles.lookup(), "stringArray").invoke(this, a);
+                break;
+            default:
+                // nothing to do
+            }
             
             for (int ii = 0; ii < size.value; ii++) {
                 java.lang.Object elementValOrRef = dted.<Element>getElement(this.$reifiedElement, ii);
