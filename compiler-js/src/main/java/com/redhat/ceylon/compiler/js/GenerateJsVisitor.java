@@ -1250,7 +1250,7 @@ public class GenerateJsVisitor extends Visitor
                     if (d.isLate()) {
                         out("undefined");
                     } else {
-                        super.visit(that);
+                        super.visit(specInitExpr);
                     }
                     endLine(true);
                 }
