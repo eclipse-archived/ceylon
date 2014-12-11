@@ -42,7 +42,7 @@ public class ConditionGenerator {
         for (Condition cond : conditions.getConditions()) {
             Tree.Variable variable = null;
             if (cond instanceof ExistsOrNonemptyCondition) {
-                variable = ((ExistsOrNonemptyCondition) cond).getVariable();
+                variable = (Variable)((ExistsOrNonemptyCondition) cond).getVariable();
             } else if (cond instanceof IsCondition) {
                 variable = ((IsCondition) cond).getVariable();
             } else if (!(cond instanceof Tree.BooleanCondition)) {
