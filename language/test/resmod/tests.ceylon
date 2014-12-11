@@ -10,7 +10,11 @@ shared void testModResources() {
     check(res2 exists, "mod resource by full path");
     assert(exists r1=res1, exists r2=res2);
     check("/" in r1.uri, "mod resource uri 1");
-    check(r1.uri.startsWith("file:/"), "mod resource uri 2");
+    if(runtime.name == "jvm"){
+        check(r1.uri.startsWith("classpath:/"), "mod resource uri 2");
+    }else if(runtime.name == "node.js"){
+        check(r1.uri.startsWith("file:/"), "mod resource uri 2");
+    }
     check(!"\\" in r1.uri, "mod resource uri 3");
     check(r1.name=="modres.txt", "mod resource name 1");
     check(r1.name==r2.name, "mod resource name 2");
@@ -23,8 +27,8 @@ shared void testModResources() {
         if (exists carr = mod.resourceByPath("/META-INF/mapping.txt")) {
             check(carr.name=="mapping.txt", "mod car resource name");
             check(carr.uri.endsWith("!META-INF/mapping.txt"), "mod car resource uri 1");
-            check(carr.uri.startsWith("file:/"), "mod car resource uri 2");
-            check(carr.size>1000, "mod car resource size");
+            check(carr.uri.startsWith("classpath:/"), "mod car resource uri 2");
+            check(carr.size>100, "mod car resource size");
             check(carr.textContent().size==carr.size, "mod car resource content");
         } else {
             fail("Couldn't find mapping.txt file in resmod-0.1.car");
