@@ -691,8 +691,9 @@ public class ExpressionVisitor extends Visitor {
         ProducedType t = null;
         Node n = that;
         Tree.Term term = null;
-        Tree.Variable v = that.getVariable();
-        if (v!=null) {
+        Tree.Statement s = that.getVariable();
+        if (s instanceof Tree.Variable) {
+            Tree.Variable v = (Tree.Variable) s;
             //v.getType().visit(this);
             defaultTypeToAnything(v);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
@@ -715,6 +716,29 @@ public class ExpressionVisitor extends Visitor {
                 checkReferenceIsNonVariable(v, se);
                 initOriginalDeclaration(v);
                 term = se.getExpression().getTerm();
+            }
+        }
+        else if (s instanceof Tree.Destructure) {
+            Tree.Destructure d = (Tree.Destructure) s;
+            if (that.getNot()) {
+                that.addError("negated conditions do not support destructuring");
+            }
+            Tree.SpecifierExpression se = d.getSpecifierExpression();
+            if (se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    se.visit(this);
+                    ProducedType type = e.getTypeModel();
+                    if (!isTypeUnknown(type)) {
+                        if (that instanceof Tree.ExistsCondition) {
+                            type = unit.getDefiniteType(type);
+                        }
+                        else if (that instanceof Tree.NonemptyCondition) {
+                            type = unit.getNonemptyDefiniteType(type);
+                        }
+                        destructure(d.getPattern(), se, type);
+                    }
+                }
             }
         }
         if (that instanceof Tree.ExistsCondition) {

@@ -60,3 +60,14 @@ void destructureInFor({[String, Float, String->String]*} iter) {
         String->String e = s1->s2;
     }
 }
+
+void destructureIf([Float, Integer]? maybePair, String[] names) {
+    if (exists [x, i] = maybePair) {
+        Float c = x;
+        Integer j = i;
+    }
+    if (nonempty [name, *rest] = names) {
+        String n = name;
+        String[] ns = rest;
+    }
+}
