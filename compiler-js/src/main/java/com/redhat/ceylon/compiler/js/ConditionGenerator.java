@@ -7,14 +7,16 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
 
 /** This component is used by the main JS visitor to generate code for conditions.
  * 
@@ -41,8 +43,13 @@ public class ConditionGenerator {
         boolean first = true;
         for (Condition cond : conditions.getConditions()) {
             Tree.Variable variable = null;
+            Tree.Destructure destruct = null;
             if (cond instanceof ExistsOrNonemptyCondition) {
-                variable = (Variable)((ExistsOrNonemptyCondition) cond).getVariable();
+                if (((ExistsOrNonemptyCondition) cond).getVariable() instanceof Tree.Variable) {
+                    variable = (Tree.Variable)((ExistsOrNonemptyCondition) cond).getVariable();
+                } else if (((ExistsOrNonemptyCondition) cond).getVariable() instanceof Tree.Destructure) {
+                    destruct = (Tree.Destructure)((ExistsOrNonemptyCondition) cond).getVariable();
+                }
             } else if (cond instanceof IsCondition) {
                 variable = ((IsCondition) cond).getVariable();
             } else if (!(cond instanceof Tree.BooleanCondition)) {
@@ -62,6 +69,18 @@ public class ConditionGenerator {
                     gen.out(varName);
                 }
                 vars.add(new VarHolder(variable, variableRHS, varName));
+            } else if (destruct != null) {
+                final Destructurer d=new Destructurer(destruct.getPattern(), null, directAccess, "", first);
+                for (Tree.Variable v : d.getVariables()) {
+                    if (first) {
+                        first = false;
+                        gen.out("var ");
+                    } else {
+                        gen.out(",");
+                    }
+                    gen.out(names.name(v.getDeclarationModel()));
+                }
+                vars.add(new VarHolder(destruct, null, null));
             }
         }
         if (output && !first) {
@@ -118,8 +137,12 @@ public class ConditionGenerator {
                 cond.visit(gen);
             } else {
                 VarHolder vh = ivars.next();
-                specialConditionCheck(cond, vh.term, vh.name);
-                directAccess.add(vh.var.getDeclarationModel());
+                if (vh.destr == null) {
+                    specialConditionCheck(cond, vh.term, vh.name);
+                    directAccess.add(vh.var.getDeclarationModel());
+                } else {
+                    destructureCondition(cond, vh);
+                }
             }
         }
         gen.out(")");
@@ -149,7 +172,9 @@ public class ConditionGenerator {
 
     void specialConditionRHS(Tree.Term variableRHS, String varName) {
         if (varName == null) {
-            variableRHS.visit(gen);
+            if (variableRHS!=null) {
+                variableRHS.visit(gen);
+            }
         } else {
             gen.out("(", varName, "=");
             variableRHS.visit(gen);
@@ -192,8 +217,7 @@ public class ConditionGenerator {
             }
         }
         for (VarHolder v : vars) {
-            directAccess.remove(v.var.getDeclarationModel());
-            names.forceName(v.var.getDeclarationModel(), null);
+            v.forget();
         }
     }
 
@@ -202,10 +226,11 @@ public class ConditionGenerator {
         final Tree.ElseClause anoserque = that.getElseClause();
         final Tree.Variable elsevar = anoserque == null ? null : anoserque.getVariable();
         if (elsevar != null) {
+            final Value elseval = elsevar.getDeclarationModel();
             for (VarHolder vh : vars) {
-                if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
-                    names.forceName(elsevar.getDeclarationModel(), vh.name);
-                    directAccess.add(elsevar.getDeclarationModel());
+                if (vh.var != null && vh.var.getDeclarationModel().getName().equals(elseval.getName())) {
+                    names.forceName(elseval, vh.name);
+                    directAccess.add(elseval);
                     break;
                 }
             }
@@ -232,8 +257,7 @@ public class ConditionGenerator {
             gen.out("return ");
             that.getIfClause().getExpression().visit(gen);
             for (VarHolder v : vars) {
-                directAccess.remove(v.var.getDeclarationModel());
-                names.forceName(v.var.getDeclarationModel(), null);
+                v.forget();
             }
             final boolean thenIf = anoserque != null &&
                     anoserque.getExpression().getTerm() instanceof Tree.IfExpression;
@@ -266,8 +290,7 @@ public class ConditionGenerator {
         List<VarHolder> vars = specialConditionsAndBlock(whileClause.getConditionList(),
                 whileClause.getBlock(), "while");
         for (VarHolder v : vars) {
-            directAccess.remove(v.var.getDeclarationModel());
-            names.forceName(v.var.getDeclarationModel(), null);
+            v.forget();
         }
     }
 
@@ -297,7 +320,7 @@ public class ConditionGenerator {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
-            final Variable elsevar = anoserque.getVariable();
+            final Tree.Variable elsevar = anoserque.getVariable();
             if (elsevar != null) {
                 directAccess.add(elsevar.getDeclarationModel());
                 names.forceName(elsevar.getDeclarationModel(), expvar);
@@ -404,16 +427,62 @@ public class ConditionGenerator {
         }
     }
 
+    void destructureCondition(Condition cond, VarHolder vh) {
+        final String expvar = names.createTempVariable();
+        gen.out("function(", expvar, "){if(");
+        if (cond instanceof ExistsCondition) {
+            if (!((ExistsCondition)cond).getNot()) {
+                gen.out("!");
+            }
+            gen.out(gen.getClAlias(), "nn$(", expvar, "))return false;");
+        } else if (cond instanceof NonemptyCondition) {
+            if (!((NonemptyCondition)cond).getNot()) {
+                gen.out("!");
+            }
+            gen.out(gen.getClAlias(), "ne$(", expvar, "))return false;");
+        } else {
+            Tree.Type type = ((IsCondition) cond).getType();
+            gen.generateIsOfType(null, expvar, type.getTypeModel(),
+                    null, ((IsCondition)cond).getNot());
+            gen.out(")return false;");
+        }
+        gen.out("return(");
+        final Destructurer d=new Destructurer(vh.destr.getPattern(), gen, directAccess, expvar, true);
+        gen.out(");}(");
+        vh.destr.getSpecifierExpression().visit(gen);
+        gen.out(")");
+        vh.vars=d.getVariables();
+    }
+
     /** Holder for a special condition's variable, its right-hand side term,
      * and its name in the generated js. */
     class VarHolder {
         final Tree.Variable var;
         final Tree.Term term;
         final String name;
-        private VarHolder(Tree.Variable variable, Tree.Term rhs, String varName) {
-            var = variable;
+        final Tree.Destructure destr;
+        Set<Tree.Variable> vars;
+        private VarHolder(Tree.Statement st, Tree.Term rhs, String varName) {
+            if (st instanceof Tree.Variable) {
+                var = (Tree.Variable)st;
+                destr = null;
+            } else {
+                var = null;
+                destr = (Tree.Destructure)st;
+            }
             term = rhs;
             name = varName;
+        }
+        void forget() {
+            if (var != null) {
+                directAccess.remove(var.getDeclarationModel());
+                names.forceName(var.getDeclarationModel(), null);
+            } else if (vars != null) {
+                for (Tree.Variable v : vars) {
+                    directAccess.remove(v.getDeclarationModel());
+                    names.forceName(v.getDeclarationModel(), null);
+                }
+            }
         }
     }
 

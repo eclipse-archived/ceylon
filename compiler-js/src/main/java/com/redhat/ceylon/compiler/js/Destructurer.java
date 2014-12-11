@@ -19,7 +19,7 @@ public class Destructurer extends Visitor {
     private final String expvar;
     private final Set<Declaration> directAccess;
     private boolean first;
-    private final Set<Declaration> added = new HashSet<>();
+    private final Set<Tree.Variable> added = new HashSet<>();
 
     /** Generate the code for the specified pattern. If null is passed instead of a
      * generator, no code is output but the patterns are still visited and their
@@ -54,7 +54,7 @@ public class Destructurer extends Visitor {
                 }
             } else {
                 added.addAll(new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")",
-                        first && idx==0).getDeclarations());
+                        first && idx==0).getVariables());
             }
         }
     }
@@ -66,7 +66,7 @@ public class Destructurer extends Visitor {
                 gen.out(".key");
             }
         } else {
-            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first).getDeclarations());
+            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first).getVariables());
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);
@@ -74,13 +74,15 @@ public class Destructurer extends Visitor {
                 gen.out(".item");
             }
         } else {
-            added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false).getDeclarations());
+            added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false).getVariables());
         }
     }
 
     public void visit(final Tree.VariablePattern that) {
-        directAccess.add(that.getVariable().getDeclarationModel());
-        added.add(that.getVariable().getDeclarationModel());
+        if (directAccess != null) {
+            directAccess.add(that.getVariable().getDeclarationModel());
+        }
+        added.add(that.getVariable());
         if (first) {
             first=false;
         } else if (gen != null) {
@@ -93,6 +95,14 @@ public class Destructurer extends Visitor {
 
     /** Returns the declarations gathered by this Destructurer. */
     public Set<Declaration> getDeclarations() {
+        final HashSet<Declaration> decs = new HashSet<>(added.size());
+        for (Tree.Variable v : added) {
+            decs.add(v.getDeclarationModel());
+        }
+        return decs;
+    }
+    /** Returns the variables declared inside the destructuring. */
+    public Set<Tree.Variable> getVariables() {
         return added;
     }
 
