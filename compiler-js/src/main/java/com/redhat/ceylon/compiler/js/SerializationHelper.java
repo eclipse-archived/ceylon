@@ -41,7 +41,7 @@ public class SerializationHelper {
         gen.out("var ", ac, "=", dc, "(");
         final String classOrMemberClass = d.isMember() ? "MemberClass" : "Class";
         if (JsCompiler.isCompilingLanguageModule()) {
-            gen.out("Applied", classOrMemberClass);
+            gen.out("Applied", classOrMemberClass, "$jsint");
         } else {
             gen.out(gen.getClAlias(), "$init$Applied", classOrMemberClass, "$jsint()");
         }
