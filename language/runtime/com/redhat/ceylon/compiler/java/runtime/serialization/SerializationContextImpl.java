@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.Map;
 
 import ceylon.language.Iterator;
 import ceylon.language.Null;
@@ -26,25 +27,19 @@ public class SerializationContextImpl
         extends BaseIterable<SerializableReference<Object>, Object> 
         implements SerializationContext, ReifiedType {
     
-    private final IdentityHashMap<Object, Object> instanceToId = new IdentityHashMap<>();
-    private final HashMap<Object, SerializableReference<Object>> idToReference = new HashMap<Object, SerializableReference<Object>>();
+    private final IdentityHashMap<Object, SerializableReference<?>> identifiableToReference = new IdentityHashMap<>();
+    private final HashMap<Object, SerializableReference<?>> unidentifiableToReference = new HashMap<>();
+    
+    private Map<Object, SerializableReference<?>> map(Object instance) {
+        if (instance instanceof ceylon.language.Identifiable) {
+            return identifiableToReference;
+        } else {
+            return unidentifiableToReference;
+        }
+    }
     
     public SerializationContextImpl() {
         super(TypeDescriptor.klass(SerializableReferenceImpl.class, ceylon.language.Object.$TypeDescriptor$), Null.$TypeDescriptor$);
-    }
-    
-    @Override
-    public boolean contains(Object instance) {
-        return instanceToId.containsKey(instance);
-    }
-    
-    /** Get the id of the given registered instance */
-    <Instance> Object getId(Instance instance) {
-        Object object = instanceToId.get(instance);
-        if (object == null) {
-            throw new ceylon.language.AssertionError("Instance " + instance + " has not been registered for serialization");
-        }
-        return object;
     }
     
     /**
@@ -55,42 +50,38 @@ public class SerializationContextImpl
      */
     @Override
     public <Instance> SerializableReference<Instance> reference(TypeDescriptor reified$Instance, Object id, Instance instance) {
-        Object otherInstance = instanceToId.put(instance, id);
-        if (otherInstance != null
-                && instance != null
-                && otherInstance != instance) {
-            throw new ceylon.language.AssertionError("A different instance has already been registered with id "+id+": \"" + otherInstance +"\", \""+ instance+"\"");
-        }
         SerializableReferenceImpl ref = new SerializableReferenceImpl(reified$Instance, this, id, instance);
-        SerializableReference<Object> prevReference = idToReference.put(id, ref);
+        SerializableReference<?> prevReference = map(instance).put(instance, ref);
         if (prevReference != null) {
-            throw new ceylon.language.AssertionError("A different instance has already been registered with id "+id+": \"" + prevReference.instance() +"\", \""+ instance+"\"");
+            throw new ceylon.language.AssertionError("An instance has already been registered with id "+id+": \"" + prevReference.instance() +"\", \""+ instance+"\"");
         }
         return ref;
     }
     
     @Override
     public <Instance> SerializableReference<Instance> getReference(TypeDescriptor reified$Instance, Instance instance) {
-        Object id = instanceToId.get(instance);
-        if (id == null) {
+        SerializableReference<?> ref = map(instance).get(instance);
+        if (ref == null) {
             return null;
         }
-        SerializableReference reference = idToReference.get(id);
-        return reference;
+        return (SerializableReference)ref;
     }
 
     @Override
     public Iterator<? extends SerializableReference<Object>> iterator() {
         return new Iterator<SerializableReference<Object>>() {
-            private final java.util.Iterator<SerializableReference<Object>> iter = idToReference.values().iterator();
+            private final java.util.Iterator<SerializableReference<?>> identifiableIter = identifiableToReference.values().iterator();
+            private final java.util.Iterator<SerializableReference<?>> unidentifiableIter = unidentifiableToReference.values().iterator();
             @Override
             public Object next() {
-                if (!iter.hasNext()) {
+                if (identifiableIter.hasNext()) {
+                    return identifiableIter.next();
+                } else if (unidentifiableIter.hasNext()) {
+                    return unidentifiableIter.next();
+                } else {
                     return finished_.get_();
                 }
-                return iter.next();
             }
-            
         };
     }
     
