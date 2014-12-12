@@ -52,6 +52,8 @@ public final class Array<Element>
         extends BaseList<Element>
         implements List<Element>, Serializable {
     
+    private static final Finished FIN = finished_.get_();
+    
     private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];    
     private static final java.lang.String[] EMPTY_STRING_ARRAY = new java.lang.String[0];
     private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
@@ -111,7 +113,7 @@ public final class Array<Element>
     	final ArrayList<Element> list = new ArrayList<Element>();
     	Iterator<?> iterator = elements.iterator();
     	java.lang.Object elem;
-    	while ((elem=iterator.next())!=finished_.get_()) {
+    	while ((elem=iterator.next())!=FIN) {
     		list.add((Element) elem);
     	}
     	
@@ -1032,10 +1034,10 @@ public final class Array<Element>
                     isNull = result==null;
                 }
                 while (isNull && index<size);
-                return isNull ? finished_.get_() : result;
+                return isNull ? FIN : result;
             }
             else {
-                return finished_.get_();
+                return FIN;
             }
         }
 
@@ -1086,7 +1088,7 @@ public final class Array<Element>
                 return unsafeItem(index++);
             }
             else {
-                return finished_.get_();
+                return FIN;
             }
         }
 
