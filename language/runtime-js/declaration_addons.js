@@ -10,23 +10,25 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
     var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
     var _d = raiz[propname];
+    if (_d){
+      if (noInherit) {
+        var mm=getrtmm$$(_d);
+        //If we found the attribute but it's inherited, forget about it
+        if (mm.$cont!==this.tipo)_d=undefined;
+      }
+    }
     if (_d===undefined) {
       //Browse all non-shared attributes looking for original name
       for (nsats in raiz) if (nsats.substring(0,10)==='$prop$get$') {
         var atmm=getrtmm$$(raiz[nsats]);
+        //Review the name in the model in case it's not shared
         if (atmm.d && atmm.d[atmm.d.length-1].substring(0,name$20.length+1)===name$20+'$') {
           _d=raiz[nsats];
           break;
         }
       }
     }
-    if (_d){
-      if (noInherit) {
-        var mm=getrtmm$$(_d);
-        if (mm.$cont!==this.tipo)return null;
-      }
-      _m=OpenValue$jsint(this.containingPackage, _d);
-    }
+    if(_d)_m=OpenValue$jsint(this.containingPackage, _d);
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
     var nom=name$20;
