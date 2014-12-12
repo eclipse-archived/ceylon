@@ -11,8 +11,21 @@ rem list of existing commands (try typing "ceylon help").
 
 set "USAGE=<arg1> <arg2>"
 set "DESCRIPTION=Example command that does nothing"
-set "LONG_USAGE=This script just shows how to create"
-set "LONG_USAGE=%LONG_USAGE% custom 'ceylon' sub-commands."
+
+rem Batch syntax:
+rem Caret (^) + single line break = no line break in resulting variable.
+rem  (Useful to line-wrap your script itself without affecting the result.)
+rem  (Don't forget to include spaces.)
+rem Caret (^) + double line break = one line break in resulting variable.
+rem  (Repeat to introduce a blank line in the result, i.e. a new paragraph.)
+set LONG_USAGE=This script just shows how to create custom 'ceylon' sub-commands.^
+
+^
+
+This long usage information is printed ^
+when users run `ceylon help example` or `ceylon example --help`. ^
+The plugin system already wraps long lines, ^
+so you should avoid wrapping them yourself.
 
 call %CEYLON_HOME%\bin\ceylon-sh-setup.bat %*
 
