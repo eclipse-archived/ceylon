@@ -1,12 +1,15 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.AssertionError;
+import ceylon.language.Callable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.emptyIterator_;
 import ceylon.language.impl.BaseIterable;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
@@ -175,5 +178,16 @@ extends BaseIterable<Element, ceylon.language.Null> {
                 (int)((this.len+step-1)/step), //ceiling division
                 this.step*(int)step);
     }
+    
+    @Override
+    public java.lang.Object each(
+            Callable<? extends java.lang.Object> step) {
+        for (int i=start; i<len; i+=this.step) {
+            step.$call$(get(this.array,i));
+        }
+        return null;
+    }
+    
+
 
 }
