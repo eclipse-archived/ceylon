@@ -283,7 +283,7 @@ shared interface Iterable<out Element, out Absent=Null>
          for (word in words) {
              print(word.lowercased);
              print(word.uppercased);
-         });
+         }
      
      _For certain streams this method is highly efficient,
      surpassing the performance of `for` loops on the JVM.
