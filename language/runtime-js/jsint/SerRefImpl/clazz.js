@@ -7,7 +7,7 @@
       var pt=mm.ps[i].$t;
       if (typeof pt === 'string') {
         pt=this.instance().$$targs$$[pt];
-        if (!pt)console.log("AGUAS! no encuentro tipo de parametro " + mm.ps[i].$t + " en " + require('util').inspect(this.instance().$$targs$$));
+        if (!pt)console.log("AGUAS! no encuentro tipo de parametro " + mm.ps[i].$t + " en " + /*require('util').inspect(*/this.instance().$$targs$$);
       }
       args.l.push(pt);
     }
