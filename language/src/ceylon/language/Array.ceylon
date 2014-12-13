@@ -70,10 +70,7 @@ shared final native class Array<Element>({Element*} elements)
         Integer destinationPosition = 0,
         "The number of elements to copy."
         Integer length = size - sourcePosition);
-    
-    shared actual native 
-    Integer count(Boolean selecting(Element element));
-    
+        
     shared actual native 
     Array<Element> span(Integer from, Integer to);
     shared actual native 
@@ -88,7 +85,21 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} by(Integer step);
     
     shared actual native 
+    Integer count(Boolean selecting(Element element));
+    shared actual native 
     void each(void step(Element element));
+    shared actual native
+    Boolean any(Boolean selecting(Element element));
+    shared actual native
+    Boolean every(Boolean selecting(Element element));
+    shared actual native
+    Element? find(Boolean selecting(Element&Object elem));
+    shared actual native
+    Element? findLast(Boolean selecting(Element&Object elem));
+    shared actual native
+    Result|Element|Null reduce<Result>
+            (Result accumulating(Result|Element partial, Element element));
+    
     
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 

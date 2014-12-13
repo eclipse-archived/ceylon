@@ -1643,6 +1643,9 @@ public final class String
     reduce(@Ignore TypeDescriptor $reifiedResult, 
             java.lang.String value, 
             Callable<? extends Result> f) {
+        if (value.isEmpty()) {
+            return null;
+        }
         int initial = value.codePointAt(0);
         java.lang.Object partial = Character.instance(initial);
         for (int offset = java.lang.Character.charCount(initial); 

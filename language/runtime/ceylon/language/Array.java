@@ -1366,7 +1366,7 @@ public final class Array<Element>
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         for (int i=0; i<size; i++) {
-            Element elem = getFromFirst(i);
+            Element elem = unsafeItem(i);
             if (elem != null && elem.equals(element)) {
                 return true;
             }
@@ -1382,14 +1382,87 @@ public final class Array<Element>
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
         for (int i=0; i<size; i++) {
-            Element elem = getFromFirst(i);
-            if (elem != null && selecting.$call$(elem).booleanValue()) {
+            if (selecting.$call$(unsafeItem(i)).booleanValue()) {
                 count++;
             }
         }
         return count;
     }
 
+    @Override
+    public boolean any(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=0; i<size; i++) {
+            if (selecting.$call$(unsafeItem(i)).booleanValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean every(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=0; i<size; i++) {
+            if (!selecting.$call$(unsafeItem(i)).booleanValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|Element")
+    public Element find(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=0; i<size; i++) {
+            Element elem = unsafeItem(i);
+            if (selecting.$call$(elem).booleanValue()) {
+                return elem;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Null|Element")
+    public Element findLast(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=size-1; i>=0; i--) {
+            Element elem = unsafeItem(i);
+            if (selecting.$call$(elem).booleanValue()) {
+                return elem;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Null|Element|Result")
+    public <Result> java.lang.Object 
+    reduce(@Ignore TypeDescriptor $reifiedResult,
+            @Name("accumulating")
+            @FunctionalParameter("(partial,element)") 
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element|Result,Element|Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
+            Callable<? extends Result> accumulating) {
+        if (size==0) {
+            return null;
+        }
+        java.lang.Object partial = unsafeItem(0);
+        for (int i=1; i<size; i++) {
+            partial = accumulating.$call$(partial,unsafeItem(i));
+        }
+        return partial;
+    }
+    
     @Override
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")

@@ -1,12 +1,14 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.AssertionError;
+import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.emptyIterator_;
 import ceylon.language.impl.BaseIterable;
 
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -182,12 +184,91 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public java.lang.Object each(
             Callable<? extends java.lang.Object> step) {
-        for (int i=start; i<len; i+=this.step) {
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
             step.$call$(get(this.array,i));
         }
         return null;
     }
     
+    @Override
+    public long count(
+    Callable<? extends Boolean> selecting) {
+        // FIXME Very inefficient for primitive types due to boxing
+        int count=0;
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
+            if (selecting.$call$(get(this.array,i)).booleanValue()) {
+                count++;
+            }
+        }
+        return count;
+    }
 
+    @Override
+    public boolean any(
+    Callable<? extends Boolean> selecting) {
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
+            if (selecting.$call$(get(this.array,i)).booleanValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean every(
+    Callable<? extends Boolean> selecting) {
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
+            if (!selecting.$call$(get(this.array,i)).booleanValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Element find(
+    Callable<? extends Boolean> selecting) {
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
+            Element elem = get(this.array,i);
+            if (selecting.$call$(elem).booleanValue()) {
+                return elem;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public Element findLast(
+    Callable<? extends Boolean> selecting) {
+        int end = start+len;
+        for (int i=start; i<end; i+=this.step) {
+            Element elem = get(this.array,i);
+            if (selecting.$call$(elem).booleanValue()) {
+                return elem;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public <Result> java.lang.Object 
+    reduce(@Ignore TypeDescriptor $reifiedResult,
+            Callable<? extends Result> accumulating) {
+        if (len==0) {
+            return null;
+        }
+        java.lang.Object partial = get(this.array,start);
+        int end = start+len;
+        for (int i=start+1; i<end; i+=this.step) {
+            partial = accumulating.$call$(partial,
+                    get(this.array,i));
+        }
+        return partial;
+    }
 
 }
