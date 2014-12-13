@@ -1609,7 +1609,7 @@ else {
             
             <para>A condition list has one or more conditions.</para>
             
-            <synopsis>ConditionList: "(" Condition ("," Condition) ")"</synopsis>
+            <synopsis>ConditionList: "(" Condition ("," Condition)* ")"</synopsis>
             
             <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
             
@@ -2274,7 +2274,7 @@ while (n&lt;=max) {
             
             <synopsis>Try: "try" ResourceList? Block</synopsis>
             
-            <synopsis>ResourceList: "(" Resource ("," Resource) ")"</synopsis>
+            <synopsis>ResourceList: "(" Resource ("," Resource)* ")"</synopsis>
             
             <synopsis>Catch: "catch" "(" Variable ")" Block</synopsis>
             
