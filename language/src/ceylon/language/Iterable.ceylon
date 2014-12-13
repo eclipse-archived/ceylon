@@ -267,7 +267,32 @@ shared interface Iterable<out Element, out Absent=Null>
             };
     };
     
-    shared default void each(void step(Element element)) {
+    "Call the given [[function|step]] for each element of 
+     this stream, passing the elements in the order they 
+     occur in this stream.
+     
+     For example:
+     
+         words.each(void (word) {
+             print(word.lowercased);
+             print(word.uppercased);
+         });
+     
+     Has the safe effect as the following `for` loop:
+     
+         for (word in words) {
+             print(word.lowercased);
+             print(word.uppercased);
+         });
+     
+     _For certain streams this method is highly efficient,
+     surpassing the performance of `for` loops on the JVM.
+     Thus, `each()` is sometimes preferred in highly 
+     performance-critical low-level code._"
+    shared default void each(
+        "The function to be called for each element in the
+         stream."
+        void step(Element element)) {
         for (element in this) {
             step(element);
         }
