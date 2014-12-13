@@ -188,6 +188,14 @@ class Measure<Element>(first, size)
             return this;
         }
     }
+    
+    shared actual void each(void step(Element element)) {
+        variable value current = first;
+        variable value count = 0;
+        while (count++<size) {
+            step(current++);
+        }
+    }
 }
 
 "Produces a [[Range]] of adjacent [[Enumerable]] values 

@@ -338,6 +338,19 @@ class Span<Element>(first, last)
             return this;
         }
     }
+    
+    shared actual void each(void step(Element element)) {
+        variable value current = first;
+        while (true) {
+            step(current);
+            if (current.offset(last)==0) {
+                break;
+            }
+            else {
+                current = next(current);
+            }
+        }
+    }
 }
 
 "Produces a [[Range]] of adjacent [[Enumerable]] values 
