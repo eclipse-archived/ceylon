@@ -56,7 +56,31 @@ class ArraySequence<out Element>(array)
     
     each(void step(Element element)) => array.each(step);
     
-    shared default actual 
+    count(Boolean selecting(Element element))
+            => array.count(selecting);
+    
+    every(Boolean selecting(Element element))
+            => array.every(selecting);
+    
+    any(Boolean selecting(Element element))
+            => array.any(selecting);
+    
+    find(Boolean selecting(Element&Object element))
+            => array.find(selecting);
+    
+    findLast(Boolean selecting(Element&Object element))
+            => array.findLast(selecting);
+    
+    shared actual 
+    Result|Element reduce<Result>(
+        Result accumulating(Result|Element partial, 
+                            Element element)) {
+        assert (exists result 
+            = array.reduce(accumulating));
+        return result;
+    }
+
+    shared actual 
     [Result+] collect<Result>
             (Result collecting(Element element)) {
         assert (nonempty sequence 
