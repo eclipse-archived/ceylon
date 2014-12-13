@@ -1419,11 +1419,12 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     public Element find(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             Element elem = unsafeItem(i);
-            if (selecting.$call$(elem).booleanValue()) {
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
                 return elem;
             }
         }
@@ -1434,11 +1435,12 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     public Element findLast(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {
         for (int i=size-1; i>=0; i--) {
             Element elem = unsafeItem(i);
-            if (selecting.$call$(elem).booleanValue()) {
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
                 return elem;
             }
         }
