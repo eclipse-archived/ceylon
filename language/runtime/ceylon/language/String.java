@@ -1515,21 +1515,30 @@ public final class String
     @Ignore
     public static Character find(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        if (value.isEmpty()) {
-            return null;
-        } else {
-            return instance(value).find(f);
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            Character ch = Character.instance(codePoint);
+            if(f.$call$(ch).booleanValue()) {
+                return ch;
+            }
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return null;
     }
 
     @Ignore
     public static Character findLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        if (value.isEmpty()) {
-            return null;
-        } else {
-            return instance(value).findLast(f);
+        Character result = null;
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            Character ch = Character.instance(codePoint);
+            if(f.$call$(ch).booleanValue()) {
+                result = ch;
+            }
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return result;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -1599,31 +1608,52 @@ public final class String
     public static <Result> java.lang.Object 
     reduce(@Ignore TypeDescriptor $reifiedResult, 
             java.lang.String value, Callable<? extends Result> f) {
-        if (value.isEmpty()) {
-            return null;
-        } else {
-            return instance(value).reduce($reifiedResult, f);
+        int initial = value.codePointAt(0);
+        java.lang.Object partial = Character.instance(initial);
+        for (int offset = java.lang.Character.charCount(initial); 
+                offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            partial = f.$call$(partial, Character.instance(codePoint));
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return partial;
+    }
+
+    @Ignore
+    public static java.lang.Object each(java.lang.String value, 
+            Callable<? extends java.lang.Object> f) {
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            f.$call$(Character.instance(codePoint));
+            offset += java.lang.Character.charCount(codePoint);
+        }
+        return null;
     }
 
     @Ignore
     public static boolean any(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        if (value.isEmpty()) {
-            return false;
-        } else {
-            return instance(value).any(f);
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            if (f.$call$(Character.instance(codePoint)).booleanValue()) {
+                return true;
+            }
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return false;
     }
 
     @Ignore
     public static boolean every(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        if (value.isEmpty()) {
-            return true;
-        } else {
-            return instance(value).every(f);
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            if(!f.$call$(Character.instance(codePoint)).booleanValue()) {
+                return false;
+            }
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return true;
     }
 
     @Ignore
@@ -1659,11 +1689,15 @@ public final class String
     @Ignore
     public static long count(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        if (value.isEmpty()) {
-            return 0;
-        } else {
-            return instance(value).count(f);
+        int count = 0;
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            if(f.$call$(Character.instance(codePoint)).booleanValue()) {
+                count++;
+            }
+            offset += java.lang.Character.charCount(codePoint);
         }
+        return count;
     }
 
     @Ignore

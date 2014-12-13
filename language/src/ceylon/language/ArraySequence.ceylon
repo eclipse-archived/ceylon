@@ -54,6 +54,8 @@ class ArraySequence<out Element>(array)
     
     clone() => ArraySequence(array.clone());
     
+    each(void step(Element element)) => array.each(step);
+    
     shared default actual 
     [Result+] collect<Result>
             (Result collecting(Element element)) {

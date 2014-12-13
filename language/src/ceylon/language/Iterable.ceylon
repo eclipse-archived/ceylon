@@ -267,6 +267,12 @@ shared interface Iterable<out Element, out Absent=Null>
             };
     };
     
+    shared default void each(void step(Element element)) {
+        for (element in this) {
+            step(element);
+        }
+    }
+    
     "Produces a stream containing the results of applying 
      the given [[mapping|collecting]] to the elements of 
      this stream.

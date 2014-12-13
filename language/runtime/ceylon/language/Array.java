@@ -1540,6 +1540,18 @@ public final class Array<Element>
         return TypeDescriptor.klass(Array.class, $reifiedElement);
     }
     
+    @Override
+    @TypeInfo(declaredVoid=true, value="ceylon.language::Anything")
+    public java.lang.Object each(
+            @Name("step")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+            Callable<? extends java.lang.Object> step) {
+        for (int i=0; i<size; i++) {
+            step.$call$(unsafeItem(i));
+        }
+        return null;
+    }
+    
     public void reverseInPlace() {
         if (array instanceof java.lang.Object[]) {
             for (int index=0; index<size/2; index++) {
