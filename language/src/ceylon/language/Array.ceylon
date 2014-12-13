@@ -87,7 +87,8 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} take(Integer taking);
     shared actual native {Element*} by(Integer step);
     
-    shared actual native void each(void step(Element element));
+    shared actual native 
+    void each(void step(Element element));
     
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 

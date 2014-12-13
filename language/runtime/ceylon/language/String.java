@@ -18,6 +18,8 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -1512,6 +1514,16 @@ public final class String
         return instance(value).sequence();
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+    public Character find(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return find(value,f);
+    }
+    
     @Ignore
     public static Character find(java.lang.String value, 
             Callable<? extends Boolean> f) {
@@ -1526,6 +1538,16 @@ public final class String
         return null;
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+    public Character findLast(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return findLast(value,f);
+    }
+    
     @Ignore
     public static Character findLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
@@ -1604,10 +1626,23 @@ public final class String
         return instance(value).scan($reifiedResult, ini);
     }
     
+    @Override
+    @TypeInfo("Result|ceylon.language::Character|ceylon.language::Null")
+    @TypeParameters(@TypeParameter("Result"))
+    public <Result> java.lang.Object 
+    reduce(@Ignore TypeDescriptor $reifiedResult, 
+            @Name("accumulating")
+            @FunctionalParameter("(partial,element)")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Character|Result,ceylon.language::Character|Result,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
+            Callable<? extends Result> f) {
+        return reduce($reifiedResult,value,f);
+    }
+    
     @Ignore
     public static <Result> java.lang.Object 
     reduce(@Ignore TypeDescriptor $reifiedResult, 
-            java.lang.String value, Callable<? extends Result> f) {
+            java.lang.String value, 
+            Callable<? extends Result> f) {
         int initial = value.codePointAt(0);
         java.lang.Object partial = Character.instance(initial);
         for (int offset = java.lang.Character.charCount(initial); 
@@ -1619,6 +1654,17 @@ public final class String
         return partial;
     }
 
+    @Override
+    @TypeInfo(declaredVoid=true, 
+              value="ceylon.language::Anything")
+    public java.lang.Object each(
+            @Name("step")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends java.lang.Object> step) {
+        return each(value,step);
+    }
+    
     @Ignore
     public static java.lang.Object each(java.lang.String value, 
             Callable<? extends java.lang.Object> f) {
@@ -1630,6 +1676,16 @@ public final class String
         return null;
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Boolean")
+    public boolean any(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return any(value,f);
+    }
+    
     @Ignore
     public static boolean any(java.lang.String value, 
             Callable<? extends Boolean> f) {
@@ -1643,6 +1699,16 @@ public final class String
         return false;
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Boolean")
+    public boolean every(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return every(value,f);
+    }
+    
     @Ignore
     public static boolean every(java.lang.String value, 
             Callable<? extends Boolean> f) {
@@ -1686,6 +1752,16 @@ public final class String
         return instance(value).by(step);
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Integer")
+    public long count(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return count(value,f);
+    }
+    
     @Ignore
     public static long count(java.lang.String value, 
             Callable<? extends Boolean> f) {

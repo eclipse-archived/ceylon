@@ -1375,7 +1375,8 @@ public final class Array<Element>
     }
 
     @Override
-    public long count(@Name("selecting")@FunctionalParameter("(element)") 
+    public long count(@Name("selecting")
+    @FunctionalParameter("(element)") 
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
@@ -1544,6 +1545,7 @@ public final class Array<Element>
     @TypeInfo(declaredVoid=true, value="ceylon.language::Anything")
     public java.lang.Object each(
             @Name("step")
+            @FunctionalParameter("(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
         for (int i=0; i<size; i++) {

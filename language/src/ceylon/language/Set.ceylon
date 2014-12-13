@@ -161,4 +161,7 @@ shared object emptySet
     take(Integer taking) => this;
     by(Integer step) => this;
     
+    shared actual 
+    void each(void step(Nothing element)) {}
+    
 }

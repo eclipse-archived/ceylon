@@ -179,4 +179,6 @@ shared serializable class Singleton<out Element>
             (Iterable<Other,OtherAbsent> other)
             given OtherAbsent satisfies Null
             => other.follow(element);
+    
+    each(void step(Element element)) => step(element);
 }

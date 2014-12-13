@@ -760,8 +760,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function every`)
     shared default 
     Boolean any(
-            "The predicate that at least one element 
-             must satisfy."
+            "The predicate that at least one element must 
+             satisfy."
             Boolean selecting(Element element)) {
         for (e in this) {
             if (selecting(e)) {
@@ -778,8 +778,7 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function any`)
     shared default 
     Boolean every(
-            "The predicate that all elements must 
-             satisfy."
+            "The predicate that all elements must satisfy."
             Boolean selecting(Element element)) {
         for (e in this) {
             if (!selecting(e)) {

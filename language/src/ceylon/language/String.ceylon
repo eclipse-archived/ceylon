@@ -423,4 +423,12 @@ shared native final class String(characters)
     shared actual native Boolean notSmallerThan(String other); 
     shared actual native Boolean notLargerThan(String other);
     
+    shared actual native void each(void step(Character element));
+    shared actual native Integer count(Boolean selecting(Character element));
+    shared actual native Boolean every(Boolean selecting(Character element));
+    shared actual native Boolean any(Boolean selecting(Character element));
+    shared actual native Result|Character|Null reduce<Result>
+            (Result accumulating(Result|Character partial, Character element));
+    shared actual native Character? find(Boolean selecting(Character elem));
+    shared actual native Character? findLast(Boolean selecting(Character elem));
 }

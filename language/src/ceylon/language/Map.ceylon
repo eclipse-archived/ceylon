@@ -320,4 +320,7 @@ shared object emptyMap
     take(Integer taking) => this;
     by(Integer step) => this;
     
+    shared actual 
+    void each(void step(Nothing->Nothing element)) {}
+    
 }

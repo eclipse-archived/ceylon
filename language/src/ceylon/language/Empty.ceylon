@@ -244,6 +244,9 @@ shared interface Empty of e
     shared actual 
     [[],[]] slice(Integer index) => [this, this];
     
+    shared actual 
+    void each(void step(Nothing element)) {}
+    
 }
 
 "A sequence with no elements, abbreviated `[]`. The unique 
