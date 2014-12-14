@@ -10,7 +10,7 @@ void destructuring([Integer,Integer, String] tuple, String->Float entry) {
     value name->quantity = entry;
     String n = name;
     Float q = quantity;
-    value @error Integer name_->Float quantity_ = entry;   
+    value @error Integer name_->Float quantity_ = entry;
 }
 
 void variadicDestructuring([String, String, String*] strings, 
@@ -74,4 +74,10 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
         String key = k;
         Object item = v;
     }
+    assert (exists [@type:"Float" float,@type:"Integer" int] = maybePair, 
+            exists @type:"String" key->@type:"Object" item = maybeEntry);
+    Float float_ = float;
+    Integer int_ = int;
+    String key_ = key;
+    Object item_ = item;
 }
