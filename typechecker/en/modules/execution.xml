@@ -588,7 +588,7 @@ String result = middleObject.string;</programlisting>
             or current instance is evaluated, an <literal>InitializationError</literal>
             is thrown.</para>
             
-            <para>Lifewise, if a non-<literal>variable</literal> <literal>late</literal> 
+            <para>Likewise, if a non-<literal>variable</literal> <literal>late</literal> 
             reference which is already initialized in the current frame or current instance
             is assigned, an <literal>InitializationError</literal> is thrown.</para>
             
