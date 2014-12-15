@@ -1,3 +1,10 @@
+"Simple class to test Iterable.each (and refined implementations)"
+shared class TestEach() {
+  variable Boolean flag=false;
+  shared void set() { flag=true; }
+  shared Boolean ok => flag;
+}
+
 @test
 shared void testIterables() {
     value s1 = { 1, 2, 3, 4, 5 };
@@ -347,6 +354,12 @@ shared void testIterables() {
     check(zipEntries(1..3, 3..1).sequence()==[1->3,2->2,3->1], "zipEntries");
     check(unzipEntries(zipEntries(1..3, 3..1)).spread(Iterable<Integer>.sequence)().sequence()==[[1,2,3],[3,2,1]], "unzipEntries");
 
+    value te1=TestEach();
+    value te2=TestEach();
+    value te3=TestEach();
+    value testEach={te1,te2,te3};
+    testEach.each((e)=>e.set());
+    check(testEach.every((e)=>e.ok), "Iterable.each");
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"
     //String oldString({Anything*} self) {

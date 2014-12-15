@@ -527,5 +527,25 @@ shared void strings() {
     check("abcd".partition(2).sequence()==["ab".sequence(), "cd".sequence()], "string partition");
     check("".partition(1).empty, "empty string partition");
     check(String("hello".exceptLast)=="hell", "string exceptLast");
-    
+
+    //refined methods
+    check("Hello".count((e)=>e.lowercase)==4, "String.count");
+    object countEach {
+        shared variable Integer counter=0;
+    }
+    "Hello".each((e)=>countEach.counter++);
+    check(countEach.counter==5, "String.each");
+    check("helLo".any((e)=>e.uppercase), "String.any 1");
+    check(!"hello".any((e)=>e.uppercase), "String.any 2");
+    check("hello".every((e)=>e.lowercase), "String.every 1");
+    check(!"Hello".every((e)=>e.uppercase), "String.every 2");
+    check(if (exists trm1="Hello".find((e)=>e=='l')) then trm1=='l' else false, "String.find");
+    check(if (exists trm2="Hello".findLast((e)=>e=='e')) then trm2=='e' else false, "String.findLast");
+    check(if (exists trm3="dddd".reduce((Character|Integer p, Character c) {
+        if (is Character p) {
+          return p.integer+c.integer;
+        } else {
+          return p+c.integer;
+        }
+    })) then trm3==400 else false, "String.reduce");
 }

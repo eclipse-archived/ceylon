@@ -167,4 +167,16 @@ shared void testArrays() {
     check(Array { 4,1,3,2 }.sort(byIncreasing((Integer e) => e))==[1,2,3,4], "integer array sort");
     check(Array {"world", "hello", "" }.sort(byIncreasing((String e) => e))==["", "hello", "world"], "string array sort");
     check(Array {"Hello", null, "World"}.coalesced.sequence() == {"Hello", "World"}.sequence(), "Array.coalesced");
+
+    //refined methods
+    check(if (exists trm1=Array{1,2,3,4}.find((e)=>e>2)) then trm1==3 else false, "Array.find");
+    check(if (exists trm2=Array{1,2,3,4}.findLast((e)=>e<3)) then trm2==2 else false, "Array.findLast");
+    check(Array{1,2,3,4}.any((e)=>e>2), "Array.any 1");
+    check(!Array{1,2,3,4}.any((e)=>e<1), "Array.any 2");
+    check(Array{1,2,3,4}.every((e)=>0<e<5), "Array.every 1");
+    check(!Array{1,2,3,4}.every((e)=>e<4), "Array.every 2");
+    check(if (exists trm3=Array{1,2,3,4}.reduce((Integer e,Integer p)=>e+p)) then trm3==10 else false, "Array.reduce");
+    value testEach=Array{TestEach(),TestEach(),TestEach()};
+    testEach.each((e)=>e.set());
+    check(testEach.every((e)=>e.ok), "Array.each");
 }
