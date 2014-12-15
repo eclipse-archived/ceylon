@@ -1,21 +1,21 @@
-function $JsCallable(callable,parms,targs) {
-    if (callable.getT$all === undefined) {
-        callable.getT$all=Callable.getT$all;
+function $JsCallable(f$,parms,targs) {
+    if (f$.getT$all === undefined) {
+        f$.getT$all=Callable.getT$all;
     }
-    var set_meta = getrtmm$$(callable) === undefined;
+    var set_meta = getrtmm$$(f$) === undefined;
     if (set_meta) {
-        callable.$crtmm$={ps:[],mod:$CCMM$,d:['$','Callable']};
+        f$.$crtmm$={ps:[],mod:$CCMM$,d:['$','Callable']};
         if (parms !== undefined) {
-            callable.$crtmm$.ps=parms;
+            f$.$crtmm$.ps=parms;
         }
     }
-    if (targs !== undefined && callable.$$targs$$ === undefined) {
-        callable.$$targs$$=targs;
+    if (targs !== undefined && f$.$$targs$$ === undefined) {
+        f$.$$targs$$=targs;
         if (set_meta) {
-            callable.$crtmm$.$t=targs.Return$Callable;
+            f$.$crtmm$.$t=targs.Return$Callable;
         }
     }
-    return callable;
+    return f$;
 }
 initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
 
