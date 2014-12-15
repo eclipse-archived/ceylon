@@ -747,25 +747,25 @@ public class GenerateJsVisitor extends Visitor
     void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
             com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
         final String privname = names.name(p) + "_";
-        defineAttribute(names.self(d), names.name(p.getModel()));
+        final MethodOrValue pdec = p.getModel();
+        defineAttribute(names.self(d), names.name(pdec));
         out("{");
-        if (p.getModel().isLate()) {
+        if (pdec.isLate()) {
             generateUnitializedAttributeReadCheck("this."+privname, names.name(p));
         }
         out("return this.", privname, ";}");
-        if (p.getModel().isVariable() || p.getModel().isLate()) {
+        if (pdec.isVariable() || pdec.isLate()) {
             final String param = names.createTempVariable();
             out(",function(", param, "){");
-            if (p.getModel().isLate() && !p.getModel().isVariable()) {
-                generateImmutableAttributeReassignmentCheck("this."+privname, names.name(p));
-            }
+            //Because of this one case, we need to pass 3 args to this method
+            generateImmutableAttributeReassignmentCheck(pdec, "this."+privname, names.name(p));
             out("return this.", privname,
                     "=", param, ";}");
         } else {
             out(",undefined");
         }
         out(",");
-        TypeUtils.encodeForRuntime(node, p.getModel(), this);
+        TypeUtils.encodeForRuntime(node, pdec, this);
         out(")");
         endLine(true);
     }
@@ -1378,9 +1378,11 @@ public class GenerateJsVisitor extends Visitor
         out("if(", privname, "===undefined)throw ", getClAlias(),
                 "InitializationError('Attempt to read unitialized attribute «", pubname, "»');");
     }
-    void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
-        out("if(", privname, "!==undefined)throw ", getClAlias(),
-                "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
+    void generateImmutableAttributeReassignmentCheck(MethodOrValue decl, String privname, String pubname) {
+        if (decl.isLate() && !decl.isVariable()) {
+            out("if(", privname, "!==undefined)throw ", getClAlias(),
+                    "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
+        }
     }
 
     @Override
@@ -1975,25 +1977,23 @@ public class GenerateJsVisitor extends Visitor
                 //since #451 we now generate an attribute here
                 if (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual()) {
                     Value vdec = (Value)bmeDecl;
-                    final String atname = bmeDecl.isShared() ? names.name(bmeDecl)+"_" : names.privateName(bmeDecl);
-                    defineAttribute(names.self(outer), names.name(bmeDecl));
+                    final String atname = vdec.isShared() ? names.name(vdec)+"_" : names.privateName(vdec);
+                    defineAttribute(names.self(outer), names.name(vdec));
                     out("{");
                     if (vdec.isLate()) {
-                        generateUnitializedAttributeReadCheck("this."+atname, names.name(bmeDecl));
+                        generateUnitializedAttributeReadCheck("this."+atname, names.name(vdec));
                     }
                     out("return this.", atname, ";}");
                     if (vdec.isVariable() || vdec.isLate()) {
                         final String par = getNames().createTempVariable();
                         out(",function(", par, "){");
-                        if (vdec.isLate()) {
-                            generateImmutableAttributeReassignmentCheck("this."+atname, names.name(bmeDecl));
-                        }
+                        generateImmutableAttributeReassignmentCheck(vdec, "this."+atname, names.name(vdec));
                         out("return this.", atname, "=", par, ";}");
                     } else {
                         out(",undefined");
                     }
                     out(",");
-                    TypeUtils.encodeForRuntime(expr, bmeDecl, this);
+                    TypeUtils.encodeForRuntime(expr, vdec, this);
                     out(")");
                     endLine(true);
                 }

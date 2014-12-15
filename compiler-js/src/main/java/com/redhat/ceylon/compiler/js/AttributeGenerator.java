@@ -121,9 +121,7 @@ public class AttributeGenerator {
                     if (decl.isVariable() || isLate) {
                         final String par = gen.getNames().createTempVariable();
                         gen.out(",function(", par, "){");
-                        if (isLate && !decl.isVariable()) {
-                            gen.generateImmutableAttributeReassignmentCheck(varName, gen.getNames().name(decl));
-                        }
+                        gen.generateImmutableAttributeReassignmentCheck(decl, varName, gen.getNames().name(decl));
                         gen.out("return ", varName, "=", par, ";}");
                     } else {
                         gen.out(",undefined");
@@ -160,9 +158,7 @@ public class AttributeGenerator {
         final String varName = gen.getNames().name(d);
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
-        if (d.isLate()) {
-            gen.generateImmutableAttributeReassignmentCheck(varName, gen.getNames().name(d));
-        }
+        gen.generateImmutableAttributeReassignmentCheck(d, varName, gen.getNames().name(d));
         gen.out("return ", varName, "=", paramVarName, ";}");
         gen.endLine(true);
         gen.shareSetter(d);
@@ -170,7 +166,7 @@ public class AttributeGenerator {
 
     static void addGetterAndSetterToPrototype(final TypeDeclaration outer, final Tree.AttributeDeclaration that,
             final GenerateJsVisitor gen) {
-        Value d = that.getDeclarationModel();
+        final Value d = that.getDeclarationModel();
         if (!gen.opts.isOptimize()||d.isToplevel()||d.getTypeDeclaration()==null) return;
         gen.comment(that);
         final String atname = d.isShared() ? gen.getNames().name(d) + "_" :
@@ -200,9 +196,7 @@ public class AttributeGenerator {
                     setterDefined = true;
                     final String par = gen.getNames().createTempVariable();
                     gen.out("function(", par, "){");
-                    if (d.isLate()) {
-                        gen.generateImmutableAttributeReassignmentCheck("this."+atname, gen.getNames().name(d));
-                    }
+                    gen.generateImmutableAttributeReassignmentCheck(d, "this."+atname, gen.getNames().name(d));
                     gen.out("return this.", atname, "=", par, ";}");
                 } else if (!gen.stitchNative(setterDef.getDeclarationModel(), that)) {
                     gen.out("function(", gen.getNames().name(
@@ -227,9 +221,8 @@ public class AttributeGenerator {
             if (d.isParameter()) {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
-            final boolean isLate = d.isLate();
             if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
-                        || param != null || isLate) {
+                        || param != null || d.isLate()) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
@@ -270,16 +263,14 @@ public class AttributeGenerator {
                     final String privname = param == null ? gen.getNames().privateName(d) : gen.getNames().name(param)+"_";
                     gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
                     gen.out("{");
-                    if (isLate) {
+                    if (d.isLate()) {
                         gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d));
                     }
                     gen.out("return this.", privname, ";}");
-                    if (d.isVariable() || isLate) {
+                    if (d.isVariable() || d.isLate()) {
                         final String pname = gen.getNames().createTempVariable();
                         gen.out(",function(", pname, "){");
-                        if (isLate && !d.isVariable()) {
-                            gen.generateImmutableAttributeReassignmentCheck("this."+privname, gen.getNames().name(d));
-                        }
+                        gen.generateImmutableAttributeReassignmentCheck(d, "this."+privname, gen.getNames().name(d));
                         gen.out("return this.", privname,
                                 "=", pname, ";}");
                     } else {
