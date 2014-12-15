@@ -279,7 +279,7 @@ public class LiteralVisitor extends Visitor {
                     catch (IllegalArgumentException iae) {
                         node.addError("illegal unicode escape sequence: '" + 
                                 hex + "' is not a valid Unicode code point");
-                        continue;
+                        chars = toChars(0);
                     }
                     result.replace(m.start(), m.end(), new String(chars));
                 }
