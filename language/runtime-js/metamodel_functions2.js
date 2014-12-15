@@ -19,6 +19,9 @@ function retpl$(t) { //receives {t:'T',l:[...]}
   }
   return r;
 }
+//Validate parameters:
+//ps are the params defined in the metamodel
+//t is the tuple with parameters to pass
 function validate$params(ps,t,msg,nothrow) {
   if (t.t===Nothing)return true;
   if (!ps || ps.length==0) {
@@ -26,12 +29,17 @@ function validate$params(ps,t,msg,nothrow) {
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter
-      for (var i=0;i<ps.length;i++)
-        if (!extendsType(t.l[i],ps[i].$t))throw IncompatibleTypeException$meta$model(msg);
+      for (var i=0;i<ps.length;i++) {
+        if (!extendsType(t.l[i],ps[i].$t)) {
+          if (nothrow)return false;else throw IncompatibleTypeException$meta$model(msg);
+        }
+      }
       return true;
     }
+  } else if (t.t===Empty) {
+    if (!ps || ps.length===0)return true;
   } else { //it's already a tuple, navigate it
-    console.log("TODO!!!! validate$params with Tuple type");
+    console.trace("TODO!!!! validate$params with Tuple type");
   }
   if (nothrow)return false;
   throw IncompatibleTypeException$meta$model(msg);
