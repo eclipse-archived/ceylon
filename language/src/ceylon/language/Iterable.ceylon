@@ -1152,8 +1152,10 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 0, 1, 2, 3 }`.
      
-     Note that the expression `stream.follow(head)` may be 
-     written as:
+     Note that the expression `stream.follow(head)` eagerly 
+     evaluates `head`, and therefore is not precisely the 
+     same as this enumeration expression, where `head` is
+     evaluated lazily:
      
          { head, *stream }"
     see (`function chain`)
