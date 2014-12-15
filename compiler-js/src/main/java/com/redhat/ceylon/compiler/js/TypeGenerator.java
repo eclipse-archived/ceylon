@@ -711,7 +711,7 @@ public class TypeGenerator {
             final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
         Constructor d = that.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
-        gen.out(fullName, "=function");
+        gen.out("function ", fullName);
         final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
         final String me = gen.getNames().self(container);
         gen.beginBlock();
