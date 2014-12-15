@@ -80,4 +80,14 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
     Integer int_ = int;
     String key_ = key;
     Object item_ = item;
+    while (exists [x_, i_] = maybePair, 
+           exists s_->o_ = maybeEntry, 
+           nonempty [f_,*r_] = names) {
+        Float x__ = x_;
+        Integer i__ = i_;
+        String s__ = s_;
+        Object o__ = o_;
+        String f__ = f_;
+        String[] r__ = r_;
+    }
 }
