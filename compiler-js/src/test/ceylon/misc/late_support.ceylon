@@ -11,6 +11,11 @@ class LateTestParent(children) {
     }
 }
 
+class VarLate() {
+  shared late VarLate v1;
+  shared late variable VarLate v2;
+}
+
 void testLate() {
     value kids = [LateTestChild(), LateTestChild()];
     LateTestParent(*kids);
@@ -29,6 +34,16 @@ void testLate() {
         check(true);
     } catch (Exception ex) {
         fail("wrong exception thrown for late attribute");
+    }
+    //#467
+    value vl=VarLate();
+    vl.v1=vl;
+    vl.v2=vl;
+    try {
+        vl.v2=VarLate();
+        check(vl.v2.hash!=vl.hash, "late variable reassign");
+    } catch (InitializationError ex) {
+        fail("late variables should be reassignable");
     }
 }
 
