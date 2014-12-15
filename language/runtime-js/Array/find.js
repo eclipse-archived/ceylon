@@ -1,5 +1,6 @@
 function(f){
   for (var i=0;i<this.length;i++){
-    f(this[i]);
+    if (f(this[i]))return this[i];
   }
+  return null;
 }
