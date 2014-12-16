@@ -3992,11 +3992,16 @@ public class StatementTransformer extends AbstractTransformer {
         if (pat instanceof Tree.TuplePattern) {
             // For a Tuple we get the value of each of its items and assign it to a local value
             int idx = 0;
-            JCExpression getExpr = makeQualIdent(varAccessExpr, "get");
             Tree.TuplePattern tuple = (Tree.TuplePattern)pat;
             for (Tree.Pattern p : tuple.getPatterns()) {
-                JCExpression idxExpr = boxType(makeInteger(idx++), typeFact().getIntegerDeclaration().getType());
-                JCExpression fullGetExpr = make().Apply(null, getExpr, List.of(idxExpr));
+                JCExpression idxExpr = makeInteger(idx++);
+                JCExpression tupleAccessExpr;
+                if (isVariadicVariable(p)) {
+                    tupleAccessExpr = makeQualIdent(varAccessExpr, "skip");
+                } else {
+                    tupleAccessExpr = makeQualIdent(varAccessExpr, "getFromFirst");
+                }
+                JCExpression fullGetExpr = make().Apply(null, tupleAccessExpr, List.of(idxExpr));
                 result = result.appendList(transformPattern(p, fullGetExpr));
             }
         } else if (pat instanceof Tree.KeyValuePattern) {
@@ -4014,6 +4019,14 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    private boolean isVariadicVariable(Tree.Pattern pat) {
+        if (pat instanceof Tree.VariablePattern) {
+            Tree.VariablePattern var = (Tree.VariablePattern)pat;
+            return var.getVariable().getType() instanceof Tree.SequencedType;
+        }
+        return false;
     }
 
     private JCVariableDecl transformVariable(Variable var, JCExpression initExpr) {
