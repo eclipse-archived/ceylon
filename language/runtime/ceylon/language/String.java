@@ -1663,7 +1663,7 @@ public final class String
     public java.lang.Object each(
             @Name("step")
             @FunctionalParameter("!(element)")
-            @TypeInfo(declaredVoid=true, value="ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
         return each(value,step);
     }
