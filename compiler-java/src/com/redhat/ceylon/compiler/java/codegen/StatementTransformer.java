@@ -2266,70 +2266,35 @@ public class StatementTransformer extends AbstractTransformer {
             Naming.SyntheticName elem_name = naming.alias("elem");
             
             Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
-            Tree.Variable variable;
-            Tree.Variable valueVariable;
+            List<JCStatement> itemDecls = List.nil();
+            final Naming.SyntheticName iteratorVarName;
             if (forIterator instanceof Tree.ValueIterator) {
-                variable = ((Tree.ValueIterator) forIterator).getVariable();
-                valueVariable = null;
+                Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
+                JCVariableDecl varExpr = transformVariable(variable, elem_name.makeIdent());
+                itemDecls = itemDecls.append(varExpr);
+                iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pat = patIter.getPattern();
-                // FIXME DESCTRUCTURE
-                variable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
-                valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
+                List<JCVariableDecl> varsExpr = transformPattern(pat, elem_name.makeIdent());
+                for (JCVariableDecl v : varsExpr) {
+                    itemDecls = itemDecls.append(v);
+                }
+                iteratorVarName = elem_name.suffixedBy(Suffix.$iterator$);
             } else {
                 throw BugException.unhandledNodeCase(forIterator);
             }
             
-            final Naming.SyntheticName loopVarName = naming.synthetic(variable.getDeclarationModel());
             Tree.Expression specifierExpression = forIterator.getSpecifierExpression().getExpression();
-            ProducedType sequenceElementType;
-            if(valueVariable == null)
-                sequenceElementType = variable.getType().getTypeModel();
-            else{
-                // Entry<V1,V2>
-                sequenceElementType = typeFact().getEntryType(variable.getType().getTypeModel(), 
-                        valueVariable.getType().getTypeModel());
-            }
+            ProducedType sequenceElementType = typeFact().getIteratedType(specifierExpression.getTypeModel());
             ProducedType sequenceType = specifierExpression.getTypeModel().getSupertype(typeFact().getIterableDeclaration());
             ProducedType expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
                     ? typeFact().getNonemptyIterableType(sequenceElementType)
                     : typeFact().getIterableType(sequenceElementType);
-            JCExpression castElem = at(stmt).TypeCast(makeJavaType(sequenceElementType, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
-            List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
             // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
             JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, expectedIterableType);
             
-            // final U n = $elem$X;
-            // or
-            // final U n = $elem$X.getKey();
-            JCExpression loopVarInit;
-            ProducedType loopVarType;
-            if (valueVariable == null) {
-                loopVarType = sequenceElementType;
-                loopVarInit = castElem;
-            } else {
-                loopVarType = variable.getDeclarationModel().getType();
-                loopVarInit = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("key")), List.<JCExpression> nil());
-            }
-            
-            JCVariableDecl itemOrKeyDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loopVarName.asName(), makeJavaType(loopVarType), 
-                    expressionGen().applyErasureAndBoxing(loopVarInit, loopVarType, isTurnedToRaw(sequenceElementType), true, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel()), loopVarType, 0));
-            final SyntheticName iteratorVarName = loopVarName.suffixedBy(Suffix.$iterator$).alias();
-            List<JCStatement> itemDecls = List.<JCStatement> of(itemOrKeyDecl);
-
-            if (valueVariable != null) {
-                // final V n = $elem$X.getElement();
-                ProducedType valueVarType = valueVariable.getDeclarationModel().getType();
-                JCExpression valueVarTypeExpr = makeJavaType(valueVarType);
-                JCExpression valueVarInitExpr = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("item")), List.<JCExpression> nil());
-                String valueVarName = valueVariable.getIdentifier().getText();
-                JCVariableDecl valueDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(valueVarName), valueVarTypeExpr, 
-                        expressionGen().applyErasureAndBoxing(valueVarInitExpr, valueVarType, isTurnedToRaw(sequenceElementType), true, CodegenUtil.getBoxingStrategy(valueVariable.getDeclarationModel()), valueVarType, 0));
-                itemDecls = itemDecls.append(valueDecl);
-            }
-
             Tree.ControlClause prevControlClause = currentForClause;
             currentForClause = stmt.getForClause();
             List<JCStatement> stmts = transformBlock(stmt.getForClause().getBlock());
