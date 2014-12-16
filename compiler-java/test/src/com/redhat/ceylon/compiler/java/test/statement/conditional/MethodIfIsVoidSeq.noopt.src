@@ -13,7 +13,7 @@ final class methodIfIsAnythingSeq_ {
             .java.lang.Object elem$3;
             .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = args$2.iterator();
             loop_0: while (!((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-                final .java.lang.Object arg = (.java.lang.Object)elem$3;
+                final .java.lang.Object arg = elem$3;
             }
         }
     }

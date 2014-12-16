@@ -147,7 +147,7 @@ final class erasureCasting_ {
         .java.lang.Object elem$13;
         .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable)erasedSequence).iterator();
         loop_0: while (!((elem$13 = erasedValue$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
-            final .java.lang.Object erasedValue = (.java.lang.Object)elem$13;
+            final .java.lang.Object erasedValue = elem$13;
         }
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let

@@ -120,7 +120,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$17 = isTuple$19 ? null : iterable$18.iterator();
         loop_2: while (isTuple$19 ? i$21 < length$22 : !((elem$16 = o$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$19) elem$16 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$20, i$21++);
-            final .java.lang.Object o = (.java.lang.Object)elem$16;
+            final .java.lang.Object o = elem$16;
         }
     }
     

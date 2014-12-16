@@ -26,7 +26,7 @@ class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$3 = isTuple$7 || isArray$6 ? null : iterable$5.iterator();
         loop_0: while (isTuple$7 || isArray$6 ? i$9 < length$10 : !((elem$2 = arg$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$7 || isArray$6) elem$2 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$8, i$9++);
-            final .java.lang.Object arg = (.java.lang.Object)elem$2;
+            final .java.lang.Object arg = elem$2;
             s$0 = ((.ceylon.language.String)arg).toString();
             .java.lang.String s$4 = s$0;
             doforelse$1 = false;

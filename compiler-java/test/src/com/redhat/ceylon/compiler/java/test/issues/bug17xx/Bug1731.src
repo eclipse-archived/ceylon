@@ -23,7 +23,7 @@ public final class bug1731_ {
         .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$1 = isTuple$6 ? null : iterable$5.iterator();
         loop_0: while (isTuple$6 ? i$8 < length$9 : !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$6) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
-            final .java.lang.Object val = (.java.lang.Object)elem$0;
+            final .java.lang.Object val = elem$0;
             {
                 .java.lang.Object sel$2 = val;
                 if (sel$2 instanceof .ceylon.language.Integer) {

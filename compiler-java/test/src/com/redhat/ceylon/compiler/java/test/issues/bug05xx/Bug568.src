@@ -10,22 +10,22 @@ final class bug568_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = childPaths;
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$2$iterable$ = childPaths;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
-                            .java.lang.Object spread$1$element$;
-                            if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$1$element$ = .ceylon.language.String.instance(((.ceylon.language.Integer)spread$1$element$).toString());
+                            .java.lang.Object spread$2$element$;
+                            if (!((spread$2$element$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$2$element$ = .ceylon.language.String.instance(((.ceylon.language.Integer)spread$2$element$).toString());
                             }
-                            return spread$1$element$;
+                            return spread$2$element$;
                         }
                     };
                 }
@@ -44,8 +44,8 @@ final class bug568_ {
             array$5 = null;
             length$7 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
-        loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$1 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }

@@ -43,7 +43,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         .java.lang.Object elem$3;
         .ceylon.language.Iterator<? extends .java.lang.Object> i$iterator$$4 = x1.iterator();
         loop_0: while (!((elem$3 = i$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-            final .java.lang.Object i = (.java.lang.Object)elem$3;
+            final .java.lang.Object i = elem$3;
             .java.lang.Object i$6;
             if ((i$6 = i) instanceof .ceylon.language.Integer) {
                 final long i$8 = ((.ceylon.language.Integer)i$6).longValue();

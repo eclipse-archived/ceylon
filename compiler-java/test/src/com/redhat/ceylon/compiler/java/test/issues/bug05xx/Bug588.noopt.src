@@ -10,7 +10,7 @@ final class bug588_ {
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> c$iterator$$1 = comparables.iterator();
         loop_0: while (!((elem$0 = c$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)elem$0;
+            final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)(.ceylon.language.Comparable)elem$0;
             .ceylon.language.print_.print((.ceylon.language.String)(.ceylon.language.Comparable)c);
         }
     }

@@ -13,7 +13,7 @@ public final class bug1535_ {
             .java.lang.Object elem$21;
             .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = floats$20.iterator();
             loop_0: while (!((elem$21 = val$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
-                final .java.lang.Object val = (.java.lang.Object)elem$21;
+                final .java.lang.Object val = elem$21;
                 (
                     let
                     {
@@ -39,7 +39,7 @@ public final class bug1535_ {
                 .java.lang.Object elem$14;
                 .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ints$13.iterator();
                 loop_1: while (!((elem$14 = val$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
-                    final .java.lang.Object val = (.java.lang.Object)elem$14;
+                    final .java.lang.Object val = elem$14;
                     (
                         let
                         {

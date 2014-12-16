@@ -27,7 +27,7 @@ final class methodIfIsAnythingSeq_ {
             .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isTuple$6 ? null : iterable$5.iterator();
             loop_0: while (isTuple$6 ? i$8 < length$9 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
                 if (isTuple$6) elem$3 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
-                final .java.lang.Object arg = (.java.lang.Object)elem$3;
+                final .java.lang.Object arg = elem$3;
             }
         }
     }
