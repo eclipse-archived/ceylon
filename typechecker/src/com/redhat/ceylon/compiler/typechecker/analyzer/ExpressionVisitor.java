@@ -874,22 +874,21 @@ public class ExpressionVisitor extends Visitor {
                                 for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
                                     ProducedType at = argTypes.get(i);
                                     Tree.Parameter param = params.get(i);
-                                    ProducedType t = param.getParameterModel().getModel()
+                                    Parameter model = param.getParameterModel();
+                                    ProducedType t = model.getModel()
                                             .getTypedReference()
                                             .getFullType();
-                                    String paramName = param.getParameterModel().getName();
                                     checkAssignable(at, t, param, 
-                                            "type of parameter '" + paramName + 
+                                            "type of parameter '" + model.getName() + 
                                             "' must be a supertype of parameter type in declaration of '" + 
                                             refName + "'");
                                 }
                                 if (!params.isEmpty()) {
                                     Tree.Parameter lastParam = 
                                             params.get(params.size()-1);
-                                    boolean refSequenced = 
-                                            lastParam.getParameterModel().isSequenced();
-                                    boolean refAtLeastOne = 
-                                            lastParam.getParameterModel().isAtLeastOne();
+                                    Parameter model = lastParam.getParameterModel();
+                                    boolean refSequenced = model.isSequenced();
+                                    boolean refAtLeastOne = model.isAtLeastOne();
                                     if (refSequenced && !variadic) {
                                         lastParam.addError("parameter list in declaration of '" + 
                                                 refName + "' does not have a variadic parameter");
@@ -920,14 +919,18 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
 
-        Tree.SpecifierExpression rhs = that.getSpecifierExpression();
-        Tree.Term lhs = that.getBaseMemberExpression();
+        Tree.SpecifierExpression rhs = 
+                that.getSpecifierExpression();
+        Tree.Term lhs = 
+                that.getBaseMemberExpression();
 
         boolean hasParams = false;
         Tree.Term me = lhs;
         while (me instanceof Tree.ParameterizedExpression) {
             hasParams = true;
-            me = ((Tree.ParameterizedExpression) me).getPrimary();
+            Tree.ParameterizedExpression pe = 
+                    (Tree.ParameterizedExpression) me;
+            me = pe.getPrimary();
         }
         if (!(me instanceof Tree.StaticMemberOrTypeExpression)) {
             me.addError("illegal specification statement: only a function or value may be specified");
@@ -937,6 +940,10 @@ public class ExpressionVisitor extends Visitor {
         assign(me);
         
         Declaration d = that.getDeclaration();
+        if (d==null &&
+                me instanceof Tree.MemberOrTypeExpression) {
+            d = ((Tree.MemberOrTypeExpression) me).getDeclaration();
+        }
         if (d instanceof TypedDeclaration) {
             if (that.getRefinement()) {
                 // interpret this specification as a 
@@ -963,6 +970,10 @@ public class ExpressionVisitor extends Visitor {
                     }
                     me.addError(desc + " already specified: '" + 
                                 d.getName(unit) + "'");
+                }
+                else if (d instanceof Value && ((Value) d).isInferred()) {
+                    me.addError("value is not a variable: '" + 
+                            d.getName() + "'");
                 }
                 else if (!mv.isVariable() && !mv.isLate()) {
                     String desc;
@@ -1037,8 +1048,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType eraseDefaultedParameters(ProducedType t) {
-        ProducedType ct = 
-                t.getSupertype(unit.getCallableDeclaration());
+        Interface cd = unit.getCallableDeclaration();
+        ProducedType ct = t.getSupertype(cd);
         if (ct!=null) {
             List<ProducedType> typeArgs = 
                     ct.getTypeArgumentList();
@@ -1057,8 +1068,10 @@ public class ExpressionVisitor extends Visitor {
                     argTypes.set(argTypes.size()-1, 
                             unit.getIteratedType(spt));
                 }
-                return producedType(unit.getCallableDeclaration(), rt, 
-                        unit.getTupleType(argTypes, variadic, atLeastOne, -1));
+                ProducedType tt = 
+                        unit.getTupleType(argTypes, 
+                                variadic, atLeastOne, -1);
+                return producedType(cd, rt, tt);
             }
         }
         return t;
@@ -1077,7 +1090,8 @@ public class ExpressionVisitor extends Visitor {
         Value value = (Value) that.getDeclaration();
         ClassOrInterface ci = 
                 (ClassOrInterface) value.getContainer();
-        Declaration root = refinedValue.getRefinedDeclaration();
+        Declaration root = 
+                refinedValue.getRefinedDeclaration();
         List<Declaration> interveningRefinements = 
                 getInterveningRefinements(value.getName(), 
                         null, root, ci, 
@@ -2537,6 +2551,7 @@ public class ExpressionVisitor extends Visitor {
                         model.setUnit(unit);
                         model.setType(t);
                         model.setName(parameter.getName());
+                        model.setInferred(true);
                         parameter.setModel(model);
                         model.setInitializerParameter(parameter);
                         Method fun = anon.getDeclarationModel();
@@ -4619,6 +4634,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec = smte.getDeclaration();
             if (dec!=null && 
                     (!isEffectivelyBaseMemberExpression(smte) ||
+                     (dec instanceof Value && ((Value) dec).isInferred()) ||
                      !unit.equals(dec.getUnit()))) { //Note: other cases handled in SpecificationVisitor
                 if (dec instanceof Value) {
                     Value value = (Value) dec;
