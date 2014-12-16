@@ -107,9 +107,23 @@ public class TypeUtils {
             gen.out(gen.getClAlias(), "Anything");
         } else {
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
+            boolean _init = !imported && pt.getDeclaration().isDynamic();
+            if (_init && !pt.getDeclaration().isToplevel()) {
+                Declaration dynintc = Util.getContainingClassOrInterface(node.getScope());
+                if (dynintc == null || dynintc instanceof Scope==false ||
+                        !Util.contains((Scope)dynintc, pt.getDeclaration())) {
+                    _init=false;
+                }
+            }
+            if (_init) {
+                gen.out("$init$");
+            }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
                 gen.out(gen.getNames().name(t));
+            }
+            if (_init) {
+                gen.out("()");
             }
         }
     }
