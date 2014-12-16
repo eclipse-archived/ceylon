@@ -11,7 +11,9 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class ValueTypeTest {
 
@@ -99,11 +101,14 @@ public class ValueTypeTest {
     private Method findStaticCompanionMethod(Class<?> clazz, Method classMethod) {
         Class<?>[] instancePTs = classMethod.getParameterTypes();
         Annotation[][] instanceAnnos = classMethod.getParameterAnnotations();
+        TypeParameters tps = classMethod.getAnnotation(TypeParameters.class);
+        int tpsCount = (tps != null) ? tps.value().length : 0;
         Class<?>[] staticPTs = new Class<?>[instancePTs.length + 1];
-        staticPTs[0] = getUnboxedType(clazz, clazz.getAnnotation(TypeInfo.class));
+        staticPTs[tpsCount] = getUnboxedType(clazz, clazz.getAnnotation(TypeInfo.class));
         for (int i = 0; i < instancePTs.length; i++) {
             TypeInfo typeInfo = findAnnotation(instanceAnnos[i], TypeInfo.class);
-            staticPTs[i + 1] = getUnboxedType(instancePTs[i], typeInfo);
+            int idx = (i < tpsCount) ? i : i + 1;
+            staticPTs[idx] = getUnboxedType(instancePTs[i], typeInfo);
         }
         try {
             return clazz.getMethod(classMethod.getName(), staticPTs);
