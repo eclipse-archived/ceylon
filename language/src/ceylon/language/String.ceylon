@@ -167,7 +167,7 @@ shared native final class String(characters)
     shared actual native String trim(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character elem));
+            Boolean trimming(Character element));
     
     "A string containing the characters of this string, 
      after discarding the characters matching the given 
@@ -180,7 +180,7 @@ shared native final class String(characters)
     shared actual native String trimLeading(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character elem));
+            Boolean trimming(Character element));
     
     "A string containing the characters of this string, 
      after discarding the characters matching the given 
@@ -193,7 +193,7 @@ shared native final class String(characters)
     shared actual native String trimTrailing(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character elem));
+            Boolean trimming(Character element));
 
     "A string containing the characters of this string after 
      collapsing strings of [[whitespace|Character.whitespace]] 
@@ -417,7 +417,7 @@ shared native final class String(characters)
     shared actual native Integer? lastInclusion(List<Anything> sublist);
     
     shared actual native {Integer*} inclusions(List<Anything> sublist);
-	    
+        
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
@@ -429,6 +429,6 @@ shared native final class String(characters)
     shared actual native Boolean any(Boolean selecting(Character element));
     shared actual native Result|Character|Null reduce<Result>
             (Result accumulating(Result|Character partial, Character element));
-    shared actual native Character? find(Boolean selecting(Character elem));
-    shared actual native Character? findLast(Boolean selecting(Character elem));
+    shared actual native Character? find(Boolean selecting(Character element));
+    shared actual native Character? findLast(Boolean selecting(Character element));
 }
