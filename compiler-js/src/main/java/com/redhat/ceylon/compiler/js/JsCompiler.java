@@ -465,7 +465,8 @@ public class JsCompiler {
         ArrayList<File> result = new ArrayList<File>(files.size());
         for (File f : files) {
             String rel = FileUtil.relativeFile(roots, f.getPath());
-            if (rel.startsWith(moduleName + "/") || rel.startsWith(moduleName + "\\")) {
+            if (rel.startsWith(moduleName + "/") || rel.startsWith(moduleName + "\\")
+                    || ("default".equals(moduleName) && !(rel.contains("/") || rel.contains("\\")))) {
                 result.add(f);
             }
         }
