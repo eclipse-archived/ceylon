@@ -297,6 +297,12 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
+        return $ceylon$language$Iterable$this$.each(step);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
     }

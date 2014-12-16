@@ -141,6 +141,11 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
+    public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
+        return $ceylon$language$Iterable$this$.each(step);
+    }
+    
+    @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
     }
@@ -443,6 +448,11 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
+    public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
+        return $ceylon$language$Iterable$this$.each(step);
+    }
+    
+    @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
     }
@@ -719,6 +729,11 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
         return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
+        return $ceylon$language$Iterable$this$.each(step);
     }
     
     @.java.lang.Override
@@ -1021,6 +1036,11 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
         return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
+        return $ceylon$language$Iterable$this$.each(step);
     }
     
     @.java.lang.Override
