@@ -3995,11 +3995,13 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.TuplePattern tuple = (Tree.TuplePattern)pat;
             for (Tree.Pattern p : tuple.getPatterns()) {
                 JCExpression idxExpr = makeInteger(idx++);
+                ProducedType ot = typeFact().getObjectDeclaration().getType();
+                JCExpression seqVarAccessExpr = make().TypeCast(makeJavaType(typeFact().getSequenceType(ot), JT_RAW), varAccessExpr);
                 JCExpression tupleAccessExpr;
                 if (isVariadicVariable(p)) {
-                    tupleAccessExpr = makeQualIdent(varAccessExpr, "skip");
+                    tupleAccessExpr = makeQualIdent(seqVarAccessExpr, "skip");
                 } else {
-                    tupleAccessExpr = makeQualIdent(varAccessExpr, "getFromFirst");
+                    tupleAccessExpr = makeQualIdent(seqVarAccessExpr, "getFromFirst");
                 }
                 JCExpression fullGetExpr = make().Apply(null, tupleAccessExpr, List.of(idxExpr));
                 result = result.appendList(transformPattern(p, fullGetExpr));
@@ -4007,9 +4009,11 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (pat instanceof Tree.KeyValuePattern) {
             // For an Entry we create two local values, one for the key and one for the value
             Tree.KeyValuePattern entry = (Tree.KeyValuePattern)pat;
-            JCExpression getKeyExpr = make().Apply(null, makeQualIdent(varAccessExpr, "getKey"), List.<JCExpression>nil());
+            ProducedType ot = typeFact().getObjectDeclaration().getType();
+            JCExpression entryVarAccessExpr = make().TypeCast(makeJavaType(typeFact().getEntryType(ot , ot), JT_RAW), varAccessExpr);
+            JCExpression getKeyExpr = make().Apply(null, makeQualIdent(entryVarAccessExpr, "getKey"), List.<JCExpression>nil());
             result = result.appendList(transformPattern(entry.getKey(), getKeyExpr));
-            JCExpression getItemExpr = make().Apply(null, makeQualIdent(varAccessExpr, "getItem"), List.<JCExpression>nil());
+            JCExpression getItemExpr = make().Apply(null, makeQualIdent(entryVarAccessExpr, "getItem"), List.<JCExpression>nil());
             result = result.appendList(transformPattern(entry.getValue(), getItemExpr));
         } else if (pat instanceof Tree.VariablePattern) {
             Tree.VariablePattern var = (Tree.VariablePattern)pat;
