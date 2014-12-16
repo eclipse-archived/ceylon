@@ -36,7 +36,6 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
-import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
@@ -47,7 +46,6 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -5179,7 +5177,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCTree.JCTypeParameter>nil(),
                         List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
             }
-            if (fcl.getForIterator() instanceof Tree.ValueIterator) {
+            Tree.ForIterator forIterator = fcl.getForIterator();
+            if (forIterator instanceof Tree.ValueIterator) {
     
                 //Add the item variable as a field in the iterator
                 Value item = ((Tree.ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
@@ -5190,11 +5189,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
                 fieldNames.add(itemVar.getName());
     
-            } else if (fcl.getForIterator() instanceof Tree.KeyValueIterator) {
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
                 //Add the key and value variables as fields in the iterator
-                Tree.KeyValueIterator kviter = (Tree.KeyValueIterator)fcl.getForIterator();
-                Value kdec = kviter.getKeyVariable().getDeclarationModel();
-                Value vdec = kviter.getValueVariable().getDeclarationModel();
+                Tree.Variable keyvariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
+                Tree.Variable valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
+                Value kdec = keyvariable.getDeclarationModel();
+                Value vdec = valueVariable.getDeclarationModel();
                 //But we'll use this as the name for the context function and base for the exhausted field
                 itemVar = naming.synthetic(Prefix.$kv$, kdec.getName(), vdec.getName());
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
@@ -5204,7 +5207,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 fieldNames.add(kdec.getName());
                 fieldNames.add(vdec.getName());
             } else {
-                error = makeErroneous(fcl, "compiler bug: iterators of type " + fcl.getForIterator().getNodeType() + " not yet supported");
+                error = makeErroneous(fcl, "compiler bug: iterators of type " + forIterator.getNodeType() + " not yet supported");
                 return null;
             }
             fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy(Suffix.$exhausted$).asName(),
@@ -5224,29 +5227,33 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
             //Variables get assigned in the else block
             ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
-            if (fcl.getForIterator() instanceof Tree.ValueIterator) {
+            if (forIterator instanceof Tree.ValueIterator) {
                 ProducedType itemType = ((Tree.ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
                 elseBody.add(make().Exec(make().Assign(itemVar.makeIdent(),
                         make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
             } else {
-                Tree.KeyValueIterator kviter = (Tree.KeyValueIterator)fcl.getForIterator();
-                Value key = kviter.getKeyVariable().getDeclarationModel();
-                Value item = kviter.getValueVariable().getDeclarationModel();
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
+                Tree.Variable keyvariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
+                Tree.Variable valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
+                Value kdec = keyvariable.getDeclarationModel();
+                Value vdec = valueVariable.getDeclarationModel();
                 //Assign the key and item to the corresponding fields with the proper type casts
                 //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
                 JCExpression castEntryExprKey = make().TypeCast(
                     makeJavaType(typeFact().getIteratedType(iterType)),
                     tmpItem.makeIdent());
-                SyntheticName keyName = naming.synthetic(key);
-                SyntheticName itemName = naming.synthetic(item);
+                SyntheticName keyName = naming.synthetic(kdec);
+                SyntheticName itemName = naming.synthetic(vdec);
                 valueCaptures.append(makeVar(Flags.FINAL, keyName, 
-                        makeJavaType(key.getType(), JT_NO_PRIMITIVES), 
+                        makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), 
                         keyName.makeIdentWithThis()));
                 valueCaptures.append(makeVar(Flags.FINAL, itemName, 
-                        makeJavaType(item.getType(), JT_NO_PRIMITIVES), 
+                        makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), 
                         itemName.makeIdentWithThis()));
                 elseBody.add(make().Exec(make().Assign(keyName.makeIdent(),
-                    make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
+                    make().TypeCast(makeJavaType(kdec.getType(), JT_NO_PRIMITIVES),
                         make().Apply(null, makeSelect(castEntryExprKey, "getKey"),
                             List.<JCExpression>nil())
                 ))));
@@ -5255,7 +5262,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeJavaType(typeFact().getIteratedType(iterType)),
                         tmpItem.makeIdent());
                 elseBody.add(make().Exec(make().Assign(itemName.makeIdent(),
-                    make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
+                    make().TypeCast(makeJavaType(vdec.getType(), JT_NO_PRIMITIVES),
                         make().Apply(null, makeSelect(castEntryExprItem, "getItem"),
                             List.<JCExpression>nil())
                 ))));
@@ -5892,18 +5899,13 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(LetExpression op) {
         ListBuffer<JCVariableDecl> defs = new ListBuffer<JCVariableDecl>();
-        for(Tree.Variable var : op.getLetClause().getVariables()){
-            JCExpression type = makeJavaType(var.getType().getTypeModel());
-            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-            JCExpression init = transformExpression(var.getSpecifierExpression().getExpression(), boxingStrategy, var.getType().getTypeModel());
-            at(var);
-            JCVariableDecl def = make().VarDef(make().Modifiers(Flags.FINAL), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
-            defs.add(def);
+        for(Tree.Statement stmt : op.getLetClause().getVariables()){
+            defs.addAll(statementGen().transformVariableOrDestructure(stmt));
         }
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(op.getLetClause().getExpression());
         JCExpression expr = transformExpression(op.getLetClause().getExpression(), boxingStrategy, op.getTypeModel());
         at(op);
         return make().LetExpr(defs.toList(), List.<JCStatement>nil(), expr);
     }
-
+    
 }

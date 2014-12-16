@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -276,13 +275,15 @@ public class StatementTransformer extends AbstractTransformer {
                 IsVarTrans elseVar = (elseVariable != null) ? new IsVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new IsCond(is, var, elseVar);
             } else if (cond instanceof Tree.ExistsCondition) {
+                // FIXME DESCTRUCTURE
                 Tree.ExistsCondition exists = (Tree.ExistsCondition)cond;
-                ExistsVarTrans var = new ExistsVarTrans(exists.getVariable());
+                ExistsVarTrans var = new ExistsVarTrans((Tree.Variable)exists.getVariable());
                 ExistsVarTrans elseVar = (elseVariable != null) ? new ExistsVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new ExistsCond(exists, var, elseVar);
             } else if (cond instanceof Tree.NonemptyCondition) {
+                // FIXME DESCTRUCTURE
                 Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition)cond;
-                NonemptyVarTrans var = new NonemptyVarTrans(nonempty.getVariable());
+                NonemptyVarTrans var = new NonemptyVarTrans((Tree.Variable)nonempty.getVariable());
                 NonemptyVarTrans elseVar = (elseVariable != null) ? new NonemptyVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new NonemptyCond(nonempty, var, elseVar);
             } else if (cond instanceof Tree.BooleanCondition) {
@@ -1640,21 +1641,21 @@ public class StatementTransformer extends AbstractTransformer {
             
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
-                String varName = Naming.getVariableName(((Tree.ValueIterator)forIterator).getVariable());
-                JCStatement variable = makeVar(FINAL,
-                        varName,
-                        makeJavaType(elementType),
-                        elementGet);
+                Tree.ValueIterator valIter = (Tree.ValueIterator)forIterator;
+                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, false);
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(variable);
-            } else if (forIterator instanceof Tree.KeyValueIterator) {
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName,
                         makeJavaType(typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType()), JT_RAW),
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
-                String keyName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getKeyVariable());
+                String keyName = Naming.getVariableName(((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable());
                 JCStatement keyVariable = makeVar(FINAL,
                         keyName,
                         makeJavaType(keyType),
@@ -1662,7 +1663,7 @@ public class StatementTransformer extends AbstractTransformer {
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
                                 typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
-                String valueName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getValueVariable());
+                String valueName = Naming.getVariableName(((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable());
                 JCStatement valueVariable = makeVar(FINAL,
                         valueName,
                         makeJavaType(valueType),
@@ -1673,6 +1674,8 @@ public class StatementTransformer extends AbstractTransformer {
                 transformedBlock = transformedBlock.prepend(valueVariable);
                 transformedBlock = transformedBlock.prepend(keyVariable);
                 transformedBlock = transformedBlock.prepend(entryVariable);
+            } else {
+                throw BugException.unhandledCase(forIterator);
             }
             
             JCStatement block = make().Block(0, transformedBlock);
@@ -2178,19 +2181,25 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected final Tree.Variable getElementOrKeyVariable() {
-            Tree.ForIterator iterator = getForIterator();
-            if (iterator instanceof Tree.ValueIterator) {
-                return ((Tree.ValueIterator)iterator).getVariable();
-            } else if (iterator instanceof Tree.KeyValueIterator) {
-                return ((Tree.KeyValueIterator)iterator).getKeyVariable();
+            Tree.ForIterator forIterator = getForIterator();
+            if (forIterator instanceof Tree.ValueIterator) {
+                return ((Tree.ValueIterator)forIterator).getVariable();
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
+                return ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
             }
             return null;
         }
         
         protected final Tree.Variable getValueVariable() {
-            Tree.ForIterator iterator = getForIterator();
-            if (iterator instanceof Tree.KeyValueIterator) {
-                return ((Tree.KeyValueIterator)iterator).getKeyVariable();
+            Tree.ForIterator forIterator = getForIterator();
+            if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
+                return ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
             }
             return null;
         }
@@ -2256,21 +2265,24 @@ public class StatementTransformer extends AbstractTransformer {
         protected ListBuffer<JCStatement> transformForClause() {
             Naming.SyntheticName elem_name = naming.alias("elem");
             
-            Tree.ForIterator iterDecl = stmt.getForClause().getForIterator();
+            Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
             Tree.Variable variable;
             Tree.Variable valueVariable;
-            if (iterDecl instanceof Tree.ValueIterator) {
-                variable = ((Tree.ValueIterator) iterDecl).getVariable();
+            if (forIterator instanceof Tree.ValueIterator) {
+                variable = ((Tree.ValueIterator) forIterator).getVariable();
                 valueVariable = null;
-            } else if (iterDecl instanceof Tree.KeyValueIterator) {
-                variable = ((Tree.KeyValueIterator) iterDecl).getKeyVariable();
-                valueVariable = ((Tree.KeyValueIterator) iterDecl).getValueVariable();
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                // FIXME DESCTRUCTURE
+                variable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
+                valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
             } else {
-                throw BugException.unhandledNodeCase(iterDecl);
+                throw BugException.unhandledNodeCase(forIterator);
             }
             
             final Naming.SyntheticName loopVarName = naming.synthetic(variable.getDeclarationModel());
-            Tree.Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
+            Tree.Expression specifierExpression = forIterator.getSpecifierExpression().getExpression();
             ProducedType sequenceElementType;
             if(valueVariable == null)
                 sequenceElementType = variable.getType().getTypeModel();
@@ -2327,7 +2339,7 @@ public class StatementTransformer extends AbstractTransformer {
                     this.label,
                     elem_name, 
                     iteratorVarName,
-                    iterDecl.getSpecifierExpression().getExpression().getTypeModel(),
+                    forIterator.getSpecifierExpression().getExpression().getTypeModel(),
                     sequenceElementType,
                     containment,
                     itemDecls,
@@ -3933,14 +3945,30 @@ public class StatementTransformer extends AbstractTransformer {
         return getLabel(loop.getControlBlock());
     }
     
-    
+    public List<JCVariableDecl> transformVariableOrDestructure(Tree.Statement varOrDes) {
+        List<JCVariableDecl> vars = List.<JCVariableDecl>nil();
+        if (varOrDes instanceof Tree.Variable) {
+            Tree.Variable var = (Tree.Variable)varOrDes;
+            Expression expr = var.getSpecifierExpression().getExpression();
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+            JCExpression init = expressionGen().transformExpression(expr, boxingStrategy, var.getType().getTypeModel());
+            vars = vars.append(transformVariable(var, init, expr.getTypeModel(), boxingStrategy == BoxingStrategy.BOXED));
+        } else if (varOrDes instanceof Tree.Destructure) {
+            Tree.Destructure des = (Tree.Destructure)varOrDes;
+            vars = vars.appendList(transform(des));
+        } else {
+            throw BugException.unhandledCase(varOrDes);
+        }
+        return vars;
+    }
+
     /**
      * Transforms a Ceylon destructuring assignment to Java code.
      * @param stmt The Ceylon destructure
      * @return The Java tree
      */
-    List<JCStatement> transform(Tree.Destructure stmt) {
-        List<JCStatement> result = List.nil();
+    List<JCVariableDecl> transform(Tree.Destructure stmt) {
+        List<JCVariableDecl> result = List.nil();
         
         // Create temp var to hold result of expression
         Naming.SyntheticName tmpVarName = naming.alias("destructure");
@@ -3951,37 +3979,53 @@ public class StatementTransformer extends AbstractTransformer {
         JCVariableDecl tmpVar = makeVar(Flags.FINAL, tmpVarName, typeExpr, expr);
         result = result.append(tmpVar);
         
-        Tree.DestructuredVariables vars = stmt.getDestructuredVariables();
-        if (vars instanceof Tree.VariableTuple) {
+        // Now add the destructured variables
+        Tree.Pattern pat = stmt.getPattern();
+        result = result.appendList(transformPattern(pat, tmpVarName.makeIdent()));
+        
+        return result;
+    }
+
+    private List<JCVariableDecl> transformPattern(Tree.Pattern pat, JCExpression varAccessExpr) {
+        List<JCVariableDecl> result = List.nil();
+        
+        if (pat instanceof Tree.TuplePattern) {
             // For a Tuple we get the value of each of its items and assign it to a local value
             int idx = 0;
-            JCExpression getExpr = makeQualIdent(tmpVarName.makeIdent(), "get");
-            Tree.VariableTuple tuple = (Tree.VariableTuple)vars;
-            for (Variable var : tuple.getVariables()) {
+            JCExpression getExpr = makeQualIdent(varAccessExpr, "get");
+            Tree.TuplePattern tuple = (Tree.TuplePattern)pat;
+            for (Tree.Pattern p : tuple.getPatterns()) {
                 JCExpression idxExpr = boxType(makeInteger(idx++), typeFact().getIntegerDeclaration().getType());
                 JCExpression fullGetExpr = make().Apply(null, getExpr, List.of(idxExpr));
-                result = result.append(transformDestructuredVariable(var, fullGetExpr));
+                result = result.appendList(transformPattern(p, fullGetExpr));
             }
-        } else if (vars instanceof Tree.KeyValue) {
+        } else if (pat instanceof Tree.KeyValuePattern) {
             // For an Entry we create two local values, one for the key and one for the value
-            Tree.KeyValue entry = (Tree.KeyValue)vars;
-            JCExpression getKeyExpr = make().Apply(null, makeQualIdent(tmpVarName.makeIdent(), "getKey"), List.<JCExpression>nil());
-            result = result.append(transformDestructuredVariable(entry.getKey(), getKeyExpr));
-            JCExpression getItemExpr = make().Apply(null, makeQualIdent(tmpVarName.makeIdent(), "getItem"), List.<JCExpression>nil());
-            result = result.append(transformDestructuredVariable(entry.getValue(), getItemExpr));
+            Tree.KeyValuePattern entry = (Tree.KeyValuePattern)pat;
+            JCExpression getKeyExpr = make().Apply(null, makeQualIdent(varAccessExpr, "getKey"), List.<JCExpression>nil());
+            result = result.appendList(transformPattern(entry.getKey(), getKeyExpr));
+            JCExpression getItemExpr = make().Apply(null, makeQualIdent(varAccessExpr, "getItem"), List.<JCExpression>nil());
+            result = result.appendList(transformPattern(entry.getValue(), getItemExpr));
+        } else if (pat instanceof Tree.VariablePattern) {
+            Tree.VariablePattern var = (Tree.VariablePattern)pat;
+            result = result.append(transformVariable(var.getVariable(), varAccessExpr));
         } else {
-            throw new BugException(vars, "Unknown destructure type, should be Tuple or Entry");
+            throw BugException.unhandledCase(pat);
         }
         
         return result;
     }
 
-    private JCStatement transformDestructuredVariable(Variable var, JCExpression init) {
+    private JCVariableDecl transformVariable(Variable var, JCExpression initExpr) {
+        return transformVariable(var, initExpr, typeFact().getObjectDeclaration().getType(), true);
+    }
+
+    private JCVariableDecl transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-        init = expressionGen().applyErasureAndBoxing(init, typeFact().getObjectDeclaration().getType(), true, boxingStrategy, var.getType().getTypeModel());
+        initExpr = expressionGen().applyErasureAndBoxing(initExpr, exprType, exprBoxed, boxingStrategy, var.getType().getTypeModel());
         at(var);
         JCExpression type = makeJavaType(var.getType().getTypeModel());
-        JCVariableDecl def = make().VarDef(make().Modifiers(Flags.FINAL), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
+        JCVariableDecl def = makeVar(Flags.FINAL, Naming.getVariableName(var), type, initExpr);
         return def;
     }
 }

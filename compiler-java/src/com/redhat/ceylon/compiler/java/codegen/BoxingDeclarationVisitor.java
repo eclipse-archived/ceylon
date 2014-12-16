@@ -44,9 +44,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -350,9 +350,23 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         ForIterator iter = that.getForIterator();
         if (iter instanceof ValueIterator) {
             ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(false);
-        } else if (iter instanceof KeyValueIterator) {
-            ((KeyValueIterator) iter).getKeyVariable().getDeclarationModel().setUnboxed(false);
-            ((KeyValueIterator) iter).getValueVariable().getDeclarationModel().setUnboxed(false);
+        } else if (iter instanceof PatternIterator) {
+            boxPattern(((PatternIterator) iter).getPattern());
+        }
+    }
+    
+    private void boxPattern(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.KeyValuePattern) {
+            boxPattern(((Tree.KeyValuePattern)pattern).getKey());
+            boxPattern(((Tree.KeyValuePattern)pattern).getValue());
+        } else if (pattern instanceof Tree.TuplePattern) {
+            for (Tree.Pattern p : ((Tree.TuplePattern)pattern).getPatterns()) {
+                boxPattern(p);
+            }
+        } else if (pattern instanceof Tree.VariablePattern) {
+            ((Tree.VariablePattern)pattern).getVariable().getDeclarationModel().setUnboxed(false);
+        } else {
+            throw BugException.unhandledCase(pattern);
         }
     }
     
