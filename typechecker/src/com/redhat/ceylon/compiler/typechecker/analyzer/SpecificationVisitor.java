@@ -703,12 +703,13 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
-        if (that.getDeclarationModel()==declaration) {
+        Constructor c = that.getDeclarationModel();
+        if (c==declaration) {
             declare();
             specify();
         }
         super.visit(that);
-        if (declaration.getContainer()==that.getDeclarationModel().getContainer() &&
+        if (declaration.getContainer()==c.getContainer() &&
                 that==lastExecutableStatement && 
                 initedByEveryConstructor) {
             specified.definitely = true;
