@@ -793,7 +793,7 @@ public final class String
     @Override
     public String trimLeading(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")@FunctionalParameter("(elem)")
+            @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trimLeading(value, characters));
     }
@@ -814,7 +814,7 @@ public final class String
     @Override
     public String trimTrailing(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")@FunctionalParameter("(elem)")
+            @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trimTrailing(value, characters));
     }
@@ -835,7 +835,7 @@ public final class String
     @Override
     public String trim(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")@FunctionalParameter("(elem)")
+            @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trim(value, characters));
     }
@@ -1633,7 +1633,7 @@ public final class String
     reduce(@Ignore TypeDescriptor $reifiedResult, 
             @Name("accumulating")
             @FunctionalParameter("(partial,element)")
-            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Character|Result,ceylon.language::Character|Result,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Result|ceylon.language::Character,Result|ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
             Callable<? extends Result> f) {
         return reduce($reifiedResult,value,f);
     }
@@ -1662,8 +1662,8 @@ public final class String
               value="ceylon.language::Anything")
     public java.lang.Object each(
             @Name("step")
-            @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @FunctionalParameter("!(element)")
+            @TypeInfo(declaredVoid=true, value="ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
         return each(value,step);
     }

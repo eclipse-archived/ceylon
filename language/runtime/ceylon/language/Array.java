@@ -1448,12 +1448,12 @@ public final class Array<Element>
     }
     
     @Override
-    @TypeInfo("ceylon.language::Null|Element|Result")
+    @TypeInfo("Result|Element|ceylon.language::Null")
     public <Result> java.lang.Object 
     reduce(@Ignore TypeDescriptor $reifiedResult,
             @Name("accumulating")
             @FunctionalParameter("(partial,element)") 
-            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element|Result,Element|Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Result|Element,Result|Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Result> accumulating) {
         if (size==0) {
             return null;
@@ -1620,7 +1620,7 @@ public final class Array<Element>
     @TypeInfo(declaredVoid=true, value="ceylon.language::Anything")
     public java.lang.Object each(
             @Name("step")
-            @FunctionalParameter("(element)")
+            @FunctionalParameter("!(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
         for (int i=0; i<size; i++) {
