@@ -597,7 +597,8 @@ public class SpecificationVisitor extends Visitor {
 	            	se.visit(this);
 	            }
 	            boolean constant = !isVariable() && !isLate();
-	            if (constant && !declaration.isDefinedInScope(that.getScope())) {
+	            if (constant && 
+	                    !declaration.isDefinedInScope(that.getScope())) {
 	                //this error is added by ExpressionVisitor
 //                    that.addError("inherited member is not variable and may not be specified here: '" + 
 //                            member.getName() + "'");
@@ -622,14 +623,17 @@ public class SpecificationVisitor extends Visitor {
 	            }
                 else if (withinDeclaration && constant && 
                         !that.getRefinement()) {
-                    Declaration dec = getContainingDeclarationOfScope(that.getScope());
+                    Declaration dec = 
+                            getContainingDeclarationOfScope(that.getScope());
                     if (dec!=null && dec.equals(member)) {
                         bme.addError("cannot specify " + shortdesc() + 
-                                " from within its own body: '" + member.getName() + "'");
+                                " from within its own body: '" + 
+                                member.getName() + "'");
                     }
                     else {
                         bme.addError("cannot specify " + shortdesc() + 
-                                " declared in outer scope: '" + member.getName() + "'", 803);
+                                " declared in outer scope: '" + 
+                                member.getName() + "'", 803);
                     }
                 }
 	            else if (specified.possibly && constant) {
