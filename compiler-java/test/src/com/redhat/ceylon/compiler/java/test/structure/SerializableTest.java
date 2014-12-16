@@ -41,6 +41,11 @@ public class SerializableTest extends CompilerTest {
     }
     
     @Test
+    public void testKlsSerializableGeneric() {
+        compareWithJavaSource("klass/SerializableGeneric");
+    }
+    
+    @Test
     public void testKlsSerializableInterfaceSatisfier() {
         compareWithJavaSource("klass/SerializableInterfaceSatisfier");
     }
