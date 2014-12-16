@@ -9,7 +9,11 @@ shared void testResources() {
     check(res2 exists, "resource by full path");
     if (exists r1=res1, exists r2=res2) {
         check("/" in r1.uri, "resource uri 1");
-        check(r1.uri.startsWith("classpath:/"), "resource uri 2");
+        if (runtime.name=="jvm") {
+            check(r1.uri.startsWith("classpath:/"), "resource uri 2 doesn't start with 'classpath': ``r1.uri``");
+        } else {
+            check(r1.uri.startsWith("file:/"), "resource uri 2 doesn't start with 'file': ``r1.uri``");
+        }
         check(!"\\" in r1.uri, "resource uri 3");
         check(r1.name=="resource.txt", "resource name 1");
         check(r1.name==r2.name, "resource name 2");
