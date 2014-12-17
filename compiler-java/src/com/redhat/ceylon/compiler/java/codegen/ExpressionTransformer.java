@@ -5173,22 +5173,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCTree.JCTypeParameter>nil(),
                         List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
             }
-            Naming.SyntheticName itemVar;
             Naming.SyntheticName tmpItem = naming.temp("item");
             List<VarDefBuilder> vdbs = List.nil();
             ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
             Tree.ForIterator forIterator = fcl.getForIterator();
+            Naming.SyntheticName itemVar = naming.synthetic(forIterator);
             if (forIterator instanceof Tree.ValueIterator) {
-                //Add the item variable as a field in the iterator
                 Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
-                itemVar = naming.synthetic(variable.getDeclarationModel());
                 VarDefBuilder vdb = statementGen().transformVariable(variable, tmpItem.makeIdent());
                 vdbs = vdbs.append(vdb);
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pat = patIter.getPattern();
-                //But we'll use this as the name for the context function and base for the exhausted field
-                itemVar = naming.synthetic(Prefix.$kv$, iterVar.getName());
                 vdbs = vdbs.appendList(statementGen().transformPattern(pat, tmpItem.makeIdent()));
             } else {
                 error = makeErroneous(fcl, "compiler bug: iterators of type " + forIterator.getNodeType() + " not yet supported");

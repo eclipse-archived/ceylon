@@ -3936,7 +3936,8 @@ public class StatementTransformer extends AbstractTransformer {
         List<JCVariableDecl> result = List.nil();
         
         // Create temp var to hold result of expression
-        Naming.SyntheticName tmpVarName = naming.alias("destructure");
+        Tree.Pattern pat = stmt.getPattern();
+        Naming.SyntheticName tmpVarName = naming.synthetic(pat);
         Expression destExpr = stmt.getSpecifierExpression().getExpression();
         JCExpression typeExpr = makeJavaType(destExpr.getTypeModel());
         JCExpression expr = expressionGen().transformExpression(destExpr);
@@ -3945,7 +3946,6 @@ public class StatementTransformer extends AbstractTransformer {
         result = result.append(tmpVar);
         
         // Now add the destructured variables
-        Tree.Pattern pat = stmt.getPattern();
         List<JCVariableDecl> vars = VarDefBuilder.buildAll(transformPattern(pat, tmpVarName.makeIdent()));
         result = result.appendList(vars);
         
