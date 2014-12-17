@@ -161,9 +161,9 @@ public class Naming implements LocalId {
         $default$,
         $init$,
         $iterator$,
-        $kv$, 
         $reified$,
-        $superarg$
+        $superarg$,
+        $pattern$
     }
     
     static String name(Unfix unfix) {
@@ -2189,6 +2189,28 @@ public class Naming implements LocalId {
     
     SyntheticName synthetic(Tree.Variable var) {
         return new SyntheticName(names.fromString(getVariableName(var)));
+    }
+    
+    SyntheticName synthetic(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.VariablePattern) {
+            return synthetic(((Tree.VariablePattern)pattern).getVariable());
+        } else if (pattern instanceof Tree.KeyValuePattern) {
+            return synthetic(Prefix.$pattern$, "entry").alias();
+        } else if (pattern instanceof Tree.TuplePattern) {
+            return synthetic(Prefix.$pattern$, "tuple").alias();
+        } else {
+            throw BugException.unhandledCase(pattern);
+        }
+    }
+    
+    SyntheticName synthetic(Tree.ForIterator forIterator) {
+        if (forIterator instanceof Tree.ValueIterator) {
+            return synthetic(((Tree.ValueIterator)forIterator).getVariable());
+        } else if (forIterator instanceof Tree.PatternIterator) {
+            return synthetic(((Tree.PatternIterator)forIterator).getPattern());
+        } else {
+            throw BugException.unhandledCase(forIterator);
+        }
     }
     
     void clearSubstitutions(Declaration decl) {
