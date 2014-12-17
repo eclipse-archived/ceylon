@@ -25,7 +25,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -41,6 +40,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarDefBuilder;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
@@ -4826,7 +4826,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName lastIteratorCtxtName = null;
         //Iterator fields
         final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
-        final HashSet<String> fieldNames = new HashSet<String>();
         final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
         private JCStatement initIterator;
@@ -4852,7 +4851,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Naming.SyntheticName itemVar = null;
                     if (clause instanceof Tree.ForComprehensionClause) {
                         final Tree.ForComprehensionClause fcl = (Tree.ForComprehensionClause)clause;
-                        itemVar = transformForClause(fcl, iterVar, itemVar);
+                        itemVar = transformForClause(fcl, iterVar);
                         if (error != null) {
                             return error;
                         }
@@ -5131,8 +5130,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         private SyntheticName transformForClause(final Tree.ForComprehensionClause clause,
-                final Naming.SyntheticName iterVar,
-                Naming.SyntheticName itemVar) {
+                final Naming.SyntheticName iterVar) {
             final Tree.ForComprehensionClause fcl = clause;
             Tree.SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
             ProducedType iterType = specexpr.getExpression().getTypeModel();
@@ -5144,14 +5142,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //The first iterator can be initialized as a field
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
                     null));
-                fieldNames.add(iterVar.getName());
                 initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(iterableExpr, "iterator"), 
                         List.<JCExpression>nil())));
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
-                fieldNames.add(iterVar.getName());
                 List<JCStatement> block = List.<JCStatement>nil();
                 if (lastIteratorCtxtName != null) {
                     block = block.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(),
@@ -5177,47 +5173,40 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCTree.JCTypeParameter>nil(),
                         List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
             }
+            Naming.SyntheticName itemVar;
+            Naming.SyntheticName tmpItem = naming.temp("item");
+            List<VarDefBuilder> vdbs = List.nil();
+            ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
             Tree.ForIterator forIterator = fcl.getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
-    
                 //Add the item variable as a field in the iterator
-                Value item = ((Tree.ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
-                itemVar = naming.synthetic(item);
-                valueCaptures.append(makeVar(Flags.FINAL, itemVar, 
-                        makeJavaType(item.getType(),JT_NO_PRIMITIVES), itemVar.makeIdentWithThis()));
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
-                        makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
-                fieldNames.add(itemVar.getName());
-    
+                Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
+                itemVar = naming.synthetic(variable.getDeclarationModel());
+                VarDefBuilder vdb = statementGen().transformVariable(variable, tmpItem.makeIdent());
+                vdbs = vdbs.append(vdb);
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pat = patIter.getPattern();
-                // FIXME DESCTRUCTURE
-                //Add the key and value variables as fields in the iterator
-                Tree.Variable keyvariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
-                Tree.Variable valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
-                Value kdec = keyvariable.getDeclarationModel();
-                Value vdec = valueVariable.getDeclarationModel();
                 //But we'll use this as the name for the context function and base for the exhausted field
-                itemVar = naming.synthetic(Prefix.$kv$, kdec.getName(), vdec.getName());
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
-                        makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(vdec.getName()),
-                        makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), null));
-                fieldNames.add(kdec.getName());
-                fieldNames.add(vdec.getName());
+                itemVar = naming.synthetic(Prefix.$kv$, iterVar.getName());
+                vdbs = vdbs.appendList(statementGen().transformPattern(pat, tmpItem.makeIdent()));
             } else {
                 error = makeErroneous(fcl, "compiler bug: iterators of type " + forIterator.getNodeType() + " not yet supported");
                 return null;
             }
+            for (VarDefBuilder vdb : vdbs) {
+                valueCaptures.append(makeVar(Flags.FINAL, vdb.name(), vdb.type(), vdb.name().makeIdentWithThis()));
+                fields.add(makeVar(Flags.PRIVATE, vdb.name(), vdb.type(), null));
+                elseBody.add(make().Exec(make().Assign(vdb.name().makeIdent(), vdb.expr())));
+            }
             fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy(Suffix.$exhausted$).asName(),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
+            elseBody.add(make().Return(makeBoolean(true)));
             
             //Now the context for this iterator
             ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
     
             //Assign the next item to an Object variable
-            Naming.SyntheticName tmpItem = naming.temp("item");
             contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
                     makeJavaType(typeFact().getObjectDeclaration().getType()),
                     make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
@@ -5225,50 +5214,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             //Then we check if it's exhausted
             contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
                     make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
-            //Variables get assigned in the else block
-            ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
-            if (forIterator instanceof Tree.ValueIterator) {
-                ProducedType itemType = ((Tree.ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
-                elseBody.add(make().Exec(make().Assign(itemVar.makeIdent(),
-                        make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
-            } else {
-                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
-                Tree.Pattern pat = patIter.getPattern();
-                // FIXME DESCTRUCTURE
-                Tree.Variable keyvariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable();
-                Tree.Variable valueVariable = ((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable();
-                Value kdec = keyvariable.getDeclarationModel();
-                Value vdec = valueVariable.getDeclarationModel();
-                //Assign the key and item to the corresponding fields with the proper type casts
-                //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
-                JCExpression castEntryExprKey = make().TypeCast(
-                    makeJavaType(typeFact().getIteratedType(iterType)),
-                    tmpItem.makeIdent());
-                SyntheticName keyName = naming.synthetic(kdec);
-                SyntheticName itemName = naming.synthetic(vdec);
-                valueCaptures.append(makeVar(Flags.FINAL, keyName, 
-                        makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), 
-                        keyName.makeIdentWithThis()));
-                valueCaptures.append(makeVar(Flags.FINAL, itemName, 
-                        makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), 
-                        itemName.makeIdentWithThis()));
-                elseBody.add(make().Exec(make().Assign(keyName.makeIdent(),
-                    make().TypeCast(makeJavaType(kdec.getType(), JT_NO_PRIMITIVES),
-                        make().Apply(null, makeSelect(castEntryExprKey, "getKey"),
-                            List.<JCExpression>nil())
-                ))));
-                //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
-                JCExpression castEntryExprItem = make().TypeCast(
-                        makeJavaType(typeFact().getIteratedType(iterType)),
-                        tmpItem.makeIdent());
-                elseBody.add(make().Exec(make().Assign(itemName.makeIdent(),
-                    make().TypeCast(makeJavaType(vdec.getType(), JT_NO_PRIMITIVES),
-                        make().Apply(null, makeSelect(castEntryExprItem, "getItem"),
-                            List.<JCExpression>nil())
-                ))));
-            }
-            elseBody.add(make().Return(makeBoolean(true)));
-            
             ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
             if (idx>0) {
                 //Subsequent contexts run once for every iteration of the previous loop

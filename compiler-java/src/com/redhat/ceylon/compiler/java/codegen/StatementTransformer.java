@@ -1642,7 +1642,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
                 Tree.ValueIterator valIter = (Tree.ValueIterator)forIterator;
-                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, false);
+                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, false).build();
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.PatternIterator) {
@@ -2270,15 +2270,15 @@ public class StatementTransformer extends AbstractTransformer {
             final Naming.SyntheticName iteratorVarName;
             if (forIterator instanceof Tree.ValueIterator) {
                 Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
-                JCVariableDecl varExpr = transformVariable(variable, elem_name.makeIdent());
+                JCVariableDecl varExpr = transformVariable(variable, elem_name.makeIdent()).build();
                 itemDecls = itemDecls.append(varExpr);
                 iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pat = patIter.getPattern();
-                List<JCVariableDecl> varsExpr = transformPattern(pat, elem_name.makeIdent());
-                for (JCVariableDecl v : varsExpr) {
-                    itemDecls = itemDecls.append(v);
+                List<VarDefBuilder> varsDefs = transformPattern(pat, elem_name.makeIdent());
+                for (VarDefBuilder vdb : varsDefs) {
+                    itemDecls = itemDecls.append(vdb.build());
                 }
                 iteratorVarName = elem_name.suffixedBy(Suffix.$iterator$);
             } else {
@@ -3917,7 +3917,7 @@ public class StatementTransformer extends AbstractTransformer {
             Expression expr = var.getSpecifierExpression().getExpression();
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
             JCExpression init = expressionGen().transformExpression(expr, boxingStrategy, var.getType().getTypeModel());
-            vars = vars.append(transformVariable(var, init, expr.getTypeModel(), boxingStrategy == BoxingStrategy.BOXED));
+            vars = vars.append(transformVariable(var, init, expr.getTypeModel(), boxingStrategy == BoxingStrategy.BOXED).build());
         } else if (varOrDes instanceof Tree.Destructure) {
             Tree.Destructure des = (Tree.Destructure)varOrDes;
             vars = vars.appendList(transform(des));
@@ -3946,13 +3946,69 @@ public class StatementTransformer extends AbstractTransformer {
         
         // Now add the destructured variables
         Tree.Pattern pat = stmt.getPattern();
-        result = result.appendList(transformPattern(pat, tmpVarName.makeIdent()));
+        List<JCVariableDecl> vars = VarDefBuilder.buildAll(transformPattern(pat, tmpVarName.makeIdent()));
+        result = result.appendList(vars);
         
         return result;
     }
 
-    private List<JCVariableDecl> transformPattern(Tree.Pattern pat, JCExpression varAccessExpr) {
-        List<JCVariableDecl> result = List.nil();
+    static class VarDefBuilder {
+        private final ExpressionTransformer gen;
+        public final Variable var;
+        public final JCExpression initExpr;
+        public final ProducedType exprType;
+        public final boolean exprBoxed;
+        private final JCExpression expr;
+        
+        public VarDefBuilder(ExpressionTransformer gen, Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
+            this.gen = gen;
+            this.var = var;
+            this.initExpr = initExpr;
+            this.exprType = exprType;
+            this.exprBoxed = exprBoxed;
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+            expr = gen.applyErasureAndBoxing(initExpr, exprType, exprBoxed, boxingStrategy, model());
+        }
+        
+        public ProducedType model() {
+            return var.getType().getTypeModel();
+        }
+        
+        public SyntheticName name() {
+            return gen.naming.synthetic(var);
+        }
+        
+        public JCExpression type() {
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+            return gen.makeJavaType(model(), (boxingStrategy == BoxingStrategy.BOXED) ? JT_NO_PRIMITIVES : 0);
+        }
+        
+        public JCExpression expr() {
+            return expr;
+        }
+        
+        JCVariableDecl build() {
+            gen.at(var);
+            JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), expr());
+            return def;
+        }
+        
+        static List<JCVariableDecl> buildAll(List<VarDefBuilder> vars) {
+            List<JCVariableDecl> result = List.nil();
+            for (VarDefBuilder vdb : vars) {
+                result = result.append(vdb.build());
+            }
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "VarDefBuilder [build()=" + build() + "]";
+        }
+    }
+    
+    List<VarDefBuilder> transformPattern(Tree.Pattern pat, JCExpression varAccessExpr) {
+        List<VarDefBuilder> result = List.nil();
         
         if (pat instanceof Tree.TuplePattern) {
             // For a Tuple we get the value of each of its items and assign it to a local value
@@ -3998,16 +4054,11 @@ public class StatementTransformer extends AbstractTransformer {
         return false;
     }
 
-    private JCVariableDecl transformVariable(Variable var, JCExpression initExpr) {
+    VarDefBuilder transformVariable(Variable var, JCExpression initExpr) {
         return transformVariable(var, initExpr, typeFact().getObjectDeclaration().getType(), true);
     }
 
-    private JCVariableDecl transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
-        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-        initExpr = expressionGen().applyErasureAndBoxing(initExpr, exprType, exprBoxed, boxingStrategy, var.getType().getTypeModel());
-        at(var);
-        JCExpression type = makeJavaType(var.getType().getTypeModel());
-        JCVariableDecl def = makeVar(Flags.FINAL, Naming.getVariableName(var), type, initExpr);
-        return def;
+    VarDefBuilder transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
+        return new VarDefBuilder(expressionGen(), var, initExpr, exprType, exprBoxed);
     }
 }
