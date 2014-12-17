@@ -2187,6 +2187,10 @@ public class Naming implements LocalId {
         return new SyntheticName(names.fromString(quoteIfJavaKeyword(value.getName())));
     }
     
+    SyntheticName synthetic(Tree.Variable var) {
+        return new SyntheticName(names.fromString(getVariableName(var)));
+    }
+    
     void clearSubstitutions(Declaration decl) {
         if (decl.isToplevel()) {
             // Clear all the substitutions before each top level declaration
