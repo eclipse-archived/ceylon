@@ -55,7 +55,7 @@ final class bug1548_ {
                                     if (v$exhausted$) {
                                         return false;
                                     } else {
-                                        v = (.java.lang.Object)$ceylontmp$item$0;
+                                        v = $ceylontmp$item$0;
                                         return true;
                                     }
                                 }

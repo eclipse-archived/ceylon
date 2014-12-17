@@ -23,7 +23,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmp$item$0;
+                            x = $ceylontmp$item$0;
                             return true;
                         }
                     }
@@ -102,7 +102,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmp$item$4;
+                            x = $ceylontmp$item$4;
                             return true;
                         }
                     }

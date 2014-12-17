@@ -29,7 +29,7 @@ final class bug1536_ {
                                     if (e$exhausted$) {
                                         return false;
                                     } else {
-                                        e = (.java.lang.Object)$ceylontmp$item$0;
+                                        e = $ceylontmp$item$0;
                                         return true;
                                     }
                                 }

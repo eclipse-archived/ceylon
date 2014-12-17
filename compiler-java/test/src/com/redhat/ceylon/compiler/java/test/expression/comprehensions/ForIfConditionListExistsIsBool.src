@@ -23,7 +23,7 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)$ceylontmp$item$0;
+                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylontmp$item$0;
                             return true;
                         }
                     }

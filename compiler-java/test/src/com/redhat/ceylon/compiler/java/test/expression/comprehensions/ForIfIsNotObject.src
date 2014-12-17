@@ -33,7 +33,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                                     if (x$exhausted$) {
                                         return false;
                                     } else {
-                                        x = (.java.lang.Object)$ceylontmp$item$0;
+                                        x = $ceylontmp$item$0;
                                         return true;
                                     }
                                 }
@@ -90,7 +90,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                                     if (y$exhausted$) {
                                         return false;
                                     } else {
-                                        y = (.java.lang.Object)$ceylontmp$item$2;
+                                        y = $ceylontmp$item$2;
                                         return true;
                                     }
                                 }

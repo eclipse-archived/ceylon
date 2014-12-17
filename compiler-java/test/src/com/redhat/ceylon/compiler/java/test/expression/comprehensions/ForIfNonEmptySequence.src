@@ -29,7 +29,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                                     if (x$exhausted$) {
                                         return false;
                                     } else {
-                                        x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmp$item$0;
+                                        x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$ceylontmp$item$0;
                                         return true;
                                     }
                                 }
@@ -90,7 +90,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                                     if (x$exhausted$) {
                                         return false;
                                     } else {
-                                        x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmp$item$3;
+                                        x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$ceylontmp$item$3;
                                         return true;
                                     }
                                 }

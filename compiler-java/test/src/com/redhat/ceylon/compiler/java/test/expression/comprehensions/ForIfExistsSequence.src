@@ -23,7 +23,7 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmp$item$0;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$ceylontmp$item$0;
                             return true;
                         }
                     }

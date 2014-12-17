@@ -23,7 +23,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmp$item$0;
+                            x = $ceylontmp$item$0;
                             return true;
                         }
                     }
@@ -46,7 +46,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                             if (y$exhausted$) {
                                 $iterator$1 = null;
                             } else {
-                                y = (.java.lang.Object)$ceylontmp$item$1;
+                                y = $ceylontmp$item$1;
                                 return true;
                             }
                         }
@@ -104,7 +104,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmp$item$6;
+                            x = $ceylontmp$item$6;
                             return true;
                         }
                     }
@@ -127,7 +127,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                             if (y$exhausted$) {
                                 $iterator$1 = null;
                             } else {
-                                y = (.java.lang.Object)$ceylontmp$item$7;
+                                y = $ceylontmp$item$7;
                                 return true;
                             }
                         }

@@ -29,7 +29,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                                     if (x$exhausted$) {
                                         return false;
                                     } else {
-                                        x = (.java.lang.Object)$ceylontmp$item$0;
+                                        x = $ceylontmp$item$0;
                                         return true;
                                     }
                                 }
@@ -90,7 +90,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                                     if (y$exhausted$) {
                                         return false;
                                     } else {
-                                        y = (.java.lang.Object)$ceylontmp$item$3;
+                                        y = $ceylontmp$item$3;
                                         return true;
                                     }
                                 }

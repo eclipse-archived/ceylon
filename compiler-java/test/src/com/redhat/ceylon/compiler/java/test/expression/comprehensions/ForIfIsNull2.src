@@ -29,7 +29,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                                     if (x$exhausted$) {
                                         return false;
                                     } else {
-                                        x = (.java.lang.Object)$ceylontmp$item$0;
+                                        x = $ceylontmp$item$0;
                                         return true;
                                     }
                                 }
