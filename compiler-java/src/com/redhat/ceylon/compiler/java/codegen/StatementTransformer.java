@@ -3962,18 +3962,11 @@ public class StatementTransformer extends AbstractTransformer {
         private final ExpressionTransformer gen;
         public final Variable var;
         public final JCExpression initExpr;
-        public final ProducedType exprType;
-        public final boolean exprBoxed;
-        private final JCExpression expr;
         
-        public VarDefBuilder(ExpressionTransformer gen, Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
+        public VarDefBuilder(ExpressionTransformer gen, Variable var, JCExpression initExpr) {
             this.gen = gen;
             this.var = var;
             this.initExpr = initExpr;
-            this.exprType = exprType;
-            this.exprBoxed = exprBoxed;
-            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-            expr = gen.applyErasureAndBoxing(initExpr, exprType, exprBoxed, boxingStrategy, model());
         }
         
         public ProducedType model() {
@@ -3990,12 +3983,18 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public JCExpression expr() {
-            return expr;
+            return initExpr;
         }
         
         JCVariableDecl build() {
             gen.at(var);
             JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), expr());
+            return def;
+        }
+        
+        JCVariableDecl buildDefOnly() {
+            gen.at(var);
+            JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), null);
             return def;
         }
         
@@ -4077,7 +4076,17 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     VarDefBuilder transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
-        return new VarDefBuilder(expressionGen(), var, initExpr, exprType, exprBoxed);
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+        JCExpression expr = 
+                (initExpr != null) ? 
+                        expressionGen().applyErasureAndBoxing(
+                                initExpr, exprType, false, exprBoxed,
+                                boxingStrategy, var.getType().getTypeModel(),
+                                ExpressionTransformer.EXPR_DOWN_CAST)
+                    :
+                        null;
+        return new VarDefBuilder(expressionGen(), var, expr);
+    }
     
     Expression getDestructureExpression(Tree.Statement varOrDes) {
         Tree.SpecifierExpression specExpr;
