@@ -277,13 +277,13 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (cond instanceof Tree.ExistsCondition) {
                 // FIXME DESCTRUCTURE
                 Tree.ExistsCondition exists = (Tree.ExistsCondition)cond;
-                ExistsVarTrans var = new ExistsVarTrans((Tree.Variable)exists.getVariable());
+                ExistsVarTrans var = new ExistsVarTrans(exists.getVariable());
                 ExistsVarTrans elseVar = (elseVariable != null) ? new ExistsVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new ExistsCond(exists, var, elseVar);
             } else if (cond instanceof Tree.NonemptyCondition) {
                 // FIXME DESCTRUCTURE
                 Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition)cond;
-                NonemptyVarTrans var = new NonemptyVarTrans((Tree.Variable)nonempty.getVariable());
+                NonemptyVarTrans var = new NonemptyVarTrans(nonempty.getVariable());
                 NonemptyVarTrans elseVar = (elseVariable != null) ? new NonemptyVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new NonemptyCond(nonempty, var, elseVar);
             } else if (cond instanceof Tree.BooleanCondition) {
@@ -518,19 +518,17 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected List<JCStatement> transformCommonResultDecl(
-                VarTrans var, List<JCStatement> stmts) {
-            if (var.hasResultDecl()) {
-                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        var.getVariableName().asName(), 
-                        var.makeTypeExpr(), 
-                        isDeferred() ? null : var.makeResultExpr());
-                if (isDeferred()) {
-                    unassignedResultVars.put(var, 
-                            var.getVariableName());
-                    varDecls.prepend(resultVarDecl);
-                    stmts = stmts.prepend(make().Exec(make().Assign(var.getVariableName().makeIdent(), var.makeResultExpr())));
-                } else {
-                    stmts = stmts.prepend(resultVarDecl);
+                VarTrans vartrans, List<JCStatement> stmts) {
+            if (vartrans.hasResultDecl()) {
+                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                for (VarDefBuilder vdb : vars) {
+                    if (isDeferred()) {
+                        unassignedResultVars.put(vartrans, vartrans.getVariableName());
+                        varDecls.prepend(vdb.buildDefOnly());
+                        stmts = stmts.prepend(make().Exec(make().Assign(vartrans.getVariableName().makeIdent(), vartrans.makeResultExpr())));
+                    } else {
+                        stmts = stmts.prepend(vdb.build());
+                    }
                 }
             }
             return stmts;
@@ -917,6 +915,7 @@ public class StatementTransformer extends AbstractTransformer {
     interface VarTrans {
         
         public Tree.Variable getVariable();
+        public Tree.Statement getVarOrDestructure();
         
         public CName getVariableName();
         public CName getTestVariableName();
@@ -925,36 +924,53 @@ public class StatementTransformer extends AbstractTransformer {
         
         public boolean hasResultDecl();
         public boolean hasAliasedVariable();
+        public boolean isDestructure();
         
         public JCExpression makeTypeExpr();
         public JCExpression makeDefaultExpr();
         public JCExpression makeResultExpr();
-    
+        public ProducedType getResultType();
+        
         public JCStatement makeTestVarDecl(int flags, boolean init);
     }
     
     abstract class BaseVarTransImpl implements VarTrans {
         protected final ProducedType toType;
         private final Tree.Expression specifierExpr;
-        private final Tree.Variable variable;
+        private final Tree.Statement varOrDes;
         private final CName testVarName;
         
         private CName variableName;
         
-        BaseVarTransImpl(Tree.Variable variable) {
-            this(variable, naming.alias(variable.getIdentifier().getText()));
+        BaseVarTransImpl(Tree.Statement varOrDes) {
+            this(varOrDes, naming.syntheticDestructure(varOrDes).alias());
         }
         
-        BaseVarTransImpl(Tree.Variable variable, CName testVarName) {
-            this.toType = variable.getType().getTypeModel();
-            this.specifierExpr = variable.getSpecifierExpression().getExpression();
-            this.variable = variable;
+        BaseVarTransImpl(Tree.Statement varOrDes, CName testVarName) {
+            this.specifierExpr = getDestructureExpression(varOrDes);
+            this.varOrDes = varOrDes;
             this.testVarName = testVarName;
+            Tree.Type type = getDestructureType(varOrDes);
+            if (type != null) {
+                this.toType = type.getTypeModel();
+            } else {
+                this.toType = specifierExpr.getTypeModel();
+            }
         }
         
         @Override
         public final Tree.Variable getVariable() {
-            return variable;
+            return (Tree.Variable)varOrDes;
+        }
+        
+        @Override
+        public final Tree.Statement getVarOrDestructure() {
+            return varOrDes;
+        }
+        
+        @Override
+        public final boolean isDestructure() {
+            return varOrDes instanceof Tree.Destructure;
         }
         
         @Override
@@ -963,7 +979,7 @@ public class StatementTransformer extends AbstractTransformer {
             // generation of Cond depends on being able to call this method multiple times and
             // get the same result. See https://github.com/ceylon/ceylon-compiler/issues/1532
             if(variableName == null)
-                variableName = naming.substituted(variable.getDeclarationModel()).capture();
+                variableName = naming.substituted(getVariable().getDeclarationModel()).capture();
             return variableName;
         }
         
@@ -1003,7 +1019,7 @@ public class StatementTransformer extends AbstractTransformer {
          */
         @Override
         public JCExpression makeDefaultExpr() {
-            at(variable);
+            at(varOrDes);
             return makeDefaultExprForType(toType);
         }
         
@@ -1014,8 +1030,16 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected JCExpression makeResultType() {
-            ProducedType tmpVarType = getExpression().getTypeModel();
-            return makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
+            return makeJavaType(getResultType(), JT_NO_PRIMITIVES);
+        }
+
+        @Override
+        public ProducedType getResultType() {
+            ProducedType exprType = getExpression().getTypeModel();
+            if (isOptional(exprType)) {
+                exprType = typeFact().getDefiniteType(exprType);
+            }
+            return exprType;
         }
         
     }
@@ -1079,6 +1103,11 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
+        public ProducedType getResultType() {
+            return typeFact().getObjectDeclaration().getType();
+        }
+
+        @Override
         public JCExpression makeResultExpr() {
             at(getVariable());
             JCExpression expr = getTestVariableName().makeIdent();
@@ -1098,37 +1127,37 @@ public class StatementTransformer extends AbstractTransformer {
     
     class ExistsVarTrans extends BaseVarTransImpl {
 
-        private ExistsVarTrans(Tree.Variable var) {
-            super(var);
+        private ExistsVarTrans(Tree.Statement varOrDes) {
+            super(varOrDes);
         }
         
-        private ExistsVarTrans(Tree.Variable var, CName testVarName) {
-            super(var, testVarName);
+        private ExistsVarTrans(Tree.Statement varOrDes, CName testVarName) {
+            super(varOrDes, testVarName);
         }
         
         @Override
         public JCExpression makeResultExpr() {
-            Value decl = getVariable().getDeclarationModel();
-            ProducedType exprType = getExpression().getTypeModel();
-            if (isOptional(exprType)) {
-                exprType = typeFact().getDefiniteType(exprType);
+            BoxingStrategy boxing;
+            if (isDestructure()) {
+                boxing = BoxingStrategy.BOXED;
+            } else {
+                Value decl = getVariable().getDeclarationModel();
+                boxing = CodegenUtil.getBoxingStrategy(decl);
             }
             return expressionGen().applyErasureAndBoxing(getTestVariableName().makeIdent(),
-                    exprType, willEraseToObject(decl.getType()), true,
-                    CodegenUtil.getBoxingStrategy(decl),
-                    decl.getType(), 0);
+                    getResultType(), willEraseToObject(toType), true,
+                    boxing, toType, 0);
         }
-        
     }
     
     class NonemptyVarTrans extends BaseVarTransImpl {
 
-        private NonemptyVarTrans(Tree.Variable var) {
-            super(var);
+        private NonemptyVarTrans(Tree.Statement varOrDes) {
+            super(varOrDes);
         }
         
-        private NonemptyVarTrans(Tree.Variable var, CName testVarName) {
-            super(var, testVarName);
+        private NonemptyVarTrans(Tree.Statement varOrDes, CName testVarName) {
+            super(varOrDes, testVarName);
         }
         
         @Override
@@ -1292,6 +1321,16 @@ public class StatementTransformer extends AbstractTransformer {
                 }
 
                 @Override
+                public final Tree.Statement getVarOrDestructure() {
+                    return null;
+                }
+                
+                @Override
+                public final boolean isDestructure() {
+                    return false;
+                }
+                
+                @Override
                 public CName getVariableName() {
                     return null;
                 }
@@ -1328,6 +1367,11 @@ public class StatementTransformer extends AbstractTransformer {
 
                 @Override
                 public JCExpression makeResultExpr() {
+                    return null;
+                }
+
+                @Override
+                public ProducedType getResultType() {
                     return null;
                 }
 
@@ -3974,7 +4018,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public SyntheticName name() {
-            return gen.naming.synthetic(var);
+            return gen.naming.substituted(var.getDeclarationModel()).capture();
+//            return gen.naming.synthetic(var);
         }
         
         public JCExpression type() {
