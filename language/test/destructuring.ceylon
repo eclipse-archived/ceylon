@@ -173,12 +173,12 @@ shared void testDestructuring() {
     entryVar(0->"foo");
     entryLiteral();
     entryGeneric();
-    destructuringLet();
-    variadicDestructuring();
-    destructureTupleInEntry();
-    destructureNestedTuple();
-    destructureInFor();
-    destructureInForComprehensions();
-    destructureIf();
-    destructureAssert();
+    destructuringLet(["", 1.0, 2], ""->2);
+    variadicDestructuring(["", "", "", ""], [1, 1.0, ""], [1.0, 2.0, 3.0]);
+    destructureTupleInEntry(""->[1.0, 2.0]);
+    destructureNestedTuple(["", [1, 2.0], ""->""]);
+    destructureInFor({["", 2.0, ""->""], ["", 2.0, ""->""]});
+    destructureInForComprehensions({["", [1.0, 2.0], ""->""], ["", [1.0, 2.0], ""->""]}, {["", [1.0, 2.0], ""->""], ["", [1.0, 2.0], ""->""], null});
+    destructureIf([1.0, 2], ["", ""], ""->2);
+    destructureAssert([1.0, 2], ["", ""], ""->2);
 }
