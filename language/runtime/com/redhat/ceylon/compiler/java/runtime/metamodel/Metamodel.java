@@ -83,7 +83,6 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -95,7 +94,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 
 public class Metamodel {
@@ -1014,7 +1012,8 @@ public class Metamodel {
     public static int getFirstDefaultedParameter(List<Parameter> parameters) {
         int i = 0;
         for(Parameter param : parameters){
-            if(param.isDefaulted()){
+            if(param.isDefaulted() || 
+                    param.isSequenced() && !param.isAtLeastOne()){
                 return i;
             }
             i++;
@@ -1032,7 +1031,7 @@ public class Metamodel {
         }
         return -1;
     }
-
+    
     public static Sequential<? extends ceylon.language.meta.declaration.Module> getModuleList() {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         Set<com.redhat.ceylon.compiler.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();
