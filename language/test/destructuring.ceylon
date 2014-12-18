@@ -264,52 +264,52 @@ void destructureWhile() {
 }
 
 void simpleDestructuring() {
-  value t1=[1, "2", 3.0];
-  value [a,b,c]=t1;
-  check(a==1, "simple destr 0.1");
-  check(b=="2", "simple destr 0.2");
-  check(c==3.0, "simple destr 0.3");
-  value d->e = "K"->1;
-  check(d=="K", "simple destr 0.4");
-  check(e==1, "simple destr 0.5");
-  value [f,g,[h,i,j]]=[9,10,t1];
-  check(f==9, "simple destr 0.6");
-  check(g==10, "simple destr 0.7");
-  check(h==a, "simple destr 0.8");
-  check(i==b, "simple destr 0.9");
-  check(j==c, "simple destr 0.10");
-  value [m,n,o->p] = [c,d,e->f];
-  check(m==c, "simple destr 0.11");
-  check(n==d, "simple destr 0.12");
-  check(o==e, "simple destr 0.13");
-  check(p==f, "simple destr 0.14");
-  value [q,*r] = t1;
-  check(q==a, "simple destr 0.15");
-  check(r==["2",3.0], "simple destr 0.16");
-  value t2=[[1,2],[3,4],[5,6]];
-  value t3=[1->2,3->4,5->6];
-  for ([s,t] in t2) {
-    check(s%2==1 && t%2==0, "simple destructuring 1");
-  }
-  for (u->v in t3) {
-    check(u%2==1 && v%2==0, "simple destructuring 2");
-  }
-  check([ for ([w,x] in t2) w+x ] == [3,7,11], "simple destructuring 3");
-  check([ for ([w,x] in t2) if (w%2==1) w+x ] == [3,7,11], "simple destructuring 4");
-  check((let (y->z="K"->1, aa=y.lowercased,ab=z*5) [aa,ab]) == ["k",5], "simple destructuring 5");
-  Entry<Integer,String>? ac = 1->"2";
-  if (exists ad->ae = ac) {
-    check(ad==1 && ae=="2", "simple destructuring 6");
-  }
-  [Integer,String]? af = [1, "2"];
-  if (exists [ag,ah] = af) {
-    check(ag==1 && ah=="2", "simple destructuring 7");
-  }
-  [String+] ai = ["1","2","3"];
-  if (nonempty [aj, *ak] = ai) {
-    check(aj=="1", "simple destructuring 8");
-    check(ak==["2","3"], "simple destructuring 9");
-  }
+    value t1=[1, "2", 3.0];
+    value [a,b,c]=t1;
+    check(a==1, "simple destr 0.1");
+    check(b=="2", "simple destr 0.2");
+    check(c==3.0, "simple destr 0.3");
+    value d->e = "K"->1;
+    check(d=="K", "simple destr 0.4");
+    check(e==1, "simple destr 0.5");
+    value [f,g,[h,i,j]]=[9,10,t1];
+    check(f==9, "simple destr 0.6");
+    check(g==10, "simple destr 0.7");
+    check(h==a, "simple destr 0.8");
+    check(i==b, "simple destr 0.9");
+    check(j==c, "simple destr 0.10");
+    value [m,n,o->p] = [c,d,e->f];
+    check(m==c, "simple destr 0.11");
+    check(n==d, "simple destr 0.12");
+    check(o==e, "simple destr 0.13");
+    check(p==f, "simple destr 0.14");
+    value [q,*r] = t1;
+    check(q==a, "simple destr 0.15");
+    check(r==["2",3.0], "simple destr 0.16");
+    value t2=[[1,2],[3,4],[5,6]];
+    value t3=[1->2,3->4,5->6];
+    for ([s,t] in t2) {
+        check(s%2==1 && t%2==0, "simple destructuring 1");
+    }
+    for (u->v in t3) {
+        check(u%2==1 && v%2==0, "simple destructuring 2");
+    }
+    check([ for ([w,x] in t2) w+x ] == [3,7,11], "simple destructuring 3");
+    check([ for ([w,x] in t2) if (w%2==1) w+x ] == [3,7,11], "simple destructuring 4");
+    check((let (y->z="K"->1, aa=y.lowercased,ab=z*5) [aa,ab]) == ["k",5], "simple destructuring 5");
+    Entry<Integer,String>? ac = 1->"2";
+    if (exists ad->ae = ac) {
+        check(ad==1 && ae=="2", "simple destructuring 6");
+    }
+    [Integer,String]? af = [1, "2"];
+    if (exists [ag,ah] = af) {
+        check(ag==1 && ah=="2", "simple destructuring 7");
+    }
+    [String+] ai = ["1","2","3"];
+    if (nonempty [aj, *ak] = ai) {
+        check(aj=="1", "simple destructuring 8");
+        check(ak==["2","3"], "simple destructuring 9");
+    }
 }
 
 @test
