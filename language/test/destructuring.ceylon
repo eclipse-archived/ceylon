@@ -278,7 +278,6 @@ shared void testDestructuring() {
     entryVar(0->"foo");
     entryLiteral();
     entryGeneric();
-    destructureAssert();
     destructureNestedTuple(["1",[2,3.0],"4"->"5"]);
     destructureTupleInEntry("1"->[2.0,3.0]);
     destructuringLet(["1",2.0,3], "4"->Singleton("5"));
@@ -286,5 +285,6 @@ shared void testDestructuring() {
     destructureInForComprehensions({["1",[2.0,3.0,4.0],"5"->"6"]}, {["1",[2.0,3.0,4.0],"5"->"6"],null});
     destructureInFor{["1",2.0,"3"->"4"],["5",6.0,"7"->"8"]};
     destructureIf([1.0,2], ["Tako","Enrique"], "K"->Singleton("V"));
+    destructureAssert([1.0,2], ["Tako","Enrique"], "K"->Singleton("V"));
     simpleDestructuring();
 }
