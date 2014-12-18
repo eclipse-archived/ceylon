@@ -145,11 +145,13 @@ public class WS {
     public static List<Link> collectLinks(HttpURLConnection con) {
         List<String> linkHeaders = con.getHeaderFields().get("Link");
         List<Link> ret = new LinkedList<Link>();
-        for(String linkHeader : linkHeaders){
-            // split it at ","
-            String[] links = linkHeader.split(",");
-            for(String link : links){
-                ret.add(parseLink(link));
+        if (linkHeaders != null) {
+            for(String linkHeader : linkHeaders){
+                // split it at ","
+                String[] links = linkHeader.split(",");
+                for(String link : links){
+                    ret.add(parseLink(link));
+                }
             }
         }
         return ret;
