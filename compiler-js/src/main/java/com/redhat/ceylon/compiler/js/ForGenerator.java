@@ -56,13 +56,10 @@ public class ForGenerator {
         gen.beginBlock();
         if (that instanceof Tree.ValueIterator) {
             directAccess.add(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
-        } else if (that instanceof Tree.KeyValueIterator) {
-            String keyvar = gen.getNames().name(((Tree.KeyValueIterator)that).getKeyVariable().getDeclarationModel());
-            String valvar = gen.getNames().name(((Tree.KeyValueIterator)that).getValueVariable().getDeclarationModel());
-            gen.out("var ", keyvar, "=", itemVar, ".key,", valvar, "=", itemVar, ".item");
+        } else if (that instanceof Tree.PatternIterator) {
+            gen.out("var ");
+            new Destructurer(((Tree.PatternIterator) that).getPattern(), gen, directAccess, itemVar, true);
             gen.endLine(true);
-            directAccess.add(((Tree.KeyValueIterator)that).getKeyVariable().getDeclarationModel());
-            directAccess.add(((Tree.KeyValueIterator)that).getValueVariable().getDeclarationModel());
         }
         return itemVar;
     }

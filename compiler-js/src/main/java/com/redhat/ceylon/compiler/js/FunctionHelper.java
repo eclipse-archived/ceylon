@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -321,19 +322,28 @@ public class FunctionHelper {
     static void generateLet(final Tree.LetExpression that, final Set<Declaration> directs, final GenerateJsVisitor gen) {
         gen.out("function(){var ");
         boolean first=true;
-        for (Tree.Variable var : that.getLetClause().getVariables()) {
+        HashSet<Declaration> decs2 = new HashSet<>();
+        for (Tree.Statement st : that.getLetClause().getVariables()) {
             if (!first)gen.out(",");
-            gen.out(gen.getNames().name(var.getDeclarationModel()), "=");
-            var.getSpecifierExpression().getExpression().visit(gen);
-            directs.add(var.getDeclarationModel());
+            if (st instanceof Tree.Variable) {
+                final Tree.Variable var = (Tree.Variable)st;
+                gen.out(gen.getNames().name(var.getDeclarationModel()), "=");
+                var.getSpecifierExpression().getExpression().visit(gen);
+                directs.add(var.getDeclarationModel());
+                decs2.add(var.getDeclarationModel());
+            } else if (st instanceof Tree.Destructure) {
+                final String expvar = gen.getNames().createTempVariable();
+                gen.out(expvar, "=");
+                ((Tree.Destructure)st).getSpecifierExpression().visit(gen);
+                decs2.addAll(new Destructurer(((Tree.Destructure)st).getPattern(),
+                        gen, directs, expvar, false).getDeclarations());
+            }
             first=false;
         }
         gen.out(";return ");
         that.getLetClause().getExpression().visit(gen);
         gen.out(";}()");
-        for (Tree.Variable var : that.getLetClause().getVariables()) {
-            directs.remove(var.getDeclarationModel());
-        }
+        directs.removeAll(decs2);
     }
 
     private static void closeMPL(List<MplData> mpl, ProducedType rt, GenerateJsVisitor gen) {

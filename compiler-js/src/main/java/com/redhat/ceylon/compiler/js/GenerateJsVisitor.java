@@ -3239,23 +3239,10 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(final Tree.Destructure that) {
         if (errVisitor.hasErrors(that))return;
-        final String tmpvar = names.createTempVariable();
-        out("var ", tmpvar, "=");
+        final String expvar = names.createTempVariable();
+        out("var ", expvar, "=");
         that.getSpecifierExpression().visit(this);
-        if (that.getDestructuredVariables() instanceof Tree.VariableTuple) {
-            int start = 0;
-            final Tree.VariableTuple vt = (Tree.VariableTuple)that.getDestructuredVariables();
-            for (Tree.Variable v : vt.getVariables()) {
-                directAccess.add(v.getDeclarationModel());
-                out(",", names.name(v.getDeclarationModel()), "=", tmpvar, ".$_get(", Integer.toString(start++), ")");
-            }
-        } else if (that.getDestructuredVariables() instanceof Tree.KeyValue) {
-            final Tree.KeyValue kv = (Tree.KeyValue)that.getDestructuredVariables();
-            out(",", names.name(kv.getKey().getDeclarationModel()), "=", tmpvar, ".key,",
-                    names.name(kv.getValue().getDeclarationModel()), "=", tmpvar, ".item");
-            directAccess.add(kv.getKey().getDeclarationModel());
-            directAccess.add(kv.getValue().getDeclarationModel());
-        }
+        new Destructurer(that.getPattern(), this, directAccess, expvar, false);
         endLine(true);
     }
 

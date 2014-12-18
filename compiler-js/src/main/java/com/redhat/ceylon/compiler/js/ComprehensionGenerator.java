@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -132,17 +133,19 @@ class ComprehensionGenerator {
             }
 
             // value or key/value variables
-            if (loop.keyVarName == null) {
-                gen.out(",", loop.valueVarName, "=", finished);
-                gen.endLine(true);
-            } else {
-                gen.out(",", loop.keyVarName, ",", loop.valueVarName);
-                gen.endLine(true);
+            gen.out(",", loop.valueVarName, "=", finished);
+            if (loop.pattern != null) {
+                HashSet<Declaration> decs = new HashSet<>();
+                new Destructurer(loop.pattern, null, decs, "", true);
+                for (Declaration d : decs) {
+                    gen.out(",", names.name(d));
+                }
             }
+            gen.endLine(true);
 
             // generate the "next" function for this loop
             boolean isLastLoop = (loopIndex == (loops.size()-1));
-            if (isLastLoop && loop.conditions.isEmpty() && (loop.keyVarName == null)) {
+            if (isLastLoop && loop.conditions.isEmpty() && (loop.pattern == null)) {
                 // simple case: innermost loop without conditions, no key/value iterator
                 gen.out("var n", loop.valueVarName, "=function(){return ",
                         loop.valueVarName, "=", loop.itVarName, ".next();}");
@@ -154,7 +157,7 @@ class ComprehensionGenerator {
 
                 // extra entry variable for key/value iterators
                 String elemVarName = loop.valueVarName;
-                if (loop.keyVarName != null) {
+                if (loop.pattern != null) {
                     elemVarName = names.createTempVariable();
                     gen.out("var ", elemVarName); gen.endLine(true);
                 }
@@ -165,9 +168,9 @@ class ComprehensionGenerator {
                 gen.beginBlock();
 
                 // get key/value if necessary
-                if (loop.keyVarName != null) {
-                    gen.out(loop.keyVarName, "=", elemVarName, ".key"); gen.endLine(true);
-                    gen.out(loop.valueVarName, "=", elemVarName, ".item"); gen.endLine(true);
+                if (loop.pattern != null) {
+                    new Destructurer(loop.pattern, gen, directAccess, elemVarName, true);
+                    gen.endLine(true);
                 }
 
                 // generate conditions as nested ifs
@@ -190,7 +193,7 @@ class ComprehensionGenerator {
                 retainedVars.emitRetainedVars(gen);
 
                 // for key/value iterators, value==undefined indicates that the iterator is finished
-                if (loop.keyVarName != null) {
+                if (loop.pattern != null) {
                     gen.out(loop.valueVarName, "=undefined"); gen.endLine(true);
                 }
 
@@ -214,7 +217,7 @@ class ComprehensionGenerator {
         // Check if another element is available on the innermost loop.
         // If yes, evaluate the expression, advance the iterator and return the result.
         ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
-        gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.keyVarName==null)
+        gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.pattern==null)
                 ? finished : "undefined", ")");
         gen.beginBlock();
         declareExternalLoopVars(lastLoop);
@@ -254,11 +257,6 @@ class ComprehensionGenerator {
     }
 
     private void declareExternalLoopVars(ComprehensionLoopInfo loop) {
-        if (loop.keyVarName != null) {
-            String tk = names.createTempVariable();
-            gen.out("var ", tk, "=", loop.keyVarName); gen.endLine(true);
-            names.forceName(loop.keyDecl, tk);
-        }
         String tv = names.createTempVariable();
         gen.out("var ", tv, "=", loop.valueVarName); gen.endLine(true);
         names.forceName(loop.valDecl, tv);
@@ -271,41 +269,32 @@ class ComprehensionGenerator {
         public final List<List<ConditionGenerator.VarHolder>> conditionVars = new ArrayList<List<ConditionGenerator.VarHolder>>();
         public final String itVarName;
         public final String valueVarName;
-        public final String keyVarName;
-        public final Declaration keyDecl;
         public final Declaration valDecl;
+        public final Tree.Pattern pattern;
 
         public ComprehensionLoopInfo(Tree.Comprehension that, Tree.ForIterator forIterator) {
             this.forIterator = forIterator;
             itVarName = names.createTempVariable();
             Tree.Variable valueVar = null;
-            Tree.Variable keyVar = null;
             if (forIterator instanceof Tree.ValueIterator) {
                 valueVar = ((Tree.ValueIterator) forIterator).getVariable();
-            } else if (forIterator instanceof Tree.KeyValueIterator) {
-                Tree.KeyValueIterator kvit = (Tree.KeyValueIterator) forIterator;
-                valueVar = kvit.getValueVariable();
-                keyVar = kvit.getKeyVariable();
+                pattern = null;
+                valDecl = valueVar.getDeclarationModel();
+                valueVarName = names.name(valDecl);
+                directAccess.add(valDecl);
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                pattern = ((Tree.PatternIterator) forIterator).getPattern();
+                valueVar = null;
+                valDecl = null;
+                valueVarName = names.createTempVariable();
             } else {
                 that.addError("No support yet for iterators of type "
                               + forIterator.getClass().getName());
                 valueVarName = null;
-                keyVarName = null;
-                keyDecl = null;
                 valDecl = null;
+                pattern = null;
                 return;
             }
-            if (keyVar == null) {
-                keyVarName = null;
-                keyDecl = null;
-            } else {
-                keyDecl = keyVar.getDeclarationModel();
-                keyVarName = names.name(keyDecl);
-                directAccess.add(keyDecl);
-            }
-            valDecl = valueVar.getDeclarationModel();
-            this.valueVarName = names.name(valDecl);
-            directAccess.add(valDecl);
         }
     }
 }
