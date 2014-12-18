@@ -13,6 +13,7 @@ public class Value extends MethodOrValue implements Scope {
     private boolean late;
     private boolean enumValue;
     private boolean specifiedInForElse;
+    private boolean inferred;
 
     private Setter setter;
     // used for object declarations that use their own value binding in their body
@@ -76,6 +77,14 @@ public class Value extends MethodOrValue implements Scope {
     
     public void setSelfCaptured(boolean selfCaptured) {
         this.selfCaptured = selfCaptured;
+    }
+    
+    public boolean isInferred() {
+        return inferred;
+    }
+    
+    public void setInferred(boolean inferred) {
+        this.inferred = inferred;
     }
 
 }

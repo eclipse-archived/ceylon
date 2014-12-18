@@ -3358,8 +3358,8 @@ condition returns [Condition condition]
     
 booleanCondition returns [BooleanCondition condition]
     : { $condition = new BooleanCondition(null); }
-      expression
-      { $condition.setExpression($expression.expression); }
+      functionOrExpression
+      { $condition.setExpression($functionOrExpression.expression); }
     ;
     
 existsCondition returns [ExistsCondition condition]

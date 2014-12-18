@@ -40,3 +40,12 @@ void parameterInference() {
     iterable { (string)=>print(string),
         (string)=>print(string) };
 }
+
+void testNotVariable() {
+    void fun(void asdfas(Integer i)) {}
+    fun(void (y) {
+        @error y = 1; 
+        @error print(y=2);
+        @error y++;
+    });
+}
