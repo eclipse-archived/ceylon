@@ -2203,6 +2203,16 @@ public class Naming implements LocalId {
         }
     }
     
+    SyntheticName syntheticDestructure(Tree.Statement varOrDes) {
+        if (varOrDes instanceof Tree.Variable) {
+            return synthetic((Tree.Variable)varOrDes);
+        } else if (varOrDes instanceof Tree.Destructure) {
+            return synthetic(((Tree.Destructure)varOrDes).getPattern());
+        } else {
+            throw BugException.unhandledCase(varOrDes);
+        }
+    }
+    
     SyntheticName synthetic(Tree.ForIterator forIterator) {
         if (forIterator instanceof Tree.ValueIterator) {
             return synthetic(((Tree.ValueIterator)forIterator).getVariable());
