@@ -148,6 +148,23 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
     //}
 }
 
+void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
+    //assert (exists [x, i] = maybePair);
+    //Float c = x;
+    //Integer j = i;
+    //assert (exists k->v = maybeEntry);
+    //String key = k;
+    //Object item = v;
+    //assert (nonempty [name, *rest] = names);
+    //String n = name;
+    //String[] ns = rest;
+    //assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
+    //Float c2 = x2;
+    //Integer j2 = i2;
+    //String n2 = name2;
+    //String[] ns2 = rest2;
+}
+
 @test
 shared void testDestructuring() {
     tupleVar([0, 1.0, "foo"]);
@@ -156,4 +173,12 @@ shared void testDestructuring() {
     entryVar(0->"foo");
     entryLiteral();
     entryGeneric();
+    destructuringLet();
+    variadicDestructuring();
+    destructureTupleInEntry();
+    destructureNestedTuple();
+    destructureInFor();
+    destructureInForComprehensions();
+    destructureIf();
+    destructureAssert();
 }
