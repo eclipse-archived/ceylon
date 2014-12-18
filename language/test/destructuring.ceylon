@@ -209,17 +209,25 @@ void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Obj
     //assert (exists [x, i] = maybePair);
     //Float c = x;
     //Integer j = i;
+    //check(c==1.0, "destr assert 1");
+    //check(j==2, "destr assert 2");
     //assert (exists k->v = maybeEntry);
     //String key = k;
     //Object item = v;
+    //check(key=="K", "destr assert 3");
+    //check(item is Singleton<String>, "destr assert 4");
     //assert (nonempty [name, *rest] = names);
     //String n = name;
     //String[] ns = rest;
+    //check(n=="Tako", "destr assert 5");
+    //check(ns==["Enrique"], "destr assert 6");
     //assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
     //Float c2 = x2;
     //Integer j2 = i2;
     //String n2 = name2;
     //String[] ns2 = rest2;
+    //check(c2==1.0 && j2==2, "destr assert 7");
+    //check(n2=="Tako" && ns2==["Enrique"], "destr assert 8");
 }
 
 void destructureWhile() {
