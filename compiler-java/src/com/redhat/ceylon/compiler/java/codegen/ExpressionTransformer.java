@@ -2982,10 +2982,22 @@ public class ExpressionTransformer extends AbstractTransformer {
     private ExpressionAndType transformArgument(SimpleInvocation invocation,
             int argIndex, BoxingStrategy boxingStrategy) {
         ExpressionAndType exprAndType;
-        final JCExpression expr;
-        final JCExpression type;
-        expr = invocation.getTransformedArgumentExpression(argIndex);
-        type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        JCExpression expr = invocation.getTransformedArgumentExpression(argIndex);
+        JCExpression type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        if (argIndex == 0
+                && typeFact().isOptionalType(invocation.getParameterType(argIndex))
+                && invocation.getArgumentType(argIndex).isSubtypeOf(typeFact().getNullDeclaration().getType())
+                && ((invocation.getPrimaryDeclaration() instanceof Constructor
+                        && Decl.isDefaultConstructor((Constructor)invocation.getPrimaryDeclaration())) 
+                    || 
+                    (Decl.getConstructedClass(invocation.getPrimaryDeclaration()) != null 
+                            && Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isSerializable()))) {
+            // we've invoking the default constructor, whose first parameter has optional type
+            // with a null argument: That will be ambiguous wrt any named constructors
+            // with otherwise identical signitures, so we need a typecast to
+            // disambiguate
+            expr = make().TypeCast(makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), expr);
+        }
         exprAndType = new ExpressionAndType(expr, type);
         return exprAndType;
     }
