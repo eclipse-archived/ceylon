@@ -4088,6 +4088,9 @@ public class StatementTransformer extends AbstractTransformer {
                         tupleAccessExpr = makeQualIdent(seqVarAccessExpr, "getFromFirst");
                     }
                     fullGetExpr = make().Apply(null, tupleAccessExpr, List.of(idxExpr));
+                    if (isVariadicVariable(p)) {
+                        fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
+                    }
                 } else {
                     fullGetExpr = null;
                 }
