@@ -1066,7 +1066,8 @@ shared interface Iterable<out Element, out Absent=Null>
     {[Element,Element]*} paired 
             => object 
             satisfies {[Element,Element]*} {
-        size => let (size = outer.size-1) size<0 then 0 else size;
+        size => let (size = outer.size-1) 
+                if (size<0) then 0 else size;
         empty => outer.size<2;
         iterator() 
                 => let (iter = outer.iterator()) 
@@ -1113,7 +1114,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 satisfies Iterable<[Element+],Absent> {
             size => let (outerSize = outer.size,
                           quotient = outerSize/length)
-                        length.divides(outerSize) 
+                        if (length.divides(outerSize)) 
                             then quotient 
                             else quotient+1;
             empty => outer.empty;

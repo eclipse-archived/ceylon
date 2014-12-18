@@ -220,10 +220,10 @@ shared sealed interface Sequence<out Element>
                 => outer.getFromFirst(size-1-index);
         
         measure(Integer from, Integer length) 
-                => length<=0 
-                then [] 
-                else (let (start = size-1-from)
-                        outer[start..start-length+1]);
+                => if (length>0)
+                    then let (start = size-1-from)
+                        outer[start..start-length+1]
+                    else [];
         
         span(Integer from, Integer to) 
                 => outer[to..from];
@@ -235,10 +235,10 @@ shared sealed interface Sequence<out Element>
                         else [];
         
         spanTo(Integer to)
-                => to<0 
-                then []
-                else (let (endIndex = size-1) 
-                        outer[endIndex..endIndex-to]);
+                => if (to>=0) 
+                    then let (endIndex = size-1) 
+                        outer[endIndex..endIndex-to]
+                    else [];
         
         iterator() 
                 => let (outerList = outer) 

@@ -841,7 +841,7 @@ shared interface List<out Element>
         
         lastIndex 
                 => let (size = outer.size-from) 
-                    size>0 then size-1;
+                    (size>0 then size-1);
         
         measure(Integer from, Integer length) 
                 => outer[from+this.from:length];
@@ -883,8 +883,8 @@ shared interface List<out Element>
         
         lastIndex 
                 => let (endIndex = outer.size-1) 
-                    endIndex>=0 then
-                        (endIndex<to then endIndex else to);
+                    (endIndex>=0 then
+                        (endIndex<to then endIndex else to));
         
         measure(Integer from, Integer length) 
                 => from+length-1>to 
@@ -926,7 +926,7 @@ shared interface List<out Element>
         
         lastIndex 
                 => let (size = this.size) 
-                    size>0 then size-1;
+                    (size>0 then size-1);
         
         getFromFirst(Integer index) 
                 => let (size = outer.size) 
@@ -954,7 +954,7 @@ shared interface List<out Element>
         
         lastIndex 
                 => let (size = this.size) 
-                    size>0 then size-1;
+                    (size>0 then size-1);
         
         getFromFirst(Integer index) 
                 => if (index<from) then
@@ -1004,8 +1004,8 @@ shared interface List<out Element>
         
         measure(Integer from, Integer length)
                 => if (size>0 && length>0)
-                then (let (start = size-1-from) 
-                        outer[start..start-length+1])
+                then let (start = size-1-from) 
+                    outer[start..start-length+1]
                 else [];
         
         span(Integer from, Integer to) 
