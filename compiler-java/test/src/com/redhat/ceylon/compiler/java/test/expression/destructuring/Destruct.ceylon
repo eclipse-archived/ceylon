@@ -109,10 +109,13 @@ void destructureInFor({[String, Float, String->String]*} iter) {
 }
 
 @noanno
-void destructureInForComprehensions({[String, Float, String->String]*} iter) {
+void destructureInForComprehensions({[String, Float[], String->String]*} iter, {[String, Float[], String->String]?*} iter2) {
     value xs = { for ([x, y, s1->s2] in iter) [s1->s2, y, x] };
-    value ys = { for ([String x, Float y, String s1 -> String s2] in iter) [s1->s2, y, x] };
+    value ys = { for ([String x, Float[] y, String s1 -> String s2] in iter) [s1->s2, y, x] };
     value xys = { for ([x1, y1, sk1->sv1] in iter) for ([x2, y2, sk2->sv2] in iter) [x1, y2, sk1->sv2] };
+    //value xsif1 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup) [s1->s2, y, x] };
+    //value xsif2 = { for ([x, y, s1->s2] in iter) if (nonempty [y1, *restys] = y) [s1->s2, y1, x] };
+    //value xsif3 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup, nonempty [y1, *restys] = y) [s1->s2, y1, x] };
 }
 
 @noanno
@@ -135,4 +138,12 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
         String n = name;
         String[] ns = rest;
     }
+    //if (exists [x, i] = maybePair, nonempty [name, *rest] = names) {
+    //    Float c = x;
+    //    Integer j = i;
+    //    String n = name;
+    //    String[] ns = rest;
+    //} else {
+    //    // Do nothing, just need an else block
+    //}
 }
