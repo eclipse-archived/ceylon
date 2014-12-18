@@ -2176,17 +2176,17 @@ nonemptyParametersStart
 
 functionOrExpression returns [Expression expression]
     : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart) =>
-      f=anonymousFunction
+      anonymousFunction
       { $expression = new Expression(null);
-        $expression.setTerm($f.function); }
-    | ce=conditionalExpression
+        $expression.setTerm($anonymousFunction.function); }
+    | conditionalExpression
       { $expression = new Expression(null); 
-        $expression.setTerm($ce.term); }
+        $expression.setTerm($conditionalExpression.term); }
+    | switchExpression
+      { $expression = new Expression(null); 
+        $expression.setTerm($switchExpression.term); }
     | e=expression
       { $expression = $e.expression; }
-    | l=let
-      { $expression = new Expression(null);
-        $expression.setTerm($l.let); }
     ;
 
 let returns [LetExpression let]
@@ -2238,16 +2238,16 @@ letClause returns [LetClause letClause]
       )?
       RPAREN
       { $letClause.setEndToken($RPAREN); }
-      functionOrExpression
-      { $letClause.setExpression($functionOrExpression.expression); 
+      conditionalBranch
+      { $letClause.setExpression($conditionalBranch.expression); 
         $letClause.setEndToken(null); }
     ;
 
 conditionalExpression returns [Term term]
     : ifExpression
       { $term = $ifExpression.term; }
-    | switchExpression
-      { $term = $switchExpression.term; }
+    | let
+      { $term = $let.let; }
     ;
 
 switchExpression returns [SwitchExpression term]
@@ -2324,19 +2324,15 @@ caseExpression returns [CaseClause clause]
       { $clause = new CaseClause($CASE_CLAUSE); }
       caseItemList
       { $clause.setCaseItem($caseItemList.item); }
-      disjunctionExpression
-      { Expression e = new Expression(null);
-        e.setTerm($disjunctionExpression.term); 
-        $clause.setExpression(e); }
+      conditionalBranch
+      { $clause.setExpression($conditionalBranch.expression); }
     ;
 
 defaultCaseExpression returns [ElseClause clause]
     : ELSE_CLAUSE 
       { $clause = new ElseClause($ELSE_CLAUSE); }
-      disjunctionExpression
-      { Expression e = new Expression(null);
-        e.setTerm($disjunctionExpression.term); 
-        $clause.setExpression(e); }
+      conditionalBranch
+      { $clause.setExpression($conditionalBranch.expression); }
     ;
 
 ifExpression returns [IfExpression term]
@@ -2395,32 +2391,26 @@ ifExpression returns [IfExpression term]
       }
     ;
 
+conditionalBranch returns [Expression expression]
+    : conditionalExpression
+      { $expression = new Expression(null);
+        $expression.setTerm($conditionalExpression.term); }
+    | disjunctionExpression
+      { $expression = new Expression(null);
+        $expression.setTerm($disjunctionExpression.term); }
+    ;
+
 thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
     : conditions
       { $conditionList = $conditions.conditionList; }
-      (
-        THEN_CLAUSE
-        { $ifClause = new IfClause($THEN_CLAUSE); }
-        de1=disjunctionExpression
-        { Expression e = new Expression(null);
-          e.setTerm($de1.term);
-          $ifClause.setExpression(e); }
-      )?
-      (
-        ELSE_CLAUSE
-        { $elseClause = new ElseClause($ELSE_CLAUSE); }
-        (
-          de2=disjunctionExpression
-          { Expression e = new Expression(null);
-            e.setTerm($de2.term);
-            $elseClause.setExpression(e); }
-        | 
-          ifExpression
-          { Expression e = new Expression(null);
-            e.setTerm($ifExpression.term);
-            $elseClause.setExpression(e); }
-        )
-      )?
+      THEN_CLAUSE
+      { $ifClause = new IfClause($THEN_CLAUSE); }
+      cb1=conditionalBranch
+      { $ifClause.setExpression($cb1.expression); }
+      ELSE_CLAUSE
+      { $elseClause = new ElseClause($ELSE_CLAUSE); }
+      cb2=conditionalBranch
+      { $elseClause.setExpression($cb2.expression); }
     ;
 
 anonymousFunction returns [FunctionArgument function]
