@@ -341,51 +341,55 @@ public class StatementTransformer extends AbstractTransformer {
             List<JCStatement> elseStmts;
             java.util.List<Tree.Condition> rest = Collections.<Tree.Condition>emptyList();
             if (transformedCond.getElseVarTrans() != null) {
-                Substitution subs = getSubstitution(transformedCond.getElseVarTrans());
+                List<Substitution> subs = getSubstitutions(transformedCond.getElseVarTrans());
                 elseStmts = transformInnermostElse(transformedCond, rest);
                 elseStmts = transformCommonResultDecl(transformedCond.getElseVarTrans(), elseStmts);
-                if (subs != null) {
-                    subs.close();
-                }
+                closeSubstitutions(subs);
             } else {
                 elseStmts = transformInnermostElse(transformedCond, rest);
             }
 
-            Substitution subs = getSubstitution(transformedCond.getVarTrans());
+            List<Substitution> subs = getSubstitutions(transformedCond.getVarTrans());
             List<JCStatement> stmts = transformInnermostThen(transformedCond);
             stmts = transformCommonResultDecl(transformedCond.getVarTrans(), stmts);
-            if (subs != null) {
-                subs.close();
-            }
+            closeSubstitutions(subs);
             
             stmts = transformCommon(transformedCond, rest, test, stmts, elseStmts);
             
             return stmts;
         }
         
-        protected Substitution getSubstitution(VarTrans var) {
-            Substitution subs;
-            if (var.hasResultDecl()) {
-                subs = naming.substituteAlias(var.getVariable().getDeclarationModel());
-            } else {
-                subs = null;
+        protected List<Substitution> getSubstitutions(VarTrans vartrans) {
+            if (vartrans.hasResultDecl()) {
+                List<Substitution> subs = List.nil();
+                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), null, null, true);
+                for (VarDefBuilder v : vars) {
+                    subs = subs.append(naming.substituteAlias(v.var.getDeclarationModel()));
+                }
+                return subs;
             }
-            return subs;
+            return null;
+        }
+        
+        protected void closeSubstitutions(List<Substitution> subs) {
+            if (subs != null) {
+                for (Substitution s : subs) {
+                    s.close();
+                }
+            }
         }
         
         @Override
         protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
             Cond intermediate = getConditionTransformer(condition);
             JCExpression test = intermediate.makeTest();
-            Substitution subs = getSubstitution(intermediate.getVarTrans());
+            List<Substitution> subs = getSubstitutions(intermediate.getVarTrans());
             List<JCStatement> stmts = transformList(rest);
             stmts = transformCommonResultDecl(intermediate.getVarTrans(), stmts);
             List<JCStatement> intermediateElse = transformIntermediateElse(intermediate, rest);
             stmts = transformCommon(intermediate, rest, test, 
                     stmts, intermediateElse);
-            if (subs != null) {
-                subs.close();
-            }
+            closeSubstitutions(subs);
             return stmts;
         }
 
@@ -775,8 +779,8 @@ public class StatementTransformer extends AbstractTransformer {
             return this.conditions.size() > 1;
         }
         
-        protected Substitution getSubstitution(VarTrans var) {
-            Substitution subs = super.getSubstitution(var);
+        protected List<Substitution> getSubstitutions(VarTrans var) {
+            List<Substitution> subs = super.getSubstitutions(var);
             if (subs == null) {
                 return subs;
             }
@@ -784,7 +788,9 @@ public class StatementTransformer extends AbstractTransformer {
             while (scope instanceof ConditionScope) {
                 scope = scope.getScope();
             }
-            subs.scopeClose(scope);
+            for (Substitution s : subs) {
+                s.scopeClose(scope);
+            }
             // make sure we get a variable name now, and that it doesn't change over time, because
             // we will need this variable name in transformCommonResultDecl(), which declares it,
             // and it runs after we process inner conditions, and if we are an assert, inner conditions
