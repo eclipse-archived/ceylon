@@ -2020,6 +2020,7 @@ shared void run() {
     sandbox(bug537);
     sandbox(bug538);
     sandbox(bug548);
+    sandbox(bug607);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);

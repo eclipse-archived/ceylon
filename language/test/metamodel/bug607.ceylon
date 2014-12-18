@@ -2,7 +2,7 @@ void myFunc(Integer *dummy) {
     print("hi");
 }
 @test
-shared void langBug607() {
+shared void bug607() {
     myFunc();
     `myFunc`.declaration.invoke([]);
 }
