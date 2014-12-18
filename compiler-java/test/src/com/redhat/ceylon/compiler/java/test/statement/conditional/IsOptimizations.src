@@ -185,11 +185,11 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final void testClassShortcircuit$priv$(final .java.lang.Object val, final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object> val2) {
         .java.lang.Object val$1;
         if ((val$1 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov && .com.redhat.ceylon.compiler.java.Util.isReified(val$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$1;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$1;
         }
         .java.lang.Object val2$4;
         if (.com.redhat.ceylon.compiler.java.Util.isReified(val2$4 = val2, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val2$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val2$4;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val2$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val2$4;
         }
     }
     
@@ -207,37 +207,37 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final <T>void testTypeParamAnything$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
         .java.lang.Object val$13;
         if ((val$13 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .com.redhat.ceylon.compiler.java.Util.isReified(val$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.Anything.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.java.lang.Object> val$14 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$13;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.java.lang.Object> val$14 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$13;
         }
         .java.lang.Object val$16;
         if ((val$16 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object> val$17 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$16;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object> val$17 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$16;
         }
         .java.lang.Object val$19;
         if ((val$19 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra && .com.redhat.ceylon.compiler.java.Util.isReified(val$19, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra.class, .ceylon.language.Anything.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra<? super .java.lang.Object> val$20 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra)val$19;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra<? super .java.lang.Object> val$20 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra<? super .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra)val$19;
         }
     }
     
     private final void testTypeParamSupertypeOfUpperBound$priv$(final .java.lang.Object val) {
         .java.lang.Object val$22;
         if ((val$22 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound && .com.redhat.ceylon.compiler.java.Util.isReified(val$22, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound.class, .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound<.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$23 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound)val$22;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound<.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$23 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound<.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound)val$22;
         }
         .java.lang.Object val$25;
         if ((val$25 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$26 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound)val$25;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$26 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound)val$25;
         }
         .java.lang.Object val$28;
         if ((val$28 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound && .com.redhat.ceylon.compiler.java.Util.isReified(val$28, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound.class, .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound<? super .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$29 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound)val$28;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound<? super .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$29 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound<? super .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound)val$28;
         }
     }
     
     private final <T>void testConstrainedTypes$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
         .java.lang.Object val$31;
         if ((val$31 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .com.redhat.ceylon.compiler.java.Util.isReified(val$31, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, $reified$T))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T> val$38 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$31;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T> val$38 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$31;
         } else {
             .java.lang.Object val$33;
             if ((val$33 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .com.redhat.ceylon.compiler.java.Util.isReified(val$33, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)))) {
@@ -245,7 +245,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             } else {
                 .java.lang.Object val$35;
                 if ((val$35 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .com.redhat.ceylon.compiler.java.Util.isReified(val$35, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
-                    final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<.ceylon.language.Boolean> val$36 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$35;
+                    final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<.ceylon.language.Boolean> val$36 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$35;
                 }
             }
         }
@@ -254,7 +254,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final <T>void testSelfTypes$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
         .java.lang.Object val$40;
         if ((val$40 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType && .com.redhat.ceylon.compiler.java.Util.isReified(val$40, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType.class, $reified$T))) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T> val$47 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$40;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T> val$47 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$40;
         } else {
             .java.lang.Object val$42;
             if ((val$42 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType && .com.redhat.ceylon.compiler.java.Util.isReified(val$42, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)))) {
@@ -262,7 +262,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             } else {
                 .java.lang.Object val$44;
                 if ((val$44 = val) instanceof .ceylon.language.Boolean) {
-                    final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.ceylon.language.Boolean> val$45 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$44;
+                    final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.ceylon.language.Boolean> val$45 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$44;
                 }
             }
         }
@@ -271,7 +271,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final <T>void testComplement$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
         .java.lang.Object val$49;
         if (!((val$49 = val) instanceof .ceylon.language.String || val$49 instanceof .ceylon.language.Integer)) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<T> val$53 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$49;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<T> val$53 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<T>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$49;
         } else {
             .java.lang.Object val$51;
             if ((val$51 = val) instanceof .ceylon.language.Integer) {
@@ -285,7 +285,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         }
         .java.lang.Object val$57;
         if (!((val$57 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .com.redhat.ceylon.compiler.java.Util.isReified(val$57, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.String.$TypeDescriptor$)) || val$57 instanceof .ceylon.language.String || val$57 instanceof .ceylon.language.Integer)) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer> val$58 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$57;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer> val$58 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$57;
         }
     }
     

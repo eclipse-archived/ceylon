@@ -9,7 +9,7 @@ final class methodIfIsAnythingSeq_ {
         final .java.lang.Object args = .ceylon.language.process_.get_().getArguments();
         .java.lang.Object args$1;
         if ((args$1 = args) instanceof .ceylon.language.Sequential) {
-            final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential)args$1;
+            final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args$1;
             final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = args$2;
             final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
             .java.lang.Object elem$3 = null;

@@ -152,11 +152,11 @@ final class test_booleans_ {
         }
         .java.lang.Object o$22;
         if ((o$22 = o) instanceof boolean[][]) {
-            final boolean[][] o$23 = (boolean[][])o$22;
+            final boolean[][] o$23 = (boolean[][])(boolean[][])o$22;
         }
         .java.lang.Object o$25;
         if ((o$25 = o) instanceof .ceylon.language.Boolean[][]) {
-            final .ceylon.language.Boolean[][] o$26 = (.ceylon.language.Boolean[][])o$25;
+            final .ceylon.language.Boolean[][] o$26 = (.ceylon.language.Boolean[][])(.ceylon.language.Boolean[][])o$25;
         }
         final boolean[] cloned = .com.redhat.ceylon.compiler.java.language.BooleanArray.$clone(items);
     }

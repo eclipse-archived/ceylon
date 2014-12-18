@@ -23,7 +23,7 @@ final class bug1908fun_ {
                 }
                 .java.lang.Object f$5;
                 if (.com.redhat.ceylon.compiler.java.Util.isReified(f$5 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))) {
-                    final .ceylon.language.Callable<? extends R> f$6 = (.ceylon.language.Callable)f$5;
+                    final .ceylon.language.Callable<? extends R> f$6 = (.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)f$5;
                     f$6.$call$(.ceylon.language.Integer.instance(1L));
                 }
                 return ((.ceylon.language.Iterable<? extends Args, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args).<R>collect($reified$R, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<R>($reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Args, $reified$Args, .ceylon.language.Empty.$TypeDescriptor$), "R(Args)", (short)-1){
