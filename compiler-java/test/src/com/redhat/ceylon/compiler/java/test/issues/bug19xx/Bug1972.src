@@ -1,0 +1,123 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1972() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$x$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Bug1972$x();
+                this($ceylontmp$x$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static final .ceylon.language.String Bug1972$x() {
+        return null;
+    }
+    
+    public Bug1972(final .ceylon.language.String x$param$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Other Other = null;
+    
+    private static final class Other {
+        
+        private Other() {
+        }
+    }
+    
+    private Bug1972(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Other $name$) {
+    }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972((.ceylon.language.String)null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.class);
+}
+class Bug1972Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972 {
+    
+    public Bug1972Sub() {
+        super((.ceylon.language.String)null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub.class);
+}
+class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1972Ser(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+    }
+    
+    Bug1972Ser(final .ceylon.language.String x) {
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser((.ceylon.language.String)null);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.class);
+}
+class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public Bug1972SerSub(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        super(ignored);
+    }
+    
+    Bug1972SerSub() {
+        super((.ceylon.language.String)null);
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        super.$serialize$(dtorFactory);
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        super.$deserialize$(deconstructed);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.class);
+}
