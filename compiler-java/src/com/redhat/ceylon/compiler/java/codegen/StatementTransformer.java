@@ -275,13 +275,11 @@ public class StatementTransformer extends AbstractTransformer {
                 IsVarTrans elseVar = (elseVariable != null) ? new IsVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new IsCond(is, var, elseVar);
             } else if (cond instanceof Tree.ExistsCondition) {
-                // FIXME DESCTRUCTURE
                 Tree.ExistsCondition exists = (Tree.ExistsCondition)cond;
                 ExistsVarTrans var = new ExistsVarTrans(exists.getVariable());
                 ExistsVarTrans elseVar = (elseVariable != null) ? new ExistsVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new ExistsCond(exists, var, elseVar);
             } else if (cond instanceof Tree.NonemptyCondition) {
-                // FIXME DESCTRUCTURE
                 Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition)cond;
                 NonemptyVarTrans var = new NonemptyVarTrans(nonempty.getVariable());
                 NonemptyVarTrans elseVar = (elseVariable != null) ? new NonemptyVarTrans(elseVariable, var.getTestVariableName()) : null;
@@ -502,6 +500,7 @@ public class StatementTransformer extends AbstractTransformer {
                 varDecls.prepend(testVarDecl);
             }
             if (isDeferred()) {
+                // FIXME DESCTRUCTURE
                 List<JCStatement> assignDefault = List.<JCStatement>nil();
                 for (VarTrans unassigned : unassignedResultVars.keySet()) {
                     assignDefault = assignDefault.append(
@@ -523,6 +522,7 @@ public class StatementTransformer extends AbstractTransformer {
                 List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
                 for (VarDefBuilder vdb : vars) {
                     if (isDeferred()) {
+                        // FIXME DESCTRUCTURE
                         unassignedResultVars.put(vartrans, vartrans.getVariableName());
                         varDecls.prepend(vdb.buildDefOnly());
                         stmts = stmts.prepend(make().Exec(make().Assign(vartrans.getVariableName().makeIdent(), vartrans.makeResultExpr())));
@@ -4019,7 +4019,6 @@ public class StatementTransformer extends AbstractTransformer {
         
         public SyntheticName name() {
             return gen.naming.substituted(var.getDeclarationModel()).capture();
-//            return gen.naming.synthetic(var);
         }
         
         public JCExpression type() {
