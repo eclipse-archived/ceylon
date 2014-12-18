@@ -205,6 +205,7 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
 }
 
 void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
+    // FIXME Still fails in the JVM backend
     //assert (exists [x, i] = maybePair);
     //Float c = x;
     //Integer j = i;
@@ -219,6 +220,47 @@ void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Obj
     //Integer j2 = i2;
     //String n2 = name2;
     //String[] ns2 = rest2;
+}
+
+void destructureWhile() {
+    // FIXME Still fails in the JVM backend
+    //variable [Float, Integer]? maybePair = [1.0, 2];
+    //while (exists [x, i] = maybePair) {
+    //    Float c = x;
+    //    Integer j = i;
+    //    check(c==1.0, "destr while 1");
+    //    check(j==2, "destr while 2");
+    //    maybePair = null;
+    //}
+    //variable <String->Object>? maybeEntry = "K"->Singleton("V");
+    //while (exists k->v = maybeEntry) {
+    //    String key = k;
+    //    Object item = v;
+    //    check(key=="K", "destr while 3");
+    //    check(item is Singleton<String>, "destr while 4");
+    //    maybeEntry = null;
+    //}
+    //variable String[] names = ["Tako", "Enrique"];
+    //while (nonempty [name, *rest] = names) {
+    //    String n = name;
+    //    String[] ns = rest;
+    //    check(n=="Tako", "destr while 5");
+    //    check(ns==["Enrique"], "destr while 6");
+    //    names = [];
+    //}
+    //variable [Float, Integer]? maybePair2 = [1.0, 2];
+    //variable String[] names2 = ["Tako", "Enrique"];
+    //if (exists [x, i] = maybePair2, nonempty [name, *rest] = names2) {
+    //    Float c = x;
+    //    Integer j = i;
+    //    String n = name;
+    //    String[] ns = rest;
+    //    check(c==1.0, "destr while 7");
+    //    check(j==2, "destr while 8");
+    //    check(n=="Tako", "destr while 9");
+    //    check(ns==["Enrique"], "destr while 10");
+    //    maybePair = null;
+    //}
 }
 
 void simpleDestructuring() {
@@ -286,5 +328,6 @@ shared void testDestructuring() {
     destructureInFor{["1",2.0,"3"->"4"],["5",6.0,"7"->"8"]};
     destructureIf([1.0,2], ["Tako","Enrique"], "K"->Singleton("V"));
     destructureAssert([1.0,2], ["Tako","Enrique"], "K"->Singleton("V"));
+    destructureWhile();
     simpleDestructuring();
 }
