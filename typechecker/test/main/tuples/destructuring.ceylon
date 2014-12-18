@@ -41,6 +41,7 @@ void destructureNestedTuple([String,[Integer,Float],String->String] tuple) {
     Float ff = f;
     String kk = k;
     String vv = v;
+    value [[xx,yy],zz] = [[1,2],4];
 }
 
 void brokenDestructuring([String,[Integer,Float],String->String] tuple) {
