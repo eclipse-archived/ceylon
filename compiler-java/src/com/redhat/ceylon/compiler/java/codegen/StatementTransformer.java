@@ -4007,6 +4007,18 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
     
+    List<VarDefBuilder> transformDestructure(Tree.Statement stmt, JCExpression varAccessExpr, ProducedType exprType, boolean exprBoxed) {
+        List<VarDefBuilder> result = List.nil();
+        if (stmt instanceof Tree.Variable) {
+            result = result.append(transformVariable((Tree.Variable)stmt, varAccessExpr, exprType, exprBoxed));
+        } else if (stmt instanceof Tree.Destructure) {
+            result = result.appendList(transformPattern(((Tree.Destructure)stmt).getPattern(), varAccessExpr));
+        } else {
+            throw BugException.unhandledCase(stmt);
+        }
+        return result;
+    }
+    
     List<VarDefBuilder> transformPattern(Tree.Pattern pat, JCExpression varAccessExpr) {
         List<VarDefBuilder> result = List.nil();
         
@@ -4060,5 +4072,26 @@ public class StatementTransformer extends AbstractTransformer {
 
     VarDefBuilder transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
         return new VarDefBuilder(expressionGen(), var, initExpr, exprType, exprBoxed);
+    
+    Expression getDestructureExpression(Tree.Statement varOrDes) {
+        Tree.SpecifierExpression specExpr;
+        if (varOrDes instanceof Tree.Variable) {
+            specExpr = ((Tree.Variable)varOrDes).getSpecifierExpression();
+        } else if (varOrDes instanceof Tree.Destructure) {
+            specExpr = ((Tree.Destructure)varOrDes).getSpecifierExpression();
+        } else {
+            throw BugException.unhandledCase(varOrDes);
+        }
+        return (specExpr != null) ? specExpr.getExpression() : null;
+    }
+    
+    Tree.Type getDestructureType(Tree.Statement varOrDes) {
+        if (varOrDes instanceof Tree.Variable) {
+            return ((Tree.Variable)varOrDes).getType();
+        } else if (varOrDes instanceof Tree.Destructure) {
+            return ((Tree.Destructure)varOrDes).getType();
+        } else {
+            throw BugException.unhandledCase(varOrDes);
+        }
     }
 }
