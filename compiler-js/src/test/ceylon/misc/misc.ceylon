@@ -1,3 +1,5 @@
+import check { check }
+
 shared interface X {
     shared void helloWorld() {
        print("hello world");
@@ -52,4 +54,10 @@ shared Integer var() { return 5; }
 {Integer*} container249 = [object249.int];
 shared object object249{
   shared Integer int = 1;
+}
+
+//For testing of 461
+shared class TestClass461 {
+  shared new TestConstructor() {}
+  shared void test() => check(true, "Import toplevel constructor");
 }

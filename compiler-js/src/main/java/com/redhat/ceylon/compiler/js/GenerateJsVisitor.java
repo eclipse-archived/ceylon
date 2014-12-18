@@ -1250,7 +1250,7 @@ public class GenerateJsVisitor extends Visitor
                     if (d.isLate()) {
                         out("undefined");
                     } else {
-                        super.visit(that);
+                        super.visit(specInitExpr);
                     }
                     endLine(true);
                 }
@@ -2182,7 +2182,7 @@ public class GenerateJsVisitor extends Visitor
     boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
-            out(path, ".");
+            out(path, d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? "_" : ".");
         }
         return path.length() > 0;
     }
@@ -2192,8 +2192,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
-        boolean isMember = d.isClassOrInterfaceMember();
-        if (!isMember && isImported(that == null ? null : that.getUnit().getPackage(), d)) {
+        final boolean isMember = d.isClassOrInterfaceMember();
+        final boolean imported = isImported(that == null ? null : that.getUnit().getPackage(), d);
+        if (!isMember && imported) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (opts.isOptimize() && !inProto) {
@@ -2226,17 +2227,36 @@ public class GenerateJsVisitor extends Visitor
                     }
                     scope = scope.getContainer();
                 }
+                if (id != null && path.length() == 0 && id.isToplevel() && !Util.contains(id, that.getScope())) {
+                    //Import of toplevel object or constructor
+                    if (imported) {
+                        path.append(names.moduleAlias(id.getUnit().getPackage().getModule())).append('.');
+                    }
+                    path.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
+                }
                 return path.toString();
             }
         }
-        else {
-            if (d != null && isMember && (d.isShared() || inProto || (!d.isParameter() && defineAsProperty(d)))) {
+        else if (d != null) {
+            if (isMember && (d.isShared() || inProto || (!d.isParameter() && defineAsProperty(d)))) {
                 TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
-                    //a shared local declaration
-                    return names.self((TypeDeclaration)d.getContainer());
-                }
-                else {
+                    //a local declaration of some kind,
+                    //perhaps in an outer scope
+                    id = (TypeDeclaration) d.getContainer();
+                    if (id.isToplevel() && !Util.contains(id, that.getScope())) {
+                        //Import of toplevel object or constructor
+                        final StringBuilder sb = new StringBuilder();
+                        if (imported) {
+                            sb.append(names.moduleAlias(id.getUnit().getPackage().getModule())).append('.');
+                        }
+                        sb.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
+                        return sb.toString();
+                    } else {
+                        //a shared local declaration
+                        return names.self(id);
+                    }
+                } else {
                     //an inherited declaration that might be
                     //inherited by an outer scope
                     return names.self(id);

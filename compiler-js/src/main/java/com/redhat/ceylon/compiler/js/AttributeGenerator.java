@@ -81,7 +81,8 @@ public class AttributeGenerator {
                 } else {
                     //Type of value must be Callable
                     //And the Args Type Parameters is a Tuple
-                    TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(expr.getExpression().getTypeModel(), gen);
+                    TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(attributeNode,
+                            expr.getExpression().getTypeModel(), gen);
                 }
                 gen.out(",");
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false,

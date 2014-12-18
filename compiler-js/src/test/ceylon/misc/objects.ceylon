@@ -68,3 +68,7 @@ void test_objects() {
     fail("#455");
   }
 }
+
+shared object testObject461 {
+  shared void test() => check(true, "Import toplevel object");
+}
