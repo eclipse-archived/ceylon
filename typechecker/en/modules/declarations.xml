@@ -1734,7 +1734,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A type alias declaration assigns a name to an arbitrary type expression,
         usually involving a union and/or intersection of types.</para>
         
-        <synopsis>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier</synopsis>
+        <synopsis>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier ";"</synopsis>
         
         <synopsis>AliasHeader: "alias" TypeName TypeParameters? TypeConstraints?</synopsis>
         
