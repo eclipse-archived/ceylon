@@ -183,7 +183,19 @@ function tpl$(elems,types,spread){
   atr$(that,'string',function(){
     return '['+commaList(elems)+(spread?','+commaList(spread):'')+']';
   },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
-  that.nativeArray=function() { return elems; }
+  that.nativeArray=function(){
+    if (spread) {
+      var e=new Array(elems.length+spread.size);
+      for (var i=0;i<elems.length;i++) {
+        e[i]=elems[i];
+      }
+      var elem;for(var iter=spread.iterator();(elem=iter.next())!==getFinished();) {
+        e[i++]=elem;
+      }
+      return e;
+    }
+    return elems;
+  }
   return that;
 }
 ex$.tpl$=tpl$;
