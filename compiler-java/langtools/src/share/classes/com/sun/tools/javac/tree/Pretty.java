@@ -884,6 +884,11 @@ public class Pretty extends JCTree.Visitor {
             printExprs(tree.args);
             print(")");
             if (tree.def != null) {
+                if (!tree.def.mods.annotations.isEmpty()) {
+                    println();
+                    align();
+                    printAnnotations(tree.def.mods.annotations);
+                }
                 Name enclClassNamePrev = enclClassName;
                 enclClassName =
                         tree.def.name != null ? tree.def.name :

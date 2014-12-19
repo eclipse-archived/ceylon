@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
@@ -141,6 +142,8 @@ public class CallableBuilder {
     private boolean companionAccess = false;
 
     private Naming.Substitution instanceSubstitution;
+
+    private List<JCAnnotation> annotations;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -512,7 +515,9 @@ public class CallableBuilder {
      * Constructs an {@code AbstractCallable} suitable for an anonymous function.
      */
     public static CallableBuilder anonymous(
-            CeylonTransformer gen, Tree.Expression expr,  
+            CeylonTransformer gen,
+            Method model,
+            Tree.Expression expr,  
             java.util.List<Tree.ParameterList> parameterListTree, 
             ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(true);
@@ -520,15 +525,16 @@ public class CallableBuilder {
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
-        return methodArgument(gen, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
+        return methodArgument(gen, model, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
     }
 
     public static CallableBuilder methodArgument(
             CeylonTransformer gen,
+            Method model,
             ProducedType callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts) {
-        return methodArgument(gen, callableTypeModel, parameterListTree, stmts, true);
+        return methodArgument(gen, model,callableTypeModel, parameterListTree, stmts, true);
     }
     
     /**
@@ -549,6 +555,7 @@ public class CallableBuilder {
      */
     private static CallableBuilder methodArgument(
             CeylonTransformer gen,
+            Method model,
             ProducedType callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts, boolean delegateDefaultedCalls) {
@@ -571,6 +578,7 @@ public class CallableBuilder {
         cb.parameterDefaultValueMethods(parameterListTree.get(0));
         cb.delegateDefaultedCalls = delegateDefaultedCalls;
         cb.useDefaultTransformation(stmts);
+        cb.annotations = gen.makeAtMethod().prependList(gen.makeAtName(model.getName())).prependList(gen.makeAtLocalDeclaration(model.getQualifier(), false));
         return cb;
     }
     
@@ -1490,7 +1498,7 @@ public class CallableBuilder {
         
         transformation.appendMethods(classBody);
         
-        JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
+        JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;
         JCNewClass instance = gen.make().NewClass(null, 

@@ -365,8 +365,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
 
-        ProducedType callableType = functionArg.getTypeModel();
-        CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(), 
+        ProducedType callableType = model.getTypedReference().getFullType();//functionArg.getTypeModel();
+        CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(),
+                model,
                 callableType, 
                 Collections.singletonList(functionArg.getParameterLists().get(0)),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
@@ -2549,7 +2550,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
                 Method fp = (Method)fpTree.getParameterModel().getModel();
                 
-                expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
+                expr = CallableBuilder.anonymous(gen(), (Method)fpTree.getTypedDeclaration().getDeclarationModel(), lazy.getExpression(), 
                         ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists(),
                         getTypeForFunctionalParameter(fp),
                         true).build();
@@ -4695,6 +4696,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Method decl = (Method) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
+                    decl,
                     (Tree.Expression)rightTerm,
                     paramExpr.getParameterLists(),
                     paramExpr.getPrimary().getTypeModel(),
