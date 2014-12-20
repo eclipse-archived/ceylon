@@ -745,8 +745,16 @@
            <para>Next, there are type abbreviations for <emphasis>callable types</emphasis>
            which represent the types of functions.</para>
            
-           <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
+           <synopsis>CallableType: PrimaryType "(" (TypeList? | SpreadType) ")"</synopsis>
            
+           <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
+            
+           <synopsis>DefaultedType: Type "="?</synopsis>
+            
+           <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
+           
+           <synopsis>SpreadType: "*" UnionType</synopsis>
+            
            <para>For any type <literal>X</literal>:</para>
            
            <itemizedlist>
@@ -798,12 +806,6 @@
             <synopsis>EmptyType: "[" "]"</synopsis>
             
             <synopsis>TupleType: "[" TypeList "]"</synopsis>
-            
-            <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
-            
-            <synopsis>DefaultedType: Type "="?</synopsis>
-            
-            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
             
             <itemizedlist>
                 <listitem>
