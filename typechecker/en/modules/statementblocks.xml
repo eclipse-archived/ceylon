@@ -12,9 +12,9 @@
     of a control structure, and vice-versa.</para></comment>
     
     <!--
-    <comment><para>TODO: a named argument list looks very much like a block, but is 
-    not currently defined that way. The language would be more regular if we decided to 
-    just make it a block.</para></comment>
+    <comment><para>TODO: a named argument list looks very much like a block, but is not
+    currently defined that way. The language would be more regular if we decided to just 
+    make it a block.</para></comment>
     -->
     
     <section id="blockstructure">
@@ -34,10 +34,11 @@
         element.</para>
         
         <!--
-        <para>As a special case, the <literal>while</literal> condition of a <literal>do/while</literal> 
-        loop is considered to directly occur in the <literal>do</literal> block. All other
-        statements and declarations of the <literal>do</literal> block are considered to
-        directly occur earlier than the <literal>while</literal> condition.</para>
+        <para>As a special case, the <literal>while</literal> condition of a 
+        <literal>do/while</literal> loop is considered to directly occur in the 
+        <literal>do</literal> block. All other statements and declarations of the 
+        <literal>do</literal> block are considered to directly occur earlier than the 
+        <literal>while</literal> condition.</para>
         -->
         
         <para>A program element <emphasis>(indirectly) occurs</emphasis> in a body if:</para>
@@ -47,8 +48,8 @@
                 <para>the program element directly occurs in the body, or</para>
             </listitem>
             <listitem>
-                <para>the program element indirectly occurs inside the body of a declaration
-                or control structure that occurs directly in the body.</para>
+                <para>the program element indirectly occurs inside the body of a 
+                declaration or control structure that occurs directly in the body.</para>
             </listitem>
         </itemizedlist>
         
@@ -135,8 +136,9 @@
                     element is a toplevel declaration of the same package,</para>
                 </listitem>
                 <listitem>
-                    <para>the declaration directly occurs in a body, and the program
-                    element sequentially occurs in the same body,</para>
+                    <para>the declaration directly occurs in a body, the program 
+                    element occurs in the same body, and the declaration sequentially 
+                    occurs earlier than the program element,</para>
                 </listitem>
                 <listitem>
                     <para>the declaration is a parameter or type parameter, and the
