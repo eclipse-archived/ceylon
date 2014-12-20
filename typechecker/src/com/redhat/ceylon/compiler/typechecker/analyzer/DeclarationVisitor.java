@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
@@ -71,7 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
  * @author Gavin King
  *
  */
-public class DeclarationVisitor extends Visitor {
+public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     private final Package pkg;
     private final String filename;
@@ -237,11 +238,11 @@ public class DeclarationVisitor extends Visitor {
                             ((Method) model).setOverloaded(true);
                             abstraction.getOverloads().add(model);
                         }
-                        /*else {
+                        else {
                             that.addError("duplicate declaration name: '" + 
                                     name + "'");
                         }
-                        unit.getDuplicateDeclarations().add(member);*/
+                        unit.getDuplicateDeclarations().add(member);
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();

@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
@@ -43,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -1854,40 +1852,4 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Declaration that) {
-        super.visit(that);
-        if (that instanceof Tree.Variable) {
-            if (((Tree.Variable) that).getType() 
-                    instanceof Tree.SyntheticVariable) {
-                return;
-            }
-        }
-        Declaration model = that.getDeclarationModel();
-        if (!(model instanceof Setter)) {
-            String name = model.getName();
-            if (name!=null) {
-                Scope s = model.getContainer();
-                boolean isControl;
-                do {
-                    Declaration member = 
-                            s.getDirectMember(name, null, false);
-                    if (member!=null && member!=model) {
-                        if (member instanceof Method && 
-                                model instanceof Method &&
-                                s instanceof ClassOrInterface) {
-                            //overloading!!
-                        }
-                        else {
-                            that.addError("duplicate declaration name: '" + 
-                                    name + "'");
-                        }
-                        model.getUnit().getDuplicateDeclarations().add(member);
-                    }
-                    isControl = s instanceof ControlBlock;
-                    s = s.getContainer();
-                }
-                while (isControl);
-            }
-        }
-    }
 }
