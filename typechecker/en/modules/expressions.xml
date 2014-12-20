@@ -440,8 +440,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Compound expressions</title>
         
         <para>An <emphasis>atom</emphasis> is a literal or self reference, a
-        string template, an iterable or tuple enumeration, and anonymous class 
-        expression, or a parenthesized expression.</para>
+        string template, a base expression, an iterable or tuple enumeration, 
+        an anonymous class expression, a metamodel or reference expression, or 
+        a parenthesized expression.</para>
         
         <synopsis>Atom: LiteralExpression | BaseExpression | DelimitedExpression | MetaExpression | SelfReference</synopsis>
         
@@ -1422,7 +1423,23 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Conditional expressions, let expressions, and anonymous class expressions</title>
         
         <para>A <emphasis>conditional expression</emphasis> resembles a control 
-        structure but is part of the expression syntax, and evaluates to a value.</para> 
+        structure but is part of the expression syntax, and evaluates to a value. 
+        A conditional expression comes in one of two forms:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>an <literal>if/then/else</literal> expression resembles 
+                the <literal>if/else</literal> conditional defined in 
+                <xref linkend="ifelse"/>, and</para>
+            </listitem>
+            <listitem>
+                <para>a <literal>switch/case/else</literal> expression resembles 
+                the <literal>switch/case/else</literal> conditional defined in 
+                <xref linkend="switchcaseelse"/>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <synopsis>ConditionalExpression: IfElseExpression | SwitchCaseElseExpression</synopsis>
         
         <para>A <emphasis>let expression</emphasis> allows inline definition of a 
         reference within an expression.</para>
@@ -1430,38 +1447,47 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>An <emphasis>inline class</emphasis> is an anonymous class defined 
         within an expression.</para>
         
-        <section id="inlineconditionalexpressions">
-            <title>Inline conditional expressions</title>
-            
-            <para>A conditional expression comes in two forms:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>an <literal>if/then/else</literal> expression resembles 
-                    the <literal>if/else</literal> conditional defined in 
-                    <xref linkend="ifelse"/>, and</para>
-                </listitem>
-                <listitem>
-                    <para>a <literal>switch/case/else</literal> expression resembles 
-                    the <literal>switch/case/else</literal> conditional defined in 
-                    <xref linkend="switchcaseelse"/>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <synopsis>ConditionalExpression: IfElseExpression | SwitchCaseElseExpression</synopsis>
+        <section id="ifexpressions">
+            <title><literal>if/then/else</literal> expressions</title>
             
             <para>An <literal>if/then/else</literal> expression has a condition 
             list, as defined in <xref linkend="controlstructureconditions"/>, a
             <literal>then</literal> expression, and an <literal>else</literal> 
             expression. The <literal>else</literal> expression is not optional.</para>
             
-            <synopsis>IfElseExpression: "if" ConditionList ThenExpression (ElseExpression | ElseIfExpression)</synopsis>
-            <synopsis>ElseIfExpression: "else" IfElseExpression</synopsis>
+            <synopsis>IfElseExpression: "if" ConditionList ThenExpression ElseExpression</synopsis>
             
             <para>The type of an <literal>if/then/else</literal> expression with
             <literal>then</literal> expression of type <literal>X</literal> and
             <literal>else</literal> or <literal>else if</literal> expression of 
             type <literal>Y</literal> is <literal>X|Y</literal>.</para>
+            
+            <synopsis>ThenExpression: "then" Expression</synopsis>
+            <synopsis>ElseExpression: "else" Expression</synopsis>
+            
+            <para>The expression following <literal>then</literal> or 
+            <literal>else</literal> is parsed with precedence just higher than the 
+            <literal>||</literal> operator, and just lower than the 
+            <literal>then</literal> and <literal>else</literal> operators, that is, 
+            between the layers 3 and 4 defined in
+            <xref linkend="operatorprecedence"/>.</para>
+            
+            <para>Alternatively, the expression following <literal>then</literal>
+            or <literal>else</literal> may be an <literal>if/then/else</literal> 
+            expression or a let expression.</para>
+            
+            <comment><para>Note: the expression following <literal>then</literal>
+            or <literal>else</literal> may not be a <literal>switch/case/else</literal> 
+            expression, since that would introduce an ambiguity related to the optional 
+            <literal>else</literal> clause of the <literal>switch/case/else</literal> 
+            expression.</para></comment>
+            
+            <programlisting>if (exists lang) then lang.name else "Ceylon"</programlisting>
+            
+        </section>
+        
+        <section id="switchexpressions">
+            <title><literal>switch/case/else</literal> expressions</title>
             
             <para>A <literal>switch/case/else</literal> expression has a 
             <literal>switch</literal> expression or inline variable, a list of 
@@ -1476,16 +1502,18 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>else</literal> expression of type <literal>Y</literal> is
             <literal>X1|X2|...|Xn|Y</literal>.</para>
             
-            <synopsis>ThenExpression: "then" Expression</synopsis>
-            <synopsis>ElseExpression: "else" Expression</synopsis>
             <synopsis>CaseExpression: "case" CaseCondition Expression</synopsis>
             
-            <para>The expression following <literal>then</literal>, 
-            <literal>else</literal>, and <literal>case</literal> is parsed with 
-            precedence just higher than the <literal>||</literal> operator, and 
-            just lower than the <literal>then</literal> and <literal>else</literal> 
-            operators, that is, between the layers 3 and 4 defined in
+            <para>The expression following <literal>case</literal> or 
+            <literal>else</literal> is parsed with precedence just higher than the 
+            <literal>||</literal> operator, and just lower than the 
+            <literal>then</literal> and <literal>else</literal> operators, that is, 
+            between the layers 3 and 4 defined in
             <xref linkend="operatorprecedence"/>.</para>
+            
+            <para>Alternatively, the expression following <literal>then</literal>
+            or <literal>else</literal> may be an <literal>if/then/else</literal> 
+            expression or a let expression.</para>
             
             <para>Each <literal>case</literal> expression includes a value case or
             type case, as defined in <xref linkend="caseconditions"/>. Just like
@@ -1501,7 +1529,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <programlisting>if (exists lang) then lang.name else "Ceylon"</programlisting>
             <programlisting>switch (seq) case (null) "null" case (is []) "empty" else "nonempty"</programlisting>
             
         </section>
@@ -1514,6 +1541,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             followed by an expression involving those variables.</para>
             
             <synopsis>LetExpression: "let" LetValueList Expression</synopsis>
+            
+            <para>The expression is parsed with precedence just higher than the 
+            <literal>||</literal> operator, and just lower than the 
+            <literal>then</literal> and <literal>else</literal> operators, that 
+            is, between the layers 3 and 4 defined in
+            <xref linkend="operatorprecedence"/>.</para>
+            
+            <para>Alternatively, the expression may be an <literal>if/then/else</literal> 
+            expression or another let expression.</para>
             
             <synopsis>LetValueList: "(" LetValue ("," LetValue)* ")"</synopsis>
             
@@ -1528,6 +1564,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>The variables are considered in scope in the expression.
             A variable in the list may refer to a variable defined earlier 
             in the list.</para>
+            
+            <programlisting>let (d = sqrt(x^2+y^2)) [x/d, y/d]</programlisting>
         
         </section>
         
