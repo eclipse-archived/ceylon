@@ -346,11 +346,11 @@ TypeConstraints?
     <section id="parameters">
         <title>Parameters</title>
         
-        <para>A function or class declaration may declare <emphasis>parameters</emphasis>.
-        A parameter is a value or function belonging to the declaration it parameterizes.
-        Parameters are distinguished from other values or functions because they occur in
-        a <emphasis>parameter list</emphasis>. A value or function is a parameter of a 
-        class or function if it is:</para>
+        <para>A function, class, or constructor declaration may declare 
+        <emphasis>parameters</emphasis>. A parameter is a value or function belonging to the 
+        declaration it parameterizes. Parameters are distinguished from other values or 
+        functions because they occur in a <emphasis>parameter list</emphasis>. A value or 
+        function is a parameter of a class or function if it is:</para>
         
         <itemizedlist>
             <listitem>
@@ -739,8 +739,8 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a super reference as an argument of an instantiation, 
-                  method invocation, or <literal>extends</literal> clause expression or as 
-                  the value of a value assignment or specification,</para>
+                  function invocation, or <literal>extends</literal> clause expression 
+                  or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
                   <para>use a super reference as an operand of any operator except the
@@ -751,9 +751,9 @@ TypeConstraints?
                   <para>return a super reference, or</para>
                </listitem>
                <listitem>
-                  <para>narrow the type of a super reference using the 
-                  <literal>if (is ...)</literal> construct or 
-                  <literal>case (is ...)</literal>.</para>
+                  <para>narrow the type of a super reference using an assignability 
+                  condition, as defined in 
+                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
                </listitem>
             </itemizedlist>
                     
@@ -937,12 +937,12 @@ TypeConstraints?
 
         <synopsis>ClassDeclaration: Annotations ClassHeader (ClassBody | ClassSpecifier ";")</synopsis>
         
-        <para>An ordinary class declaration specifies a list of parameters required 
-        to instantiate the type, and, optionally a list of type parameters.  A class 
-        declaration may have a superclass, a list of interfaces it satisfies, a self
-        type or an enumerated list of cases, and/or a list of type constraints.</para>
+        <para>An ordinary class declaration may specify, optionally, a list of parameters 
+        required to instantiate the type, and, also optionally, a list of type parameters.
+        A class declaration may have a superclass, a list of interfaces it satisfies, a 
+        self type or an enumerated list of cases, and/or a list of type constraints.</para>
         
-        <synopsis>ClassHeader: "class" TypeName TypeParameters? Parameters ClassInheritance TypeConstraints?</synopsis>
+        <synopsis>ClassHeader: "class" TypeName TypeParameters? Parameters? ClassInheritance TypeConstraints?</synopsis>
         
         <synopsis>ClassInheritance: CaseTypes? ExtendedType? SatisfiedTypes?</synopsis>
         
@@ -960,11 +960,12 @@ TypeConstraints?
                 class declarations, and</para>
             </listitem>
             <listitem>
-                <para>instance initialization code.</para>
+                <para>instance initialization code and, if the class does not have
+                a parameter list, constructors.</para>
             </listitem>
         </itemizedlist>
 
-        <synopsis>ClassBody: "{" (Declaration | Statement)* "}"</synopsis>
+        <synopsis>ClassBody: "{" (Declaration | Statement | Constructor)* "}"</synopsis>
         
         <para>The body of a class may contain executable code.</para>
         
@@ -988,10 +989,10 @@ TypeConstraints?
         <literal>abstract</literal> class declaration is not part of the schema of the 
         class type, and is therefore not considered a member of the class.</para>
         
-        <para>Ceylon classes do not have seperate nested constructor declarations. 
-        Instead, the body of the class declares <emphasis>initializer parameters</emphasis>. 
-        An initializer parameter may be used anywhere in the class body, including in 
-        method and attribute definitions.</para>
+        <para>A class is not required to have a seperate nested constructor declaration.
+        Instead, the body of the class may itself declare its
+        <emphasis>initializer parameters</emphasis>. An initializer parameter may be 
+        used anywhere in the class body, including in method and attribute definitions.</para>
         
         <programlisting>shared class Key(Lock lock) {
     shared void lock() {
@@ -1014,14 +1015,24 @@ TypeConstraints?
     shared void increment() => count++;
 }</programlisting>
         
+        <para>If a class does not specify an initializer parameter list, it must have
+        at least one constructor.</para>
+        
         <section id="callabletypeofclass">
             <title>Callable type of a class</title>
             
-            <para>The <emphasis>callable type</emphasis> of a class captures the type 
-            and parameter types of the class. The callable type is <literal>T(*P)</literal>, 
-            where <literal>T</literal> is the applied type formed by the class with its 
-            own type parameters as type arguments, and <literal>P</literal> is the type 
-            of the initializer parameter list of the class.</para>
+            <para>The <emphasis>callable type</emphasis> of a class with an initializer
+            parameter list captures the type and initializer parameter types of the class. 
+            The callable type is <literal>T(*P)</literal>, where <literal>T</literal> is 
+            the applied type formed by the class with its own type parameters as type 
+            arguments, and <literal>P</literal> is the type of the initializer parameter 
+            list of the class.</para>
+            
+            <para>The callable type of a class with a default constructor is the callable
+            type of the default constructor.</para>
+            
+            <para>A class with no initializer parameter list and no default constructor
+            does not have a callable type.</para>
             
             <para>An <literal>abstract</literal> class is not callable, except from the 
             <literal>extends</literal> clause of a subclass, or the class specifier of a
@@ -1034,8 +1045,9 @@ TypeConstraints?
         
             <para>The initial part of the body of a class is called the 
             <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
-            statements and control structures. The initializer is executed every time the 
-            class is instantiated.</para>
+            statements, and control structures. The initializer is executed every time the 
+            class is instantiated. The initializer section may end with a list of
+            constructors, as defined in <xref linkend="constructors"/>.</para>
                
             <para>A class initializer is responsible for initializing the state of the new 
             instance of the class, before a reference to the new instance is available to 
@@ -1115,7 +1127,7 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a self reference to the instance being initialized as an 
-                  argument of an instantiation, method invocation, or <literal>extends</literal> 
+                  argument of an instantiation, function invocation, or <literal>extends</literal> 
                   clause expression or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
@@ -1225,8 +1237,8 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a super reference as an argument of an instantiation, 
-                  method invocation, or <literal>extends</literal> clause expression or 
-                  as the value of a value assignment or specification,</para>
+                  function invocation, or <literal>extends</literal> clause expression 
+                  or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
                   <para>use a super reference as an operand of any operator except the
@@ -2714,8 +2726,9 @@ print(greeting);</programlisting>
         
         <para>A <emphasis>constructor</emphasis> is a callable block of code that
         produces a new instance of the class to which the constructor belongs.
-        Every constructor belongs to a class. A constructor may have parameters.
-        Every constructor implementation is a block of code.</para>
+        Every constructor must occur directly in the initializer section of a class. 
+        A constructor may have parameters. Every constructor implementation is a 
+        block of code.</para>
         
         <synopsis>ConstructorDeclaration: Annotations ConstructorHeader Block</synopsis>
         
@@ -2724,11 +2737,25 @@ print(greeting);</programlisting>
         
         <synopsis>ConstructorHeader: "new" TypeName Parameters ExtendedType?</synopsis>
         
+        <para>If two constructors belong to the same class, then the constructors 
+        must have distinct names.</para>
+        
         <para>A class with an initializer parameter list may not declare 
         constructors.</para>
         
         <para>The constructors of a class must occur after every other statement,
         declaration, and control structure in the initializer section of the class.</para>
+        
+        <section id="defaultconstructor">
+            <title>Default constructor</title>
+            
+            <para>If a constructor has the same name as the class it belongs to,
+            then the constructor is called the <emphasis>default constructor</emphasis>
+            for the class.</para>
+            
+            <para>Every default constructor must be annotated <literal>shared</literal>.</para>
+            
+        </section>
         
         <section id="callabletypeofaconstructor">
             <title>Callable type of a constructor</title>
