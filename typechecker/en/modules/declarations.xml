@@ -1019,7 +1019,8 @@ TypeConstraints?
             
             <para>The <emphasis>callable type</emphasis> of a class captures the type 
             and parameter types of the class. The callable type is <literal>T(*P)</literal>, 
-            where <literal>T</literal> is the class and <literal>P</literal> is the type 
+            where <literal>T</literal> is the applied type formed by the class with its 
+            own type parameters as type arguments, and <literal>P</literal> is the type 
             of the initializer parameter list of the class.</para>
             
             <para>An <literal>abstract</literal> class is not callable, except from the 
@@ -1068,14 +1069,15 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>any occurrence of the expression <literal>this</literal> or
-                    <literal>super</literal>, unless it also occurs in the body of a 
-                    nested class or interface declaration,</para>
+                    <para>any occurrence of the expression <literal>this</literal>, as 
+                    defined in <xref linkend="this"/>, or <literal>super</literal>, as 
+                    defined in <xref linkend="super"/>, unless it also occurs in the 
+                    body of a nested class or interface declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>any occurrence of the expression <literal>outer</literal> in 
-                    the body of a class or interface declaration immediately contained 
-                    by the class, or</para>
+                    <para>any occurrence of the expression <literal>outer</literal>, as 
+                    defined in <xref linkend="outer"/>, in the body of a class or 
+                    interface declaration immediately contained by the class, or</para>
                 </listitem>
                 <listitem>
                     <para>in the case of an anonymous class, any base expression, or 
@@ -1126,8 +1128,8 @@ TypeConstraints?
                </listitem>
                <listitem>
                   <para>attempt to narrow the type of a self reference to the instance 
-                  being initialized using the <literal>if (is ...)</literal> construct 
-                  or <literal>case (is ...)</literal>.</para>
+                  being initialized  using an assignability condition, as defined in 
+                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1181,14 +1183,22 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>a statement or control structure,</para>
+                    <para>a statement or control structure, defined in 
+                    <xref linkend="controlstructures"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>a reference declaration,</para>
+                    <para>a reference declaration, as defined below in
+                    <xref linkend="references"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>a forward-declared method or attribute declaration not
-                    annotated <literal>late</literal>,</para>
+                    <para>a constructor, as defined below in 
+                    <xref linkend="constructors"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>a forward-declared function or value declaration not
+                    annotated <literal>late</literal>, as defined below in 
+                    <xref linkend="functionforwarddeclaration"/> and 
+                    <xref linkend="valueforwarddeclaration"/>,</para>
                 </listitem>
                 <listitem>
                     <para>an <literal>object</literal> declaration with a non-empty 
@@ -1215,8 +1225,8 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a super reference as an argument of an instantiation, 
-                  method invocation, or <literal>extends</literal> clause expression or as 
-                  the value of a value assignment or specification,</para>
+                  method invocation, or <literal>extends</literal> clause expression or 
+                  as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
                   <para>use a super reference as an operand of any operator except the
@@ -1227,9 +1237,9 @@ TypeConstraints?
                   <para>return a super reference, or</para>
                </listitem>
                <listitem>
-                  <para>narrow the type of a super reference using the 
-                  <literal>if (is ...)</literal> construct or 
-                  <literal>case (is ...)</literal>.</para>
+                  <para>narrow the type of a super reference using an assignability 
+                  condition, as defined in 
+                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
                </listitem>
             </itemizedlist>
             
@@ -2699,4 +2709,70 @@ print(greeting);</programlisting>
         
     </section>
     
+    <section id="constructors">
+        <title>Constructors</title>
+        
+        <para>A <emphasis>constructor</emphasis> is a callable block of code that
+        produces a new instance of the class to which the constructor belongs.
+        Every constructor belongs to a class. A constructor may have parameters.
+        Every constructor implementation is a block of code.</para>
+        
+        <synopsis>ConstructorDeclaration: Annotations ConstructorHeader Block</synopsis>
+        
+        <para>All constructor declarations specify the constructor name, exactly 
+        one parameter list, and, optionally, an <literal>extends</literal> clause.</para>
+        
+        <synopsis>ConstructorHeader: "new" TypeName Parameters ExtendedType?</synopsis>
+        
+        <para>A class with an initializer parameter list may not declare 
+        constructors.</para>
+        
+        <para>The constructors of a class must occur after every other statement,
+        declaration, and control structure in the initializer section of the class.</para>
+        
+        <section id="callabletypeofaconstructor">
+            <title>Callable type of a constructor</title>
+            
+            <para>The <emphasis>callable type</emphasis> of a constructor captures 
+            the type of the class, and parameter types of the constructor. The
+            callable type is <literal>T(*P)</literal>, where <literal>T</literal> 
+            is the applied type formed by the class with its own type parameters 
+            as type arguments, and <literal>P</literal> is the type of the parameter 
+            list of the constructor.</para>
+            
+            <para>A constructor of an <literal>abstract</literal> class is not 
+            callable, except from the <literal>extends</literal> clause of a 
+            subclass, or the class specifier of a class alias.</para>
+            
+        </section>
+        
+        <section id="constructordelegation">
+            <title>Constructor delegation</title>
+            
+            <para>Every constructor of any class which does not directly extend
+            <literal>Basic</literal> defined in <literal>ceylon.language</literal>
+            must explicitly delegate to either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a constructor of its immediate superclass, specifying
+                    arguments for the parameters of the superclass constructor, 
+                    if the superclass declares constructors, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the initializer of its immediate superclass, specifying
+                    arguments for the initializer parameters, if the superclass 
+                    has an initializer parameter list.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If the constructor of a class which directly extends 
+            <literal>Basic</literal> does not have an <literal>extends</literal>
+            clause, the constructor implicitly delegates to the initializer of
+            <literal>Basic</literal>.</para>
+             
+        </section>
+        
+    </section>
+        
 </chapter>

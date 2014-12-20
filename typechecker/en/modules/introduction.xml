@@ -340,10 +340,24 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             <title>Class initialization and instantiation</title>
             
             <para>
-            Ceylon does not feature any Java-like constructor declaration and so each 
-            Ceylon class has a parameter list, and exactly one 
-            <emphasis>initializer</emphasis>&mdash;the body of the class. This helps
-            reduce verbosity and results in a more regular block structure.
+            A Ceylon class may have one or more named constructors, declared
+            using the <literal>new</literal> keyword.
+            </para>
+            
+            <programlisting>class Point {
+    Float x; 
+    Float y;
+    new Point(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+    ...
+}</programlisting>
+            
+            <para>
+            However, since constructors are often unnecessarily verbose, it is more
+            common to define a Ceylon class with a parameter list, and exactly one 
+            <emphasis>initializer</emphasis>&mdash;the body of the class.
             </para>
             
             <programlisting>class Point(Float x, Float y) { ... }</programlisting>

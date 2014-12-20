@@ -168,10 +168,10 @@
     <section id="identifiernaming">
         <title>Identifier naming</title>
 
-        <para>The Ceylon compiler enforces identifier naming conventions. Types must
-        be named with an initial uppercase letter. Methods, attributes, parameters, 
-        and locals must be named with an initial lowercase letter or underscore.
-        The grammar for identifiers is defined by 
+        <para>The Ceylon compiler enforces identifier naming conventions. Types 
+        and constructors must be named with an initial uppercase letter. Values, 
+        functions, and parameters must be named with an initial lowercase letter 
+        or underscore. The grammar for identifiers is defined by 
         <xref linkend="identifiersandkeywords"/>.</para>
         
         <synopsis>TypeName: UIdentifier</synopsis>
@@ -186,12 +186,12 @@
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces, type aliases, and type parameters share 
-                a single namespace,</para>
+                <para>classes, interfaces, type aliases, type parameters, and
+                constructors share a single namespace,</para>
             </listitem>
             <listitem>
-                <para>functions, values, and parameters share a single namespace, 
-                and</para>
+                <para>functions and values, including parameters, share a single 
+                namespace, and</para>
             </listitem>
             <listitem>
                 <para>packages and modules have their own dedicated namespace.</para>
@@ -248,8 +248,12 @@
                 of one or more parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>class schema</emphasis> is a type schema with exactly
-                one parameter list.</para>
+                <para>A <emphasis>class schema</emphasis> is a type schema with either
+                one parameter list, or a list of constructor schemas.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>constructor schema</emphasis> is a name (an initial 
+                uppercase identifier) with exactly one parameter list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>parameter list</emphasis> is a list of names (initial 

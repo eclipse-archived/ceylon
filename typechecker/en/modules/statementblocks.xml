@@ -84,7 +84,7 @@
             </listitem>
             <listitem>
                 <para>the program element sequentially occurs inside the body of a control 
-                structure that occurs directly in the body.</para>
+                structure or constructor that occurs directly in the body.</para>
             </listitem>
         </itemizedlist>
         
@@ -98,8 +98,8 @@
             </listitem>
             <listitem>
                 <para>the second program element sequentially occurs inside the body of a 
-                control structure, and the first program element directly occurs earlier 
-                than the declaration or control structure.</para>
+                control structure or constructor, and the first program element directly 
+                occurs earlier than the control structure or constructor.</para>
             </listitem>
         </itemizedlist>
         
@@ -117,7 +117,7 @@
             <listitem>
                 <para>the sequence of statements that occur directly in the body in which
                 the first program element directly occurs, beginning from the first program 
-                element and ending with the declaration or control structure in whose body 
+                element and ending with the control structure or constructor in whose body 
                 the second program element sequentially occurs, followed by the sequence of 
                 statements from the first statement of the declaration whose body contains 
                 the second program element to the second program element itself, otherwise.</para>
@@ -1263,6 +1263,11 @@ else {
                     declaration or if the <literal>finally</literal> block definitely initializes 
                     the declaration.</para>
                 </listitem>
+                <listitem>
+                    <para>The constructors of a class definitely initialize a declaration if
+                    the body of every constructor of the class definititely initializes the
+                    declaration.</para>
+                </listitem>
             </itemizedlist>
             
             <comment><para>TODO: an assignment expression occurring within a containing expression
@@ -1319,8 +1324,9 @@ else {
                     containing class, and</para>
                 </listitem>
                 <listitem>
-                    <para>at the very last expression statement, directive statement or 
-                    specification statement of the initializer of the containing class.</para>
+                    <para>at the end of the very last expression statement, directive statement, 
+                    constructor, or specification statement of the initializer of the containing 
+                    class.</para>
                 </listitem>
             </itemizedlist>
             
