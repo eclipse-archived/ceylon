@@ -268,9 +268,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The keyword <literal>super</literal> refers to the current instance 
             of the immediately containing class or interface. Its type is the 
-            intersection of the principle instantiation of the immediate superclass 
+            intersection of the principal instantiation of the immediate superclass 
             for the immediately containing class or interface, as defined in
-            <xref linkend="principalinstantiationofasupertype"/>, and all principle 
+            <xref linkend="principalinstantiationofasupertype"/>, and all principal 
             instantiations of immediate superinterfaces of the immediately containing 
             class or interface. A member reference such as <literal>super.x</literal> 
             may not resolve to a <literal>formal</literal> declaration, nor to any 
@@ -278,7 +278,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The keyword <literal>super</literal> may occur as the first operand
             of an <literal>of</literal> operator, in which case the second operand is
-            the principle instantiation of some supertype of the class for the 
+            the principal instantiation of some supertype of the class for the 
             immediately containing class or interface. The expression 
             <literal>(super of Type)</literal> has type <literal>Type</literal>. A 
             member reference such as <literal>(super of Type).x</literal> may not 
