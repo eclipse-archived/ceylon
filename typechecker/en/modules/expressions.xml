@@ -2603,7 +2603,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     </section>
     
-    <section id="constructors">
+    <section id="creation">
     <title>Operators for creating objects</title>
     
         <para>These operators simplify the syntax for instantiating certain 
