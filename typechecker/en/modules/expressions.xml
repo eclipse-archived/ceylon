@@ -246,8 +246,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>The keyword <literal>this</literal> refers to the current instance,
             as defined in <xref linkend="currentinstanceofaclassorinterface"/>, of the 
             immediately containing class or interface (the class or interface in which 
-            the expression appears). Its type is the type of the immediately containing 
-            class or interface.</para>
+            the expression appears). Its type is the applied type formed by the 
+            immediately containing class or interface with its own type parameters as
+            type arguments.</para>
             
         </section>
        
@@ -257,8 +258,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>The keyword <literal>outer</literal> refers to the current instance,
             as defined in <xref linkend="currentinstanceofaclassorinterface"/>, of the 
             class or interface which immediately contains the immediately containing 
-            class or interface. Its type is assignable to the type of this class or 
-            interface.</para>
+            class or interface. Its type is the applied type formed by this class or 
+            interface with its own type parameters as type arguments.</para>
             
         </section>
                     
@@ -267,19 +268,23 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The keyword <literal>super</literal> refers to the current instance 
             of the immediately containing class or interface. Its type is the 
-            intersection of the immediate superclass and all immediate superinterfaces 
-            of the class. A member reference such as <literal>super.x</literal> may not 
-            resolve to a <literal>formal</literal> declaration, nor to any member 
-            inherited from more than one supertype of the intersection type.</para>
+            intersection of the principle instantiation of the immediate superclass 
+            for the immediately containing class or interface, as defined in
+            <xref linkend="principalinstantiationofasupertype"/>, and all principle 
+            instantiations of immediate superinterfaces of the immediately containing 
+            class or interface. A member reference such as <literal>super.x</literal> 
+            may not resolve to a <literal>formal</literal> declaration, nor to any 
+            member inherited from more than one supertype of the intersection type.</para>
             
             <para>The keyword <literal>super</literal> may occur as the first operand
             of an <literal>of</literal> operator, in which case the second operand is
-            any supertype of the class. The expression <literal>(super of Type)</literal>
-            has type <literal>Type</literal>. A member reference such as 
-            <literal>(super of Type).x</literal> may not resolve to a <literal>formal</literal> 
-            member, nor to any member inherited from more than one supertype of 
-            <literal>Type</literal>, nor to any member that is refined by the class or 
-            any intermediate supertype of the class.</para> 
+            the principle instantiation of some supertype of the class for the 
+            immediately containing class or interface. The expression 
+            <literal>(super of Type)</literal> has type <literal>Type</literal>. A 
+            member reference such as <literal>(super of Type).x</literal> may not 
+            resolve to a <literal>formal</literal> member, nor to any member inherited 
+            from more than one supertype of <literal>Type</literal>, nor to any member 
+            that is refined by the class or any intermediate supertype of the class.</para> 
             
         </section>
         
