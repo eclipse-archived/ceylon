@@ -240,6 +240,9 @@ public class JsIdentifierNames {
         if (name.startsWith("anonymous#")) {
             name="anon$" + name.substring(10);
         }
+        if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
+            return decl.getName();
+        }
         boolean nonLocal = !priv;
         if (nonLocal) {
             // check if it's a shared member or a toplevel function

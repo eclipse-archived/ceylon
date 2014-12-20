@@ -167,6 +167,8 @@ public class TypeGenerator {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Interface d = that.getDeclarationModel();
+        //If it's inside a dynamic interface, don't generate anything
+        if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         gen.comment(that);
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
@@ -241,6 +243,8 @@ public class TypeGenerator {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
+        //If it's inside a dynamic interface, don't generate anything
+        if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Tree.ParameterList plist = that.getParameterList();
         final List<Tree.Constructor> constructors;
         final List<Tree.Statement> classBody;

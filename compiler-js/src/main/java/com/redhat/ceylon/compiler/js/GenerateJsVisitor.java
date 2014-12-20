@@ -535,6 +535,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, final Tree.InterfaceDefinition interfaceDef) {
+        if (type.isDynamic())return;
         TypeGenerator.interfaceDefinition(interfaceDef, this);
         Interface d = interfaceDef.getDeclarationModel();
         out(names.self(type), ".", names.name(d), "=", names.name(d));
@@ -549,6 +550,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addClassToPrototype(ClassOrInterface type, final Tree.ClassDefinition classDef) {
+        if (type.isDynamic())return;
         TypeGenerator.classDefinition(classDef, this);
         final String tname = names.name(classDef.getDeclarationModel());
         out(names.self(type), ".", tname, "=", tname);
