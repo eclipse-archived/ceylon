@@ -1415,7 +1415,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
-                    name + "'");
+                    name + "'", 1700);
             p = new TypeParameter();
             p.setDeclaration(declaration);
             that.setDeclarationModel(p);

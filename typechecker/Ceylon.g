@@ -2426,7 +2426,6 @@ anonymousFunction returns [FunctionArgument function]
       p1=parameters
       { $function.addParameterList($p1.parameterList); }
       ( 
-        //(anonParametersStart)=> 
         p2=parameters
         { $function.addParameterList($p2.parameterList); }
       )*
@@ -2501,7 +2500,6 @@ assignmentExpression returns [Term term]
 
 assignmentOperator returns [AssignmentOp operator]
     : SPECIFY { $operator = new AssignOp($SPECIFY); }
-    //| APPLY_OP 
     | ADD_SPECIFY { $operator = new AddAssignOp($ADD_SPECIFY); }
     | SUBTRACT_SPECIFY { $operator = new SubtractAssignOp($SUBTRACT_SPECIFY); }
     | MULTIPLY_SPECIFY { $operator = new MultiplyAssignOp($MULTIPLY_SPECIFY); }
@@ -2512,7 +2510,6 @@ assignmentOperator returns [AssignmentOp operator]
     | COMPLEMENT_SPECIFY { $operator = new ComplementAssignOp($COMPLEMENT_SPECIFY); }
     | AND_SPECIFY { $operator = new AndAssignOp($AND_SPECIFY); }
     | OR_SPECIFY { $operator = new OrAssignOp($OR_SPECIFY); }
-    //| DEFAULT_SPECIFY { $operator = new DefaultAssignOp($DEFAULT_SPECIFY); }
     ;
 
 thenElseExpression returns [Term term]
@@ -3028,7 +3025,7 @@ spreadType returns [Type type]
       { spt = new SpreadType($PRODUCT_OP);
         $type=spt; }
       (
-        sp=type
+        sp=unionType
         { spt.setType($sp.type); }
       )?
     ;
@@ -3162,11 +3159,6 @@ abbreviatedType returns [StaticType type]
     : qualifiedOrTupleType
       { $type=$qualifiedOrTupleType.type; }
       (
-      //syntactic predicate to resolve an
-      //ambiguity in the grammar of the
-      //prefix "is Type" operator
-      //(typeAbbreviationStart)=>
-      (
         OPTIONAL 
         { OptionalType ot = new OptionalType(null);
           ot.setDefiniteType($type);
@@ -3206,7 +3198,6 @@ abbreviatedType returns [StaticType type]
           )?
         RPAREN
         { bt.setEndToken($RPAREN); }
-      )
       )*
     ;
 
@@ -3398,7 +3389,7 @@ nonemptyCondition returns [NonemptyCondition condition]
         { $condition.setVariable($impliedVariable.variable); }
       | expression
         { $condition.setBrokenExpression($expression.expression); }
-    )
+      )
     ;
 
 isCondition returns [IsCondition condition]
@@ -3412,13 +3403,14 @@ isCondition returns [IsCondition condition]
             $condition = new IsCondition($IS_OP); }
       type
       { $condition.setType($type.type); }
-    ( (LIDENTIFIER SPECIFY) =>
-      v=isConditionVariable
-      { $condition.setVariable($v.variable); }
-    | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
-      impliedVariable 
-      { $condition.setVariable($impliedVariable.variable); }
-    )
+      (
+        (LIDENTIFIER SPECIFY) =>
+        v=isConditionVariable
+        { $condition.setVariable($v.variable); }
+      |
+        impliedVariable 
+        { $condition.setVariable($impliedVariable.variable); }
+      )
     ;
 
 isConditionVariable returns [Variable variable]
