@@ -1060,9 +1060,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             of a forward-declared function may be specified by a <emphasis>value specification 
             statement</emphasis>. The value specification statement consists of an unqualified 
             value reference, or a qualified value reference where the receiver expression is
-            `this`, and an ordinary <literal>=</literal> specifier. The value reference must 
-            refer to a declaration which sequentially occurs earlier in the body in which the 
-            specification statement occurs.</para>
+            <literal>this</literal>, and an ordinary <literal>=</literal> specifier. The value 
+            reference must refer to a declaration which sequentially occurs earlier in the body 
+            in which the specification statement occurs.</para>
             
             <synopsis>ValueSpecification: ("this" ".")? MemberName Specifier ";"</synopsis>
             
