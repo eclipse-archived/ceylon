@@ -1048,8 +1048,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <itemizedlist>
                 <listitem>
                     <para>A <literal>for</literal> clause specifies a source stream and an 
-                    iteration variable, as defined in <xref linkend="iterationvariables"/>, 
-                    representing the values produced by the stream.</para>
+                    iterator pattern, as defined in <xref linkend="forelse"/>, representing 
+                    the values produced by the stream.</para>
                 </listitem>
                 <listitem>
                     <para>An <literal>if</literal> clause specifies a condition list, as

@@ -814,8 +814,7 @@ TypeConstraints?
                </listitem>
                <listitem>
                   <para>narrow the type of a super reference using an assignability 
-                  condition, as defined in 
-                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
+                  condition, as defined in <xref linkend="assignabilityconditions"/>.</para>
                </listitem>
             </itemizedlist>
                     
@@ -1201,9 +1200,9 @@ TypeConstraints?
                   <para>return a self reference to the instance being initialized, or</para>
                </listitem>
                <listitem>
-                  <para>attempt to narrow the type of a self reference to the instance 
-                  being initialized  using an assignability condition, as defined in 
-                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
+                  <para>narrow the type of a self reference to the instance being 
+                  initialized using an assignability condition, as defined in 
+                  <xref linkend="assignabilityconditions"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1312,8 +1311,7 @@ TypeConstraints?
                </listitem>
                <listitem>
                   <para>narrow the type of a super reference using an assignability 
-                  condition, as defined in 
-                  <xref linkend="assignabilityexistencenonemptinessconditions"/>.</para>
+                  condition, as defined in <xref linkend="assignabilityconditions"/>.</para>
                </listitem>
             </itemizedlist>
             

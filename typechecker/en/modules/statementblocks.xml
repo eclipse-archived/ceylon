@@ -909,40 +909,106 @@ Integer f(Integer n) => n+package.n;</programlisting>
     
     </section>
     
-    <section id="patterns">
-        <title>Patterns</title>
+    <section id="patternsandvariables">
+        <title>Patterns and variables</title>
         
-        <para>An expression whose type is an instantiation of <literal>Sequence</literal>, 
-        <literal>Tuple</literal>, or <literal>Entry</literal> may be assigned to a 
-        <emphasis>pattern</emphasis>. The type of an expression assigned to a pattern 
-        is called the <emphasis>patterned type</emphasis>.</para>
+        <para>Destructuring statements, assertions, and some control structures allow inline 
+        declaration of a <emphasis>variables</emphasis>, which often occur as part of a more
+        complex <emphasis>pattern</emphasis>.</para>
         
-        <para>Patterns are formed from:</para>
+        <comment><para>Note: the use of the term variable here does not imply any connection
+        to the <literal>variable</literal> annotation for values. A variable in a destructuring
+        statement, assertion, or control structure may not be assigned using a specification
+        or assignment statement.</para></comment>
         
-        <itemizedlist>
-            <listitem>
-                <para>pattern variables,</para>
-            </listitem>
-            <listitem>
-                <para>tuple patterns, and</para>
-            </listitem>
-            <listitem>
-                <para>entry patterns.</para>
-            </listitem>
-        </itemizedlist>
+        <section id="controlstructurevariables">
+            <title>Variables</title>
+       
+            <para>A variable is a reference, as defined by <xref linkend="references"/>.</para>
+            
+            <synopsis>TypedVariable: Type MemberName</synopsis>
+            
+            <para>In most cases, the explicit type be omitted.</para>
+            
+            <synopsis>Variable: (Type | "value")? MemberName</synopsis>
+            
+            <para>If the explicit type is missing from the declaration, the type of the variable 
+            is inferred, according to rules that depend upon the control structure to which 
+            the variable belongs.</para>
+            
+            <para>A variable declared by a destructuring statement is a reference scoped to the 
+            body in which the destructuring statement occurs.</para>
+            
+            <para>A variable declared by an assertion is a reference scoped to the body in which 
+            the <literal>assert</literal> statement occurs.</para>
+            
+            <para>A variable declared by a control structure is a reference scoped to the block 
+            that immediately follows the variable declaration:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>For a variable in an <literal>if</literal> condition, the scope of the
+                    variable is the <literal>if</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>while</literal> condition, the scope of the
+                    variable is the <literal>while</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>for</literal> iterator, the scope of the
+                    variable is the <literal>for</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>try</literal> clause, the scope of the 
+                    variable is the <literal>try</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>catch</literal> clause, the scope of the 
+                    variable is the <literal>catch</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in an <literal>assert</literal> statement, the scope of the 
+                    variable is the body containing the <literal>assert</literal> statement.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
         
-        <synopsis>Pattern: Variable | TuplePattern | EntryPattern</synopsis>
+        <section id="patterns">
+            <title>Patterns</title>
         
-        <comment><para>Note: in a future release of the language, we might introduce
-        a more general pattern matching system, allowing pattern matching against
-        arbitrary classes.</para></comment>
+            <para>An expression whose type is an instantiation of <literal>Sequence</literal>, 
+            <literal>Tuple</literal>, or <literal>Entry</literal> may be assigned to a 
+            <emphasis>pattern</emphasis>. The type of an expression assigned to a pattern 
+            is called the <emphasis>patterned type</emphasis>.</para>
+            
+            <para>Patterns are formed from:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>pattern variables,</para>
+                </listitem>
+                <listitem>
+                    <para>tuple patterns, and</para>
+                </listitem>
+                <listitem>
+                    <para>entry patterns.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <synopsis>Pattern: Variable | TuplePattern | EntryPattern</synopsis>
+            
+            <comment><para>Note: in a future release of the language, we might introduce
+            a more general pattern matching system, allowing pattern matching against
+            arbitrary classes.</para></comment>
+        
+        </section>
         
         <section id="patternvariables">
             <title>Pattern variables</title>
             
             <para>A <emphasis>pattern variable</emphasis> is just a variable, as 
-            defined below in <xref linkend="controlstructurevariables"/> that 
-            occurs as an element of a tuple or entry pattern.</para>
+            defined above, that occurs as an element of a tuple or entry pattern.</para>
             
             <para>If the variable has an explicit type, then the patterned type
             must be assignable to this type. Otherwise, the type of the variable
@@ -1042,10 +1108,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <synopsis>Block: "{" (Declaration | Statement)* "}"</synopsis>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
-        invocation of a method, an instantiation of a class, a control structure, a 
-        control directive, or an assertion.</para>
+        invocation of a method, an instantiation of a class, a destructuring statement,
+        a control structure, a control directive, or an assertion.</para>
 
-        <synopsis>Statement: ExpressionStatement | Specification | Assertion | DirectiveStatement | ControlStructure</synopsis>
+        <synopsis>Statement: ExpressionStatement | Specification | Destructure | Assertion | Directive | ControlStructure</synopsis>
         
         <para>A statement or declaration contained in a block may not evaluate a value, 
         invoke a function, instantiate a class, or extend a class whose declaration 
@@ -1116,8 +1182,6 @@ Integer f(Integer n) => n+package.n;</programlisting>
             current block and forces the flow of execution to resume in some outer scope. 
             They may only occur as the lexically last statement of a block.</para>
             
-            <synopsis>DirectiveStatement: Directive ";"</synopsis>
-            
             <para>There are four control directives:</para>
             
             <itemizedlist>
@@ -1130,7 +1194,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
             </itemizedlist>
             
-            <synopsis>Directive: Return | Throw | Break | Continue</synopsis>
+            <synopsis>Directive: (Return | Throw | Break | Continue) ";"</synopsis>
             
             <para>For example:</para>
             
@@ -1284,6 +1348,19 @@ if (normalize) {
 else {
     process(String s) => s;
 }</programlisting>
+            
+        </section>
+        
+        <section id="destructuringstatements">
+            <title>Destructuring statements</title>
+            
+            <para>A <emphasis>destructuring statement</emphasis> assigns an expression 
+            to a pattern, as defined above in <xref linkend="patterns"/>.</para>
+            
+            <synopsis>Destructure: "value" (TuplePattern | EntryPattern) Specifier ";"</synopsis>
+            
+            <para>The type of the specified expression is the patterned type of the
+            tuple or entry pattern.</para>
             
         </section>
         
@@ -1566,204 +1643,51 @@ else {
         
     </section>
     
-    <section id="controlstructures">
-        <title>Control structures and assertions</title>
+    <section id="controlstructureconditions">
+        <title>Conditions</title>
         
-        <para>Control of execution flow may be achieved using control directives and 
-        <emphasis>control structures</emphasis>. Control structures include conditionals, 
-        loops, and exception management.</para>
-
-        <para>Ceylon provides the following control structures:</para>
+        <para>Assertions and certain control structures have a <emphasis>condition list</emphasis>. 
+        A condition list has one or more <emphasis>conditions</emphasis>.</para>
+        
+        <synopsis>ConditionList: "(" Condition ("," Condition)* ")"</synopsis>
+        
+        <para>Any condition in the list may refer to a variable defined in a condition that occurs
+        earlier in the list.</para>
+        
+        <para>A condition list is considered to be <emphasis>always satisfied</emphasis> if
+        every condition in the list is always satisfied. A condition list is considered to be 
+        <emphasis>never satisfied</emphasis> if some condition in the list is never satisfied.</para>
+        
+        <para>There are four kinds of condition:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the <literal>if/else</literal> conditional&mdash;for controlling 
-                execution based on a boolean condition, type condition, or check for a 
-                non-null or non-empty value,</para>
+                <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
+                evaluates to <literal>true</literal>,</para>
             </listitem>
             <listitem>
-                <para>the <literal>switch/case/else</literal> conditional&mdash;for 
-                controlling execution using an enumerated list of values or types,</para>
+                <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
+                 evaluates to an instance of a specified type,</para>
             </listitem>
             <listitem>
-                <para>the <literal>while</literal> loop&mdash;for loops which terminate 
-                based on a boolean condition, type condition, or check for a non-null or 
-                non-empty value,</para>
+                <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
+                evaluates to a non-null value, and</para>
             </listitem>
             <listitem>
-                <para>the <literal>for/else</literal> loop&mdash;for looping over elements 
-                of an iterable object, and</para>
+                <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
+                evaluates to a non-null, non-empty value.</para>
             </listitem>
-            <listitem>
-                <para>the <literal>try/catch/finally</literal> exception manager&mdash;for 
-                managing exceptions and controlling the lifecycle of objects which require 
-                explicit destruction.</para>
-            </listitem>
+            <!--listitem>
+                <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
+                subtype of the specified type.</para>
+            </listitem-->
         </itemizedlist>
-                
-        <synopsis>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</synopsis>
-       
-        <comment><para>Control structures are not considered to be expressions, and therefore 
-        do not evaluate to a value. However, comprehensions&mdash;and conditional expressions, 
-        planned for a future release of the language&mdash;are part of the expression syntax 
-        and share much of the syntax and semantics of the control structures they resemble.
-        </para></comment>
         
-        <para><emphasis>Assertions</emphasis> are runtime checks upon program invariants, or 
-        function preconditions and postconditions. An assertion failure represents a bug in
-        the program, and is not considered recoverable. Therefore, assertions should not be 
-        used to control "normal" execution flow.</para>
+        <synopsis>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</synopsis>
         
-        <comment><para>Note: of course, in certain circumstances, it is appropriate to handle
-        the exception that results from an assertion failure, for example, to display a message
-        to the user, or in a testing framework to aggregate and report the failures that occurred
-        in test assertions. A test failure may be considered "normal" occurrence from the point 
-        of view of a testing framework, but it's not "normal" in the sense intended above.
-        </para></comment>
-        
-        <!--comment><para>Note: the detailed semantics of control structures and assertions are 
-        defined in <xref linkend="executionofcontrolstructures"/>.</para></comment-->
-        
-        <section id="controlstructurevariables">
-            <title>Control structure variables</title>
-       
-            <para>Assertions and some control structures allow inline declaration of a 
-            <emphasis>variable</emphasis>. A variable is a reference, as defined by 
-            <xref linkend="references"/>.</para>
-            
-            <synopsis>TypedVariable: Type MemberName</synopsis>
-            
-            <para>In most cases, the explicit type be omitted.</para>
-            
-            <synopsis>Variable: (Type | "value")? MemberName</synopsis>
-            
-            <para>If the explicit type is missing from the declaration, the type of the variable 
-            is inferred, according to rules that depend upon the control structure to which 
-            the variable belongs.</para>
-            
-            <para>A variable declared by an assertion is a reference scoped to the body in which 
-            the <literal>assert</literal> statement occurs.</para>
-            
-            <para>A variable declared by a control structure is a reference scoped to the block 
-            that immediately follows the variable declaration:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>For a variable in an <literal>if</literal> condition, the scope of the
-                    variable is the <literal>if</literal> block.</para>
-                </listitem>
-                <listitem>
-                    <para>For a variable in a <literal>while</literal> condition, the scope of the
-                    variable is the <literal>while</literal> block.</para>
-                </listitem>
-                <listitem>
-                    <para>For a variable in a <literal>for</literal> iterator, the scope of the
-                    variable is the <literal>for</literal> block.</para>
-                </listitem>
-                <listitem>
-                    <para>For a variable in a <literal>try</literal> clause, the scope of the 
-                    variable is the <literal>try</literal> block.</para>
-                </listitem>
-                <listitem>
-                    <para>For a variable in a <literal>catch</literal> clause, the scope of the 
-                    variable is the <literal>catch</literal> block.</para>
-                </listitem>
-                <listitem>
-                    <para>For a variable in an <literal>assert</literal> statement, the scope of the 
-                    variable is the body containing the <literal>assert</literal> statement.</para>
-                </listitem>
-            </itemizedlist>
-            
-        </section>
-        
-        <section id="iterationvariables">
-            <title>Iteration variables</title>
-            
-            <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
-            declaration. An iteration variable is a reference scoped to the body of the loop.</para>
-            
-            <synopsis>IteratorVariable: Variable | EntryVariablePair</synopsis>
-            
-            <para>An iteration variable of type <literal>Entry</literal> may be specified in 
-            destructured form.</para>
-            
-            <synopsis>EntryVariablePair: Variable "->" Variable</synopsis>
-            
-            <para>If the type is missing from the declaration, the type of the iteration variable is 
-            inferred:</para> 
-            
-            <itemizedlist>
-                <listitem>
-                    <para>given an iterated expression which has the principal instantiation
-                    <literal>Iterable&lt;X&gt;</literal>, the inferred type of the variable 
-                    is <literal>X</literal>, unless</para>
-                </listitem>
-                <listitem>
-                    <para>the destructured form is used for an iterated expression which is 
-                    has the principal instantiation <literal>Iterable&lt;Entry&lt;X,Y&gt;&gt;</literal>,
-                    in which case the inferred type of the first variable is <literal>X</literal>, 
-                    and the inferred type of the second variable is <literal>Y</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <!--para>An iteration variable may be callable.</para>
-            
-            <synopsis>CallableVariable: (Type | "void")? MemberName Parameters+</synopsis>
-            
-            <para>If the return type is missing from the declaration, the return type of the 
-            callable variable is inferred.</para-->
-            
-            <comment><para>TODO: Should we, purely for consistency, let you write 
-            <literal>for (f(Float x) in functions)</literal>, even though it's not
-            very useful?</para></comment>
-        
-        </section>
-        
-        <section id="controlstructureconditions">
-            <title>Control structure conditions</title>
-            
-            <para>Some control structures expect conditions. There are four kinds of condition:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
-                    evaluates to <literal>true</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
-                     evaluates to an instance of a specified type,</para>
-                </listitem>
-                <listitem>
-                    <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
-                    evaluates to a non-null value, and</para>
-                </listitem>
-                <listitem>
-                    <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                    evaluates to a non-null, non-empty value.</para>
-                </listitem>
-                <!--listitem>
-                    <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
-                    subtype of the specified type.</para>
-                </listitem-->
-            </itemizedlist>
-            
-            <synopsis>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</synopsis>
-            
-            <para>A condition list has one or more conditions.</para>
-            
-            <synopsis>ConditionList: "(" Condition ("," Condition)* ")"</synopsis>
-            
-            <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
-            
-            <para>A condition list is considered to be <emphasis>always satisfied</emphasis> if
-            every condition in the list is always satisfied. A condition list is considered to be 
-            <emphasis>never satisfied</emphasis> if some condition in the list is never satisfied.</para>
-            
-            <comment><para>TODO: are we going to support <literal>satisfies</literal> conditions on 
-            type parameters, for example, <literal>if (Element satisfies Object)</literal>, to allow
-            refinement of its upper bounds?</para></comment>
-            
-        </section>
+        <comment><para>TODO: are we going to support <literal>satisfies</literal> conditions on 
+        type parameters, for example, <literal>if (Element satisfies Object)</literal>, to allow
+        refinement of its upper bounds?</para></comment>
         
         <section id="booleanconditions">
             <title>Boolean conditions</title>
@@ -1784,10 +1708,10 @@ else {
                 
         </section>
         
-        <section id="assignabilityexistencenonemptinessconditions">
-            <title>Assignability, existence, and nonemptiness conditions</title>
+        <section id="assignabilityconditions">
+            <title>Assignability conditions</title>
         
-            <para>An assignability, existence, or nonemptiness condition may contain either:</para>
+            <para>An assignability condition may contain either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1799,43 +1723,27 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>In the case of an assignability or existence condition, the type of the variable 
-            may be inferred.</para>
-                    
             <synopsis>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</synopsis>
             
-            <synopsis>ExistsOrNonemptyCondition: "!"? ("exists" | "nonempty") (Variable Specifier | MemberName)</synopsis>
-            
-            <para>A <emphasis>negated condition</emphasis> is one which starts with 
-            <literal>!</literal>.</para>
+            <para>A <emphasis>negated</emphasis> assignability condition is one which starts 
+            with <literal>!</literal>.</para>
             
             <comment><para>TODO: are we going to allow <literal>is Type this</literal> and 
             <literal>is Type outer</literal> to narrow the type of a self reference?</para></comment>
             
-            <para>The type of the value reference or expression must be:</para>
+            <para>The type of the value reference or expression in an assignability condition 
+            must be:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>in the case of an assignability condition, a type which is not a subtype of 
-                    the specified type, but whose intersection with the specified type is not exactly 
-                    <literal>Nothing</literal>, except</para>
+                    <para>in the case of a condition which is not negated, a type which is not 
+                    a subtype of the specified type, but whose intersection with the specified 
+                    type is not exactly <literal>Nothing</literal>, except</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of a negated assignability condition, a type whose intersection 
-                    with the specified type is not exactly <literal>Nothing</literal>, and which is 
-                    not a supertype of the specified type, or</para>
-                </listitem>
-                <listitem>
-                    <para>in the case of an existence condition or negated existence condition, a type 
-                    whose intersection with <literal>Null</literal> is not exactly 
-                    <literal>Nothing</literal> and whose intersection with <literal>Object</literal> 
-                    is not exactly <literal>Nothing</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>in the case of a nonemptiness condition or a negated nonemptiness condition, 
-                    a subtype of <literal>Anything[]?</literal> whose intersection with <literal>[]</literal> 
-                    is not exactly <literal>Nothing</literal>, and whose intersection with 
-                    <literal>[Nothing+]</literal> is not exactly <literal>Nothing</literal>.</para>
+                    <para>in the case of a negated condition, a type whose intersection with the 
+                    specified type is not exactly <literal>Nothing</literal>, and which is not a 
+                    supertype of the specified type, or</para>
                 </listitem>
             </itemizedlist>
             
@@ -1844,29 +1752,8 @@ else {
             <programlisting>if (is Printable&amp;Identifiable obj) { ... }</programlisting>
             <programlisting>if (is Integer|Float num) { ... }</programlisting></comment>
     
-            <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
-            considered an abbreviation of&mdash;an assignability condition:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><literal>exists x</literal> is equivalent to <literal>is Object x</literal>, 
-                    and</para>
-                </listitem>
-                <listitem>
-                    <para><literal>!exists x</literal> is equivalent to <literal>is Null x</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
-                    where <literal>x</literal> is an expression whose type has the principal 
-                    instantiation <literal>E[]?</literal>, and</para>
-                </listitem>
-                <listitem>
-                    <para><literal>!nonempty x</literal> is equivalent to <literal>is [] x</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>For an <literal>is</literal> assignability condition with a conditional expression 
-            of type <literal>T</literal> and specified type <literal>X</literal>:</para>
+            <para>For an assignability condition with a conditional expression of type 
+            <literal>T</literal> and specified type <literal>X</literal>:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1934,14 +1821,94 @@ if (is Usable tx) { ... }</programlisting>
             <para>Where the <literal>tx</literal> declared by the condition hides the outer 
             declaration of <literal>tx</literal> inside the block that follows.</para>
             
-            <para>For an <literal>exists</literal> existence condition:</para>
+            <para>As a special exception to the above, if a condition occurs in a 
+            <literal>dynamic</literal> block, and the conditional expression has no type, 
+            and the condition contains a value reference, 
+            then:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable 
-                    must be a supertype of <literal>T&amp;Object</literal>, where the specifier 
-                    expression is of type <literal>T</literal>, and must be a subtype of
-                    <literal>Object</literal>, or</para>
+                    <para>if the condition is not negated, the value will be treated by the 
+                    compiler as having type <literal>X</literal> where <literal>X</literal> 
+                    is the specified type, inside the block or expression that immediately 
+                    follows the condition, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>if the condition is negated, the value will be treated by the compiler 
+                    as having no type.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section id="existencenonemptinessconditions">
+            <title>Existence and nonemptiness conditions</title>
+            
+            <para>An existence or nonemptiness condition may contain either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>an unqualified value reference to a non-<literal>variable</literal>,
+                    non-<literal>default</literal> reference, or</para>
+                </listitem>
+                <listitem>
+                    <para>a pattern together with an expression.</para>
+                </listitem>
+            </itemizedlist>
+                    
+            <synopsis>ExistsOrNonemptyCondition: "!"? ("exists" | "nonempty") (Pattern Specifier | MemberName)</synopsis>
+            
+            <para>A <emphasis>negated</emphasis> condition is one which starts with 
+            <literal>!</literal>.</para>
+            
+            <para>The type of the value reference or expression must be:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>in the case of an existence condition or negated existence condition, 
+                    a type whose intersection with <literal>Null</literal> is not exactly 
+                    <literal>Nothing</literal> and whose intersection with <literal>Object</literal> 
+                    is not exactly <literal>Nothing</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of a nonemptiness condition or a negated nonemptiness 
+                    condition, a subtype of <literal>Anything[]?</literal> whose intersection with 
+                    <literal>[]</literal> is not exactly <literal>Nothing</literal>, and whose 
+                    intersection with <literal>[Nothing+]</literal> is not exactly 
+                    <literal>Nothing</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
+            considered an abbreviation of&mdash;an assignability condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>exists x</literal> is equivalent to <literal>is Object x</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>!exists x</literal> is equivalent to <literal>is Null x</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
+                    where <literal>x</literal> is an expression whose type has the principal 
+                    instantiation <literal>E[]?</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>!nonempty x</literal> is equivalent to <literal>is [] x</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For an existence condition which is not negated:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition has a pattern, the patterned type is 
+                    <literal>T&amp;Object</literal>, where the specifier expression is of type 
+                    <literal>T</literal>, and, if the pattern is a variable pattern, the declared 
+                    type of the variable, if any, must be a subtype of <literal>Object</literal>, 
+                    or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
@@ -1953,12 +1920,13 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For a <literal>!exists</literal> negated existence condition:</para>
+            <para>For a negated existence condition:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable, 
-                    if any, must be <literal>Null</literal>, or</para>
+                    <para>if the condition has a pattern, it must be a variable pattern and
+                    the declared type of the variable, if any, must be <literal>Null</literal>, 
+                    or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
@@ -1971,15 +1939,16 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For a <literal>nonempty</literal> nonemptiness condition:</para>
+            <para>For a nonemptiness condition which is not negated:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable,
-                    if any, must be a supertype of <literal>T&amp;[E+]</literal>, where the 
-                    specifier expression is of type <literal>T</literal> and <literal>T</literal> 
-                    has the principal instantiation <literal>E[]?</literal>, and must be a subtype 
-                    of <literal>[Anything+]</literal>, or</para>
+                    <para>if the condition has a pattern, the patterned type is
+                    <literal>T&amp;[E+]</literal>, where the specifier expression is of type 
+                    <literal>T</literal> and <literal>T</literal> has the principal instantiation 
+                    <literal>E[]?</literal>, and, if the pattern is a variable pattern, the declared 
+                    type of the variable, if any, must be a subtype of <literal>[Anything+]</literal>, 
+                    or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
@@ -1992,12 +1961,12 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For a <literal>!nonempty</literal> negated nonemptiness condition:</para>
+            <para>For a negated nonemptiness condition:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable, 
-                    if any, must be <literal>[]</literal>, or</para>
+                    <para>if the condition has a pattern, it must be a variable pattern and the 
+                    declared type of the variable, if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
@@ -2023,19 +1992,7 @@ if (is Usable tx) { ... }</programlisting>
         
             <para>As a special exception to the above, if a condition occurs in a <literal>dynamic</literal> 
             block, and the conditional expression has no type, and the condition contains a value reference, 
-            then:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if the condition is an assignability condition, and the condition is not
-                    negated, the value will be treated by the compiler as having type <literal>X</literal> 
-                    where <literal>X</literal> is the specified type, inside the block or expression that 
-                    immediately follows the condition, or, otherwise</para>
-                </listitem>
-                <listitem>
-                    <para>the value will be treated by the compiler as having no type.</para>
-                </listitem>
-            </itemizedlist>
+            then the value will be treated by the compiler as having no type.</para>
             
         </section>
         
@@ -2116,6 +2073,66 @@ if (is Usable tx) { ... }</programlisting>
             the control structure containing the condition is executed.</para>
         
         </section-->
+        
+    </section>
+    
+    <section id="controlstructures">
+        <title>Control structures and assertions</title>
+        
+        <para>Control of execution flow may be achieved using control directives and 
+        <emphasis>control structures</emphasis>. Control structures include conditionals, 
+        loops, and exception management.</para>
+
+        <para>Ceylon provides the following control structures:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the <literal>if/else</literal> conditional&mdash;for controlling 
+                execution based on a boolean condition, type condition, or check for a 
+                non-null or non-empty value,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>switch/case/else</literal> conditional&mdash;for 
+                controlling execution using an enumerated list of values or types,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>while</literal> loop&mdash;for loops which terminate 
+                based on a boolean condition, type condition, or check for a non-null or 
+                non-empty value,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>for/else</literal> loop&mdash;for looping over elements 
+                of an iterable object, and</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>try/catch/finally</literal> exception manager&mdash;for 
+                managing exceptions and controlling the lifecycle of objects which require 
+                explicit destruction.</para>
+            </listitem>
+        </itemizedlist>
+                
+        <synopsis>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</synopsis>
+       
+        <comment><para>Control structures are not considered to be expressions, and therefore 
+        do not evaluate to a value. However, comprehensions, specified in 
+        <xref linkend="comprehensions"/>, and conditional expressions, specified in 
+        <xref linkend="miscexpressions"/> are part of the expression syntax and share much of 
+        the syntax and semantics of the control structures they resemble.</para></comment>
+        
+        <para><emphasis>Assertions</emphasis> are runtime checks upon program invariants, or 
+        function preconditions and postconditions. An assertion failure represents a bug in
+        the program, and is not considered recoverable. Therefore, assertions should not be 
+        used to control "normal" execution flow.</para>
+        
+        <comment><para>Note: of course, in certain circumstances, it is appropriate to handle
+        the exception that results from an assertion failure, for example, to display a message
+        to the user, or in a testing framework to aggregate and report the failures that occurred
+        in test assertions. A test failure may be considered "normal" occurrence from the point 
+        of view of a testing framework, but it's not "normal" in the sense intended above.
+        </para></comment>
+        
+        <!--comment><para>Note: the detailed semantics of control structures and assertions are 
+        defined in <xref linkend="executionofcontrolstructures"/>.</para></comment-->
         
         <section id="ifelse">
             <title><literal>if/else</literal></title>
@@ -2329,33 +2346,21 @@ case (is Float) {
             an <literal>else</literal> clause, as specified in 
             <xref linkend="executionofloops"/>.</para>
             
-            <para>The <literal>for</literal> iterator consists of an iteration variable 
-            declaration and an iterated expression that contains the range of values to 
-            be iterated.</para>
+            <para>The <literal>for</literal> iterator has an <emphasis>iterator 
+            pattern</emphasis> and an <emphasis>iterated expression</emphasis> 
+            that contains the range of values to be iterated.</para>
             
-            <synopsis>ForIterator: "(" IteratorVariable "in" Expression ")"</synopsis>
+            <synopsis>ForIterator: "(" Pattern "in" Expression ")"</synopsis>
             
-            <para>The type of the iterated expression depends upon the iteration variable 
-            declarations:</para>
+            <para>The type of the iterated expression must be an invariant subtype 
+            of some instantiation <literal>{T*}</literal> or <literal>{T+}</literal> 
+            of <literal>Iterable</literal> in <literal>ceylon.language</literal>. 
+            Then the patterned type of the iterator pattern is <literal>T</literal>.</para> 
             
-            <itemizedlist>
-            <listitem>
-                <para>The iterated expression must be an expression of type assignable to 
-                <literal>Iterable&lt;X&gt;</literal> where <literal>X</literal> is the 
-                declared type of the iteration variable.</para> 
-            </listitem>
-            <listitem>
-                <para>If two iteration variables are defined, the iterated expression type 
-                must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal>
-                where <literal>U</literal> and <literal>V</literal> are the declared types 
-                of the iteration variables.</para>
-            </listitem>
-            </itemizedlist>
-            
-            <para>As a special exception to the above, if a <literal>for</literal> occurs in 
-            a <literal>dynamic</literal> block, and the iterated expression has no type, the 
-            iterator is not statically type-checked. If the iteration variable does not declare
-            an explicit type, the iteration variable has no type.</para>
+            <para>As a special exception to the above, if a <literal>for</literal> occurs 
+            in a <literal>dynamic</literal> block, and the iterated expression has no type, 
+            the iterator is not statically type-checked. If the iteration variable does not 
+            declare an explicit type, the iteration variable has no type.</para>
                         
             <programlisting>for (p in people) { 
     print(p.name);
@@ -2598,8 +2603,8 @@ else "total must be less than ``bound``";</programlisting>
                 </listitem>
                 <listitem>
                     <para>may be the subject of a control structure condition, as 
-                    defined in <xref linkend="assignabilityexistencenonemptinessconditions"/>,
-                    a <literal>switch</literal>, as defined in <xref linkend="switchcaseelse"/>, 
+                    defined in <xref linkend="controlstructureconditions"/>, a 
+                    <literal>switch</literal>, as defined in <xref linkend="switchcaseelse"/>, 
                     or a <literal>for</literal> iterator, as defined in <xref linkend="forelse"/>.
                     </para>
                 </listitem>
