@@ -909,6 +909,130 @@ Integer f(Integer n) => n+package.n;</programlisting>
     
     </section>
     
+    <section id="patterns">
+        <title>Patterns</title>
+        
+        <para>An expression whose type is an instantiation of <literal>Sequence</literal>, 
+        <literal>Tuple</literal>, or <literal>Entry</literal> may be assigned to a 
+        <emphasis>pattern</emphasis>. The type of an expression assigned to a pattern 
+        is called the <emphasis>patterned type</emphasis>.</para>
+        
+        <para>Patterns are formed from:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>pattern variables,</para>
+            </listitem>
+            <listitem>
+                <para>tuple patterns, and</para>
+            </listitem>
+            <listitem>
+                <para>entry patterns.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <synopsis>Pattern: Variable | TuplePattern | EntryPattern</synopsis>
+        
+        <comment><para>Note: in a future release of the language, we might introduce
+        a more general pattern matching system, allowing pattern matching against
+        arbitrary classes.</para></comment>
+        
+        <section id="patternvariables">
+            <title>Pattern variables</title>
+            
+            <para>A <emphasis>pattern variable</emphasis> is just a variable, as 
+            defined below in <xref linkend="controlstructurevariables"/> that 
+            occurs as an element of a tuple or entry pattern.</para>
+            
+            <para>If the variable has an explicit type, then the patterned type
+            must be assignable to this type. Otherwise, the type of the variable
+            is inferred to be the patterned type.</para> 
+        
+        </section>
+        
+        <section id="tuplepatterns">
+            <title>Tuple patterns</title>
+        
+            <para>A tuple pattern comprises a list of <emphasis>element 
+            patterns</emphasis>, ending in, optionally, a <emphasis>spread 
+            element pattern</emphasis> indicated by an asterisk. Tuple 
+            patterns are enclosed in brackets.</para>
+            
+            <synopsis>TuplePattern: "[" Pattern ("," Pattern)* ("," "*" Pattern)? "]"</synopsis>
+            
+            <para>The patterned type must be an instantiation of the type
+            <literal>Tuple</literal> or <literal>Sequence</literal> in 
+            <literal>ceylon.language</literal>. Then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the tuple pattern has only one element pattern, 
+                    and it is a spread element pattern, then the patterned 
+                    type of the spread element pattern is just the patterned 
+                    type of the surrounding tuple pattern.</para> 
+                </listitem>
+                <listitem>
+                    <para>Or, if the tuple pattern has only one element pattern, 
+                    and it is not a spread element pattern, then the patterned 
+                    type must be a single-element instantiation <literal>[T]</literal> 
+                    of <literal>Tuple</literal>, and the patterned type of the
+                    element pattern is <literal>T</literal>.</para> 
+                </listitem>
+                <listitem>
+                    <para>Otherwise, if the patterned type is an instantiation 
+                    <literal>Tuple&lt;T,F,R&gt;</literal> of <literal>Tuple</literal>,
+                    then the patterned type of the first element pattern is 
+                    <literal>F</literal>, and the patterned types of the 
+                    remaining element patterns, if any, are determined by 
+                    forming a new tuple pattern with patterned type 
+                    <literal>R</literal> by removing the first element pattern 
+                    from the list of element patterns.</para>
+                </listitem>
+                <listitem>
+                    <para>Or, if the patterned type is an instantiation 
+                    <literal>[T+]</literal> of <literal>Sequence</literal>, 
+                    then there must be exactly two element patterns, and the 
+                    second element pattern must be a spread element pattern. 
+                    Then the patterned type of the first element pattern is
+                    <literal>T</literal>, and the patterned type of the
+                    second element pattern is <literal>[T*]</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>value [x, y, z] = [1.0, 2.0, 0.0];</programlisting>
+            <programlisting>value [first, *rest] = sequence;</programlisting>
+                
+        </section>
+        
+        <section id="entrypatterns">
+            <title>Entry patterns</title>
+        
+            <para>An entry pattern comprises a <emphasis>key pattern</emphasis>,
+            followed by an <emphasis>item pattern</emphasis>.</para>
+            
+            <synopsis>EntryPattern: Pattern "->" Pattern</synopsis>
+            
+            <para>The patterned type must be an instantiation 
+            <literal>K-&gt;V</literal> of the type <literal>Entry</literal> in 
+            <literal>ceylon.language</literal>. Then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the patterned type of the key pattern is 
+                    <literal>K</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>the patterned type of the item pattern is 
+                    <literal>V</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>value name->[lat,long] = observatory;</programlisting>
+            
+        </section>
+        
+    </section>
+    
     <section id="blocksandstatements">
         <title>Blocks and statements</title>
             
