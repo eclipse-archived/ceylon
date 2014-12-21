@@ -1111,7 +1111,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         invocation of a method, an instantiation of a class, a destructuring statement,
         a control structure, a control directive, or an assertion.</para>
 
-        <synopsis>Statement: ExpressionStatement | Specification | Destructure | Assertion | Directive | ControlStructure</synopsis>
+        <synopsis>Statement: ExpressionStatement | Specification | Destructure | Directive | ControlStructure | Dynamic</synopsis>
         
         <para>A statement or declaration contained in a block may not evaluate a value, 
         invoke a function, instantiate a class, or extend a class whose declaration 
@@ -1361,6 +1361,72 @@ else {
             
             <para>The type of the specified expression is the patterned type of the
             tuple or entry pattern.</para>
+            
+        </section>
+        
+        <section id="dynamicblocks">
+            <title>Dynamic blocks</title>
+            
+            <para>A <literal>dynamic</literal> block allows interoperation with 
+            dynamically typed native code.</para>
+            
+            <synopsis>Dynamic: "dynamic" Block</synopsis>
+            
+            <para>Inside a <literal>dynamic</literal> block an expression may have 
+            no type, as specified in <xref linkend="expressions"/>.</para>
+            
+            <para>An expression with no type:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>may be specified or assigned to a typed value, as defined
+                    in <xref linkend="specificationstatements"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>may be passed as the argument of a typed parameter in an
+                    invocation expression, as defined in 
+                    <xref linkend="directinvocations"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>may be the invoked expression of an invocation, as defined
+                    in <xref linkend="invocationexpressions"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>may be returned by a typed function or getter, or
+                    thrown as an exception, as defined in 
+                    <xref linkend="controldirectives"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>may be the operand of an operator expression, as defined in
+                    <xref linkend="compoundexpressions"/>, or</para>
+                </listitem>
+                <listitem>
+                    <para>may be the subject of a control structure condition, as 
+                    defined in <xref linkend="controlstructureconditions"/>, a 
+                    <literal>switch</literal>, as defined in <xref linkend="switchcaseelse"/>, 
+                    or a <literal>for</literal> iterator, as defined in <xref linkend="forelse"/>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Furthermore:</para>  
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a qualified or unqualified reference may not refer to a
+                    statically typed declaration, as defined by 
+                    <xref linkend="unqualifiedreferenceresolution"/> and
+                    <xref linkend="qualifiedreferenceresolution"/>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>These situations result in <emphasis>dynamic type checking</emphasis>,
+            as defined in <xref linkend="dynamictypechecking"/>, since the usual static
+            type checks are impossible.</para>
+            
+            <comment><para>Note: within a <literal>dynamic</literal> block, Ceylon behaves like
+            a language with optional static typing, performing static type checks where possible,
+            and dynamic type checking where necessary.</para></comment>
             
         </section>
         
@@ -2111,7 +2177,7 @@ if (is Usable tx) { ... }</programlisting>
             </listitem>
         </itemizedlist>
                 
-        <synopsis>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</synopsis>
+        <synopsis>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Assertion</synopsis>
        
         <comment><para>Control structures are not considered to be expressions, and therefore 
         do not evaluate to a value. However, comprehensions, specified in 
@@ -2564,73 +2630,7 @@ else "total must be less than ``bound``";</programlisting>
             </comment>
             
         </section>
-        
-        <section id="dynamicblocks">
-            <title>Dynamic blocks</title>
-            
-            <para>A <literal>dynamic</literal> block allows interoperation with 
-            dynamically typed native code.</para>
-            
-            <synopsis>Dynamic: "dynamic" Block</synopsis>
-            
-            <para>Inside a <literal>dynamic</literal> block an expression may have 
-            no type, as specified in <xref linkend="expressions"/>.</para>
-            
-            <para>An expression with no type:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>may be specified or assigned to a typed value, as defined
-                    in <xref linkend="specificationstatements"/>,</para>
-                </listitem>
-                <listitem>
-                    <para>may be passed as the argument of a typed parameter in an
-                    invocation expression, as defined in 
-                    <xref linkend="directinvocations"/>,</para>
-                </listitem>
-                <listitem>
-                    <para>may be the invoked expression of an invocation, as defined
-                    in <xref linkend="invocationexpressions"/>,</para>
-                </listitem>
-                <listitem>
-                    <para>may be returned by a typed function or getter, or
-                    thrown as an exception, as defined in 
-                    <xref linkend="controldirectives"/>,</para>
-                </listitem>
-                <listitem>
-                    <para>may be the operand of an operator expression, as defined in
-                    <xref linkend="compoundexpressions"/>, or</para>
-                </listitem>
-                <listitem>
-                    <para>may be the subject of a control structure condition, as 
-                    defined in <xref linkend="controlstructureconditions"/>, a 
-                    <literal>switch</literal>, as defined in <xref linkend="switchcaseelse"/>, 
-                    or a <literal>for</literal> iterator, as defined in <xref linkend="forelse"/>.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>Furthermore:</para>  
-            
-            <itemizedlist>
-                <listitem>
-                    <para>a qualified or unqualified reference may not refer to a
-                    statically typed declaration, as defined by 
-                    <xref linkend="unqualifiedreferenceresolution"/> and
-                    <xref linkend="qualifiedreferenceresolution"/>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>These situations result in <emphasis>dynamic type checking</emphasis>,
-            as defined in <xref linkend="dynamictypechecking"/>, since the usual static
-            type checks are impossible.</para>
-            
-            <comment><para>Note: within a <literal>dynamic</literal> block, Ceylon behaves like
-            a language with optional static typing, performing static type checks where possible,
-            and dynamic type checking where necessary.</para></comment>
-            
-        </section>
-         
+                 
     </section>
 
 </chapter>
