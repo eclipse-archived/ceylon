@@ -3122,12 +3122,18 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Metamodel expressions</title>
         
         <para>A <emphasis>metamodel expression</emphasis> is a reference to
-        a type, a class, a function, or a value. It evaluates to a metamodel 
-        object whose static type captures the type itself, the callable type 
-        of the class, the callable type of the function, or the type of the 
-        value, respectively.</para>
+        a type, a class, a function, a value, or a constructor. It evaluates 
+        to a metamodel object whose static type captures, respectively:</para>
         
-        <synopsis>Meta: TypeMeta | BaseMeta | MemberMeta</synopsis>
+        <itemizedlist>
+            <listitem><para>the type itself,</para></listitem>
+            <listitem><para>the callable type of the class,</para></listitem>
+            <listitem><para>the callable type of the function,</para></listitem>
+            <listitem><para>the type of the value, or</para></listitem>
+            <listitem><para>the callable type of the constructor.</para></listitem>
+        </itemizedlist>
+        
+        <synopsis>Meta: TypeMeta | BaseMeta | MemberMeta | ConstructorMeta</synopsis>
         
         <para>A <emphasis>type metamodel expression</emphasis> is a type, as
         defined by <xref linkend="type"/>, surrounded by backticks.</para>
@@ -3172,6 +3178,20 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
         <programlisting>Value&lt;Integer&gt; systemMillis = `system.milliseconds`;</programlisting>
         
+        <para>A <emphasis>constructor metamodel expression</emphasis> is a qualifier, 
+        followed by a constructor name, with an optional list of type arguments, 
+        surrounded by backticks.</para>
+        
+        <synopsis>ConstructorMeta: "`" MetaQualifier "." TypeName TypeArguments? "`"</synopsis>
+        
+        <para>The constructor metamodel expression qualifier is a type that is an
+        instantiation of a class.</para>
+        
+        <para>A constructor metamodel expression is a reference to a constructor or 
+        of the class identified by the qualifier. The constructor is resolved as a 
+        member of the class according to 
+        <xref linkend="qualifiedreferenceresolution"/>.</para>
+        
         <para>Type argument inference is impossible in a metamodel expression,
         so type arguments must be explicitly provided for every generic 
         declaration.</para>
@@ -3196,6 +3216,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>for a toplevel class of callable type 
                     <literal>R(*P)</literal>, the type is 
                     <literal>Class&lt;R,P&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a constructor of a toplevel class of callable 
+                    type <literal>R(*P)</literal>, the type is 
+                    <literal>Constructor&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
@@ -3228,6 +3253,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>for a member class of callable type 
                     <literal>R(*P)</literal>, the type is 
                     <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a constructor of a member class of callable 
+                    type <literal>R(*P)</literal>, the type is 
+                    <literal>MemberClassConstructor&lt;T,R,P&gt;</literal>, 
+                    and</para>
                 </listitem>
                 <listitem>
                     <para>for a nested interface of type 
@@ -3279,14 +3310,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <para>a class, interface, type alias, or type parameter,</para>
             </listitem>
             <listitem>
-                <para>a function or value, or</para>
+                <para>a function or value,</para>
+            </listitem>
+            <listitem>
+                <para>a constructor, or</para>
             </listitem>
             <listitem>
                 <para>a package or module.</para>
             </listitem>
         </itemizedlist>
         
-        <synopsis>Dec: TypeDec | MemberDec | PackageDec | ModuleDec</synopsis>
+        <synopsis>Dec: TypeDec | MemberDec | ConstructorDec | PackageDec | ModuleDec</synopsis>
         
         <section id="declarationreferences">
             <title>Declaration references</title>
@@ -3338,6 +3372,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <synopsis>MemberKeyword: "value" | "function"</synopsis>
             
             <synopsis>MemberDec: "`" MemberKeyword MemberDecQualifier? MemberName "`"</synopsis>
+            
+            <para>A <emphasis>constructor reference expression</emphasis> is a 
+            member declaration qualifier, followed by the name of a constructor,
+            with the keyword <literal>new</literal>, surrounded by backticks.</para>
+            
+            <synopsis>ConstructorKeyword: "new"</synopsis>
+            
+            <synopsis>ConstructorDec: "`" ConstructorKeyword MemberDecQualifier TypeName "`"</synopsis>
             
             <para>A reference expression is a reference to a declaration. The 
             referenced declaration is determined according to
@@ -3413,6 +3455,10 @@ Module languageModule = `module ceylon.language`;</programlisting>
                 <listitem>
                     <para>for a function, the type is 
                     <literal>FunctionDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a constructor, the type is 
+                    <literal>ConstructorDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a type parameter, the type is 
