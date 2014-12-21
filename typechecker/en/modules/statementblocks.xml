@@ -713,6 +713,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>there must be at least one declaration with the given name or 
+                    imported into the toplevel namespace of the compilation unit, as
+                    defined in <xref linkend="imports"/>, and aliased to the given 
                     imported name, as defined in <xref linkend="importedname"/>, in scope 
                     at the program element, and</para>
                 </listitem>
@@ -818,9 +820,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the qualifying type must have or inherit at least one member 
-                    or nested type with the given name or imported name, as defined in 
-                    <xref linkend="importedname"/>, which is visible at the program 
-                    element, and</para>
+                    or nested type with the given name or aliased to the given imported 
+                    name, as defined in <xref linkend="importedname"/>, which is visible 
+                    at the program element, and</para>
                 </listitem>
                 <listitem>
                     <para>if there are multiple visible members with the given name or 

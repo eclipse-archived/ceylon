@@ -195,6 +195,23 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
+        <para>An import element may either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>import a name into the <emphasis>toplevel namespace</emphasis> 
+                of the compilation unit in which it occurs, or</para>
+            </listitem>
+            <listitem>
+                <para>result in an alias for a member of a type within the 
+                compilation unit in which it occurs.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Every import element belonging directly to an <literal>import</literal> 
+        statement imports into the <emphasis>toplevel namespace</emphasis> of the 
+        compilation unit.</para>
+        
         <para>An import element may not refer to a declaration that is not visible to
         the compilation unit, as defined by <xref linkend="visibility"/>.</para>
         
@@ -214,39 +231,80 @@ TypeConstraints?
         
         <section id="typeimports">
             <title>Type imports</title>
-        
+            
             <para>An import element that specifies a type name imports the toplevel type 
-            with that name from the given package.</para>
+            with that name from the imported package or type.</para>
             
             <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements "}")?</synopsis>
             
-            <para>A compilation unit may not import two types with the same name.</para>
+            <para>The specified name must be the name of a type declaration belonging to 
+            the imported package or type.</para>
             
-            <programlisting>import java.util { Set, List, Map }</programlisting>
+            <programlisting>import ceylon.collection { MutableSet, MutableList, MutableMap }</programlisting>
             
-            <para>The import element may be followed by a list of nested import elements, 
-            which must specify aliases.</para>
+            <para>The import element may be followed by a list of nested import elements:</para> 
             
-            <comment><para>Note: as a special exception to the usual language rules, to 
-            support interoperation with Java, a nested import element which references a
-            <literal>static</literal> member of a Java type results in a Ceylon
-            <emphasis>toplevel</emphasis> reference to the <literal>static</literal> member. 
-            In this case, the import element may omit the explicit alias.</para></comment>
+            <itemizedlist>
+                <listitem>
+                    <para>if the import element imports into the toplevel namespace of 
+                    the compilation unit, and if a nested import element is a reference 
+                    to a constructor, the nested import element imports into the toplevel 
+                    namespace of the compilation unit, and need not specify an alias, or,
+                    otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the nested import element only defines an alias for the 
+                    referenced member of the imported type, and this alias must be 
+                    specified explicitly.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
         
+        <section id="anonymousclassimports">
+            <title>Anonymous class imports</title>
+            
+            <para>An import element that specifies the name of an anonymous class, as 
+            defined in <xref linkend="anonymousclasses"/>, imports the anonymous class 
+            with that name from the imported package or type.</para>
+            
+            <synopsis>ImportTypeElement: FunctionValueAlias? MemberName ("{" ImportElements "}")?</synopsis>
+            
+            <para>The specified name must be the name of an anonymous class declaration 
+            belonging to the imported package or type.</para>
+            
+            <programlisting>import ceylon.file { home, current }</programlisting>
+            
+            <para>The import element may be followed by a list of nested import elements:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the import element imports into the toplevel namespace of 
+                    the compilation unit, a nested import element imports into the 
+                    toplevel namespace of the compilation unit, and need not specify 
+                    an alias, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the nested import element only defines an alias for the 
+                    referenced member of the imported type, and this alias must be 
+                    specified explicitly.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
         <section id="methodattributeimports">
             <title>Function and value imports</title>
-        
+            
             <para>An import element that specifies a function or value name imports the 
-            toplevel function or value with that name from the given package.</para>
+            toplevel function or value with that name from the imported package or type.</para> 
             
             <synopsis>ImportFunctionValueElement: FunctionValueAlias? MemberName</synopsis>
             
-            <para>A compilation unit may not import two methods or attributes with the same 
-            name.</para>
+            <para>The specified name must be the name of a function or value declaration
+            belonging to the imported package or type.</para>
             
-            <programlisting>import ceylon.math { sqr, sqrt, e, pi }</programlisting>
+            <programlisting>import ceylon.math.float { sqrt, e, pi }</programlisting>
         
         </section>
         
@@ -330,8 +388,12 @@ TypeConstraints?
             as the name of a toplevel declaration contained in the compilation unit in
             which the import element occurs.</para>
             
-            <para>Two import elements occurring in the same compilation unit may not result 
-            in the same imported name.</para>
+            <para>Two import elements occurring in the same compilation unit, which import 
+            into the toplevel namespace of the compilation unit, may not result in the same 
+            imported name.</para>
+            
+            <para>Two nested import elements belonging to the same import element may not 
+            result in the same imported name.</para>
             
             <emphasis><para>Note: if an imported declaration is already referenceable within 
             a compilation unit without the <literal>import</literal> statement, for example, 
