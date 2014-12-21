@@ -1346,14 +1346,16 @@ TypeConstraints?
             the member.</para>
             -->
             
-            <para>A subclass must pass values to each superclass initialization parameter in 
-            the <literal>extends</literal> clause.</para>
-    
+            <para>A subclass with an initializer parameter list must pass arguments to 
+            each superclass initialization parameter or constructor parameter in the 
+            <literal>extends</literal> clause. A subclass with no initializer parameter 
+            list may not pass arguments in the <literal>extends</literal> clause.</para>
+            
             <programlisting>shared class SpecialKey1()
         extends Key( SpecialLock() ) {
     ...
 }</programlisting>
-    
+            
             <programlisting>shared class SpecialKey2(Lock lock) 
         extends Key(lock) {
     ...

@@ -1094,7 +1094,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <synopsis>ExtendedType: "extends" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
         
-            <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
+            <para>The <literal>extends</literal> clause must specify exactly one superclass
+            or superclass constructor.</para>
             
             <itemizedlist>
                 <listitem>
@@ -1102,8 +1103,14 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
                     clause must also explicitly specify type arguments.</para>
                 </listitem>
                 <listitem>
-                    <para>The <literal>extends</literal> clause must specify arguments for the 
-                    initializer parameters of the superclass.</para>
+                    <para>If the class has an initializer parameter list, the <literal>extends</literal> 
+                    clause must specify arguments for the initializer parameters of the superclass
+                    or parameters of the superclass constructor.</para>
+                </listitem>
+                <listitem>
+                    <para>If the class has no initializer parameter list, the <literal>extends</literal> 
+                    clause may not specify arguments for the initializer parameters of the superclass,
+                    and the <literal>extends</literal> clause may not refer to a constructor.</para>
                 </listitem>
             </itemizedlist>
             
