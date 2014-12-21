@@ -509,11 +509,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>a reference within the lexical scope of the referenced 
-                    function, value, or class, or</para>
+                    function, value, constructor, or class, or</para>
                 </listitem>
                 <listitem>
                     <para>a reference within the body of the referenced function,
-                    value, or class.</para>
+                    value, constructor, or class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -526,10 +526,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <xref linkend="typeargumentsandconstraints"/>, to the type parameter list
             of the unqualified realization.</para>
             
-            <para>If a base expression is a reference to an attribute, method, or 
-            member class of a class, the receiving instance is the current instance of 
-            that class, as defined by <xref linkend="currentinstanceofaclassorinterface"/>.
-            Otherwise, there is no receiving instance.</para>
+            <para>If a base expression is a reference to an attribute, method, member 
+            class, or member class constructor of a class, the receiving instance is the 
+            current instance of that class, as defined by 
+            <xref linkend="currentinstanceofaclassorinterface"/>. Otherwise, there is no 
+            receiving instance.</para>
         
         </section>
         
@@ -537,7 +538,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Member expressions</title>
             
             <para>A <emphasis>member expression</emphasis> is a <emphasis>receiver
-            expression</emphasis>, followed by an identifier, with an optional list 
+            expression</emphasis>, followed by an identifier, with an optional list
             of type arguments.</para>
             
             <synopsis>MemberExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
@@ -585,7 +586,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If the constructor expression is qualified by a member expression,
             the member expression produces the instance upon which the constructor
-            is invoked.</para>
+            is invoked. When a constructor expression is executed, the member 
+            expression is evaluated to produce the receiving instance which is held 
+            until the constructor is invoked or evaluated, as defined in 
+            <xref linkend="evaluationinvocationandassignment"/>.</para>
             
         </section>
                     

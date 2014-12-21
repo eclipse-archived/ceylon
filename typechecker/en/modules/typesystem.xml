@@ -1090,12 +1090,44 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <title>Extension</title>
         
             <para>A class may extend another class, in which case the first class is a subtype
-            of the second class and inherits its members.</para>
+            of the second class and inherits its members. A class which extends another class
+            may have a constructor, as defined in <xref linkend="constructors"/>, which 
+            delegates to a constructor of the second class. Extension and constructor delegation
+            is specified using the <literal>extends</literal> clause.</para>
             
-            <synopsis>ExtendedType: "extends" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
-        
-            <para>The <literal>extends</literal> clause must specify exactly one superclass
-            or superclass constructor.</para>
+            <para>An <literal>extends</literal> clause has a reference to a superclass or
+            superclass constructor, followed by an optional positional argument list, as
+            defined in <xref linkend="positionalarguments"/>.</para>
+            
+            <synopsis>ExtendedType: "extends" SuperclassOrConstructor PositionalArguments?</synopsis>
+            
+            <synopsis>SuperclassOrConstructor: (("super" | TypeNameWithArguments) ".")? TypeNameWithArguments</synopsis>
+            
+            <para>The specification of the superclass or superclass constructor is treated 
+            as a value expression, not as a type expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the qualifier <literal>super</literal> occurs, the specification
+                    is treated as a member expression, as defined by 
+                    <xref linkend="memberexpressions"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>if a qualifying type occurs, the specification is treated as a 
+                    constructor expression, as defined by 
+                    <xref linkend="constructorexpressions"/>, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>if no qualifier occurs, the specification is treated as a 
+                    base expression, as defined by <xref linkend="baseexpressions"/>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The type of the value expression is the inherited type.</para> 
+            
+            <para>The specification of the superclass or superclass constructor may have 
+            type arguments, and, additionally, the extends clause may have a positional 
+            argument list:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1103,19 +1135,21 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
                     clause must also explicitly specify type arguments.</para>
                 </listitem>
                 <listitem>
-                    <para>If the class has an initializer parameter list, the <literal>extends</literal> 
+                    <para>If the <literal>extends</literal> clause belongs to a constructor or 
+                    to a class with an initializer parameter list, the <literal>extends</literal> 
                     clause must specify arguments for the initializer parameters of the superclass
                     or parameters of the superclass constructor.</para>
                 </listitem>
                 <listitem>
-                    <para>If the class has no initializer parameter list, the <literal>extends</literal> 
-                    clause may not specify arguments for the initializer parameters of the superclass,
-                    and the <literal>extends</literal> clause may not refer to a constructor.</para>
+                    <para>If the <literal>extends</literal> clause belongs to a class with no 
+                    initializer parameter list, the <literal>extends</literal> clause may not 
+                    specify arguments for the initializer parameters of the superclass, and the 
+                    <literal>extends</literal> clause may not refer to a constructor.</para>
                 </listitem>
             </itemizedlist>
             
             <para>The type arguments may <emphasis>not</emphasis> be inferred from the 
-            initializer arguments.</para>
+            positional arguments.</para>
             
             <programlisting>extends Singleton&lt;String&gt;("")</programlisting>
             <programlisting>extends Person(name, org)</programlisting>
