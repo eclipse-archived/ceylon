@@ -764,8 +764,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 <listitem>
                     <para>the type name in a qualified type declaration or type argument, 
                     as defined by <xref linkend="typeexpressions"/>, for example 
-                    <literal>Buffer</literal> 
-                    in <literal>BufferedReader.Buffer</literal>,</para>
+                    <literal>Buffer</literal> in
+                    <literal>BufferedReader.Buffer</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>the value, function, or type name in a member expression, as 
@@ -775,9 +775,13 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     <literal>Buffer</literal> in <literal>br.Buffer()</literal>,</para>
                 </listitem>
                 <listitem>
+                    <para>the constructor name in a constructor expression, as 
+                    defined by <xref linkend="constructorexpressions"/>, or</para>
+                </listitem>
+                <listitem>
                     <para>the type name in a qualified type in a static expression, as 
                     defined by <xref linkend="staticexpressions"/>, for example 
-                    <literal>Buffer</literal> in 
+                    <literal>Buffer</literal> in
                     <literal>BufferedReader.Buffer.size</literal>, or the member name 
                     in a static expression, for example <literal>iterator</literal> in 
                     <literal>Sequence.iterator</literal>, or <literal>size</literal> in 
@@ -795,6 +799,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 <listitem>
                     <para>For a value reference or callable reference, the 
                     qualifying type is the type of the receiver expression.</para>
+                </listitem>
+                <listitem>
+                    <para>For a constructor reference, the qualifying type is the 
+                    type of the qualifying base or member expression.</para>
                 </listitem>
                 <listitem>
                     <para>For a static reference, the qualifying type is the full 

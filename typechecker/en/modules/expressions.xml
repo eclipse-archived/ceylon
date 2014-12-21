@@ -461,7 +461,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         first row of the table of operator precedence and associativity in
         <xref linkend="operatorprecedence"/>.</para>
         
-        <synopsis>Primary: Atom | MemberExpression | StaticExpression | Invocation | IndexedExpression</synopsis>
+        <synopsis>Primary: Atom | QualifiedExpression | Invocation | IndexedExpression</synopsis>
+        
+        <synopsis>QualifiedExpression: MemberExpression | ConstructorExpression | StaticExpression</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, as defined in <xref linkend="operators"/>, 
@@ -559,6 +561,33 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <xref linkend="evaluationinvocationandassignment"/>.</para>
             
         </section>
+        
+        <section id="constructorexpressions">
+            <title>Constructor expressions</title>
+            
+            <para>A <emphasis>constructor expression</emphasis> is a base or member
+            expression that references a class with constructors, followed by an
+            identifier, with an optional list of type arguments.</para>
+            
+            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." TypeName TypeArguments?</synopsis>
+            
+            <para>A constructor expression is a reference to a constructor of a 
+            class.</para>
+            
+            <para>The referenced member is determined by resolving the qualified 
+            reference as defined by <xref linkend="qualifiedreferenceresolution"/>.
+            The qualified realization for the qualified reference is determined
+            according to <xref linkend="realizations"/>.</para>
+            
+            <para>The type argument list, if any, must conform, as defined by
+            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list
+            of the qualified realization.</para>
+            
+            <para>If the constructor expression is qualified by a member expression,
+            the member expression produces the instance upon which the constructor
+            is invoked.</para>
+            
+        </section>
                     
         <section id="valuereferences">
             <title>Value references</title>
@@ -589,10 +618,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="callablereferences">
             <title>Callable references</title>
             
-            <para>A <emphasis>callable reference</emphasis> is a base expression or
-            member expression that references something&mdash;a function or 
-            class&mdash;that can be <emphasis>invoked</emphasis> or 
-            <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
+            <para>A <emphasis>callable reference</emphasis> is a base expression,
+            member expression, or constructor expression that references something&mdash;a 
+            function, class, or constructor&mdash;that can be <emphasis>invoked</emphasis> 
+            or <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
             
             <para>A callable reference may be invoked immediately, or it may be passed 
             to other code which may invoke the reference. A callable reference captures 
@@ -601,7 +630,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             reference is invoked.</para>
             
             <para>The type of a callable reference expression is the callable type of
-            the realization of the referenced function or class.</para>
+            the realization of the referenced function, class, or constructor.</para>
             
             <para>If a callable reference expression refers to a generic declaration, 
             it must either:</para>
@@ -799,7 +828,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Any invocation expression where the invoked expression is a callable 
             reference expression is called a <emphasis>direct invocation expression</emphasis> 
-            of the function or class to which the callable reference refers.</para> 
+            of the function, class, or constructor to which the callable reference refers.</para> 
             
             <comment><para>TODO: Should we consider <literal>x{y=1;}{z=2;}</literal> a legal
             direct invocation if <literal>x</literal> has multiple parameter lists?</para></comment>
@@ -816,24 +845,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>type argument inference is possible, as defined in 
                     <xref linkend="typeargumentinference"/>, since the compiler has access to 
-                    the type parameters and constraints of the function or class.</para>
+                    the type parameters and constraints of the function, class, or constructor.</para>
                 </listitem>
             </itemizedlist>
             
             <para>If an invocation expression has a named argument list, it must be a direct
             invocation.</para>
             
-            <para>The type of a direct invocation expression is the return type of the 
+            <para>The type of a direct invocation expression is the return type of the
             realization of the function, or the type of the realization of the class, as 
             defined in <xref linkend="realizations"/>.</para>
             
             <para>If the function has no return type, and occurs within a <literal>dynamic</literal> 
             block, then the whole direct invocation expression has no type.</para>
             
-            <para>In a direct invocation expression of a function or class, the restriction
-            above on the argument list type is equivalent to the following requirements. Given
-            the parameter list of the realization of the function or class, and the arguments 
-            of the direct invocation:</para>
+            <para>In a direct invocation expression of a function, class, or constructor, the 
+            restriction above on the argument list type is equivalent to the following 
+            requirements. Given the parameter list of the realization of the function or class, 
+            and the arguments of the direct invocation:</para>
             
             <itemizedlist>
                 <listitem>
@@ -869,7 +898,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Furthermore, if type argument are inferred, then the inferred type 
             arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
-            to the type parameter list of the realization of the function or class.</para>
+            to the type parameter list of the realization of the function, class, or
+            constructor.</para>
             
             <para>If an argument expression has no type, or if its parameter has no type, 
             and the invocation occurs within a <literal>dynamic</literal> block, then the 
@@ -885,9 +915,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
             <para>When no argument is assigned to a defaulted parameter by the caller, 
             the default argument defined by the parameter declaration of the realization,
-            as defined by <xref linkend="typeargumentsandconstraints"/>, of the function 
-            or class is used. The default argument expression is evaluated every time the 
-            method is invoked with no argument specified for the defaulted parameter.</para>
+            as defined by <xref linkend="typeargumentsandconstraints"/>, of the function, 
+            class, or constructor is used. The default argument expression is evaluated 
+            every time the method is invoked with no argument specified for the defaulted 
+            parameter.</para>
             
             <para>This class:</para>
             

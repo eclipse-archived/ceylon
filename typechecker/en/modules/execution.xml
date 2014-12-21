@@ -1008,8 +1008,8 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an invocation expression, as defined in 
             <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
-            of a function, or <emphasis>instantiation</emphasis> of a class. Every invocation 
-            has a callable expression:</para>
+            of a function or constructor, or <emphasis>instantiation</emphasis> of a class. 
+            Every invocation has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1069,7 +1069,7 @@ String result = middleObject.string;</programlisting>
                  
         </section>
         
-       <section id="anonymousfunctionevaluation">
+        <section id="anonymousfunctionevaluation">
             <title>Evaluation of anonymous functions</title>
             
             <para>When an anonymous function expression, as defined in 
@@ -1079,9 +1079,9 @@ String result = middleObject.string;</programlisting>
             the resulting value of the expression. The concrete class of this instance is not 
             specified here.</para>
             
-       </section>
+        </section>
             
-       <section id="enumerationevaluation">
+        <section id="enumerationevaluation">
             <title>Evaluation of enumerations</title>
             
             <para>Evaluation of an enumeration expression, as defined in 
