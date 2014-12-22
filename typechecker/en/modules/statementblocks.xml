@@ -337,6 +337,11 @@
                 </listitem>
             </itemizedlist>
             
+            <comment><para>Note: the Ceylon compiler enforces additional visibility
+            restrictions for members of Java classes, since Java's visibility modifiers
+            can express restrictions that cannot be reproduced within Ceylon's visibility
+            model. These restrictions are outside the scope of this specification.</para></comment>
+            
             <para>A type parameter or a declaration that occurs directly inside a block 
             (the body of a function, getter, setter, or control structure) may not be 
             annotated <literal>shared</literal>.</para>
