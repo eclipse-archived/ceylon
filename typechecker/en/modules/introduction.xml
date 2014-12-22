@@ -743,6 +743,11 @@ Float x = origin[0];
 Float y = origin[1];
 Null z = origin[2]; //only two elements!</programlisting>
             
+            <para>Tuples and nonempty sequences support pattern-based 
+            <emphasis>destructuring</emphasis>.</para>
+            
+            <programlisting>value [x, y] = origin;</programlisting>
+            
         </section>
         
     </section>
