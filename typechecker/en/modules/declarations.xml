@@ -259,6 +259,11 @@ TypeConstraints?
                 </listitem>
             </itemizedlist>
             
+            <comment><para>Note: an import element referring to a <literal>static</literal>
+            member of a Java class imports the static member into the toplevel namespace of
+            the compilation unit. However, this behavior is outside the scope of this 
+            specification.</para></comment>
+            
         </section>
         
         <section id="anonymousclassimports">
