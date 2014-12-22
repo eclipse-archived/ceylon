@@ -335,8 +335,9 @@ void run() {
             <itemizedlist>
                 <listitem>
                     <para>For a statement that occurs sequentially, as defined by 
-                    <xref linkend="blockstructure"/>, in the body of the class, the current 
-                    instance is the new instance being initialized.</para>
+                    <xref linkend="blockstructure"/>, in the body of the class or of a 
+                    constructor of the class, the current instance is the new instance 
+                    being initialized.</para>
                 </listitem>
                 <listitem>
                     <para>For a statement that occurs sequentially in the body of a member
@@ -428,7 +429,8 @@ String result = middleObject.string;</programlisting>
             <title>Initialization</title>
             
             <para>When an instance is instantiated, its initializer is executed, and the
-            initializer for every class it inherits is executed. For a class
+            initializer for every class it inherits is executed. If a class has
+            constructors, one of its constructors is also executed. For a class
             <literal>C</literal>:</para>
             
             <itemizedlist>
@@ -441,20 +443,23 @@ String result = middleObject.string;</programlisting>
                     <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
                     there is exactly one other superclass <literal>Y</literal> of 
                     <literal>C</literal> that directly extends <literal>X</literal>. When
-                    execution of the initializer of <literal>X</literal> terminates without
-                    a thrown exception, execution of the initializer of <literal>Y</literal>
-                    begins.</para>
+                    execution of the initializer of <literal>X</literal>, and the constructor
+                    of <literal>X</literal>, if any, terminates without a thrown exception, 
+                    execution of the initializer of <literal>Y</literal> begins. Finally, if 
+                    <literal>Y</literal> has constructors, the constructor delegated by 
+                    <literal>X</literal> is executed.</para>
                 </listitem>
                 <listitem>
-                    <para>Finally, when execution of the initializer of <literal>C</literal>
-                    terminates without a thrown exception, the new instance of <literal>C</literal>
-                    is fully-initialized and made accessible to the calling code.</para>
+                    <para>Finally, when execution of the initializer of <literal>C</literal>, 
+                    and the invoked constructor of <literal>C</literal>, if any, terminates 
+                    without a thrown exception, the new instance of <literal>C</literal> is 
+                    fully-initialized and made accessible to the calling code.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>If any initializer in the class hierarchy terminates with a thrown exception,
-            initialization terminates and the incompletely-initialized instance never becomes
-            accessible.</para>
+            <para>If any initializer or constructor in the class hierarchy terminates with 
+            a thrown exception, initialization terminates and the incompletely-initialized 
+            instance never becomes accessible.</para>
             
             <para>Each initializer produces a frame containing initialized values for each 
             reference declared by the corresponding class. These frames are aggregated together 
