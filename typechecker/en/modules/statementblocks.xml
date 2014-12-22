@@ -1972,7 +1972,7 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>if the condition has a pattern, the patterned type is 
                     <literal>T&amp;Object</literal>, where the specifier expression is of type 
-                    <literal>T</literal>, and, if the pattern is a variable pattern, the declared 
+                    <literal>T</literal>, and, if the pattern is a pattern variable, the declared 
                     type of the variable, if any, must be a subtype of <literal>Object</literal>, 
                     or</para>
                 </listitem>
@@ -1990,7 +1990,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a variable pattern and
+                    <para>if the condition has a pattern, it must be a pattern variable and
                     the declared type of the variable, if any, must be <literal>Null</literal>, 
                     or</para>
                 </listitem>
@@ -2012,7 +2012,7 @@ if (is Usable tx) { ... }</programlisting>
                     <para>if the condition has a pattern, the patterned type is
                     <literal>T&amp;[E+]</literal>, where the specifier expression is of type 
                     <literal>T</literal> and <literal>T</literal> has the principal instantiation 
-                    <literal>E[]?</literal>, and, if the pattern is a variable pattern, the declared 
+                    <literal>E[]?</literal>, and, if the pattern is a pattern variable, the declared 
                     type of the variable, if any, must be a subtype of <literal>[Anything+]</literal>, 
                     or</para>
                 </listitem>
@@ -2031,7 +2031,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a variable pattern and the 
+                    <para>if the condition has a pattern, it must be a pattern variable and the 
                     declared type of the variable, if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
