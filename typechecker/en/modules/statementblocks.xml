@@ -1013,6 +1013,13 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>If the variable has an explicit type, then the patterned type
             must be assignable to this type. Otherwise, the type of the variable
             is inferred to be the patterned type.</para> 
+            
+            <para>A <emphasis>variadic pattern variable</emphasis> is indicated
+            with an asterisk.</para>
+            
+            <synopsis>VariadicVariable: UnionType? "*" MemberName</synopsis>
+            
+            <para>Variadic pattern variables only occur in tuple patterns.</para>
         
         </section>
         
@@ -1020,11 +1027,11 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <title>Tuple patterns</title>
         
             <para>A tuple pattern comprises a list of <emphasis>element 
-            patterns</emphasis>, ending in, optionally, a <emphasis>spread 
-            element pattern</emphasis> indicated by an asterisk. Tuple 
-            patterns are enclosed in brackets.</para>
+            patterns</emphasis>, ending in, optionally, a variadic pattern 
+            variable called a <emphasis>variadic</emphasis> element pattern. 
+            Tuple patterns are enclosed in brackets.</para>
             
-            <synopsis>TuplePattern: "[" Pattern ("," Pattern)* ("," "*" Pattern)? "]"</synopsis>
+            <synopsis>TuplePattern: "[" Pattern ("," Pattern)* ("," VariadicVariable)? "]"</synopsis>
             
             <para>The patterned type must be an instantiation of the type
             <literal>Tuple</literal> or <literal>Sequence</literal> in 
@@ -1033,15 +1040,15 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If the tuple pattern has only one element pattern, 
-                    and it is a spread element pattern, then the patterned 
-                    type of the spread element pattern is just the patterned 
-                    type of the surrounding tuple pattern.</para> 
+                    and it is variadic, then the patterned type of this variadic 
+                    element pattern is just the patterned type of the surrounding 
+                    tuple pattern.</para> 
                 </listitem>
                 <listitem>
                     <para>Or, if the tuple pattern has only one element pattern, 
-                    and it is not a spread element pattern, then the patterned 
-                    type must be a single-element instantiation <literal>[T]</literal> 
-                    of <literal>Tuple</literal>, and the patterned type of the
+                    and it is not variadic, then the patterned type must be a 
+                    single-element instantiation <literal>[T]</literal> of 
+                    <literal>Tuple</literal>, and the patterned type of the
                     element pattern is <literal>T</literal>.</para> 
                 </listitem>
                 <listitem>
@@ -1058,10 +1065,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     <para>Or, if the patterned type is an instantiation 
                     <literal>[T+]</literal> of <literal>Sequence</literal>, 
                     then there must be exactly two element patterns, and the 
-                    second element pattern must be a spread element pattern. 
-                    Then the patterned type of the first element pattern is
-                    <literal>T</literal>, and the patterned type of the
-                    second element pattern is <literal>[T*]</literal>.</para>
+                    second element pattern must be variadic. Then the patterned 
+                    type of the first element pattern is <literal>T</literal>, 
+                    and the patterned type of the second element pattern is 
+                    <literal>[T*]</literal>.</para>
                 </listitem>
             </itemizedlist>
             
