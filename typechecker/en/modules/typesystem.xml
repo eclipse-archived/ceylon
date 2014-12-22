@@ -2144,7 +2144,7 @@ interface NumberLiteral
                     <para>method parameter types,</para>
                 </listitem>
                 <listitem>
-                    <para>initializer parameter types, and</para>
+                    <para>class initializer and constructor parameter types, and</para>
                 </listitem>
                 <listitem>
                     <para>type arguments of extended classes and satisfied interfaces.</para>
