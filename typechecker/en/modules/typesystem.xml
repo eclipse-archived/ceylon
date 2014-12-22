@@ -2214,6 +2214,10 @@ interface NumberLiteral
             <para>There must be at least as many type parameters as type arguments. There must 
             be at least as many type arguments as type parameters without default values.</para>
             
+            <comment><para>TODO: Currently we enforce these restrictions in every type expression,
+            but in fact that is too heavy-handed. We only really need to enforce it for 
+            instantiations and supertypes.</para></comment>
+            
         </section>
         
         <section id="producedtypes">
