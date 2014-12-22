@@ -472,8 +472,12 @@ variableOrTuplePattern returns [Pattern pattern]
 pattern returns [Pattern pattern]
     : 
       (variable ENTRY_OP) =>
-      keyItemPattern
-      { $pattern = $keyItemPattern.pattern; }
+      ki1=keyItemPattern
+      { $pattern = $ki1.pattern; }
+    |
+      (tuplePattern ENTRY_OP) =>
+      ki2=keyItemPattern
+      { $pattern = $ki2.pattern; }
     |
       (tuplePatternStart) => 
       tuplePattern
