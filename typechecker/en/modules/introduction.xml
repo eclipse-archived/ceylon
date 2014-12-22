@@ -186,6 +186,14 @@
 interface Sink&lt;in Item&gt; { ... }</programlisting>
             
             <para>
+            In order to support interoperation with Java, Ceylon also features 
+            Java-style <emphasis>use-site variance</emphasis>, with a much cleaner syntax
+            than Java's. A type argument may be marked as covariant or contravariant.
+            </para>
+            
+            <programlisting>List&lt;out Element&gt; javaArrayList = ArrayList&lt;Element&gt;();</programlisting>
+            
+            <para>
             Ceylon has a somewhat more expressive system of generic type constraints with 
             a cleaner, more regular syntax. The syntax for declaring constraints on a type 
             parameter looks very similar to a class or interface declaration. A type 
