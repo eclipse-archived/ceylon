@@ -1088,7 +1088,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>An entry pattern comprises a <emphasis>key pattern</emphasis>,
             followed by an <emphasis>item pattern</emphasis>.</para>
             
-            <synopsis>EntryPattern: Pattern "->" Pattern</synopsis>
+            <synopsis>EntryPattern: KeyOrItemPattern "->" KeyOrItemPattern</synopsis>
+            
+            <synopsis>KeyOrItemPattern: Variable | TuplePattern</synopsis>
             
             <para>The patterned type must be an instantiation 
             <literal>K-&gt;V</literal> of the type <literal>Entry</literal> in 
