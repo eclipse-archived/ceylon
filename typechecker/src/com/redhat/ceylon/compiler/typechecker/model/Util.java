@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
@@ -1520,10 +1522,14 @@ public class Util {
      * Nevertheless, we give it our best shot!
      */
     public static ProducedType principalInstantiation(
-            TypeDeclaration dec, ProducedType first, ProducedType second, 
+            TypeDeclaration dec, 
+            ProducedType first, ProducedType second, 
             Unit unit) {
         List<TypeParameter> tps = dec.getTypeParameters();
-        List<ProducedType> args = new ArrayList<ProducedType>(tps.size());
+        List<ProducedType> args = 
+                new ArrayList<ProducedType>(tps.size());
+        Map<TypeParameter,SiteVariance> varianceOverrides =
+                new HashMap<TypeParameter,SiteVariance>(1);
         for (TypeParameter tp: tps) {
             ProducedType arg;
             ProducedType rta = first.getTypeArguments().get(tp);
@@ -1531,14 +1537,22 @@ public class Util {
             if (rta==null || prta==null) {
                 arg = new UnknownType(unit).getType();
             }
-            else if (first.isContravariant(tp) && second.isContravariant(tp)) {
+            else if (first.isContravariant(tp) ||
+                     second.isContravariant(tp)) {
                 arg = unionType(rta, prta, unit);
+                if (!tp.isContravariant()) {
+                    varianceOverrides.put(tp, IN);
+                }
             }
-            else if (first.isCovariant(tp) && second.isCovariant(tp)) {
+            else if (first.isCovariant(tp) || 
+                     second.isCovariant(tp)) {
                 arg = intersectionType(rta, prta, unit);
+                if (!tp.isCovariant()) {
+                    varianceOverrides.put(tp, OUT);
+                }
             }
             else {
-                //invariant type
+                //two invariant type args
                 if (rta.isExactly(prta)) {
                     arg = rta;
                 }
@@ -1558,8 +1572,11 @@ public class Util {
             }
             args.add(arg);
         }
-        ProducedType pqt = principalQualifyingType(first, second, dec, unit);
-        return dec.getProducedType(pqt, args);
+        ProducedType pqt = 
+                principalQualifyingType(first, second, dec, unit);
+        ProducedType result = dec.getProducedType(pqt, args);
+        result.setVarianceOverrides(varianceOverrides);
+        return result;
     }
     
     public static boolean areConsistentSupertypes(ProducedType st1, 
@@ -1569,6 +1586,8 @@ public class Util {
         //      the qualifying type, since you're not allowed to
         //      subtype an arbitrary instantiation of a nested
         //      type - only supertypes of the outer type
+        //      Nor do we need to check variance overrides since
+        //      supertypes can't have them.
         for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
             if (!tp.isCovariant() && !tp.isContravariant()) {
                 ProducedType ta1 = st1.getTypeArguments().get(tp);
