@@ -1990,9 +1990,9 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable and
-                    the declared type of the variable, if any, must be <literal>Null</literal>, 
-                    or</para>
+                    <para>if the condition has a pattern, it must be a pattern variable, the
+                    patterned type is <literal>Null</literal>, and the declared type of the 
+                    variable, if any, must be <literal>Null</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
@@ -2031,8 +2031,9 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable and the 
-                    declared type of the variable, if any, must be <literal>[]</literal>, or</para>
+                    <para>if the condition has a pattern, it must be a pattern variable, the
+                    patterned type is <literal>[]</literal>, and the declared type of the variable,
+                    if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
