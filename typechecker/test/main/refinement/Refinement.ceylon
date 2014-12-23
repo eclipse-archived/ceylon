@@ -334,3 +334,15 @@ void intermediateShortcutRefinement() {
     }
 
 }
+
+class ABC() {
+    shared void mul() {
+        print("Yep");
+    }
+}
+
+class DEF() extends ABC() {
+    @error shared void mul(Integer hi) {
+        print("Nope");
+    }
+}
