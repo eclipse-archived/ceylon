@@ -1388,12 +1388,14 @@ public class TypeVisitor extends Visitor {
             if (!(outerType instanceof Tree.SuperType)) {
                 TypeDeclaration otd = 
                         qualifiedType.getDeclarationModel();
-                if (otd.isStaticallyImportable() || 
-                        otd instanceof Constructor) {
-                    checkExtendedTypeExpression(outerType);
-                }
-                else {
-                    outerType.addError("illegal qualifier in constructor delegation (must be super)");
+                if (otd!=null) {
+                    if (otd.isStaticallyImportable() || 
+                            otd instanceof Constructor) {
+                        checkExtendedTypeExpression(outerType);
+                    }
+                    else {
+                        outerType.addError("illegal qualifier in constructor delegation (must be super)");
+                    }
                 }
             }
         }
