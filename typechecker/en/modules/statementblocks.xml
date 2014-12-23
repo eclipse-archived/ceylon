@@ -929,7 +929,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="controlstructurevariables">
             <title>Variables</title>
        
-            <para>A variable is a reference, as defined by <xref linkend="references"/>.</para>
+            <para>A variable is a streamlined form of reference declaration, as defined by 
+            <xref linkend="references"/>.</para>
             
             <synopsis>TypedVariable: Type MemberName</synopsis>
             
@@ -1013,7 +1014,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <title>Pattern variables</title>
             
             <para>A <emphasis>pattern variable</emphasis> is just a variable, as 
-            defined above, that occurs as an element of a tuple or entry pattern.</para>
+            defined above, that occurs as in a pattern.</para>
             
             <para>If the variable has an explicit type, then the patterned type
             must be assignable to this type. Otherwise, the type of the variable

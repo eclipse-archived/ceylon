@@ -1576,11 +1576,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="letexpressions">
             <title>Let expressions</title>
             
-            <para>A let expression comprises a list of one or more variable 
-            declarations, as defined in <xref linkend="controlstructurevariables"/>, 
-            followed by an expression involving those variables.</para>
+            <para>A let expression comprises a pattern list, followed by an 
+            expression involving the pattern variables that occur in the listed
+            patterns.</para>
             
-            <synopsis>LetExpression: "let" LetValueList Expression</synopsis>
+            <synopsis>LetExpression: "let" PatternList Expression</synopsis>
             
             <para>The expression is parsed with precedence just higher than the 
             <literal>||</literal> operator, and just lower than the 
@@ -1591,21 +1591,22 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Alternatively, the expression may be an <literal>if/then/else</literal> 
             expression or another let expression.</para>
             
-            <synopsis>LetValueList: "(" LetValue ("," LetValue)* ")"</synopsis>
+            <para>A pattern list is enclosed in parentheses.</para>
             
-            <para>Each variable is a shortcut reference declaration, as defined
-            in <xref linkend="references"/>.</para>
+            <synopsis>PatternList: "(" PatternListElement ("," PatternListElement)* ")"</synopsis>
             
-            <synopsis>LetValue: Variable Specifier</synopsis>
+            <para>Each element of the pattern list is a pattern, as defined in
+            <xref linkend="patterns"/>, followed by a specified expression. The
+            patterned type is the type of the specified expression.</para>
             
-            <para>If the variable declaration specifies an explicit type, the
-            specified expression must be assignable to that type.</para>
+            <synopsis>PatternListElement: Pattern Specifier</synopsis>
             
-            <para>The variables are considered in scope in the expression.
-            A variable in the list may refer to a variable defined earlier 
-            in the list.</para>
+            <para>The pattern variables that occur in the pattern list are 
+            considered in scope in the expression that follows the pattern
+            list. Furthermore, a pattern in the list may refer to a pattern
+            variable declared earlier in the pattern list.</para>
             
-            <programlisting>let (d = sqrt(x^2+y^2)) [x/d, y/d]</programlisting>
+            <programlisting>let ([x,y] = loc, d = sqrt(x^2+y^2)) [x/d, y/d]</programlisting>
         
         </section>
         
