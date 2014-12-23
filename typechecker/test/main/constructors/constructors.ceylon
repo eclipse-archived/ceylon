@@ -201,3 +201,9 @@ class Sub4 extends Alias {
 class Silly extends Basic {
     shared new Silly() extends Basic() {}
 }
+
+class Unshared() { }
+
+shared class SharedWithConstructor {
+    shared new SharedWithConstructor(@error Unshared bar) { }
+}
