@@ -1603,8 +1603,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The pattern variables that occur in the pattern list are 
             considered in scope in the expression that follows the pattern
-            list. Furthermore, a pattern in the list may refer to a pattern
-            variable declared earlier in the pattern list.</para>
+            list. Furthermore, a specified expression in the pattern list 
+            may refer to a pattern variable declared by an earlier element
+            in the pattern list.</para>
             
             <programlisting>let ([x,y] = loc, d = sqrt(x^2+y^2)) [x/d, y/d]</programlisting>
         
