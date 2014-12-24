@@ -352,6 +352,10 @@ shared native final class String(characters)
      of the characters."
     shared actual native Comparison compare(String other);
     
+    "Compare this string with the given string 
+     lexicographically, ignoring the case of the characters."
+    shared native Comparison compareIgnoringCase(String other);
+    
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
      `string.size>length`."
@@ -369,6 +373,10 @@ shared native final class String(characters)
      the same [[characters]], in the same order, as the 
      given [[string|that]]."
     shared actual native Boolean equals(Object that);
+    
+    "Compare this string with the given string, ignoring the 
+     case of the characters."
+    shared native Boolean equalsIgnoringCase(String that);
     
     shared actual native Integer hash;
     

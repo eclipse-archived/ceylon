@@ -146,7 +146,7 @@ public final class String
     @Override
     public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof String) {
-            String s = (String)that;
+            String s = (String) that;
             return value.equals(s.value);
         }
         else {
@@ -158,12 +158,24 @@ public final class String
     public static boolean equals(java.lang.String value, 
             java.lang.Object that) {
         if (that instanceof String) {
-            String s = (String)that;
+            String s = (String) that;
             return value.equals(s.value);
         }
         else {
             return false;
         }
+    }
+
+    public boolean equalsIgnoringCase(
+            @Name("that") java.lang.String that) {
+        return value.equalsIgnoreCase(that);
+    }
+
+    @Ignore
+    public static boolean equalsIgnoringCase(
+            java.lang.String value, 
+            java.lang.String that) {
+        return value.equalsIgnoreCase(that);
     }
 
     @Override
@@ -176,19 +188,32 @@ public final class String
         return value.hashCode();
     }
 
+    private static Comparison comparison(int c) {
+        return c < 0 ? smaller_.get_() :
+            (c == 0 ? equal_.get_() : larger_.get_());
+    }
+
     @Override
     public Comparison compare(@Name("other") String other) {
-        int c = value.compareTo(other.value);
-        return (c < 0) ? smaller_.get_() :
-            ((c == 0) ? equal_.get_() : larger_.get_());
+        return comparison(value.compareTo(other.value));
     }
 
     @Ignore
     public static Comparison compare(java.lang.String value, 
             java.lang.String otherValue) {
-        int c = value.compareTo(otherValue);
-        return (c < 0) ? smaller_.get_() :
-            ((c == 0) ? equal_.get_() : larger_.get_());
+        return comparison(value.compareTo(otherValue));
+    }
+    
+    public Comparison compareIgnoringCase(
+            @Name("other") java.lang.String other) {
+        return comparison(value.compareToIgnoreCase(other));
+    }
+
+    @Ignore
+    public static Comparison compareIgnoringCase(
+            java.lang.String value, 
+            java.lang.String otherValue) {
+        return comparison(value.compareToIgnoreCase(otherValue));
     }
 
     @Override
