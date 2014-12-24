@@ -2123,6 +2123,9 @@ interface NumberLiteral
                 </listitem>
             </itemizedlist>
             
+            <para>It is illegal for both the type parameter and its type argument
+            to have an explicit variance.</para>
+            
         </section>
         
         <section id="typeargumentsubstitution">
@@ -2138,10 +2141,10 @@ interface NumberLiteral
                     <para>attribute types,</para>
                 </listitem>
                 <listitem>
-                    <para>method return types,</para>
+                    <para>function or method return types,</para>
                 </listitem>
                 <listitem>
-                    <para>method parameter types,</para>
+                    <para>function or method parameter types,</para>
                 </listitem>
                 <listitem>
                     <para>class initializer and constructor parameter types, and</para>
@@ -2151,8 +2154,71 @@ interface NumberLiteral
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: write up the algorithm for substitution of type arguments
-            with use-site variance!</para></comment>
+            <para>When a type argument <literal>A</literal> with no explicit variance 
+            annotation is substituted for a type parameter <literal>T</literal>, all
+            occurrences of <literal>T</literal> in the schema of the generic declaration
+            are replaced with <literal>A</literal>.</para>
+            
+            <para>For type arguments with explicit variance of a type parameter 
+            <literal>T</literal>, substitution of the type argument depends upon whether
+            an occurrence of <literal>T</literal> is a covariant or contravariant position
+            in the schema of the generic declaration, as defined above in 
+            <xref linkend="variancevalidation"/>.</para>
+            
+            <para>When a type argument <literal>out A</literal> explicitly marked 
+            covariant is substituted for a type parameter <literal>T</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a covariant position
+                    as a type argument of an invariant type parameter is replaced by 
+                    <literal>out A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every other occurrence of <literal>T</literal> in a covariant
+                    position is replaced by <literal>A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a contravariant
+                    position is replaced by <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every applied type expression <literal>E</literal> occurring
+                    as a type argument of an invariant type parameter where 
+                    <literal>T</literal> occurred as a type argument, and was replaced by 
+                    something other than <literal>A</literal>, according to the above rules, 
+                    is replaced by <literal>out E</literal>. This rule is applied 
+                    recursively.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a type argument <literal>in A</literal> explicitly marked 
+            contravariant is substituted for a type parameter <literal>T</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a contravariant 
+                    position as a type argument of an invariant type parameter is 
+                    replaced by <literal>in A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every other occurrence of <literal>T</literal> in a 
+                    contravariant position is replaced by <literal>A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a covariant
+                    position is replaced by the intersection of the upper bound type
+                    constraints on <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every applied type expression <literal>E</literal> occurring
+                    as a type argument of an invariant type parameter where 
+                    <literal>T</literal> occurred as a type argument, and was replaced by 
+                    something other than <literal>A</literal>, according to the above rules, 
+                    is replaced by <literal>out E</literal>. This rule is applied 
+                    recursively.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
