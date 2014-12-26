@@ -410,7 +410,7 @@ public class ControlFlowVisitor extends Visitor {
         Tree.ForClause forClause = that.getForClause();
         if (forClause!=null) {
             forClause.visit(this);
-            atLeastOneIteration = isAtLeastOne(forClause);
+            atLeastOneIteration = isAtLeastOne(forClause.getForIteratorList());
         }
         boolean definitelyDoesNotBreakFromFor = !possiblyBreaks;
         boolean definitelyReturnsFromFor = definitelyReturns && 

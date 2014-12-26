@@ -37,6 +37,11 @@ class ControlStructures() {
         }
     }
     
+    for (n in names, i in 1..10) {
+        String ns = n;
+        Integer ii = i;
+    }
+    
     variable String[] varseq = [];
     @error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}

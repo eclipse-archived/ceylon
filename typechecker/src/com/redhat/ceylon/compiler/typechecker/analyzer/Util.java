@@ -653,21 +653,32 @@ public class Util {
         return false;
     }
     
-    static boolean isAtLeastOne(Tree.ForClause forClause) {
-        Tree.ForIterator fi = forClause.getForIterator();
-        if (fi!=null) {
-            Tree.SpecifierExpression se = fi.getSpecifierExpression();
-            if (se!=null) {
-                Tree.Expression e = se.getExpression();
-                if (e!=null) {
-                    Unit unit = forClause.getUnit();
-                    ProducedType at = 
-                            unit.getAnythingDeclaration().getType();
-                    ProducedType neit = unit.getNonemptyIterableType(at);
-                    ProducedType t = e.getTypeModel();
-                    return t!=null && t.isSubtypeOf(neit);
+    static boolean isAtLeastOne(Tree.ForIteratorList fil) {
+        if (fil!=null) {
+            for (Tree.ForIterator fi: fil.getForIterators()) {
+                Tree.SpecifierExpression se = fi.getSpecifierExpression();
+                if (se==null) {
+                    return false;
+                }
+                else {
+                    Tree.Expression e = se.getExpression();
+                    if (e==null) {
+                        return false;
+                    }
+                    else {
+                        Unit unit = fil.getUnit();
+                        ProducedType at = 
+                                unit.getAnythingDeclaration().getType();
+                        ProducedType neit = 
+                                unit.getNonemptyIterableType(at);
+                        ProducedType t = e.getTypeModel();
+                        if (isTypeUnknown(t) || !t.isSubtypeOf(neit)) {
+                            return false;
+                        }
+                    }
                 }
             }
+            return true;
         }
         return false;
     }
@@ -851,8 +862,8 @@ public class Util {
         }
     }
 
-    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, Unit unit,
-            boolean requireSequential) {
+    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, 
+            Unit unit, boolean requireSequential) {
         ProducedType result = unit.getType(unit.getEmptyDeclaration());
         ProducedType ut = unit.getNothingDeclaration().getType();
         for (int i=es.size()-1; i>=0; i--) {
@@ -869,19 +880,24 @@ public class Util {
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
-                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
+                    Tree.Comprehension c = (Tree.Comprehension) a;
+                    Tree.InitialComprehensionClause icc = 
+                            c.getInitialComprehensionClause();
                     result = icc.getPossiblyEmpty() ? 
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
                     if (!requireSequential) {
-                        ProducedType it = producedType(unit.getIterableDeclaration(), 
-                                et, icc.getFirstTypeModel());
+                        ProducedType it = 
+                                producedType(unit.getIterableDeclaration(), 
+                                        et, icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }
                 else {
                     ut = unionType(ut, et, unit);
-                    result = producedType(unit.getTupleDeclaration(), ut, et, result);
+                    result = 
+                            producedType(unit.getTupleDeclaration(), 
+                                    ut, et, result);
                 }
             }
         }

@@ -102,6 +102,15 @@ void comprehensions() {
     @type:"Sequential<Character>" value sst1 = [ *"hello" ];
     @type:"Tuple<Character,Character,Sequential<Character>>" value sst2 = [ ' ', *"hello" ];
     
+    @type:"Iterable<Tuple<Integer|String,Integer,Tuple<String,String,Empty>>,Null>" 
+    value pairs = { for (x in 0..4, y in words) [x,y] };
+    
+    @type:"Iterable<String,Null>" 
+    value strings = { for (x in words, y in words) x+y };
+    
+    @type:"Iterable<Integer,Nothing>" 
+    value ints = { for (x in 0..4, y in 0..0) x+y };
+    
 }
 
 class SuperWithIter({Character*} iter) {}

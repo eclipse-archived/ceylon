@@ -1297,7 +1297,7 @@ public class SpecificationVisitor extends Visitor {
                 forClause.visit(this);
                 inLoop = c;
             }
-            atLeastOneIteration = isAtLeastOne(forClause);
+            atLeastOneIteration = isAtLeastOne(forClause.getForIteratorList());
         }
         boolean possiblyExitedFromForClause = specified.exited && !specified.byExits;
         boolean possiblyAssignedByForClause = specified.possibly;

@@ -16,6 +16,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDecla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
@@ -308,28 +309,26 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         that.setPossiblyEmpty(true);
         Tree.ComprehensionClause cc = that.getComprehensionClause();
-        if (cc!=null) {
+        Tree.ForIteratorList fil = that.getForIteratorList();
+        if (cc!=null && fil!=null) {
             that.setTypeModel(cc.getTypeModel());
-            Tree.ForIterator fi = that.getForIterator();
-            if (fi!=null) {
-                Tree.SpecifierExpression se = fi.getSpecifierExpression();
+            ProducedType firstType = cc.getFirstTypeModel();
+            for (Tree.ForIterator fi: fil.getForIterators()) {
+                Tree.SpecifierExpression se = 
+                        fi.getSpecifierExpression();
                 if (se!=null) {
                     Tree.Expression e = se.getExpression();
                     if (e!=null) {
                         ProducedType it = e.getTypeModel();
                         if (it!=null) {
-                            ProducedType et = unit.getIteratedType(it);
-                            boolean nonemptyIterable = et!=null &&
-                                    it.isSubtypeOf(unit.getNonemptyIterableType(et));
-                            that.setPossiblyEmpty(!nonemptyIterable || 
-                                    cc.getPossiblyEmpty());
-                            ProducedType firstType = unionType(unit.getFirstType(it), 
-                                    cc.getFirstTypeModel(), unit);
-                            that.setFirstTypeModel(firstType);
+                            firstType = unionType(firstType,
+                                    unit.getFirstType(it), unit);
                         }
                     }
                 }
             }
+            that.setPossiblyEmpty(!isAtLeastOne(fil) || cc.getPossiblyEmpty());
+            that.setFirstTypeModel(firstType);
         }
     }
     
