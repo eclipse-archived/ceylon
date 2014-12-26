@@ -2188,7 +2188,7 @@ interface NumberLiteral
                     <literal>T</literal> occurred as a type argument, and was replaced by 
                     something other than <literal>A</literal>, according to the above rules, 
                     resulting in an applied type expression <literal>F</literal>, is
-                    replaced by <literal>out E</literal>. This rule is applied 
+                    replaced by <literal>out F</literal>. This rule is applied 
                     recursively.</para>
                 </listitem>
             </itemizedlist>
@@ -2217,7 +2217,7 @@ interface NumberLiteral
                     <literal>T</literal> occurred as a type argument, and was replaced by 
                     something other than <literal>A</literal>, according to the above rules, 
                     resulting in an applied type expression <literal>F</literal>, is 
-                    replaced by <literal>out E</literal>. This rule is applied 
+                    replaced by <literal>out F</literal>. This rule is applied 
                     recursively.</para>
                 </listitem>
             </itemizedlist>
