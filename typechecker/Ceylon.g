@@ -2473,8 +2473,8 @@ expressionComprehensionClause returns [ExpressionComprehensionClause comprehensi
 forComprehensionClause returns [ForComprehensionClause comprehensionClause]
     : FOR_CLAUSE
       { $comprehensionClause = new ForComprehensionClause($FOR_CLAUSE); }
-      forIterator
-      { $comprehensionClause.setForIterator($forIterator.iterator); }
+      forIterators
+      { $comprehensionClause.setForIteratorList($forIterators.iterators); }
       comprehensionClause
       { $comprehensionClause.setComprehensionClause($comprehensionClause.comprehensionClause); }
     ;
@@ -3703,8 +3703,8 @@ forElse returns [ForStatement statement]
 forBlock returns [ForClause clause]
     : FOR_CLAUSE 
       { $clause = new ForClause($FOR_CLAUSE); }
-      forIterator 
-      { $clause.setForIterator($forIterator.iterator); }
+      forIterators
+      { $clause.setForIteratorList($forIterators.iterators); }
       controlBlock
       { $clause.setBlock($controlBlock.block); }
     ;
@@ -3716,15 +3716,29 @@ failBlock returns [ElseClause clause]
       { $clause.setBlock($controlBlock.block); }
     ;
 
-forIterator returns [ForIterator iterator]
-    @init { ValueIterator vi = null;
-            PatternIterator pi = null; }
+forIterators returns [ForIteratorList iterators]
     : LPAREN
-    { vi = new ValueIterator($LPAREN); 
-      pi = new PatternIterator($LPAREN); 
-      $iterator = vi; }
-    ( 
       (
+        { $iterators = new ForIteratorList($LPAREN); }
+        fi1=forIterator
+        { $iterators.addForIterator($fi1.iterator); }
+        (
+          COMMA
+          { $iterators.setEndToken($COMMA); }
+          fi2=forIterator
+          { $iterators.addForIterator($fi2.iterator); 
+            $iterators.setEndToken(null); }
+        )*
+      )?
+      RPAREN
+      { $iterators.setEndToken($RPAREN); }
+    ;
+
+forIterator returns [ForIterator iterator]
+    @init { ValueIterator vi = new ValueIterator(null);
+            PatternIterator pi = new PatternIterator(null); 
+            $iterator = vi; }
+    : (
         (patternStart) => pattern
         { pi.setPattern($pattern.pattern);
           $iterator = pi; }
@@ -3736,11 +3750,8 @@ forIterator returns [ForIterator iterator]
         containment
         { $iterator.setSpecifierExpression($containment.specifierExpression); }
       )?
-    )?
-    RPAREN
-    { $iterator.setEndToken($RPAREN); }
     ;
-    
+
 containment returns [SpecifierExpression specifierExpression]
     : IN_OP 
       { $specifierExpression = new SpecifierExpression($IN_OP); }
