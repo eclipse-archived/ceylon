@@ -1115,17 +1115,26 @@ public class Util {
                     if (tp.isInvariant()) {
                         if (pst==null) pst = p.getSupertype(std);
                         if (qst==null) qst = q.getSupertype(std);
-                        ProducedType psta = pst==null ? null : 
-                            pst.getTypeArguments().get(tp);
-                        ProducedType qsta = qst==null ? null :
-                            qst.getTypeArguments().get(tp);
-                        if (psta!=null && psta.isWellDefined() &&
-                                qsta!=null && psta.isWellDefined() &&
-                                //what about types with UnknownType as an arg?
-                                !pst.containsTypeParameters() && 
-                                !qst.containsTypeParameters() &&
-                                !pst.isExactly(qst)) {
-                            return true;
+                        if (pst!=null && qst!=null) {
+                            ProducedType psta = pst.getTypeArguments().get(tp);
+                            ProducedType qsta = qst.getTypeArguments().get(tp);
+                            //TODO: why isWellDefined() instead of isTypeUnknown() ?
+                            if (psta.isWellDefined() && !pst.containsTypeParameters() && 
+                                qsta.isWellDefined() && !qst.containsTypeParameters()) {
+                                boolean psti = pst.isInvariant(tp);
+                                boolean pstcov = pst.isCovariant(tp);
+                                boolean pstcontra = pst.isContravariant(tp);
+                                boolean qsti = qst.isInvariant(tp);
+                                boolean qstcov = qst.isCovariant(tp);
+                                boolean qstcontra = qst.isContravariant(tp);
+                                if (psti && qsti && !psta.isExactly(qsta) ||
+                                    pstcov && qsti && !qsta.isSubtypeOf(psta) ||
+                                    qstcov && psti && !psta.isSubtypeOf(qsta) ||
+                                    pstcontra && qsti && !psta.isSubtypeOf(qsta) ||
+                                    qstcontra && psti && !qsta.isSubtypeOf(psta)) {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

@@ -2747,6 +2747,75 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
         </section>
         
+        <section id="typeargumentdistinctness">
+            <title>Type argument distinctness</title>
+            
+            <para>A pair of type arguments <literal>A</literal> and <literal>B</literal>
+            are considered:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>provably distinct</emphasis>, if neither 
+                    <literal>A</literal> nor <literal>B</literal> involves a type 
+                    parameter and either:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>both arguments are invariant, and are not 
+                            exactly the same type,</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is covariant and the other argument 
+                            is invariant and is not a subtype of the covariant 
+                            argument, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is contravariant and the other 
+                            argument is invariant and is not a supertype of the 
+                            contravariant argument,</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para><emphasis>provably not distinct</emphasis>, if either:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>both arguments are invariant, and are exactly 
+                            the same type,</para>
+                        </listitem>
+                        <listitem>
+                            <para>both arguments are covariant,</para>
+                        </listitem>
+                        <listitem>
+                            <para>both arguments are contravariant,</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is covariant and the other argument 
+                            is invariant and is a subtype of the covariant 
+                            argument, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is contravariant and the other 
+                            argument is invariant and is a supertype of the 
+                            contravariant argument,</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>otherwise, <emphasis>possibly distinct</emphasis>, if
+                    either <literal>A</literal> or <literal>B</literal> involves a 
+                    type parameter and <literal>A</literal> and <literal>B</literal> 
+                    are not provably not distinct, or if <literal>A</literal> and 
+                    <literal>B</literal> have opposite variances.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: the unfortunate case of possible distinctness is an
+            incompleteness in the type system arising from the fact that Ceylon does 
+            not currently allow a type argument with both an upper and a lower bound, 
+            that is, a type argument of form <literal>in X out Y</literal>.</para></comment>
+            
+        </section>
+        
         <section id="principalinstantiationinheritance">
             <title>Principal instantiation inheritance</title>
             
@@ -2779,48 +2848,52 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
                 <listitem>
                     <para>for some invariant type parameter <literal>T</literal> of 
+                    <literal>Y</literal>, the argument <literal>A</literal> of 
+                    <literal>T</literal> given in <literal>V</literal> and the argument
+                    <literal>B</literal> of <literal>T</literal> given in 
+                    <literal>W</literal> are provably distinct type arguments, and then 
+                    the type <literal>V&amp;W</literal> is the bottom type 
+                    <literal>Nothing</literal>, and we say that <literal>V</literal> and 
+                    <literal>W</literal> are <emphasis>disjoint instantiations</emphasis> 
+                    of <literal>Y</literal>, or</para>
+                </listitem>
+                
+                <listitem>
+                    <para>for some invariant type parameter <literal>T</literal> of 
                     <literal>Y</literal>, the argument of <literal>A</literal> of 
                     <literal>T</literal> given in <literal>V</literal> and the argument
                     <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal> are distinct types, and either <literal>A</literal>
-                    or <literal>B</literal> involves a type parameter, or</para>
+                    <literal>W</literal> are possibly distinct, and then we say that
+                    <literal>V</literal> and <literal>W</literal> are 
+                    <emphasis>unreconcilable instantiations</emphasis> 
+                    of <literal>Y</literal>, or</para>
                 </listitem>
                 
                 <listitem>
-                    <para>if, for some invariant type parameter <literal>T</literal> 
-                    of <literal>Y</literal>, the argument of <literal>A</literal> of 
-                    <literal>T</literal> given in <literal>V</literal> and the argument
-                    <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal> are distinct types, and neither <literal>A</literal>
-                    nor <literal>B</literal> involve a type parameter, then the type 
-                    <literal>V&amp;W</literal> is the bottom type <literal>Nothing</literal>, 
-                    and we say that <literal>V</literal> and <literal>W</literal> are 
-                    <emphasis>disjoint instantiations</emphasis> of <literal>Y</literal>, 
-                    or, otherwise,</para>
-                </listitem>
-                
-                <listitem>
-                    <para><literal>X</literal> must be a subtype of an instantiation 
-                    <literal>P</literal> of <literal>Y</literal> formed by taking each
-                    type parameter <literal>T</literal> of <literal>Y</literal>, and 
-                    constructing a type argument <literal>C</literal> for 
-                    <literal>T</literal> from the type arguments <literal>A</literal> 
-                    of <literal>T</literal> given in <literal>V</literal> and 
-                    <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal>:</para>
+                    <para>otherwise, <literal>X</literal> must be a subtype of an 
+                    instantiation <literal>P</literal> of <literal>Y</literal> formed 
+                    by taking each type parameter <literal>T</literal> of 
+                    <literal>Y</literal>, and constructing a type argument 
+                    <literal>C</literal> for <literal>T</literal> from the type 
+                    arguments <literal>A</literal> of <literal>T</literal> given in 
+                    <literal>V</literal> and <literal>B</literal> of <literal>T</literal> 
+                    given in <literal>W</literal>:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>if <literal>Y</literal> is invariant in <literal>T</literal>, 
-                            then <literal>C</literal> is the same type as <literal>A</literal>
-                            and <literal>B</literal>,</para>
+                            <para>if <literal>A</literal> and <literal>B</literal> are 
+                            both invariant, then they must be exactly the same type,
+                            and <literal>C</literal> is the same type as 
+                            <literal>A</literal> and <literal>B</literal>,</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>Y</literal> is covariant in <literal>T</literal>, 
-                            then <literal>C</literal> is <literal>A&amp;B</literal>, or</para>
+                            <para>if either <literal>A</literal> and <literal>B</literal> 
+                            is covariant then <literal>C</literal> is 
+                            <literal>out A&amp;B</literal>, or</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>Y</literal> is contravariant in <literal>T</literal>,
-                            then <literal>C</literal> is <literal>A|B</literal>.</para>
+                            <para>if either <literal>A</literal> and <literal>B</literal> 
+                            is contravariant then <literal>C</literal> is 
+                            <literal>in A|B</literal>.</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -2948,12 +3021,12 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             instantiation for an intersection type.</para>  
             <itemizedlist>
             <listitem>
-            <para>Intersections such as <literal>X&lt;in A&gt;&amp;X&lt;out B&gt;</literal>, 
+            <para>Intersections such as <literal>X&lt;in A&gt; &amp; X&lt;out B&gt;</literal>, 
             where the principal instantiation would be <literal>X&lt;in A out B&gt;</literal>.
             </para>
             </listitem>
             <listitem>
-            <para>An intersection <literal>X&lt;A&gt;&amp;X&lt;P&gt;</literal> 
+            <para>An intersection <literal>X&lt;A&gt; &amp; X&lt;P&gt;</literal> 
             of two instantiations of an invariant type, <literal>X&lt;T&gt;</literal> where 
             one type argument <literal>P</literal> is a type parameter. The principal
             instantiation should be <literal>X&lt;in A|P out A&amp;P&gt;</literal>.</para> 
