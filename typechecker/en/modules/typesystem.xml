@@ -2184,10 +2184,10 @@ interface NumberLiteral
                 </listitem>
                 <listitem>
                     <para>Every applied type expression <literal>E</literal> occurring
-                    as a type argument of an invariant type parameter where 
-                    <literal>T</literal> occurred as a type argument, and was replaced by 
-                    something other than <literal>A</literal>, according to the above rules, 
-                    resulting in an applied type expression <literal>F</literal>, is
+                    as a type argument of an invariant type parameter which was replaced 
+                    by an applied type expression <literal>F</literal>, and where the
+                    differences between <literal>E</literal> and <literal>F</literal> 
+                    include replacement not resulting from the second rule above, is
                     replaced by <literal>out F</literal>. This rule is applied 
                     recursively.</para>
                 </listitem>
@@ -2213,10 +2213,10 @@ interface NumberLiteral
                 </listitem>
                 <listitem>
                     <para>Every applied type expression <literal>E</literal> occurring
-                    as a type argument of an invariant type parameter where 
-                    <literal>T</literal> occurred as a type argument, and was replaced by 
-                    something other than <literal>A</literal>, according to the above rules, 
-                    resulting in an applied type expression <literal>F</literal>, is 
+                    as a type argument of an invariant type parameter which was replaced 
+                    by an applied type expression <literal>F</literal>, and where the
+                    differences between <literal>E</literal> and <literal>F</literal> 
+                    include replacement not resulting from the second rule above, is
                     replaced by <literal>out F</literal>. This rule is applied 
                     recursively.</para>
                 </listitem>
