@@ -57,6 +57,13 @@ public class VisibilityVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+        checkParameterVisibility(that.getDeclarationModel(), 
+                that.getParameterList());
+    }
+
+    @Override
     public void visit(Tree.MethodArgument that) {
         super.visit(that);
         checkParameterVisibility(that.getDeclarationModel(), 
