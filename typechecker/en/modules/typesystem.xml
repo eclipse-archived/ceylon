@@ -2865,7 +2865,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     <literal>B</literal> of <literal>T</literal> given in 
                     <literal>W</literal> are possibly distinct, and then we say that
                     <literal>V</literal> and <literal>W</literal> are 
-                    <emphasis>unreconcilable instantiations</emphasis> 
+                    <emphasis>irreconcilable instantiations</emphasis> 
                     of <literal>Y</literal>, or</para>
                 </listitem>
                 
@@ -2886,14 +2886,26 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                             <literal>A</literal> and <literal>B</literal>,</para>
                         </listitem>
                         <listitem>
-                            <para>if either <literal>A</literal> and <literal>B</literal> 
-                            is covariant then <literal>C</literal> is 
-                            <literal>out A&amp;B</literal>, or</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are covariant, then <literal>C</literal> is 
+                            <literal>out A&amp;B</literal></para>
                         </listitem>
                         <listitem>
-                            <para>if either <literal>A</literal> and <literal>B</literal> 
-                            is contravariant then <literal>C</literal> is 
-                            <literal>in A|B</literal>.</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are contravariant, then <literal>C</literal> is 
+                            <literal>in A|B</literal>,</para>
+                        </listitem>
+                        <listitem>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                             is covariant and the other is invariant, with exact type
+                             <literal>D</literal>, then <literal>C</literal> is just
+                             <literal>D</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is contravariant, and the other is invariant, with exact type 
+                            <literal>D</literal>, then <literal>C</literal> is just
+                            <literal>D</literal>.</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
