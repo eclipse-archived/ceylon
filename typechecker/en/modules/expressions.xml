@@ -627,6 +627,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             function, class, or constructor&mdash;that can be <emphasis>invoked</emphasis> 
             or <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
             
+            <para>If a callable reference refers to a class with a default constructor,
+            the callable reference is considered a reference to the default constructor.</para>
+            
             <para>A callable reference may be invoked immediately, or it may be passed 
             to other code which may invoke the reference. A callable reference captures 
             the return type and parameter list types of the function or class it refers 
