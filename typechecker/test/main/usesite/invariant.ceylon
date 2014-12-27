@@ -66,3 +66,24 @@ void check(My<out String> myout, My<in String> myin) {
     myin.var = "";
     @error myin.var = 1;
 }
+
+void instantiations() {
+    
+    interface Set<T> {}
+    
+    Set<String> & Set<out Object> set1 = nothing;
+    Set<Object> & Set<in String> set2 = nothing;
+    Set<out String> & Set<out Integer> set3 = nothing;
+    Set<in Integer> & Set<in String> set4 = nothing;
+    Set<Integer> & Set<String> set5 = nothing;
+    Set<Integer> & Set<in String> set6 = nothing;
+    Set<Integer> & Set<out String> set7 = nothing;
+    @type:"Set<out Nothing>" value ss3 = set3;
+    @type:"Set<in Integer|String>" value ss4 = set4;
+    @type:"Set<String>" value ss1 = set1;
+    @type:"Set<Object>" value ss2 = set2;
+    @type:"Nothing" value ss5 = set5;
+    @type:"Nothing" value ss6 = set5;
+    @type:"Nothing" value ss7 = set5;
+
+}
