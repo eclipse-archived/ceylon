@@ -12,6 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPac
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getInheritedDeclarations;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
@@ -163,6 +164,9 @@ public class RefinementVisitor extends Visitor {
         if (!dec.isFormal() && type.isDynamic()) {
             that.addError("non-formal member belongs to dynamic interface");
         }
+        if (dec.getName().equals("mul")) {
+            dec.getContainer();
+        }
         List<ProducedType> signature = getSignature(dec);
         Declaration root = 
                 type.getRefinedMember(dec.getName(), signature, false);
@@ -179,8 +183,13 @@ public class RefinementVisitor extends Visitor {
                             dec.getName());
                 }
                 else {
-                    that.addError("duplicate or overloaded member name: " + dec.getName());
+                    that.addError("duplicate or overloaded member name: " + 
+                            dec.getName());
                 }
+            }
+            else if (!getInheritedDeclarations(dec.getName(), type).isEmpty()) {
+                that.addError("duplicate or overloaded member name in type hierarchy: " + 
+                        dec.getName());
             }
         }
         else {

@@ -1722,12 +1722,26 @@ public class Util {
         for (TypeDeclaration std: bottom.getSupertypeDeclarations()) {
             if (std.inherits(top) && !std.equals(bottom)) {
                 Declaration member = std.getDirectMember(name, signature, false);
-                if (member!=null && !isAbstraction(member)) {
+                if (member!=null && member.isShared() && !isAbstraction(member)) {
                     TypeDeclaration td = (TypeDeclaration) member.getContainer();
                     Declaration refined = td.getRefinedMember(name, signature, false);
                     if (refined!=null && refined.equals(root)) {
                         result.add(member);
                     }
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static List<Declaration> getInheritedDeclarations(String name,
+            TypeDeclaration bottom) {
+        List<Declaration> result = new ArrayList<Declaration>(2);
+        for (TypeDeclaration std: bottom.getSupertypeDeclarations()) {
+            if (!std.equals(bottom)) {
+                Declaration member = std.getDirectMember(name, null, false);
+                if (member!=null && member.isShared() && !isAbstraction(member)) {
+                    result.add(member);
                 }
             }
         }
