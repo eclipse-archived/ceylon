@@ -2,6 +2,7 @@ package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
 import static java.lang.System.arraycopy;
 
 import java.lang.invoke.MethodHandles;
@@ -9,7 +10,6 @@ import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
 import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.BaseSequence;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.GenericDeclaration;
@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Generic;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
@@ -70,8 +71,8 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
                 defaultValue = "ceylon.language::Empty")})
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
-        extends BaseSequence<Element>
-        implements Sequence<Element>, Serializable {
+//        extends BaseSequence<Element>
+        implements Sequence<Element>, Serializable, ReifiedType {
 
     /** 
      * A backing array. May be shared between many Tuple instances
@@ -103,7 +104,7 @@ public final class Tuple<Element, First extends Element,
             java.lang.Object[] array, 
             Sequential<? extends Element> rest, 
             boolean copy) {
-        super($reifiedElement);
+//        super($reifiedElement);
         if (array.length + rest.getSize() == 0) {
             throw new AssertionError("Tuple may not have zero elements");
         }
@@ -671,7 +672,8 @@ public final class Tuple<Element, First extends Element,
            @Name("elements") Sequential<? extends Other> es) {
         if (rest.getEmpty()) {
             int length = this.array.length;
-            java.lang.Object[] array = new java.lang.Object[length+Util.toInt(es.getSize())];
+            java.lang.Object[] array = 
+                    new java.lang.Object[length+Util.toInt(es.getSize())];
             arraycopy(this.array, 0, array, 0, length);
             int ii = length;
             Iterator<?> iter = es.iterator();
@@ -683,7 +685,8 @@ public final class Tuple<Element, First extends Element,
                     (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
         } else {
             return new Tuple<java.lang.Object,First,Sequential<?>>
-                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest.append($reifiedOther, es));
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), 
+                            array, rest.append($reifiedOther, es));
         }
     }
 
@@ -710,7 +713,7 @@ public final class Tuple<Element, First extends Element,
 
     @Ignore
     public Tuple($Serialization$ ignored, TypeDescriptor $reifiedElement,TypeDescriptor $reifiedFirst, TypeDescriptor $reifiedRest) {
-        super($reifiedElement);
+//        super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         // hack: put the type descriptors into the array, so they're available
         // in $deserialize$() for getting the values from the dted
@@ -793,5 +796,676 @@ public final class Tuple<Element, First extends Element,
         
     }
     
+    
+    //MIXINS:
+
+    @Override @Ignore
+    public Sequential$impl<? extends Element> $ceylon$language$Sequential$impl() {
+        return new Sequential$impl($reifiedElement,this);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> initial(long length) {
+        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
+        if (length>=array.length) return this;
+        int len = (int) length;
+        Object[] initialArray = new Object[len];
+        System.arraycopy(array, 0, initialArray, 0, len);
+        return new Tuple($reifiedElement, initialArray);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> terminal(long length) {
+        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
+        if (length>=array.length) return this;
+        int len = (int) length;
+        Object[] initialArray = new Object[len];
+        System.arraycopy(array, array.length-len, initialArray, 0, len);
+        return new Tuple($reifiedElement, initialArray);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
+        int size = array.length;
+        int j = 0;
+        while (j<size) {
+            if (!f.$call$(array[j]).booleanValue()) {
+                break;
+            }
+            j++;
+        }
+        int i = 0;
+        while (i<size) {
+            if (!f.$call$(array[size-1-i]).booleanValue()) {
+                break;
+            }
+            i++;
+        }
+        if (i==0 && j==0) return this;
+        Object[] trimmedArray = new Object[size-i-j];
+        System.arraycopy(array, j, trimmedArray, 0, size-i);
+        return new Tuple($reifiedElement, trimmedArray);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> trimLeading(
+            Callable<? extends Boolean> f) {
+        int size = array.length;
+        int i = 0;
+        while (i<size) {
+            if (!f.$call$(array[i]).booleanValue()) {
+                break;
+            }
+            i++;
+        }
+        if (i==0) return this;
+        Object[] trimmedArray = new Object[size-i];
+        System.arraycopy(array, i, trimmedArray, 0, size-i);
+        return new Tuple($reifiedElement, trimmedArray);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> trimTrailing(
+            Callable<? extends Boolean> f) {
+        int size = array.length;
+        int i = 0;
+        while (i<size) {
+            if (!f.$call$(array[size-1-i]).booleanValue()) {
+                break;
+            }
+            i++;
+        }
+        if (i==0) return this;
+        Object[] trimmedArray = new Object[size-i];
+        System.arraycopy(array, 0, trimmedArray, 0, size-i);
+        return new Tuple($reifiedElement, trimmedArray);
+    }
+
+    @Override @Ignore
+    public List$impl<? extends Element> $ceylon$language$List$impl() {
+        return new List$impl($reifiedElement, this);
+    }
+
+    @Override @Ignore
+    public boolean endsWith(List<? extends java.lang.Object> list) {
+        long size = list.getSize();
+        if (size>array.length) return false;
+        if (size<=0) return true;
+        int offset = array.length - (int) size;
+        if (offset<0) return false;
+        for (int i=0; i<size; i++) {
+            java.lang.Object x = array[i+offset];
+            java.lang.Object y = list.getFromFirst(i);
+            if (x!=y) {
+                if (x==null || y==null || !x.equals(y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override @Ignore
+    public boolean startsWith(List<? extends java.lang.Object> list) {
+        long size = list.getSize();
+        if (size>array.length) return false;
+        if (size<=0) return true;
+        int offset = array.length - (int) size;
+        if (offset<0) return false;
+        for (int i=0; i<size; i++) {
+            java.lang.Object x = array[i];
+            java.lang.Object y = list.getFromFirst(i);
+            if (x!=y) {
+                if (x==null || y==null || !x.equals(y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override @Ignore
+    public Integer firstInclusion(List<? extends java.lang.Object> list) {
+        long size = list.getSize();
+        if (size>array.length) return null;
+        if (size<=0) return Integer.instance(0);
+        int offset = array.length - (int) size;
+        loop: for (int start=0; start<=offset; start++) {
+            for (int i=0; i<size; i++) {
+                java.lang.Object x = array[i+start];
+                java.lang.Object y = list.getFromFirst(i);
+                if (x!=y) {
+                    if (x==null || y==null || !x.equals(y)) {
+                        continue loop;
+                    }
+                }
+            }
+            return Integer.instance(start);
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Integer lastInclusion(List<? extends java.lang.Object> list) {
+        long size = list.getSize();
+        if (size>array.length) return null;
+        if (size<=0) return Integer.instance(0);
+        int offset = array.length - (int) size;
+        if (offset<0) return null;
+        loop: for (int start=offset; start>=0; start--) {
+            for (int i=0; i<size; i++) {
+                java.lang.Object x = array[i+start];
+                java.lang.Object y = list.getFromFirst(i);
+                if (x!=y) {
+                    if (x==null || y==null || !x.equals(y)) {
+                        continue loop;
+                    }
+                }
+            }
+            return Integer.instance(start);
+        }
+        return null;
+    }
+    
+    @Override @Ignore
+    public Integer firstIndexWhere(Callable<? extends Boolean> f) {
+        for (int i=0; i<array.length; i++) {
+            if (f.$call$(array[i]).booleanValue()) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Integer lastIndexWhere(Callable<? extends Boolean> f) {
+        for (int i=array.length-1; i>=0; i--) {
+            if (f.$call$(array[i]).booleanValue()) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(java.lang.Object o) {
+        for (int i=0; i<array.length; i++) {
+            java.lang.Object x = array[i];
+            if (x==o || (x!=null && o!=null && x.equals(o))) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(java.lang.Object o) {
+        for (int i=array.length-1; i>=0; i--) {
+            java.lang.Object x = array[i];
+            if (x==o || (x!=null && o!=null && x.equals(o))) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Element get(Integer index) {
+        return getFromFirst(index.value);
+    }
+
+    @Override @Ignore
+    public boolean includes(List<? extends java.lang.Object> list) {
+        long size = list.getSize();
+        if (size>array.length) return false;
+        if (size<=0) return true;
+        int offset = array.length - (int) size;
+        if (offset<0) return false;
+        loop: for (int start=0; start<=offset; start++) {
+            for (int i=0; i<size; i++) {
+                java.lang.Object x = array[i+start];
+                java.lang.Object y = list.getFromFirst(i);
+                if (x!=y) {
+                    if (x==null || y==null || !x.equals(y)) {
+                        continue loop;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override @Ignore
+    public boolean includesAt(long at, List<? extends java.lang.Object> list) {
+        if (at<0 || at>=array.length) return false;
+        long size = list.getSize();
+        if (size>array.length) return false;
+        if (size<=0) return true;
+        int offset = array.length - (int) size - (int) at;
+        if (offset<0) return false;
+        for (int i=(int) at; i<size; i++) {
+            java.lang.Object x = array[i];
+            java.lang.Object y = list.getFromFirst(i);
+            if (x!=y) {
+                if (x==null || y==null || !x.equals(y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(
+            List<? extends java.lang.Object> list) {
+        return $ceylon$language$List$impl().inclusions(list);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(
+            Callable<? extends Boolean> f) {
+        return $ceylon$language$List$impl().indexesWhere(f);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    occurrences(java.lang.Object o) {
+        return $ceylon$language$List$impl().occurrences(o);
+    }
+
+    @Override @Ignore
+    public boolean occurs(java.lang.Object o) {
+        for (int i=0; i<array.length; i++) {
+            java.lang.Object x = array[i];
+            if (x==o || (x!=null && o!=null && x.equals(o))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override @Ignore
+    public boolean occursAt(long at, java.lang.Object o) {
+        if (at<0||at>=array.length) return false;
+        java.lang.Object x = array[(int) at];
+        return x==o || (x!=null && o!=null && x.equals(o));
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor $reifiedOther, List<? extends Other> list) {
+        return $ceylon$language$List$impl().patch($reifiedOther, list);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor $reifiedOther, List<? extends Other> list,
+            long index) {
+        return $ceylon$language$List$impl().patch($reifiedOther, list, index);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor $reifiedOther, List<? extends Other> list,
+            long index, long len) {
+        return $ceylon$language$List$impl().patch($reifiedOther, list, index, len);
+    }
+
+    @Override @Ignore
+    public <Other> long patch$from(TypeDescriptor $reifiedOther,
+            List<? extends Other> list) {
+        return list.getSize();
+    }
+
+    @Override @Ignore
+    public <Other> long patch$length(TypeDescriptor arg0,
+            List<? extends Other> list, long from) {
+        return 0;
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublist(long from, long to) {
+        return sublistTo(to).sublistFrom(from);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublistFrom(long from) {
+        return $ceylon$language$List$impl().sublistFrom(from);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublistTo(long to) {
+        return $ceylon$language$List$impl().sublistTo(to);
+    }
+
+    @Override @Ignore
+    public Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
+        return new Collection$impl($reifiedElement,this);
+    }
+
+    @Override @Ignore
+    public Iterable$impl<? extends Element, ? extends java.lang.Object> $ceylon$language$Iterable$impl() {
+        return new Iterable$impl($reifiedElement,NothingType,this);
+    }
+
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        for (int i=0; i<array.length; i++) {
+            if (f.$call$(array[i]).booleanValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        for (int i=0; i<array.length; i++) {
+            if (!f.$call$(array[i]).booleanValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
+        return $ceylon$language$Iterable$impl().by(step);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable chain(TypeDescriptor $reifiedOther,
+            TypeDescriptor $reifiedOtherAbsent,
+            Iterable<? extends Other, ? extends OtherAbsent> it) {
+        return $ceylon$language$Iterable$impl().chain($reifiedOther, $reifiedOtherAbsent, it);
+    }
+
+    @Override @Ignore
+    public <Default> Iterable defaultNullElements(TypeDescriptor $reified$Default,
+            Default defaultValue) {
+        return $ceylon$language$Iterable$impl().defaultNullElements($reified$Default, defaultValue);
+    }
+
+    @Override @Ignore
+    public java.lang.Object each(Callable<? extends java.lang.Object> f) {
+        for (int i=0; i<array.length; i++) {
+            f.$call$(array[i]);
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(
+            Callable<? extends Boolean> selecting) {
+        return $ceylon$language$Iterable$impl().filter(selecting);
+    }
+
+    @Override @Ignore
+    public <Result, OtherAbsent> Iterable flatMap(
+            TypeDescriptor $reified$Result,
+            TypeDescriptor $reified$OtherAbsent,
+            Callable<? extends Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+        return $ceylon$language$Iterable$impl().flatMap($reified$Result, $reified$OtherAbsent, collecting);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Result> fold(TypeDescriptor $reified$Result,
+            Result initial) {
+        return $ceylon$language$Iterable$impl().fold($reified$Result, initial);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable follow(TypeDescriptor $reified$Other, Other head) {
+        return $ceylon$language$Iterable$impl().follow($reified$Other, head);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$impl().getCoalesced();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$impl().getCycled();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$impl().getExceptLast();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$impl().getIndexed();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> getPaired() {
+        return $ceylon$language$Iterable$impl().getPaired();
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor $reifiedOther, Other o) {
+        return $ceylon$language$Iterable$impl().interpose($reifiedOther, o);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor $reifiedOther, Other o, long step) {
+        return $ceylon$language$Iterable$impl().interpose($reifiedOther, o, step);
+    }
+
+    @Override @Ignore
+    public <Other> long interpose$step(TypeDescriptor arg0, Other arg1) {
+        return 1;
+    }
+
+    @Override @Ignore
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
+            TypeDescriptor $reified$Result, Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$impl().map($reified$Result, collecting);
+    }
+
+    @Override @Ignore
+    public java.lang.Object max(Callable<? extends Comparison> f) {
+        java.lang.Object result = array[0];
+        for (int i=1; i<array.length; i++) {
+            java.lang.Object object = array[i];
+            if (f.$call$(object, result)==larger_.get_()) {
+                result = object;
+            }
+        }
+        return result;
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> partition(
+            long length) {
+        return $ceylon$language$Iterable$impl()
+        .partition(length);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable product(TypeDescriptor $reified$Other,
+            TypeDescriptor $reified$OtherAbsent,
+            Iterable<? extends Other, ? extends OtherAbsent> other) {
+        return $ceylon$language$Iterable$impl().product($reified$Other, $reified$OtherAbsent, other);
+    }
+
+    @Override @Ignore
+    public <Result> java.lang.Object reduce(TypeDescriptor $reifiedResult,
+            Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$impl().reduce($reifiedResult, f);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(
+            TypeDescriptor $reified$Result, Result initial) {
+        return  $ceylon$language$Iterable$impl().scan($reified$Result, initial);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> select(Callable<? extends Boolean> selecting) {
+        return $ceylon$language$Iterable$impl().select(selecting);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skip(long skipping) {
+        return $ceylon$language$Iterable$impl().skip(skipping);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skipWhile(
+            Callable<? extends Boolean> skipping) {
+        return $ceylon$language$Iterable$impl().skipWhile(skipping);
+    }
+
+    @Override @Ignore
+    public <Result, Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> spread(
+            TypeDescriptor $reified$Result, TypeDescriptor $reified$Args,
+            Callable<? extends Callable<? extends Result>> method) {
+        return $ceylon$language$Iterable$impl().spread($reified$Result, $reified$Args, method);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> take(long taking) {
+        return $ceylon$language$Iterable$impl().take(taking);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> takeWhile(
+            Callable<? extends Boolean> taking) {
+        return $ceylon$language$Iterable$impl().takeWhile(taking);
+    }
+
+    @Override @Ignore
+    public Category$impl<? super java.lang.Object> $ceylon$language$Category$impl() {
+        return new Category$impl($reifiedElement,this);
+    }
+
+    @Override @Ignore
+    public boolean containsAny(Iterable<? extends java.lang.Object, ? extends java.lang.Object> it) {
+        return $ceylon$language$Category$impl().containsAny(it);
+    }
+
+    @Override @Ignore
+    public boolean containsEvery(
+            Iterable<? extends java.lang.Object, ? extends java.lang.Object> it) {
+        return $ceylon$language$Category$impl().containsEvery(it);
+    }
+
+    @Override @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
+        return new Correspondence$impl(Integer.$TypeDescriptor$,$reifiedElement,this);
+    }
+
+    @Override @Ignore
+    public boolean definesAny(Iterable<? extends Integer, ? extends java.lang.Object> it) {
+        return $ceylon$language$Correspondence$impl().definesAny(it);
+    }
+
+    @Override @Ignore
+    public boolean definesEvery(
+            Iterable<? extends Integer, ? extends java.lang.Object> it) {
+        return $ceylon$language$Correspondence$impl().definesEvery(it);
+    }
+
+    @Override @Ignore
+    public <Absent> Iterable<? extends Element, ? extends Absent> getAll(
+            TypeDescriptor $reified$Absent,
+            Iterable<? extends Integer, ? extends Absent> keys) {
+        return $ceylon$language$Correspondence$impl().getAll($reified$Absent, keys);
+    }
+
+    @Override @Ignore
+    public Sequence$impl<? extends Element> $ceylon$language$Sequence$impl() {
+        return new Sequence$impl($reifiedElement,this);
+    }
+
+    @Override @Ignore
+    public <Result> Sequence<? extends Result> collect(TypeDescriptor $reified$Result,
+            Callable<? extends Result> collecting) {
+        return $ceylon$language$Sequence$impl().collect($reified$Result, collecting);
+    }
+
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        for (int i=0; i<array.length; i++) {
+            java.lang.Object object = array[i];
+            if (f.$call$(object).booleanValue()) {
+                return (Element) object;
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        for (int i=array.length-1; i>=0; i--) {
+            java.lang.Object object = array[i];
+            if (f.$call$(object).booleanValue()) {
+                return (Element) object;
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public boolean getEmpty() {
+        return false;
+    }
+
+    @Override @Ignore
+    public Sequence<? extends Integer> getKeys() {
+        return $ceylon$language$Sequence$impl().getKeys();
+    }
+
+    @Override @Ignore
+    public Sequence<? extends Element> getReversed() {
+        return $ceylon$language$Sequence$impl().getReversed();
+    }
+
+    @Override @Ignore
+    public <Other> Sequence prepend(TypeDescriptor $reifiedOther,
+            Sequential<? extends Other> elements) {
+        return $ceylon$language$Sequence$impl().prepend($reifiedOther,elements);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> repeat(long times) {
+        //TODO: optimize this one, returning a Tuple!
+        return $ceylon$language$Sequence$impl().repeat(times);
+    }
+
+    @Override @Ignore
+    public Sequence slice(long index) {
+        //TODO: optimize this one, returning a Tuple!
+        return $ceylon$language$Sequence$impl().slice(index);
+    }
+
+    @Override @Ignore
+    public Sequence<? extends Element> sort(Callable<? extends Comparison> comparing) {
+        return $ceylon$language$Sequence$impl().sort(comparing);
+    }
+    
+    @Override
+    public java.lang.String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.appendCharacter('[');
+        for (int i=0; i<array.length; i++) {
+            if (sb.getSize()>1) sb.append(", ");
+            java.lang.Object object = array[i];
+            sb.append(object==null ? "<null>" : object.toString());
+        }
+        sb.appendCharacter(']');
+        return sb.toString();
+    }
+    
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        return $ceylon$language$List$impl().equals(obj);
+    }
+    
+    @Override
+    public int hashCode() {
+        return $ceylon$language$List$impl().hashCode();
+    }
     
 }
