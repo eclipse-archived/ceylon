@@ -745,7 +745,7 @@ shared interface List<out Element>
     shared actual default 
     List<Element> spanTo(Integer to) {
         if (to>=size-1) {
-            return this;
+            return clone();
         }
         else if (to>=0) {
             return ArraySequence(Array(sublistTo(to)));
