@@ -1479,6 +1479,37 @@ public class Util {
         return signature;
     }
     
+    public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( involvesTypeParameters(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                if ( involvesTypeParameters(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else {
+            if (member.getTypeParameters().contains(pt.getDeclaration())) {
+                return true;
+            }
+            for (ProducedType at: pt.getTypeArgumentList()) {
+                if ( at!=null && involvesTypeParameters(member, at) ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    
     public static boolean isCompletelyVisible(Declaration member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {

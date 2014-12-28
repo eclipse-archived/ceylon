@@ -350,12 +350,14 @@ public abstract class TypeDeclaration extends Declaration
                 return true;
             }
         }
-        for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
+        for (TypeDeclaration t: 
+                getSatisfiedTypeDeclarations()) {
             if (t.isMember(dec, visited)) {
                 return true;
             }
         }
-        TypeDeclaration et = getExtendedTypeDeclaration();
+        TypeDeclaration et = 
+                getExtendedTypeDeclaration();
         if (et!=null) {
             if (et.isMember(dec, visited)) {
                 return true;
@@ -370,12 +372,14 @@ public abstract class TypeDeclaration extends Declaration
     public boolean inherits(TypeDeclaration dec) {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
+        for (TypeDeclaration t: 
+                getSatisfiedTypeDeclarations()) {
             if (t.inherits(dec)) {
                 return true;
             }
         }
-        TypeDeclaration et = getExtendedTypeDeclaration();
+        TypeDeclaration et = 
+                getExtendedTypeDeclaration();
         if (et!=null && et.inherits(dec)) {
             return true;
         }
@@ -393,7 +397,7 @@ public abstract class TypeDeclaration extends Declaration
                         new HashSet<TypeDeclaration>());
     }
 
-    private Declaration getRefinedMember(String name, 
+    protected Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis, 
             Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
@@ -401,7 +405,8 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             Declaration result = null;
-            TypeDeclaration et = getExtendedTypeDeclaration();
+            TypeDeclaration et = 
+                    getExtendedTypeDeclaration();
             if (et!=null) {
                 Declaration ed = 
                         et.getRefinedMember(name, signature, 
@@ -411,7 +416,8 @@ public abstract class TypeDeclaration extends Declaration
                     result = ed;
                 }
             }
-            for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+            for (TypeDeclaration st: 
+                    getSatisfiedTypeDeclarations()) {
                 Declaration sd = 
                         st.getRefinedMember(name, signature, 
                                 ellipsis, visited);

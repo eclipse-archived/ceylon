@@ -22,3 +22,14 @@ void functionRefInference() {
         collecting = emptyOrSingleton; 
     };
 }
+
+void inf() {
+    void foo<Bar>(void func(Bar b)){} 
+    @error foo(void(b){});
+    
+    void fun<X>(X x) {}
+    Y accept1<Y>(void f(Y y)) { throw; }
+    Y accept2<Y>(Anything(Y) f) { throw; }
+    @type:"Nothing" accept1(fun);
+    @type:"Nothing" accept2(fun);
+}

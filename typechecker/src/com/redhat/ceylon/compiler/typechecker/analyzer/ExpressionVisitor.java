@@ -34,6 +34,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrI
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
@@ -2531,101 +2532,101 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression smte) {
         Tree.TypeArguments typeArguments = smte.getTypeArguments();
         Declaration dec = smte.getDeclaration();
-        if (typeArguments instanceof Tree.InferredTypeArguments && 
-                dec instanceof Generic &&
-                !((Generic) dec).getTypeParameters().isEmpty()) {
-            ProducedTypedReference param = smte.getTargetParameter();
-            ProducedType paramType = smte.getParameterType();
-            if (paramType==null && param!=null) {
-                paramType = param.getFullType();
-            }
-            ProducedReference arg = getProducedReference(smte);
-            if (!smte.getStaticMethodReferencePrimary() && 
-                    dec instanceof Functional && 
-                    param!=null) {
-                Functional fun = (Functional) dec;
-                List<ParameterList> apls = fun.getParameterLists();
-                Declaration pdec = param.getDeclaration();
-                if (pdec instanceof Functional) {
-                    Functional pfun = (Functional) pdec;
-                    List<ParameterList> ppls = pfun.getParameterLists();
-                    if (apls.isEmpty() || ppls.isEmpty()) {
-                        return null; //TODO: to give a nicer error
+        if (dec instanceof Generic) {
+            Generic generic = (Generic) dec;
+            if (typeArguments instanceof Tree.InferredTypeArguments && 
+                    !generic.getTypeParameters().isEmpty()) {
+                ProducedTypedReference param = smte.getTargetParameter();
+                ProducedType paramType = smte.getParameterType();
+                Declaration pd = param==null ? null :
+                    (Declaration) param.getDeclaration().getContainer();
+                if (paramType==null && param!=null) {
+                    paramType = param.getFullType();
+                }
+                ProducedReference arg = getProducedReference(smte);
+                if (!smte.getStaticMethodReferencePrimary() && 
+                        dec instanceof Functional && 
+                        param!=null) {
+                    Functional fun = (Functional) dec;
+                    List<ParameterList> apls = fun.getParameterLists();
+                    Declaration pdec = param.getDeclaration();
+                    if (pdec instanceof Functional) {
+                        Functional pfun = (Functional) pdec;
+                        List<ParameterList> ppls = pfun.getParameterLists();
+                        if (apls.isEmpty() || ppls.isEmpty()) {
+                            return null; //TODO: to give a nicer error
+                        }
+                        else {
+                            List<ProducedType> inferredTypes = 
+                                    new ArrayList<ProducedType>();
+                            List<Parameter> apl = apls.get(0).getParameters();
+                            List<Parameter> ppl = ppls.get(0).getParameters();
+                            for (TypeParameter tp: fun.getTypeParameters()) {
+                                List<ProducedType> list = 
+                                        new ArrayList<ProducedType>();
+                                for (int i=0; i<apl.size() && i<ppl.size(); i++) {
+                                    Parameter ap = apl.get(i);
+                                    Parameter pp = ppl.get(i);
+                                    ProducedType type = 
+                                            param.getTypedParameter(pp).getFullType();
+                                    ProducedType template = 
+                                            arg.getTypedParameter(ap).getFullType();
+                                    ProducedType it = 
+                                            inferTypeArg(tp, template, type, 
+                                                    true, false, 
+                                                    new ArrayList<TypeParameter>());
+                                    if (!(isTypeUnknown(it) ||
+                                            involvesTypeParameters(generic, it) ||
+                                            pd instanceof Generic &&
+                                            involvesTypeParameters((Generic) pd, it))) {
+                                        addToUnionOrIntersection(tp, list, it);
+                                    }
+                                }
+                                inferredTypes.add(formUnionOrIntersection(tp, list));
+                            }
+                            return inferredTypes;
+                        }
                     }
-                    else {
+                }
+                if (paramType!=null) {
+                    if (unit.isSequentialType(paramType)) {
+                        paramType = unit.getSequentialElementType(paramType);
+                    }
+                    if (unit.isCallableType(paramType)) {
+                        ProducedType template;
+                        if (smte.getStaticMethodReferencePrimary()) {
+                            template = producedType(unit.getTupleDeclaration(), 
+                                    arg.getType(), arg.getType(), 
+                                    unit.getEmptyDeclaration().getType());
+                        }
+                        else {
+                            template = unit.getCallableTuple(arg.getFullType());
+                        }
+                        ProducedType type = 
+                                unit.getCallableTuple(paramType);
                         List<ProducedType> inferredTypes = 
                                 new ArrayList<ProducedType>();
-                        List<Parameter> apl = apls.get(0).getParameters();
-                        List<Parameter> ppl = ppls.get(0).getParameters();
-                        for (TypeParameter tp: fun.getTypeParameters()) {
-                            List<ProducedType> list = 
-                                    new ArrayList<ProducedType>();
-                            for (int i=0; i<apl.size() && i<ppl.size(); i++) {
-                                Parameter ap = apl.get(i);
-                                Parameter pp = ppl.get(i);
-                                ProducedType type = 
-                                        param.getTypedParameter(pp).getFullType();
-                                ProducedType template = 
-                                        arg.getTypedParameter(ap).getFullType();
-                                ProducedType it = 
-                                        inferTypeArg(tp, template, type, 
-                                                true, false, 
-                                                new ArrayList<TypeParameter>());
-                                if (it!=null &&
-                                        !it.containsTypeParameters()) {
-                                    addToUnionOrIntersection(tp, list, it);
-                                }
+                        for (TypeParameter tp: generic.getTypeParameters()) {
+                            ProducedType it = 
+                                    inferTypeArg(tp, template, type,
+                                            true, false, 
+                                            new ArrayList<TypeParameter>());
+                            if (isTypeUnknown(it) ||
+                                    involvesTypeParameters(generic, it) ||
+                                    pd instanceof Generic &&
+                                    involvesTypeParameters((Generic) pd, it)) {
+                                inferredTypes.add(unit.getNothingDeclaration().getType());
                             }
-                            inferredTypes.add(formUnionOrIntersection(tp, list));
+                            else {
+                                inferredTypes.add(it);
+                            }
                         }
                         return inferredTypes;
                     }
                 }
             }
-            if (paramType!=null) {
-                if (unit.isSequentialType(paramType)) {
-                    paramType = unit.getSequentialElementType(paramType);
-                }
-                if (unit.isCallableType(paramType)) {
-                    ProducedType template;
-                    if (smte.getStaticMethodReferencePrimary()) {
-                        template = producedType(unit.getTupleDeclaration(), 
-                                arg.getType(), arg.getType(), 
-                                unit.getEmptyDeclaration().getType());
-                    }
-                    else {
-                        template = unit.getCallableTuple(arg.getFullType());
-                    }
-                    ProducedType type = 
-                            unit.getCallableTuple(paramType);
-                    List<ProducedType> inferredTypes = 
-                            new ArrayList<ProducedType>();
-                    for (TypeParameter tp: ((Generic) dec).getTypeParameters()) {
-                        ProducedType it = 
-                                inferTypeArg(tp, template, type,
-                                        true, false, 
-                                        new ArrayList<TypeParameter>());
-                        if (it!=null &&
-                                !it.containsTypeParameters()) {
-                            inferredTypes.add(it);
-                        }
-                        else {
-                            inferredTypes.add(unit.getNothingDeclaration().getType());
-                        }
-                    }
-                    return inferredTypes;
-                }
-                else {
-                    return null;
-                }
-            }
-            else {
-                return null;
-            }
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     private ProducedReference getProducedReference(
@@ -2681,6 +2682,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferParameterTypesFromCallableParameter(ProducedReference pr,
             Parameter param, Tree.FunctionArgument anon) {
+        Declaration declaration = param.getDeclaration();
         Functional f = (Functional) param.getModel();
         List<ParameterList> fpls = f.getParameterLists();
         List<Tree.ParameterList> apls = anon.getParameterLists();
@@ -2695,6 +2697,11 @@ public class ExpressionVisitor extends Visitor {
                     if (parameter.getModel()==null) {
                         ProducedType t = 
                                 pr.getTypedParameter(fp).getType();
+                        if (isTypeUnknown(t) ||
+                                declaration instanceof Generic &&
+                                involvesTypeParameters((Generic) declaration, t)) {
+                            t = new UnknownType(unit).getType();
+                        }
                         Value model = new Value();
                         model.setUnit(unit);
                         model.setType(t);
