@@ -93,3 +93,14 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
         String[] r__ = r_;
     }
 }
+
+void buggy() {
+    [Integer, Integer]|[Integer] foo = [42];
+    @error value [x,y] = foo;
+    [Integer, Integer+] bar = [42, 53];
+    @error value [a,b] = bar;
+    [Integer, Integer*] baz = [42, 53];
+    @error value [w,z] = baz;
+    [Integer,Integer+] list = [42, 53];
+    value [@type:"Integer" first, @type:"Sequence<Integer>" *rest] = list;
+}

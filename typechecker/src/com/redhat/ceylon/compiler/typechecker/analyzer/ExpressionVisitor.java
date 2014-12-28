@@ -485,8 +485,20 @@ public class ExpressionVisitor extends Visitor {
             else {
                 List<ProducedType> types = 
                         unit.getTupleElementTypes(sequenceType);
+                boolean tupleLengthUnbounded = 
+                        unit.isTupleLengthUnbounded(sequenceType);
+                boolean tupleVariantAtLeastOne = 
+                        unit.isTupleVariantAtLeastOne(sequenceType);
+                int minimumLength = 
+                        unit.getTupleMinimumLength(sequenceType);
                 if (!variadic && types.size()>length) {
                     se.addError("assigned tuple has too many elements");
+                }
+                if (!variadic && tupleLengthUnbounded) {
+                    se.addError("assigned tuple has unbounded length");
+                }
+                if (!variadic && minimumLength<types.size()) {
+                    se.addError("assigned tuple has variadic length");
                 }
                 for (int i=0; i<types.size() && i < (variadic ? length-1 : length); i++) {
                     ProducedType type = types.get(i);
@@ -494,10 +506,6 @@ public class ExpressionVisitor extends Visitor {
                     destructure(pattern, se, type);
                 }
                 if (variadic) {
-                    boolean tupleLengthUnbounded = 
-                            unit.isTupleLengthUnbounded(sequenceType);
-                    boolean tupleVariantAtLeastOne = 
-                            unit.isTupleVariantAtLeastOne(sequenceType);
                     List<ProducedType> list = new ArrayList<ProducedType>();
                     for (ProducedType t: types.subList(length-1, 
                             tupleLengthUnbounded ? 

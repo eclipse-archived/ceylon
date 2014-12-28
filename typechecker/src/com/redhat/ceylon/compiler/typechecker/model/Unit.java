@@ -917,6 +917,9 @@ public class Unit {
             if (simpleResult!=null){
                 return simpleResult;
             }
+            if (isEmptyType(args)) {
+                return new LinkedList<ProducedType>();
+            }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
             if (tst!=null) {
@@ -932,10 +935,9 @@ public class Unit {
                     return result;
                 }
             }
-            else if (isEmptyType(args)) {
-                return new LinkedList<ProducedType>();
-            }
             else if (isSequentialType(args)) {
+                //this is pretty weird: return the whole
+                //tail type as the element of the list! 
             	if (!(args.getDeclaration() instanceof TypeParameter)) {
             		LinkedList<ProducedType> sequenced = 
             		        new LinkedList<ProducedType>();
@@ -1021,6 +1023,11 @@ public class Unit {
             if (simpleTupleLengthUnbounded != null) {
                 return simpleTupleLengthUnbounded.booleanValue();
             }
+            if (getSequenceType(getType(getNothingDeclaration())).isSubtypeOf(args)) {
+                return true;
+            }
+            //TODO: this doesn't account for the case where
+            //      a tuple occurs in a union with []
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
             if (tst!=null) {
@@ -1028,12 +1035,6 @@ public class Unit {
                 if (tal.size()>=3) {
                     return isTupleLengthUnbounded(tal.get(2));
                 }
-            }
-            else if (isEmptyType(args)) {
-                return false;
-            }
-            else if (isSequentialType(args)) {
-                return !(args.getDeclaration() instanceof TypeParameter);
             }
         }
         return false;
@@ -1093,6 +1094,12 @@ public class Unit {
             if (simpleTupleVariantAtLeastOne != null) {
                 return simpleTupleVariantAtLeastOne.booleanValue();
             }
+            if (getType(getEmptyDeclaration()).isSubtypeOf(args)) {
+                return false;
+            }
+            if (getSequenceType(getType(getNothingDeclaration())).isSubtypeOf(args)) {
+                return true;
+            }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
             if (tst!=null) {
@@ -1100,15 +1107,6 @@ public class Unit {
                 if (tal.size()>=3) {
                     return isTupleVariantAtLeastOne(tal.get(2));
                 }
-            }
-            else if (isEmptyType(args)) {
-                return false;
-            }
-            else if (isSequenceType(args)) {
-                return true;
-            }
-            else if (isSequentialType(args)) {
-                return false;
             }
         }
         return false;
@@ -1172,6 +1170,9 @@ public class Unit {
             if (getType(getEmptyDeclaration()).isSubtypeOf(args)) {
                 return 0;
             }
+            if (getSequenceType(getType(getNothingDeclaration())).isSubtypeOf(args)) {
+                return 1;
+            }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
             if (tst!=null) {
@@ -1179,15 +1180,6 @@ public class Unit {
                 if (tal.size()>=3) {
                     return getTupleMinimumLength(tal.get(2))+1;
                 }
-            }
-            else if (isEmptyType(args)) {
-                return 0;
-            }
-            else if (isSequenceType(args)) {
-                return 1;
-            }
-            else if (isSequentialType(args)) {
-                return 0;
             }
         }
         return 0;
