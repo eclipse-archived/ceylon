@@ -293,7 +293,7 @@ shared interface List<out Element>
         `function initial`)
     shared default 
     List<Element> sublistTo(Integer to) 
-            => to<0 then this else Sublist(to);
+            => to<0 then [] else Sublist(to);
     
     "A sublist of this list, starting at the element with
      index [[from]], ending at the element with the index 
