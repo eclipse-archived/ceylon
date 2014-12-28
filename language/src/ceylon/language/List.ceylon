@@ -754,20 +754,13 @@ shared interface List<out Element>
             return [];
         }
     }
-    
-    shared actual default 
-    List<Element> measure(Integer from, Integer length) {
-        if (length>size) {
-            return this;
-        }
-        else if (length>=1) {
-            return ArraySequence(Array(sublist(from, from+length-1)));
-        }
-        else {
-            return [];
-        }
-    }
-    
+
+    shared actual default
+    List<Element> measure(Integer from, Integer length)
+        => if (length > 0)
+        then span(from, from + length - 1)
+        else [];
+
     "A nonempty sequence containing the results of applying 
      the given mapping to the elements of this sequence."
     shared default actual 
