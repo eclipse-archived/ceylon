@@ -24,8 +24,10 @@ void functionRefInference() {
 }
 
 void inf() {
-    void foo<Bar>(void func(Bar b)){} 
-    @error foo(void(b){});
+    void foo1<Bar>(void func(Bar b)){} 
+    @error foo1(void(b){});
+    void foo2<Bar>(Anything(Bar) b){}
+    @error foo2(void(b){});
     
     void fun<X>(X x) {}
     Y accept1<Y>(void f(Y y)) { throw; }

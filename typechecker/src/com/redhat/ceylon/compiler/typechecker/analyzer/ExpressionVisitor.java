@@ -2367,7 +2367,7 @@ public class ExpressionVisitor extends Visitor {
                         Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
                         if (term instanceof Tree.FunctionArgument) {
                             inferParameterTypesFromCallableType(paramType, 
-                                    (Tree.FunctionArgument) term);
+                                    (Tree.FunctionArgument) term, null);
                         }
                         else if (term instanceof Tree.StaticMemberOrTypeExpression) {
                             Tree.StaticMemberOrTypeExpression smte = 
@@ -2506,7 +2506,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(paramType, 
-                                (Tree.FunctionArgument) term);
+                                (Tree.FunctionArgument) term, param);
                     }
                 }
             }
@@ -2653,14 +2653,21 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferParameterTypesFromCallableType(ProducedType paramType,
-            Tree.FunctionArgument anon) {
+            Tree.FunctionArgument anon, Parameter param) {
         List<Tree.ParameterList> apls = anon.getParameterLists();
         if (!apls.isEmpty()) {
             List<ProducedType> types = 
                     unit.getCallableArgumentTypes(paramType);
             List<Tree.Parameter> aps = apls.get(0).getParameters();
+            Declaration declaration = param==null ? 
+                    null : param.getDeclaration();
             for (int j=0; j<types.size() && j<aps.size(); j++) {
                 ProducedType type = types.get(j);
+                if (isTypeUnknown(type) ||
+                        declaration instanceof Generic &&
+                        involvesTypeParameters((Generic) declaration, type)) {
+                    type = new UnknownType(unit).getType();
+                }
                 Tree.Parameter ap = aps.get(j);
                 if (ap instanceof Tree.InitializerParameter) {
                     Parameter parameter = ap.getParameterModel();
