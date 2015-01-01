@@ -4602,10 +4602,16 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkAssignable(lhst, unit.getSetType(unit.getType(unit.getObjectDeclaration())), 
-                    that.getLeftTerm(), "set operand expression must be a set");
-            checkAssignable(lhst, unit.getSetType(unit.getType(unit.getObjectDeclaration())), 
-                    that.getRightTerm(), "set operand expression must be a set");
+            ProducedType ot = 
+                    unit.getType(unit.getObjectDeclaration());
+            checkAssignable(lhst, 
+                    unit.getSetType(ot), 
+                    that.getLeftTerm(), 
+                    "set operand expression must be a set");
+            checkAssignable(rhst, 
+                    unit.getSetType(ot), 
+                    that.getRightTerm(), 
+                    "set operand expression must be a set");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
             ProducedType et;
@@ -4627,10 +4633,16 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkAssignable(lhst, unit.getSetType(unit.getType(unit.getObjectDeclaration())), 
-                    that.getLeftTerm(), "set operand expression must be a set");
-            checkAssignable(lhst, unit.getSetType(unit.getType(unit.getObjectDeclaration())), 
-                    that.getRightTerm(), "set operand expression must be a set");
+            ProducedType ot = 
+                    unit.getType(unit.getObjectDeclaration());
+            checkAssignable(lhst, 
+                    unit.getSetType(ot), 
+                    that.getLeftTerm(), 
+                    "set operand expression must be a set");
+            checkAssignable(rhst, 
+                    unit.getSetType(ot), 
+                    that.getRightTerm(), 
+                    "set operand expression must be a set");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
             if (that instanceof Tree.UnionAssignOp) {
@@ -4642,7 +4654,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitLogicalOperator(Tree.BinaryOperatorExpression that) {
-        ProducedType bt = unit.getType(unit.getBooleanDeclaration());
+        ProducedType bt = 
+                unit.getType(unit.getBooleanDeclaration());
         ProducedType lt = leftType(that);
         ProducedType rt = rightType(that);
         if (!isTypeUnknown(rt) && !isTypeUnknown(lt)) {
@@ -4685,11 +4698,13 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(lhst)) {
-            checkAssignable(lhst, unit.getType(unit.getBooleanDeclaration()), that.getLeftTerm(), 
+            ProducedType bt = unit.getType(unit.getBooleanDeclaration());
+            checkAssignable(lhst, bt, that.getLeftTerm(), 
                     "operand expression must be a boolean value");
         }
         if ( rhst!=null && !isTypeUnknown(rhst)) {
-            checkAssignable(rhst, unit.getType(unit.getObjectDeclaration()), that.getRightTerm(),
+            ProducedType ot = unit.getType(unit.getObjectDeclaration());
+            checkAssignable(rhst, ot, that.getRightTerm(),
                     "operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(unit.denotableType(rhst)));
         }
