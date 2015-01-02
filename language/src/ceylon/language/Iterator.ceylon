@@ -1,4 +1,17 @@
-"Produces the elements of an [[Iterable]] object."
+"Produces the elements of an [[Iterable]] object. For 
+ example, this class has an `Iterator` that produces the 
+ integers from `min` to `max`:
+ 
+     class IntegerIterable(Integer min, Integer max) 
+            satisfies {Integer+} {
+        iterator() => object satisfies Iterator<Integer> {
+            variable value i = min;
+            next() => i<=max then i++ else finished;
+        };
+     }
+ 
+ An iterator is _exhausted_ when [[next]] produces the 
+ value [[finished]]."
 see (`interface Iterable`)
 by ("Gavin")
 shared interface Iterator<out Element> {
