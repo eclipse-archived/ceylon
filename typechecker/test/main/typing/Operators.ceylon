@@ -410,3 +410,27 @@ void testScale() {
 class Cat() satisfies Category<String> {
     contains(String string) => !string.empty;
 }
+
+interface MySet<T> satisfies Set<T> given T satisfies Object {}
+void testSetOperators(variable MySet<String> myset, 
+    variable Set<Object> set, 
+    variable Set<Integer> yourset) {
+    @error myset &= myset;
+    @error myset ~= myset;
+    @error myset |= myset;
+    @error myset &= set;
+    @error myset ~= set;
+    @error myset |= set;
+    set &= myset;
+    set ~= myset;
+    set |= myset;
+    set &= set;
+    set ~= set;
+    set |= set;
+    set &= yourset;
+    set ~= yourset;
+    set |= yourset;
+    yourset &= set;
+    yourset ~= set;
+    @error yourset |= set;
+}

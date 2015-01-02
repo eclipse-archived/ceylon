@@ -4635,6 +4635,8 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             ProducedType ot = 
                     unit.getType(unit.getObjectDeclaration());
+            ProducedType nt = 
+                    unit.getType(unit.getNothingDeclaration());
             checkAssignable(lhst, 
                     unit.getSetType(ot), 
                     that.getLeftTerm(), 
@@ -4643,6 +4645,10 @@ public class ExpressionVisitor extends Visitor {
                     unit.getSetType(ot), 
                     that.getRightTerm(), 
                     "set operand expression must be a set");
+            checkAssignable(unit.getSetType(nt), 
+                    lhst, 
+                    that.getLeftTerm(),
+                    "assigned expression type must be an instantiation of 'Set'");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
             if (that instanceof Tree.UnionAssignOp) {
