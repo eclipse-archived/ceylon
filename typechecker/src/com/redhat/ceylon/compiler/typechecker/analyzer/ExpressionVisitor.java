@@ -450,7 +450,7 @@ public class ExpressionVisitor extends Visitor {
             if (!unit.isSequentialType(sequenceType)) {
                 se.addError("assigned expression is not a sequence type: '" + 
                         sequenceType.getProducedTypeName(unit) + 
-                        "' is not a subtype of `Sequential`");
+                        "' is not a subtype of 'Sequential'");
                 return;
             }
             
@@ -469,7 +469,7 @@ public class ExpressionVisitor extends Visitor {
                         !unit.isSequenceType(sequenceType)) {
                     se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
                             sequenceType.getProducedTypeName(unit) + 
-                            "' is not a subtype of `Sequence`");
+                            "' is not a subtype of 'Sequence'");
                 }
                 
                 if (length>1) {
