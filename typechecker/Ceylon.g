@@ -487,6 +487,20 @@ pattern returns [Pattern pattern]
       { $pattern = $variablePattern.pattern; }
     ;
 
+tupleOrEntryPattern returns [Pattern pattern]
+    : 
+      (variable ENTRY_OP) =>
+      ki1=keyItemPattern
+      { $pattern = $ki1.pattern; }
+    |
+      (tuplePattern ENTRY_OP) =>
+      ki2=keyItemPattern
+      { $pattern = $ki2.pattern; }
+    |
+      tuplePattern
+      { $pattern = $tuplePattern.pattern; }
+    ;
+
 variablePattern returns [VariablePattern pattern]
     : variable
       { $pattern = new VariablePattern(null);
@@ -572,8 +586,8 @@ destructure returns [Destructure destructure]
       { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
         $destructure = new Destructure(null);
         $destructure.setType(vm); }
-      pattern
-      { $destructure.setPattern($pattern.pattern); }
+      tupleOrEntryPattern
+      { $destructure.setPattern($tupleOrEntryPattern.pattern); }
       (
         specifier
         { $destructure.setSpecifierExpression($specifier.specifierExpression); }
