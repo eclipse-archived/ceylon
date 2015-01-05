@@ -12,6 +12,7 @@ import ceylon.language.impl.BaseIterable;
 import ceylon.language.serialization.SerializationContext;
 import ceylon.language.serialization.SerializableReference;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -33,7 +34,7 @@ public class SerializationContextImpl
     private final HashMap<Object, SerializableReference<?>> unidentifiableToReference = new HashMap<>();
     
     private Map<Object, SerializableReference<?>> map(Object instance) {
-        if (instance instanceof ceylon.language.Identifiable) {
+        if (Util.isIdentifiable(instance)) {
             return identifiableToReference;
         } else {
             return unidentifiableToReference;
