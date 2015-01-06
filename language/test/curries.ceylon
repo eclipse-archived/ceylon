@@ -88,5 +88,8 @@ shared void testCurries() {
     flatten(([Float] tup)=>check((tup of Object) is [Float], "flatten 6"))(1.0);
     flatten(([Float, String] tup)=>check((tup of Object) is [Float, String], "flatten 7"))(1.0, "");
     flatten(([Float, Float, String] tup)=>check((tup of Object) is [Float, Float, String], "flatten 8"))(1.0, 2.0, "");
-    
+
+    Object testCompose(Object x) => x;
+    check(compose(testCompose,String.uppercased)("hey")=="HEY", "compose 1");
+    check(compose(testCompose,"Hey".initial)(1)=="H","compose 2");
 }
