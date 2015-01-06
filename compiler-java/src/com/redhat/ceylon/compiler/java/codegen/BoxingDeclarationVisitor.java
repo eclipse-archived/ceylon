@@ -221,8 +221,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
             if (Decl.equal(refinedFrom, functionalParameter) ) {
                 // Don't consider Anything to be unboxed, since this is a parameter
-                // note a method return type (where void would be considered unboxed).
-                declaration.setUnboxed(!declaration.getUnit().getAnythingDeclaration().getType().isExactly(declaration.getType()));
+                // not a method return type (where void would be considered unboxed).
+                if (declaration.getUnit().getAnythingDeclaration().getType().isExactly(declaration.getType())
+                        || declaration.getUnit().isOptionalType(declaration.getType())) {
+                    declaration.setUnboxed(false);
+                } else {
+                    declaration.setUnboxed(true);
+                }
             } else {
                 // make sure refined declarations have already been set
                 if(refinedFrom.getUnboxed() == null)
