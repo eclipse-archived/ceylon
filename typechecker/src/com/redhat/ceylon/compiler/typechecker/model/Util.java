@@ -1457,8 +1457,9 @@ public class Util {
     }
 
     public static List<ProducedType> getSignature(Declaration dec) {
-        if(dec instanceof Functional == false)
+        if (!(dec instanceof Functional)) {
             return null;
+        }
         List<ParameterList> parameterLists = 
                 ((Functional)dec).getParameterLists();
         if (parameterLists == null || parameterLists.isEmpty()) {
@@ -1470,7 +1471,8 @@ public class Util {
             return null;
         }
         int size = parameterList.getParameters().size();
-        List<ProducedType> signature = new ArrayList<ProducedType>(size);
+        List<ProducedType> signature = 
+                new ArrayList<ProducedType>(size);
         for (Parameter param : parameterList.getParameters()) {
             signature.add(param.getModel()==null ? 
                     new UnknownType(dec.getUnit()).getType() : 
@@ -1482,7 +1484,8 @@ public class Util {
     public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( involvesTypeParameters(member, ct.substitute(pt.getTypeArguments())) ) {
+                ProducedType args = ct.substitute(pt.getTypeArguments());
+                if (involvesTypeParameters(member, args)) {
                     return true;
                 }
             }
@@ -1490,7 +1493,8 @@ public class Util {
         }
         else if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( involvesTypeParameters(member, ct.substitute(pt.getTypeArguments())) ) {
+                ProducedType args = ct.substitute(pt.getTypeArguments());
+                if (involvesTypeParameters(member, args)) {
                     return true;
                 }
             }
@@ -1501,7 +1505,7 @@ public class Util {
                 return true;
             }
             for (ProducedType at: pt.getTypeArgumentList()) {
-                if ( at!=null && involvesTypeParameters(member, at) ) {
+                if (at!=null && involvesTypeParameters(member, at)) {
                     return true;
                 }
             }
