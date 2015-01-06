@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class SerializationContextImpl
         extends BaseIterable<SerializableReference<Object>, Object> 
         implements SerializationContext, ReifiedType {
     
+    private final ArrayList<SerializableReference<?>> references = new ArrayList<>();
     private final IdentityHashMap<Object, SerializableReference<?>> identifiableToReference = new IdentityHashMap<>();
     private final HashMap<Object, SerializableReference<?>> unidentifiableToReference = new HashMap<>();
     
@@ -55,6 +57,7 @@ public class SerializationContextImpl
         if (prevReference != null) {
             throw new ceylon.language.AssertionError("An instance has already been registered with id "+id+": \"" + prevReference.instance() +"\", \""+ instance+"\"");
         }
+        references.add(ref);
         return ref;
     }
     
@@ -70,14 +73,11 @@ public class SerializationContextImpl
     @Override
     public Iterator<? extends SerializableReference<Object>> iterator() {
         return new Iterator<SerializableReference<Object>>() {
-            private final java.util.Iterator<SerializableReference<?>> identifiableIter = identifiableToReference.values().iterator();
-            private final java.util.Iterator<SerializableReference<?>> unidentifiableIter = unidentifiableToReference.values().iterator();
+            private int index = 0;
             @Override
             public Object next() {
-                if (identifiableIter.hasNext()) {
-                    return identifiableIter.next();
-                } else if (unidentifiableIter.hasNext()) {
-                    return unidentifiableIter.next();
+                if (index < references.size()) {
+                    return references.get(index++);
                 } else {
                     return finished_.get_();
                 }

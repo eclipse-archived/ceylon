@@ -9,7 +9,7 @@ interface SerializableReference<Instance> satisfies Reference<Instance> {
     "Records the state of the instance in a deconstructor obtained 
      from the given function."
     shared formal
-    /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor(ClassModel classModel));
+    /*Deconstructed */ void serialize(Deconstructor deconstructor);
     
     "The instance."
     shared formal Instance instance();

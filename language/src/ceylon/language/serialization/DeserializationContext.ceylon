@@ -39,4 +39,8 @@ interface DeserializationContext
         "A reference to the outer instance if the the 
          [[clazz]]."
         Reference<Outer>? outerReference);
+    
+    "Obtain the reference previously registered with the given id, or null
+     if the given id has not been registered."
+    shared formal Reference<Instance>? getReference<Instance>(Object id);
 }

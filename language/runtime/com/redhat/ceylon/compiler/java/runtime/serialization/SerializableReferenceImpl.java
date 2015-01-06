@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
-import ceylon.language.Callable;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.SerializableReference;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -23,7 +23,7 @@ implements SerializableReference<Instance>, ReifiedType {
     private final TypeDescriptor reified$Instance;
     private final Object id;
     private final Instance instance;
-
+    
     SerializableReferenceImpl(@Ignore TypeDescriptor reified$Instance, SerializationContextImpl context, Object id, Instance instance) {
         this.reified$Instance = reified$Instance;
         this.id = id;
@@ -33,14 +33,18 @@ implements SerializableReference<Instance>, ReifiedType {
     public String toString() {
         return id +"=>" + instance;
     }
-
+    
     @Override
-    public /*Deconstructed<Instance>*/ Object serialize(Callable<? extends Deconstructor> deconstructor) {
+    public Object serialize(final Deconstructor dtor) {
         if (this.instance instanceof Serializable) {
-            ((Serializable)this.instance).$serialize$(deconstructor);
+            ((Serializable)this.instance).$serialize$(new AbstractCallable<Deconstructor>(Deconstructor.$TypeDescriptor$, null, "Deconstructor(ClassModel)", (short)-1) {
+                public Deconstructor $call$(Object o) {
+                    return dtor;
+                }
+            });
             return null;
         } else {
-            throw new ceylon.language.AssertionError("object is not an instance of a serializable class");
+            throw new ceylon.language.AssertionError("not an instance of a serializable class: " + this.instance);
         }
     }
 

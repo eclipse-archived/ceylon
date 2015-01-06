@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ public class DeserializationContextImpl
     // TODO Shouldn't this be keyed on (id, class), and in fact shouldn't 
     // the classed-ness of ids be a concern of the serialization library?
     private final Map<Object, DeserializingReference<?>> idToReference = new HashMap<>();
+    private final ArrayList<Reference<?>> references = new ArrayList<>();
     
     public DeserializationContextImpl() {
         super(ceylon.language.Object.$TypeDescriptor$, Null.$TypeDescriptor$);
@@ -53,6 +55,14 @@ public class DeserializationContextImpl
         }
         ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, (Reference)null);
         idToReference.put(id, ref);
+        references.add(ref);
+        return (Reference)ref;
+    }
+    
+    @Override
+    public <Instance> Reference<Instance> getReference(TypeDescriptor reified$Instance, 
+            Object id) {
+        DeserializingReference<?> ref = idToReference.get(id);
         return (Reference)ref;
     }
     
@@ -76,6 +86,7 @@ public class DeserializationContextImpl
         }
         ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, outerReference);
         idToReference.put(id, ref);
+        references.add((Reference)ref);
         return (Reference)ref;
     }
 
@@ -98,11 +109,11 @@ public class DeserializationContextImpl
     @Override
     public Iterator<? extends Reference<Object>> iterator() {
         return new Iterator<Reference<Object>>() {
-            private final java.util.Iterator<DeserializingReference<?>> iter = idToReference.values().iterator();
+            private int index = 0;
             @Override
             public Object next() {
-                if (iter.hasNext()) {
-                    return iter.next();
+                if (index < references.size()) {
+                    return references.get(index++);
                 } else {
                     return finished_.get_();
                 }
