@@ -898,7 +898,7 @@ public class Unit {
     		}
     		else {
                 List<ProducedType> typeArgList = pt.getTypeArgumentList();
-                if (typeArgList.isEmpty() && pt.getQualifyingType()==null) {
+                if (typeArgList.isEmpty()) {
                     return pt;
                 }
                 else {
@@ -911,7 +911,7 @@ public class Unit {
                         TypeParameter tp = typeParamList.get(i);
                         typeArguments.add(tp.isCovariant() ? denotableType(at) : at);
                     }
-                    ProducedType qt = denotableType(pt.getQualifyingType());
+                    ProducedType qt = pt.getQualifyingType();
                     ProducedType dt = d.getProducedType(qt, typeArguments);
                     dt.setUnderlyingType(pt.getUnderlyingType());
                     dt.setVarianceOverrides(pt.getVarianceOverrides());
