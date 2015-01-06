@@ -84,7 +84,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // FIXME: so we really want to disallow that in the metamodel?
         if(!decl.isAnonymous() 
                 && !Metamodel.isLocalType(decl)
-                && !hasConstructors()){
+                && !hasConstructors()
+                && !decl.getParameterLists().isEmpty()) {
             initConstructor(decl);
         }else{
             this.parameterTypes = (Sequential) empty_.get_();
