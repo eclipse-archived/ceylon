@@ -698,7 +698,6 @@ public class ExpressionVisitor extends Visitor {
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
         ProducedType t = null;
-        Node n = that;
         Tree.Term term = null;
         Tree.Statement s = that.getVariable();
         if (s instanceof Tree.Variable) {
@@ -709,22 +708,24 @@ public class ExpressionVisitor extends Visitor {
             if (se==null) {
                 v.addError("missing specifier");
             }
-            else if (se.getExpression()!=null) {
-                se.visit(this);
-                boolean not = that.getNot();
-                if (that instanceof Tree.ExistsCondition) {
-                    inferDefiniteType(v, se, not);
-                    checkOptionalType(v, se, not);
+            else {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    se.visit(this);
+                    boolean not = that.getNot();
+                    if (that instanceof Tree.ExistsCondition) {
+                        inferDefiniteType(v, se, not);
+                        checkOptionalType(v, se, not);
+                    }
+                    else if (that instanceof Tree.NonemptyCondition) {
+                        inferNonemptyType(v, se, not);
+                        checkEmptyOptionalType(v, se, not);
+                    }
+                    t = e.getTypeModel();
+                    checkReferenceIsNonVariable(v, se);
+                    initOriginalDeclaration(v);
+                    term = e.getTerm();
                 }
-                else if (that instanceof Tree.NonemptyCondition) {
-                    inferNonemptyType(v, se, not);
-                    checkEmptyOptionalType(v, se, not);
-                }
-                t = se.getExpression().getTypeModel();
-                n = v;
-                checkReferenceIsNonVariable(v, se);
-                initOriginalDeclaration(v);
-                term = se.getExpression().getTerm();
             }
         }
         else if (s instanceof Tree.Destructure) {
@@ -737,24 +738,32 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Expression e = se.getExpression();
                 if (e!=null) {
                     se.visit(this);
-                    ProducedType type = e.getTypeModel();
-                    if (!isTypeUnknown(type)) {
+                    t = e.getTypeModel();
+                    if (!isTypeUnknown(t)) {
+                        ProducedType type = null;
                         if (that instanceof Tree.ExistsCondition) {
-                            type = unit.getDefiniteType(type);
+                            type = unit.getDefiniteType(t);
                         }
                         else if (that instanceof Tree.NonemptyCondition) {
-                            type = unit.getNonemptyDefiniteType(type);
+                            type = unit.getNonemptyDefiniteType(t);
                         }
-                        destructure(d.getPattern(), se, type);
+                        if (!isTypeUnknown(type) && !type.isNothing()) {
+                            destructure(d.getPattern(), se, type);
+                        }
+                        /*else {
+                            d.getPattern().addError("cannot be destructured: '" + 
+                                    type.getProducedTypeName(unit) + "'");
+                        }*/
                     }
+                    term = e.getTerm();
                 }
             }
         }
         if (that instanceof Tree.ExistsCondition) {
-            checkOptional(t, term, n);
+            checkOptional(t, term);
         }
         else if (that instanceof Tree.NonemptyCondition) {
-            checkEmpty(t, term, n);
+            checkEmpty(t, term);
         }
     }
 
@@ -802,11 +811,7 @@ public class ExpressionVisitor extends Visitor {
                 (((Value) d).isVariable() || ((Value) d).isTransient());
     }
     
-    private void checkEmpty(ProducedType t, Tree.Term term, Node n) {
-        /*if (t==null) {
-            n.addError("expression must be a type with fixed size: type not known");
-        }
-        else*/ 
+    private void checkEmpty(ProducedType t, Tree.Term term) {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(unit.getDefiniteType(t))) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
@@ -819,11 +824,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkOptional(ProducedType t, Tree.Term term, Node n) {
-        /*if (t==null) {
-            n.addError("expression must be of optional type: type not known");
-        }
-        else*/ 
+    private void checkOptional(ProducedType t, Tree.Term term) {
         if (!isTypeUnknown(t) && !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: '" +
@@ -2245,7 +2246,7 @@ public class ExpressionVisitor extends Visitor {
                 mte.getMemberOperator();
         Tree.Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
-            checkOptional(pt, p, p);
+            checkOptional(pt, p);
             result = unit.getDefiniteType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -4677,7 +4678,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
+            checkOptional(lhst, that.getLeftTerm());
             List<ProducedType> list = new ArrayList<ProducedType>(2);
             addToUnion(list, unit.denotableType(rhst));
             addToUnion(list, unit.getDefiniteType(unit.denotableType(lhst)));
@@ -4747,12 +4748,12 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitExistsOperator(Tree.Exists that) {
-        checkOptional(type(that), that.getTerm(), that);
+        checkOptional(type(that), that.getTerm());
         that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
-        checkEmpty(type(that), that.getTerm(), that);
+        checkEmpty(type(that), that.getTerm());
         that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
     }
     
