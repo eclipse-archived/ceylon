@@ -2736,7 +2736,7 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
             List<ProducedType> sig = new ArrayList<ProducedType>(args.size());
             for (Tree.PositionalArgument pa: args) {
-                sig.add(pa.getTypeModel());
+                sig.add(unit.denotableType(pa.getTypeModel()));
             }
             mte.setSignature(sig);
             mte.setEllipsis(hasSpreadArgument(args));

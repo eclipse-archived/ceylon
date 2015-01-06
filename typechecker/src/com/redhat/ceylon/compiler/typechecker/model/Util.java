@@ -237,7 +237,9 @@ public class Util {
     
     public static boolean matches(ProducedType argType, ProducedType paramType, 
             Unit unit) {
-        if (paramType==null || argType==null) return false;
+        if (paramType==null || argType==null) {
+            return false;
+        }
         //Ignore optionality for resolving overloads, since
         //all Java parameters are treated as optional
         //Except in the case of primitive parameters
@@ -575,11 +577,35 @@ public class Util {
                 return paramType.getSatisfiedTypeDeclarations().get(0);
             }
         }
-        else if (paramType instanceof UnionType || 
-                paramType instanceof IntersectionType) {
-            //TODO: this is pretty sucky, cos in theory a
-            //      union or intersection might be assignable
-            //      to the parameter type with a typecast
+        else if (paramType instanceof UnionType) {
+            //TODO: this is very sucky, cos in theory a
+            //      union might be assignable to the 
+            //      parameter type with a typecast
+            return paramType.getUnit().getObjectDeclaration();
+        }
+        else if (paramType instanceof IntersectionType) {
+            Unit unit = paramType.getUnit();
+            List<TypeDeclaration> sts = 
+                    paramType.getSatisfiedTypeDeclarations();
+            if (sts.size()==2) {
+                //attempt to eliminate Basic from the 
+                //intersection - very useful for anonymous
+                //classes, whose denotableType is often an 
+                //intersection with Basic
+                TypeDeclaration first = sts.get(0);
+                TypeDeclaration second = sts.get(1);
+                if (first!=null && 
+                        first.equals(unit.getBasicDeclaration())) {
+                    return erase(second);
+                }
+                else if (second!=null && 
+                        second.equals(unit.getBasicDeclaration())) {
+                    return erase(first);
+                }
+            }
+            //TODO: this is very sucky, cos in theory an
+            //      intersection might be assignable to the 
+            //      parameter type with a typecast
             return paramType.getUnit().getObjectDeclaration();
         }
         else {
