@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -244,7 +245,12 @@ public class FreeValue
         }else{
             Class<?> javaClass = Metamodel.getJavaClass(declaration);
             // FIXME: pretty sure this doesn't work with interop and fields
-            return Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration)).getAnnotations();
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration));
+            if (declaredGetter != null) {
+                return declaredGetter.getAnnotations();
+            } else {
+                return new Annotation[0];
+            }
         }
     }
 }
