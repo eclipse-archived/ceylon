@@ -663,7 +663,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             //do this *after* checking for disjointness!
-            knownType=unit.denotableType(knownType);
+            knownType = unit.denotableType(knownType);
             //now recompute the narrowed type!
             it = narrow(type, knownType, that.getNot());
             
@@ -4446,8 +4446,7 @@ public class ExpressionVisitor extends Visitor {
                 "operand expression must not be an optional type");
 //        checkAssignable(rhst, ot, that.getRightTerm(), 
 //                "operand expression must not be an optional type");
-        that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
-                unit.denotableType(rhst)) );
+        that.setTypeModel(unit.getEntryType(lhst, rhst));
     }
     
     private void visitIdentityOperator(Tree.BinaryOperatorExpression that) {
@@ -4679,8 +4678,8 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
             List<ProducedType> list = new ArrayList<ProducedType>(2);
-            addToUnion(list, unit.denotableType(rhst));
-            addToUnion(list, unit.getDefiniteType(unit.denotableType(lhst)));
+            addToUnion(list, rhst);
+            addToUnion(list, unit.getDefiniteType(lhst));
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
             ProducedType rt = ut.getType();
@@ -4712,7 +4711,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType ot = unit.getType(unit.getObjectDeclaration());
             checkAssignable(rhst, ot, that.getRightTerm(),
                     "operand expression may not be an optional type");
-            that.setTypeModel(unit.getOptionalType(unit.denotableType(rhst)));
+            that.setTypeModel(unit.getOptionalType(rhst));
         }
     }
 

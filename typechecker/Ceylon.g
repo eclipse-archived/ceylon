@@ -1563,9 +1563,10 @@ base returns [Primary primary]
         else
             be = new BaseTypeExpression(null);
         be.setIdentifier($baseReference.identifier);
-        be.setTypeArguments( new InferredTypeArguments(null) );
         if ($baseReference.typeArgumentList!=null)
             be.setTypeArguments($baseReference.typeArgumentList);
+        else
+            be.setTypeArguments( new InferredTypeArguments(null) );
         $primary=be; }
     ;
 
@@ -1599,9 +1600,10 @@ primary returns [Primary primary]
         qe.setPrimary($primary);
         qe.setMemberOperator($qualifiedReference.operator);
         qe.setIdentifier($qualifiedReference.identifier);
-        qe.setTypeArguments( new InferredTypeArguments(null) );
         if ($qualifiedReference.typeArgumentList!=null)
             qe.setTypeArguments($qualifiedReference.typeArgumentList);
+        else 
+            qe.setTypeArguments( new InferredTypeArguments(null) );
         $primary=qe; }
       | indexOrIndexRange 
         { $indexOrIndexRange.indexExpression.setPrimary($primary);

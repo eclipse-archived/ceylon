@@ -9,4 +9,5 @@ void testImported() {
     @type:"bar.Bar" Bar("bar");
     @type:"bar.Bar" barObject.Bar("bar");
     @type:"Foo" New();
+    @type:"Foo" value newfoo = New();
 }

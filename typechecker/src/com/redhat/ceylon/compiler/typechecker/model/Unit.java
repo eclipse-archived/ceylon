@@ -531,7 +531,7 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	ProducedType result = denotableType(rt);
+    	ProducedType result = rt;
     	Declaration declaration = ref.getOverloadedVersion();
         if (declaration instanceof Functional) {
     	    List<ParameterList> pls = 
@@ -897,7 +897,27 @@ public class Unit {
     			return it.getType();
     		}
     		else {
-    			return pt;
+                List<ProducedType> typeArgList = pt.getTypeArgumentList();
+                if (typeArgList.isEmpty() && pt.getQualifyingType()==null) {
+                    return pt;
+                }
+                else {
+                    d = pt.getDeclaration();
+                    List<TypeParameter> typeParamList = d.getTypeParameters();
+                    List<ProducedType> typeArguments = 
+                            new ArrayList<ProducedType>(typeArgList.size());
+                    for (int i=0; i<typeParamList.size() && i<typeArgList.size(); i++) {
+                        ProducedType at = typeArgList.get(i);
+                        TypeParameter tp = typeParamList.get(i);
+                        typeArguments.add(tp.isCovariant() ? denotableType(at) : at);
+                    }
+                    ProducedType qt = denotableType(pt.getQualifyingType());
+                    ProducedType dt = d.getProducedType(qt, typeArguments);
+                    dt.setUnderlyingType(pt.getUnderlyingType());
+                    dt.setVarianceOverrides(pt.getVarianceOverrides());
+                    dt.setRaw(pt.isRaw());
+                    return dt;
+                }
     		}
     	}
     	else {
@@ -1308,9 +1328,8 @@ public class Unit {
     
     public ProducedType getValueMetatype(ProducedTypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
-        ProducedType getType = denotableType(pr.getType());
-        ProducedType setType = variable ? 
-                denotableType(pr.getType()) : 
+        ProducedType getType = pr.getType();
+        ProducedType setType = variable ? pr.getType() : 
                 new NothingType(this).getType();
         ProducedType qualifyingType = pr.getQualifyingType();
         while (qualifyingType!=null && 

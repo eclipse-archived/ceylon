@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -43,19 +45,26 @@ public class Util {
     static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
         Declaration member = d.getMember(name, unit, signature, ellipsis);
-        if (member instanceof TypedDeclaration)
+        if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
-        else
+        }
+        else {
             return null;
+        }
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
         Declaration member = d.getMember(name, unit, signature, ellipsis);
-        if (member instanceof TypeDeclaration)
+        if (member instanceof TypeDeclaration) {
             return (TypeDeclaration) member;
-        else
+        }
+        else if (member instanceof TypedDeclaration) {
+            return anonymousType(name, member);
+        }
+        else {
             return null;
+        }
     }
 
     static TypedDeclaration getTypedDeclaration(Scope scope,
@@ -79,9 +88,27 @@ public class Util {
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
+        else if (result instanceof TypedDeclaration) {
+            return anonymousType(name, result);
+        }
         else {
         	return null;
         }
+    }
+
+    public static TypeDeclaration anonymousType(String name, Declaration result) {
+        ProducedType type = 
+                ((TypedDeclaration) result).getType();
+        if (type!=null) {
+            TypeDeclaration typeDeclaration = 
+                    type.getDeclaration();
+            if (typeDeclaration instanceof Class &&
+                    typeDeclaration.isAnonymous() &&
+                    isNamed(name,typeDeclaration)) {
+                return typeDeclaration;
+            }
+        }
+        return null;
     }
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
@@ -851,15 +878,15 @@ public class Util {
         }
     }
 
-    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, Unit unit,
-            boolean requireSequential) {
+    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, 
+            Unit unit, boolean requireSequential) {
         ProducedType result = unit.getType(unit.getEmptyDeclaration());
         ProducedType ut = unit.getNothingDeclaration().getType();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.PositionalArgument a = es.get(i);
             ProducedType t = a.getTypeModel();
             if (t!=null) {
-                ProducedType et = unit.denotableType(t);
+                ProducedType et = t;//unit.denotableType(t);
                 if (a instanceof Tree.SpreadArgument) {
                     /*if (requireSequential) { 
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
@@ -869,7 +896,8 @@ public class Util {
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
-                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
+                    Tree.InitialComprehensionClause icc = 
+                            ((Tree.Comprehension) a).getInitialComprehensionClause();
                     result = icc.getPossiblyEmpty() ? 
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
