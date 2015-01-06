@@ -486,7 +486,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
-            that.addError("missing parameter list in class declaration: '" + 
+            that.addError("missing parameter list in constructor declaration: '" + 
                     name(that.getIdentifier()) + "' must have a parameter list", 1000);
         }
         else {
