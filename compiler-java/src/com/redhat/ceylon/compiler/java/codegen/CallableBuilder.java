@@ -318,11 +318,11 @@ public class CallableBuilder {
             Constructor ctor = (Constructor)methodClassOrCtor;
             callBuilder.argument(gen.naming.makeNamedConstructorName(ctor));
             for (Parameter parameter : parameterList.getParameters()) {
-                callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
+                callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
             }
         } else {
             for (Parameter parameter : parameterList.getParameters()) {
-                JCExpression parameterExpr = gen.naming.makeQuotedIdent(parameter.getName());
+                JCExpression parameterExpr = gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter));
                 int flags = 0;
                 ProducedType parameterType = parameter.getType();
                 // this works on the parameter type as declared
@@ -1561,7 +1561,7 @@ public class CallableBuilder {
         // add all parameters
         int i=0;
         for(Parameter param : paramLists.getParameters()){
-            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
+            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.systemParameter(gen, Naming.getAliasedParameterName(param));
             JCExpression paramType = gen.makeJavaType(parameterTypes.get(i));
             parameterBuilder.modifiers(Flags.FINAL);
             parameterBuilder.type(paramType, null);
