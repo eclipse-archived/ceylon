@@ -146,6 +146,9 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkMember(Tree.Declaration that, Declaration dec) {
+        if (dec.getName()==null) {
+            return;
+        }
         if (dec instanceof Constructor) {
             return;
         }
