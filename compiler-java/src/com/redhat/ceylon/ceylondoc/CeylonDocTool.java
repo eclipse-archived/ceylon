@@ -632,6 +632,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             
             copyResource("resources/ceylon.css", new File(resourcesDir, "ceylon.css"));
             copyResource("resources/rainbow.min.js", new File(resourcesDir, "rainbow.min.js"));
+            copyResource("resources/rainbow.linenumbers.js", new File(resourcesDir, "rainbow.linenumbers.js"));
             copyResource("resources/ceylon.js", new File(resourcesDir, "ceylon.js"));
             
             copyResource("resources/favicon.ico", new File(resourcesDir, "favicon.ico"));
@@ -790,6 +791,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.around("title", pu.getUnit().getFilename());
                 markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
                 markup.tag("link href='" + getResourceUrl(pkg, "ceylon.css") + "' rel='stylesheet' type='text/css'");
+                markup.tag("link href='" + getResourceUrl(pkg, "ceylondoc.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'");
                 
                 markup.open("script type='text/javascript'");
@@ -798,6 +800,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 
                 markup.around("script src='" + getResourceUrl(pkg, "jquery-1.8.2.min.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "rainbow.min.js") + "' type='text/javascript'");
+                markup.around("script src='" + getResourceUrl(pkg, "rainbow.linenumbers.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "ceylon.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "ceylondoc.js") + "' type='text/javascript'"); 
                 markup.close("head");

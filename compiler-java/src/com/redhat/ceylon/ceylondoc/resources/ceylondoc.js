@@ -3,6 +3,31 @@ function enableInfoKeybordShortcut(key) {
 	$("#"+key+" .info").addClass("text-info");
 }
 
+
+/*
+ * HIGHLIGHT LINES IN RAINBOW
+ */
+if( window.Rainbow ) {
+    function highlightLinesInRainbow() {
+        var startend = location.hash.substr(1).split(',');
+        var startLine = parseInt(startend[0]);
+        var endLine = parseInt(startend[1]);
+
+        if( !isNaN(startLine) && !isNaN(endLine) ) {
+            var tr = $('.line-'+startLine);
+            if( tr.length > 0 ) {
+                $(document.body).scrollTop(tr.position().top);
+                for(i = startLine; i <= endLine; i++) {
+                    tr.addClass('highlight');
+                    tr = tr.next();
+                }
+            }
+        }
+    } 
+    window.Rainbow.onLineNumbersComplete = highlightLinesInRainbow;
+}
+
+
 /*
  * COLLAPSIBLE TYPE HIERARCHY
  */
@@ -534,27 +559,11 @@ $(document).ready(function() {
             if (tr.is('tr') ) {
                 tr.addClass('highlight');
                 if (tr.hasClass('row-collapsible')) {
-					if ($('.description-collapsed', tr).length > 0) {
-						$('.link-collapsible', tr).click();
-						scrollIntoView(tr);
-					}
-				}                
-            }
-        }
-    }
-    
-    function scrollIntoView(element) {
-        var containerTop = $(window).scrollTop();
-        var containerBottom = containerTop + $(window).height();
-        var elementTop = element.offset().top;
-        var elementBottom = elementTop + element.height();
-        if (elementTop < containerTop) {
-            $(window).scrollTop(elementTop);
-        } else if (elementBottom > containerBottom) {
-            if( element.height() > $(window).height() ) {
-                $(window).scrollTop(elementTop);
-            } else {
-                $(window).scrollTop(elementBottom - $(window).height());
+                    if ($('.description-collapsed', tr).length > 0) {
+                        $('.link-collapsible', tr).click();
+                        $(document.body).scrollTop(tr.position().top);
+                    }
+                }
             }
         }
     }

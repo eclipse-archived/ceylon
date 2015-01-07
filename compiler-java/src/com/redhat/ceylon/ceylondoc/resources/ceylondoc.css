@@ -809,3 +809,7 @@ td .icon-collapse2 {
 .collapse-all {
 	padding: 10px 5px 10px !important;
 }
+
+table.rainbow {
+    border-collapse: collapse;
+}
