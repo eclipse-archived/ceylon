@@ -1024,7 +1024,8 @@ public class Unit {
             return ret;
         }
         if (name.equals("ceylon.language::Sequential")
-                || name.equals("ceylon.language::Sequence")) {
+                || name.equals("ceylon.language::Sequence")
+                || name.equals("ceylon.language::Range")) {
             ArrayList<ProducedType> ret = 
                     new ArrayList<ProducedType>(count+1);
             for (int i=0;i<count;i++) {
@@ -1043,14 +1044,17 @@ public class Unit {
             if (simpleTupleLengthUnbounded != null) {
                 return simpleTupleLengthUnbounded.booleanValue();
             }
-            if (getSequenceType(getType(getNothingDeclaration())).isSubtypeOf(args)) {
-                return true;
+            if (args.isSubtypeOf(getType(getEmptyDeclaration()))) {
+                return false;
             }
             //TODO: this doesn't account for the case where
             //      a tuple occurs in a union with []
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
-            if (tst!=null) {
+            if (tst==null) {
+                return true;
+            }
+            else {
                 List<ProducedType> tal = tst.getTypeArgumentList();
                 if (tal.size()>=3) {
                     return isTupleLengthUnbounded(tal.get(2));
@@ -1100,6 +1104,9 @@ public class Unit {
         if (name.equals("ceylon.language::Empty")) {
             return false;
         }
+        if (name.equals("ceylon.language::Range")) {
+            return true;
+        }
         if (name.equals("ceylon.language::Sequential")
            || name.equals("ceylon.language::Sequence")) {
             return true;
@@ -1122,7 +1129,10 @@ public class Unit {
             }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
-            if (tst!=null) {
+            if (tst == null) {
+                return false;
+            }
+            else {
                 List<ProducedType> tal = tst.getTypeArgumentList();
                 if (tal.size()>=3) {
                     return isTupleVariantAtLeastOne(tal.get(2));
@@ -1171,6 +1181,9 @@ public class Unit {
         if (name.equals("ceylon.language::Empty")) {
             return false;
         }
+        if (name.equals("ceylon.language::Range")) {
+            return true;
+        }
         if (name.equals("ceylon.language::Sequential")) {
             return false;
         }
@@ -1195,7 +1208,10 @@ public class Unit {
             }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
-            if (tst!=null) {
+            if (tst == null) {
+                return 0;
+            }
+            else {
                 List<ProducedType> tal = tst.getTypeArgumentList();
                 if (tal.size()>=3) {
                     return getTupleMinimumLength(tal.get(2))+1;
@@ -1240,12 +1256,13 @@ public class Unit {
         if (name.equals("ceylon.language::Tuple")) {
             ProducedType rest = args.getTypeArgumentList().get(2);
             int ret = getSimpleTupleMinimumLength(rest);
-            if(ret == -1)
-                return -1;
-            return ret + 1;
+            return ret == -1 ? -1 : ret + 1;
         }
         if (name.equals("ceylon.language::Empty")) {
             return 0;
+        }
+        if (name.equals("ceylon.language::Range")) {
+            return 1;
         }
         if (name.equals("ceylon.language::Sequential")) {
             return 0;

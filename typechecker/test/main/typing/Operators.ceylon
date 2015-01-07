@@ -254,6 +254,9 @@ class Operators() {
     Integer|Float defaultIon2(Null|Integer|Float x) {
         return x else 0;
     }
+    
+    @type:"Null|Integer"
+    value rangeElement = (-3..10)[5];
 
     Boolean b1 = true;
     Boolean b2 = false;
