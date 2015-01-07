@@ -973,13 +973,18 @@ public class Naming implements LocalId {
         return getAliasedParameterName(parameter.getModel());
     }
     
+    static boolean aliasConstructorParameterName(MethodOrValue mov) {
+        return mov.getContainer() instanceof Constructor && !mov.isShared() && !mov.isCaptured();
+    }
+    
     private static String getAliasedParameterName(MethodOrValue parameter) {
         if (!parameter.isParameter()) {
             throw new BugException();
         }
         MethodOrValue mov = parameter;
         if ((mov instanceof Method && ((Method)mov).isDeferred())
-                || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
+                || (mov instanceof Value && mov.isVariable() && mov.isCaptured())
+                || aliasConstructorParameterName(mov)) {
             return suffixName(Suffix.$param$, parameter.getName());
         }
         return quoteIfJavaKeyword(parameter.getName());

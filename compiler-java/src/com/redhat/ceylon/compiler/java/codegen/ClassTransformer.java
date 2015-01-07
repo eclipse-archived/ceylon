@@ -1022,13 +1022,9 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
-        if (param.getDeclaration() instanceof Constructor
-                && !param.getModel().isShared()
-                && !param.getModel().isCaptured()) {
+        pdb.aliasName(Naming.getAliasedParameterName(param));
+        if (Naming.aliasConstructorParameterName(param.getModel())) {
             naming.addVariableSubst(param.getModel(), naming.suffixName(Suffix.$param$, param.getName()));
-            pdb.aliasName(naming.suffixName(Suffix.$param$, param.getName()));
-        } else {
-            pdb.aliasName(Naming.getAliasedParameterName(param));
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
