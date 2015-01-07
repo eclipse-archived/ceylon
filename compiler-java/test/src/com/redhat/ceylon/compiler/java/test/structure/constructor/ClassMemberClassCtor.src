@@ -56,8 +56,8 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(final long i) {
-        return new SharedMember(i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(final long i$param$) {
+        return new SharedMember(i$param$);
     }
     
     public final long SharedMember$i() {
@@ -74,8 +74,8 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         );
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i) {
-        return new SharedMember($name$, i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i$param$) {
+        return new SharedMember($name$, i$param$);
     }
     
     public static final class SharedMember$Other {

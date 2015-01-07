@@ -362,14 +362,14 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(final boolean b) {
-        return new Member(b);
+    public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(final boolean b$param$) {
+        return new Member(b$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other $name$, final boolean b) {
-        return new Member($name$, b);
+    .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member$Other $name$, final boolean b$param$) {
+        return new Member($name$, b$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

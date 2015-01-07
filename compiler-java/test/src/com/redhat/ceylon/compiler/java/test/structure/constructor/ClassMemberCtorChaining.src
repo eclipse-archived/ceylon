@@ -5,12 +5,12 @@ class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtim
     ClassMemberCtorChaining() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(final long i) {
-        return new Member(i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(final long i$param$) {
+        return new Member(i$param$);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other $name$, final long i) {
-        return new Member($name$, i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other $name$, final long i$param$) {
+        return new Member($name$, i$param$);
     }
     
     public static final class Member$Other {
@@ -51,12 +51,12 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
         super();
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(final long i) {
-        return new Sub(i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(final long i$param$) {
+        return new Sub(i$param$);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 $name$, final long i) {
-        return new Sub($name$, i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
     }
     
     public static final class Sub$Sub3 {
@@ -66,8 +66,8 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub3 Sub$Sub3 = null;
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 $name$, final long i) {
-        return new Sub($name$, i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
     }
     
     public static final class Sub$Sub4 {
@@ -77,8 +77,8 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 Sub$Sub4 = null;
     
-    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other $name$, final long i) {
-        return new Sub($name$, i);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
     }
     
     public static final class Sub$Other {

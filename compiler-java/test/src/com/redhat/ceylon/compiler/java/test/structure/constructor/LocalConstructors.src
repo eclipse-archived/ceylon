@@ -9,20 +9,20 @@ final class localConstructors_ {
         
         final class C$impl<Y> {
             
-            public final <Y>Y C$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x) {
+            public final <Y>Y C$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$) {
                 return null;
             }
         }
         
         class C<Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x) {
+            C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$) {
                 (
                     let
                     {
                         C$impl<Y> $ceylontmp$impl$0 = new C$impl<Y>();
-                        Y $ceylontmp$y$1 = $ceylontmp$impl$0.C$y($reified$Y, x);
-                        this($reified$Y, x, $ceylontmp$y$1);
+                        Y $ceylontmp$y$1 = $ceylontmp$impl$0.C$y($reified$Y, x$param$);
+                        this($reified$Y, x$param$, $ceylontmp$y$1);
                     }
                     returning null;
                 );

@@ -36,12 +36,12 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         );
     }
     
-    DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two $name$, final .java.lang.String s) {
+    DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two $name$, final .java.lang.String s$param$) {
         (
             let
             {
-                long $ceylontmp$i$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i(s);
-                this($name$, s, $ceylontmp$i$4);
+                long $ceylontmp$i$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$Two$i(s$param$);
+                this($name$, s$param$, $ceylontmp$i$4);
             }
             returning null;
         );
@@ -73,7 +73,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         return "";
     }
     
-    public static final long DefaultedParameterCtor$Two$i(final .java.lang.String s) {
+    public static final long DefaultedParameterCtor$Two$i(final .java.lang.String s$param$) {
         return 0L;
     }
     

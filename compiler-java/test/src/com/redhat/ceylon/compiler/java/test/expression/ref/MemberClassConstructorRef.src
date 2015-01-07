@@ -12,8 +12,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(final .java.lang.String s1) {
-        return new Simple(s1);
+    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(final .java.lang.String s1$param$) {
+        return new Simple(s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -34,8 +34,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Unary $name$, final .java.lang.String s1) {
-        return new Simple($name$, s1);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Unary $name$, final .java.lang.String s1$param$) {
+        return new Simple($name$, s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -50,8 +50,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Binary $name$, final .java.lang.String s1, final .java.lang.String s2) {
-        return new Simple($name$, s1, s2);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Binary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
+        return new Simple($name$, s1$param$, s2$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -66,8 +66,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Ternary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        return new Simple($name$, s1, s2, s3);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
+        return new Simple($name$, s1$param$, s2$param$, s3$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -82,8 +82,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple Simple$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        return new Simple($name$, s1, s2, s3, s4);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .java.lang.String s4$param$) {
+        return new Simple($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -201,8 +201,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $instance$.Simple$new$(s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $instance$.Simple$new$(s1$param$);
                     }
                 };
             }
@@ -222,8 +222,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $instance$.Simple$new$(s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $instance$.Simple$new$(s1$param$);
                     }
                 };
             }
@@ -237,8 +237,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0) {
-                final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                return Simple$new$(s1);
+                final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                return Simple$new$(s1$param$);
             }
         };
         if (defRef2.$call$(.ceylon.language.String.instance("s1")).toString().equals("Simple.Simple(s1)")) {
@@ -288,8 +288,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Unary, s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Unary, s1$param$);
                     }
                 };
             }
@@ -309,9 +309,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Binary, s1, s2);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Binary, s1$param$, s2$param$);
                     }
                 };
             }
@@ -331,10 +331,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Ternary, s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2).toString();
+                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Ternary, s1$param$, s2$param$, s3$param$);
                     }
                 };
             }
@@ -354,11 +354,11 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        final .java.lang.String s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Nary, s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$0[1]).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$0[2]).toString();
+                        final .java.lang.String s4$param$ = ((.ceylon.language.String)$param$0[3]).toString();
+                        return $instance$.Simple$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Nary, s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                 };
             }
@@ -370,8 +370,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(final .java.lang.String s1) {
-        return new Defaulted(s1);
+    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(final .java.lang.String s1$param$) {
+        return new Defaulted(s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -408,8 +408,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Unary $name$, final .java.lang.String s1) {
-        return new Defaulted($name$, s1);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Unary $name$, final .java.lang.String s1$param$) {
+        return new Defaulted($name$, s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -441,8 +441,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary $name$, final .java.lang.String s1, final .java.lang.String s2) {
-        return new Defaulted($name$, s1, s2);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
+        return new Defaulted($name$, s1$param$, s2$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -474,26 +474,26 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Binary$s2(final .java.lang.String s1) {
+    public final .java.lang.String Defaulted$Binary$s2(final .java.lang.String s1$param$) {
         return "s2";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary $name$, final .java.lang.String s1) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary $name$, final .java.lang.String s1$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$13 = Defaulted$Binary$s2(s1);
+                .java.lang.String $ceylontmp$s2$13 = Defaulted$Binary$s2(s1$param$);
             }
-            returning new Defaulted($name$, s1, $ceylontmp$s2$13);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$13);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        return new Defaulted($name$, s1, s2, s3);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
+        return new Defaulted($name$, s1$param$, s2$param$, s3$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -526,44 +526,44 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Ternary$s2(final .java.lang.String s1) {
+    public final .java.lang.String Defaulted$Ternary$s2(final .java.lang.String s1$param$) {
         return "s2";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$17 = Defaulted$Ternary$s2(s1);
-                .java.lang.String $ceylontmp$s3$18 = Defaulted$Ternary$s3(s1, $ceylontmp$s2$17);
+                .java.lang.String $ceylontmp$s2$17 = Defaulted$Ternary$s2(s1$param$);
+                .java.lang.String $ceylontmp$s3$18 = Defaulted$Ternary$s3(s1$param$, $ceylontmp$s2$17);
             }
-            returning new Defaulted($name$, s1, $ceylontmp$s2$17, $ceylontmp$s3$18);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$17, $ceylontmp$s3$18);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Ternary$s3(final .java.lang.String s1, final .java.lang.String s2) {
+    public final .java.lang.String Defaulted$Ternary$s3(final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
         return "s3";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1, final .java.lang.String s2) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$19 = Defaulted$Ternary$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$19 = Defaulted$Ternary$s3(s1$param$, s2$param$);
             }
-            returning new Defaulted($name$, s1, s2, $ceylontmp$s3$19);
+            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$19);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        return new Defaulted($name$, s1, s2, s3, s4);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .java.lang.String s4$param$) {
+        return new Defaulted($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -597,56 +597,56 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Nary$s2(final .java.lang.String s1) {
+    public final .java.lang.String Defaulted$Nary$s2(final .java.lang.String s1$param$) {
         return "s2";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$24 = Defaulted$Nary$s2(s1);
-                .java.lang.String $ceylontmp$s3$25 = Defaulted$Nary$s3(s1, $ceylontmp$s2$24);
-                .java.lang.String $ceylontmp$s4$26 = Defaulted$Nary$s4(s1, $ceylontmp$s2$24, $ceylontmp$s3$25);
+                .java.lang.String $ceylontmp$s2$24 = Defaulted$Nary$s2(s1$param$);
+                .java.lang.String $ceylontmp$s3$25 = Defaulted$Nary$s3(s1$param$, $ceylontmp$s2$24);
+                .java.lang.String $ceylontmp$s4$26 = Defaulted$Nary$s4(s1$param$, $ceylontmp$s2$24, $ceylontmp$s3$25);
             }
-            returning new Defaulted($name$, s1, $ceylontmp$s2$24, $ceylontmp$s3$25, $ceylontmp$s4$26);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$24, $ceylontmp$s3$25, $ceylontmp$s4$26);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Nary$s3(final .java.lang.String s1, final .java.lang.String s2) {
+    public final .java.lang.String Defaulted$Nary$s3(final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
         return "s3";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1, final .java.lang.String s2) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$27 = Defaulted$Nary$s3(s1, s2);
-                .java.lang.String $ceylontmp$s4$28 = Defaulted$Nary$s4(s1, s2, $ceylontmp$s3$27);
+                .java.lang.String $ceylontmp$s3$27 = Defaulted$Nary$s3(s1$param$, s2$param$);
+                .java.lang.String $ceylontmp$s4$28 = Defaulted$Nary$s4(s1$param$, s2$param$, $ceylontmp$s3$27);
             }
-            returning new Defaulted($name$, s1, s2, $ceylontmp$s3$27, $ceylontmp$s4$28);
+            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$27, $ceylontmp$s4$28);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .java.lang.String Defaulted$Nary$s4(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    public final .java.lang.String Defaulted$Nary$s4(final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
         return "s4";
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted Defaulted$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s4$29 = Defaulted$Nary$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$29 = Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
             }
-            returning new Defaulted($name$, s1, s2, s3, $ceylontmp$s4$29);
+            returning new Defaulted($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$29);
         );
     }
     
@@ -766,19 +766,19 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$s1();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$s1();
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s1$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1) {
-                        return $instance$.Defaulted$new$(s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$) {
+                        return $instance$.Defaulted$new$(s1$param$);
                     }
                 };
             }
@@ -802,19 +802,19 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$s1();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$s1();
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s1$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1) {
-                        return $instance$.Defaulted$new$(s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$) {
+                        return $instance$.Defaulted$new$(s1$param$);
                     }
                 };
             }
@@ -832,19 +832,19 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                final .java.lang.String s1 = Defaulted$s1();
-                return $calltyped$(s1);
+                final .java.lang.String s1$param$ = Defaulted$s1();
+                return $calltyped$(s1$param$);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                return $calltyped$(s1);
+                final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                return $calltyped$(s1$param$);
             }
             
-            private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1) {
-                return Defaulted$new$(s1);
+            private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$) {
+                return Defaulted$new$(s1$param$);
             }
         };
         if (defRef2.$call$().toString().equals("Defaulted.Defaulted(s1)")) {
@@ -898,19 +898,19 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$Unary$s1();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$Unary$s1();
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $calltyped$(s1);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s1$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1) {
-                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Unary, s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$) {
+                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Unary, s1$param$);
                     }
                 };
             }
@@ -934,29 +934,29 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$Binary$s1();
-                        final .java.lang.String s2 = $instance$.Defaulted$Binary$s2(s1);
-                        return $calltyped$(s1, s2);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$Binary$s1();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Binary$s2(s1$param$);
+                        return $calltyped$(s1$param$, s2$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance$.Defaulted$Binary$s2(s1);
-                        return $calltyped$(s1, s2);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Binary$s2(s1$param$);
+                        return $calltyped$(s1$param$, s2$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        return $calltyped$(s1, s2);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        return $calltyped$(s1$param$, s2$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2) {
-                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary, s1, s2);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
+                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Binary, s1$param$, s2$param$);
                     }
                 };
             }
@@ -976,41 +976,41 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$Ternary$s1();
-                        final .java.lang.String s2 = $instance$.Defaulted$Ternary$s2(s1);
-                        final .java.lang.String s3 = $instance$.Defaulted$Ternary$s3(s1, s2);
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$Ternary$s1();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Ternary$s2(s1$param$);
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Ternary$s3(s1$param$, s2$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance$.Defaulted$Ternary$s2(s1);
-                        final .java.lang.String s3 = $instance$.Defaulted$Ternary$s3(s1, s2);
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Ternary$s2(s1$param$);
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Ternary$s3(s1$param$, s2$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = $instance$.Defaulted$Ternary$s3(s1, s2);
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Ternary$s3(s1$param$, s2$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2).toString();
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary, s1, s2, s3);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
+                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Ternary, s1$param$, s2$param$, s3$param$);
                     }
                 };
             }
@@ -1030,55 +1030,55 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                        final .java.lang.String s1 = $instance$.Defaulted$Nary$s1();
-                        final .java.lang.String s2 = $instance$.Defaulted$Nary$s2(s1);
-                        final .java.lang.String s3 = $instance$.Defaulted$Nary$s3(s1, s2);
-                        final .java.lang.String s4 = $instance$.Defaulted$Nary$s4(s1, s2, s3);
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = $instance$.Defaulted$Nary$s1();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Nary$s2(s1$param$);
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Nary$s3(s1$param$, s2$param$);
+                        final .java.lang.String s4$param$ = $instance$.Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance$.Defaulted$Nary$s2(s1);
-                        final .java.lang.String s3 = $instance$.Defaulted$Nary$s3(s1, s2);
-                        final .java.lang.String s4 = $instance$.Defaulted$Nary$s4(s1, s2, s3);
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = $instance$.Defaulted$Nary$s2(s1$param$);
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Nary$s3(s1$param$, s2$param$);
+                        final .java.lang.String s4$param$ = $instance$.Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = $instance$.Defaulted$Nary$s3(s1, s2);
-                        final .java.lang.String s4 = $instance$.Defaulted$Nary$s4(s1, s2, s3);
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = $instance$.Defaulted$Nary$s3(s1$param$, s2$param$);
+                        final .java.lang.String s4$param$ = $instance$.Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .java.lang.String s4 = $instance$.Defaulted$Nary$s4(s1, s2, s3);
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2).toString();
+                        final .java.lang.String s4$param$ = $instance$.Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : $instance$.Defaulted$Nary$s1();
-                        final .java.lang.String s2 = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $instance$.Defaulted$Nary$s2(s1);
-                        final .java.lang.String s3 = $param$0.length > 2 ? ((.ceylon.language.String)$param$0[2]).toString() : $instance$.Defaulted$Nary$s3(s1, s2);
-                        final .java.lang.String s4 = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $instance$.Defaulted$Nary$s4(s1, s2, s3);
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : $instance$.Defaulted$Nary$s1();
+                        final .java.lang.String s2$param$ = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $instance$.Defaulted$Nary$s2(s1$param$);
+                        final .java.lang.String s3$param$ = $param$0.length > 2 ? ((.ceylon.language.String)$param$0[2]).toString() : $instance$.Defaulted$Nary$s3(s1$param$, s2$param$);
+                        final .java.lang.String s4$param$ = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $instance$.Defaulted$Nary$s4(s1$param$, s2$param$, s3$param$);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary, s1, s2, s3, s4);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $calltyped$(final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .java.lang.String s4$param$) {
+                        return $instance$.Defaulted$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted$Nary, s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                 };
             }
@@ -1090,8 +1090,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-        return new Sequenced(s1);
+    public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+        return new Sequenced(s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1123,8 +1123,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Unary $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-        return new Sequenced($name$, s1);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Unary $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+        return new Sequenced($name$, s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -1151,8 +1151,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary $name$, final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s2) {
-        return new Sequenced($name$, s1, s2);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary $name$, final .java.lang.String s1$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$) {
+        return new Sequenced($name$, s1$param$, s2$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -1167,20 +1167,20 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary $name$, final .java.lang.String s1) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary $name$, final .java.lang.String s1$param$) {
         return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s2$45 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1, $ceylontmp$s2$45);
+            returning new Sequenced($name$, s1$param$, $ceylontmp$s2$45);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary $name$, final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s3) {
-        return new Sequenced($name$, s1, s2, s3);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$) {
+        return new Sequenced($name$, s1$param$, s2$param$, s3$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -1195,20 +1195,20 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary $name$, final .java.lang.String s1, final .java.lang.String s2) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$) {
         return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s3$46 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1, s2, $ceylontmp$s3$46);
+            returning new Sequenced($name$, s1$param$, s2$param$, $ceylontmp$s3$46);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s4) {
-        return new Sequenced($name$, s1, s2, s3, s4);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$param$) {
+        return new Sequenced($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -1223,13 +1223,13 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced Sequenced$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary $name$, final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary $name$, final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$) {
         return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s4$47 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1, s2, s3, $ceylontmp$s4$47);
+            returning new Sequenced($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$47);
         );
     }
     
@@ -1343,22 +1343,22 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(s1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1370,8 +1370,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1385,8 +1385,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1410,8 +1410,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-                        return $instance$.Sequenced$new$(s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+                        return $instance$.Sequenced$new$(s1$param$);
                     }
                 };
             }
@@ -1435,22 +1435,22 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(s1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1462,8 +1462,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1477,8 +1477,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1502,8 +1502,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-                        return $instance$.Sequenced$new$(s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+                        return $instance$.Sequenced$new$(s1$param$);
                     }
                 };
             }
@@ -1521,22 +1521,22 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $calltyped$(s1$variadic$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(s1$param$$variadic$);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
-                return $calltyped$(s1);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(s1$param$);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
-                return $calltyped$(s1$variadic$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                return $calltyped$(s1$param$$variadic$);
             }
             
             @.java.lang.Override
@@ -1548,8 +1548,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
-                return $calltyped$(s1$variadic$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                return $calltyped$(s1$param$$variadic$);
             }
             
             @.java.lang.Override
@@ -1563,8 +1563,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
-                return $calltyped$(s1$variadic$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                return $calltyped$(s1$param$$variadic$);
             }
             
             @.java.lang.Override
@@ -1588,8 +1588,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-                return Sequenced$new$(s1);
+            private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+                return Sequenced$new$(s1$param$);
             }
         };
         if (defRef2.$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
@@ -1643,22 +1643,22 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(s1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                        return $calltyped$(s1$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1670,8 +1670,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1685,8 +1685,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
-                        return $calltyped$(s1$variadic$);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        return $calltyped$(s1$param$$variadic$);
                     }
                     
                     @.java.lang.Override
@@ -1710,8 +1710,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1) {
-                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Unary, s1);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
+                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Unary, s1$param$);
                     }
                 };
             }
@@ -1735,55 +1735,55 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0.get(.ceylon.language.Integer.instance(0))).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0.spanFrom(.ceylon.language.Integer.instance(1));
-                        return $calltyped$(s1, s2);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0.get(.ceylon.language.Integer.instance(0))).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0.spanFrom(.ceylon.language.Integer.instance(1));
+                        return $calltyped$(s1$param$, s2$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1, s2$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$, s2$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
-                        return $calltyped$(s1, s2);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
+                        return $calltyped$(s1$param$, s2$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
-                        return $calltyped$(s1, s2$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
+                        return $calltyped$(s1$param$, s2$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$1}, $param$2));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s1$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$1}, $param$2));
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
-                        return $calltyped$(s1, s2$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
+                        return $calltyped$(s1$param$, s2$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s1$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
                                 (.ceylon.language.String)$param$1,
                                 (.ceylon.language.String)$param$2}, $param$3));
                     }
@@ -1791,19 +1791,19 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        return $calltyped$(s1$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        return $calltyped$(s1$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s2) {
-                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary, s1, s2);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$) {
+                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Binary, s1$param$, s2$param$);
                     }
                 };
             }
@@ -1827,65 +1827,65 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1.get(.ceylon.language.Integer.instance(1))).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1.spanFrom(.ceylon.language.Integer.instance(2));
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1.get(.ceylon.language.Integer.instance(1))).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1.spanFrom(.ceylon.language.Integer.instance(2));
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1, s2, s3$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$, s2$param$, s3$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$2;
-                        return $calltyped$(s1, s2, s3);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$2;
+                        return $calltyped$(s1$param$, s2$param$, s3$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$2);
-                        return $calltyped$(s1, s2, s3$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$2);
+                        return $calltyped$(s1$param$, s2$param$, s3$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$2}, $param$3));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        return $calltyped$(s1$param$, s2$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$2}, $param$3));
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$0[1]).toString();
+                        return $calltyped$(s1$param$, s2$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$0[1]).toString();
+                        return $calltyped$(s1$param$, s2$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s3) {
-                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary, s1, s2, s3);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$) {
+                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Ternary, s1$param$, s2$param$, s3$param$);
                     }
                 };
             }
@@ -1909,53 +1909,53 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2.get(.ceylon.language.Integer.instance(2))).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$2.spanFrom(.ceylon.language.Integer.instance(3));
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2.get(.ceylon.language.Integer.instance(2))).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$2.spanFrom(.ceylon.language.Integer.instance(3));
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(s1, s2, s3, s4$variadic$);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$param$$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$$variadic$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3;
-                        return $calltyped$(s1, s2, s3, s4);
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$2).toString();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$param$ = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3;
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.get_()));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$0[1]).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$0[2]).toString();
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $callvariadic$(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
+                        final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0[0]).toString();
+                        final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$0[1]).toString();
+                        final .java.lang.String s3$param$ = ((.ceylon.language.String)$param$0[2]).toString();
+                        return $calltyped$(s1$param$, s2$param$, s3$param$, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s4) {
-                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary, s1, s2, s3, s4);
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .java.lang.String s1$param$, final .java.lang.String s2$param$, final .java.lang.String s3$param$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s4$param$) {
+                        return $instance$.Sequenced$new$(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced$Nary, s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                 };
             }
@@ -1971,8 +1971,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T s1) {
-        return new Parameterized<T>($reified$T, s1);
+    public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T s1$param$) {
+        return new Parameterized<T>($reified$T, s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1993,8 +1993,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Unary $name$, final T s1) {
-        return new Parameterized<T>($reified$T, $name$, s1);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Unary $name$, final T s1$param$) {
+        return new Parameterized<T>($reified$T, $name$, s1$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -2009,8 +2009,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Binary $name$, final T s1, final T s2) {
-        return new Parameterized<T>($reified$T, $name$, s1, s2);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Binary $name$, final T s1$param$, final T s2$param$) {
+        return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -2025,8 +2025,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Ternary $name$, final T s1, final T s2, final T s3) {
-        return new Parameterized<T>($reified$T, $name$, s1, s2, s3);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Ternary $name$, final T s1$param$, final T s2$param$, final T s3$param$) {
+        return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$, s3$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -2041,8 +2041,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <T>.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<T> Parameterized$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Nary $name$, final T s1, final T s2, final T s3, final T s4) {
-        return new Parameterized<T>($reified$T, $name$, s1, s2, s3, s4);
+    .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Nary $name$, final T s1$param$, final T s2$param$, final T s3$param$, final T s4$param$) {
+        return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -2179,8 +2179,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1$param$);
                     }
                 };
             }
@@ -2200,8 +2200,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1$param$);
                     }
                 };
             }
@@ -2215,8 +2215,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                return Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1);
+                final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                return Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, s1$param$);
             }
         };
         if (defRef2.$call$(.ceylon.language.String.instance("s1")).toString().equals("Parameterized.Parameterized(s1)")) {
@@ -2266,8 +2266,8 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Unary, s1);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Unary, s1$param$);
                     }
                 };
             }
@@ -2287,9 +2287,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                        final .ceylon.language.String s2 = (.ceylon.language.String)$param$1;
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Binary, s1, s2);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                        final .ceylon.language.String s2$param$ = (.ceylon.language.String)$param$1;
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Binary, s1$param$, s2$param$);
                     }
                 };
             }
@@ -2309,10 +2309,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0;
-                        final .ceylon.language.String s2 = (.ceylon.language.String)$param$1;
-                        final .ceylon.language.String s3 = (.ceylon.language.String)$param$2;
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Ternary, s1, s2, s3);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0;
+                        final .ceylon.language.String s2$param$ = (.ceylon.language.String)$param$1;
+                        final .ceylon.language.String s3$param$ = (.ceylon.language.String)$param$2;
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Ternary, s1$param$, s2$param$, s3$param$);
                     }
                 };
             }
@@ -2332,11 +2332,11 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object... $param$0) {
-                        final .ceylon.language.String s1 = (.ceylon.language.String)$param$0[0];
-                        final .ceylon.language.String s2 = (.ceylon.language.String)$param$0[1];
-                        final .ceylon.language.String s3 = (.ceylon.language.String)$param$0[2];
-                        final .ceylon.language.String s4 = (.ceylon.language.String)$param$0[3];
-                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Nary, s1, s2, s3, s4);
+                        final .ceylon.language.String s1$param$ = (.ceylon.language.String)$param$0[0];
+                        final .ceylon.language.String s2$param$ = (.ceylon.language.String)$param$0[1];
+                        final .ceylon.language.String s3$param$ = (.ceylon.language.String)$param$0[2];
+                        final .ceylon.language.String s4$param$ = (.ceylon.language.String)$param$0[3];
+                        return $instance$.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Nary, s1$param$, s2$param$, s3$param$, s4$param$);
                     }
                 };
             }
