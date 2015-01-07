@@ -313,7 +313,7 @@ void simpleDestructuring() {
     if (exists [ag,ah] = af) {
         check(ag==1 && ah=="2", "simple destructuring 7");
     }
-    [String+] ai = ["1","2","3"];
+    [String*] ai = ["1","2","3"];
     if (nonempty [aj, *ak] = ai) {
         check(aj=="1", "simple destructuring 8");
         check(ak==["2","3"], "simple destructuring 9");
