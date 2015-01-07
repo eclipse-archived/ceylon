@@ -1445,7 +1445,7 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Sequence$impl().sort(comparing);
     }
     
-    @Override
+    @Override @Ignore
     public java.lang.String toString() {
         StringBuilder sb = new StringBuilder();
         sb.appendCharacter('[');
@@ -1458,12 +1458,12 @@ public final class Tuple<Element, First extends Element,
         return sb.toString();
     }
     
-    @Override
+    @Override @Ignore
     public boolean equals(java.lang.Object obj) {
         return $ceylon$language$List$impl().equals(obj);
     }
     
-    @Override
+    @Override @Ignore
     public int hashCode() {
         return $ceylon$language$List$impl().hashCode();
     }
