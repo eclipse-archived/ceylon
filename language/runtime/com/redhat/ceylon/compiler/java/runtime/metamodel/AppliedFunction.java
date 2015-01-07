@@ -68,7 +68,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-        
+
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
@@ -152,7 +152,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(found != null){
             boolean variadic = found.isVarArgs();
             method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, variadic, false);
-            if(defaultedMethods != null){
+            if(defaultedMethods != null && !variadic){
                 // this won't find the last one, but its method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
@@ -165,8 +165,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             }else if(variadic){
                 // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
                 // we treat variadic methods as if the last parameter is optional
-                firstDefaulted = parameters.size() - 1;
-                dispatch = new MethodHandle[2];
+                // firstDefaulted and dispatch already set up because getFirstDefaultedParameter treats java variadics like ceylon variadics
                 dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, variadic, true);
                 dispatch[1] = method;
             }

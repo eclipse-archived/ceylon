@@ -1013,7 +1013,7 @@ public class Metamodel {
         int i = 0;
         for(Parameter param : parameters){
             if(param.isDefaulted() || 
-                    param.isSequenced() && !param.isAtLeastOne()){
+                    (param.isSequenced() && !param.isAtLeastOne())){
                 return i;
             }
             i++;

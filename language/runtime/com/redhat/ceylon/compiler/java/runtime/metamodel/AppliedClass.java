@@ -186,7 +186,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(found != null){
             boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
             constructor = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, false);
-            if(defaultedMethods != null){
+            if(defaultedMethods != null && !variadic){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
@@ -199,8 +199,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             }else if(variadic){
                 // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
                 // we treat variadic methods as if the last parameter is optional
-                firstDefaulted = parameters.size() - 1;
-                dispatch = new MethodHandle[2];
+                // firstDefaulted and dispatch already set up because getFirstDefaultedParameter treats java variadics like ceylon variadics
                 dispatch[0] = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, true);
                 dispatch[1] = constructor;
             }
