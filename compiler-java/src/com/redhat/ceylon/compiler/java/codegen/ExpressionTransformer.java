@@ -2748,10 +2748,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                     argIndex = numArguments;
                 }
             }
-            if(!wrapIntoArray)
+            if(!wrapIntoArray) {
+                if (argIndex== 0 
+                        && invocation.isCallable()
+                        && !invocation.isArgumentSpread(numArguments-1)
+                        ) {
+                    exprAndType = new ExpressionAndType(
+                            make().TypeCast(make().Type(syms().objectType), exprAndType.expression),
+                            make().Type(syms().objectType));
+                }
                 result = result.append(exprAndType);
-            else
+            } else {
                 arrayWrap.append(exprAndType.expression);
+            }
         }
         if (invocation.isIndirect()
                 && invocation.isParameterSequenced(numArguments)
