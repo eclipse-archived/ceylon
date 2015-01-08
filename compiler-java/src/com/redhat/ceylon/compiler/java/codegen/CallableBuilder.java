@@ -1364,11 +1364,13 @@ public class CallableBuilder {
                         gen.makeQualIdent(makeParamIdent(gen, arity), "get"), 
                         List.<JCExpression>of(gen.expressionGen().applyErasureAndBoxing(gen.make().Literal(a), 
                                 gen.typeFact().getIntegerDeclaration().getType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerDeclaration().getType())));
+                Parameter param = paramLists.getParameters().get(a);
                 get = gen.expressionGen().applyErasureAndBoxing(get, 
                         parameterTypes.get(a), 
-                        true, true, BoxingStrategy.UNBOXED, 
+                        true, true, 
+                        (jtFlagsForParameter(param, parameterTypes.get(a)) & JT_NO_PRIMITIVES) == 0 ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED , 
                         parameterTypes.get(a), 0);
-                Parameter param = paramLists.getParameters().get(a);
+                
                 makeVarForParameter(stmts, param, parameterTypes.get(a),
                         name, get);
                 args.append(name.makeIdent());
