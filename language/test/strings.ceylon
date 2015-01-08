@@ -548,4 +548,6 @@ shared void strings() {
           return p+c.integer;
         }
     })) then trm3==400 else false, "String.reduce");
+    check("abc".equalsIgnoringCase("aBc"), "String.equalsIgnoringCase");
+    check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase");
 }
