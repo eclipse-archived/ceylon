@@ -68,15 +68,6 @@ native class Tuple<out Element,out First,out Rest = []>
     Integer size => 1 + rest.size;
     
     shared actual native 
-    String string;
-    
-    shared actual native 
-    Boolean equals(Object that);
-    
-    shared actual native 
-    Integer hash;
-    
-    shared actual native 
     Element? getFromFirst(Integer index) 
             => switch (index <=> 0)
             case (smaller) null
