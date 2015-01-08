@@ -1533,6 +1533,15 @@ public class Util {
     }
     
     /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Integer> backing array
+     */
+    public static java.lang.String getStringArray(Object o, int index) {
+        if (o instanceof java.lang.String[])
+            return ((java.lang.String[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    /**
      * Used by the JVM backend to get items from an ArraySequence object. Beware: do not use that
      * for Array&lt;Object> as there's too much magic in there.
      */
