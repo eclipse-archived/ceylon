@@ -181,7 +181,7 @@ function tpl$(elems,types,spread){
     return spread?spread.last:elems[elems.size-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
   atr$(that,'string',function(){
-    return '['+commaList(elems)+(spread?','+commaList(spread):'')+']';
+    return '['+commaList(elems)+(spread?', '+commaList(spread):'')+']';
   },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
   that.nativeArray=function(){
     if (spread) {
