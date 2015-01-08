@@ -46,6 +46,11 @@ class ArrayIterationStatic() {
             print(element);
         }
     }
+    void arrayOfStrings(Array<String> array) {
+        for (element in array) {
+            print(element);
+        }
+    }
    
     void arrayOfObjects(Array<Object> array) {
         for (element in array) {
