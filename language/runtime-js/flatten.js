@@ -1,5 +1,6 @@
 function flatten(tf, $$$mptypes) {
   if (tf.$unflattened$)return tf.$unflattened$;
+  if (tf.jsc$)tf=tf.jsc$;
   var mm=getrtmm$$(tf);
   function rf() {
     var argc = arguments.length;

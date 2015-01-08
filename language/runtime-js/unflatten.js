@@ -1,5 +1,6 @@
 function unflatten(ff, $$$mptypes) {
   if (ff.$flattened$)return ff.$flattened$;
+  if (ff.jsc$)ff=ff.jsc$;
   var mm=getrtmm$$(ff);
   if (mm && mm.ps) {
     var ru=function ru(seq,$mptypes) {
