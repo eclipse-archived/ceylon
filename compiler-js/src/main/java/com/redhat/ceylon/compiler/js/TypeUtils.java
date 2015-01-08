@@ -439,8 +439,10 @@ public class TypeUtils {
             if (first) first=false; else gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+            ProducedType ptype = p.getType();
             if (p.getModel() instanceof Method) {
                 gen.out("$pt:'f',");
+                ptype = ((Method)p.getModel()).getTypedReference().getFullType();
             }
             if (p.isSequenced()) {
                 gen.out("seq:1,");
@@ -449,7 +451,7 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_DEFAULT, ":1,");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            metamodelTypeNameOrList(n, gen.getCurrentPackage(), p.getType(), gen);
+            metamodelTypeNameOrList(n, gen.getCurrentPackage(), ptype, gen);
             if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
                 new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
             }
