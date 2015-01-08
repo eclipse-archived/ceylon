@@ -243,16 +243,16 @@ final class variadicDestructuring_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> $pattern$tuple$22 = strings;
         final .java.lang.String x = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$22).getFromFirst(0)).toString();
         final .java.lang.String y = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$22).getFromFirst(1)).toString();
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$22).skip(2);
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$22).skip(2).sequence();
         final .ceylon.language.Sequence $pattern$tuple$23 = tup;
         final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$23).getFromFirst(0)).longValue();
-        final .ceylon.language.Sequence pair = (.ceylon.language.Sequence)((.ceylon.language.Sequence)$pattern$tuple$23).skip(1);
+        final .ceylon.language.Sequence pair = (.ceylon.language.Sequence)((.ceylon.language.Sequence)$pattern$tuple$23).skip(1).sequence();
         final .ceylon.language.Sequence $pattern$tuple$24 = pair;
         final double ff = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$24).getFromFirst(0)).doubleValue();
         final .java.lang.String ss = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$24).getFromFirst(1)).toString();
         final .ceylon.language.Sequence<? extends .ceylon.language.Float> $pattern$tuple$25 = floats;
         final double z = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$25).getFromFirst(0)).doubleValue();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Float> zs = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$25).skip(1);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Float> zs = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$25).skip(1).sequence();
     }
 }
 final class destructureTupleInEntry_ {
@@ -603,7 +603,7 @@ final class destructureIf_ {
         }
         .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$62$63;
         if (($pattern$tuple$62$63 = names) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$65 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$62$63).skip(1);
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$65 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$62$63).skip(1).sequence();
             final .java.lang.String name$64 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$62$63).getFromFirst(0)).toString();
             final .java.lang.String n = name$64;
             final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$65;
@@ -614,7 +614,7 @@ final class destructureIf_ {
             final long i$70 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$67$68).getFromFirst(1)).longValue();
             final double x$69 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$67$68).getFromFirst(0)).doubleValue();
             if (($pattern$tuple$71$72 = names) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$74 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$71$72).skip(1);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$74 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$71$72).skip(1).sequence();
                 final .java.lang.String name$73 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$71$72).getFromFirst(0)).toString();
                 final double c = x$69;
                 final long j = i$70;
