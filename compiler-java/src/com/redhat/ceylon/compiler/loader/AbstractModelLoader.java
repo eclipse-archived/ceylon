@@ -2585,6 +2585,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 "field '"+value.getName()+"'", klass);
         if (value.isEnumValue()) {
             Class enumValueType = new Class();
+            enumValueType.setNamed(false);
             enumValueType.setAnonymous(true);
             enumValueType.setExtendedType(type);
             enumValueType.setContainer(value.getContainer());

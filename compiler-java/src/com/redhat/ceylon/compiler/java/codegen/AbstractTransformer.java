@@ -1636,6 +1636,9 @@ public abstract class AbstractTransformer implements Transformation {
             type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
         }
         
+        if(type.getDeclaration().isAnonymous())
+            type = typeFact().denotableType(type);
+        
         // ERASURE
         if ((flags & JT_CLASS_LITERAL) == 0
                 // don't consider erasure for class literals since it would resolve aliases and we want class
@@ -4607,7 +4610,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeReifiedTypeArgument(ProducedType pt) {
-        return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false);
+        return makeReifiedTypeArgumentResolved(typeFact().denotableType(pt.resolveAliases()), false);
     }
     
     private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
