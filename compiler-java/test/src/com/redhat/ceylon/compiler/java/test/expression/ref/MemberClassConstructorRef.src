@@ -1357,7 +1357,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1370,7 +1370,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1385,7 +1387,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1416,7 +1421,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
+        if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s1")})).toString().equals("Sequenced.Sequenced([s1])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
         }
@@ -1449,7 +1454,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1462,7 +1467,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1477,7 +1484,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1508,7 +1518,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
+        if (defRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s1")})).toString().equals("Sequenced.Sequenced([s1])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef(this)(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
         }
@@ -1535,7 +1545,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
                 return $calltyped$(s1$param$$variadic$);
             }
             
@@ -1548,7 +1558,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1});
                 return $calltyped$(s1$param$$variadic$);
             }
             
@@ -1563,7 +1575,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2});
                 return $calltyped$(s1$param$$variadic$);
             }
             
@@ -1592,7 +1607,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 return Sequenced$new$(s1$param$);
             }
         };
-        if (defRef2.$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Sequenced([s1])")) {
+        if (defRef2.$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s1")})).toString().equals("Sequenced.Sequenced([s1])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "defRef2(\"s1\").string == \"Sequenced.Sequenced([s1])\""));
         }
@@ -1657,7 +1672,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1670,7 +1685,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1685,7 +1702,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s1$param$$variadic$);
                     }
                     
@@ -1716,7 +1736,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (unaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s1"))).toString().equals("Sequenced.Unary([s1])")) {
+        if (unaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s1")})).toString().equals("Sequenced.Unary([s1])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "unaryRef(this)(\"s1\").string == \"Sequenced.Unary([s1])\""));
         }
@@ -1760,7 +1780,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$1});
                         return $calltyped$(s1$param$, s2$param$$variadic$);
                     }
                     
@@ -1775,7 +1795,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                         final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s1$param$, s2$param$$variadic$);
                     }
                     
@@ -1808,7 +1830,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s2"))).toString().equals("Sequenced.Binary(s1,[s2])")) {
+        if (binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s2")})).toString().equals("Sequenced.Binary(s1,[s2])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "binaryRef(this)(\"s1\", \"s2\").string == \"Sequenced.Binary(s1,[s2])\""));
         }
@@ -1856,7 +1878,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                         final .java.lang.String s1$param$ = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2$param$ = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s3$param$$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$2});
                         return $calltyped$(s1$param$, s2$param$, s3$param$$variadic$);
                     }
                     
@@ -1890,7 +1912,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s3"))).toString().equals("Sequenced.Ternary(s1,s2,[s3])")) {
+        if (ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s3")})).toString().equals("Sequenced.Ternary(s1,s2,[s3])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ternaryRef(this)(\"s1\", \"s2\", \"s3\").string == \"Sequenced.Ternary(s1,s2,[s3])\""));
         }
@@ -1960,7 +1982,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
                 };
             }
         };
-        if (naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("s4"))).toString().equals("Sequenced.Nary(s1,s2,s3,[s4])")) {
+        if (naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("s4")})).toString().equals("Sequenced.Nary(s1,s2,s3,[s4])")) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string == \"Sequenced.Nary(s1,s2,s3,[s4])\""));
         }

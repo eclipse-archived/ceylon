@@ -1041,7 +1041,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
                         return $calltyped$(s$variadic$);
                     }
                     
@@ -1052,7 +1052,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1});
                         return $calltyped$(s$variadic$);
                     }
                     
@@ -1065,7 +1067,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$0,
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s$variadic$);
                     }
                     
@@ -1097,11 +1102,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([])\" == nullaryRef(this)().string"));
         }
-        if ("nullarySequenced([r1])".equals(nullaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"))).toString())) {
+        if ("nullarySequenced([r1])".equals(nullaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("r1")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\").string"));
         }
-        if ("nullarySequenced([r1, r2])".equals(nullaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"), .ceylon.language.String.instance("r2"))).toString())) {
+        if ("nullarySequenced([r1, r2])".equals(nullaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.String.instance("r1"),
+                .ceylon.language.String.instance("r2")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1, r2])\" == nullaryRef(this)(\"r1\", \"r2\").string"));
         }
@@ -1136,7 +1143,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$1});
                         return $calltyped$(s1, s$variadic$);
                     }
                     
@@ -1149,7 +1156,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                                $param$1,
+                                $param$2});
                         return $calltyped$(s1, s$variadic$);
                     }
                     
@@ -1183,11 +1192,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [])\" == unaryRef(this)(\"s\").string"));
         }
-        if ("unarySequenced(s; [r1])".equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"))).toString())) {
+        if ("unarySequenced(s; [r1])".equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("r1")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\").string"));
         }
-        if ("unarySequenced(s; [r1, r2])".equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"), .ceylon.language.String.instance("r2"))).toString())) {
+        if ("unarySequenced(s; [r1, r2])".equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.String.instance("r1"),
+                .ceylon.language.String.instance("r2")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1, r2])\" == unaryRef(this)(\"s\", \"r1\", \"r2\").string"));
         }
@@ -1226,7 +1237,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$2});
                         return $calltyped$(s1, s2, s$variadic$);
                     }
                     
@@ -1261,11 +1272,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [])\" == binaryRef(this)(\"s1\", \"s2\").string"));
         }
-        if ("binarySequenced(s1, s2; [r1])".equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"))).toString())) {
+        if ("binarySequenced(s1, s2; [r1])".equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("r1")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\").string"));
         }
-        if ("binarySequenced(s1, s2; [r1, r2])".equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"), .ceylon.language.String.instance("r2"))).toString())) {
+        if ("binarySequenced(s1, s2; [r1, r2])".equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.String.instance("r1"),
+                .ceylon.language.String.instance("r2")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1, r2])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\", \"r2\").string"));
         }
@@ -1329,11 +1342,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\").string"));
         }
-        if ("ternarySequenced(s1, s2, s3; [r1])".equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"))).toString())) {
+        if ("ternarySequenced(s1, s2, s3; [r1])".equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("r1")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\").string"));
         }
-        if ("ternarySequenced(s1, s2, s3; [r1, r2])".equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"), .ceylon.language.String.instance("r2"))).toString())) {
+        if ("ternarySequenced(s1, s2, s3; [r1, r2])".equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.String.instance("r1"),
+                .ceylon.language.String.instance("r2")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1, r2])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\", \"r2\").string"));
         }
@@ -1382,11 +1397,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string"));
         }
-        if ("narySequenced(s1, s2, s3, s4; [r1])".equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"))).toString())) {
+        if ("narySequenced(s1, s2, s3, s4; [r1])".equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("r1")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\").string"));
         }
-        if ("narySequenced(s1, s2, s3, s4; [r1, r2])".equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance("r1"), .ceylon.language.String.instance("r2"))).toString())) {
+        if ("narySequenced(s1, s2, s3, s4; [r1, r2])".equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.String.instance("r1"),
+                .ceylon.language.String.instance("r2")})).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1, r2])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\", \"r2\").string"));
         }
