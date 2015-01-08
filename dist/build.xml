@@ -834,6 +834,28 @@ You can now build the package by executing:
         </exec>
     </target>
 
+    <target name="git-gc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-gc-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-gc-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Compacting ${project.item.name}...</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="gc"/>
+                </exec>
+            </then>
+        </if>
+    </target>
+
     <target name="clean"
             description="Cleans the distribution package">
         <delete dir="${ceylon.dist.dir}"/>
