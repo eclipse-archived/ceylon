@@ -104,6 +104,11 @@ abstract class Invocation {
     protected BoxingStrategy boxingStrategy;
     private final Tree.Primary qmePrimary;
     private final boolean onValueType;
+    private boolean callable;
+    
+    public boolean isCallable() {
+        return callable;
+    }
     
     protected Invocation(AbstractTransformer gen, 
             Tree.Term primary, Declaration primaryDeclaration,
@@ -281,8 +286,10 @@ abstract class Invocation {
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 if (gen.isVariadicCallable(getPrimary().getTypeModel())) {
                     selector = Naming.getCallableVariadicMethodName();
+                    this.callable = true;
                 } else {
                     selector = Naming.getCallableMethodName();
+                    this.callable = true;
                 }
             } else if ((getPrimaryDeclaration() instanceof Method
                             && ((Method)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
@@ -298,8 +305,10 @@ abstract class Invocation {
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 if (gen.isVariadicCallable(getPrimary().getTypeModel())) {
                     selector = Naming.getCallableVariadicMethodName();
+                    this.callable = true;
                 } else {
                     selector = Naming.getCallableMethodName();
+                    this.callable = true;
                 }
             }
         }
