@@ -555,8 +555,8 @@ class TestSet<out Element>({Element*} e) satisfies Set<Element>
 }
 
 void testSetOperators() {
-  variable value s1 = TestSet{1,2,3,4};
-  value s2 = TestSet{4,5,6};
+  variable Set<Integer> s1 = TestSet{1,2,3,4};
+  Set<Integer> s2 = TestSet{4,5,6};
   check((s1|s2).size == 6, "|");
   check((s1~s2).size == 3, "~");
   check((s1&s2).size == 1, "&");
