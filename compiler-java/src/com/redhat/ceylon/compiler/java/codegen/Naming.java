@@ -679,7 +679,9 @@ public class Naming implements LocalId {
 
     private void appendTypeDeclaration(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, 
             TypeDeclarationBuilder<?> typeDeclarationBuilder, Scope scope, final boolean last) {
-        if (scope instanceof Class || scope instanceof TypeAlias || scope instanceof Constructor) {
+        if (scope instanceof Class 
+                || scope instanceof TypeAlias 
+                || (scope instanceof Constructor && (scope.equals(decl) || !Decl.isLocalNotInitializerScope(scope)))) {
             TypeDeclaration klass = (TypeDeclaration)scope;
             if(klass.isAnonymous() && !klass.isNamed())
                 typeDeclarationBuilder.clear();
