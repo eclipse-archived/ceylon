@@ -1592,7 +1592,7 @@ public class GenerateJsVisitor extends Visitor
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             generateCallable(that, null);
         } else if (that.getStaticMethodReference() && that.getDeclaration()!=null) {
-            out("function($O$) {return ");
+            out("function($O$){return ");
             if (that.getDeclaration() instanceof Method) {
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));

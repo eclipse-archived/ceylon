@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -273,7 +274,7 @@ public class InvocationGenerator {
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
                 Map<String, String> argVarNames, boolean superAccess, Tree.TypeArguments targs) {
         boolean firstList = true;
-        for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
+        for (ParameterList plist : func.getParameterLists()) {
             boolean first=true;
             if (firstList && superAccess) {
                 gen.out(".call(this");
@@ -584,12 +585,19 @@ public class InvocationGenerator {
     }
 
     private void describeMethodParameters(Tree.Term term) {
-        Method _m = null;
+        ParameterList plist = null;
         if (term instanceof Tree.FunctionArgument) {
-            _m = (((Tree.FunctionArgument)term).getDeclarationModel());
+            plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
         } else if (term instanceof Tree.MemberOrTypeExpression) {
-            if (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Method) {
-                _m = (Method)((Tree.MemberOrTypeExpression)term).getDeclaration();
+            Tree.MemberOrTypeExpression mote = ((Tree.MemberOrTypeExpression)term);
+            if (mote.getDeclaration() instanceof Method) {
+                plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
+            } else if (mote.getDeclaration() instanceof Value && mote.getStaticMethodReference()) {
+                plist = new ParameterList();
+                Parameter param = new Parameter();
+                plist.getParameters().add(param);
+                param.setModel((Value)mote.getDeclaration());
+                param.setName("_0");
             }
         } else if (term instanceof Tree.InvocationExpression) {
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, term.getTypeModel(), gen);
@@ -597,10 +605,10 @@ public class InvocationGenerator {
         } else {
             gen.out("/*WARNING4 Callable EXPR of type ", term.getClass().getName(), "*/");
         }
-        if (_m == null) {
+        if (plist == null) {
             gen.out("[]");
         } else {
-            TypeUtils.encodeParameterListForRuntime(term, _m.getParameterLists().get(0), gen);
+            TypeUtils.encodeParameterListForRuntime(term, plist, gen);
         }
     }
 
