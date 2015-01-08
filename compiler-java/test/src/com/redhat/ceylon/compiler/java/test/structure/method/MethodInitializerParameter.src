@@ -14,7 +14,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     private final void unary$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
-        m.$call$(.ceylon.language.Integer.instance(1L));
+        m.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
         (
             let
             {
@@ -26,7 +26,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     private final void nary$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
-        m.$call$(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        m.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
         (
             let
             {
@@ -41,9 +41,9 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     private final void sequenced$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
-        m.$callvariadic$(.ceylon.language.Integer.instance(1L));
-        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
-        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        m.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        m.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
+        m.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
         (
@@ -70,7 +70,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     private final void typeParameter$priv$(final .ceylon.language.Callable<? extends T> m) {
-        m.$call$(getT$priv$());
+        m.$call$((.java.lang.Object)getT$priv$());
         (
             let
             {

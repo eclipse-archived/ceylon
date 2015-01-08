@@ -26,7 +26,7 @@ final class bug934_collectMatches_ {
         loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final Element element = (Element)elem$0;
-            final long result = search.$call$(element).longValue();
+            final long result = search.$call$((.java.lang.Object)element).longValue();
             if (result > 0L) {
                 ok.ref = (.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)), new .java.lang.Object[]{(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(result),

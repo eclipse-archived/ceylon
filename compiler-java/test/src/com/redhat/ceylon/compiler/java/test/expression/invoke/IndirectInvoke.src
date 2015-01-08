@@ -53,19 +53,19 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     private final void mParameter2$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call$(.ceylon.language.Integer.instance(1L));
+        indirect.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     
     private final void mParameter3$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call$(.ceylon.language.Boolean.instance(true));
+        indirect.$call$((.java.lang.Object).ceylon.language.Boolean.instance(true));
     }
     
     private final void mParameter4$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call$(.ceylon.language.String.instance(""));
+        indirect.$call$((.java.lang.Object).ceylon.language.String.instance(""));
     }
     
     private final <T>void mParameter5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
-        indirect.$call$(t);
+        indirect.$call$((.java.lang.Object)t);
     }
     
     private final void mLocal$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
@@ -75,22 +75,22 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private final long mLocal2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> indirect = f;
-        return indirect.$call$(.ceylon.language.Integer.instance(1L)).longValue();
+        return indirect.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).longValue();
     }
     
     private final boolean mLocal3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> indirect = f;
-        return indirect.$call$(.ceylon.language.Boolean.instance(true)).booleanValue();
+        return indirect.$call$((.java.lang.Object).ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
     private final .java.lang.String mLocal4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> indirect = f;
-        return indirect.$call$(.ceylon.language.String.instance("")).toString();
+        return indirect.$call$((.java.lang.Object).ceylon.language.String.instance("")).toString();
     }
     
     private final <T>T mLocal5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> f, final T t) {
         final .ceylon.language.Callable<? extends T> indirect = f;
-        return indirect.$call$(t);
+        return indirect.$call$((.java.lang.Object)t);
     }
     
     private final void mMethod$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
@@ -98,19 +98,19 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     private final long mMethod2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
-        return indirect.$call$().$call$(.ceylon.language.Integer.instance(1L)).longValue();
+        return indirect.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).longValue();
     }
     
     private final boolean mMethod3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
-        return indirect.$call$().$call$(.ceylon.language.Boolean.instance(true)).booleanValue();
+        return indirect.$call$().$call$((.java.lang.Object).ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
     private final .java.lang.String mMethod4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
-        return indirect.$call$().$call$(.ceylon.language.String.instance("")).toString();
+        return indirect.$call$().$call$((.java.lang.Object).ceylon.language.String.instance("")).toString();
     }
     
     private final <T>T mMethod5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
-        return indirect.$call$().$call$(t);
+        return indirect.$call$().$call$((.java.lang.Object)t);
     }
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1$priv$() {

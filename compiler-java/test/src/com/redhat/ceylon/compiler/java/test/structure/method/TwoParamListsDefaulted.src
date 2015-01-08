@@ -36,14 +36,14 @@ final class twoParamListsDefaulted_caller_ {
     }
     
     static void twoParamListsDefaulted_caller() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted().$call$(.ceylon.language.String.instance("Doe"));
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted().$call$((.java.lang.Object).ceylon.language.String.instance("Doe"));
         (
             let
             {
                 .java.lang.String arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
             }
             returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted(arg$1$0);
-        ).$call$(.ceylon.language.String.instance("Doe"));
+        ).$call$((.java.lang.Object).ceylon.language.String.instance("Doe"));
     }
     
     public static void main(.java.lang.String[] args) {

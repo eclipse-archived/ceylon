@@ -102,7 +102,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 );
             }
         };
-        f.$call$(.ceylon.language.empty_.get_());
+        f.$call$((.java.lang.Object).ceylon.language.empty_.get_());
     }
     
     public static void main(.java.lang.String[] args) {

@@ -416,7 +416,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(s$param$);
             }
         };
-        if ("default(s1)".equals($default.$call$(.ceylon.language.String.instance("s1")).toString())) {
+        if ("default(s1)".equals($default.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s1)\"==default(\"s1\").string"));
         }
@@ -428,7 +428,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef($ceylontmp$s);
             }
         };
-        if ("default(s2)".equals(default2.$call$(.ceylon.language.String.instance("s2")).toString())) {
+        if ("default(s2)".equals(default2.$call$((.java.lang.Object).ceylon.language.String.instance("s2")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"default(s2)\"==default2(\"s2\").string"));
         }
@@ -440,7 +440,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Unary, s$param$);
             }
         };
-        if ("unary(s2)".equals(unary.$call$(.ceylon.language.String.instance("s2")).toString())) {
+        if ("unary(s2)".equals(unary.$call$((.java.lang.Object).ceylon.language.String.instance("s2")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s2)\"==unary(\"s2\").string"));
         }
@@ -452,7 +452,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Unary, s$param$);
             }
         };
-        if ("unary(s3)".equals(unary2.$call$(.ceylon.language.String.instance("s3")).toString())) {
+        if ("unary(s3)".equals(unary2.$call$((.java.lang.Object).ceylon.language.String.instance("s3")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(s3)\"==unary2(\"s3\").string"));
         }
@@ -465,7 +465,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Binary, s1$param$, s2$param$);
             }
         };
-        if ("binary(s2,s3)".equals(binary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
+        if ("binary(s2,s3)".equals(binary.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(s2,s3)\"==binary(\"s2\", \"s3\").string"));
         }
@@ -479,7 +479,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Ternary, s1$param$, s2$param$, s3$param$);
             }
         };
-        if ("ternary(s2,s3,s4)".equals(ternary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
+        if ("ternary(s2,s3,s4)".equals(ternary.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(s2,s3,s4)\"==ternary(\"s2\", \"s3\", \"s4\").string"));
         }
@@ -494,7 +494,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.Nary, s1$param$, s2$param$, s3$param$, s4$param$);
             }
         };
-        if ("nary(s2,s3,s4,s5)".equals(nary.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
+        if ("nary(s2,s3,s4,s5)".equals(nary.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(s2,s3,s4,s5)\"==nary(\"s2\", \"s3\", \"s4\", \"s5\").string"));
         }
@@ -506,7 +506,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, s$param$);
             }
         };
-        if ("defaultTp(s1)".equals(defaultTp.$call$(.ceylon.language.String.instance("s1")).toString())) {
+        if ("defaultTp(s1)".equals(defaultTp.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"defaultTp(s1)\"==defaultTp(\"s1\").string"));
         }
@@ -518,7 +518,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.UnaryTp, s$param$);
             }
         };
-        if ("unaryTp(s2)".equals(unaryTp.$call$(.ceylon.language.String.instance("s2")).toString())) {
+        if ("unaryTp(s2)".equals(unaryTp.$call$((.java.lang.Object).ceylon.language.String.instance("s2")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryTp(s2)\"==unaryTp(\"s2\").string"));
         }
@@ -531,7 +531,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.BinaryTp, s1$param$, s2$param$);
             }
         };
-        if ("binaryTp(s2,s3)".equals(binaryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
+        if ("binaryTp(s2,s3)".equals(binaryTp.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryTp(s2,s3)\"==binaryTp(\"s2\", \"s3\").string"));
         }
@@ -545,7 +545,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.TernaryTp, s1$param$, s2$param$, s3$param$);
             }
         };
-        if ("ternaryTp(s2,s3,s4)".equals(ternaryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
+        if ("ternaryTp(s2,s3,s4)".equals(ternaryTp.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryTp(s2,s3,s4)\"==ternaryTp(\"s2\", \"s3\", \"s4\").string"));
         }
@@ -560,7 +560,7 @@ final class constructorRef_ {
                 return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp.NaryTp, s1$param$, s2$param$, s3$param$, s4$param$);
             }
         };
-        if ("naryTp(s2,s3,s4,s5)".equals(naryTp.$call$(.ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
+        if ("naryTp(s2,s3,s4,s5)".equals(naryTp.$call$((.java.lang.Object).ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.String.instance("s5")).toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryTp(s2,s3,s4,s5)\"==naryTp(\"s2\", \"s3\", \"s4\", \"s5\").string"));
         }

@@ -18,7 +18,7 @@ final class bug1916_ {
                         .java.lang.Object val$2;
                         if ((val$2 = val) != null) {
                             final .java.lang.Object val$4 = val$2;
-                            $ceylontmp$ifResult$0 = predicate.$call$(val$4);
+                            $ceylontmp$ifResult$0 = predicate.$call$((.java.lang.Object)val$4);
                         } else {
                             final .java.lang.Object val$3 = val$2;
                             $ceylontmp$ifResult$0 = .ceylon.language.Boolean.instance(false);
@@ -49,7 +49,7 @@ final class bug1916_2_ {
                             .java.lang.Object sel$6 = val;
                             if (sel$6 != null) {
                                 final .java.lang.Object val$8 = (.java.lang.Object)sel$6;
-                                $ceylontmp$ifResult$5 = predicate.$call$(val$8);
+                                $ceylontmp$ifResult$5 = predicate.$call$((.java.lang.Object)val$8);
                             } else {
                                 final .java.lang.Object val$7 = (.java.lang.Object)sel$6;
                                 $ceylontmp$ifResult$5 = .ceylon.language.Boolean.instance(false);

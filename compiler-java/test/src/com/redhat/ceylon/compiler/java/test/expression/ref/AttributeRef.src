@@ -34,7 +34,7 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef.$call$(this))) {
+        if (.ceylon.language.String.instance("val").equals(valRef.$call$((.java.lang.Object)this))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
         }
@@ -46,7 +46,7 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef2.$call$(other))) {
+        if (.ceylon.language.String.instance("val").equals(valRef2.$call$((.java.lang.Object)other))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)"));
         }
@@ -58,7 +58,7 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 return $instance$.getTypeParam();
             }
         };
-        if (getT$priv$().equals(typeParamRef.$call$(this))) {
+        if (getT$priv$().equals(typeParamRef.$call$((.java.lang.Object)this))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "t == typeParamRef(this)"));
         }
@@ -70,7 +70,7 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 return $instance$.getTypeParam();
             }
         };
-        if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call$(other))) {
+        if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call$((.java.lang.Object)other))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)"));
         }
@@ -92,11 +92,11 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 };
             }
         };
-        if (objectEqualsRef.$call$(this).$call$(this).booleanValue()) {
+        if (objectEqualsRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object)this).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
         }
-        if (!objectEqualsRef.$call$(this).$call$(.ceylon.language.String.instance("")).booleanValue()) {
+        if (!objectEqualsRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("")).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
         }
@@ -115,11 +115,11 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 };
             }
         };
-        if (stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(.ceylon.language.String.instance("")).booleanValue()) {
+        if (stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("")).$call$((.java.lang.Object).ceylon.language.String.instance("")).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
         }
-        if (!stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(this).booleanValue()) {
+        if (!stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("")).$call$((.java.lang.Object)this).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
         }
@@ -138,11 +138,11 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 };
             }
         };
-        if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(1L)).$call$(.ceylon.language.Integer.instance(1L)))) {
+        if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
         }
-        if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(0L)).$call$(.ceylon.language.Integer.instance(1L)))) {
+        if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(0L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
         }
@@ -161,11 +161,11 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 };
             }
         };
-        if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar")))) {
+        if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar")))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
         }
-        if (stringEqualsRef.$call$(.ceylon.language.String.instance("foobar")).$call$(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar"))).booleanValue()) {
+        if (stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("foobar")).$call$((.java.lang.Object)stringPlus.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar"))).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
         }
@@ -205,7 +205,7 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                 return .ceylon.language.String.instance($instance$.getBar());
             }
         };
-        if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call$(Inner$new$("bar")))) {
+        if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call$((.java.lang.Object)Inner$new$("bar")))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))"));
         }

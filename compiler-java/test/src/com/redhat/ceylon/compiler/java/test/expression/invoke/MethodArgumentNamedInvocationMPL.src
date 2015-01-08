@@ -6,31 +6,31 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
     }
     
     private final void m1$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
+        final .java.lang.String s = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
     }
     
     private final void m2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
+        final .java.lang.Object v = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     
     private final void m3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
+        final .java.lang.String s = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
     }
     
     private final void m4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
+        final .java.lang.Object v = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     
     private final void m5$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
+        final .java.lang.Object v = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     
     private final void m6$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
+        final .java.lang.Object v = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     
     private final void m7$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
+        final .java.lang.String s = f.$call$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
     }
     
     private final void callsite$priv$() {

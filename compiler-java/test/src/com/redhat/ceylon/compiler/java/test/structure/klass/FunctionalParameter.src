@@ -68,7 +68,7 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public final void callMethodFps(final .ceylon.language.Callable<? extends .java.lang.Object> voidFp1, final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp1) {
-        voidFp1.$call$(.ceylon.language.String.instance(""));
+        voidFp1.$call$((.java.lang.Object).ceylon.language.String.instance(""));
         (
             let
             {
@@ -78,7 +78,7 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
             returning null;
         );
         .java.lang.String s = null;
-        s = stringFp1.$call$(.ceylon.language.String.instance("")).toString();
+        s = stringFp1.$call$((.java.lang.Object).ceylon.language.String.instance("")).toString();
         s = (
             let
             {

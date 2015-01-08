@@ -64,7 +64,7 @@ public class Bug1154<Element, First extends Element, Rest extends .ceylon.langua
     }
     
     public final void juu(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call$((.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)getTuple());
+        f.$call$((.java.lang.Object)(.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)getTuple());
     }
     
     @.java.lang.Override

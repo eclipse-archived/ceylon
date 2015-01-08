@@ -24,7 +24,7 @@ final class bug1908fun_ {
                 .java.lang.Object f$5;
                 if (.com.redhat.ceylon.compiler.java.Util.isReified(f$5 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))) {
                     final .ceylon.language.Callable<? extends R> f$6 = (.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)f$5;
-                    f$6.$call$(.ceylon.language.Integer.instance(1L));
+                    f$6.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
                 }
                 return ((.ceylon.language.Iterable<? extends Args, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args).<R>collect($reified$R, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<R>($reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Args, $reified$Args, .ceylon.language.Empty.$TypeDescriptor$), "R(Args)", (short)-1){
                     
@@ -50,7 +50,7 @@ final class bug1908_ {
             public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(1L);
             }
-        }).$call$(.ceylon.language.empty_.get_()));
+        }).$call$((.java.lang.Object).ceylon.language.empty_.get_()));
         .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1908fun_.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>>bug1908fun(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -58,7 +58,7 @@ final class bug1908_ {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
                 return .ceylon.language.Integer.instance(i);
             }
-        }).$call$((.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .java.lang.Object[]{(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})})));
+        }).$call$((.java.lang.Object)(.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .java.lang.Object[]{(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})})));
     }
     
     public static void main(.java.lang.String[] args) {

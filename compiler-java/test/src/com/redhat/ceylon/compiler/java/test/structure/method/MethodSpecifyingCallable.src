@@ -175,7 +175,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.String foo$priv$(final long i) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call$(.ceylon.language.Integer.instance(i)).toString();
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call$((.java.lang.Object).ceylon.language.Integer.instance(i)).toString();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> noParam;
     
@@ -193,7 +193,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object oneParam1$priv$() {
-        return getOneParam$priv$().$call$(.ceylon.language.Integer.instance(1L));
+        return getOneParam$priv$().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> oneSequencedParam;
     
@@ -272,15 +272,15 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object secondSequencedParam0$priv$() {
-        return getSecondSequencedParam$priv$().$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        return getSecondSequencedParam$priv$().$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
     
     private final .java.lang.Object secondSequencedParam1$priv$() {
-        return getSecondSequencedParam$priv$().$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
+        return getSecondSequencedParam$priv$().$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
     }
     
     private final .java.lang.Object secondSequencedParam2$priv$() {
-        return getSecondSequencedParam$priv$().$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        return getSecondSequencedParam$priv$().$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
     }

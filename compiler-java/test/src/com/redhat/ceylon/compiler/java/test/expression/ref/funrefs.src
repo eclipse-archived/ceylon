@@ -190,7 +190,7 @@ final class funrefs_ {
                     }
                 };
             }
-        }.$call$(person).$call$(.ceylon.language.String.instance("hello"));
+        }.$call$(person).$call$((.java.lang.Object).ceylon.language.String.instance("hello"));
         final .ceylon.language.Callable<? extends .ceylon.language.String> firstFun = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "String(Singleton<String>)", (short)-1){
             
             @.java.lang.Override

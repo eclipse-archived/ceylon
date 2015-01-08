@@ -6,9 +6,9 @@ final class callablePositionalInvocationSequenced_f_ {
     }
     
     static void callablePositionalInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-        foo.$callvariadic$(.ceylon.language.Integer.instance(1L));
-        foo.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("")}));
-        foo.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        foo.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        foo.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("")}));
+        foo.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
                 .ceylon.language.String.instance(""),
                 .ceylon.language.String.instance("")}));
         foo.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());

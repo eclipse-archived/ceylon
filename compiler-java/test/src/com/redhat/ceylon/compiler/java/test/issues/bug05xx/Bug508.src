@@ -13,7 +13,7 @@ final class bug508_ {
             }
             
             void callFunction(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
-                .ceylon.language.print_.print(f.$call$(.ceylon.language.Integer.instance(0L)));
+                .ceylon.language.print_.print(f.$call$((.java.lang.Object).ceylon.language.Integer.instance(0L)));
             }
         }
         final callFunction_ callFunction = new callFunction_();

@@ -82,7 +82,7 @@ final class spreadMethodReference_ {
         spreadMethodRef.ref = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$6$iterable$ = spreadMethodRef.ref.$call$(.ceylon.language.Integer.instance(5L));
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$6$iterable$ = spreadMethodRef.ref.$call$((.java.lang.Object).ceylon.language.Integer.instance(5L));
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "[Integer+](Integer)", (short)-1){
                 

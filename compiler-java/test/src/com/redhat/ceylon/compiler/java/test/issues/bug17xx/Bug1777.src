@@ -32,7 +32,7 @@ public final class Bug1777$impl<Element> {
                 .ceylon.language.Iterator<? extends Element> elem$iterator$$1 = $this.iterator();
                 loop_0: while (!((elem$0 = elem$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
                     final Element elem = (Element)elem$0;
-                    partial = accumulating.$call$(partial, elem);
+                    partial = accumulating.$call$((.java.lang.Object)partial, elem);
                 }
                 return partial;
             }
@@ -619,7 +619,7 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
                 .ceylon.language.Iterator<? extends Element> elem$iterator$$5 = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777_2<Element>.this.iterator();
                 loop_1: while (!((elem$4 = elem$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
                     final Element elem = (Element)elem$4;
-                    partial = accumulating.$call$(partial, elem);
+                    partial = accumulating.$call$((.java.lang.Object)partial, elem);
                 }
                 return partial;
             }

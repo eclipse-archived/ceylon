@@ -37,11 +37,11 @@ final class variadicArraysMethods_ {
         ));
         final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
         final .java.lang.Object[] objectArray1 = new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        f.$call$((.java.lang.Object)objectArray1);
+        f.$call$((.java.lang.Object)(.java.lang.Object)objectArray1);
         final int[] intArray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        f.$call$(intArray);
+        f.$call$((.java.lang.Object)intArray);
         final .ceylon.language.Callable<? extends .java.lang.Object> f2 = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
-        f2.$call$((.java.lang.Object)null);
+        f2.$call$((.java.lang.Object)(.java.lang.Object)null);
         java.variadicObject((.java.lang.Object)null);
         java.variadicObject((.java.lang.Object)arr1);
         java.variadicObject((.java.lang.Object[])arr1);
