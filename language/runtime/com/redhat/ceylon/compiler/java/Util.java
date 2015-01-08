@@ -1141,7 +1141,7 @@ public class Util {
     @SuppressWarnings({"unchecked"})
     public static <T> Sequential<? extends T> 
     sequentialCopy(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
-            T... elements) {
+            Object... elements) {
         return sequentialCopy($reifiedT, 0, 
                 elements.length, elements, rest);
     }
@@ -1156,7 +1156,7 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static <T> Sequential<? extends T> sequentialCopy(
             TypeDescriptor $reifiedT,  
-            int start, int length, T[] elements, 
+            int start, int length, Object[] elements, 
             Sequential<? extends T> rest) {
         if (length == 0) {
             if(rest.getEmpty()) {

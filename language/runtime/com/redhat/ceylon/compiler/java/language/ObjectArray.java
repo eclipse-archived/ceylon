@@ -269,31 +269,31 @@ public final class ObjectArray<T> implements ReifiedType {
     /* Implement Iterable */
 
     public static final class ObjectArrayIterable<T> 
-    extends AbstractArrayIterable<T, T[]> {
+    extends AbstractArrayIterable<T, Object[]> {
 
-        public ObjectArrayIterable(T[] array, int start, int len, int step) {
+        public ObjectArrayIterable(Object[] array, int start, int len, int step) {
             super(TypeDescriptor.klass(array.getClass().getComponentType()), 
                     array, start, len, step);
         }
 
-        public ObjectArrayIterable(T[] array, int length) {
+        public ObjectArrayIterable(Object[] array, int length) {
             super(TypeDescriptor.klass(array.getClass().getComponentType()),
                     array, length);
         }
         
-        public ObjectArrayIterable(TypeDescriptor reifiedElement, T[] array) {
+        public ObjectArrayIterable(TypeDescriptor reifiedElement, Object[] array) {
             super(reifiedElement, array, array.length);
         }
 
         @Override
-        protected ObjectArrayIterable<T> newInstance(T[] array, int start,
+        protected ObjectArrayIterable<T> newInstance(Object[] array, int start,
                 int len, int step) {
             return new ObjectArrayIterable<T>(array, start, len, step);
         }
 
         @Override
-        protected T get(T[] array, int index) {
-            return array[index];
+        protected T get(Object[] array, int index) {
+            return (T)array[index];
         }
         
         @Override
