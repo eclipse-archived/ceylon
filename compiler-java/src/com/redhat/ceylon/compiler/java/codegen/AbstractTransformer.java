@@ -4657,6 +4657,10 @@ public abstract class AbstractTransformer implements Transformation {
                     qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
                 }
             }
+            if (qualifyingType != null && 
+                    qualifyingType.getDeclaration() instanceof Constructor) {
+                qualifyingType = qualifyingType.getQualifyingType();
+            }
             if(qualifyingType != null){
                 containerType = makeReifiedTypeArgumentResolved(qualifyingType, true);
             }
