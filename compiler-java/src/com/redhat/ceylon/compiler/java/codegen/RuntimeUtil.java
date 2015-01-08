@@ -188,6 +188,10 @@ class RuntimeUtil {
     public JCExpression getByteArray(JCExpression indexable, JCExpression index) {
         return makeUtilInvocation(null, "getByteArray", List.of(indexable, index));
     }
+    
+    public JCExpression getStringArray(JCExpression indexable, JCExpression index) {
+        return makeUtilInvocation(null, "getStringArray", List.of(indexable, index));
+    }
 
     public JCExpression arrayLength(JCExpression array) {
         return makeUtilInvocation(null, "arrayLength", List.of(array));

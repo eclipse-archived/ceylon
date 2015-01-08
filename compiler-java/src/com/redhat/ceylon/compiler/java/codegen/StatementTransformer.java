@@ -1795,7 +1795,8 @@ public class StatementTransformer extends AbstractTransformer {
                     || typeFact().getArrayType(typeFact().getByteDeclaration().getType()).isExactly(arrayType)
                     || typeFact().getArrayType(typeFact().getIntegerDeclaration().getType()).isExactly(arrayType)
                     || typeFact().getArrayType(typeFact().getCharacterDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getFloatDeclaration().getType()).isExactly(arrayType);
+                    || typeFact().getArrayType(typeFact().getFloatDeclaration().getType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getStringDeclaration().getType()).isExactly(arrayType);;
         }
         
         @Override
@@ -1854,6 +1855,10 @@ public class StatementTransformer extends AbstractTransformer {
                 gotType = elementType;
             } else if (isCeylonByte(elementType)) {
                 elementGet = utilInvocation().getByteArray( 
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
+            } else if (isCeylonString(elementType)) {
+                elementGet = utilInvocation().getStringArray( 
                         indexableName.makeIdent(), indexName.makeIdent());
                 gotType = elementType;
             }
