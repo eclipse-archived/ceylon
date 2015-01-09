@@ -26,6 +26,7 @@ import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.runtime.ClassLoaderHolder;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
@@ -74,7 +75,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         return loadModuleMetaData(cl, name);
     }
 
-    protected static void invokeRun(ClassLoaderHolder clh, String moduleName, final String runClassName, final String[] args) throws Exception {
+    protected static void invokeRun(ClassLoaderHolder clh, String moduleName, String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
         ClassLoader cl = clh.getClassLoader();
         ClassLoader oldClassLoader = SecurityActions.setContextClassLoader(cl);
@@ -85,6 +86,8 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 if (lastDot > 0) {
                     firstChar = runClassName.charAt(lastDot + 1);
                 }
+                // make sure we quote java keywords
+                runClassName = JVMModuleUtil.quoteJavaKeywords(runClassName);
                 // we add _ to run class
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
             } catch (ClassNotFoundException cnfe) {
