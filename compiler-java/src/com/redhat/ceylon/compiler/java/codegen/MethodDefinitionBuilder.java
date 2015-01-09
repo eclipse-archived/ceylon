@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -405,8 +406,9 @@ public class MethodDefinitionBuilder
             nonWideningDecl = param.getModel();
         }
         
-        // make sure we don't accidentally narrow parameters that would be erased in the topmost declaration
-        if(canWiden){
+        // make sure we don't accidentally narrow value parameters that would be erased in the topmost declaration
+        if(canWiden
+                && param.getModel() instanceof Value){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());
             if(!Decl.equal(refinedParameter, param.getModel())){
                 ProducedType refinedParameterType;
