@@ -750,7 +750,7 @@ public class RecognizedOptions {
                 return s.endsWith(".java")  // Java source file
                         || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
                         || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
-                        || SourceVersion.isName(s)   // Legal type name
+                        || isCeylonName(s)   // Legal type name for Ceylon
                         || (new File(s)).isFile();   // Possibly a resource file
             }
             @Override
@@ -825,6 +825,21 @@ public class RecognizedOptions {
             }
         },
         };
+    }
+
+    /**
+     * Version of isName for Ceylon which allows keywords since we do allow them as part of module names 
+     * @param name
+     * @return
+     */
+    public static boolean isCeylonName(CharSequence name) {
+        String id = name.toString();
+
+        for(String s : id.split("\\.", -1)) {
+            if (!SourceVersion.isIdentifier(s))
+                return false;
+        }
+        return true;
     }
 
     public enum PkgInfo {
