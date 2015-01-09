@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.redhat.ceylon.compiler.typechecker.parser.ParseUtil;
+
 public class Variable {
 
     protected final String key;
@@ -107,7 +109,16 @@ public class Variable {
             }
         });
     }
-    
+
+    public static Variable moduleQuotedName(final String key, final String moduleNameKey) {
+        return new Variable(key, null, new VariableValue() {  
+            @Override
+            public String getValue(String projectName, Environment env) {
+                return ParseUtil.quoteCeylonKeywords(env.get(moduleNameKey));
+            }
+        });
+    }
+
     public static Variable moduleVersion(String key, String defaultValue) {
         PatternValidator validator = new PatternValidator("[a-zA-Z0-9.]+");
         return new Variable(key, validator, 

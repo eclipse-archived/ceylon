@@ -245,6 +245,7 @@ public class CeylonNewTool extends CeylonBaseTool {
                 result.add(baseDir);
             }
             result.add(moduleName);
+            result.add(Variable.moduleQuotedName("module.quoted.name", "module.name"));
             result.add(Variable.moduleDir("module.dir", "module.name"));
             result.add(moduleVersion);
             if (shouldCreateProject()) {
