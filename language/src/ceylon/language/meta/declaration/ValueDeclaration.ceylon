@@ -58,7 +58,7 @@ shared sealed interface ValueDeclaration
     "Applies the given closed container type to this attribute declaration in order to obtain an attribute model. 
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
-    shared formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Container> containerType);
+    shared formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
     
     "Reads the current value of this toplevel value."
     shared default Anything get()

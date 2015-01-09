@@ -138,7 +138,7 @@ public class FreeFunction
         ceylon.language.meta.model.Method<Container, Return, Arguments> memberApply(TypeDescriptor $reifiedContainer,
                                                                                TypeDescriptor $reifiedReturn,
                                                                                TypeDescriptor $reifiedArguments,
-                                                                               ceylon.language.meta.model.Type<? extends Container> containerType){
+                                                                               ceylon.language.meta.model.Type<? extends Object> containerType){
         
         return this.<Container, Return, Arguments>memberApply($reifiedContainer,
                                                               $reifiedReturn,
@@ -159,7 +159,7 @@ public class FreeFunction
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedReturn,
                 @Ignore TypeDescriptor $reifiedArguments,
-                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");

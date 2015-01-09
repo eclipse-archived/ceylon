@@ -12,10 +12,10 @@ import ceylon.language {
 
 shared native class OpenInterface(shared Package pkg, shared Object meta) satisfies InterfaceDeclaration {
   shared actual native Interface<Type> interfaceApply<Type=Anything>(AppliedType<Anything>* typeArguments);
-  shared actual native MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
+  shared actual native MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments);
   shared actual native Interface<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments);
   shared actual native Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
-    memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
+    memberApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments);
 
   shared actual native Kind[] memberDeclarations<Kind>() 
             given Kind satisfies NestableDeclaration;

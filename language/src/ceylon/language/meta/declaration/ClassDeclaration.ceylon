@@ -75,7 +75,7 @@ shared sealed interface ClassDeclaration
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
+    shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 
     "Creates a new instance of this toplevel class, by applying the specified type arguments and value arguments."

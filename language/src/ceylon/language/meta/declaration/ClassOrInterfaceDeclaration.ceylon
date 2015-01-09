@@ -123,6 +123,6 @@ shared sealed interface ClassOrInterfaceDeclaration
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
     shared formal Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
-        memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
+        memberApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments);
 
 }

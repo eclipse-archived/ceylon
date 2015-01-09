@@ -109,7 +109,7 @@ public class FreeValue
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedGet,
                 @Ignore TypeDescriptor $reifiedSet,
-                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType){
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType){
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
         ProducedType qualifyingType = Metamodel.getModel(containerType);

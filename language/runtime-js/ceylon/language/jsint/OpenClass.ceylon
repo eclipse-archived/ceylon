@@ -15,7 +15,7 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
     shared Object meta;
     shared native actual Class<Type, Arguments> classApply<Type=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
-    shared native actual MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
+    shared native actual MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
     shared native actual Boolean anonymous;
     shared native actual Boolean abstract;
@@ -46,7 +46,7 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
     shared native actual OpenType[] caseTypes;
     shared native actual ClassOrInterface<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments);
     shared native actual Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
-        memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
+        memberApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments);
     shared native actual NestableDeclaration|Package container;
     shared native actual Kind[] annotatedMemberDeclarations<Kind, Annotation>()
         given Kind satisfies NestableDeclaration

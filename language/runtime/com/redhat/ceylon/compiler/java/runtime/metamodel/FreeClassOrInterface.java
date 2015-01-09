@@ -372,7 +372,7 @@ public abstract class FreeClassOrInterface
     public <Container, Type extends Object>
         java.lang.Object memberApply(TypeDescriptor $reifiedContainer,
                                      TypeDescriptor $reifiedType,
-                                     ceylon.language.meta.model.Type<? extends Container> containerType){
+                                     ceylon.language.meta.model.Type<? extends Object> containerType){
         
         return this.<Container, Type>memberApply($reifiedContainer,
                                                  $reifiedType,
@@ -391,7 +391,7 @@ public abstract class FreeClassOrInterface
         java.lang.Object memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
@@ -418,7 +418,7 @@ public abstract class FreeClassOrInterface
     ceylon.language.meta.model.Member<Container, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         Sequential<? extends ceylon.language.meta.model.Type<?>> types,
-                                                                        ceylon.language.meta.model.Type<Container> container){
+                                                                        ceylon.language.meta.model.Type<? extends Object> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(qualifyingType, declaration);

@@ -61,5 +61,5 @@ shared sealed interface InterfaceDeclaration
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
+    shared formal MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<Anything>* typeArguments);
 }

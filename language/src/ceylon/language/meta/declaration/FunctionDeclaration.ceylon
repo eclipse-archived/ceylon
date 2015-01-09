@@ -60,7 +60,7 @@ shared sealed interface FunctionDeclaration
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Return` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Container> containerType, Type<Anything>* typeArguments)
+    shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Object> containerType, Type<Anything>* typeArguments)
         given Arguments satisfies Anything[];
     
     "Invokes the underlying toplevel function, by applying the specified type arguments and value arguments."

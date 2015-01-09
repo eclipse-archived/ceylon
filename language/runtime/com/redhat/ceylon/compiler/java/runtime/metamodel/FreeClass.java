@@ -178,7 +178,7 @@ public class FreeClass
         ceylon.language.meta.model.MemberClass<Container, Type, Arguments> memberClassApply(TypeDescriptor $reifiedContainer,
                                                                                        TypeDescriptor $reifiedType,
                                                                                        TypeDescriptor $reifiedArguments,
-                                                                                       ceylon.language.meta.model.Type<? extends Container> containerType){
+                                                                                       ceylon.language.meta.model.Type<? extends Object> containerType){
         
         return this.<Container, Type, Arguments>memberClassApply($reifiedContainer,
                                                  $reifiedType,
@@ -200,7 +200,7 @@ public class FreeClass
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
                 @Ignore TypeDescriptor $reifiedArguments,
-                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");

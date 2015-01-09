@@ -49,7 +49,7 @@ public class FreeInterface
     public <Container, Type>
         ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(TypeDescriptor $reifiedContainer,
                                                                                     TypeDescriptor $reifiedType,
-                                                                                    ceylon.language.meta.model.Type<? extends Container> containerType){
+                                                                                    ceylon.language.meta.model.Type<? extends Object> containerType){
         
         return this.<Container, Type>memberInterfaceApply($reifiedContainer,
                                                           $reifiedType,
@@ -68,7 +68,7 @@ public class FreeInterface
     ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
     }
