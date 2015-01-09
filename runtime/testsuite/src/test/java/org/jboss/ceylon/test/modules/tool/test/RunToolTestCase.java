@@ -158,6 +158,29 @@ public class RunToolTestCase {
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
+    @Test
+    public void testQuotedModuleName() throws Exception {
+        ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
+        Assert.assertNotNull(model);
+        CeylonRunTool tool = pluginFactory.bindArguments(model, options("foo.long.module/1.0.0"));
+        assertOutput(tool, "Hello, World!");
+    }
+
+    @Test
+    public void testQuotedModuleNameNoVersion() throws Exception {
+        ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
+        Assert.assertNotNull(model);
+        CeylonRunTool tool = pluginFactory.bindArguments(model, options("foo.long.module"));
+        assertOutput(tool, "Hello, World!");
+    }
+
+    @Test
+    public void testQuotedModuleNameVersion() throws Exception {
+        ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
+        Assert.assertNotNull(model);
+        CeylonRunTool tool = pluginFactory.bindArguments(model, options("--run=foo.long.module::run", "foo.long.module/1.0.0"));
+        assertOutput(tool, "Hello, World!");
+    }
     private void assertOutput(CeylonRunTool tool, String txt) throws IOException {
         PrintStream oldout = System.out;
         PrintStream out = null;
