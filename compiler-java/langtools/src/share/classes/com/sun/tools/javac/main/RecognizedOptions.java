@@ -782,7 +782,8 @@ public class RecognizedOptions {
                         return true;
                     }
                     helper.addFile(f);
-                } if (f.isFile()) {
+                } 
+                if (f.isFile()) {
                     // Most likely a resource file
                     helper.addFile(f);
                 } else {
