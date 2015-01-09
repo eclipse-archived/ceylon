@@ -20,6 +20,12 @@
 package com.redhat.ceylon.tools.new_;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.CharBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -28,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,6 +87,25 @@ public class NewProjectToolTest {
         }
     }
     
+    private void assertMatchInFile(File file, Pattern pattern) throws Exception {
+        Charset charset = Charset.forName("UTF-8");
+        
+        FileInputStream stream = new FileInputStream(file);
+        try  {
+            FileChannel channel = stream.getChannel();
+            try {
+                MappedByteBuffer map = channel.map(MapMode.READ_ONLY, 0, channel.size());
+                CharBuffer chars = charset.decode(map);
+                Matcher matcher = pattern.matcher(chars);
+                Assert.assertTrue(pattern+" not found in "+file, matcher.find());
+            } finally {
+                channel.close();
+            }
+        } finally {
+            stream.close();
+        }
+    }
+    
     private void assertFile(File file) {
         Assert.assertTrue(file + " should be a file", file.isFile());
     }
@@ -127,6 +154,36 @@ public class NewProjectToolTest {
             assertFile(new File(tmpDir, ".classpath"));
             assertFile(new File(tmpDir, ".project"));
             assertDir(new File(tmpDir, ".settings"));
+        } finally {
+            delete(tmpDir);
+        }
+    }
+
+    @Test
+    public void testKeywordsInModuleName() throws Exception {
+        ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
+        Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
+        Path tmpPath = Files.createTempDirectory("ceylon-new-");
+        File tmpDir = tmpPath.toFile();
+        try {
+            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+                    args("--from=../ceylon-dist/templates", 
+                            "hello-world",
+                            "--module-name=long.module",
+                            "--module-version=1",
+                            "--ant=false",
+                            "--eclipse=false",
+                            tmpDir.getAbsolutePath()));
+            runTool(tool);
+            File moduleFile = new File(tmpDir, "source/long/module/module.ceylon");
+            assertFile(moduleFile);
+            File packageFile = new File(tmpDir, "source/long/module/package.ceylon");
+            assertFile(packageFile);
+            assertFile(new File(tmpDir, "source/long/module/run.ceylon"));
+            Pattern pattern = Pattern.compile(Pattern.quote("long.\\imodule"));
+            assertMatchInFile(moduleFile, pattern);
+            assertMatchInFile(packageFile, pattern);
         } finally {
             delete(tmpDir);
         }
