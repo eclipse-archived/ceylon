@@ -408,7 +408,7 @@ public class MethodDefinitionBuilder
         // make sure we don't accidentally narrow parameters that would be erased in the topmost declaration
         if(canWiden){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());
-            if(!Decl.equal(refinedParameter, param.getDeclaration())){
+            if(!Decl.equal(refinedParameter, param.getModel())){
                 ProducedType refinedParameterType;
                 // we don't have to use produced typed references with type params applied here because we want to know the
                 // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
