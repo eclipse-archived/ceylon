@@ -75,7 +75,16 @@ public class CompilerToolTest extends CompilerTest {
                 options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
-    
+
+    @Test
+    public void testCompileKeywordsInModuleName()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                options("--src=test/src", "com.redhat.ceylon.tools.test.keywords.long.module"));
+        tool.run();
+    }
+
     @Test
     public void testCompileCwd()  throws Exception {
         File destDir = destFile("compilecwdtest");
