@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.tools.JavaFileObject.Kind;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
@@ -46,11 +47,11 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 public class Util {
 
     public static String quote(String name) {
-        return Naming.quote(name);
+        return JVMModuleUtil.quote(name);
     }
 
     public static String quoteIfJavaKeyword(String name){
-        return Naming.quoteIfJavaKeyword(name);
+        return JVMModuleUtil.quoteIfJavaKeyword(name);
     }
     
     /**
@@ -61,11 +62,7 @@ public class Util {
      * @return The parts of the qualified name, quoted if necessary
      */
     public static String[] quoteJavaKeywords(String[] name){
-        String[] result = new String[name.length];
-        for (int ii = 0; ii < name.length; ii++) {
-            result[ii] = quoteIfJavaKeyword(name[ii]);
-        }
-        return result;
+        return JVMModuleUtil.quoteJavaKeywords(name);
     }
     
     /**
@@ -76,37 +73,7 @@ public class Util {
      * @return
      */
     public static String quoteJavaKeywords(String qualifiedName){
-        // try not to work for nothing if we don't have to
-        if(needsJavaKeywordsQuoting(qualifiedName))
-            return join(".", quoteJavaKeywords(qualifiedName.split("\\.")));
-        else
-            return qualifiedName;
-    }
-    
-    private static boolean needsJavaKeywordsQuoting(String qualifiedName) {
-        int nextDot = qualifiedName.indexOf('.');
-        int start = 0;
-        while(nextDot != -1){
-            if(Naming.isJavaKeyword(qualifiedName, start, nextDot))
-                return true;
-            start = nextDot+1;
-            nextDot = qualifiedName.indexOf('.', start);
-        }
-        return Naming.isJavaKeyword(qualifiedName, start, qualifiedName.length());
-    }
-
-    /**
-     * Joins the given parts using the given separator
-     * @param sep The separator
-     * @param parts The parts
-     * @return The parts, joined with the separator
-     */
-    public static String join(String sep, String... parts) {
-        StringBuilder sb = new StringBuilder();
-        for (String part : parts) {
-            sb.append(part).append(sep);
-        }
-        return sb.subSequence(0, sb.length() - sep.length()).toString();
+        return JVMModuleUtil.quoteJavaKeywords(qualifiedName);
     }
 
     public static String strip(String str){

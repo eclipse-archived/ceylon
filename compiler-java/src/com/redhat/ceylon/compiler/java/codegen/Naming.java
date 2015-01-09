@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
@@ -230,98 +231,17 @@ public class Naming implements LocalId {
     
     /** Quote the given name by prefixing it with a dollar ($) */
     public static String quote(String name) {
-        return "$"+name;
+        return JVMModuleUtil.quote(name);
     }
 
-    private static final HashSet<String> tokens;
-    private static final String[] tokensArray =         new String[]{
-        "abstract",
-        "assert",
-        "boolean",
-        "break",
-        "byte",
-        "case",
-        "catch",
-        "char",
-        "class",
-        "const",
-        "continue",
-        "default",
-        "do",
-        "double",
-        "else",
-        "enum",
-        "extends",
-        "final",
-        "finally",
-        "float",
-        "for",
-        "goto",
-        "if",
-        "implements",
-        "import",
-        "instanceof",
-        "int",
-        "interface",
-        "long",
-        "native",
-        "new",
-        "package",
-        "private",
-        "protected",
-        "public",
-        "return",
-        "short",
-        "static",
-        "strictfp",
-        "super",
-        "switch",
-        "synchronized",
-        "this",
-        "throw",
-        "throws",
-        "transient",
-        "try",
-        "void",
-        "volatile",
-        "while",
-        "true",
-        "false",
-        "null",
-    };
-    static {
-        tokens = new HashSet<String>();
-        for (String token : tokensArray) {
-            tokens.add(token);
-        }
-    }
     /** Determines whether the given name is a Java keyword */
     public static boolean isJavaKeyword(String name) {
-        return tokens.contains(name);
-    }
-
-    /** Determines whether the given name is a Java keyword */
-    public static boolean isJavaKeyword(String string, int start, int end) {
-        int length = end - start;
-        OUTER:
-        for(int i=0;i<tokensArray.length;i++){
-            String token = tokensArray[i];
-            if(token.length() != length)
-                continue;
-            for(int c=0;c<length;c++){
-                if(string.charAt(c + start) != token.charAt(c))
-                    continue OUTER;
-            }
-            return true;
-        }
-        return false;
+        return JVMModuleUtil.isJavaKeyword(name);
     }
 
     /** Prefixes the given name with a dollar ($) if it is a Java keyword */
     public static String quoteIfJavaKeyword(String name){
-        if(isJavaKeyword(name))
-            return quote(name);
-        return name;
+        return JVMModuleUtil.quoteIfJavaKeyword(name);
     }
 
     private static final HashSet<String> QUOTABLE_METHOD_NAMES;
