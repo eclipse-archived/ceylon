@@ -4293,6 +4293,12 @@ BACKTICK
     : '`'
     ;
 
+/*
+    List of keywords.
+    
+    Note that this must be kept in sync with com.redhat.ceylon.compiler.typechecker.parser.ParseUtil
+*/
+
 ABSTRACTED_TYPE
     :   'abstracts'
     ;
