@@ -1,1 +1,1 @@
-shared package @[module.name];
+shared package @[module.quoted.name];

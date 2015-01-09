@@ -3,7 +3,7 @@ shared void hello(String name = "World") {
     print("Hello, `` name ``!");
 }
 
-"Run the module `@[module.name]`." 
+"Run the module `@[module.quoted.name]`." 
 shared void run(){
     if (nonempty args=process.arguments) {
         for (arg in args) {
