@@ -219,6 +219,7 @@
         <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
+                <exclude name="javax/**" />
                 <exclude name="com/redhat/ceylon/compiler/java/test/**" />
                 <exclude name="com/redhat/ceylon/ant/**" />
                 <exclude name="com/redhat/ceylon/common/**" />
