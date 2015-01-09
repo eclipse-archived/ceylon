@@ -46,6 +46,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 
 /**
@@ -140,11 +141,13 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
     
     private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
-        DotName moduleClassName = DotName.createSimple(moduleName + ".$module_");
+        // we need to escape any java keyword from the package list
+        String quotedModuleName = JVMModuleUtil.quoteJavaKeywords(moduleName);
+        DotName moduleClassName = DotName.createSimple(quotedModuleName + ".$module_");
         ClassInfo ret = index.getClassByName(moduleClassName);
         if(ret == null){
             // read previous module descriptor name
-            moduleClassName = DotName.createSimple(moduleName + ".module_");
+            moduleClassName = DotName.createSimple(quotedModuleName + ".module_");
             ret = index.getClassByName(moduleClassName);
         }
         return ret;
