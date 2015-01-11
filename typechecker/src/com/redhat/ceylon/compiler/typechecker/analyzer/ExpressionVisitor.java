@@ -7012,39 +7012,39 @@ public class ExpressionVisitor extends Visitor {
         
         TypeDeclaration constructor = (TypeDeclaration) that.getScope();
         Scope container = constructor.getContainer();
-        if (constructor instanceof Constructor) {
-            if (container instanceof Class) {
-                Class containingClass = (Class) container;
-                Class superclass = 
-                        containingClass.getExtendedTypeDeclaration();
-                if (superclass!=null) {
-                    ProducedType extendedType = containingClass.getExtendedType();
-                    ProducedType constructedType = type.getTypeModel();
-                    Declaration delegate = type.getDeclarationModel();
-                    if (delegate instanceof Constructor) {
-                        ClassOrInterface delegatedType = 
-                                ((Constructor) delegate).getExtendedTypeDeclaration();
-                        if (!superclass.equals(delegatedType)) {
-                            type.addError("not a constructor of the immediate superclass: '" +
-                                    delegate.getName(unit) + "' is not a constructor of '" + 
-                                    superclass.getName(unit) + "'");
-                        }
-                        else {
-                            checkIsExactly(constructedType.getExtendedType(), 
-                                    extendedType, type, 
-                                    "type arguments must match type arguments in extended class expression");
-                        }
+        if (type!=null &&
+                constructor instanceof Constructor &&
+                container instanceof Class) {
+            Class containingClass = (Class) container;
+            Class superclass = 
+                    containingClass.getExtendedTypeDeclaration();
+            if (superclass!=null) {
+                ProducedType extendedType = containingClass.getExtendedType();
+                ProducedType constructedType = type.getTypeModel();
+                Declaration delegate = type.getDeclarationModel();
+                if (delegate instanceof Constructor) {
+                    ClassOrInterface delegatedType = 
+                            ((Constructor) delegate).getExtendedTypeDeclaration();
+                    if (!superclass.equals(delegatedType)) {
+                        type.addError("not a constructor of the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not a constructor of '" + 
+                                superclass.getName(unit) + "'");
                     }
-                    else if (delegate instanceof Class) {
-                        if (!superclass.equals(delegate)) {
-                            type.addError("does not instantiate the immediate superclass: '" +
-                                    delegate.getName(unit) + "' is not '" + 
-                                    superclass.getName(unit) + "'");
-                        }
-                        else {
-                            checkIsExactly(constructedType, extendedType, type, 
-                                    "type arguments must match type arguments in extended class expression");
-                        }
+                    else {
+                        checkIsExactly(constructedType.getExtendedType(), 
+                                extendedType, type, 
+                                "type arguments must match type arguments in extended class expression");
+                    }
+                }
+                else if (delegate instanceof Class) {
+                    if (!superclass.equals(delegate)) {
+                        type.addError("does not instantiate the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not '" + 
+                                superclass.getName(unit) + "'");
+                    }
+                    else {
+                        checkIsExactly(constructedType, extendedType, type, 
+                                "type arguments must match type arguments in extended class expression");
                     }
                 }
             }
