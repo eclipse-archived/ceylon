@@ -338,4 +338,11 @@ shared void testDestructuring() {
     destructureAssert([1.0,2], ["Tako","Enrique"], "K"->Singleton("V"));
     destructureWhile();
     simpleDestructuring();
+    //js479
+    class Bug479(){
+        value a=[function()=>1,void(){}];
+        value [b,c]=a;
+        check(b()==1, "JS#479");
+    }
+    Bug479();
 }
