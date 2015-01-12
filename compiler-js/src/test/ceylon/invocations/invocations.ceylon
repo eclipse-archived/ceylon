@@ -32,5 +32,6 @@ shared void test() {
     check(staticJoinTest("**")({"a","b","c"})=="a**b**c", "static String.join test");
     testSpread();
     testIssues();
+    testConstructors();
     results();
 }
