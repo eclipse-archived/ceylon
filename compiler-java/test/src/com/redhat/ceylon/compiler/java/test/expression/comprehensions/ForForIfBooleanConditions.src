@@ -60,8 +60,8 @@ final class forForIfBooleanConditions_ {
                         private final boolean $next$2() {
                             ifcomp_2: while (true) {
                                 if (!this.x()) break ifcomp_2;
-                                if (x.compare(y) == .ceylon.language.larger_.get_()) {
-                                    if (y.compare(.ceylon.language.Integer.instance(2L)) == .ceylon.language.larger_.get_()) {
+                                if (.ceylon.language.Integer.compare(x.longValue(), y.longValue()) == .ceylon.language.larger_.get_()) {
+                                    if (.ceylon.language.Integer.compare(y.longValue(), 2L) == .ceylon.language.larger_.get_()) {
                                         break ifcomp_2;
                                     }
                                 }

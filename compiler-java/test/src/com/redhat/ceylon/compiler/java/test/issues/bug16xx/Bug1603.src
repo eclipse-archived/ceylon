@@ -18,7 +18,7 @@ class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .cey
         if ((element$1 = element) instanceof .ceylon.language.Integer) {
             final long element$2 = ((.ceylon.language.Integer)element$1).longValue();
             if ((Element)getFirst() instanceof .ceylon.language.Integer) {
-                return .ceylon.language.Integer.instance(element$2).compare((.ceylon.language.Integer)getFirst()) != .ceylon.language.larger_.get_();
+                return .ceylon.language.Integer.compare(element$2, ((.ceylon.language.Integer)getFirst()).longValue()) != .ceylon.language.larger_.get_();
             }
         }
         return false;

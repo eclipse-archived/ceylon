@@ -119,7 +119,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         long n2 = 0L;
         sync = n1 == n2;
         sync = !(n1 == n2);
-        final .ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2));
+        final .ceylon.language.Comparison c = .ceylon.language.Integer.compare(n1, n2);
         sync = n1 < n2;
         sync = n1 > n2;
         sync = n1 <= n2;
