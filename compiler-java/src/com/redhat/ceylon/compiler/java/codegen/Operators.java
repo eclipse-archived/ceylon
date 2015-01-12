@@ -109,8 +109,13 @@ public class Operators {
                 // no optimised operator returns a boxed type 
                 if(!expression.getUnboxed())
                     return OptimisationStrategy.NONE;
-                if (Decl.isValueTypeDecl(expression.getLeftTerm().getTypeModel())) {
+                ProducedType leftType = expression.getLeftTerm().getTypeModel();
+                if (Decl.isValueTypeDecl(leftType)) {
                     // we can use value type optimization to avoid boxing 
+                    return OptimisationStrategy.OPTIMISE_VALUE_TYPE;
+                } else if (leftType.getDeclaration().getSelfType() != null
+                        && Decl.isValueTypeDecl(leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration()))) {
+                    // a self type of a value type (e.g. Summable<Integer>)
                     return OptimisationStrategy.OPTIMISE_VALUE_TYPE;
                 }
                 return super.getOptimisationStrategy(expression, gen);

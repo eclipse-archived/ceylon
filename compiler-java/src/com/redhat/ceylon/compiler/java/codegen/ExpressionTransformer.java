@@ -2112,7 +2112,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (optimisationStrategy.useValueTypeMethod()) {
-            result = make().Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftTerm.getTypeModel(), JT_NO_PRIMITIVES), actualOperator.ceylonMethod), args.prepend(left));
+            ProducedType leftType = leftTerm.getTypeModel();
+            if (optimisationStrategy == OptimisationStrategy.OPTIMISE_VALUE_TYPE
+                    && leftType.getDeclaration().getSelfType() != null) {
+                leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
+                left = applyErasureAndBoxing(left, leftTerm, BoxingStrategy.BOXED, 
+                        leftType);
+                left = applyErasureAndBoxing(left, leftType, true, BoxingStrategy.UNBOXED, 
+                        leftType);
+            }
+            result = make().Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, JT_NO_PRIMITIVES), actualOperator.ceylonMethod), args.prepend(left));
         } else {
             result = make().Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
         }
