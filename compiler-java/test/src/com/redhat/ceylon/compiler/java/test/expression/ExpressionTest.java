@@ -393,6 +393,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/IntPowerWithIntLiteralOptim");
     }
     @Test
+    public void testOprPowerBoxing(){
+        compareWithJavaSource("operator/PowerBoxing");
+    }
+    @Test
     public void testOprIntPowerWithIntLiteralOptimCorrect(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.expression.operator.intPowerWithIntLiteralOptimCorrect", 
                 "operator/IntPowerWithIntLiteralOptimCorrect.ceylon");

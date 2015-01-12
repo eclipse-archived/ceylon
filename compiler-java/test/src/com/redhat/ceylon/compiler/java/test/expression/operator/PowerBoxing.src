@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class powerBoxing_ {
+    
+    private powerBoxing_() {
+    }
+    
+    static void powerBoxing() {
+        final long exp = 2L;
+        final long result = .ceylon.language.Integer.power(2L, exp) - 1L;
+        final long result2 = .ceylon.language.Integer.power(2L, exp);
+        final double result3 = .ceylon.language.Float.power(2.0, exp) - 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.operator.powerBoxing_.powerBoxing();
+    }
+}
