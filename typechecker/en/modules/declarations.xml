@@ -1031,7 +1031,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
 
-        <synopsis>ClassBody: "{" (Declaration | Statement | Constructor)* "}"</synopsis>
+        <synopsis>ClassBody: "{" (Declaration | Statement | ConstructorDeclaration)* "}"</synopsis>
         
         <para>The body of a class may contain executable code.</para>
         
