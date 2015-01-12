@@ -166,7 +166,24 @@ public class Operators {
                 return lessPermissive(left, right);
             }
         },
-        BINARY_COMPARE(Tree.CompareOp.class, 2, "compare"),
+        BINARY_COMPARE(Tree.CompareOp.class, 2, "compare") {
+            @Override
+            public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression expression, AbstractTransformer gen) {
+                // no optimised operator returns a boxed type 
+                if(!expression.getUnboxed())
+                    return OptimisationStrategy.NONE;
+                ProducedType leftType = expression.getLeftTerm().getTypeModel();
+                if (Decl.isValueTypeDecl(leftType)) {
+                    // we can use value type optimization to avoid boxing 
+                    return OptimisationStrategy.OPTIMISE_VALUE_TYPE;
+                } else if (leftType.getDeclaration().getSelfType() != null
+                        && Decl.isValueTypeDecl(leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration()))) {
+                    // a self type of a value type (e.g. Summable<Integer>)
+                    return OptimisationStrategy.OPTIMISE_VALUE_TYPE;
+                }
+                return super.getOptimisationStrategy(expression, gen);
+            }
+        },
 
         // Binary operators that act on intermediary Comparison objects
         BINARY_LARGER(Tree.LargerOp.class, 2, JCTree.EQ, "larger", JCTree.GT, IntegerFloatCharacter),

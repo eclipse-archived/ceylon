@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Bound;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
@@ -420,6 +421,12 @@ public abstract class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(ComparisonOp that) {
+        super.visit(that);
+        // this is not conditional
+        CodegenUtil.markUnBoxed(that);
+    }
+    
+    public void visit(CompareOp that) {
         super.visit(that);
         // this is not conditional
         CodegenUtil.markUnBoxed(that);
