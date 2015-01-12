@@ -2215,7 +2215,13 @@ public class GenerateJsVisitor extends Visitor
                 }
                 final StringBuilder path = new StringBuilder();
                 while (scope != null) {
-                    if (scope instanceof TypeDeclaration) {
+                    if (scope instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                        path.append(names.name((TypeDeclaration)scope.getContainer()));
+                        if (scope == id) {
+                            break;
+                        }
+                        scope = scope.getContainer();
+                    } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
                             path.append(".outer$");
                         } else {
@@ -2254,6 +2260,8 @@ public class GenerateJsVisitor extends Visitor
                         }
                         sb.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
                         return sb.toString();
+                    } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                        return names.name((TypeDeclaration)d.getContainer());
                     } else {
                         //a shared local declaration
                         return names.self(id);
