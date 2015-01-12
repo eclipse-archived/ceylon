@@ -1,16 +1,13 @@
 @noanno
-void powerBoxing() {
+void powerBoxing<T>(Exponentiable<Integer, Integer> intSelf,
+    Exponentiable<Float, Float> floatSelf,
+    T exponentiable) given T satisfies Exponentiable<T, Integer> {
     value exp = 2;
-    value result = 2 ^ exp - 1;
-    value result2 = 2.power(exp);
-    value result3 = 2.0 ^ exp - 1;
+    value result2 = 2 ^ exp;
+    value result3 = 2.0 ^ exp;
+    value result4 = 2.0 ^ 2.0;
+    value result5 = intSelf ^ exp;
+    value result6 = floatSelf ^ 2.0;
+    value result7 = exponentiable ^ exp;
     
-    /*
-    Object obj  = false;
-    value v1 = false == obj;
-    value v2 = false == false of Object;
-    value v3 = false.hash;
-    
-    value x1 = false.equals(obj);
-    value x2 = false.equals(false of Object);*/
 }
