@@ -345,9 +345,7 @@ public abstract class BoxingVisitor extends Visitor {
         super.visit(that);
         // can't optimise the ** operator in Java
         if(that instanceof PowerOp) {
-            if (Strategy.inlinePowerAsMultiplication((PowerOp)that)) {
-                CodegenUtil.markUnBoxed(that);
-            }
+            CodegenUtil.markUnBoxed(that);
             return;
         }
         // we are unboxed if both terms are

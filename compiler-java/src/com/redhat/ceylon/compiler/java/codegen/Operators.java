@@ -50,15 +50,22 @@ public class Operators {
     private static final PrimitiveType[] All = PrimitiveType.values();
 
     public enum OptimisationStrategy {
-        OPTIMISE(true, BoxingStrategy.UNBOXED),
-        OPTIMISE_BOXING(false, BoxingStrategy.INDIFFERENT),
-        NONE(false, BoxingStrategy.BOXED);
+        /** Optimize using the equivalent javac operator */
+        OPTIMISE(true, false, BoxingStrategy.UNBOXED),
+        /** Optimize using the static method (for a value type) */
+        OPTIMISE_VALUE_TYPE(false, true, BoxingStrategy.UNBOXED),
+        /** A special case used for String == */
+        OPTIMISE_BOXING(false, false, BoxingStrategy.INDIFFERENT),
+        /** No optimization possible: Call the (virtual) method corresponding to the ceylon operator */
+        NONE(false, false, BoxingStrategy.BOXED);
         
         private BoxingStrategy boxingStrategy;
         private boolean useJavaOperator;
+        private boolean useValueTypeMethod;
 
-        OptimisationStrategy(boolean useJavaOperator, BoxingStrategy boxingStrategy){
+        OptimisationStrategy(boolean useJavaOperator, boolean useValueTypeMethod, BoxingStrategy boxingStrategy){
             this.useJavaOperator = useJavaOperator;
+            this.useValueTypeMethod = useValueTypeMethod;
             this.boxingStrategy = boxingStrategy;
         }
         
@@ -68,6 +75,10 @@ public class Operators {
         
         public boolean useJavaOperator(){
             return useJavaOperator;
+        }
+        
+        public boolean useValueTypeMethod(){
+            return useValueTypeMethod;
         }
     }
     
@@ -92,7 +103,19 @@ public class Operators {
         BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.MINUS, IntegerFloatByte),
         BINARY_PRODUCT(Tree.ProductOp.class, 2, "times", JCTree.MUL, IntegerFloat),
         BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.DIV, IntegerFloat),
-        BINARY_POWER(Tree.PowerOp.class, 2, "power"),
+        BINARY_POWER(Tree.PowerOp.class, 2, "power", -1) {
+            @Override
+            public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression expression, AbstractTransformer gen) {
+                // no optimised operator returns a boxed type 
+                if(!expression.getUnboxed())
+                    return OptimisationStrategy.NONE;
+                if (Decl.isValueTypeDecl(expression.getLeftTerm().getTypeModel())) {
+                    // we can use value type optimization to avoid boxing 
+                    return OptimisationStrategy.OPTIMISE_VALUE_TYPE;
+                }
+                return super.getOptimisationStrategy(expression, gen);
+            }
+        },
         BINARY_REMAINDER(Tree.RemainderOp.class, 2, "remainder", JCTree.MOD, PrimitiveType.INTEGER),
         
         BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
