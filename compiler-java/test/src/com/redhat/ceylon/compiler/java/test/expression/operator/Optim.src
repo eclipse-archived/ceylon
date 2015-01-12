@@ -76,7 +76,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = n2 * n3;
         n1 = n2 / n3;
         n1 = n2 % n3;
-        n1 = .ceylon.language.Integer.instance(n2).power(.ceylon.language.Integer.instance(n3)).longValue();
+        n1 = .ceylon.language.Integer.power(n2, n3);
         n1 = n2 += n3;
         n1 = n2 *= n3;
         n1 = n2 /= n3;
@@ -102,7 +102,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = n2.times(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.divided(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.remainder(.ceylon.language.Integer.instance(n3)).longValue();
-        n1 = n2.power(.ceylon.language.Integer.instance(n3)).longValue();
+        n1 = .ceylon.language.Integer.power(n2.longValue(), n3);
         n1 = (
             let
             {
@@ -152,7 +152,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = n2 - n3;
         n1 = n2 * n3;
         n1 = n2 / n3;
-        n1 = .ceylon.language.Float.instance(n2).power(.ceylon.language.Float.instance(n3)).doubleValue();
+        n1 = .ceylon.language.Float.power(n2, n3);
         n1 = n2 += n3;
         n1 = n2 *= n3;
         n1 = n2 /= n3;
@@ -172,7 +172,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = n2.minus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.times(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.divided(.ceylon.language.Float.instance(n3)).doubleValue();
-        n1 = n2.power(.ceylon.language.Float.instance(n3)).doubleValue();
+        n1 = .ceylon.language.Float.power(n2.doubleValue(), n3);
         n1 = (
             let
             {

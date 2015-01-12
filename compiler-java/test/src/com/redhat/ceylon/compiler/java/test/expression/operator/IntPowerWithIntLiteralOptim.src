@@ -22,8 +22,8 @@ final class intPowerWithIntLiteralOptim_ {
             }
             returning base$1 * base$1 * base$1;
         );
-        final long x0 = .ceylon.language.Integer.instance(x).power(.ceylon.language.Integer.instance(0L)).longValue();
-        final long xm1 = .ceylon.language.Integer.instance(x).power(.ceylon.language.Integer.instance(-1L)).longValue();
+        final long x0 = .ceylon.language.Integer.power(x, 0L);
+        final long xm1 = .ceylon.language.Integer.power(x, -1L);
     }
     
     public static void main(.java.lang.String[] args) {

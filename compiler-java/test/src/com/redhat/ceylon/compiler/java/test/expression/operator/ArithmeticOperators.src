@@ -243,7 +243,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         setN1(getN1() * getN2());
         setN1(getN1() / getN2());
         setN1(getN1() % getN2());
-        setN1(.ceylon.language.Integer.instance(getN1()).power(.ceylon.language.Integer.instance(getN2())).longValue());
+        setN1(.ceylon.language.Integer.power(getN1(), getN2()));
         (
             let
             {
@@ -318,7 +318,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         setGetterN1(getGetterN1() * getGetterN2());
         setGetterN1(getGetterN1() / getGetterN2());
         setGetterN1(getGetterN1() % getGetterN2());
-        setGetterN1(.ceylon.language.Integer.instance(getGetterN1()).power(.ceylon.language.Integer.instance(getGetterN2())).longValue());
+        setGetterN1(.ceylon.language.Integer.power(getGetterN1(), getGetterN2()));
         (
             let
             {
@@ -397,7 +397,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         this.setN1(this.getN1() * this.getN2());
         this.setN1(this.getN1() / this.getN2());
         this.setN1(this.getN1() % this.getN2());
-        this.setN1(.ceylon.language.Integer.instance(this.getN1()).power(.ceylon.language.Integer.instance(this.getN2())).longValue());
+        this.setN1(.ceylon.language.Integer.power(this.getN1(), this.getN2()));
         (
             let
             {
@@ -480,7 +480,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         this.setGetterN1(this.getGetterN1() * this.getGetterN2());
         this.setGetterN1(this.getGetterN1() / this.getGetterN2());
         this.setGetterN1(this.getGetterN1() % this.getGetterN2());
-        this.setGetterN1(.ceylon.language.Integer.instance(this.getGetterN1()).power(.ceylon.language.Integer.instance(this.getGetterN2())).longValue());
+        this.setGetterN1(.ceylon.language.Integer.power(this.getGetterN1(), this.getGetterN2()));
         (
             let
             {
@@ -619,7 +619,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         n1 = n1 * n2;
         n1 = n1 / n2;
         n1 = n1 % n2;
-        n1 = .ceylon.language.Integer.instance(n1).power(.ceylon.language.Integer.instance(n2)).longValue();
+        n1 = .ceylon.language.Integer.power(n1, n2);
         n1 += n2;
         n1 *= n1;
         n1 /= n2;
@@ -738,7 +738,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         getterN1$setter$_.set_(getterN1$getter$_.get_() * getterN2$getter$_.get_());
         getterN1$setter$_.set_(getterN1$getter$_.get_() / getterN2$getter$_.get_());
         getterN1$setter$_.set_(getterN1$getter$_.get_() % getterN2$getter$_.get_());
-        getterN1$setter$_.set_(.ceylon.language.Integer.instance(getterN1$getter$_.get_()).power(.ceylon.language.Integer.instance(getterN2$getter$_.get_())).longValue());
+        getterN1$setter$_.set_(.ceylon.language.Integer.power(getterN1$getter$_.get_(), getterN2$getter$_.get_()));
         (
             let
             {
@@ -891,7 +891,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.get_() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.get_() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.get_() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.get_());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.set_(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.get_()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.get_())).longValue());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.set_(.ceylon.language.Integer.power(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.get_()));
         (
             let
             {
@@ -966,7 +966,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.get_() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.get_() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.get_() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.get_());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.set_(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.get_()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.get_())).longValue());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.set_(.ceylon.language.Integer.power(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.get_()));
         (
             let
             {
@@ -1054,7 +1054,7 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
         super.setGetterN1(super.getGetterN1() * super.getGetterN2());
         super.setGetterN1(super.getGetterN1() / super.getGetterN2());
         super.setGetterN1(super.getGetterN1() % super.getGetterN2());
-        super.setGetterN1(.ceylon.language.Integer.instance(super.getGetterN1()).power(.ceylon.language.Integer.instance(super.getGetterN2())).longValue());
+        super.setGetterN1(.ceylon.language.Integer.power(super.getGetterN1(), super.getGetterN2()));
         (
             let
             {
