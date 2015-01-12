@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -20,6 +21,7 @@ public class Destructurer extends Visitor {
     private final Set<Declaration> directAccess;
     private boolean first;
     private final Set<Tree.Variable> added = new HashSet<>();
+    private final Set<Declaration> attribs = new HashSet<>();
 
     /** Generate the code for the specified pattern. If null is passed instead of a
      * generator, no code is output but the patterns are still visited and their
@@ -37,6 +39,11 @@ public class Destructurer extends Visitor {
         this.expvar = expvar;
         this.first=first;
         that.visit(this);
+        if (!attribs.isEmpty()) {
+            for (Declaration attr : attribs) {
+                gen.out(";", names.self((TypeDeclaration)attr.getContainer()), ".", names.name(attr), "=", names.name(attr));
+            }
+        }
     }
 
     public void visit(final Tree.TuplePattern that) {
@@ -79,17 +86,21 @@ public class Destructurer extends Visitor {
     }
 
     public void visit(final Tree.VariablePattern that) {
+        Tree.Variable v = that.getVariable();
         if (directAccess != null) {
-            directAccess.add(that.getVariable().getDeclarationModel());
+            directAccess.add(v.getDeclarationModel());
         }
-        added.add(that.getVariable());
+        if (v.getDeclarationModel().isClassOrInterfaceMember()) {
+            attribs.add(v.getDeclarationModel());
+        }
+        added.add(v);
         if (first) {
             first=false;
         } else if (gen != null) {
             gen.out(",");
         }
         if (gen != null) {
-            gen.out(names.name(that.getVariable().getDeclarationModel()), "=",expvar);
+            gen.out(names.name(v.getDeclarationModel()), "=",expvar);
         }
     }
 
