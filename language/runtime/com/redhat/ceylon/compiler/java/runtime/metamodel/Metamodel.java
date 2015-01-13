@@ -1172,7 +1172,8 @@ public class Metamodel {
         FreeClassOrInterface decl = (FreeClassOrInterface)getOrCreateMetamodel(klass);
         String getterName = Naming.getGetterName(decl.declaration);
         try {
-            java.lang.reflect.Method method = klass.getMethod(getterName);
+            java.lang.reflect.Method method = klass.getDeclaredMethod(getterName);
+            method.setAccessible(true);
             return (T)method.invoke(null);
         } catch (RuntimeException e) {
             throw e;
