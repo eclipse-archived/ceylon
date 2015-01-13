@@ -44,7 +44,10 @@
             destdir="${build.classes}"
             debug="true"
             encoding="UTF8"
-            classpathref="classpath">
+            classpathref="classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java" />
         </javac>
         <copy todir="${build.classes}">
@@ -135,7 +138,10 @@
             destdir="${build.classes}"
             debug="true"
             encoding="UTF8"
-            classpathref="test.run.classpath">
+            classpathref="test.run.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java" />
         </javac>
         <copy todir="${build.classes}">
