@@ -51,4 +51,6 @@ void compareBoxing<T>(
     
     ord = tSelf <=> t;
     cmp = tSelf < t;
+    
+    assert([1].first>0);
 }
