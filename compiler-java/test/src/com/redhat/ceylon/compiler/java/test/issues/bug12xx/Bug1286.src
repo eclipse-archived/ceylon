@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-interface bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<E> {
+interface bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<E> {
     
     public .java.lang.Object Consumer$impl();
     
     public void add(final E e);
 }
-interface bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<E> {
+interface bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<E> {
     
     public .java.lang.Object Consumer$impl();
     
@@ -33,17 +33,17 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     }
                     
                     public .java.lang.String get_() {
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_).ceylon.language.nothing_.get_();
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_)times1;
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_).ceylon.language.nothing_.get_();
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_)times1;
                         
                         final class Consumer$impl<E> {
                             
-                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<? super E> $this) {
+                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super E> $this) {
                                 this.$reified$E = $reified$E;
                                 this.$this = $this;
                             }
                             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
-                            private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$Consumer_<? super E> $this;
+                            private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super E> $this;
                             
                             public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
                                 this.$reified$E = $reified$E;
@@ -61,17 +61,17 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     
                     @.java.lang.Override
                     public .java.lang.Object $call$() {
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_).ceylon.language.nothing_.get_();
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_)times1;
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_).ceylon.language.nothing_.get_();
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_)times1;
                         
                         final class Consumer$impl<E> {
                             
-                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<? super E> $this) {
+                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super E> $this) {
                                 this.$reified$E = $reified$E;
                                 this.$this = $this;
                             }
                             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
-                            private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$Consumer_<? super E> $this;
+                            private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super E> $this;
                             
                             public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
                                 this.$reified$E = $reified$E;
