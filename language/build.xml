@@ -562,6 +562,9 @@
             debug="true"
             encoding="UTF-8"
             classpathref="test.compile.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}"
             includeantruntime="false">
             <include name="**/*.java"/>
         </javac>
