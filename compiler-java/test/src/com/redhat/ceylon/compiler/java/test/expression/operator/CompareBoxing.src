@@ -14,15 +14,19 @@ final class compareBoxing_ {
         cmp = f < f;
         ord = .ceylon.language.String.compare(s, s);
         cmp = .ceylon.language.String.compare(s, s) == .ceylon.language.smaller_.get_();
-        ord = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)t).compare((T)t);
-        cmp = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)t).compare((T)t) == .ceylon.language.smaller_.get_();
-        ord = .ceylon.language.Integer.compare(((.ceylon.language.Integer)intSelf).longValue(), i);
-        cmp = .ceylon.language.Integer.compare(((.ceylon.language.Integer)intSelf).longValue(), i) == .ceylon.language.smaller_.get_();
-        ord = .ceylon.language.Float.compare(((.ceylon.language.Float)floatSelf).doubleValue(), f);
-        cmp = .ceylon.language.Float.compare(((.ceylon.language.Float)floatSelf).doubleValue(), f) == .ceylon.language.smaller_.get_();
-        ord = .ceylon.language.String.compare(((.ceylon.language.String)stringSelf).toString(), s);
-        cmp = .ceylon.language.String.compare(((.ceylon.language.String)stringSelf).toString(), s) == .ceylon.language.smaller_.get_();
-        ord = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)tSelf).compare((T)t);
-        cmp = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)tSelf).compare((T)t) == .ceylon.language.smaller_.get_();
+        ord = ((T)t).compare((T)t);
+        cmp = ((T)t).compare((T)t) == .ceylon.language.smaller_.get_();
+        ord = .ceylon.language.Integer.compare(((.ceylon.language.Integer)(.ceylon.language.Integer)intSelf).longValue(), i);
+        cmp = .ceylon.language.Integer.compare(((.ceylon.language.Integer)(.ceylon.language.Integer)intSelf).longValue(), i) == .ceylon.language.smaller_.get_();
+        ord = .ceylon.language.Float.compare(((.ceylon.language.Float)(.ceylon.language.Float)floatSelf).doubleValue(), f);
+        cmp = .ceylon.language.Float.compare(((.ceylon.language.Float)(.ceylon.language.Float)floatSelf).doubleValue(), f) == .ceylon.language.smaller_.get_();
+        ord = .ceylon.language.String.compare(((.ceylon.language.String)(.ceylon.language.String)stringSelf).toString(), s);
+        cmp = .ceylon.language.String.compare(((.ceylon.language.String)(.ceylon.language.String)stringSelf).toString(), s) == .ceylon.language.smaller_.get_();
+        ord = ((T)tSelf).compare((T)t);
+        cmp = ((T)tSelf).compare((T)t) == .ceylon.language.smaller_.get_();
+        if (.ceylon.language.Integer.compare(((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).getFirst()).longValue(), 0L) == .ceylon.language.larger_.get_()) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1].first>0"));
+        }
     }
 }
