@@ -80,7 +80,7 @@
     <!-- Rule to build compiler classes from their Java sources -->
     <target name="classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classpath" includeantruntime="true">
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
         </javac>
     </target>
 
