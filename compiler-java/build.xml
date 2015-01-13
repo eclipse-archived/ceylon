@@ -139,7 +139,7 @@
     <!-- Rule to build compiler classes from their Java sources -->
     <target name="compiler.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" includeantruntime="true">
+        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
             <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
             <exclude name="com/redhat/ceylon/tools/Tool.java" />
@@ -190,7 +190,7 @@
     <!-- Rule to build compiler test classes from their Java sources -->
     <target name="test.classes" depends="compiler.classes">
         <mkdir dir="${build.classes}" />
-        <javac destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
+        <javac destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
             <src path="${test.ceylond.src}"/>
             <src path="${test.src}"/>
             <include name="com/redhat/ceylon/compiler/java/test/**" />
