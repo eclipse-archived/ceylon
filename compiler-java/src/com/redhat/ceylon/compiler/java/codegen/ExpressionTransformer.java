@@ -2037,9 +2037,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType, int typeArgumentToUse) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
+        ProducedType leftSelf = leftType.getDeclaration().getSelfType();
+        if (leftSelf != null) {
+            leftType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
+        }
         // the right type always only depends on the LHS so let's not try to find it on the right side because it may
         // be undecidable: https://github.com/ceylon/ceylon-compiler/issues/1535
-        ProducedType rightType = getTypeArgument(leftType, typeArgumentToUse);
+        ProducedType rightType = getTypeArgument(getSupertype(op.getLeftTerm(), compoundType), typeArgumentToUse);
         // we do have a special case which is when the LHS is Float and RHS is Integer and the typechecker allowed coercion
         if(getSupertype(op.getLeftTerm(), typeFact().getFloatDeclaration()) != null
                 && getSupertype(op.getRightTerm(), typeFact().getIntegerDeclaration()) != null){
