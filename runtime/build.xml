@@ -214,24 +214,36 @@
                srcdir="${runtime-spi.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
         <javac debug="true"
                encoding="UTF-8"
                srcdir="${runtime-api.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
         <javac debug="true"
                encoding="UTF-8"
                srcdir="${runtime-impl.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
         <javac debug="true"
                encoding="UTF-8"
                srcdir="${runtime-bootstrap.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
         <!-- Include META-INF -->
         <copy todir="${build.classes}">
@@ -265,6 +277,9 @@
                srcdir="${runtime-test.src}"
                destdir="${build.test}"
                classpathref="test.build.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
     </target>
 
