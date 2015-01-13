@@ -1802,6 +1802,15 @@ shared void checkConstructors2() {
     `ClassConstructorsOfEveryArity.Plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
 }
 
+@test
+shared void checkLambdasTransparentContainers(){
+    value f = void(){
+        class C(){}
+        assert(`class C`.container == `function checkLambdasTransparentContainers`);
+    };
+    f();
+}
+
 Boolean eq(Anything a, Anything b){
     if(exists a){
         if(exists b){
@@ -1965,6 +1974,11 @@ shared void run() {
         checkConstructors2();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed constructors"); e.printStackTrace(); }
+    try {
+        total++;
+        checkLambdasTransparentContainers();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed lambdas transparent containers"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
