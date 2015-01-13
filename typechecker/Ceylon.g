@@ -844,7 +844,7 @@ delegatedConstructor returns [DelegatedConstructor delegatedConstructor]
         ci=classInstantiation
         { $delegatedConstructor.setType($ci.type);
           $delegatedConstructor.setInvocationExpression($ci.invocationExpression); }
-      )
+      )?
     ;
 
 aliasDeclaration returns [TypeAliasDeclaration declaration]
@@ -924,7 +924,8 @@ classBody returns [ClassBody classBody]
     ;
 
 extendedType returns [ExtendedType extendedType]
-    : EXTENDS { $extendedType = new ExtendedType($EXTENDS); }
+    : EXTENDS
+      { $extendedType = new ExtendedType($EXTENDS); }
       (  
         ci=classInstantiation
         { $extendedType.setType($ci.type);
