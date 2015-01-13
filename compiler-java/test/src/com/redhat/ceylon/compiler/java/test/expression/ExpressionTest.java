@@ -389,6 +389,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/ArithmeticOperators");
     }
     @Test
+    public void testOprPlusBoxing(){
+        compareWithJavaSource("operator/PlusBoxing");
+    }
+    @Test
     public void testOprArithmeticOperatorsByte(){
         compareWithJavaSource("operator/ArithmeticOperatorsByte");
     }
