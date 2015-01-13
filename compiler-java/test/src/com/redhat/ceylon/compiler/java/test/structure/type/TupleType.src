@@ -34,7 +34,7 @@ final class add_ {
     }
     
     static double add(final .ceylon.language.Sequence<? extends .ceylon.language.Float> floats) {
-        return ((.ceylon.language.Summable<.ceylon.language.Float>)(.ceylon.language.Summable)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getFirst()).plus((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getRest()).getFirst()).doubleValue();
+        return ((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getFirst()).plus((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getRest()).getFirst()).doubleValue();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -52,7 +52,7 @@ final class tupleTypeTest_ {
         final .java.lang.String a = ((.ceylon.language.String)(.java.lang.Object)tup.getFirst()).toString();
         final long b = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .java.lang.Object>)tup.getRest()).getFirst()).longValue();
         final double c = ((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)((.ceylon.language.Sequence<? extends .java.lang.Object>)tup.getRest()).getRest()).getFirst()).doubleValue();
-        final long sum = ((.ceylon.language.Summable<.ceylon.language.Integer>)(.ceylon.language.Summable)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final long sum = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)})).getFirst()).plus((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{

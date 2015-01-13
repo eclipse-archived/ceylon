@@ -308,12 +308,12 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         final .java.lang.Object boxed = this.getN$priv$();
         .java.lang.Object n = this.getN$priv$();
         .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric sync = null;
-        sync = ((.ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Summable)n).plus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertible)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).times((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Integral)n).remainder((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).divided((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Exponentiable)n).power((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).plus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).times((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).remainder((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).divided((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).power((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         (
             let
             {
@@ -401,8 +401,8 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         boolean sync = false;
         sync = erasedTest == erasedTest;
         sync = p1.equals(p1);
-        sync = ((.ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Comparable)p1).compare((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1) == .ceylon.language.smaller_.get_();
-        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Comparable)p1).compare((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).compare((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1) == .ceylon.language.smaller_.get_();
+        final .ceylon.language.Comparison cmp = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).compare((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
         sync = (
             let
             {
