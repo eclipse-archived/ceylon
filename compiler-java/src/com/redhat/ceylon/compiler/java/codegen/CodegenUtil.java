@@ -263,6 +263,9 @@ public class CodegenUtil {
                 while ((isAlias && c.isAlias())
                         || (isActual && c.isActual())) {
                     c = c.getExtendedTypeDeclaration();
+                    // handle compile errors
+                    if(c == null)
+                        return null;
                 }
                 // be safe
                 if(c.getParameterList() == null
