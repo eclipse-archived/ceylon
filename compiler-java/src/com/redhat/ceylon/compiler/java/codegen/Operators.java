@@ -219,7 +219,7 @@ public class Operators {
             OptimisationStrategy optimisationStrategy;
             OptimisationStrategy left = isTermOptimisable(leftTerm, gen);
             OptimisationStrategy right = isTermOptimisable(rightTerm, gen);
-            optimisationStrategy = lessPermissive(left, right);
+            optimisationStrategy = mostAggressive(left, right);
             if (optimisationStrategy != OptimisationStrategy.OPTIMISE) {
                 // we can't use operator optimization, but maybe was can
                 // use static value type method to avoid boxing
@@ -235,9 +235,17 @@ public class Operators {
             return optimisationStrategy;
         }
         
+        /** Returns the least aggressive optimization of the two given optimizations */
         protected static OptimisationStrategy lessPermissive(OptimisationStrategy left, OptimisationStrategy right) {
             // it's from most permissive to less permissive, so return the one with the higher ordinal (less permissive)
             if(left.ordinal() > right.ordinal())
+                return left;
+            return right;
+        }
+        /** Returns the more aggressive optimization of the two given optimizations */
+        protected static OptimisationStrategy mostAggressive(OptimisationStrategy left, OptimisationStrategy right) {
+            // it's from most permissive to less permissive, so return the one with the higher ordinal (less permissive)
+            if(left.ordinal() < right.ordinal())
                 return left;
             return right;
         }
