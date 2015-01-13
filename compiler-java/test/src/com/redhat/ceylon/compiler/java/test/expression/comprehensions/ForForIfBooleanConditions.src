@@ -61,7 +61,7 @@ final class forForIfBooleanConditions_ {
                             ifcomp_2: while (true) {
                                 if (!this.x()) break ifcomp_2;
                                 if (.ceylon.language.Integer.compare(x.longValue(), y.longValue()) == .ceylon.language.larger_.get_()) {
-                                    if (.ceylon.language.Integer.compare(y.longValue(), 2L) == .ceylon.language.larger_.get_()) {
+                                    if (y.longValue() > 2L) {
                                         break ifcomp_2;
                                     }
                                 }
@@ -73,7 +73,7 @@ final class forForIfBooleanConditions_ {
                             if (this.$next$2()) {
                                 final .ceylon.language.Integer y = this.y;
                                 final .ceylon.language.Integer x = this.x;
-                                return x.times(y);
+                                return .ceylon.language.Integer.instance(.ceylon.language.Integer.times(x.longValue(), y.longValue()));
                             } else return .ceylon.language.finished_.get_();
                         }
                     };

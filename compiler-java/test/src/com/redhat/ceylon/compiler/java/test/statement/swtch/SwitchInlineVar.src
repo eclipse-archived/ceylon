@@ -65,13 +65,13 @@ class SwitchInlineVar implements .com.redhat.ceylon.compiler.java.runtime.model.
                 switch_2: switch (b.toString()) {
                 case "aap": 
                     {
-                        name = .ceylon.language.String.instance("Monkey: ").plus((
+                        name = "Monkey: " + (
                             let
                             {
                                 .ceylon.language.String $ceylontmp$3 = b;
                             }
                             returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.String.instance("?");
-                        )).toString();
+                        ).toString();
                     }
                     break switch_2;
                 

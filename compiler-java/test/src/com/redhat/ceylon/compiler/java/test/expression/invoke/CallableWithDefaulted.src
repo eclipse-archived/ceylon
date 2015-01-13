@@ -869,7 +869,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .ceylon.language.Integer a = (.ceylon.language.Integer)$param$0;
                 final .ceylon.language.Integer b = (.ceylon.language.Integer)$param$1;
-                return a.plus(b);
+                return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus(a.longValue(), b.longValue()));
             }
         };
     }

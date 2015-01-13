@@ -34,7 +34,7 @@ final class forIfFor_ {
                         private final boolean $next$1() {
                             ifcomp_1: while (true) {
                                 if (!this.x()) break ifcomp_1;
-                                if (x.remainder(.ceylon.language.Integer.instance(2L)).equals(.ceylon.language.Integer.instance(0L))) {
+                                if (x.longValue() % 2L == 0L) {
                                     break ifcomp_1;
                                 }
                             }
@@ -71,7 +71,7 @@ final class forIfFor_ {
                             if (this.y()) {
                                 final .ceylon.language.Integer x = this.x;
                                 final .ceylon.language.Integer y = this.y;
-                                return x.times(y);
+                                return .ceylon.language.Integer.instance(.ceylon.language.Integer.times(x.longValue(), y.longValue()));
                             } else return .ceylon.language.finished_.get_();
                         }
                     };
