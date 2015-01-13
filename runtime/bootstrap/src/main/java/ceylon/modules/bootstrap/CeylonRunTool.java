@@ -59,7 +59,11 @@ import com.redhat.ceylon.common.tool.Summary;
         "\n\n" +
         "The following would execute the `com.example.foobar` module:" +
          "\n\n" +
-         "    ceylon run com.example.foobar/1.0.0"
+         "    ceylon run com.example.foobar/1.0.0" +
+         "\n\n" +
+         "The following would execute the `bob` function in the `com.example.foobar.gee` package of the same previous module:" +
+         "\n\n" +
+         "    ceylon run --run com.example.foobar.gee::bob com.example.foobar/1.0.0"
 )
 public class CeylonRunTool extends RepoUsingTool {
     private static final String CEYLON_RUNTIME = "ceylon.runtime";
@@ -86,7 +90,9 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
-    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters.")
+    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. "+
+            "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator "+
+            "between the package name and the toplevel class or method name.")
     public void setRun(String run) {
         this.run = run;
     }
