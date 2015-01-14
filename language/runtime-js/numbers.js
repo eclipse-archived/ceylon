@@ -114,7 +114,7 @@ $addnm$('divided');
 JSNum$proto.remainder = function(other) { return this%other; }
 $addnm$('remainder',Integral.$$.prototype.remainder);
 JSNum$proto.remainder.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};};
-JSNum$proto.divides=function(o){return other%this===0;}
+JSNum$proto.divides=function(o){return o%this===0;}
 JSNum$proto.divides.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};};
 JSNum$proto.power = function(exp) {
     if (nflt$(this)||nflt$(exp)) { return Float(Math.pow(this, exp)); }
