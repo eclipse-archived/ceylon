@@ -50,6 +50,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
@@ -654,7 +655,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             throw new IllegalArgumentException("Unknown compile flags passed");
         }
         ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
-        Tool tool = pluginFactory.bindArguments(model, args);
+        Tool tool = pluginFactory.bindArguments(model, pluginLoader.<CeylonTool>instance("", null), args);
         try {
             msg("compiling", name).newline();
             tool.run();
