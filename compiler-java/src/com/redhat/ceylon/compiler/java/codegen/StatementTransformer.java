@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
@@ -392,6 +391,11 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
 
+        protected JCStatement makeDefaultAssignment(ProducedType type, CName name) {
+            return make().Exec(make().Assign(name.makeIdent(), 
+                    makeDefaultExprForType(type)));        
+        }
+        
         protected abstract List<JCStatement> transformInnermostThen(Cond cond);
         protected abstract List<JCStatement> transformInnermostElse(Cond cond, java.util.List<Tree.Condition> rest);
         protected abstract List<JCStatement> transformIntermediateElse(Cond cond, java.util.List<Tree.Condition> rest);
@@ -403,7 +407,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
         final SyntheticName ifVar = naming.temp("if");
-        private LinkedHashMap<VarTrans, CName> unassignedResultVars = new LinkedHashMap<VarTrans, CName>();
+        private List<JCStatement> unassignedResultVars = List.nil();
         private JCBlock thenBlock;
         private Tree.Variable elseVar;
         private Node elsePart;
@@ -501,14 +505,7 @@ public class StatementTransformer extends AbstractTransformer {
                 varDecls.prepend(testVarDecl);
             }
             if (isDeferred()) {
-                // FIXME DESCTRUCTURE
-                List<JCStatement> assignDefault = List.<JCStatement>nil();
-                for (VarTrans unassigned : unassignedResultVars.keySet()) {
-                    assignDefault = assignDefault.append(
-                            make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
-                            unassigned.makeDefaultExpr())));
-                }
-                elseStmts = assignDefault.isEmpty() ? null : assignDefault;
+                elseStmts = unassignedResultVars.isEmpty() ? null : unassignedResultVars;
             }
             stmts = List.<JCStatement>of(make().If(
                     test, 
@@ -523,10 +520,9 @@ public class StatementTransformer extends AbstractTransformer {
                 List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
                 for (VarDefBuilder vdb : vars) {
                     if (isDeferred()) {
-                        // FIXME DESCTRUCTURE
-                        unassignedResultVars.put(vartrans, vartrans.getVariableName());
+                        unassignedResultVars = unassignedResultVars.prepend(makeDefaultAssignment(vdb.model(), vdb.name()));
                         varDecls.prepend(vdb.buildDefOnly());
-                        stmts = stmts.prepend(make().Exec(make().Assign(vartrans.getVariableName().makeIdent(), vartrans.makeResultExpr())));
+                        stmts = stmts.prepend(make().Exec(make().Assign(vdb.name().makeIdent(), vdb.expr())));
                     } else {
                         stmts = stmts.prepend(vdb.build());
                     }
@@ -766,7 +762,7 @@ public class StatementTransformer extends AbstractTransformer {
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
         private final ListBuffer<JCStatement> fieldDecls = ListBuffer.lb();
         private final SyntheticName messageSb = naming.temp("assert");
-        private LinkedHashMap<VarTrans, CName> unassignedResultVars = new LinkedHashMap<VarTrans, CName>();
+        private List<JCStatement> unassignedResultVars = List.nil();
         
         public AssertCondList(Tree.Assertion ass) {
             super(ass.getConditionList().getConditions(), (Tree.Block)null);
@@ -806,11 +802,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression test, List<JCStatement> stmts, List<JCStatement> elseStmts) {
             
             if (isMulti()) {
-                for (VarTrans unassigned : unassignedResultVars.keySet()) {
-                    elseStmts = elseStmts.prepend(
-                            make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
-                            unassigned.makeDefaultExpr())));
-                }
+                elseStmts = elseStmts.prependList(unassignedResultVars);
             }
             stmts = List.<JCStatement>of(make().If(
                     test, 
@@ -831,7 +823,7 @@ public class StatementTransformer extends AbstractTransformer {
                         var.getVariableName().asName(), 
                         var.makeTypeExpr(), 
                         null);
-                unassignedResultVars.put(var, var.getVariableName());
+                unassignedResultVars = unassignedResultVars.prepend(makeDefaultAssignment(var.getType(), var.getVariableName()));
                 (Decl.getNonConditionScope(ass.getScope()) instanceof ClassOrInterface
                         && var.getVariable().getDeclarationModel().isCaptured() ? fieldDecls : varDecls).append(resultVarDecl);
                 stmts = stmts.prepend(make().Exec(make().Assign(var.getVariableName().makeIdent(), var.makeResultExpr())));
@@ -928,8 +920,8 @@ public class StatementTransformer extends AbstractTransformer {
         public boolean isDestructure();
         
         public JCExpression makeTypeExpr();
-        public JCExpression makeDefaultExpr();
         public JCExpression makeResultExpr();
+        public ProducedType getType();
         public ProducedType getResultType();
         
         public JCStatement makeTestVarDecl(int flags, boolean init);
@@ -1017,29 +1009,15 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
+        public final ProducedType getType() {
+            return toType;
+        }
+
+        @Override
         public final JCExpression makeTypeExpr() {
             return makeJavaType(toType, (toTypeBoxed) ? AbstractTransformer.JT_NO_PRIMITIVES : 0);
         }
 
-        /**
-         * Generates a default value for result variables.
-         * When transforming {@code if/else if} the variable holding the 
-         * type-narrowed variable must be declared final so it can be captured
-         * but in the else blocks we don't have anything we can safely 
-         * initialise it with in the model. So we generate default values 
-         * here, which cannot actually be seen from the ceylon code.
-         * @return
-         */
-        @Override
-        public JCExpression makeDefaultExpr() {
-            at(varOrDes);
-            JCExpression valueExpr = makeDefaultExprForType(toType);
-            if (toTypeBoxed) {
-                valueExpr = boxType(valueExpr, toType);
-            }
-            return valueExpr;
-        }
-        
         @Override
         public JCStatement makeTestVarDecl(int flags, boolean init) {
             // Temporary variable holding the result of the expression/variable to test
@@ -1179,15 +1157,15 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeResultExpr() {
-            Value decl = getVariable().getDeclarationModel();
             ProducedType exprType = getExpression().getTypeModel();
             if (isOptional(exprType)) {
                 exprType = typeFact().getDefiniteType(exprType);
             }
+            ProducedType expectedType = getVariable().getDeclarationModel().getType();
             return expressionGen().applyErasureAndBoxing(getTestVariableName().makeIdent(),
                     exprType, false, true,
                     BoxingStrategy.BOXED,
-                    decl.getType(),
+                    expectedType,
                     ExpressionTransformer.EXPR_DOWN_CAST);
         }
         
@@ -1378,12 +1356,12 @@ public class StatementTransformer extends AbstractTransformer {
                 }
 
                 @Override
-                public JCExpression makeDefaultExpr() {
+                public JCExpression makeResultExpr() {
                     return null;
                 }
 
                 @Override
-                public JCExpression makeResultExpr() {
+                public ProducedType getType() {
                     return null;
                 }
 
