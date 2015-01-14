@@ -3113,7 +3113,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 callBuilder.arrayRead(transformedPrimary.expr);
             else if(transformedPrimary.selector.equals("set")){
                 callBuilder.arrayWrite(transformedPrimary.expr);
-                ProducedType arrayType = invocation.getQmePrimary().getTypeModel();
+                ProducedType arrayType = invocation.getQmePrimary().getTypeModel().resolveAliases();
                 if(isJavaObjectArray(arrayType) && invocation instanceof PositionalInvocation){
                     ProducedType elementType = arrayType.getTypeArgumentList().get(0);
                     ProducedType argumentType = ((PositionalInvocation)invocation).getArgumentType(1);
