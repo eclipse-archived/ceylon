@@ -244,7 +244,7 @@ final class erasureCasting_ {
             }
         }.sequence();
         final .ceylon.language.Sequence tupleOfSequentialSomething = (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tupleOfSequentialSomething.get(.ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tupleOfSequentialSomething.getFromFirst(1L);
         final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequenceOfSequenceOfStrings = (.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom(tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> callableOfCallable = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
         final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.<.java.lang.Object, .ceylon.language.Empty, .ceylon.language.Empty>ec_callableWithBonds(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, callableOfCallable).$call$();

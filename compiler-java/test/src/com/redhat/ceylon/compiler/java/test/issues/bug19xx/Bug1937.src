@@ -64,7 +64,7 @@ final class bug1937_ {
                 final int c$13;
                 if ((obj$10 = obj) instanceof .ceylon.language.String) {
                     obj$11 = ((.ceylon.language.String)obj$10).toString();
-                    if ((c$12 = .ceylon.language.String.instance(obj$11).get(.ceylon.language.Integer.instance(2L))) != null) {
+                    if ((c$12 = .ceylon.language.String.instance(obj$11).getFromFirst(2L)) != null) {
                         c$13 = c$12.intValue();
                         if (c$13 == 121) {
                             $ceylontmp$if$9 = true;
@@ -127,7 +127,7 @@ final class bug1937_ {
                             final int c$26;
                             if ((obj$23 = obj) instanceof .ceylon.language.String) {
                                 obj$24 = ((.ceylon.language.String)obj$23).toString();
-                                if ((c$25 = .ceylon.language.String.instance(obj$24).get(.ceylon.language.Integer.instance(2L))) != null) {
+                                if ((c$25 = .ceylon.language.String.instance(obj$24).getFromFirst(2L)) != null) {
                                     c$26 = c$25.intValue();
                                     if (c$26 == 121) {
                                         $ceylontmp$if$22 = true;
@@ -169,7 +169,7 @@ final class bug1937_ {
                             final int c$35;
                             if ((obj$32 = obj) instanceof .ceylon.language.String) {
                                 obj$33 = ((.ceylon.language.String)obj$32).toString();
-                                if ((c$34 = .ceylon.language.String.instance(obj$33).get(.ceylon.language.Integer.instance(2L))) != null) {
+                                if ((c$34 = .ceylon.language.String.instance(obj$33).getFromFirst(2L)) != null) {
                                     c$35 = c$34.intValue();
                                     if (c$35 == 121) {
                                         $ceylontmp$if$31 = true;

@@ -47,8 +47,8 @@ class Bug1550MyList implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public final void test() {
-        ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.Correspondence)m()).get(.ceylon.language.Integer.instance(0L)).test();
-        ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.Correspondence)getA()).get(.ceylon.language.Integer.instance(0L)).test();
+        ((.ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.List)m()).getFromFirst(0L).test();
+        ((.ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.List)getA()).getFromFirst(0L).test();
     }
     
     public static void main(.java.lang.String[] args) {

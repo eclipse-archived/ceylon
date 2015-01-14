@@ -180,7 +180,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
     
     private final void testString$priv$() {
         final .java.lang.String string = "";
-        final .ceylon.language.Character c = .ceylon.language.String.instance(string).get(.ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Character c = .ceylon.language.String.instance(string).getFromFirst(0L);
         .java.lang.String sync = null;
         sync = ((.ceylon.language.String)(.java.lang.Object)(.ceylon.language.String)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L))).toString();
         sync = ((.ceylon.language.String)(.java.lang.Object)(.ceylon.language.String)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).measure(.ceylon.language.Integer.instance(0L), 1L)).toString();

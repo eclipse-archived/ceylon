@@ -30,7 +30,7 @@ class RefiningBug1188 extends .com.redhat.ceylon.compiler.java.test.issues.bug11
         if (parents.getSize() > 1L) {
             throw new .ceylon.language.Exception();
         }
-        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 parent = parents.get(.ceylon.language.Integer.instance(0L));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 parent = parents.getFromFirst(0L);
     }
     
     @.java.lang.Override

@@ -34,7 +34,7 @@ class Bug406 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             }.sequence();
         );
         .ceylon.language.String s1s$2;
-        if ((s1s$2 = spread1.get(.ceylon.language.Integer.instance(0L))) != null) {
+        if ((s1s$2 = spread1.getFromFirst(0L)) != null) {
             final .java.lang.String s1s$3 = s1s$2.toString();
         }
     }

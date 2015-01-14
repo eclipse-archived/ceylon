@@ -11,7 +11,7 @@ class MethodIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.j
         final .java.lang.Object z$2;
         .java.lang.Object y$3;
         final long y$4;
-        if ((z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
+        if ((z$1 = x.getFromFirst(0L)) != null) {
             z$2 = z$1;
             if ((y$3 = z$2) instanceof .ceylon.language.Integer) {
                 y$4 = ((.ceylon.language.Integer)y$3).longValue();

@@ -48,7 +48,7 @@ final class bug934_ {
             protected final .java.lang.Object $evaluate$(int $index$) {
                 switch ($index$) {
                 case 0: 
-                    return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)results.get(.ceylon.language.Integer.instance(1L));
+                    return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)results.getFromFirst(1L);
                 
                 default: 
                     return null;

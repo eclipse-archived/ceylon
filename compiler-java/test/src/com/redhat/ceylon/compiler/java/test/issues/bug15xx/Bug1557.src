@@ -39,16 +39,16 @@ final class cmp_ {
     }
     
     static <Value1 extends .ceylon.language.Comparable<? super Value1>, Value2 extends .ceylon.language.Comparable<? super Value2>>.ceylon.language.Comparison cmp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value2, final .ceylon.language.Sequence a, final .ceylon.language.Sequence b) {
-        if (((Value1)a.get(.ceylon.language.Integer.instance(0L))).compare((Value1)b.get(.ceylon.language.Integer.instance(0L))) == .ceylon.language.smaller_.get_()) {
+        if (((Value1)a.getFromFirst(0L)).compare((Value1)b.getFromFirst(0L)) == .ceylon.language.smaller_.get_()) {
             return .ceylon.language.smaller_.get_();
         } else {
-            if (((Value1)a.get(.ceylon.language.Integer.instance(0L))).compare((Value1)b.get(.ceylon.language.Integer.instance(0L))) == .ceylon.language.larger_.get_()) {
+            if (((Value1)a.getFromFirst(0L)).compare((Value1)b.getFromFirst(0L)) == .ceylon.language.larger_.get_()) {
                 return .ceylon.language.larger_.get_();
             } else {
-                if (((Value2)a.get(.ceylon.language.Integer.instance(1L))).compare((Value2)b.get(.ceylon.language.Integer.instance(1L))) == .ceylon.language.smaller_.get_()) {
+                if (((Value2)a.getFromFirst(1L)).compare((Value2)b.getFromFirst(1L)) == .ceylon.language.smaller_.get_()) {
                     return .ceylon.language.smaller_.get_();
                 } else {
-                    if (((Value2)a.get(.ceylon.language.Integer.instance(1L))).compare((Value2)b.get(.ceylon.language.Integer.instance(1L))) == .ceylon.language.larger_.get_()) {
+                    if (((Value2)a.getFromFirst(1L)).compare((Value2)b.getFromFirst(1L)) == .ceylon.language.larger_.get_()) {
                         return .ceylon.language.larger_.get_();
                     } else {
                         return .ceylon.language.equal_.get_();
