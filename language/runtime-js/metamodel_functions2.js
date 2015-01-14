@@ -142,8 +142,11 @@ function convert$params(mm,a,$$targs$$) {
     var val_t=restype2$(sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,$$targs$$);
     if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$$targs$$);
     if (a[i]===undefined) {
-      if (p.def||p.seq)fa.push(undefined);
-      else {
+      if (p.def||p.seq) {
+        if (p.seq && p.$t.t===Sequence)
+          throw InvocationException$meta$model("Not enough arguments to function. Expected 1 but got only 0");
+        fa.push(undefined);
+      } else {
         throw InvocationException$meta$model("Wrong number of arguments (should be " + ps.length + ")");
       }
     } else if (sarg) {
