@@ -207,6 +207,11 @@ public class RecoveryTest extends CompilerTest {
                 "declaration/DeclarationRecoveryMissingRefinedMembers");
     }
     
+    @Test
+    public void testRcvDeclarationRecoveryObjectWithCtor(){
+        compile(1,
+                "declaration/ObjectWithCtor.ceylon");
+    }
      
     
     private void testDeclarationRecovery(
