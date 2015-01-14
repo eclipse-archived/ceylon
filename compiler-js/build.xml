@@ -1,4 +1,6 @@
 <project name="Ceylon JS compiler" default="test" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
     <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties" />
 
