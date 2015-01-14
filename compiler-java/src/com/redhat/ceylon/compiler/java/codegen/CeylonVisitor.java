@@ -121,6 +121,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.Constructor that) {
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(that);
+        if (plan instanceof Drop) {
+            return;
+        }
         classBuilder.defs(gen.classGen().transform(that, classBuilder));
     }
 
