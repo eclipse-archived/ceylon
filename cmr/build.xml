@@ -1,4 +1,6 @@
 <project name="Ceylon module-resolver module" default="publish" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
     <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties"/>
 
