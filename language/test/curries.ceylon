@@ -92,4 +92,8 @@ shared void testCurries() {
     Object testCompose(Object x) => x;
     check(compose(testCompose,String.uppercased)("hey")=="HEY", "compose 1");
     check(compose(testCompose,"Hey".initial)(1)=="H","compose 2");
+    void js478([Integer?] i){
+      check(!i[0] exists, "JS #478");
+    }
+    flatten(js478)(null);
 }
