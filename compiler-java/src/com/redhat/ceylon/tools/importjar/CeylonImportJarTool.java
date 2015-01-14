@@ -97,17 +97,6 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         super(ImportJarMessages.RESOURCE_BUNDLE);
     }
     
-    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, File jarFile, String verbose) {
-        super(ImportJarMessages.RESOURCE_BUNDLE);
-        setModuleSpec(moduleSpec);
-        this.out = out;
-        this.user = user;
-        this.pass = pass;
-        this.jarFile = jarFile;
-        this.verbose = verbose;
-        initialize();
-    }
-
     @OptionArgument(argumentName="file")
     @Description("Specify a module.xml or module.properties file to be used "
             + "as the module descriptor")
