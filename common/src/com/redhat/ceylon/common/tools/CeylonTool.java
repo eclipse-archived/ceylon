@@ -45,6 +45,7 @@ import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolError;
@@ -66,6 +67,25 @@ import com.redhat.ceylon.common.tool.Tools;
         "the other with the same remaining command line arguments. " +
         "The named tools are loaded and configured with the remaining command " +
         "line arguments and control passes to those tools.")
+@RemainingSections(
+"## CONFIGURATION MECHANISM\n\n" +
+"Ceylon uses a simple text format to store customizations that are per repository and are per user. Such a configuration file may look like this:"+
+"\n\n"+
+"    #\n"+
+"    # A '#' or ';' character indicates a comment.\n"+
+"    #\n"+
+"    \n"+
+"    ; global settings\n"+
+"    [defaults]\n"+
+"        encoding = utf8\n"+
+"        pager = false\n"+
+"    \n"+
+"    ; local repository\n"+
+"    [repository \"LOCAL\"]\n"+
+"        url = ./modules\n"+
+"\n\n"+
+"Various commands read from the configuration file and adjust their operation accordingly. See ceylon-config(1) for a list and more details about the configuration mechanism."
+)
 public class CeylonTool implements Tool {
 
     private static final String ARG_LONG_VERSION = "--version";
