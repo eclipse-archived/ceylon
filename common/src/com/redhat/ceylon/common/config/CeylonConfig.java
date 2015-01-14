@@ -319,11 +319,27 @@ public class CeylonConfig {
     public Boolean getBoolOption(String key) {
         String result = getOption(key);
         if (result != null) {
-            return "true".equals(result) || "on".equals(result) || "yes".equals(result) || "1".equals(result);
+            return isTrueish(result);
         }
         return null;
     }
     
+    /**
+     * Returns true if the given value is "true", "on", "yes" or "1", false otherwise.
+     */
+    public static boolean isTrueish(String value) {
+        return value != null
+                && ("true".equals(value) || "on".equals(value) || "yes".equals(value) || "1".equals(value));
+    }
+
+    /**
+     * Returns true if the given value is "false", "off", "no" or "0", false otherwise.
+     */
+    public static boolean isFalsish(String value) {
+        return value != null
+                && ("false".equals(value) || "off".equals(value) || "no".equals(value) || "0".equals(value));
+    }
+
     /**
      * Retrieves a single boolean value for the given option. If more than one
      * value exits only the first one is returned. The strings "true", "on",
