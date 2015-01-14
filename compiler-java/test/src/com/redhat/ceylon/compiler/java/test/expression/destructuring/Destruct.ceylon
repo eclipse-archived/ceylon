@@ -138,14 +138,14 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
         String n = name;
         String[] ns = rest;
     }
-    //if (exists [x, i] = maybePair, nonempty [name, *rest] = names) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    String n = name;
-    //    String[] ns = rest;
-    //} else {
-    //    // Do nothing, just need an else block
-    //}
+    if (exists [x, i] = maybePair, nonempty [name, *rest] = names) {
+        Float c = x;
+        Integer j = i;
+        String n = name;
+        String[] ns = rest;
+    } else {
+        // Do nothing, just need an else block
+    }
 }
 
 @noanno

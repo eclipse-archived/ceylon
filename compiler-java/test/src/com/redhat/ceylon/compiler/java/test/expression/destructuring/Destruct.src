@@ -602,5 +602,57 @@ final class destructureIf_ {
                 final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$74;
             }
         }
+        boolean $ceylontmp$if$75 = false;
+        .ceylon.language.Sequence $pattern$tuple$76$77;
+        final long i$79;
+        final double x$78;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$80$81;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$83;
+        final .java.lang.String name$82;
+        if (($pattern$tuple$76$77 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+            i$79 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$76$77).getFromFirst(1)).longValue();
+            x$78 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$76$77).getFromFirst(0)).doubleValue();
+            if (($pattern$tuple$80$81 = names) instanceof .ceylon.language.Sequence) {
+                rest$83 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$80$81).skip(1).sequence();
+                name$82 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$80$81).getFromFirst(0)).toString();
+                $ceylontmp$if$75 = true;
+            } else {
+                name$82 = null;
+                rest$83 = null;
+            }
+        } else {
+            name$82 = null;
+            rest$83 = null;
+            x$78 = 0.0;
+            i$79 = 0L;
+        }
+        if ($ceylontmp$if$75) {
+            final double c = x$78;
+            final long j = i$79;
+            final .java.lang.String n = name$82;
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$83;
+        } else {
+        }
+    }
+}
+final class destructureAssert_ {
+    
+    private destructureAssert_() {
+    }
+    
+    static void destructureAssert(final .ceylon.language.Sequence maybePair, final .ceylon.language.Sequential<? extends .ceylon.language.String> names, final .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> maybeEntry) {
+    }
+}
+final class destructureWhile_ {
+    
+    private destructureWhile_() {
+    }
+    
+    static void destructureWhile() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.destructuring.destructureWhile_.destructureWhile();
     }
 }
