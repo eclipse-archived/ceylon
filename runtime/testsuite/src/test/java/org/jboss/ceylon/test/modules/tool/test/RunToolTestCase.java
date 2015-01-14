@@ -33,13 +33,14 @@ import org.junit.Test;
 
 import ceylon.modules.bootstrap.CeylonRunTool;
 
+import com.redhat.ceylon.common.tool.AbstractToolTest;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 
-public class RunToolTestCase {
+public class RunToolTestCase extends AbstractToolTest {
 
     protected final static String OUT_EXPECTED_DEFAULT = "Hello, world";
     protected final static String OUT_EXPECTED_WITH_ARG = "Hello, Tako";
@@ -50,7 +51,6 @@ public class RunToolTestCase {
     protected final String destDir;
     protected final String cacheDir;
     
-    protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
     public RunToolTestCase() {
@@ -87,7 +87,7 @@ public class RunToolTestCase {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
         try {
-            CeylonRunTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
+            CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>emptyList());
             Assert.fail();
         } catch (OptionArgumentException e) {
             // asserting this is thrown
@@ -98,7 +98,7 @@ public class RunToolTestCase {
     public void testModuleVersion() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("hello/1.0.0"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("hello/1.0.0"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
@@ -106,7 +106,7 @@ public class RunToolTestCase {
     public void testModuleVersionArgs() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("hello/1.0.0", "Tako"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("hello/1.0.0", "Tako"));
         assertOutput(tool, OUT_EXPECTED_WITH_ARG);
     }
     
@@ -114,7 +114,7 @@ public class RunToolTestCase {
     public void testModuleNoVersion() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("hello"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("hello"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
@@ -122,7 +122,7 @@ public class RunToolTestCase {
     public void testModuleNoVersionArgs() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("hello", "Tako"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("hello", "Tako"));
         assertOutput(tool, OUT_EXPECTED_WITH_ARG);
     }
     
@@ -130,7 +130,7 @@ public class RunToolTestCase {
     public void testModuleVersionFunction() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("--run=hello.hello", "hello/1.0.0"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run=hello.hello", "hello/1.0.0"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
@@ -138,7 +138,7 @@ public class RunToolTestCase {
     public void testDefault() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("default"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("default"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
@@ -146,7 +146,7 @@ public class RunToolTestCase {
     public void testDefaultArg() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("default", "Tako"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("default", "Tako"));
         assertOutput(tool, OUT_EXPECTED_WITH_ARG);
     }
     
@@ -154,7 +154,7 @@ public class RunToolTestCase {
     public void testDefaultFunction() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("--run=hello", "default"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run=hello", "default"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     
@@ -162,7 +162,7 @@ public class RunToolTestCase {
     public void testQuotedModuleName() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("foo.long.module/1.0.0"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("foo.long.module/1.0.0"));
         assertOutput(tool, "Hello, World!");
     }
 
@@ -170,7 +170,7 @@ public class RunToolTestCase {
     public void testQuotedModuleNameNoVersion() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("foo.long.module"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("foo.long.module"));
         assertOutput(tool, "Hello, World!");
     }
 
@@ -178,7 +178,7 @@ public class RunToolTestCase {
     public void testQuotedModuleNameVersion() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
-        CeylonRunTool tool = pluginFactory.bindArguments(model, options("--run=foo.long.module::run", "foo.long.module/1.0.0"));
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run=foo.long.module::run", "foo.long.module/1.0.0"));
         assertOutput(tool, "Hello, World!");
     }
     private void assertOutput(CeylonRunTool tool, String txt) throws IOException {

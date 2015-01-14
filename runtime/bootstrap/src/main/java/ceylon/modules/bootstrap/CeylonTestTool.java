@@ -18,6 +18,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Executes tests")
 @Description(
@@ -52,7 +53,7 @@ public class CeylonTestTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize(CeylonTool mainTool) throws Exception {
         // noop
     }
 
