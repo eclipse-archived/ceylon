@@ -122,6 +122,67 @@ final class ifExpression_ {
             }
             returning $ceylontmp$ifResult$17;
         )).f();
+        final .ceylon.language.Integer arg = (.ceylon.language.Integer).ceylon.language.nothing_.get_();
+        final .java.lang.String x0 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$20;
+                .ceylon.language.Integer arg$22;
+                if ((arg$22 = arg) != null) {
+                    final long arg$24 = arg$22.longValue();
+                    $ceylontmp$ifResult$20 = .ceylon.language.Integer.toString(arg$24);
+                } else {
+                    final .java.lang.Object arg$23 = arg$22;
+                    $ceylontmp$ifResult$20 = "0.0";
+                }
+            }
+            returning $ceylontmp$ifResult$20;
+        );
+        final double x1 = (
+            let
+            {
+                double $ceylontmp$ifResult$25;
+                .ceylon.language.Integer arg$27;
+                if ((arg$27 = arg) != null) {
+                    final long arg$29 = arg$27.longValue();
+                    $ceylontmp$ifResult$25 = 1.0;
+                } else {
+                    final .java.lang.Object arg$28 = arg$27;
+                    $ceylontmp$ifResult$25 = 0.0;
+                }
+            }
+            returning $ceylontmp$ifResult$25;
+        );
+        final .java.lang.Object x2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$30;
+                .ceylon.language.Integer arg$32;
+                if ((arg$32 = arg) != null) {
+                    final long arg$34 = arg$32.longValue();
+                    $ceylontmp$ifResult$30 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$34));
+                } else {
+                    final .java.lang.Object arg$33 = arg$32;
+                    $ceylontmp$ifResult$30 = .ceylon.language.Float.instance(0.0);
+                }
+            }
+            returning $ceylontmp$ifResult$30;
+        );
+        final .java.lang.Object x3 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$35;
+                .ceylon.language.Integer arg$37;
+                if ((arg$37 = arg) != null) {
+                    final long arg$39 = arg$37.longValue();
+                    $ceylontmp$ifResult$35 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$39));
+                } else {
+                    final .java.lang.Object arg$38 = arg$37;
+                    $ceylontmp$ifResult$35 = .ceylon.language.Float.instance(0.0);
+                }
+            }
+            returning $ceylontmp$ifResult$35;
+        );
     }
     
     public static void main(.java.lang.String[] args) {

@@ -39,7 +39,14 @@ class SwitchExpressionTop(Anything a){}
 @noanno
 class SwitchExpressionBottom(Anything val) extends SwitchExpressionTop(switch (val) 
         case (is String?) val
-        else "asd"){}
+        else "asd"){
+    
+    Integer? arg = null;
+    value y0 = switch (arg) case (null) 0.0 case (is Integer) 1.0;
+    value y1 = switch (arg) case (null) "null" case (is Integer) arg.string;
+    value y2 = switch (arg) case (null) 0.0 case (is Integer) arg.string;
+    value y3 = switch (arg) case (null) 0.0 case (is Integer) null;
+}
 
 void switchExpressionTest(){
     SwitchExpressionBottom("asd");

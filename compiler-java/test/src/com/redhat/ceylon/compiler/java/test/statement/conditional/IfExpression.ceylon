@@ -37,5 +37,10 @@ void ifExpression() {
     String s5 = if(is Integer|String erased, is String erased) then erased else "fail";
     A|B|Null erased2 = nothing;
     Integer i1 = (if(is A|B erased2) then erased2 else (nothing of A)).f();
+    Integer? arg = nothing;
+    value x0 = if (exists arg) then arg.string else "0.0";
+    value x1 = if (exists arg) then 1.0 else 0.0;
+    value x2 = if (exists arg) then arg.string else 0.0;
+    value x3 = if (exists arg) then arg.string else 0.0;
     
 }
