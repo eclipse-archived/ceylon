@@ -22,6 +22,7 @@ package com.redhat.ceylon.common.tools.help;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -95,7 +96,7 @@ public class CeylonHelpTool implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override

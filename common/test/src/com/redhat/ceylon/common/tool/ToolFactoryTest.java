@@ -13,21 +13,18 @@ import com.redhat.ceylon.common.tool.example.TestExampleTool;
 import com.redhat.ceylon.common.tool.example.TestMinimumsTool;
 import com.redhat.ceylon.common.tool.example.TestSubtoolTool;
 
-public class ToolFactoryTest {
-    
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new TestingToolLoader();
+public class ToolFactoryTest extends AbstractToolTest {
     
     @Test
     public void testLongOptionArgument() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--long-name=true"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--long-name=true"));
         Assert.assertTrue(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
         Assert.assertTrue(tool.isInited());
         
-        tool = pluginFactory.bindArguments(model, Arrays.asList("--short-name=false"));
+        tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--short-name=false"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertEquals("false", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
@@ -35,7 +32,7 @@ public class ToolFactoryTest {
 
         // If a long option argument has a not optional argument then the
         // argument may come from the next argument
-        tool = pluginFactory.bindArguments(model, Arrays.asList("--short-name", "foo"));
+        tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--short-name", "foo"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertEquals("foo", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
@@ -47,7 +44,7 @@ public class ToolFactoryTest {
     public void testLongOptionArgumentMissing() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--short-name"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--short-name"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals(e.getMessage(), "Option '--short-name' to command 'example' should be followed by an argument", e.getMessage());
@@ -57,12 +54,12 @@ public class ToolFactoryTest {
     @Test
     public void testShortOptionArgumentApart() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-b", "true"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-b", "true"));
         Assert.assertEquals("true", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
         Assert.assertTrue(tool.isInited());
         
-        tool = pluginFactory.bindArguments(model, Arrays.asList("-b", "false"));
+        tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-b", "false"));
         Assert.assertEquals("false", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
         Assert.assertTrue(tool.isInited());
@@ -70,7 +67,7 @@ public class ToolFactoryTest {
     @Test
     public void testShortOptionArgumentTogether() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-btrue"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-btrue"));
         Assert.assertEquals("true", tool.getShortName());
         Assert.assertTrue(tool.isInited());
     }
@@ -78,7 +75,7 @@ public class ToolFactoryTest {
     public void testShortOptionArgumentMissing() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("-b"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-b"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals(e.getMessage(), "Option '-b' to command 'example' should be followed by an argument", e.getMessage());
@@ -88,19 +85,19 @@ public class ToolFactoryTest {
     public void testOptionArgumentTooMany() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("-b1", "-b2"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-b1", "-b2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals(e.getMessage(), "Option '-b' to command 'example' should appear at most 1 time(s)", e.getMessage());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--short-name=1", "-b2"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--short-name=1", "-b2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option '--short-name'/'-b' to command 'example' should appear at most 1 time(s)"));
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--short-name=1", "--short-name=2"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--short-name=1", "--short-name=2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option '--short-name' to command 'example' should appear at most 1 time(s)"));
@@ -110,7 +107,7 @@ public class ToolFactoryTest {
     @Test
     public void testLongOptionList() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--list-option=true", "--list-option=false"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--list-option=true", "--list-option=false"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertEquals(Arrays.asList("true", "false"), tool.getListOption());
@@ -120,7 +117,7 @@ public class ToolFactoryTest {
     @Test
     public void testFileOption() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--file=foo"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--file=foo"));
         Assert.assertEquals("foo", tool.getFile().getName());
         Assert.assertTrue(tool.isInited());
     }
@@ -128,7 +125,7 @@ public class ToolFactoryTest {
     @Test
     public void testEnumOption() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--thread-state=NEW"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--thread-state=NEW"));
         Assert.assertEquals(Thread.State.NEW, tool.getThreadState());
         Assert.assertTrue(tool.isInited());
     }
@@ -136,7 +133,7 @@ public class ToolFactoryTest {
     @Test
     public void testArgumentList() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("true", "false"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("true", "false"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListOption() == null);
@@ -147,7 +144,7 @@ public class ToolFactoryTest {
     @Test
     public void testEoo() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
-        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--", "--list-option=true", "--", "-b", "true", "-btrue"));
+        TestExampleTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--", "--list-option=true", "--", "-b", "true", "-btrue"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListOption() == null);
@@ -159,18 +156,18 @@ public class ToolFactoryTest {
     public void testMiniumums() {
         ToolModel<TestMinimumsTool> model = pluginLoader.loadToolModel("minimums");
         try {
-            pluginFactory.bindArguments(model, Arrays.<String>asList());
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.<String>asList());
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Argument 'value' to command 'minimums' should appear at least 3 time(s)", e.getMessage());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("true", "false"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("true", "false"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Argument 'value' to command 'minimums' should appear at least 3 time(s)", e.getMessage());
         }
-        pluginFactory.bindArguments(model, Arrays.asList("true", "false", "3"));
+        pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("true", "false", "3"));
         
     }
     
@@ -178,19 +175,19 @@ public class ToolFactoryTest {
     public void testUnknownShortOption() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("-l"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-l"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised short option '-l' to command 'example'", e.getMessage());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("-Fl"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-Fl"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised short option '-l' to command 'example' (in combined options '-Fl')", e.getMessage());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("-lalala"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("-lalala"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised short option '-l' to command 'example' (in combined options '-lalala')", e.getMessage());
@@ -201,7 +198,7 @@ public class ToolFactoryTest {
     public void testUnknownLongOption() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--lalala"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--lalala"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised long option '--lalala' to command 'example'", e.getMessage());
@@ -212,7 +209,7 @@ public class ToolFactoryTest {
     public void testUnknownLongOptionArgument() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--lalala=f"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--lalala=f"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised long option '--lalala=f' to command 'example'", e.getMessage());
@@ -223,13 +220,13 @@ public class ToolFactoryTest {
     public void testVerbose() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         
-        TestExampleTool ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose=foo"));
+        TestExampleTool ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbose=foo"));
         Assert.assertEquals("foo", ex.getVerbose());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose="));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbose="));
         Assert.assertEquals("", ex.getVerbose());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbose"));
         Assert.assertEquals("", ex.getVerbose());   
     }
     
@@ -237,16 +234,16 @@ public class ToolFactoryTest {
     public void testVerbosities() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         
-        TestExampleTool ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1"));
+        TestExampleTool ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbosities=1"));
         Assert.assertEquals(Arrays.asList("1"), ex.getVerbosities());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities="));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbosities="));
         Assert.assertEquals(Collections.singletonList(""), ex.getVerbosities());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbosities"));
         Assert.assertEquals(Collections.<String>singletonList(""), ex.getVerbosities());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1", "--verbosities=2", "--verbosities"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--verbosities=1", "--verbosities=2", "--verbosities"));
         Assert.assertEquals(Arrays.asList("1", "2", ""), ex.getVerbosities());
     }
     
@@ -254,34 +251,34 @@ public class ToolFactoryTest {
     public void testSubtool() {
         ToolModel<TestSubtoolTool> model = pluginLoader.loadToolModel("subtool");
         
-        TestSubtoolTool ex = pluginFactory.bindArguments(model, Arrays.asList("subtool1"));
+        TestSubtoolTool ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool1"));
         Assert.assertEquals(TestSubtoolTool.Subtool1.class, ex.getAction().getClass());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("subtool1", "--foo"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool1", "--foo"));
         Assert.assertEquals(TestSubtoolTool.Subtool1.class, ex.getAction().getClass());
         
         try {
-            ex = pluginFactory.bindArguments(model, Arrays.asList("subtool1", "--bar"));
+            ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool1", "--bar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised long option '--bar' to command 'subtool1'", e.getMessage());
         }
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("subtool2"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool2"));
         Assert.assertEquals(TestSubtoolTool.Subtool2.class, ex.getAction().getClass());
         
-        ex = pluginFactory.bindArguments(model, Arrays.asList("subtool2", "--bar"));
+        ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool2", "--bar"));
         Assert.assertEquals(TestSubtoolTool.Subtool2.class, ex.getAction().getClass());
         
         try {
-            ex = pluginFactory.bindArguments(model, Arrays.asList("subtool2", "--foo"));
+            ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool2", "--foo"));
         Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised long option '--foo' to command 'subtool2'", e.getMessage());
         }
         
         try {
-            ex = pluginFactory.bindArguments(model, Arrays.asList("subtool3"));
+            ex = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("subtool3"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             String message = e.getMessage();
@@ -295,13 +292,13 @@ public class ToolFactoryTest {
     public void testInitThrows() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.Exception"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.RuntimeException"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
@@ -312,13 +309,13 @@ public class ToolFactoryTest {
     public void testOptionThrows() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-throw"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-throw"));
             Assert.fail();
         } catch (InvalidOptionValueException e) {
             Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-throw"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-throw"));
             Assert.fail();
         } catch (InvalidOptionValueException e) {
             Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
@@ -329,13 +326,13 @@ public class ToolFactoryTest {
     public void testOptionArgumentThrows() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-argument-throw=s"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-argument-throw=s"));
             Assert.fail();
         } catch (InvalidOptionValueException e) {
             Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-argument-throw=s"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-argument-throw=s"));
             Assert.fail();
         } catch (InvalidOptionValueException e) {
             Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
@@ -346,13 +343,13 @@ public class ToolFactoryTest {
     public void testArgumentThrows() {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "argument"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.Exception", "argument"));
             Assert.fail();
         } catch (InvalidArgumentValueException e) {
             Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
         }
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "argument"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "argument"));
             Assert.fail();
         } catch (InvalidArgumentValueException e) {
             Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());

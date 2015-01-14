@@ -42,6 +42,7 @@ import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.help.model.Doc;
 import com.redhat.ceylon.common.tools.help.model.Visitor;
 
@@ -180,7 +181,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     }
     
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
         setSystemProperties();
         if (!allPlumbing && !allPorcelain && (tools == null || tools.isEmpty())) {
             throw new IllegalStateException("No tools to process");

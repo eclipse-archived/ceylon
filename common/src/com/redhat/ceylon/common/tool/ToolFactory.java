@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 
 /**
@@ -125,9 +126,9 @@ public class ToolFactory {
      * @throws OptionArgumentException.OptionMultiplicityException If there were too many or too few occurances of an option
      * @throws OptionArgumentException.ArgumentMultiplicityException If there were too many or too few occurances of an argument
      */
-    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, Iterable<String> args) {
+    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, CeylonTool mainTool, Iterable<String> args) {
         T tool = newInstance(toolModel);
-        return bindArguments(toolModel, tool, args);
+        return bindArguments(toolModel, tool, mainTool, args);
     }
     
     class ArgumentProcessor<T extends Tool> {
@@ -137,10 +138,12 @@ public class ToolFactory {
         final Iterator<String> iter;
         final ToolModel<T> toolModel;
         final T tool;
-        ArgumentProcessor(ToolModel<T> toolModel, T tool, Iterator<String> iter) {
+        private CeylonTool mainTool;
+        ArgumentProcessor(ToolModel<T> toolModel, T tool, CeylonTool mainTool, Iterator<String> iter) {
             this.toolModel = toolModel;
             this.tool = tool;
             this.iter = iter;
+            this.mainTool = mainTool;
         }
         
         void processArguments() {
@@ -294,7 +297,7 @@ public class ToolFactory {
                     ToolModel<T> model = loader.loadToolModel(binding.unparsedArgumentValue);
                     model.setParentTool(toolModel);
                     
-                    return (A)bindArguments(model, (T)value, new Iterable<String>() {
+                    return (A)bindArguments(model, (T)value, mainTool, new Iterable<String>() {
                         @Override
                         public Iterator<String> iterator() {
                             return iter;
@@ -363,7 +366,7 @@ public class ToolFactory {
 
         private void invokeInitialize() {
             try {
-                tool.initialize();
+                tool.initialize(mainTool);
             } catch (Exception e) {
                 throw new ToolInitializationException(toolModel, e);
             }
@@ -411,9 +414,9 @@ public class ToolFactory {
      * @throws OptionArgumentException.OptionMultiplicityException If there were too many or too few occurances of an option
      * @throws OptionArgumentException.ArgumentMultiplicityException If there were too many or too few occurances of an argument
      */
-    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
+    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, CeylonTool mainTool, Iterable<String> args) {
             setToolLoaderAndModel(toolModel, tool);
-            ArgumentProcessor<T> invocation = new ArgumentProcessor<>(toolModel, tool, args.iterator());
+            ArgumentProcessor<T> invocation = new ArgumentProcessor<>(toolModel, tool, mainTool, args.iterator());
             invocation.processArguments();
             return tool;
         

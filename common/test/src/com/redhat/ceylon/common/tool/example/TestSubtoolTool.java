@@ -3,6 +3,7 @@ package com.redhat.ceylon.common.tool.example;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 public class TestSubtoolTool implements Tool {
 
@@ -16,7 +17,7 @@ public class TestSubtoolTool implements Tool {
             return foo;
         }
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
         }
         @Override
         public void run() throws Exception {
@@ -34,7 +35,7 @@ public class TestSubtoolTool implements Tool {
             return bar;
         }
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
         }
         @Override
         public void run() throws Exception {
@@ -55,7 +56,7 @@ public class TestSubtoolTool implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
 
     @Override

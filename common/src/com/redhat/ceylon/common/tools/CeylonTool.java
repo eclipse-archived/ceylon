@@ -262,7 +262,7 @@ public class CeylonTool implements Tool {
         try {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(CommandLine.parse(args));
-            getPluginFactory().bindArguments(model, this, myArgs);
+            getPluginFactory().bindArguments(model, this, this, myArgs);
             result = SC_OK;
         } catch (NoSuchToolException e) {
             error = e;
@@ -347,7 +347,7 @@ public class CeylonTool implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override
@@ -455,7 +455,7 @@ public class CeylonTool implements Tool {
             useCache = true;
         if(useCache && toolCache != null)
             return toolCache;
-        tool = getPluginFactory().bindArguments(model, toolArgs);
+        tool = getPluginFactory().bindArguments(model, this, toolArgs);
         if(useCache)
             toolCache = tool;
         return tool;

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.common.tool;
 
+import com.redhat.ceylon.common.tools.CeylonTool;
+
 /**
  * A plug-in to the {@code ceylon} command.
  * 
@@ -65,7 +67,7 @@ public interface Tool {
      * or specialized validation of arguments etc 
      * @throws Exception If anything went wrong.
      */
-    public void initialize() throws Exception;
+    public void initialize(CeylonTool mainTool) throws Exception;
     
     /**
      * Executes the tool. 

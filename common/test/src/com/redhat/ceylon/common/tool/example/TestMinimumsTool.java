@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("")
 public class TestMinimumsTool implements Tool {
@@ -21,7 +22,7 @@ public class TestMinimumsTool implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
 
     @Override

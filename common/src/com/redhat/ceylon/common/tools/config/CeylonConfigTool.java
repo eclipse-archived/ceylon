@@ -34,6 +34,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Manages Ceylon configuration files")
 @Description(
@@ -155,7 +156,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
     public class List implements Tool {
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initSubtool();
         }
 
@@ -177,7 +178,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initSubtool();
         }
         
@@ -210,7 +211,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initUpdatingSubtool();
         }
         
@@ -238,7 +239,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initUpdatingSubtool();
         }
         
@@ -271,7 +272,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initUpdatingSubtool();
         }
         
@@ -292,7 +293,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
 
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
             initUpdatingSubtool();
         }
         
@@ -332,7 +333,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
-            public void initialize() {
+            public void initialize(CeylonTool mainTool) {
             }
             
             @Override
@@ -361,7 +362,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
-            public void initialize() {
+            public void initialize(CeylonTool mainTool) {
             }
             
             @Override
@@ -383,7 +384,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
-            public void initialize() {
+            public void initialize(CeylonTool mainTool) {
             }
             
             @Override
@@ -399,7 +400,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
         
         @Override
-        public void initialize() {
+        public void initialize(CeylonTool mainTool) {
         }
         
         @Override
@@ -409,7 +410,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
     }
     
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override
