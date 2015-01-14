@@ -1,3 +1,3 @@
 function(o) {
-  return o.remainer(this)===0;
+  return o.remainder(this)===0;
 }
