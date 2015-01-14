@@ -643,4 +643,17 @@ public abstract class BoxingVisitor extends Visitor {
             return;
         propagateFromTerm(that, that.getLetClause().getExpression());
     }
+    
+    @Override
+    public void visit(Tree.DefaultOp that) {
+        super.visit(that);
+        if (Util.unwrapExpressionUntilTerm(that.getLeftTerm()) instanceof Tree.ThenOp) {
+            Tree.ThenOp then = (Tree.ThenOp)Util.unwrapExpressionUntilTerm(that.getLeftTerm());
+            if (CodegenUtil.isUnBoxed(that.getRightTerm())
+                    && CodegenUtil.isUnBoxed(then.getRightTerm())
+                    && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel()))) {
+                        CodegenUtil.markUnBoxed(that);
+            }
+        }
+    }
 }
