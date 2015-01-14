@@ -128,7 +128,10 @@ public class CeylonHelpTool implements Tool {
         if((wantsPager == null 
                 || wantsPager.booleanValue())
                 // and if stdout is on a tty
-                && Boolean.getBoolean("com.redhat.ceylon.common.tool.terminal.isatty")){
+                // on this we differ with git which only tests isatty(stdout) and System.console() will return null
+                // if stdout is on a tty but stdin on a pipe, but I've to say that I can't understand what a pager
+                // is good for if stdin is not on a tty...
+                && System.console() != null){
             this.wantsPager = true;
         }
     }
