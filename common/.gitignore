@@ -4,3 +4,4 @@
 .settings/
 /build
 *.iml
+user-build.properties
