@@ -7,11 +7,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1845() {
-        final .java.lang.Object bug1845_1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        {
+        final .java.lang.Object bug1845_1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -34,11 +30,7 @@ class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 return null;
             }
         };
-        final .java.lang.Object bug1845_2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        {
+        final .java.lang.Object bug1845_2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -90,11 +82,7 @@ final class bug1845_1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-            @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
-            @.com.redhat.ceylon.compiler.java.metadata.Method
-            {
+            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -151,11 +139,7 @@ final class bug1845_2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-            @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
-            @.com.redhat.ceylon.compiler.java.metadata.Method
-            {
+            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -211,11 +195,7 @@ final class bug1845_3_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.Object get_() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -254,11 +234,7 @@ final class bug1845_4_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.Object get_() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
