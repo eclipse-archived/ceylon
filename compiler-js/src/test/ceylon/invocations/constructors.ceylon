@@ -3,10 +3,12 @@ class ToplevelBug476 {
   shared Integer x;
   shared new ToplevelBug476(){
     x=1;
+    check(x+1==2, "#484.1");
   }
   shared new Bar(){
     value f2 = ToplevelBug476();
     x=2;
+    check(x+1==3, "#484.2");
   }
 }
 
