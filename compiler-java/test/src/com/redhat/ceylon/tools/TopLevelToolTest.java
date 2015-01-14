@@ -200,7 +200,7 @@ public class TopLevelToolTest {
 "ceylon example: Unrecognised long option '--file=.' to command 'ceylon'\n"+
 "\n"+
 "Usage:\n"+
-"ceylon [--stacktraces] [--version] [--] [<tool-arguments...>]\n"+
+"ceylon [--no-pager] [--paginate] [--stacktraces] [--version] [--] [<tool-\n       arguments...>]\n"+
 "\n"+
 "Run 'ceylon help example' for more help",
                     out.getErr().trim().replace("\r", ""));
@@ -259,6 +259,7 @@ public class TopLevelToolTest {
                     "ceylon: 'comple' is not a ceylon command\n"+
 "Did you mean?\n"+
 "    compile\n"+
+"    copy\n"+
 "    example\n"+
 "\n"+
 "Run 'ceylon help' for more help", 
