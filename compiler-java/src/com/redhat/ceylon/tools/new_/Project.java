@@ -26,6 +26,7 @@ import java.util.List;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 public abstract class Project implements Tool {
 
@@ -58,7 +59,7 @@ public abstract class Project implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override

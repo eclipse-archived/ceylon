@@ -62,6 +62,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -93,7 +94,7 @@ public class CeylonDocToolTest {
             FileUtil.delete(dir);
         }
         tool.setOut(dir.getAbsolutePath());
-        tool.initialize();
+        tool.initialize(new CeylonTool());
         return tool;
     }
 

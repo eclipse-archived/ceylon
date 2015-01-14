@@ -7,6 +7,7 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Prints a classpath suitable for passing to Java tools to run a given Ceylon module")
@@ -46,6 +47,6 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
     }
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize(CeylonTool mainTool) throws Exception {
     }
 }

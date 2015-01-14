@@ -47,12 +47,10 @@ import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
+import com.redhat.ceylon.tools.test.AbstractToolTest;
 
-public class NewProjectToolTest {
+public class NewProjectToolTest extends AbstractToolTest {
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
-    
     private List<String> args(String... args) {
         return Arrays.asList(args);
     }
@@ -137,7 +135,7 @@ public class NewProjectToolTest {
         Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
-            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+            CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     args("--from=../ceylon-dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
@@ -167,7 +165,7 @@ public class NewProjectToolTest {
         Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
-            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+            CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     args("--from=../ceylon-dist/templates", 
                             "hello-world",
                             "--module-name=long.module",
@@ -202,7 +200,7 @@ public class NewProjectToolTest {
         FileUtil.copyAll(srcTemplates, dstTemplates);
         
         try {
-            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+            CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     args("--cwd", tmpDir.getAbsolutePath(),
                             "--from=templates", 
                             "hello-world",
@@ -233,7 +231,7 @@ public class NewProjectToolTest {
         Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
-            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+            CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     args("--from=../ceylon-dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
@@ -262,7 +260,7 @@ public class NewProjectToolTest {
         Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
-            CeylonNewTool newTool = pluginFactory.bindArguments(newModel, 
+            CeylonNewTool newTool = pluginFactory.bindArguments(newModel, getMainTool(),
                     args("--from=../ceylon-dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
@@ -273,7 +271,7 @@ public class NewProjectToolTest {
             runTool(newTool);
             ToolModel<CeylonCompileTool> compileModel = pluginLoader.loadToolModel("compile");
             Assert.assertNotNull(compileModel);
-            CeylonCompileTool compileTool = pluginFactory.bindArguments(compileModel, 
+            CeylonCompileTool compileTool = pluginFactory.bindArguments(compileModel, getMainTool(),
                     args("--src=" + tmpDir.getAbsolutePath() + "/source",
                             "--out=" + tmpDir.getAbsolutePath(),
                             "org.example.hello"));

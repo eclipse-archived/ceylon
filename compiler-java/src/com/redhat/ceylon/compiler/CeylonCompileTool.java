@@ -41,6 +41,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -316,7 +317,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     @Override
-    public void initialize() throws IOException {
+    public void initialize(CeylonTool mainTool) throws IOException {
         setSystemProperties();
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());

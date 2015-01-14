@@ -32,17 +32,16 @@ import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.common.tools.help.CeylonHelpTool;
+import com.redhat.ceylon.tools.test.AbstractToolTest;
 
-public class HelpToolTest {
+public class HelpToolTest extends AbstractToolTest {
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     @Test
     public void testHelp() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
         Assert.assertTrue(model.isPorcelain());
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>emptyList());
         tool.run();
     }
     
@@ -51,7 +50,7 @@ public class HelpToolTest {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("xfavbergbvuis12342w34"));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("xfavbergbvuis12342w34"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertTrue(e.getMessage(), e.getMessage().contains("Invalid value 'xfavbergbvuis12342w34' given for argument 'tool'"));
@@ -62,7 +61,7 @@ public class HelpToolTest {
     public void testHelpHelp() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("help"));
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("help"));
         tool.run();
     }
     
@@ -70,12 +69,12 @@ public class HelpToolTest {
     public void testHelpCompiler() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("compile"));
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("compile"));
         tool.setToolLoader(pluginLoader);
         tool.run();
         
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("--", "compile", "--javac="));
+            pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--", "compile", "--javac="));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unexpected argument '--javac=' to command 'help'", e.getMessage());
@@ -86,7 +85,7 @@ public class HelpToolTest {
     public void testHelpDoc() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("doc"));
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("doc"));
         tool.run();
     }
     
@@ -94,7 +93,7 @@ public class HelpToolTest {
     public void testHelpImportJar() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("import-jar"));
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("import-jar"));
         tool.run();
     }
     
@@ -102,7 +101,7 @@ public class HelpToolTest {
     public void testHelpDocTool() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("doc-tool"));
+        CeylonHelpTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("doc-tool"));
         tool.run();
     }
 

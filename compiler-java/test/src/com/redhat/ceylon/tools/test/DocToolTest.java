@@ -32,10 +32,7 @@ import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
-public class DocToolTest extends CompilerTest {
-    
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+public class DocToolTest extends AbstractToolTest {
     
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+2);
@@ -50,7 +47,7 @@ public class DocToolTest extends CompilerTest {
     public void testDoc()  throws Exception {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        CeylonDocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
@@ -59,7 +56,7 @@ public class DocToolTest extends CompilerTest {
     public void testDocMultiple()  throws Exception {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        CeylonDocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
     }
@@ -68,7 +65,7 @@ public class DocToolTest extends CompilerTest {
     public void testDocNonShared()  throws Exception {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        CeylonDocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 options("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
@@ -77,7 +74,7 @@ public class DocToolTest extends CompilerTest {
     public void testDocSourceCode()  throws Exception {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        CeylonDocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 options("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }

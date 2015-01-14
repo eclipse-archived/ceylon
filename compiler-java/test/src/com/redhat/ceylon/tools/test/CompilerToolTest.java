@@ -38,16 +38,14 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationE
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.compiler.SystemErrorException;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
-public class CompilerToolTest extends CompilerTest {
-    
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+public class CompilerToolTest extends AbstractToolTest {
     
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+2);
@@ -71,7 +69,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompile()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
@@ -80,7 +78,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileKeywordsInModuleName()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.keywords.long.module"));
         tool.run();
     }
@@ -94,7 +92,7 @@ public class CompilerToolTest extends CompilerTest {
         
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 Arrays.asList(
                         "--cwd", destDir.getPath(),
                         "--src=src",
@@ -121,7 +119,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileVerbose()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--verbose", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
@@ -130,7 +128,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileDefault()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src/com/redhat/ceylon/tools/test/deflt", "default"));
         tool.run();
     }
@@ -143,7 +141,7 @@ public class CompilerToolTest extends CompilerTest {
         carFile2.delete();
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
         assertTrue(carFile1.exists() && carFile2.exists());
@@ -154,7 +152,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule"));
             Assert.fail();
         } catch (OptionArgumentException e) {
@@ -167,7 +165,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.java"));
             Assert.fail();
         } catch (OptionArgumentException e) {
@@ -180,7 +178,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.ceylon"));
             Assert.fail();
         } catch (OptionArgumentException e) {
@@ -192,7 +190,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileValidEncoding()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);        
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "--encoding=UTF-8", "com.redhat.ceylon.tools.test.ceylon"));
     }
     
@@ -201,7 +199,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "--encoding=foo", "com.redhat.ceylon.tools.test.ceylon"));
             Assert.fail();
         } catch (OptionArgumentException e) {
@@ -214,7 +212,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon/1.0"));
             Assert.fail();
         } catch (OptionArgumentException e) {
@@ -229,7 +227,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithSyntaxErrors()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.syntax"));
         try{
             tool.run();
@@ -246,7 +244,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithAnalysisErrors()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.analysis"));
         try{
             tool.run();
@@ -263,7 +261,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithErroneous()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.erroneous"));
         try{
             tool.run();
@@ -280,7 +278,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithRuntimeException()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.runtimeex"));
         try{
             tool.run();
@@ -297,7 +295,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithOomeException()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.oome"));
         try{
             tool.run();
@@ -311,7 +309,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testCompileWithStackOverflowError()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.stackoverflow"));
         try{
             tool.run();
@@ -326,7 +324,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try{
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src", "3"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
@@ -341,7 +339,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try{
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--javac=-target=foo", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
@@ -349,7 +347,7 @@ public class CompilerToolTest extends CompilerTest {
         }
         
         try{
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--javac=-source=foo", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
@@ -357,7 +355,7 @@ public class CompilerToolTest extends CompilerTest {
         }
         
         try{
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--javac=-monkey", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
@@ -365,13 +363,13 @@ public class CompilerToolTest extends CompilerTest {
         }
         
         {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--javac=-Xlint:cast", 
                             "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         }
         
         try{
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--javac=-Xlint:monkey", 
                             "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
             Assert.fail("Tool should have thrown an exception");
@@ -384,7 +382,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testBug1183()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.bug1183"));
         try {
             tool.run();
@@ -399,7 +397,7 @@ public class CompilerToolTest extends CompilerTest {
     public void testBadIntegerLiteral()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "com.redhat.ceylon.tools.test.badintegerliteral"));
         try {
             tool.run();
@@ -415,7 +413,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src/com/redhat/ceylon/tools/test/empty"));
             Assert.fail("Tool should have thrown an exception");
         } catch (ToolInitializationException e) {
@@ -430,7 +428,7 @@ public class CompilerToolTest extends CompilerTest {
         Assert.assertNotNull(model);
         
         try {
-            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--suppress-warnings=blah"));
             Assert.fail("Tool should have thrown an exception");
         } catch (OptionArgumentException e) {

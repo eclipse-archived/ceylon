@@ -41,11 +41,10 @@ import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.common.tools.help.CeylonDocToolTool;
+import com.redhat.ceylon.tools.test.AbstractToolTest;
 
-public class DocToolToolTest {
+public class DocToolToolTest extends AbstractToolTest {
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     private File dir;
     
     @Before
@@ -65,7 +64,7 @@ public class DocToolToolTest {
         List<String> toolArgs = new ArrayList<>();
         toolArgs.addAll(Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
         toolArgs.addAll(Arrays.asList(otherArgs));
-        CeylonDocToolTool tool = pluginFactory.bindArguments(model, toolArgs);
+        CeylonDocToolTool tool = pluginFactory.bindArguments(model, getMainTool(), toolArgs);
         Assert.assertEquals(0, dir.listFiles().length);
         tool.run();
     }

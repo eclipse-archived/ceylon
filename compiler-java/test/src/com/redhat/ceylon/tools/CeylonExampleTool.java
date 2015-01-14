@@ -28,6 +28,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 /**
  * An example tool which demonstrates how to write a {@link Tool}.
@@ -160,7 +161,7 @@ public class CeylonExampleTool implements Tool {
      * The initialize methods initializes the tool
      */
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
         this.inited = true;
     }
     

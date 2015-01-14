@@ -10,21 +10,14 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.tools.test.AbstractToolTest;
 
-public class VersionToolTest {
-    protected static String normalizeLineEndings(String txt) {
-        String result = txt.replaceAll("\r\n", "\n"); // Windows
-        result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
-        return result;
-    }
-    
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+public class VersionToolTest extends AbstractToolTest {
     
     @Test
     public void testAll() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--src", "test/src/com/redhat/ceylon/tools/version/modules"));
         StringWriter out = new StringWriter();
         tool.setOut(out);
@@ -39,7 +32,7 @@ public class VersionToolTest {
     @Test
     public void testAllAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--src", "test/src/com/redhat/ceylon/tools/version/modules",
                 "--dependencies"));
         StringWriter out = new StringWriter();
@@ -55,7 +48,7 @@ public class VersionToolTest {
     @Test
     public void testFoo() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--src", "test/src/com/redhat/ceylon/tools/version/modules", 
                 "foo"));
         StringWriter out = new StringWriter();
@@ -69,7 +62,7 @@ public class VersionToolTest {
     @Test
     public void testFooAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--src", "test/src/com/redhat/ceylon/tools/version/modules",
                 "--dependencies",
                 "foo"));
@@ -86,7 +79,7 @@ public class VersionToolTest {
     @Test
     public void testBarAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--src", "test/src/com/redhat/ceylon/tools/version/modules",
                 "--dependencies",
                 "bar"));
@@ -102,7 +95,7 @@ public class VersionToolTest {
     @Test
     public void testAllCwd() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
-        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--cwd", "test",
                 "--src", "src/com/redhat/ceylon/tools/version/modules"));
         StringWriter out = new StringWriter();

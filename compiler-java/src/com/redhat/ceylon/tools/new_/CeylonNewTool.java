@@ -44,6 +44,7 @@ import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Generates a new Ceylon project")
 @Description("Generates a new project, prompting for information as necessary")
@@ -92,7 +93,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override

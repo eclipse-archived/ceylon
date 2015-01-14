@@ -119,7 +119,7 @@ public class CeylonBashCompletionTool implements Tool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
     
     @Override

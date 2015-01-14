@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.tools.TestingToolLoader;
 
 public class BashCompletionToolTest {
@@ -42,6 +43,9 @@ public class BashCompletionToolTest {
         return Arrays.asList(args);
     }
     
+    private CeylonTool getMainTool() {
+        return pluginLoader.instance("", null);
+    }
     
     public void redirectStdout() {
         this.savedOut = System.out;
@@ -63,7 +67,7 @@ public class BashCompletionToolTest {
     public void testToolNameCompletion()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 args("--cword=1",
                         "--",
                         "/path/to/ceylon",
@@ -83,7 +87,7 @@ public class BashCompletionToolTest {
     public void testToolNameCompletion_partial()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=1",
                         "--",
                         "/path/to/ceylon",
@@ -101,7 +105,7 @@ public class BashCompletionToolTest {
     public void testOptionNameCompletion()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",
@@ -127,7 +131,7 @@ public class BashCompletionToolTest {
     public void testOptionNameCompletion_partial()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",
@@ -149,7 +153,7 @@ public class BashCompletionToolTest {
     public void testFileCompletion()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",
@@ -170,7 +174,7 @@ public class BashCompletionToolTest {
     public void testFileCompletion_partial()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",
@@ -191,7 +195,7 @@ public class BashCompletionToolTest {
     public void testEnumCompletion()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",
@@ -213,7 +217,7 @@ public class BashCompletionToolTest {
     public void testEnumCompletion_partial()  throws Exception {
         ToolModel<CeylonBashCompletionTool> model = pluginLoader.loadToolModel("bash-completion");
         Assert.assertNotNull(model);
-        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, 
+        CeylonBashCompletionTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 args("--cword=2",
                         "--",
                         "/path/to/ceylon",

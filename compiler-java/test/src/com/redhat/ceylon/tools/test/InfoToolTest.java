@@ -34,17 +34,14 @@ import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
-public class InfoToolTest {
+public class InfoToolTest extends AbstractToolTest {
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
-    
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         try {
-            CeylonInfoTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
+            CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>emptyList());
             Assert.fail();
         } catch (OptionArgumentException e) {
             // asserting this is thrown
@@ -55,20 +52,20 @@ public class InfoToolTest {
     public void testModuleVersion() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
     }
     
     @Test
     public void testModuleOnly() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
     }
     
     @Test
     public void testOffline() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList("--offline", "ceylon.language"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.<String>asList("--offline", "ceylon.language"));
     }
 }

@@ -27,6 +27,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Generates a WAR file")
@@ -135,7 +136,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
 	}
 
 	@Override
-	public void initialize() throws Exception {
+	public void initialize(CeylonTool mainTool) throws Exception {
 	}
 	
 	protected void addSpec(EntrySpec spec) {

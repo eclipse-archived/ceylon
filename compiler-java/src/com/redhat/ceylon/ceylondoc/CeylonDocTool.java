@@ -59,6 +59,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -355,7 +356,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
         setSystemProperties();
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){

@@ -22,6 +22,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
 @Summary("Prints information about modules in repositories")
@@ -170,7 +171,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
         if (showType != null) {
             if ("car".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.CAR;

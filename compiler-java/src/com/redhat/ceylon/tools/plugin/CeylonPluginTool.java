@@ -31,6 +31,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolError;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
@@ -414,6 +415,6 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize(CeylonTool mainTool) throws Exception {
     }
 }

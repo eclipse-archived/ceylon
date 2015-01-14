@@ -36,22 +36,19 @@ import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.tools.src.CeylonSrcTool;
 
-public class SrcToolTest extends CompilerTest {
+public class SrcToolTest extends AbstractToolTest {
 
     @Override
     protected String getPackagePath() {
         return super.getPackagePath() + "/test_mod_source";
     }
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
-    
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
         try {
-            CeylonSrcTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
+            CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>emptyList());
             Assert.fail();
         } catch (OptionArgumentException e) {
             // asserting this is thrown
@@ -62,21 +59,21 @@ public class SrcToolTest extends CompilerTest {
     public void testModuleVersion() throws Exception {
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
     }
     
     @Test
     public void testModuleOnly() throws Exception {
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language"));
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
     }
     
     @Test
     public void testOffline() throws Exception {
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList("--offline", "ceylon.language"));
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.<String>asList("--offline", "ceylon.language"));
     }
     
     @Test
@@ -85,7 +82,7 @@ public class SrcToolTest extends CompilerTest {
         
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList(
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.<String>asList(
                 "--cacherep", getCachePath(),
                 "--rep", getOutPath(),
                 "--src", "build/test-source",
@@ -109,7 +106,7 @@ public class SrcToolTest extends CompilerTest {
         
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList(
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.<String>asList(
                 "--cacherep", removeRoot(getCachePath()),
                 "--rep", removeRoot(getOutPath()),
                 "--cwd", "build",
