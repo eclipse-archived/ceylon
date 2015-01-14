@@ -22,6 +22,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
@@ -198,7 +199,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize() throws IOException {
+    public void initialize(CeylonTool mainTool) throws IOException {
     }
 
     @Override

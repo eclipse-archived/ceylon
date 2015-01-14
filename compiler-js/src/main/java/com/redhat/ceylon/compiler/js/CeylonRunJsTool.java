@@ -28,6 +28,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.loader.JsModuleManager;
 
 @Summary("Executes a Ceylon program")
@@ -413,7 +414,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(CeylonTool mainTool) {
     }
 
     @Override
