@@ -757,4 +757,6 @@ void checkParseFloat() {
         print("33-bit shift tests disabled for JS");
     }
     check(0.flip(31).get(31), "logicalShift.get 8");
+    check(2.divides(6), "Integer.divides 1");
+    check(!5.divides(6), "Integer.divides 2");
 }
