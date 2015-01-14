@@ -127,6 +127,7 @@ public class CeylonTool implements Tool {
     private ToolFactory pluginFactory;
     private boolean version;
     private Tool toolCache;
+    private Boolean paginate;
     
     public CeylonTool() {
     }
@@ -148,6 +149,26 @@ public class CeylonTool implements Tool {
         return stacktraces;
     }
     
+    @Option
+    @Description("Pipe all Ceylon tool output into less (or if set, $CEYLON_PAGER or $PAGER) if standard output is a terminal. This overrides the `help.pager` and `defaults.pager` configuration options (see the \"Configuration Mechanism\" section below).")
+    public void setPaginate(boolean paginate) {
+        this.paginate = Boolean.TRUE;
+    }
+    
+    public boolean getPaginate() {
+        return paginate != null && paginate;
+    }
+
+    @Option
+    @Description("Do not pipe Ceylon tool output into a pager.")
+    public void setNoPager(boolean noPager) {
+        this.paginate = Boolean.FALSE;
+    }
+    
+    public boolean getNoPager() {
+        return paginate != null && !paginate;
+    }
+
     //@Argument(argumentName="command", multiplicity="?", order=1)
     public void setCommand(String command) {
         this.toolName = command;
@@ -512,5 +533,9 @@ public class CeylonTool implements Tool {
     
     public void setToolLoader(ToolLoader toolLoader) {
         this.pluginLoader = toolLoader;
+    }
+
+    public Boolean getWantsPager() {
+        return paginate;
     }
 }
