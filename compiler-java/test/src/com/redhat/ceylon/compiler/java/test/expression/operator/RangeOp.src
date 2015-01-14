@@ -54,24 +54,12 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final long offset(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return (
-            let
-            {
-                .ceylon.language.Integer $ceylontmp$0 = this == other ? .ceylon.language.Integer.instance(0L) : null;
-            }
-            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(1L);
-        ).longValue();
+        return this == other ? 0L : 1L;
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum neighbour(final long offset) {
-        return (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum $ceylontmp$1 = !(offset % 2L == 0L == (this == .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_())) ? .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_() : null;
-            }
-            returning $ceylontmp$1 != null ? $ceylontmp$1 : .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
-        );
+        return !(offset % 2L == 0L == (this == .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_())) ? .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_() : .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
     }
     
     @.java.lang.Override

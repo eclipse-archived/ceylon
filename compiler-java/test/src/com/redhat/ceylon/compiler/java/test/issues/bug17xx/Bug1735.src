@@ -7,13 +7,7 @@ final class bug1735_ {
     
     static void bug1735() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735 b = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735();
-        b.setType(.com.redhat.ceylon.compiler.java.Util.toInt((
-            let
-            {
-                .ceylon.language.Integer $ceylontmp$0 = true ? .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T) : null;
-            }
-            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T);
-        ).longValue()));
+        b.setType(true ? .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T : .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T);
         final long i = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T;
         b.setType(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T);
         b.setType(.com.redhat.ceylon.compiler.java.Util.toInt(i));

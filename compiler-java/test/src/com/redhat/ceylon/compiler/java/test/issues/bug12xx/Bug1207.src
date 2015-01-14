@@ -8,68 +8,56 @@ final class bug1207_ {
     static void bug1207() {
         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
         .ceylon.language.String.replace("hello", "h", "H");
-        final .ceylon.language.Callable<? extends .java.lang.Object> c1 = (
-            let
-            {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$0 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
-                    
-                    @.java.lang.Override
-                    public .java.lang.Object $call$() {
-                        return (
-                            let
-                            {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
-                            }
-                            returning null;
-                        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> c1 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                     }
-                } : null;
+                    returning null;
+                );
             }
-            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
-                
-                @.java.lang.Override
-                public .java.lang.Object $call$() {
-                    return (
-                        let
-                        {
-                            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
-                        }
-                        returning null;
-                    );
-                }
-            };
-        );
-        (
-            let
-            {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$1 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
-                    
-                    @.java.lang.Override
-                    public .java.lang.Object $call$() {
-                        return (
-                            let
-                            {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
-                            }
-                            returning null;
-                        );
+        } : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                     }
-                } : null;
+                    returning null;
+                );
             }
-            returning $ceylontmp$1 != null ? $ceylontmp$1 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
-                
-                @.java.lang.Override
-                public .java.lang.Object $call$() {
-                    return (
-                        let
-                        {
-                            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
-                        }
-                        returning null;
-                    );
-                }
-            };
-        ).$call$();
+        };
+        (1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
+                    }
+                    returning null;
+                );
+            }
+        } : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
+                    }
+                    returning null;
+                );
+            }
+        }).$call$();
         final .ceylon.language.Callable<? extends .ceylon.language.String> f = (
             let
             {
