@@ -18,6 +18,7 @@ import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 public class CompileJsToolTest {
 
@@ -31,6 +32,9 @@ public class CompileJsToolTest {
         
         
     };
+    protected CeylonTool getMainTool() {
+        return pluginLoader.instance("", null);
+    }
 
     private List<String> args(String... args) {
         ArrayList<String> result = new ArrayList<String>();
@@ -44,7 +48,7 @@ public class CompileJsToolTest {
     public void testLoad() {
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        pluginFactory.bindArguments(tool, args());
+        pluginFactory.bindArguments(tool, getMainTool(), args());
     }
 
     @Test(expected=OptionArgumentException.ToolInitializationException.class)
@@ -52,7 +56,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon",
@@ -65,7 +69,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/invalid",
                 "src/test/resources/doc/calls.ceylon",
@@ -78,7 +82,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/invalid.ceylon",
@@ -91,7 +95,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/invalid",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon",
@@ -104,7 +108,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon",
@@ -121,7 +125,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon"));
@@ -135,7 +139,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "default"));
@@ -152,7 +156,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "--resource-root=ALTROOT",
@@ -170,7 +174,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -185,7 +189,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -205,7 +209,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -224,7 +228,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -240,7 +244,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "m1"));
@@ -258,7 +262,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "m1"));
@@ -277,12 +281,12 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "m1"));
         jsc.run();
-        jsc = pluginFactory.bindArguments(tool, args(
+        jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -303,7 +307,7 @@ public class CompileJsToolTest {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
-        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "--resource-root=ALTROOT",
