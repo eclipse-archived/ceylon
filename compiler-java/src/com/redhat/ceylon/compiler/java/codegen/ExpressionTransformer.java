@@ -4576,20 +4576,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType leftCorrespondenceOrRangeType = leftType.getSupertype(leftSuperTypeDeclaration);
         ProducedType rightType = getTypeArgument(leftCorrespondenceOrRangeType, 0);
         
-        JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
-        
         // now find the access code
         JCExpression safeAccess;
         
         if(isElement){
+            // can we use getFromFirst() to avoid boxing the index?
+            boolean listOptim =  
+                    leftType.isSubtypeOf(typeFact().getListDeclaration().getProducedType(
+                            null, Collections.singletonList(typeFact().getAnythingDeclaration().getType())));
+            
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, 
+                    listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType);
+            
             Tree.Element element = (Tree.Element) elementOrRange;
             
             // do the index
-            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
+            JCExpression index = transformExpression(element.getExpression(), listOptim ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, rightType);
 
             // tmpVar.item(index)
             safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                                          makeSelect(lhs, "get"), List.of(index));
+                                          makeSelect(lhs, listOptim ? "getFromFirst" : "get"), List.of(index));
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
             ProducedType sequentialElementType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
@@ -4604,6 +4610,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
         }else{
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
