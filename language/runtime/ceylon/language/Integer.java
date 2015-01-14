@@ -309,7 +309,6 @@ public final class Integer
     }
 
     @Override
-    @Ignore
     public final boolean divides(@Name("other") Integer other) {
         return other.value % value == 0;
     }

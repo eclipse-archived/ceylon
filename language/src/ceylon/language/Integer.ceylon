@@ -50,6 +50,8 @@ shared native final class Integer(Integer integer)
             "if there is no such character")
     shared native Character character;
     
+    shared actual native Boolean divides(Integer other);
+    
     shared actual native Integer plus(Integer other);
     shared actual native Integer minus(Integer other);
     shared actual native Integer times(Integer other);
