@@ -5,7 +5,7 @@ function flatten(tf, $$$mptypes) {
   function rf() {
     var argc = arguments.length;
     var last = argc>0 ? arguments[argc-1] : undefined;
-    var tlast = typeof(last)==='object';
+    var tlast = last!=null && typeof(last)==='object';
     if (tlast && typeof(last.Args$flatten) === 'object' && (last.Args$flatten.t==='T'||typeof(last.Args$flatten.t) === 'function')) {
       argc--;
     } else if (tf.$$targs$$ && tlast) {
