@@ -138,7 +138,11 @@ final class bug954_ {
             }
         }
         final x_ x = new x_();
-        x.x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+        x.x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -165,7 +169,11 @@ final class bug954_ {
         }
         final y_ y = new y_();
         if (b) {
-            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1)
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+            @.com.redhat.ceylon.compiler.java.metadata.Name("y")
+            @.com.redhat.ceylon.compiler.java.metadata.Method
+            {
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -175,7 +183,11 @@ final class bug954_ {
                 }
             };
         } else {
-            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1)
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+            @.com.redhat.ceylon.compiler.java.metadata.Name("y")
+            @.com.redhat.ceylon.compiler.java.metadata.Method
+            {
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore

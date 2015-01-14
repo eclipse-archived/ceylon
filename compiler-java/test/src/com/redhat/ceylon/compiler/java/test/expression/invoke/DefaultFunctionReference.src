@@ -81,7 +81,11 @@ final class defaultFunctionReference2_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference2$f(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object*)", (short)0){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object*)", (short)0)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("f")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -227,7 +231,11 @@ final class defaultFunctionReference3_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference3$f(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object+)", (short)0){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object+)", (short)0)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("f")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
