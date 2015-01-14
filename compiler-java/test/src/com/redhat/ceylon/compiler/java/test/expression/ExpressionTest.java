@@ -364,6 +364,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/NullHandlingOperators");
     }
     @Test
+    public void testOprThenElseOptimization(){
+        compareWithJavaSource("operator/ThenElseOptimization");
+    }
+    @Test
     public void testOprLookupOperatorOptimization(){
         compareWithJavaSource("operator/LookupOperatorOptimization");
     }
