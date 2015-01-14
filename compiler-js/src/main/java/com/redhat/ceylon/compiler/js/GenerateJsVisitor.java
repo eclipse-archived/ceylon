@@ -1698,7 +1698,6 @@ public class GenerateJsVisitor extends Visitor
     String memberAccessBase(Node node, Declaration decl, boolean setter,
                 String lhs) {
         final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
-
         if (sb.length() > 0) {
             if (node instanceof BaseMemberOrTypeExpression) {
                 Declaration bmd = ((BaseMemberOrTypeExpression)node).getDeclaration();
@@ -2216,7 +2215,11 @@ public class GenerateJsVisitor extends Visitor
                 final StringBuilder path = new StringBuilder();
                 while (scope != null) {
                     if (scope instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-                        path.append(names.name((TypeDeclaration)scope.getContainer()));
+                        if (that instanceof BaseTypeExpression) {
+                            path.append(names.name((TypeDeclaration)scope.getContainer()));
+                        } else {
+                            path.append(names.self((TypeDeclaration)scope.getContainer()));
+                        }
                         if (scope == id) {
                             break;
                         }
