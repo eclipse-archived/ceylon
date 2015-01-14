@@ -364,6 +364,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/NullHandlingOperators");
     }
     @Test
+    public void testOprLookupOperatorOptimization(){
+        compareWithJavaSource("operator/LookupOperatorOptimization");
+    }
+    @Test
     public void testOprSequenceOperators(){
         compareWithJavaSource("operator/SequenceOperators");
         run("com.redhat.ceylon.compiler.java.test.expression.operator.sequenceOperators");
