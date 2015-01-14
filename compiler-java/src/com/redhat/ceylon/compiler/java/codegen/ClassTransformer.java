@@ -4627,7 +4627,8 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.makeTypeDeclarationName(ctor), null, true);
             int classMods = transformConstructorDeclFlags(ctor);
             JCVariableDecl constructorNameConst;
-            if (clz.isToplevel() || clz.isMember()) {
+            if (clz.isToplevel() || 
+                    (clz.isMember() && Decl.isToplevel((Declaration)clz.getContainer()))) {
                 classMods |= FINAL | STATIC;
                 constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
                         names().fromString(naming.makeTypeDeclarationName(ctor)),
