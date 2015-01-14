@@ -10,6 +10,12 @@ class ToplevelBug476 {
     x=2;
     check(x+1==3, "#484.2");
   }
+  shared ToplevelBug476 test485_1() {
+    return ToplevelBug476.Bar();
+  }
+  shared ToplevelBug476 test485_2() {
+    return Bar();
+  }
 }
 
 void testConstructors() {
@@ -25,4 +31,6 @@ void testConstructors() {
     }
   }
   check(NestedBug476.Bar().x==2, "#476 nested");
+  check(ToplevelBug476().test485_1().x==2, "#485.1");
+  check(ToplevelBug476().test485_2().x==2, "#485.2");
 }
