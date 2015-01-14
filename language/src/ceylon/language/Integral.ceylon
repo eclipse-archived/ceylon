@@ -51,7 +51,7 @@ shared interface Integral<Other> of Other
     
     "Determine if this number is a factor of the given 
      number."
-    shared Boolean divides(Other other) 
+    shared default Boolean divides(Other other) 
             => (other % (this of Other)).zero;
     
 }
