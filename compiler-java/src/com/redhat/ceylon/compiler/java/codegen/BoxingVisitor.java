@@ -581,7 +581,9 @@ public abstract class BoxingVisitor extends Visitor {
         Tree.Expression elseExpr = that.getElseClause().getExpression();
         if(ifExpr == null || elseExpr == null)
             return;
-        if(CodegenUtil.isUnBoxed(ifExpr) && CodegenUtil.isUnBoxed(elseExpr))
+        if(CodegenUtil.isUnBoxed(ifExpr) 
+                && CodegenUtil.isUnBoxed(elseExpr)
+                && !willEraseToObject(that.getTypeModel()))
             CodegenUtil.markUnBoxed(that);
         if(CodegenUtil.isRaw(ifExpr) || CodegenUtil.isRaw(elseExpr))
             CodegenUtil.markRaw(that);
@@ -628,7 +630,8 @@ public abstract class BoxingVisitor extends Visitor {
             if(CodegenUtil.hasUntrustedType(expr))
                 CodegenUtil.markUntrustedType(that);
         }
-        if(unboxed)
+        if(unboxed 
+                && !willEraseToObject(that.getTypeModel()))
             CodegenUtil.markUnBoxed(that);
     }
     
