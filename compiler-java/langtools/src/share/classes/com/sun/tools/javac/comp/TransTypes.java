@@ -757,6 +757,14 @@ public class TransTypes extends TreeTranslator {
         super.visitLetExpr(tree);
         // make sure we inherit the new type
         tree.type = tree.expr.type;
+        // if we have statements, drop any constant value from the type
+        // otherwise the statements will be dropped in code generation
+        // which won't work if the statements have side-effects
+        // same code in Attr.visit(LetExpr)
+        if(tree.type.constValue() != null
+                && tree.stats != null
+                && !tree.stats.isEmpty())
+            tree.type = tree.type.baseType();
     }
     
 /**************************************************************************

@@ -3345,7 +3345,14 @@ public class Attr extends JCTree.Visitor {
             attribExpr(tree.expr, localEnv, pt);
             // the type of the LET is the type of the expression
             tree.type = tree.expr.type;
-            
+            // if we have statements, drop any constant value from the type
+            // otherwise the statements will be dropped in code generation
+            // which won't work if the statements have side-effects
+            // same code in TransTypes.visit(LetExpr)
+            if(tree.type.constValue() != null
+                    && tree.stats != null
+                    && !tree.stats.isEmpty())
+                tree.type = tree.type.baseType();
         }finally{
             // exit the LET scope
             localEnv.info.scope.leave();
