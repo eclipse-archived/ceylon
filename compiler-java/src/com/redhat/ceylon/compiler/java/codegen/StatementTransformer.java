@@ -3536,13 +3536,15 @@ public class StatementTransformer extends AbstractTransformer {
             Naming.SyntheticName elseSelectorAlias = null;
             if(caseList.getElseClause() != null
                     && caseList.getElseClause().getVariable() != null){
+                Value elseVar = caseList.getElseClause().getVariable().getDeclarationModel();
                 if (hasVariable(switchClause)) {
-                     ProducedType switchVarType = switchClause.getSwitched().getVariable().getDeclarationModel().getType();
-                     Value elseVar = caseList.getElseClause().getVariable().getDeclarationModel();
-                     ProducedType elseVarType = elseVar.getType();
-                     if(!elseVarType.isExactly(switchVarType)){
-                         elseSelectorAlias = naming.synthetic(elseVar);
-                     }
+                    ProducedType switchVarType = switchClause.getSwitched().getVariable().getDeclarationModel().getType();
+                    ProducedType elseVarType = elseVar.getType();
+                    if(!elseVarType.isExactly(switchVarType)){
+                        elseSelectorAlias = naming.synthetic(elseVar);
+                    }
+                } else if (CodegenUtil.getBoxingStrategy(elseVar) != CodegenUtil.getBoxingStrategy(elseVar.getOriginalDeclaration())) {
+                    elseSelectorAlias = naming.synthetic(elseVar);
                 }
             }
             cases.add(make().Case(null, List.of(transformElse(elseSelectorAlias, caseList, tmpVar, outerExpression))));
