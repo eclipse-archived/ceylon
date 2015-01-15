@@ -243,16 +243,19 @@ abstract class Invocation {
         } else {
             actualPrimExpr = primaryExpr;
         }
-        
+         
         if (getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)getPrimary();
             Declaration declaration = type.getDeclaration();
             if (Strategy.generateInstantiator(declaration)) {
                 if (Decl.withinInterface(declaration)) {
                     actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
-                } else { 
+                } else if (declaration.isToplevel()) {
                     actualPrimExpr = null;
                 }
+                // if the decl is not toplevel (but the primary is a base type
+                // we must be invoking a member imported from an object
+                // in which case the qualifer is needed.
             }
             if (declaration instanceof Constructor) {
                 selector = null;

@@ -4418,6 +4418,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                         qualExpr = applyVarianceCasts(qualExpr, targetType, varianceCastResult, 0);
                     }
                 }
+            } else if (decl.isClassMember()
+                    && ((Class)decl.getContainer()).isAnonymous()
+                    && ((Class)decl.getContainer()).isToplevel()) {
+                Class container = (Class)decl.getContainer();
+                Value value = (Value)((Package)container.getContainer()).getMember(container.getName(), null, false);
+                qualExpr = make().Apply(null,
+                        naming.makeName(value, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER),
+                        List.<JCExpression>nil());    
             } else if (decl.isMember() && !expr.getStaticMethodReference()) {
                 throw new BugException(expr, decl.getQualifiedNameString() + " was unexpectedly a member");
             }
@@ -4783,6 +4791,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
             decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
             lhs = addInterfaceImplAccessorIfRequired(lhs, (Tree.StaticMemberOrTypeExpression) leftTerm, decl);
+            lhs = addThisQualifierIfRequired(lhs, (Tree.StaticMemberOrTypeExpression)leftTerm, decl);
         } else {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
