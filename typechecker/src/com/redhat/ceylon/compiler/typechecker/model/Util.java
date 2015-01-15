@@ -819,8 +819,7 @@ public class Util {
                         pt.getDeclaration().getSupertypeDeclarations();
                 for (int i=0, l=supertypes.size(); i<l; i++) {
                     TypeDeclaration supertype = supertypes.get(i);
-                    List<TypeDeclaration> ctds = 
-                            
+                    List<TypeDeclaration> ctds =
                             supertype.getCaseTypeDeclarations();
                     if (ctds!=null) {
                         TypeDeclaration ctd=null;
@@ -866,7 +865,7 @@ public class Util {
                         list.remove(i);
                         i--; // redo this index
                     }
-                    else if (haveUninhabitableIntersection(pt,t, unit)) {
+                    else if (haveUninhabitableIntersection(pt, t, unit)) {
                         list.clear();
                         list.add(unit.getNothingDeclaration().getType());
                         return;

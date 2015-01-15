@@ -650,7 +650,7 @@ public class ExpressionVisitor extends Visitor {
             
             ProducedType it = narrow(type, knownType, that.getNot());
             //check for disjointness
-            if (it.getDeclaration() instanceof NothingType) {
+            if (it.isNothing()) {
                 if (that.getNot()) {
                     /*that.addError("tests assignability to Nothing type: " +
                             knownType.getProducedTypeName(unit) + " is a subtype of " + 
@@ -4788,20 +4788,20 @@ public class ExpressionVisitor extends Visitor {
     private void visitIsOperator(Tree.IsOp that) {
         Tree.Type rt = that.getType();
         if (rt!=null) {
-            ProducedType t = rt.getTypeModel();
-            if (t!=null) {
+            ProducedType type = rt.getTypeModel();
+            if (type!=null) {
                 if (that.getTerm()!=null) {
-                    ProducedType pt = that.getTerm().getTypeModel();
-                    if (pt!=null && pt.isSubtypeOf(t)) {
+                    ProducedType knownType = that.getTerm().getTypeModel();
+                    if (knownType!=null && knownType.isSubtypeOf(type)) {
                         that.addError("expression type is a subtype of the type: '" +
-                                pt.getProducedTypeName(unit) + "' is assignable to '" +
-                                t.getProducedTypeName(unit) + "'");
+                                knownType.getProducedTypeName(unit) + "' is assignable to '" +
+                                type.getProducedTypeName(unit) + "'");
                     }
                     else {
-                        if (intersectionType(t, pt, unit).isNothing()) {
+                        if (intersectionType(type, knownType, unit).isNothing()) {
                             that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                                    pt.getProducedTypeName(unit) + "' and '" + 
-                                    t.getProducedTypeName(unit) + "' is empty");
+                                    knownType.getProducedTypeName(unit) + "' and '" + 
+                                    type.getProducedTypeName(unit) + "' is empty");
                         }
                     }
                 }
