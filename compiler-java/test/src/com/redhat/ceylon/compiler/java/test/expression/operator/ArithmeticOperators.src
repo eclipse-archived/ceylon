@@ -18,7 +18,7 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public final boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
         return $ceylon$language$Integral$this$.divides(other);
     }
     protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Number$this$;
