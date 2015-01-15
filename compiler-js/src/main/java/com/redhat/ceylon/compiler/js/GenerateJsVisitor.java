@@ -1767,7 +1767,18 @@ public class GenerateJsVisitor extends Visitor
             generateThrow(null, "Undefined type " + id, that);
             out(":", id, ")");
         } else {
-            qualify(that, d);
+            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                //This is an ugly-ass hack for when the typechecker incorrectly reports
+                //the declaration as the constructor instead of the class;
+                //this happens with classes that have a default constructor with the same name as the type
+                if (names.name(d).equals(names.name((TypeDeclaration)d.getContainer()))) {
+                    qualify(that, (TypeDeclaration)d.getContainer());
+                } else {
+                    qualify(that, d);
+                }
+            } else {
+                qualify(that, d);
+            }
             out(names.name(d));
         }
     }
@@ -2213,8 +2224,10 @@ public class GenerateJsVisitor extends Visitor
                     scope = scope.getContainer();
                 }
                 final StringBuilder path = new StringBuilder();
+                final Declaration innermostDeclaration = Util.getContainingDeclarationOfScope(scope);
                 while (scope != null) {
-                    if (scope instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                    if (scope instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+                            && scope == innermostDeclaration) {
                         if (that instanceof BaseTypeExpression) {
                             path.append(names.name((TypeDeclaration)scope.getContainer()));
                         } else {
@@ -2227,6 +2240,11 @@ public class GenerateJsVisitor extends Visitor
                     } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
                             path.append(".outer$");
+                        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+                                && Util.getContainingDeclaration(d) == scope) {
+                            if (!d.getName().equals(((TypeDeclaration)scope).getName())) {
+                                path.append(names.name((TypeDeclaration) scope));
+                            }
                         } else {
                             path.append(names.self((TypeDeclaration) scope));
                         }
@@ -2264,7 +2282,7 @@ public class GenerateJsVisitor extends Visitor
                         sb.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
                         return sb.toString();
                     } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-                        return names.name((TypeDeclaration)d.getContainer());
+                        return names.name(id);
                     } else {
                         //a shared local declaration
                         return names.self(id);
