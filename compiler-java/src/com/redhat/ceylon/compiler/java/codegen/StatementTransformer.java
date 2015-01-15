@@ -3647,7 +3647,10 @@ public class StatementTransformer extends AbstractTransformer {
             int lastCheap = 0;
             // The dummy isn't actually used for anything, it just has to be non-null
             SyntheticName dummy = naming.synthetic(Naming.Unfix.$annotationSequence$);
-            for (Tree.CaseClause clause : list) {
+            // if one of the match expressions is null that 
+            // test must be first to avoid NPE.
+            Tree.CaseClause containsNull = null;
+            outer: for (Tree.CaseClause clause : list) {
                 Tree.CaseItem item = clause.getCaseItem();
                 boolean isCheap;
                 if (item instanceof Tree.IsCase) {
@@ -3656,6 +3659,12 @@ public class StatementTransformer extends AbstractTransformer {
                             getSwitchExpressionType(switchClause));
                 } else if (item instanceof Tree.MatchCase) {
                     // will be primitive equality test
+                    for (Tree.Expression expr : ((Tree.MatchCase) item).getExpressionList().getExpressions()) {
+                        if (isNull(expr.getTypeModel())) {
+                            containsNull = clause;
+                            continue outer;
+                        }
+                    }
                     isCheap = true;
                 } else {
                     // should never get here, but we can just return the unsorted list
@@ -3666,6 +3675,9 @@ public class StatementTransformer extends AbstractTransformer {
                 if (isCheap) {
                     lastCheap = index+1;
                 }
+            }
+            if (containsNull != null) {
+                cheap.add(0, containsNull);
             }
             return cheap;
         }
@@ -3867,8 +3879,12 @@ public class StatementTransformer extends AbstractTransformer {
             }
             if(tests == null)
                 tests = test;
-            else
+            else if (isNull(term.getTypeModel())) {
+                // ensure we do any null check as the first operation in the ||-ed expression
+                tests = make().Binary(JCTree.OR, test, tests);
+            } else {
                 tests = make().Binary(JCTree.OR, tests, test);
+            }
         }
         JCBlock block = transformCaseClauseBlock(caseClause, tmpVar, outerExpression);
         return at(caseClause).If(tests, block, last);
