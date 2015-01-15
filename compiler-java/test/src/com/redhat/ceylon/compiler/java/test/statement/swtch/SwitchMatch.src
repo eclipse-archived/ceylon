@@ -130,12 +130,12 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
         {
             .ceylon.language.Boolean sel$3 = b;
-            if (sel$3.booleanValue() == true) {
+            if (sel$3 == null) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
+            } else if (sel$3.booleanValue() == true) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
             } else if (sel$3.booleanValue() == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
-            } else if (sel$3 == null) {
-                .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
