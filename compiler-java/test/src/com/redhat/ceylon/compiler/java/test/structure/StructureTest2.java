@@ -214,6 +214,11 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("importIt/ImportCeylonLanguageType");
     }
     
+    @Test
+    public void testImpImportObjectMembers(){
+        compareWithJavaSource("importIt/ImportObjectMembers.src", "importIt/ImportObjectMembers.ceylon", "importIt/obj/Object.ceylon");
+    }
+    
     // Tests for nesting of declarations
     /*@Test
     public void testNstNesting(){
