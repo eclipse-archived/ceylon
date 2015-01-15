@@ -541,6 +541,13 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testSwitchWithNullCase(){
+        compareWithJavaSource("swtch/SwitchWithNullCase");
+        //compile("swtch/SwitchWithNullCase.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.statement.swtch.switchWithNullCase");
+    }
+    
+    @Test
     public void testReturnAnonFunction(){
         compareWithJavaSource("retrn/ReturnAnonFunction");
     }
