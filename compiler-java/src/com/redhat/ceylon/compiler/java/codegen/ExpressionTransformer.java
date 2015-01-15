@@ -4296,7 +4296,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                 qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
-                qualExpr = addThisQualifierIfRequired(qualExpr, expr, decl);
+                qualExpr = addThisOrObjectQualifierIfRequired(qualExpr, expr, decl);
 
                 if (qualExpr == null && needDollarThis(expr)) {
                     qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
@@ -4367,7 +4367,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      *   to ensure we're accessing the outer instances member, not 
      *   a member of the anonymous local class that happens to have the same name.
      */
-    private JCExpression addThisQualifierIfRequired(
+    private JCExpression addThisOrObjectQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
             Declaration decl) {
         if (qualExpr == null 
@@ -4791,7 +4791,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
             decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
             lhs = addInterfaceImplAccessorIfRequired(lhs, (Tree.StaticMemberOrTypeExpression) leftTerm, decl);
-            lhs = addThisQualifierIfRequired(lhs, (Tree.StaticMemberOrTypeExpression)leftTerm, decl);
+            lhs = addThisOrObjectQualifierIfRequired(lhs, (Tree.StaticMemberOrTypeExpression)leftTerm, decl);
         } else {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
