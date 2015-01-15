@@ -955,7 +955,10 @@ public class Util {
         }
         else if (qd.getCaseTypes()!=null) {
             boolean all = true;
-            for (ProducedType t: qd.getCaseTypes()) {
+            for (ProducedType t: 
+                    //TODO: shouldn't this be q.getCaseTypes() ?
+                    //      but that causes nontermination...
+                    qd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
                         !emptyMeet(p,t,unit)) {
                     all = false; 
@@ -974,7 +977,10 @@ public class Util {
         }
         else if (pd.getCaseTypes()!=null) {
             boolean all = true;
-            for (ProducedType t: pd.getCaseTypes()) {
+            for (ProducedType t: 
+                    //TODO: shouldn't this be p.getCaseTypes() ?
+                    //      but that causes nontermination...
+                    pd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
                         !emptyMeet(q,t,unit)) {
                     all = false; 
@@ -1025,8 +1031,10 @@ public class Util {
 //                unit.isNonemptyIterableType(p)) {
 //            return true;
 //        }
+        Interface st = unit.getSequentialDeclaration();
         Interface nst = unit.getSequenceDeclaration();
-        if (pd.inherits(nst) && qd.inherits(nst)) {
+        if (pd.inherits(nst) && qd.inherits(st) ||
+            qd.inherits(nst) && pd.inherits(st)) {
             ProducedType pet = unit.getSequentialElementType(p);
             ProducedType qet = unit.getSequentialElementType(q);
             if (emptyMeet(pet, qet, unit)) {
@@ -1044,13 +1052,12 @@ public class Util {
                 }
             }
         }
-        Interface st = unit.getSequentialDeclaration();
         if (pd.inherits(td) && qd.inherits(st)) {
             List<ProducedType> pal = p.getTypeArgumentList();
             ProducedType qet = unit.getSequentialElementType(q);
             if (pal.size()>=3) {
                 if (emptyMeet(pal.get(1), qet, unit) ||
-                    emptyMeet(pal.get(2), q, unit)) {
+                    emptyMeet(pal.get(2), unit.getSequentialType(qet), unit)) {
                     return true;
                 }
             }
@@ -1060,7 +1067,7 @@ public class Util {
             ProducedType pet = unit.getSequentialElementType(p);
             if (qal.size()>=3) {
                 if (emptyMeet(qal.get(1), pet, unit) ||
-                    emptyMeet(qal.get(2), p, unit)) {
+                    emptyMeet(qal.get(2), unit.getSequentialType(pet), unit)) {
                     return true;
                 }
             }
