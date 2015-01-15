@@ -617,14 +617,14 @@ final class destructureIf_ {
                 name$82 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$80$81).getFromFirst(0)).toString();
                 $ceylontmp$if$75 = true;
             } else {
-                name$82 = null;
                 rest$83 = null;
+                name$82 = null;
             }
         } else {
-            name$82 = null;
-            rest$83 = null;
-            x$78 = 0.0;
             i$79 = 0L;
+            x$78 = 0.0;
+            rest$83 = null;
+            name$82 = null;
         }
         if ($ceylontmp$if$75) {
             final double c = x$78;
@@ -649,10 +649,5 @@ final class destructureWhile_ {
     }
     
     static void destructureWhile() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.destructuring.destructureWhile_.destructureWhile();
     }
 }

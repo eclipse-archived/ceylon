@@ -20,8 +20,8 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
                 y1$4 = 0L;
             }
         } else {
-            y1$4 = 0L;
             x1$2 = 0L;
+            y1$4 = 0L;
         }
         if ($ceylontmp$if$0) {
             return x1$2 == y1$4;
@@ -45,8 +45,8 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
                 y$9 = 0L;
             }
         } else {
-            y$9 = 0L;
             x$7 = 0L;
+            y$9 = 0L;
         }
         if ($ceylontmp$if$5) {
             return x$7 == y$9;
@@ -70,8 +70,8 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
                 y1$14 = 0L;
             }
         } else {
-            y1$14 = 0L;
             x1$12 = 0L;
+            y1$14 = 0L;
         }
         if ($ceylontmp$if$10) {
             return x1$12 == y1$14;

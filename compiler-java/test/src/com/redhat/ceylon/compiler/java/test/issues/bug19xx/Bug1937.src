@@ -73,8 +73,8 @@ final class bug1937_ {
                         c$13 = 0;
                     }
                 } else {
-                    c$13 = 0;
                     obj$11 = null;
+                    c$13 = 0;
                 }
                 if ($ceylontmp$if$9) {
                     $ceylontmp$ifResult$8 = true;
@@ -136,8 +136,8 @@ final class bug1937_ {
                                     c$26 = 0;
                                 }
                             } else {
-                                c$26 = 0;
                                 obj$24 = null;
+                                c$26 = 0;
                             }
                             if ($ceylontmp$if$22) {
                                 $ceylontmp$ifResult$21 = true;
@@ -178,8 +178,8 @@ final class bug1937_ {
                                     c$35 = 0;
                                 }
                             } else {
-                                c$35 = 0;
                                 obj$33 = null;
+                                c$35 = 0;
                             }
                             if ($ceylontmp$if$31) {
                                 $ceylontmp$ifResult$30 = true;
