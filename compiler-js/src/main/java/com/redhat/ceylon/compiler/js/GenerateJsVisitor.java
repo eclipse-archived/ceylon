@@ -1358,7 +1358,11 @@ public class GenerateJsVisitor extends Visitor
                 endLine(true);
                 out(pname, ".$crtmm$=$prop$", pname, ".$crtmm$");
             } else {
-                out("function(){return ", names.name(d), "}");
+                if (d.isToplevel()) {
+                    out(names.getter(d));
+                } else {
+                    out("function(){return ", names.name(d), "}");
+                }
             }
             endLine(true);
         }

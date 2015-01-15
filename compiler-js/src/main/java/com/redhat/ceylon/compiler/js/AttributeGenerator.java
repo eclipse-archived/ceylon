@@ -49,7 +49,7 @@ public class AttributeGenerator {
         } else {
             varName = gen.getNames().name(decl);
         }
-        final boolean initVal = expr != null && decl.isToplevel();
+        final boolean initVal = decl.isToplevel();
         gen.out("var ", varName);
         if (expr != null) {
             if (initVal) {
@@ -57,7 +57,7 @@ public class AttributeGenerator {
                 gen.out("if(", varName, "===", gen.getClAlias(), "INIT$)");
                 gen.generateThrow(gen.getClAlias()+"InitializationError",
                         "Cyclic initialization trying to read the value of '" +
-                        decl.getName() + "' before it was set", attributeNode);
+                        decl.getName() + "' before it was set", attributeNode==null?expr:attributeNode);
                 gen.endLine(true);
                 gen.out("if(", varName, "===undefined){",
                         varName, "=", gen.getClAlias(), "INIT$;", varName, "=");
@@ -90,7 +90,7 @@ public class AttributeGenerator {
             }
             gen.boxUnboxEnd(boxType);
             if (initVal) {
-                gen.out("};return ", varName, ";};$valinit$", varName, "()");
+                gen.out("};return ", varName, ";}");
             }
         } else if (param != null) {
             gen.out("=", param);
