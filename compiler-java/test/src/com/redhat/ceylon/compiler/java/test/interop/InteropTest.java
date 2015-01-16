@@ -468,4 +468,10 @@ public class InteropTest extends CompilerTest {
     public void testIopBug1977(){
         compareWithJavaSource("Bug1977");
     }
+    
+    @Test
+    public void testIopWidening(){
+        compile("Widening.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.run");
+    }
 }
