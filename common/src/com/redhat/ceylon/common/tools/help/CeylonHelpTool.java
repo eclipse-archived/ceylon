@@ -141,9 +141,10 @@ public class CeylonHelpTool implements Tool {
     
     @Override
     public void run() {
-        if(wantsPager && OSUtil.isWindows()){
-            openHelpInBrowser();
-            return;
+        if(wantsPager && OSUtil.isWindows() && tool != null){
+            if (openHelpInBrowser()){
+                return;
+            }
         }
         
         docBuilder.setIncludeHidden(includeHidden);
@@ -155,7 +156,7 @@ public class CeylonHelpTool implements Tool {
             doc = docBuilder.buildDoc(root, true);
         }
         Process pagerProcess = null;
-        if(wantsPager){
+        if(wantsPager && !OSUtil.isWindows()){
             pagerProcess = startPager();
         }
         OutputStream pagerPipe = null;
