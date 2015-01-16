@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+final class importConstructor_ {
+    
+    private importConstructor_() {
+    }
+    
+    static void importConstructor() {
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor();
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.Other);
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.Third);
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor> x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor>(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Ctor()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor();
+            }
+        };
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor> other = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor>(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Ctor()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.Other);
+            }
+        };
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor> y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor>(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Ctor()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.Third);
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.importConstructor_.importConstructor();
+    }
+}
