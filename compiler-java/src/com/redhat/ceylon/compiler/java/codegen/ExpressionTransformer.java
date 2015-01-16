@@ -157,6 +157,8 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Use this when the expression is to be passed to a Java field/setter/parameter which does not require null-safety
      */
     public static final int EXPR_TARGET_ACCEPTS_NULL = 1 << 8;
+    
+    public static final int EXPR_WIDEN_PRIM = 1 << 9;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -827,6 +829,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ret = make().TypeCast(syms().floatType, ret);
                 } else if(convertTo.equals("char")) {
                     ret = make().TypeCast(syms().charType, ret);
+                }
+            } else if (convertFrom != null
+                    && (flags & EXPR_WIDEN_PRIM) != 0) {
+                if (isCeylonInteger(exprType)
+                        && (convertFrom.equals("int")
+                            || convertFrom.equals("short")
+                            || convertFrom.equals("byte"))) {
+                    ret = make().TypeCast(syms().longType, ret);
+                } else if (isCeylonFloat(exprType)&& 
+                        convertFrom.equals("float")) {
+                    ret = make().TypeCast(syms().doubleType, ret);
                 }
             }
         }
@@ -1743,7 +1756,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret;
         if(operator.getUnOpOptimisationStrategy(op, op.getTerm(), this).useJavaOperator()){
             // optimisation for unboxed types
-            JCExpression expr = transformExpression(term, BoxingStrategy.UNBOXED, expectedType);
+            JCExpression expr = transformExpression(term, BoxingStrategy.UNBOXED, expectedType, EXPR_WIDEN_PRIM);
             // unary + is essentially a NOOP
             if(operator == OperatorTranslation.UNARY_POSITIVE)
                 return expr;
@@ -1770,7 +1783,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // we want it unboxed only if the operator is optimised
         // we don't care about the left erased type, since equals() is on Object
-        JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null);
+        JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null, EXPR_WIDEN_PRIM);
         // we don't care about the right erased type, since equals() is on Object
         JCExpression expr = transformOverridableBinaryOperator(op.getLeftTerm(), op.getRightTerm(), null, operator, optimisationStrategy, left, op.getTypeModel());
         return at(op).Unary(JCTree.NOT, expr);
@@ -2085,15 +2098,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
 
         at(op);
-        JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), leftType);
-        JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), rightType);
+        JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), leftType, EXPR_WIDEN_PRIM);
+        JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), rightType, EXPR_WIDEN_PRIM);
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, op.getLeftTerm(), op.getRightTerm(), op.getTypeModel());
     }
 
     private JCExpression transformOverridableBinaryOperator(Tree.Term leftTerm, Tree.Term rightTerm, ProducedType rightType,
             OperatorTranslation operator, OptimisationStrategy optimisationStrategy, 
             JCExpression left, ProducedType expectedType) {
-        JCExpression right = transformExpression(rightTerm, optimisationStrategy.getBoxingStrategy(), rightType);
+        JCExpression right = transformExpression(rightTerm, optimisationStrategy.getBoxingStrategy(), rightType, EXPR_WIDEN_PRIM);
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, leftTerm, rightTerm, expectedType);
     }
 
@@ -2278,7 +2291,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // only fully optimise if we don't have to access the getter/setter
         if(canOptimise && CodegenUtil.isDirectAccessVariable(expr.getTerm())){
-            JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel());
+            JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel(), EXPR_WIDEN_PRIM);
             return at(expr).Unary(operator.javacOperator, term);
         }
         
@@ -2416,7 +2429,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.Term term = expr.getTerm();
         // only fully optimise if we don't have to access the getter/setter
         if(canOptimise && CodegenUtil.isDirectAccessVariable(term)){
-            JCExpression jcTerm = transformExpression(term, BoxingStrategy.UNBOXED, expr.getTypeModel());
+            JCExpression jcTerm = transformExpression(term, BoxingStrategy.UNBOXED, expr.getTypeModel(), EXPR_WIDEN_PRIM);
             return at(expr).Unary(operator.javacOperator, jcTerm);
         }
 
@@ -5612,8 +5625,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(!optimisationStrategy.useJavaOperator())
                     return null;
                 
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType);
-                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType);
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
+                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
                 return make().Binary(operator.javacOperator, leftExpr, rightExpr);
             }else{
@@ -5625,7 +5638,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(!optimisationStrategy.useJavaOperator())
                     return null;
                 
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType);
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
                 return make().Unary(operator.javacOperator, leftExpr);
             }
