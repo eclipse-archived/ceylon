@@ -12,12 +12,29 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.tool.AbstractToolTest;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
+import com.redhat.ceylon.common.tool.ServiceToolLoader;
+import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
-public class CompileJsToolTest extends AbstractToolTest {
+public class CompileJsToolTest {
 
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new ServiceToolLoader(Tool.class) {
+        
+        @Override
+        public String getToolName(String className) {
+            return classNameToToolName(className);
+        }
+        
+        
+    };
+    protected CeylonTool getMainTool() {
+        return pluginLoader.instance("", null);
+    }
     private List<String> args(String... args) {
         ArrayList<String> result = new ArrayList<String>();
         result.add("--rep=build/runtime");
