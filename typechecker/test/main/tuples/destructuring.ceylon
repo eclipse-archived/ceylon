@@ -1,4 +1,4 @@
-void destructuring([Integer,Integer, String] tuple, String->Float entry) {
+void destructuring([Integer,Integer,String] tuple, String->Float entry, String[] strings) {
     value [i,j,str] = tuple;
     Integer ii = i;
     Integer jj = j;
@@ -11,6 +11,8 @@ void destructuring([Integer,Integer, String] tuple, String->Float entry) {
     String n = name;
     Float q = quantity;
     value @error Integer name_->Float quantity_ = entry;
+    value [@type:"Tuple<Integer|String,Integer,Tuple<Integer|String,Integer,Tuple<String,String,Empty>>>" *tup] = tuple;
+    value [@type:"Sequential<String>" *ss] = strings;
 }
 
 void variadicDestructuring([String, String, String*] strings, 
@@ -112,4 +114,14 @@ void unknownTail<First,Rest>(Tuple<Anything,First,Rest> tup,
     value [@type:"First" x, @type:"Rest" *ys] = tup;
     @type:"String" fun(*tup);
     @type:"String" fun(x,*ys);
+}
+
+void unknownTail2<First,Rest>(Tuple<Anything,First,Rest> tup,
+    String(*Tuple<Anything,First,Rest>) fun)
+        given Rest satisfies [Object,Object]
+        given First satisfies Object {
+    //@type:"String" fun(*tup);
+    value [@type:"First" x, @type:"Rest" *ys] = tup;
+    @type:"String" fun(x,*ys);
+    value [@type:"Rest" *zs] = ys;
 }

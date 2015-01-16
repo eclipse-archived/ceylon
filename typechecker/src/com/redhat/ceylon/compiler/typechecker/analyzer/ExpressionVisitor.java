@@ -454,8 +454,9 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
             
+            Class td = unit.getTupleDeclaration();
             if (sequenceType.getDeclaration()
-                    .inherits(unit.getTupleDeclaration())) {
+                    .inherits(td)) {
                 List<ProducedType> types = 
                         unit.getTupleElementTypes(sequenceType);
                 boolean tupleLengthUnbounded = 
@@ -473,16 +474,35 @@ public class ExpressionVisitor extends Visitor {
                 if (!variadic && minimumLength<types.size()) {
                     se.addError("assigned tuple has variadic length");
                 }
-                for (int i=0; i<types.size() && i < (variadic ? length-1 : length); i++) {
+                int fixedLength = variadic ? length-1 : length;
+                for (int i=0; i<types.size() && i<fixedLength; i++) {
                     ProducedType type = types.get(i);
                     Tree.Pattern pattern = patterns.get(i);
                     destructure(pattern, se, type);
                 }
                 if (variadic) {
-                    List<ProducedType> list = new ArrayList<ProducedType>();
-                    for (ProducedType t: types.subList(length-1, 
-                            tupleLengthUnbounded ? 
-                                    types.size()-1 : types.size())) {
+                    int i=0;
+                    ProducedType tail = sequenceType;
+                    while (i++<fixedLength && tail!=null) {
+                        if (tail.getDeclaration().inherits(td)) {
+                            List<ProducedType> list = 
+                                    tail.getTypeArgumentList();
+                            if (list.size()>=3) {
+                                tail = list.get(2);
+                            }
+                            else {
+                                tail = null;
+                            }
+                        }
+                        else {
+                            tail = null;
+                        }
+                    }
+                    destructure(lastPattern, se, tail);
+                    /*List<ProducedType> list = 
+                            new ArrayList<ProducedType>();
+                    for (ProducedType t: 
+                        types.subList(length-1, types.size()-1)) {
                         list.add(t);
                     }
                     ProducedType variadicTailType;
@@ -498,7 +518,7 @@ public class ExpressionVisitor extends Visitor {
                             unit.getTupleType(list, 
                                     variadicTailType,
                                     -1);
-                    destructure(lastPattern, se, type);
+                    destructure(lastPattern, se, type);*/
                 }
                 else {
                     for (int i=types.size(); i<length; i++) {
