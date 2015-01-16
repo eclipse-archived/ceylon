@@ -499,7 +499,7 @@ public abstract class BoxingVisitor extends Visitor {
     }
 
     private boolean hasTypeParameterWithConstraintsOutsideScope(ProducedType type, Scope scope) {
-        return hasTypeParameterWithConstraintsOutsideScopeResolved(type.resolveAliases(), scope);
+        return hasTypeParameterWithConstraintsOutsideScopeResolved(type != null ? type.resolveAliases() : null, scope);
     }
     
     private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(ProducedType type, Scope scope) {
