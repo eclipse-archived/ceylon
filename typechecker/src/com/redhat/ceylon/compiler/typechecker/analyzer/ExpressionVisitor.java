@@ -2500,6 +2500,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferParameterTypes(ProducedReference pr, 
             Parameter param, Tree.Expression e, boolean variadic) {
+        if (param.getModel()==null) return;
         if (e!=null) {
             Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
             ProducedTypedReference tpr = pr.getTypedParameter(param);
@@ -4033,6 +4034,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.ListedArgument a) {
+        if (p.getModel()==null) return;
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         a.setParameter(p);
         ProducedType at = a.getTypeModel();
