@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.common.tools.help;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -26,6 +27,8 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -138,6 +141,11 @@ public class CeylonHelpTool implements Tool {
     
     @Override
     public void run() {
+        if(wantsPager && OSUtil.isWindows()){
+            openHelpInBrowser();
+            return;
+        }
+        
         docBuilder.setIncludeHidden(includeHidden);
         Doc doc;
         if (tool != null) {
@@ -184,6 +192,30 @@ public class CeylonHelpTool implements Tool {
                 }
             }
         }
+    }
+
+    /** this is only for windows **/
+    private boolean openHelpInBrowser() {
+        String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
+        if(ceylonHome == null || ceylonHome.isEmpty())
+            return false;
+        String toolDoc = "ceylon";
+        if(tool.getName() != null && !tool.getName().isEmpty())
+            toolDoc += "-"+tool.getName();
+        toolDoc += ".html";
+        String docHome = ceylonHome+"/doc/en/toolset/";
+        File toolDocFile = new File(docHome, toolDoc);
+        if(toolDocFile.exists() && toolDocFile.isFile()){
+            String uri = toolDocFile.toURI().toString();
+            try {
+                // we should not wait for that process, though and just exit while the browser keeps running
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", uri});
+            } catch (IOException e) {
+                throw new ToolUsageError("Could not open browser for uri '"+uri+"'. Please invoke with the --no-pager command-line option.");
+            }
+            return true;
+        }else
+            return false;
     }
 
     private Process startPager() {
