@@ -114,14 +114,15 @@ void unknownTail<First,Rest>(Tuple<Anything,First,Rest> tup,
     value [@type:"First" x, @type:"Rest" *ys] = tup;
     @type:"String" fun(*tup);
     @type:"String" fun(x,*ys);
+    value [@type:"Rest" *zs] = ys;
 }
 
 void unknownTail2<First,Rest>(Tuple<Anything,First,Rest> tup,
     String(*Tuple<Anything,First,Rest>) fun)
         given Rest satisfies [Object,Object]
         given First satisfies Object {
-    //@type:"String" fun(*tup);
     value [@type:"First" x, @type:"Rest" *ys] = tup;
+    @type:"String" fun(*tup);
     @type:"String" fun(x,*ys);
     value [@type:"Rest" *zs] = ys;
 }

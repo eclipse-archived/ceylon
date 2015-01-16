@@ -454,9 +454,8 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
             
-            Class td = unit.getTupleDeclaration();
             if (sequenceType.getDeclaration()
-                    .inherits(td)) {
+                    .inherits(unit.getTupleDeclaration())) {
                 List<ProducedType> types = 
                         unit.getTupleElementTypes(sequenceType);
                 boolean tupleLengthUnbounded = 
@@ -481,44 +480,8 @@ public class ExpressionVisitor extends Visitor {
                     destructure(pattern, se, type);
                 }
                 if (variadic) {
-                    int i=0;
-                    ProducedType tail = sequenceType;
-                    while (i++<fixedLength && tail!=null) {
-                        if (tail.getDeclaration().inherits(td)) {
-                            List<ProducedType> list = 
-                                    tail.getTypeArgumentList();
-                            if (list.size()>=3) {
-                                tail = list.get(2);
-                            }
-                            else {
-                                tail = null;
-                            }
-                        }
-                        else {
-                            tail = null;
-                        }
-                    }
+                    ProducedType tail = getTailType(sequenceType, fixedLength);
                     destructure(lastPattern, se, tail);
-                    /*List<ProducedType> list = 
-                            new ArrayList<ProducedType>();
-                    for (ProducedType t: 
-                        types.subList(length-1, types.size()-1)) {
-                        list.add(t);
-                    }
-                    ProducedType variadicTailType;
-                    if (tupleLengthUnbounded) {
-//                        list.add(unit.getSequentialElementType(types.get(types.size()-1)));
-                        variadicTailType = types.get(types.size()-1);
-                    }
-                    else {
-                        variadicTailType = null;
-                    }
-                    
-                    ProducedType type = 
-                            unit.getTupleType(list, 
-                                    variadicTailType,
-                                    -1);
-                    destructure(lastPattern, se, type);*/
                 }
                 else {
                     for (int i=types.size(); i<length; i++) {
@@ -559,6 +522,28 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    public ProducedType getTailType(ProducedType sequenceType, int fixedLength) {
+        int i=0;
+        ProducedType tail = sequenceType;
+        Class td = unit.getTupleDeclaration();
+        while (i++<fixedLength && tail!=null) {
+            if (tail.getDeclaration().inherits(td)) {
+                List<ProducedType> list = 
+                        tail.getTypeArgumentList();
+                if (list.size()>=3) {
+                    tail = list.get(2);
+                }
+                else {
+                    tail = null;
+                }
+            }
+            else {
+                tail = null;
+            }
+        }
+        return tail;
     }
     
     @Override public void visit(Tree.Variable that) {
@@ -3867,7 +3852,8 @@ public class ExpressionVisitor extends Visitor {
         
         for (int i=0; i<paramTypes.size(); i++) {
             if (i>=args.size()) {
-                if (i<firstDefaulted && (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
+                if (i<firstDefaulted && 
+                        (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
                     pal.addError("missing argument for required parameter " + i);
                 }
             }
@@ -3875,10 +3861,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument arg = args.get(i);
                 ProducedType at = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
-                    int fd = firstDefaulted<0?-1:firstDefaulted<i?0:firstDefaulted-i;
                     checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
-                            paramTypes.subList(i, paramTypes.size()), 
-                            sequenced, atLeastOne, fd, at);
+                            getTailType(paramTypesAsTuple, i), at);
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
@@ -3922,37 +3906,21 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
-            List<ProducedType> psl, boolean sequenced, 
-            boolean atLeastOne, int firstDefaulted, ProducedType at) {
+            ProducedType tailType, ProducedType at) {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
-            if (!unit.isIterableType(at)) {
-              //note: check already done by visit(SpreadArgument)
-                /*sa.addError("spread argument is not iterable: " + 
-                        at.getProducedTypeName(unit) + 
-                        " is not a subtype of Iterable");*/
-            }
-            else {
+            if (unit.isIterableType(at)) {
                 ProducedType sat = spreadType(at, unit, true);
-                //TODO: this ultimately repackages the parameter
-                //      information as a tuple - it would be
-                //      better to just truncate the original
-                //      tuple type we started with
-                List<ProducedType> pts = 
-                        new ArrayList<ProducedType>(psl);
-                if (sequenced) {
-                    pts.set(pts.size()-1, 
-                            unit.getIteratedType(pts.get(pts.size()-1)));
-                }
-                ProducedType ptt = 
-                        unit.getTupleType(pts, 
-                                sequenced, 
-                                atLeastOne, 
-                                firstDefaulted);
-                if (!isTypeUnknown(sat) && !isTypeUnknown(ptt)) {
-                    checkAssignable(sat, ptt, sa, 
+                if (!isTypeUnknown(sat) && !isTypeUnknown(tailType)) {
+                    checkAssignable(sat, tailType, sa, 
                             "spread argument not assignable to parameter types");
                 }
+            }
+            else {
+              //note: check already done by visit(SpreadArgument)
+              /*sa.addError("spread argument is not iterable: " + 
+                      at.getProducedTypeName(unit) + 
+                      " is not a subtype of Iterable");*/
             }
         }
     }
