@@ -636,8 +636,9 @@ public class TypeGenerator {
             gen.out(")");
             gen.endLine(true);
         } else if (d != null) {
+            final String objectGetterName = gen.getNames().getter(d);
             final String objvar = (addToPrototype ? "this.":"")+gen.getNames().name(d);
-            gen.out(GenerateJsVisitor.function, gen.getNames().getter(d), "()");
+            gen.out(GenerateJsVisitor.function, objectGetterName, "()");
             gen.beginBlock();
             //Create the object lazily
             final String oname = gen.getNames().objectName(c);
@@ -655,20 +656,20 @@ public class TypeGenerator {
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, gen, false, null);
             }
-            gen.out(");", objvar, ".$crtmm$=", gen.getNames().getter(d), ".$crtmm$;}");
+            gen.out(");", objvar, ".$crtmm$=", objectGetterName, ".$crtmm$;}");
             gen.endLine();
             gen.out("return ", objvar, ";");
             gen.endBlockNewLine();            
             
             if (addToPrototype || d.isShared()) {
                 gen.outerSelf(d);
-                gen.out(".", gen.getNames().getter(d), "=", gen.getNames().getter(d));
+                gen.out(".", objectGetterName, "=", objectGetterName);
                 gen.endLine(true);
             }
             if (!d.isToplevel()) {
                 if(gen.outerSelf(d))gen.out(".");
             }
-            gen.out(gen.getNames().getter(d), ".$crtmm$=");
+            gen.out(objectGetterName, ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, annots, gen);
             gen.endLine(true);
             if (!d.isToplevel()) {
@@ -676,27 +677,30 @@ public class TypeGenerator {
                     gen.out(".");
                 }
             }
-            gen.out("$prop$", gen.getNames().getter(d), "={get:");
+            gen.out("$prop$", objectGetterName, "={get:");
             if (!d.isToplevel()) {
                 if (gen.outerSelf(d)) {
                     gen.out(".");
                 }
             }
-            gen.out(gen.getNames().getter(d), ",$crtmm$:");
+            gen.out(objectGetterName, ",$crtmm$:");
             if (!d.isToplevel()) {
                 if (gen.outerSelf(d)) {
                     gen.out(".");
                 }
             }
-            gen.out(gen.getNames().getter(d), ".$crtmm$}");
+            gen.out(objectGetterName, ".$crtmm$}");
             gen.endLine(true);
             //make available with the class name as well, for metamodel access
-            gen.out(gen.getNames().getter(c), "=", gen.getNames().getter(d), ";$prop$",
-                    gen.getNames().getter(c), "=", gen.getNames().getter(d));
+            final String classGetterName = gen.getNames().getter(c);
+            if (!classGetterName.equals(objectGetterName)) {
+                gen.out(classGetterName, "=", objectGetterName, ";");
+            }
+            gen.out("$prop$", classGetterName, "=", objectGetterName);
             gen.endLine(true);
             if (d.isToplevel()) {
-                gen.out("ex$.$prop$", gen.getNames().getter(d), "=$prop$",
-                        gen.getNames().getter(d));
+                gen.out("ex$.$prop$", objectGetterName, "=$prop$",
+                        objectGetterName);
                 gen.endLine(true);
             }
         } else if (that instanceof Tree.ObjectExpression) {
