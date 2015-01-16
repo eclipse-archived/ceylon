@@ -1,10 +1,11 @@
-"Given two streams, form a new stream consisting of
- all entries where, for any given index in the resulting
- stream, the key of the entry is the element occurring 
- at the same index in the first stream, and the item is 
- the element occurring at the same index in the second 
- stream. The length of the resulting stream is the 
- length of the shorter of the two given streams.
+"Given two streams, form a new stream consisting of all 
+ [[entries|Entry]] where, for any given index in the 
+ resulting stream, the [[key|Entry.key]] of the entry is the 
+ element occurring at the same index in the 
+ [[first stream|keys]], and the [[item|Entry.item]] is the 
+ element occurring at the same index in the 
+ [[second stream|items]]. The length of the resulting stream 
+ is the length of the shorter of the two given streams.
  
  Thus:
  
@@ -20,14 +21,14 @@ zipEntries<Key,Item,KeyAbsent,ItemAbsent>
         given ItemAbsent satisfies Null
         => mapPairs(Entry<Key,Item>, keys, items);
 
-"Given two streams, form a new stream consisting of
- all pairs where, for any given index in the resulting
- stream, the first element of the pair is the element 
- occurring at the same index in the first stream, and 
- the second element of the pair is the element occurring 
- at the same index in the second stream. The length of 
- the resulting stream is the length of the shorter of the 
- two given streams.
+"Given two streams, form a new stream consisting of all 
+ pairs where, for any given index in the resulting stream, 
+ the first element of the pair is the element occurring at 
+ the same index in the [[first stream|firstElements]], and 
+ the second element of the pair is the element occurring at 
+ the same index in the [[second stream|secondElements]]. The 
+ length of the resulting stream is the length of the shorter 
+ of the two given streams.
  
  Thus:
  
@@ -43,11 +44,11 @@ zipPairs<First,Second,FirstAbsent,SecondAbsent>
         => mapPairs((First first,Second second) => [first,second],
                 firstElements, secondElements);
 
-"Given a stream of values, and a stream of tuples, produce
- a new stream of tuples formed by prepending the values in
- the first stream to the tuples in the second stream. The 
- length of the resulting stream is the length of the shorter 
- of the two given streams.
+"Given a stream of values, and a stream of [[tuples|Tuple]], 
+ produce a new stream of tuples formed by prepending the 
+ values in the [[first stream|heads]] to the tuples in the 
+ [[second stream|tails]]. The length of the resulting stream 
+ is the length of the shorter of the two given streams.
  
  Thus:
  
