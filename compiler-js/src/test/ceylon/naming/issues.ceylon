@@ -24,8 +24,8 @@ shared class Test483() {
 }
 
 void issues() {
-  check(toplevel483.string=="object.", "#483.1 toplevel");
-  check(getToplevel483()=="method.", "#483.2 toplevel");
+  check(toplevel483.string=="object.", "#483.1 toplevel ``toplevel483``");
+  check(getToplevel483().string=="method.", "#483.2 toplevel ``getToplevel483()``");
   object nested483 {
     string="object.";
   }
@@ -34,9 +34,9 @@ void issues() {
       string="method.";
     };
   }
-  check(nested483.string=="object.", "#483.1 in method");
-  check(getNested483()=="method.", "#483.2 in method");
+  check(nested483.string=="object.", "#483.1 in method ``nested483``");
+  check(getNested483().string=="method.", "#483.2 in method ``getNested483()``");
   value t=Test483();
-  check(t.nested483.string=="object.", "#483.1 member (outside)");
-  check(t.getNested483()=="method.", "#483.2 member (outside)");
+  check(t.nested483.string=="object.", "#483.1 member (outside) ``t.nested483``");
+  check(t.getNested483().string=="method.", "#483.2 member (outside) ``t.getNested483()``");
 }
