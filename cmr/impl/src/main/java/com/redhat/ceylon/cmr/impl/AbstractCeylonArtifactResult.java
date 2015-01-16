@@ -42,6 +42,7 @@ import com.redhat.ceylon.cmr.util.PathFilterParser;
 public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResult {
     private RepositoryManager manager;
     private ModuleInfo infos;
+    private boolean resolved = false;
 
     protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
         super(repository, name, version);
@@ -53,8 +54,10 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
 
     protected ModuleInfo resolve(){
-        if(infos == null)
+        if(!resolved){
             infos = Configuration.getResolvers(manager).resolve(this);
+            resolved = true;
+        }
         return infos;
     }
     
