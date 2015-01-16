@@ -585,10 +585,34 @@ public class Unit {
     }
     
     public ProducedType getTupleType(List<ProducedType> elemTypes, 
+            ProducedType variadicTailType, int firstDefaulted) {
+        boolean hasVariadicTail = variadicTailType!=null;
+        ProducedType result = hasVariadicTail ?
+                variadicTailType : 
+                getType(getEmptyDeclaration());
+        ProducedType union = hasVariadicTail ?
+                getSequentialElementType(variadicTailType) :
+                getType(getNothingDeclaration());
+        return getTupleType(elemTypes, 
+                false, false, 
+                firstDefaulted, 
+                result, union);
+    }
+
+    public ProducedType getTupleType(List<ProducedType> elemTypes, 
     		boolean variadic, boolean atLeastOne, int firstDefaulted) {
     	ProducedType result = getType(getEmptyDeclaration());
     	ProducedType union = getType(getNothingDeclaration());
-    	int last = elemTypes.size()-1;
+    	return getTupleType(elemTypes, 
+    	        variadic, atLeastOne, 
+    	        firstDefaulted,
+                result, union);
+    }
+
+    private ProducedType getTupleType(List<ProducedType> elemTypes,
+            boolean variadic, boolean atLeastOne, int firstDefaulted,
+            ProducedType result, ProducedType union) {
+        int last = elemTypes.size()-1;
     	for (int i=last; i>=0; i--) {
     		ProducedType elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
@@ -938,12 +962,10 @@ public class Unit {
             else if (isSequentialType(args)) {
                 //this is pretty weird: return the whole
                 //tail type as the element of the list! 
-            	if (!(args.getDeclaration() instanceof TypeParameter)) {
-            		LinkedList<ProducedType> sequenced = 
-            		        new LinkedList<ProducedType>();
-            		sequenced.add(args);
-            		return sequenced;
-            	}
+        		LinkedList<ProducedType> sequenced = 
+        		        new LinkedList<ProducedType>();
+        		sequenced.add(args);
+        		return sequenced;
             }
         }
         LinkedList<ProducedType> unknown = 
@@ -1449,7 +1471,8 @@ public class Unit {
     
     public ProducedType getParameterTypesAsTupleType(List<Parameter> params, 
             ProducedReference pr) {
-        List<ProducedType> paramTypes = new ArrayList<ProducedType>(params.size());
+        List<ProducedType> paramTypes = 
+                new ArrayList<ProducedType>(params.size());
         int max = params.size()-1;
         int firstDefaulted = -1;
         boolean sequenced = false;
@@ -1475,7 +1498,8 @@ public class Unit {
             }
             paramTypes.add(ft);
         }
-        return getTupleType(paramTypes, sequenced, atLeastOne, 
+        return getTupleType(paramTypes, 
+                sequenced, atLeastOne, 
                 firstDefaulted);
     }
     

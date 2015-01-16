@@ -104,3 +104,12 @@ void buggy() {
     [Integer,Integer+] list = [42, 53];
     value [@type:"Integer" first, @type:"Sequence<Integer>" *rest] = list;
 }
+
+void unknownTail<First,Rest>(Tuple<Anything,First,Rest> tup,
+    String(*Tuple<Anything,First,Rest>) fun)
+        given Rest satisfies Anything[]
+        given First satisfies Object {
+    value [@type:"First" x, @type:"Rest" *ys] = tup;
+    @type:"String" fun(*tup);
+    @type:"String" fun(x,*ys);
+}

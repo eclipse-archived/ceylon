@@ -454,7 +454,62 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
             
-            if (sequenceType.getSupertype(unit.getTupleDeclaration())==null) {
+            if (sequenceType.getDeclaration()
+                    .inherits(unit.getTupleDeclaration())) {
+                List<ProducedType> types = 
+                        unit.getTupleElementTypes(sequenceType);
+                boolean tupleLengthUnbounded = 
+                        unit.isTupleLengthUnbounded(sequenceType);
+//                boolean tupleVariantAtLeastOne = 
+//                        unit.isTupleVariantAtLeastOne(sequenceType);
+                int minimumLength = 
+                        unit.getTupleMinimumLength(sequenceType);
+                if (!variadic && types.size()>length) {
+                    se.addError("assigned tuple has too many elements");
+                }
+                if (!variadic && tupleLengthUnbounded) {
+                    se.addError("assigned tuple has unbounded length");
+                }
+                if (!variadic && minimumLength<types.size()) {
+                    se.addError("assigned tuple has variadic length");
+                }
+                for (int i=0; i<types.size() && i < (variadic ? length-1 : length); i++) {
+                    ProducedType type = types.get(i);
+                    Tree.Pattern pattern = patterns.get(i);
+                    destructure(pattern, se, type);
+                }
+                if (variadic) {
+                    List<ProducedType> list = new ArrayList<ProducedType>();
+                    for (ProducedType t: types.subList(length-1, 
+                            tupleLengthUnbounded ? 
+                                    types.size()-1 : types.size())) {
+                        list.add(t);
+                    }
+                    ProducedType variadicTailType;
+                    if (tupleLengthUnbounded) {
+//                        list.add(unit.getSequentialElementType(types.get(types.size()-1)));
+                        variadicTailType = types.get(types.size()-1);
+                    }
+                    else {
+                        variadicTailType = null;
+                    }
+                    
+                    ProducedType type = 
+                            unit.getTupleType(list, 
+                                    variadicTailType,
+                                    -1);
+                    destructure(lastPattern, se, type);
+                }
+                else {
+                    for (int i=types.size(); i<length; i++) {
+                        Tree.Pattern pattern = patterns.get(i);
+                        Node errNode = pattern instanceof Tree.VariablePattern ?
+                                ((Tree.VariablePattern) pattern).getVariable() : pattern;
+                        errNode.addError("assigned tuple has too few elements");
+                    }
+                }
+            }
+            else {
                 if (!variadic) {
                     se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
                             sequenceType.getProducedTypeName(unit) + 
@@ -481,56 +536,6 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     destructure(lastPattern, se, sequenceType);
-                }
-            }
-            else {
-                List<ProducedType> types = 
-                        unit.getTupleElementTypes(sequenceType);
-                boolean tupleLengthUnbounded = 
-                        unit.isTupleLengthUnbounded(sequenceType);
-                boolean tupleVariantAtLeastOne = 
-                        unit.isTupleVariantAtLeastOne(sequenceType);
-                int minimumLength = 
-                        unit.getTupleMinimumLength(sequenceType);
-                if (!variadic && types.size()>length) {
-                    se.addError("assigned tuple has too many elements");
-                }
-                if (!variadic && tupleLengthUnbounded) {
-                    se.addError("assigned tuple has unbounded length");
-                }
-                if (!variadic && minimumLength<types.size()) {
-                    se.addError("assigned tuple has variadic length");
-                }
-                for (int i=0; i<types.size() && i < (variadic ? length-1 : length); i++) {
-                    ProducedType type = types.get(i);
-                    Tree.Pattern pattern = patterns.get(i);
-                    destructure(pattern, se, type);
-                }
-                if (variadic) {
-                    List<ProducedType> list = new ArrayList<ProducedType>();
-                    for (ProducedType t: types.subList(length-1, 
-                            tupleLengthUnbounded ? 
-                                    types.size()-1 : types.size())) {
-                        list.add(t);
-                    }
-                    if (tupleLengthUnbounded) {
-                        list.add(unit.getSequentialElementType(types.get(types.size()-1)));
-                    }
-                    
-                    ProducedType type = 
-                            unit.getTupleType(list, 
-                                    tupleLengthUnbounded, 
-                                    tupleVariantAtLeastOne, 
-                                    -1);
-                    destructure(lastPattern, se, type);
-                }
-                else {
-                    for (int i=types.size(); i<length; i++) {
-                        Tree.Pattern pattern = patterns.get(i);
-                        Node errNode = pattern instanceof Tree.VariablePattern ?
-                                ((Tree.VariablePattern) pattern).getVariable() : pattern;
-                                errNode.addError("assigned tuple has too few elements");
-                    }
                 }
             }
         }
@@ -3860,7 +3865,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType paramType = paramTypes.get(i);
                     if (sequenced && i==paramTypes.size()-1) {
                         checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
-                            paramType, atLeastOne);
+                                paramType, atLeastOne);
                     }
                     else {
                         arg.addError("not a variadic parameter: parameter " + i);
@@ -3913,13 +3918,17 @@ public class ExpressionVisitor extends Visitor {
                 //      information as a tuple - it would be
                 //      better to just truncate the original
                 //      tuple type we started with
-                List<ProducedType> pts = new ArrayList<ProducedType>(psl);
+                List<ProducedType> pts = 
+                        new ArrayList<ProducedType>(psl);
                 if (sequenced) {
                     pts.set(pts.size()-1, 
                             unit.getIteratedType(pts.get(pts.size()-1)));
                 }
-                ProducedType ptt = unit.getTupleType(pts, sequenced, atLeastOne, 
-                        firstDefaulted);
+                ProducedType ptt = 
+                        unit.getTupleType(pts, 
+                                sequenced, 
+                                atLeastOne, 
+                                firstDefaulted);
                 if (!isTypeUnknown(sat) && !isTypeUnknown(ptt)) {
                     checkAssignable(sat, ptt, sa, 
                             "spread argument not assignable to parameter types");
@@ -3930,7 +3939,8 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args,
             ProducedType paramType) {
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        ProducedType set = paramType==null ? 
+                null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             ProducedType at = a.getTypeModel();
@@ -3955,7 +3965,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionIndirectArgument(Tree.Comprehension c, 
             ProducedType paramType, boolean atLeastOne) {
-        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        Tree.InitialComprehensionClause icc = 
+                ((Tree.Comprehension) c).getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
@@ -3970,7 +3981,8 @@ public class ExpressionVisitor extends Visitor {
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
             List<Tree.PositionalArgument> args) {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        ProducedType set = paramType==null ? 
+                null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
@@ -4002,7 +4014,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
             Tree.Comprehension c, boolean atLeastOne) {
-        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        Tree.InitialComprehensionClause icc = 
+                ((Tree.Comprehension) c).getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
