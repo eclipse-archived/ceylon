@@ -672,25 +672,6 @@ public class TypeGenerator {
             gen.out(objectGetterName, ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, annots, gen);
             gen.endLine(true);
-            if (!d.isToplevel()) {
-                if (gen.outerSelf(d)) {
-                    gen.out(".");
-                }
-            }
-            gen.out("$prop$", objectGetterName, "={get:");
-            if (!d.isToplevel()) {
-                if (gen.outerSelf(d)) {
-                    gen.out(".");
-                }
-            }
-            gen.out(objectGetterName, ",$crtmm$:");
-            if (!d.isToplevel()) {
-                if (gen.outerSelf(d)) {
-                    gen.out(".");
-                }
-            }
-            gen.out(objectGetterName, ".$crtmm$}");
-            gen.endLine(true);
             //make available with the class name as well, for metamodel access
             final String classGetterName = gen.getNames().getter(c);
             if (!classGetterName.equals(objectGetterName)) {
