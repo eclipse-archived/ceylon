@@ -944,17 +944,17 @@ TypeConstraints?
         <section id="interfacealiases">
             <title>Interface aliases</title>
             
-            <para>An interface declaration which specifies a reference to another interface
-            type defines an <emphasis>interface alias</emphasis> of the specified interface 
-            type.</para>
+            <para>An <emphasis>interface alias</emphasis> is an interface declaration which 
+            specifies another type.</para>
             
             <synopsis>TypeSpecifier: "=>" Type</synopsis>
     
-            <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
-            a reference to an interface with no type parameters, or an instantiation of a 
-            generic interface. An interface alias simply assigns an alternative name to the 
-            original interface type. A reference to the alias may occur anywhere a reference 
-            to an interface may occur.</para>
+            <para>The specified type must be an <emphasis>interface type</emphasis>, that 
+            is, a reference to an interface with no type parameters or an instantiation of 
+            a generic interface, and is called the <emphasis>aliased type</emphasis>.</para>
+            
+            <para>An interface alias simply assigns an alternative name to the aliased type. 
+            A reference to the alias may occur anywhere a reference to an interface may occur.</para>
             
             <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
             
@@ -1763,16 +1763,20 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="classaliases">
             <title>Class aliases</title>
             
-            <para>A class declaration which specifies a reference to another class type 
-            defines a <emphasis>class alias</emphasis> of the specified class type.</para>
+            <para>A <emphasis>class alias</emphasis> is a class declaration which specifies 
+            a reference to a class or constructor of a class, followed by a positional 
+            argument list, as defined in <xref linkend="positionalarguments"/>.</para>
             
-            <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
+            <synopsis>ClassSpecifier: "=>" SuperclassOrConstructor PositionalArguments</synopsis>
             
-            <para>The specified type must be a <emphasis>class type</emphasis>, that is,
-            a reference to a class with no type parameters, or an instantiation of a generic 
-            class. A class alias simply assigns an alternative name to the original class 
-            type. A reference to the alias may occur anywhere a reference to a class may 
-            occur.</para>
+            <para>The specification of the class or class constructor is treated as a value 
+            expression, as in <xref linkend="extendedclass"/>. The type of this value 
+            expression must be a <emphasis>class type</emphasis>, that is, a reference
+            to a class with no type parameters or an instantiation of a generic class, and 
+            is called the <emphasis>aliased type</emphasis>.</para>
+            
+            <para>A class alias simply assigns an alternative name to the aliased type. A 
+            reference to the alias may occur anywhere a reference to a class may occur.</para>
             
             <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
             
