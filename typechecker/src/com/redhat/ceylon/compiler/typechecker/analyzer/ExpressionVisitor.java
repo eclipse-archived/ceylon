@@ -401,18 +401,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void destructure(Tree.SpecifierExpression se, ProducedType et,
+    private void destructure(Tree.SpecifierExpression se, ProducedType entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
-        if (et.getSupertype(unit.getEntryDeclaration())==null) {
+        if (!unit.isEntryType(entryType)) {
             se.addError("assigned expression is not an entry type: '"
-                    + et.getProducedTypeName(unit) + 
+                    + entryType.getProducedTypeName(unit) + 
                     "' is not an entry type");
         }
         else {
-            destructure(key, se, unit.getKeyType(et));
-            destructure(value, se, unit.getValueType(et));
+            destructure(key, se, unit.getKeyType(entryType));
+            destructure(value, se, unit.getValueType(entryType));
         }
     }
 
@@ -437,101 +437,121 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             Tree.Pattern lastPattern = patterns.get(length-1);
-            boolean variadic = false;
-//            boolean nonempty = false;
-            if (lastPattern instanceof Tree.VariablePattern) {
-                VariablePattern variablePattern = 
-                        (Tree.VariablePattern) lastPattern;
-                Tree.Type type = 
-                        variablePattern.getVariable().getType();
-                if (type instanceof Tree.SequencedType) {
-                    variadic = true;
-//                    nonempty = ((Tree.SequencedType) type).getAtLeastOne();
-                }
-            }
             if (!unit.isSequentialType(sequenceType)) {
-                se.addError("assigned expression is not a sequence type: '" + 
+                se.addError("assigned expression is not a sequence type, so may not be destructured: '" + 
                         sequenceType.getProducedTypeName(unit) + 
                         "' is not a subtype of 'Sequential'");
-                return;
             }
-            
-            if (sequenceType.getDeclaration()
-                    .inherits(unit.getTupleDeclaration())) {
-                List<ProducedType> types = 
-                        unit.getTupleElementTypes(sequenceType);
-                boolean tupleLengthUnbounded = 
-                        unit.isTupleLengthUnbounded(sequenceType);
-//                boolean tupleVariantAtLeastOne = 
-//                        unit.isTupleVariantAtLeastOne(sequenceType);
-                int minimumLength = 
-                        unit.getTupleMinimumLength(sequenceType);
-                if (!variadic && types.size()>length) {
-                    se.addError("assigned tuple has too many elements");
-                }
-                if (!variadic && tupleLengthUnbounded) {
-                    se.addError("assigned tuple has unbounded length");
-                }
-                if (!variadic && minimumLength<types.size()) {
-                    se.addError("assigned tuple has variadic length");
-                }
-                int fixedLength = variadic ? length-1 : length;
-                for (int i=0; i<types.size() && i<fixedLength; i++) {
-                    ProducedType type = types.get(i);
-                    Tree.Pattern pattern = patterns.get(i);
-                    destructure(pattern, se, type);
-                }
-                if (variadic) {
-                    ProducedType tail = getTailType(sequenceType, fixedLength);
-                    destructure(lastPattern, se, tail);
-                }
-                else {
-                    for (int i=types.size(); i<length; i++) {
-                        Tree.Pattern pattern = patterns.get(i);
-                        Node errNode = pattern instanceof Tree.VariablePattern ?
-                                ((Tree.VariablePattern) pattern).getVariable() : pattern;
-                        errNode.addError("assigned tuple has too few elements");
-                    }
-                }
+            else if (unit.isEmptyType(sequenceType)) {
+                se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
+                        sequenceType.getProducedTypeName(unit) + 
+                        "' is a subtype of `Empty`");
+            }
+            else if (unit.isTupleType(sequenceType)) {
+                destructureTuple(se, sequenceType, patterns, 
+                        length, lastPattern);
             }
             else {
-                if (!variadic) {
-                    se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a tuple type");
-                }
-                else if (/*nonempty && length>1 ||*/ length>2) {
-                    se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a tuple type");
-                }
-                else if ((/*nonempty ||*/ length>1) && 
-                        !unit.isSequenceType(sequenceType)) {
-                    se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a subtype of 'Sequence'");
-                }
-                
-                if (length>1) {
-                    ProducedType elementType = 
-                            unit.getSequentialElementType(sequenceType);
-                    destructure(patterns.get(0), se, elementType);
-                    destructure(lastPattern, se, 
-                            unit.getSequentialType(elementType));
-                }
-                else {
-                    destructure(lastPattern, se, sequenceType);
-                }
+                destructureSequence(se, sequenceType, patterns, 
+                        length, lastPattern);
             }
+        }
+    }
+
+    private boolean isVariadicPattern(Tree.Pattern lastPattern) {
+        boolean variadic = false;
+//      boolean nonempty = false;
+        if (lastPattern instanceof Tree.VariablePattern) {
+            VariablePattern variablePattern = 
+                    (Tree.VariablePattern) lastPattern;
+            Tree.Type type = 
+                    variablePattern.getVariable().getType();
+            if (type instanceof Tree.SequencedType) {
+                variadic = true;
+//              nonempty = ((Tree.SequencedType) type).getAtLeastOne();
+            }
+        }
+        return variadic;
+    }
+
+    private void destructureTuple(Tree.SpecifierExpression se,
+            ProducedType sequenceType, List<Pattern> patterns, 
+            int length, Tree.Pattern lastPattern) {
+        boolean variadic = isVariadicPattern(lastPattern);
+        List<ProducedType> types = 
+                unit.getTupleElementTypes(sequenceType);
+        boolean tupleLengthUnbounded = 
+                unit.isTupleLengthUnbounded(sequenceType);
+//                boolean tupleVariantAtLeastOne = 
+//                        unit.isTupleVariantAtLeastOne(sequenceType);
+        int minimumLength = 
+                unit.getTupleMinimumLength(sequenceType);
+        if (!variadic && types.size()>length) {
+            se.addError("assigned tuple has too many elements");
+        }
+        if (!variadic && tupleLengthUnbounded) {
+            se.addError("assigned tuple has unbounded length");
+        }
+        if (!variadic && minimumLength<types.size()) {
+            se.addError("assigned tuple has variadic length");
+        }
+        int fixedLength = variadic ? length-1 : length;
+        for (int i=0; i<types.size() && i<fixedLength; i++) {
+            ProducedType type = types.get(i);
+            Tree.Pattern pattern = patterns.get(i);
+            destructure(pattern, se, type);
+        }
+        if (variadic) {
+            ProducedType tail = getTailType(sequenceType, fixedLength);
+            destructure(lastPattern, se, tail);
+        }
+        for (int i=types.size(); i<length; i++) {
+            Tree.Pattern pattern = patterns.get(i);
+            Node errNode = pattern instanceof Tree.VariablePattern ?
+                    ((Tree.VariablePattern) pattern).getVariable() : pattern;
+                    errNode.addError("assigned tuple has too few elements");
+        }
+    }
+
+    private void destructureSequence(Tree.SpecifierExpression se,
+            ProducedType sequenceType, List<Pattern> patterns, 
+            int length, Tree.Pattern lastPattern) {
+        boolean variadic = isVariadicPattern(lastPattern);
+        
+        if (!variadic) {
+            se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a tuple type");
+        }
+        else if (/*nonempty && length>1 ||*/ length>2) {
+            se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a tuple type");
+        }
+        else if ((/*nonempty ||*/ length>1) && 
+                !unit.isSequenceType(sequenceType)) {
+            se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a subtype of 'Sequence'");
+        }
+        
+        if (length>1) {
+            ProducedType elementType = 
+                    unit.getSequentialElementType(sequenceType);
+            destructure(patterns.get(0), se, elementType);
+            destructure(lastPattern, se, 
+                    unit.getSequentialType(elementType));
+        }
+        else {
+            destructure(lastPattern, se, sequenceType);
         }
     }
 
     public ProducedType getTailType(ProducedType sequenceType, int fixedLength) {
         int i=0;
         ProducedType tail = sequenceType;
-        Class td = unit.getTupleDeclaration();
         while (i++<fixedLength && tail!=null) {
-            if (tail.getDeclaration().inherits(td)) {
+            if (unit.isTupleType(tail)) {
                 List<ProducedType> list = 
                         tail.getTypeArgumentList();
                 if (list.size()>=3) {
@@ -2611,7 +2631,7 @@ public class ExpressionVisitor extends Visitor {
                         if (smte.getStaticMethodReferencePrimary()) {
                             template = producedType(unit.getTupleDeclaration(), 
                                     arg.getType(), arg.getType(), 
-                                    unit.getEmptyDeclaration().getType());
+                                    unit.getType(unit.getEmptyDeclaration()));
                         }
                         else {
                             template = unit.getCallableTuple(arg.getFullType());

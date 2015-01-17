@@ -126,3 +126,22 @@ void unknownTail2<First,Rest>(Tuple<Anything,First,Rest> tup,
     @type:"String" fun(x,*ys);
     value [@type:"Rest" *zs] = ys;
 }
+
+shared void tupleLengths(){
+    value [a0,@error b0,@error *c0] = [1];
+    value [a1,@error *c1] = [1];
+    value [a2,*c2] = [1,2];
+    value [a3,c3] = [1,2];
+    value [*a4] = [1,2];
+    value [*a5] = [1];
+    value [a6] = [1];
+    value [a7,@error *c7] = [1];
+    value [a8,@error c8] = [1];
+    value [a9,b9,@error *c9] = [1,2];
+    value [a10,b10,@error c10] = [1,2];
+    @error value [a11] = [];
+    @error value [*a12] = [];
+    @error value [*s] = "hello";
+    @error value x1->y1 = [1,2];
+    @error value [x2,y2] = 1->2;
+}

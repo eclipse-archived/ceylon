@@ -634,7 +634,7 @@ public class TypeVisitor extends Visitor {
                     return;
                 }
                 Class td = unit.getTupleDeclaration();
-                t = unit.getEmptyDeclaration().getType();
+                t = unit.getType(unit.getEmptyDeclaration());
                 for (int i=0; i<len; i++) {
                     t = producedType(td, et, et, t);
                 }

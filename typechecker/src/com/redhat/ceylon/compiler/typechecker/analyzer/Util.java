@@ -869,19 +869,22 @@ public class Util {
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
-                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
+                    Tree.InitialComprehensionClause icc = 
+                            ((Tree.Comprehension) a).getInitialComprehensionClause();
                     result = icc.getPossiblyEmpty() ? 
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
                     if (!requireSequential) {
-                        ProducedType it = producedType(unit.getIterableDeclaration(), 
-                                et, icc.getFirstTypeModel());
+                        ProducedType it = 
+                                producedType(unit.getIterableDeclaration(), 
+                                        et, icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }
                 else {
                     ut = unionType(ut, et, unit);
-                    result = producedType(unit.getTupleDeclaration(), ut, et, result);
+                    result = producedType(unit.getTupleDeclaration(), 
+                            ut, et, result);
                 }
             }
         }

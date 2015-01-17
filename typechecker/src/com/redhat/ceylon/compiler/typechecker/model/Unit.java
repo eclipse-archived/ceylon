@@ -851,6 +851,10 @@ public class Unit {
         return pt.getDeclaration().inherits(getEmptyDeclaration());
     }
     
+    public boolean isTupleType(ProducedType pt) {
+        return pt.getDeclaration().inherits(getTupleDeclaration());
+    }
+    
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
