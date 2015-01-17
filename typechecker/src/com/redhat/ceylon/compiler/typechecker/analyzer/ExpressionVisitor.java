@@ -376,15 +376,17 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.VariablePattern) pattern;
                 Tree.Variable var = vp.getVariable();
                 Tree.Type varType = var.getType();
-                if (varType instanceof Tree.SequencedType) {
-                    inferSequencedValueType(type, var);
+                if (varType!=null) {
+                    if (varType instanceof Tree.SequencedType) {
+                        inferSequencedValueType(type, var);
+                    }
+                    else {
+                        inferValueType(var, type);
+                    }
+                    ProducedType declaredType = varType.getTypeModel();
+                    checkAssignable(type, declaredType, var, 
+                            "type of element of assigned value must be a subtype of declared type of pattern variable");
                 }
-                else {
-                    inferValueType(var, type);
-                }
-                ProducedType declaredType = varType.getTypeModel();
-                checkAssignable(type, declaredType, var, 
-                        "type of element of assigned value must be a subtype of declared type of pattern variable");
             }
         }
     }

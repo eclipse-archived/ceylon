@@ -3900,14 +3900,11 @@ var returns [Variable variable]
       { $variable.setType( new ValueModifier(null) ); }
       mn2=memberName
       { $variable.setIdentifier($mn2.identifier); }
-    | 
-      { $variable.setType( new FunctionModifier(null) ); }
-      mn3=memberName 
-      { $variable.setIdentifier($mn3.identifier); }
       (
-        p3=parameters
-        { $variable.addParameterList($p3.parameterList); }
-      )+
+        p2=parameters
+        { $variable.setType( new FunctionModifier(null) );
+          $variable.addParameterList($p2.parameterList); }
+      )*
     )
     ;
 
