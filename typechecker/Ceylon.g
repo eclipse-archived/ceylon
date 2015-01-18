@@ -451,7 +451,7 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
 tuplePatternStart
     : LBRACKET
       (
-        compilerAnnotations LIDENTIFIER
+        compilerAnnotations PRODUCT_OP? LIDENTIFIER
       |
         (compilerAnnotations declarationStart) => 
         (compilerAnnotations declarationStart)
