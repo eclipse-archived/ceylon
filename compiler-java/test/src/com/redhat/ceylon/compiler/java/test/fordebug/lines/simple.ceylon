@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 String name(String firstName, String lastName) {
-    return "My name is " firstName " " lastName ". Hello !";
+    return "My name is ``firstName`` ``lastName``. Hello !";
 }
 
 shared class Main2() {  
