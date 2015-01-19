@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.SavedPosition;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -642,9 +643,11 @@ public class CallableBuilder {
                 Naming.SyntheticName name,
                 final Parameter param, 
                 final int a, final int arity) {
-            JCExpression varInitialExpression = makeDowncastOrDefault(param, a, arity);
-            makeVarForParameter(stmts, param, parameterTypes.get(a), 
-                    name, varInitialExpression);
+            try (SavedPosition pos = gen.noPosition()) {
+                JCExpression varInitialExpression = makeDowncastOrDefault(param, a, arity);
+                makeVarForParameter(stmts, param, parameterTypes.get(a), 
+                        name, varInitialExpression);
+            }
         }
         
         /**
