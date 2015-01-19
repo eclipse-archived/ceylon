@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public final class bug2001_ {
+    
+    private bug2001_() {
+    }
+    
+    public static void bug2001() {
+        final .ceylon.language.Comparison c = (.ceylon.language.Comparison)(
+            let
+            {
+                .ceylon.language.Comparison $ceylontmp$ifResult$0;
+                {
+                    long sel$1 = 0L;
+                    if (sel$1 == 0L) {
+                        $ceylontmp$ifResult$0 = .ceylon.language.smaller_.get_();
+                    } else if (sel$1 == 1L) {
+                        $ceylontmp$ifResult$0 = .ceylon.language.equal_.get_();
+                    } else {
+                        $ceylontmp$ifResult$0 = (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .ceylon.language.Comparison c2 = (.ceylon.language.Comparison)(
+            let
+            {
+                .ceylon.language.Comparison $ceylontmp$ifResult$2;
+                {
+                    long sel$3 = 0L;
+                    if (sel$3 == 0L) {
+                        $ceylontmp$ifResult$2 = .ceylon.language.smaller_.get_();
+                    } else if (sel$3 == 1L) {
+                        $ceylontmp$ifResult$2 = (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$2 = .ceylon.language.equal_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2001_.bug2001();
+    }
+}
