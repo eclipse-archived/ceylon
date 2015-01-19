@@ -402,9 +402,9 @@ final class operationsOnMixedTypes_ {
     static void operationsOnMixedTypes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         java.byte_attr = (byte)(java.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
-        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Byte.getUnsigned(java.byte_attr) + java.int_attr);
+        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Byte.getUnsigned(java.byte_attr) + (long)java.int_attr);
         java.byte_attr = (byte)(.ceylon.language.Integer.getByte(java.int_attr) + java.byte_attr);
-        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(java.int_attr + .ceylon.language.Byte.getUnsigned(java.byte_attr));
+        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt((long)java.int_attr + .ceylon.language.Byte.getUnsigned(java.byte_attr));
         java.byte_attr = (
             let
             {
