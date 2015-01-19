@@ -4,7 +4,7 @@ function tpl$(elems,types,spread){
     if (is$(spread,{t:Sequence})) {
     } else {
       var e;
-      for (var iter=spread.iterator();(e=iter.next())!==getFinished();) {
+      for (var iter=spread.iterator();(e=iter.next())!==finished();) {
         elems.push(e);
       }
       types=undefined;
@@ -140,7 +140,7 @@ function tpl$(elems,types,spread){
       var ot=this.iterator();
       var ni=oi.next();
       var nt=ot.next();
-      while (ni!==getFinished()) {
+      while (ni!==finished()) {
         if (!ni.equals(nt))return false;
         ni=oi.next();
         nt=ot.next();
@@ -189,7 +189,7 @@ function tpl$(elems,types,spread){
       for (var i=0;i<elems.length;i++) {
         e[i]=elems[i];
       }
-      var elem;for(var iter=spread.iterator();(elem=iter.next())!==getFinished();) {
+      var elem;for(var iter=spread.iterator();(elem=iter.next())!==finished();) {
         e[i++]=elem;
       }
       return e;

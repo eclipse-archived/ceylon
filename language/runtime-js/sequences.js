@@ -80,7 +80,7 @@ function $init$sarg(){if(sarg$.$$===undefined){
         iter.$$.prototype.next=function(){
           if (this.sp)return this.sp.next();
           var e=sarg.e(this.i);
-          if (e===getFinished() && sarg.s) {
+          if (e===finished() && sarg.s) {
             this.sp=sarg.s().iterator();
             e=this.sp.next();
           } else {
@@ -104,7 +104,7 @@ $init$sarg();
 function nfor$(c) {
   var a = [];
   var item;
-  for (var iter = c.iterator();(item=iter.next())!==getFinished();){
+  for (var iter = c.iterator();(item=iter.next())!==finished();){
     a.push(item);
   }
   return a;

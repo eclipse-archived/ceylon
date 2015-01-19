@@ -5,7 +5,7 @@
     }
   } else if ((typeof console !== "undefined") && (console.log !== undefined)) {
     return function(line) {
-      if (line==getOperatingSystem().newline) {
+      if (line==operatingSystem().newline) {
         console.log(ex$.p$w$stdout||'');
         ex$.p$w$stdout='';
       } else {

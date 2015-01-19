@@ -597,7 +597,7 @@ function coi$get$anns(anntypes) {
   var ats=[];
   if (!anntypes)return ats;
   var iter=anntypes.iterator();
-  var a;while((a=iter.next())!==getFinished()){
+  var a;while((a=iter.next())!==finished()){
     ats.push({t:a.tipo});
   }
   return ats;

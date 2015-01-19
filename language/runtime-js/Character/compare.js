@@ -1,4 +1,4 @@
 function(other) {
-    return this.value===other.value ? getEqual()
-                                    : (this.value<other.value ? getSmaller():getLarger());
+    return this.value===other.value ? equal()
+                                    : (this.value<other.value ? smaller():larger());
 }

@@ -6,7 +6,7 @@ function(other) {
             var oi=other.iterator();
             var ti=this.iterator();
             var oc=oi.next(); var tc;
-            while((tc=ti.next())!=getFinished()){
+            while((tc=ti.next())!=finished()){
                 if (!tc.equals(oc))return false;
                 oc=oi.next();
             }

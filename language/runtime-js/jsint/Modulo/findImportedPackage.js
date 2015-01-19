@@ -2,7 +2,7 @@ function findImportedPackage(pknm){
   var pk = this.findPackage(pknm);
   if (pk) return pk;
   if (pknm.match('^ceylon\\.language')) {
-    var clmod=getModules$meta().find('ceylon.language', $CCMM$()['$mod-version']);
+    var clmod=modules$meta().find('ceylon.language', $CCMM$()['$mod-version']);
     var deps=clmod.dependencies;
     if (deps===getEmpty())deps=[];
     deps.push(Importa$jsint('ceylon.language', $CCMM$()['$mod-version']),clmod);

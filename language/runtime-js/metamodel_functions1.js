@@ -80,9 +80,9 @@ function doc$(root, path) {
   return doc(e);
 }
 ex$.doc$=doc$;
-//Shortcut for getModules$meta().find(m/v).findPackage(p)
+//Shortcut for modules$meta().find(m/v).findPackage(p)
 function fmp$(m,v,p) {
-  return getModules$meta().find(m,v).findPackage(p);
+  return modules$meta().find(m,v).findPackage(p);
 }
 ex$.fmp$=fmp$;
 function lmp$(x,p) {

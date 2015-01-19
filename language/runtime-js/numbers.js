@@ -142,7 +142,7 @@ JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other
 $addnm$('equals',$_Object.$$.prototype.equals);
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
-    return value==other ? getEqual() : (value<other ? getSmaller():getLarger());
+    return value==other ? equal() : (value<other ? smaller():larger());
 }
 $addnm$('compare',Comparable.$$.prototype.compare);
 JSNum$proto.smallerThan=function(o) {
