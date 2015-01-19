@@ -21,6 +21,7 @@
     <condition property="batExt" value=".bat">
         <os family="windows" />
     </condition>
+    <property name="batExt" value=""/>
 	
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
@@ -561,6 +562,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="generate-apidoc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
             <arg value="--stacktraces"/>
             <arg value="doc"/>
@@ -572,6 +574,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="generate-tooldoc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
             <arg value="--stacktraces"/>
             <arg value="doc-tool"/>
@@ -616,6 +619,7 @@ Used with another target such as 'package'">
     </target>
     
     <target name="generate-tooldoc-man">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <echo message="doc for ${toolfile}"/>
         <dirname property="toolfile.dir" file="${toolfile}"/>
         <basename property="toolfile.file" file="${toolfile}"/>
