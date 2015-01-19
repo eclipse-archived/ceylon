@@ -228,7 +228,7 @@ public class CodegenUtil {
 
 
     static boolean isDirectAccessVariable(Term term) {
-        if(!(term instanceof BaseMemberExpression))
+        if(!(term instanceof BaseMemberExpression) || !term.getUnboxed())
             return false;
         Declaration decl = ((BaseMemberExpression)term).getDeclaration();
         if(decl == null) // typechecker error

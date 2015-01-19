@@ -936,6 +936,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     abstract class BaseVarTransImpl implements VarTrans {
         protected final ProducedType toType;
+        private final boolean toTypeBoxed;
         private final Tree.Expression specifierExpr;
         private final Tree.Statement varOrDes;
         private final CName testVarName;
@@ -950,7 +951,17 @@ public class StatementTransformer extends AbstractTransformer {
             this.specifierExpr = getDestructureExpression(varOrDes);
             this.varOrDes = varOrDes;
             this.testVarName = testVarName;
-            Tree.Type type = getDestructureType(varOrDes);
+            Tree.Type type;
+            if (varOrDes instanceof Tree.Variable) {
+                Tree.Variable var = (Tree.Variable)varOrDes;
+                type = var.getType();
+                toTypeBoxed = !CodegenUtil.isUnBoxed(var.getDeclarationModel());
+            } else if (varOrDes instanceof Tree.Destructure) {
+                type = ((Tree.Destructure)varOrDes).getType();
+                toTypeBoxed = false;
+            } else {
+                throw BugException.unhandledCase(varOrDes);
+            }
             if (type != null) {
                 this.toType = type.getTypeModel();
             } else {
@@ -1005,7 +1016,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public final JCExpression makeTypeExpr() {
-            return makeJavaType(toType);
+            return makeJavaType(toType, (toTypeBoxed) ? AbstractTransformer.JT_NO_PRIMITIVES : 0);
         }
 
         /**
@@ -1020,7 +1031,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCExpression makeDefaultExpr() {
             at(varOrDes);
-            return makeDefaultExprForType(toType);
+            JCExpression valueExpr = makeDefaultExprForType(toType);
+            if (toTypeBoxed) {
+                valueExpr = boxType(valueExpr, toType);
+            }
+            return valueExpr;
         }
         
         @Override
@@ -1117,7 +1132,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
                 // Substitute variable with the correct type to use in the rest of the code block
                 expr = at(getVariable()).TypeCast(rawToTypeExpr, expr);
-                if (canUnbox(toType)) {
+                if ((getVariable().getDeclarationModel().getUnboxed() == true) && canUnbox(toType)) {
                     expr = unboxType(expr, toType);
                 } 
             }
@@ -1692,7 +1707,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
                 Tree.ValueIterator valIter = (Tree.ValueIterator)forIterator;
-                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, false).build();
+                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, isIndexedAccessBoxed()).build();
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.PatternIterator) {
@@ -1769,6 +1784,9 @@ public class StatementTransformer extends AbstractTransformer {
         
         /** Makes the expression for the accessing the indexable at the current index */
         protected abstract JCExpression makeIndexedAccess();
+        
+        /** To determine if the makeIndexedAccess() returns a boxed value or not */
+        protected abstract boolean isIndexedAccessBoxed();
         
         /** Makes the expression for the length of the iteration */
         protected abstract JCExpression makeLengthExpr();
@@ -1877,6 +1895,11 @@ public class StatementTransformer extends AbstractTransformer {
                     elementType, 0);
             return elementGet;
         }
+        
+        @Override
+        protected boolean isIndexedAccessBoxed() {
+            return getElementOrKeyVariable().getDeclarationModel().getUnboxed() == false;
+        }
     }
     
     /**
@@ -1923,6 +1946,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeIndexedAccess() {
             return make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
+        }
+        
+        @Override
+        protected boolean isIndexedAccessBoxed() {
+            return false;
         }
     }
     
@@ -2156,6 +2184,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeIndexedAccess() {
             return indexName.makeIdent();
+        }
+        
+        @Override
+        protected boolean isIndexedAccessBoxed() {
+            return false;
         }
 
         @Override
@@ -2836,11 +2869,19 @@ public class StatementTransformer extends AbstractTransformer {
             this.outerAlias = naming.alias(value.getName());
             // TODO Annots
             try (SavedPosition pos = noPosition()) {
+                JCExpression valueExpr = makeDefaultExprForType(type);
+                JCExpression typeExpr;
+                if (value.getUnboxed() == false) {
+                    typeExpr = makeJavaType(type, AbstractTransformer.JT_NO_PRIMITIVES); 
+                    valueExpr = boxType(valueExpr, type);
+                } else {
+                    typeExpr = makeJavaType(type); 
+                }
                 return make().VarDef(
                         make().Modifiers(modifiers & ~FINAL, annots), 
                         outerAlias.asName(), 
-                        makeJavaType(type), 
-                        makeDefaultExprForType(type));
+                        typeExpr, 
+                        valueExpr);
             }
         }
 
@@ -2873,7 +2914,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCStatement result = makeVar(
                         modifiers, 
                         innerAlias.getName(), 
-                        makeJavaType(type), 
+                        makeJavaType(type, (value.getUnboxed() == false) ? AbstractTransformer.JT_NO_PRIMITIVES : 0), 
                         naming.makeName(value, Naming.NA_IDENT));
                 innerSubst = naming.addVariableSubst(value, innerAlias.getName());
                 return result;
@@ -2964,12 +3005,16 @@ public class StatementTransformer extends AbstractTransformer {
                 // so give variable attribute declarations without 
                 // initializers a default value. See #1153.
                 initialValue = makeDefaultExprForType(t);
+                if (CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()) == BoxingStrategy.BOXED) {
+                    initialValue = boxType(initialValue, t);
+                }
             }
             
             List<JCAnnotation> annots = List.<JCAnnotation>nil();
             
             int modifiers = transformLocalFieldDeclFlags(decl);
-            result.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, makeJavaType(t), initialValue));
+            JCExpression typeExpr = makeJavaType(decl.getDeclarationModel(), t, modifiers);
+            result.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, typeExpr, initialValue));
             
             JCStatement outerSubs = openOuterSubstitutionIfNeeded(
                     decl.getDeclarationModel(), t, annots, modifiers);
@@ -3913,6 +3958,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression cond = makeTypeTest(null, selectorAlias, caseType , expressionType);
         
         String name = isCase.getVariable().getIdentifier().getText();
+        TypedDeclaration varDecl = isCase.getVariable().getDeclarationModel();
 
         Naming.SyntheticName tmpVarName = selectorAlias;
         Name substVarName = naming.aliasName(name);
@@ -3924,7 +3970,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression tmpVarExpr = at(isCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
         JCExpression toTypeExpr;
-        if (isCeylonBasicType(varType)) {
+        if (isCeylonBasicType(varType) && varDecl.getUnboxed() == true) {
             toTypeExpr = makeJavaType(varType);
             tmpVarExpr = unboxType(tmpVarExpr, varType);
         } else {
@@ -3935,7 +3981,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
 
         // Prepare for variable substitution in the following code block
-        Substitution prevSubst = naming.addVariableSubst(isCase.getVariable().getDeclarationModel(), substVarName.toString());
+        Substitution prevSubst = naming.addVariableSubst(varDecl , substVarName.toString());
 
         List<JCStatement> stats = List.<JCStatement> of(decl2);
         stats = stats.appendList(transformCaseClause(caseClause, tmpVar, outerExpression));
@@ -4178,15 +4224,5 @@ public class StatementTransformer extends AbstractTransformer {
             throw BugException.unhandledCase(varOrDes);
         }
         return (specExpr != null) ? specExpr.getExpression() : null;
-    }
-    
-    Tree.Type getDestructureType(Tree.Statement varOrDes) {
-        if (varOrDes instanceof Tree.Variable) {
-            return ((Tree.Variable)varOrDes).getType();
-        } else if (varOrDes instanceof Tree.Destructure) {
-            return ((Tree.Destructure)varOrDes).getType();
-        } else {
-            throw BugException.unhandledCase(varOrDes);
-        }
     }
 }

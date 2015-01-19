@@ -151,7 +151,7 @@ abstract class Invocation {
         return qmePrimary;
     }
 
-    final boolean isOnValueType() {
+    boolean isOnValueType() {
         return onValueType;
     }
     
@@ -926,13 +926,15 @@ class CallableInvocation extends DirectInvocation {
     private boolean tempVars;
 
     private Naming.SyntheticName instanceFieldName;
+    private boolean instanceFieldIsBoxed;
 
     public CallableInvocation(
-            AbstractTransformer gen, Naming.SyntheticName primaryName, Tree.Term primary,
+            AbstractTransformer gen, Naming.SyntheticName primaryName, boolean primaryIsBoxed, Tree.Term primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount, boolean tempVars) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         this.instanceFieldName = primaryName;
+        this.instanceFieldIsBoxed = primaryIsBoxed;
         Functional functional = null;
         if(primary instanceof Tree.MemberOrTypeExpression)
             functional = (Functional) ((Tree.MemberOrTypeExpression) primary).getDeclaration();
@@ -952,6 +954,11 @@ class CallableInvocation extends DirectInvocation {
             setErased(CodegenUtil.hasTypeErased(tdecl)|| CodegenUtil.hasTypeErased(primary));
         }
         this.tempVars = tempVars;
+    }
+
+    @Override
+    boolean isOnValueType() {
+        return super.isOnValueType() && !instanceFieldIsBoxed;
     }
 
     @Override

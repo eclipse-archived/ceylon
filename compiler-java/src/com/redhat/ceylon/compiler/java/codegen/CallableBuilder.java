@@ -29,7 +29,6 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.SavedPosition;
-import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
@@ -181,6 +180,7 @@ public class CallableBuilder {
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
+        boolean instanceFieldIsBoxed = false;
         if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
                 && !(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SpreadOp)) {
             Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
@@ -194,10 +194,15 @@ public class CallableBuilder {
                 if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
                     primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
                 }
+                ProducedType varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
+                int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
+                if (qmte.getPrimary().getUnboxed() == false) {
+                    varTypeFlags |= JT_NO_PRIMITIVES;
+                    instanceFieldIsBoxed = true;
+                }
                 letStmts.add(gen.makeVar(Flags.FINAL, 
                         instanceFieldName, 
-                        gen.makeJavaType(qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte), 
-                                Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0), 
+                        gen.makeJavaType(varType, varTypeFlags), 
                         primaryExpr));
                 
                 if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
@@ -231,9 +236,9 @@ public class CallableBuilder {
         };
         if (cb.isVariadic) {
             tx = cb.new VariadicCallableTransformation(
-                    cb.new CallMethodWithForwardedBody(instanceFieldName, forwardCallTo, false));
+                    cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, false));
         } else {
-            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, forwardCallTo, true), null);
+            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, true), null);
         }
         cb.useTransformation(tx);
         
@@ -641,29 +646,31 @@ public class CallableBuilder {
         protected void makeDowncastOrDefaultVar(
                 ListBuffer<JCStatement> stmts,
                 Naming.SyntheticName name,
+                boolean boxed,
                 final Parameter param, 
                 final int a, final int arity) {
             try (SavedPosition pos = gen.noPosition()) {
-                JCExpression varInitialExpression = makeDowncastOrDefault(param, a, arity);
+                JCExpression varInitialExpression = makeDowncastOrDefault(param, boxed, a, arity);
                 makeVarForParameter(stmts, param, parameterTypes.get(a), 
-                        name, varInitialExpression);
+                        name, boxed, varInitialExpression);
             }
         }
         
         /**
          * Makes an expression, (appropriately downcasted or unboxed) for the
          * given parameter of the {@code $call()} method.
+         * @param boxed 
          */
-        private JCExpression makeCallParameterExpr(Parameter param, int argIndex, boolean varargs) {
+        private JCExpression makeCallParameterExpr(Parameter param, boolean boxed, int argIndex, boolean varargs) {
             ProducedType paramType = parameterTypes.get(Math.min(argIndex, numParams-1));
-            return makeParameterExpr(param, argIndex, paramType, varargs);
+            return makeParameterExpr(param, argIndex, paramType, boxed, varargs);
         }
         
         /**
          * Makes an expression, (appropriately downcasted or unboxed) for the
          * given parameter of the {@code $call()} method.
          */
-        protected JCExpression makeParameterExpr(Parameter param, int argIndex, ProducedType paramType, boolean ellipsis){
+        protected JCExpression makeParameterExpr(Parameter param, int argIndex, ProducedType paramType, boolean boxed, boolean ellipsis){
             JCExpression argExpr;
             if (!ellipsis) {
                 // The Callable has overridden one of the non-ellipsis $call$() 
@@ -678,7 +685,7 @@ public class CallableBuilder {
             }
             int ebFlags = ExpressionTransformer.EXPR_DOWN_CAST; // we're effectively downcasting it from Object
             BoxingStrategy boxingStrategy;
-            if(isValueTypeCall(param, paramType))
+            if(!boxed && isValueTypeCall(param, paramType))
                 boxingStrategy = BoxingStrategy.UNBOXED;
             else
                 boxingStrategy = CodegenUtil.getBoxingStrategy(param.getModel());
@@ -697,9 +704,9 @@ public class CallableBuilder {
         }
         
         protected JCExpression makeDowncastOrDefault(final Parameter param,
-                final int a, final int arity) {
+                boolean boxed, final int a, final int arity) {
             // read the value
-            JCExpression paramExpression = makeCallParameterExpr(param, a, arity > CALLABLE_MAX_FIZED_ARITY);
+            JCExpression paramExpression = makeCallParameterExpr(param, boxed, a, arity > CALLABLE_MAX_FIZED_ARITY);
             JCExpression varInitialExpression;
             // TODO Suspicious
             if(param.isDefaulted() || param.isSequenced()){
@@ -748,9 +755,9 @@ public class CallableBuilder {
         
         protected final void makeVarForParameter(ListBuffer<JCStatement> stmts,
                 final Parameter param, ProducedType parameterType,
-                Naming.SyntheticName name, JCExpression expr) {
+                Naming.SyntheticName name, boolean boxed, JCExpression expr) {
             // store it in a local var
-            int flags = jtFlagsForParameter(param, parameterType);
+            int flags = jtFlagsForParameter(param, parameterType, boxed);
             JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(param.getModel().isVariable() ? 0 : Flags.FINAL), 
                     name.asName(), 
                     gen.makeJavaType(parameterType, flags),
@@ -760,9 +767,9 @@ public class CallableBuilder {
                 stmts.append(gen.makeVariableBoxDecl(name.makeIdent(), param.getModel()));
             }
         }
-        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType) {
+        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType, boolean boxed) {
             int flags = 0;
-            if(!CodegenUtil.isUnBoxed(param.getModel()) && !isValueTypeCall(param, parameterType)){
+            if(!CodegenUtil.isUnBoxed(param.getModel()) && (!isValueTypeCall(param, parameterType) || boxed)){
                 flags |= AbstractTransformer.JT_NO_PRIMITIVES;
             }
             if (companionAccess) {
@@ -798,7 +805,7 @@ public class CallableBuilder {
             int a = 0;
             for(Parameter param : paramLists.getParameters()){
                 // don't read default parameter values for forwarded calls
-                makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param), param, a, arity);
+                makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param), false, param, a, arity);
                 a++;
             }
             return makeCallMethod(stmts.appendList(body).toList(), arity);
@@ -810,9 +817,11 @@ public class CallableBuilder {
         final boolean isCallMethod;
         private final Tree.Term forwardCallTo;
         private final Naming.SyntheticName instanceFieldName;
+        private final boolean instanceFieldIsBoxed;
 
-        CallMethodWithForwardedBody(Naming.SyntheticName instanceFieldName, Tree.Term forwardCallTo, boolean isCallMethod) {
+        CallMethodWithForwardedBody(Naming.SyntheticName instanceFieldName, boolean instanceFieldIsBoxed, Tree.Term forwardCallTo, boolean isCallMethod) {
             this.instanceFieldName = instanceFieldName;
+            this.instanceFieldIsBoxed = instanceFieldIsBoxed;
             this.forwardCallTo = forwardCallTo;
             this.isCallMethod = isCallMethod;
         }
@@ -824,8 +833,8 @@ public class CallableBuilder {
         }
         
         @Override
-        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType) {
-            int flags = super.jtFlagsForParameter(param, parameterType);
+        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType, boolean boxed) {
+            int flags = super.jtFlagsForParameter(param, parameterType, boxed);
             // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
             // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
             // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
@@ -862,7 +871,7 @@ public class CallableBuilder {
                     if(arity <= CALLABLE_MAX_FIZED_ARITY 
                             /*&& forwardCallTo != null */&& arity == a)
                         break;
-                    makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param), param, a, arity);
+                    makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param), instanceFieldIsBoxed, param, a, arity);
                     a++;
                 }
             }
@@ -878,6 +887,7 @@ public class CallableBuilder {
             CallableInvocation invocationBuilder = new CallableInvocation (
                     gen,
                     instanceFieldName,
+                    instanceFieldIsBoxed,
                     forwardCallTo,
                     primaryDeclaration,
                     target,
@@ -1073,7 +1083,7 @@ public class CallableBuilder {
             SyntheticName name = parameterName(a);
             Parameter param = paramLists.getParameters().get(a);
             makeDowncastOrDefaultVar(stmts, 
-                    name, param, a, arity);
+                    name, false, param, a, arity);
             args.append(name.makeIdent());
         }
         
@@ -1096,7 +1106,7 @@ public class CallableBuilder {
                 if (arity < numParams - 1) {
                     Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
                     makeDowncastOrDefaultVar(stmts, 
-                            parameterName(Math.min(a, numParams-1)), param1, a, arity);
+                            parameterName(Math.min(a, numParams-1)), false, param1, a, arity);
                 } else {
                     varargs.append(gen.make().Ident(makeParamName(gen, a)));
                 }
@@ -1111,7 +1121,7 @@ public class CallableBuilder {
             SyntheticName vname = getCallableTempVarName(getVariadicParameter()).suffixedBy(Suffix.$variadic$);
             args.append(vname.makeIdent());
             makeVarForParameter(stmts, getVariadicParameter(), getVariadicType(), 
-                    vname, varargsSequence);
+                    vname, false, varargsSequence);
             return a;
         }
         
@@ -1219,7 +1229,7 @@ public class CallableBuilder {
             ListBuffer<JCExpression> lb = ListBuffer.lb();
             for (; a < arity1-1 && a < CALLABLE_MAX_FIZED_ARITY; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
-                lb.append(makeParameterExpr(param, a, getVariadicIteratedType(), false));
+                lb.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
             ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
@@ -1321,7 +1331,7 @@ public class CallableBuilder {
             ListBuffer<JCExpression> variadicElements = ListBuffer.lb();
             for (; a < arity; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
-                variadicElements.append(makeParameterExpr(param, a, getVariadicIteratedType(), false));
+                variadicElements.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
             ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
@@ -1379,11 +1389,11 @@ public class CallableBuilder {
                 get = gen.expressionGen().applyErasureAndBoxing(get, 
                         parameterTypes.get(a), 
                         true, true, 
-                        (jtFlagsForParameter(param, parameterTypes.get(a)) & JT_NO_PRIMITIVES) == 0 ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED , 
+                        (jtFlagsForParameter(param, parameterTypes.get(a), false) & JT_NO_PRIMITIVES) == 0 ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED , 
                         parameterTypes.get(a), 0);
                 
                 makeVarForParameter(stmts, param, parameterTypes.get(a),
-                        name, get);
+                        name, false, get);
                 args.append(name.makeIdent());
             }
             // Get the rest of the sequential using spanFrom()
@@ -1398,7 +1408,7 @@ public class CallableBuilder {
                     parameterTypes.get(a), 0);
             Parameter param = paramLists.getParameters().get(numParams-1);
             makeVarForParameter(stmts, param, parameterTypes.get(a),
-                    name, spanFrom);
+                    name, false, spanFrom);
             args.append(name.makeIdent());
         }
         
