@@ -427,7 +427,7 @@ public abstract class CompilerTest {
 
         // now compile it all the way
         ExitState exitState = task.call2();
-        Assert.assertEquals("Compilation failed", exitState.ceylonState == CeylonState.OK);
+        Assert.assertEquals("Compilation failed", exitState.ceylonState, CeylonState.OK);
 
         // now look at what we expected
         String expectedSrc = normalizeLineEndings(readFile(new File(getPackagePath(), name+".src"))).trim();
