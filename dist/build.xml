@@ -215,7 +215,7 @@ Used with another target such as 'package'">
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
                      copy-licenses, install-runtime-libs, install-language, install-runtime,
-                     add-module-descriptors"
+                     generate-tooldoc, add-module-descriptors"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
