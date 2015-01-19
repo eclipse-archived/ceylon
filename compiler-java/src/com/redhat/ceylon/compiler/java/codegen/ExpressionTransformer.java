@@ -3274,7 +3274,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }else{
                 if (classType.getDeclaration() instanceof Constructor) {
-                    classType = classType.getQualifyingType();
+                    classType = classType.getExtendedType();
                 }
                 JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
                 callBuilder.instantiate(typeExpr);
