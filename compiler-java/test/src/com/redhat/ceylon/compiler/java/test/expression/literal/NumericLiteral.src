@@ -31,7 +31,7 @@ class NumericLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final void bytes() {
         final byte b1 = (byte)123L;
         final byte b2 = (byte)123L;
-        final byte b1n = -(byte)123L;
+        final byte b1n = .ceylon.language.Integer.getByte(-123L);
         final byte b2n = (byte)-123L;
         final byte b3 = (byte)255L;
         final byte b4 = (byte)255L;

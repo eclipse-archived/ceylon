@@ -48,7 +48,7 @@ class NumericLiteral(){
     shared void bytes(){
         Byte b1 = 123.byte;
         Byte b2 = Byte(123);
-        Byte b1n = -123.byte;
+        Byte b1n = (-123).byte;
         Byte b2n = Byte(-123);
         Byte b3 = #ff.byte;
         Byte b4 = Byte(#ff);
