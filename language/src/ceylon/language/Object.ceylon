@@ -58,7 +58,12 @@ shared abstract class Object()
      - if `x==y` then `x.hash==y.hash`.
      
      Therefore, a class which refines [[equals]] must also
-     refine `hash`."
+     refine `hash`.
+     
+     Because the [[Integer]] type is platform-dependent 
+     a compiler for a given platform is permitted to
+     further manipulate the calculated hash for an object,
+     and the resulting hash may differ between platforms."
     shared formal Integer hash;
     
     "A developer-friendly string representing the instance. 
