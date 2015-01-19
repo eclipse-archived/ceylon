@@ -1005,6 +1005,10 @@ class CallableInvocation extends DirectInvocation {
             String selector) {
         return new TransformedInvocationPrimary(instanceFieldName != null ? instanceFieldName.makeIdent() : primaryExpr, selector);
     }
+    
+    public Constructor getConstructor() {
+        return getConstructorFromPrimary(getProducedReference().getDeclaration());
+    }
 }
 
 /**
