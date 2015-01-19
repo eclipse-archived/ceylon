@@ -12,4 +12,4 @@ for (mem in this.m$['$pks$']) {
     m.push(this.m$['$pks$'][mem]);
   }
 }
-return m.length===0?getEmpty():ArraySequence(m,{Element$ArraySequence:{t:Package$meta$declaration}});
+return m.length===0?empty():ArraySequence(m,{Element$ArraySequence:{t:Package$meta$declaration}});

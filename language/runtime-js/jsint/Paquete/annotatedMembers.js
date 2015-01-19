@@ -21,7 +21,7 @@ function annotatedMembers($$$mptypes){
         }
       }
     }
-    return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:$$$mptypes.Kind$annotatedMembers});
+    return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:$$$mptypes.Kind$annotatedMembers});
   }
-  return getEmpty();
+  return empty();
 }

@@ -5,7 +5,7 @@ function(nm,$mpt){
   if (cn) {
     mm=getrtmm$$(cn);
     if (mm.d[mm.d.length-2]==='$cn') {
-      var args=mm.ps?tupleize$params(mm.ps,this.$targs):getEmpty();
+      var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
       return AppliedMemberConstructor(cn,
              {Type$AppliedMemberConstructor:this.$$targs$$.Type$AppliedMemberClass,
               Container$AppliedMemberConstructor:this.$$targs$$.Container$AppliedMemberClass,

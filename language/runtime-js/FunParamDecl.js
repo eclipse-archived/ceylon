@@ -79,13 +79,13 @@ function $init$FunParamDecl(){
       
       //MethodDef apply at caca.ceylon (31:2-32:74)
       $$funParamDecl.$_apply=function $_apply(typeArguments$11,$$$mptypes){
-          if(typeArguments$11===undefined){typeArguments$11=getEmpty();}
+          if(typeArguments$11===undefined){typeArguments$11=empty();}
           throw Exception("IMPL FunParamDecl.apply");
       };$$funParamDecl.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},ps:[{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
       
       //MethodDef memberApply at caca.ceylon (33:2-34:80)
       $$funParamDecl.memberApply=function memberApply(containerType$12,typeArguments$13,$$$mptypes){
-          if(typeArguments$13===undefined){typeArguments$13=getEmpty();}
+          if(typeArguments$13===undefined){typeArguments$13=empty();}
           throw Exception("IMPL FunParamDecl.memberApply");
       };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
     })(FunParamDecl.$$.prototype);

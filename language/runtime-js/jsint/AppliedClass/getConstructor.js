@@ -5,7 +5,7 @@ function(nm,$mpt){
   if (cn) {
     mm=getrtmm$$(cn);
     if (mm.d[mm.d.length-2]==='$cn') {
-      var args=mm.ps?tupleize$params(mm.ps,this.$targs):getEmpty();
+      var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
       return AppliedConstructor$jsint(cn,{Type$AppliedConstructor:this.$$targs$$.Type$AppliedClass,
                                 Arguments$AppliedConstructor:args},undefined,this.$targs);
     }

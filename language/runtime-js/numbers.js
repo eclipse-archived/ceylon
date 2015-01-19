@@ -274,9 +274,9 @@ atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ ||
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);
-function getInfinity() { return $infinity; }
-ex$.$prop$getInfinity={get:getInfinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
+function infinity() { return $infinity; }
+ex$.$prop$infinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
 
 ex$.Integer=Integer;
 ex$.Float=Float;
-ex$.getInfinity=getInfinity;
+ex$.infinity=infinity;
