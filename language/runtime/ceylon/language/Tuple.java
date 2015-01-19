@@ -809,7 +809,7 @@ public final class Tuple<Element, First extends Element,
         if (length<=0) return (Sequential<? extends Element>) empty_.get_();
         if (length>=array.length) return this;
         int len = (int) length;
-        Object[] initialArray = new Object[len];
+        java.lang.Object[] initialArray = new java.lang.Object[len];
         System.arraycopy(array, 0, initialArray, 0, len);
         return new Tuple($reifiedElement, initialArray);
     }
@@ -819,7 +819,7 @@ public final class Tuple<Element, First extends Element,
         if (length<=0) return (Sequential<? extends Element>) empty_.get_();
         if (length>=array.length) return this;
         int len = (int) length;
-        Object[] initialArray = new Object[len];
+        java.lang.Object[] initialArray = new java.lang.Object[len];
         System.arraycopy(array, array.length-len, initialArray, 0, len);
         return new Tuple($reifiedElement, initialArray);
     }
@@ -842,7 +842,7 @@ public final class Tuple<Element, First extends Element,
             i++;
         }
         if (i==0 && j==0) return this;
-        Object[] trimmedArray = new Object[size-i-j];
+        java.lang.Object[] trimmedArray = new java.lang.Object[size-i-j];
         System.arraycopy(array, j, trimmedArray, 0, size-i);
         return new Tuple($reifiedElement, trimmedArray);
     }
@@ -859,7 +859,8 @@ public final class Tuple<Element, First extends Element,
             i++;
         }
         if (i==0) return this;
-        Object[] trimmedArray = new Object[size-i];
+        java.lang.Object[] trimmedArray = 
+                new java.lang.Object[size-i];
         System.arraycopy(array, i, trimmedArray, 0, size-i);
         return new Tuple($reifiedElement, trimmedArray);
     }
@@ -876,7 +877,8 @@ public final class Tuple<Element, First extends Element,
             i++;
         }
         if (i==0) return this;
-        Object[] trimmedArray = new Object[size-i];
+        java.lang.Object[] trimmedArray = 
+                new java.lang.Object[size-i];
         System.arraycopy(array, 0, trimmedArray, 0, size-i);
         return new Tuple($reifiedElement, trimmedArray);
     }
