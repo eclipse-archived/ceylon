@@ -3221,6 +3221,12 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
             ProducedType exprType,
             BoxingStrategy boxingStrategy) {
+        return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy, exprType);
+    }
+    
+    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
+            ProducedType exprType,
+            BoxingStrategy boxingStrategy, ProducedType expectedType) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
             return javaExpr;
         boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
@@ -3232,6 +3238,9 @@ public abstract class AbstractTransformer implements Transformation {
             javaExpr = boxType(javaExpr, exprType);
         } else {
             // unbox
+            if (exprType.getDeclaration() instanceof TypeParameter) {
+                exprType = expectedType;
+            }
             javaExpr = unboxType(javaExpr, exprType);
         }
         return javaExpr;

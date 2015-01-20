@@ -535,7 +535,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             exprType = expectedType;
         }
         // we must do the boxing after the cast to the proper type
-        JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+        JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy, expectedType);
         
         // very special case for nothing that we need to "unbox" to a primitive type
         if(exprType != null
