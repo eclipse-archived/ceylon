@@ -33,7 +33,7 @@ shared void testProcess() {
     check(language.minorVersion==1, "language.minorVersion");
     check(language.releaseVersion==1, "language.releaseVersion");
     check(!language.versionName.empty, "language.versionName");
-    check(language.majorVersionBinary==7, "language.majorVersionBinary");
+    check(language.majorVersionBinary==8, "language.majorVersionBinary");
     check(language.minorVersionBinary==0, "language.minorVersionBinary");
     print("Ceylon language version ``language.version`` major ``language.majorVersion`` " +
         "minor ``language.minorVersion`` release ``language.releaseVersion`` " +
