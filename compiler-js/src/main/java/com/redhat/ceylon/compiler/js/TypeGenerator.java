@@ -673,11 +673,6 @@ public class TypeGenerator {
             gen.out(objectGetterName, ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, annots, gen);
             gen.endLine(true);
-            //make available with the class name as well, for metamodel access
-            final String classGetterName = gen.getNames().getter(c, false);
-            if (!classGetterName.equals(objectGetterName)) {
-                //gen.out(classGetterName, "=", objectGetterName, ";");
-            }
             gen.out(gen.getNames().getter(c, true), "=", objectGetterName);
             gen.endLine(true);
             if (d.isToplevel()) {
