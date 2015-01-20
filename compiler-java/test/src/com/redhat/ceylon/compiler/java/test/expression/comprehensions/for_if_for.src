@@ -71,7 +71,7 @@ final class forIfFor_ {
                             if (this.y()) {
                                 final .ceylon.language.Integer x = this.x;
                                 final .ceylon.language.Integer y = this.y;
-                                return .ceylon.language.Integer.instance(.ceylon.language.Integer.times(x.longValue(), y.longValue()));
+                                return x.times(y);
                             } else return .ceylon.language.finished_.get_();
                         }
                     };
