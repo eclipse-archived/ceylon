@@ -46,7 +46,7 @@ public class JsIdentifierNames {
                 "final", "float", "goto", "implements", "instanceof", "int", "long",
                 "native", "new", "null", "private", "protected", "public", "short", "static",
                 "synchronized", "throws", "transient", "true", "typeof", "var", "volatile",
-                "with", "abstract"));
+                "with", "abstract", "process"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number"));
         //JS Object
@@ -125,9 +125,11 @@ public class JsIdentifierNames {
 
     public String objectName(Declaration decl) {
         String name = getName(decl, true, false);
+        if (reservedWords.contains(name)) {
+            name = "$_" + name;
+        }
         if (decl.isToplevel()) {
-            return String.format("get%c%s()", Character.toUpperCase(name.charAt(0)),
-                    name.substring(1));
+            return String.format("%s()", name);
         }
         return name;
     }
@@ -135,11 +137,17 @@ public class JsIdentifierNames {
     /**
      * Determine the function name to be used in the generated JavaScript code
      * for the getter of the given declaration.
+     * @param decl The declaration whose name we have to generate.
+     * @param forMetamodel indicates whether the name is for metamodel purposes ($prop$getBla)
      */
-    public String getter(Declaration decl) {
+    public String getter(Declaration decl, boolean forMetamodel) {
         if (decl == null) { return ""; }
         String name = getName(decl, true, false);
-        return String.format("get%c%s", Character.toUpperCase(name.charAt(0)),
+        if (!forMetamodel && !decl.isClassOrInterfaceMember()) {
+            return reservedWords.contains(name) ? "$_" + name : name;
+        }
+        return String.format("%sget%c%s", forMetamodel?"$prop$":"",
+                Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
     }
 
