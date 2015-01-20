@@ -111,7 +111,7 @@ public class SerializationHelper {
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
             gen.out(ac, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
-                    pkgname, ",this.$prop$", gen.getNames().getter(v),")", ",",
+                    pkgname, ",this.", gen.getNames().getter(v, true),")", ",",
                     "this.", gen.getNames().name(v), ",{Instance$putValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out("this.$$targs$$.", vd.getName(), "$", d.getName());
@@ -194,8 +194,8 @@ public class SerializationHelper {
             final String valname = v.isParameter() || v.isLate() ?
                     gen.getNames().name(v)+"_" : gen.getNames().privateName(v);
             gen.out(ni, ".", valname, "=", dc, ".getValue(", gen.getClAlias(),
-                    "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.$prop$",
-                    gen.getNames().getter(v),")", ",{Instance$getValue:");
+                    "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.",
+                    gen.getNames().getter(v, true),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
             } else {

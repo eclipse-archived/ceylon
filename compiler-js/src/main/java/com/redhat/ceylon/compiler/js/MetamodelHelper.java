@@ -97,7 +97,7 @@ public class MetamodelHelper {
         }
         if (d instanceof Value) {
             if (!d.isMember()) gen.qualify(that, d);
-            gen.out("$prop$", gen.getNames().getter(d), ")");
+            gen.out(gen.getNames().getter(d, true), ")");
         } else {
             if (d.isAnonymous()) {
                 final String oname = gen.getNames().objectName(d);
@@ -176,7 +176,7 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
-            gen.out(gen.getClAlias(),"getNothingType$meta$model()");
+            gen.out(gen.getClAlias(),"nothingType$meta$model()");
         } else if (that instanceof Tree.AliasLiteral) {
             gen.out("/*TODO: applied alias*/");
         } else if (that instanceof Tree.TypeParameterLiteral) {
@@ -212,7 +212,7 @@ public class MetamodelHelper {
                 gen.out(".$$.prototype.");
             }
             if (d instanceof Value) {
-                gen.out("$prop$", gen.getNames().getter(d), ",");
+                gen.out(gen.getNames().getter(d, true), ",");
             } else {
                 gen.out(gen.getNames().name(d),",");
             }
@@ -279,7 +279,7 @@ public class MetamodelHelper {
                 gen.out(".$$.prototype.");
             }
             if (d instanceof Value) {
-                gen.out("$prop$", gen.getNames().getter(d),",");
+                gen.out(gen.getNames().getter(d, true),",");
             } else {
                 gen.out(gen.getNames().name(d),",");
             }
@@ -297,7 +297,7 @@ public class MetamodelHelper {
                 gen.out(".$$.prototype.");
             }
             if (d instanceof Value) {
-                gen.out("$prop$", gen.getNames().getter(d));
+                gen.out(gen.getNames().getter(d, true));
             } else {
                 gen.out(gen.getNames().name(d));
             }
@@ -311,7 +311,7 @@ public class MetamodelHelper {
     }
 
     static void findModule(final Module m, final GenerateJsVisitor gen) {
-        gen.out(gen.getClAlias(), "getModules$meta().find('",
+        gen.out(gen.getClAlias(), "modules$meta().find('",
                 m.getNameAsString(), "','", m.getVersion(), "')");
     }
 

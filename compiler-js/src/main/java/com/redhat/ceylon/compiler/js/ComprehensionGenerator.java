@@ -23,7 +23,7 @@ class ComprehensionGenerator {
 
     ComprehensionGenerator(GenerateJsVisitor gen, JsIdentifierNames names, Set<Declaration> directDeclarations) {
         this.gen = gen;
-        finished = String.format("%sgetFinished()", gen.getClAlias());
+        finished = String.format("%sfinished()", gen.getClAlias());
         this.names = names;
         directAccess = directDeclarations;
     }

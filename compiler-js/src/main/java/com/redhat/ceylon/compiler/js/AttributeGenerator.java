@@ -136,7 +136,7 @@ public class AttributeGenerator {
                     gen.endLine(true);
                 }
                 else {
-                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl),"(){return ");
+                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){return ");
                     if (initVal) {
                         gen.out("$valinit$", varName, "();}");
                     } else {

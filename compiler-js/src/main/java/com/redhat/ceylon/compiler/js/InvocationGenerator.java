@@ -290,7 +290,7 @@ public class InvocationGenerator {
                     if (p.isDefaulted()) {
                         gen.out("undefined");
                     } else {
-                        gen.out(gen.getClAlias(), "getEmpty()");
+                        gen.out(gen.getClAlias(), "empty()");
                     }
                 } else {
                     gen.out(vname);

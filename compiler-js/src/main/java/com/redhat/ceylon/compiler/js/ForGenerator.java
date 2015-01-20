@@ -33,7 +33,7 @@ public class ForGenerator {
         gen.endBlock();
         if (hasElse) {
             gen.endLine();
-            gen.out("if(", gen.getClAlias(), "getFinished()", "===", itemVar, ")");
+            gen.out("if(", gen.getClAlias(), "finished()", "===", itemVar, ")");
             gen.encloseBlockInFunction(that.getElseClause().getBlock(), true);
         }
     }
@@ -51,7 +51,7 @@ public class ForGenerator {
             gen.out("var ", itemVar, ";for(var ", iterVar,"=");
             iterable.visit(gen);
             gen.out(".iterator();(", itemVar, "=", iterVar, ".next())!==",
-                    gen.getClAlias(), "getFinished();)");
+                    gen.getClAlias(), "finished();)");
         }
         gen.beginBlock();
         if (that instanceof Tree.ValueIterator) {
@@ -95,7 +95,7 @@ public class ForGenerator {
         final String nxtvar = gen.getNames().createTempVariable();
         final String cfvar = gen.getNames().createTempVariable();
         gen.out(",", cmpvar, "=", itemVar, ".compare(", iterVar, "),", nxtvar, "=", cmpvar, "===",
-                gen.getClAlias(), "getSmaller()?'successor':'predecessor';for(var ",
+                gen.getClAlias(), "smaller()?'successor':'predecessor';for(var ",
                 cfvar, "=", gen.getClAlias(), "eorl$(", cmpvar, ");", cfvar,
                 "(", iterVar, ",", itemVar, ");");
         gen.out(itemVar, "=", itemVar, "[", nxtvar, "])");
