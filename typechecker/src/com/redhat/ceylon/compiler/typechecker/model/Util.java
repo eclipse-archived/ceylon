@@ -940,6 +940,12 @@ public class Util {
      * assignable is empty.
      */
     private static boolean emptyMeet(ProducedType p, ProducedType q, Unit unit) {
+        if (p==null || q==null) {
+            return false;
+        }
+        if (p.isNothing() || q.isNothing()) {
+            return true;
+        }
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
