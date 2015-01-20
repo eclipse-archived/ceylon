@@ -97,3 +97,45 @@ class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class);
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.javax.annotation.Generated({"by you"})
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Name("CPAnnoTest2")
+    public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("generated")})
+    final .java.lang.String x$param$) {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.Other Other = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class Other {
+        
+        private Other() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
+    public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("generated")})
+    final .java.lang.String x$param$) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.class);
+}

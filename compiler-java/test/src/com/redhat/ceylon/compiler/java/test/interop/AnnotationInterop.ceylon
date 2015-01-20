@@ -82,3 +82,9 @@ class AnnotationInterop() {
     preDestroy
     shared void beforeDestruction() {}
 }
+
+class CPAnnoTest2 {
+    generated({"by you"})
+    shared new CPAnnoTest2(generated({"by me"}) String x) { }
+    shared new Other(generated({"by me"}) String x) { }
+}

@@ -86,6 +86,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.annotations.Constructor.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.DocAnnotation$annotation$(description = "ctor param doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"ctor param doc"})})
