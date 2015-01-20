@@ -609,7 +609,25 @@ public class CeylonDocToolTest {
         tool.setIncludeNonShared(true);
         tool.run();
     }
-    
+
+    @Test
+    public void bug1975() throws Exception{
+        File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
+        
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug1975";
+        
+        compile(pathname, dir.getPath(), moduleName);
+
+        CeylonDocTool tool = 
+                tool(Arrays.asList(new File(pathname)),
+                        Arrays.asList(new File("doc")),
+                        Arrays.asList(moduleName),
+                        true, false);
+        tool.setIncludeNonShared(true);
+        tool.run();
+    }
+
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
