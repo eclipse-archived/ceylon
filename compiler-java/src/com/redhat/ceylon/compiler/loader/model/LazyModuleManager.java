@@ -123,8 +123,7 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(!lazyModule.isJava() && !module.isDefault()){
                 // it must be a Ceylon module
                 // default modules don't have any module descriptors so we can't check them
-                if(lazyModule.getMajor() != Versions.JVM_BINARY_MAJOR_VERSION
-                        || lazyModule.getMinor() != Versions.JVM_BINARY_MINOR_VERSION){
+                if(!Versions.isJvmBinaryVersionSupported(lazyModule.getMajor(), lazyModule.getMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
                             dependencyTree,
                             "This module was compiled for an incompatible version of the Ceylon compiler ("+lazyModule.getMajor()+"."+lazyModule.getMinor()+")."

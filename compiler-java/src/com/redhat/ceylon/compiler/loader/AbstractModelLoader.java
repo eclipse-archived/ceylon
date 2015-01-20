@@ -1254,8 +1254,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Integer minor = (Integer) annotation.getValue("minor");
         if(minor == null)
             minor = 0;
-        if(major != Versions.JVM_BINARY_MAJOR_VERSION
-                || minor != Versions.JVM_BINARY_MINOR_VERSION){
+        if(!Versions.isJvmBinaryVersionSupported(major.intValue(), minor.intValue())){
             logError("Ceylon class " + classMirror.getQualifiedName() + " was compiled by an incompatible version of the Ceylon compiler"
                     +"\nThe class was compiled using "+major+"."+minor+"."
                     +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
