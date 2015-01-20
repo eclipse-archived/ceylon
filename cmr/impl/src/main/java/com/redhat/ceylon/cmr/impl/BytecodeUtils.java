@@ -117,7 +117,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return new ModuleInfo(null, infos);
     }
 
-    private synchronized static Index readModuleIndex(final File jarFile, boolean everything) {
+    private static Index readModuleIndex(final File jarFile, boolean everything) {
         try {
             try(JarFile jar = new JarFile(jarFile)){
                 Enumeration<JarEntry> entries = jar.entries();
