@@ -508,7 +508,7 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
-        return resultType(gen.makeJavaTypeAnnotations(typeDecl), resultType);
+        return resultType(gen.makeJavaTypeAnnotations(typeDecl, false), resultType);
     }
     
     public MethodDefinitionBuilder resultType(List<JCAnnotation> resultTypeAnnos, JCExpression resultType) {
