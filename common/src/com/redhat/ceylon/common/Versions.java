@@ -55,10 +55,71 @@ public class Versions {
      * M6 is 5.0
      * 1.0 is 6.0
      * 1.1 is 7.0
+     * 1.1.1 is 8.0
      */
-    public static final int JVM_BINARY_MAJOR_VERSION = 7;
+    public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
-    public static final int JS_BINARY_MAJOR_VERSION = 7;
+    public static final int JS_BINARY_MAJOR_VERSION = 8;
     public static final int JS_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M1_BINARY_MAJOR_VERSION = 0;
+    public static final int M1_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M2_BINARY_MAJOR_VERSION = 0;
+    public static final int M2_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M3_BINARY_MAJOR_VERSION = 1;
+    public static final int M3_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M3_1_BINARY_MAJOR_VERSION = 2;
+    public static final int M3_1_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M4_BINARY_MAJOR_VERSION = 3;
+    public static final int M4_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M5_BINARY_MAJOR_VERSION = 4;
+    public static final int M5_BINARY_MINOR_VERSION = 0;
+    
+    public static final int M6_BINARY_MAJOR_VERSION = 5;
+    public static final int M6_BINARY_MINOR_VERSION = 0;
+    
+    public static final int V1_0_BINARY_MAJOR_VERSION = 6;
+    public static final int V1_0_BINARY_MINOR_VERSION = 0;
+    
+    public static final int V1_1_BINARY_MAJOR_VERSION = 7;
+    public static final int V1_1_BINARY_MINOR_VERSION = 0;
+    
+    public static final int V1_1_1_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_1_1_BINARY_MINOR_VERSION = 0;
 
+    /**
+     * Is the given binary version compatible with the current version
+     * @param major the binary version to check for compatibility
+     * @param minor the binary version to check for compatibility
+     * @return true if the current version of ceylon can consume the given binary version
+     */
+    public static boolean isJvmBinaryVersionSupported(int major, int minor){
+        // latest version 1.1.1 supports 1.1 (bin 7.0) and 1.1.1 (bin 8.0)
+        return (major == JVM_BINARY_MAJOR_VERSION
+                || major == V1_1_BINARY_MAJOR_VERSION)
+                && minor == JVM_BINARY_MINOR_VERSION;
+    }
+
+    /**
+     * Can the given consumer binary version consume modules compiled for the given binary version
+     * @param consumerMajor the binary version that wants to consume the given binary version
+     * @param consumerMinor the binary version that wants to consume the given binary version
+     * @param major the binary version to check for compatibility
+     * @param minor the binary version to check for compatibility
+     * @return true if the given consumer version of ceylon can consume the given binary version
+     */
+    public static boolean isBinaryVersionCompatible(int consumerMajor, int consumerMinor, int major, int minor){
+        // latest version 1.1.1 supports 1.1 (bin 7.0) and 1.1.1 (bin 8.0)
+        if(consumerMajor == V1_1_1_BINARY_MAJOR_VERSION && consumerMinor == V1_1_1_BINARY_MINOR_VERSION){
+            return (major == V1_1_1_BINARY_MAJOR_VERSION 
+                    || major == V1_1_BINARY_MAJOR_VERSION) && minor == 0;
+        }
+        // other versions must be equal
+        return consumerMajor == major && consumerMinor == minor;
+    }
 }
