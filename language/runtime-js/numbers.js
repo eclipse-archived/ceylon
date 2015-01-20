@@ -275,7 +275,7 @@ atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ ||
 
 var $infinity = Float(Infinity);
 function infinity() { return $infinity; }
-ex$.$prop$infinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
+ex$.$prop$getInfinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
 
 ex$.Integer=Integer;
 ex$.Float=Float;
