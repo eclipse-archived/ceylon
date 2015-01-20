@@ -148,7 +148,7 @@ TypeConstraints?
         <para>An <literal>import</literal> statement specifies the name of a package to
         import from, and a list of declarations to import from that package.</para>
         
-        <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
+        <synopsis>Import: "import" FullPackageName ImportElements</synopsis>
         
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
@@ -176,9 +176,9 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <synopsis>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)</synopsis>
+        <synopsis>ImportElements: "{" (ImportElement ",")* (ImportElement | ImportWildcard) "}"</synopsis>
         
-        <synopsis>ImportElement: ImportTypeElement | ImportFunctionValueElement</synopsis>
+        <synopsis>ImportElement: ImportTypeElement | ImportObjectElement | ImportFunctionValueElement</synopsis>
         
         <para>An import element is a reference to either:</para>
         
@@ -235,7 +235,7 @@ TypeConstraints?
             <para>An import element that specifies a type name imports the toplevel type 
             with that name from the imported package or type.</para>
             
-            <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements "}")?</synopsis>
+            <synopsis>ImportTypeElement: TypeAlias? TypeName ImportElements?</synopsis>
             
             <para>The specified name must be the name of a type declaration belonging to 
             the imported package or type.</para>
@@ -273,7 +273,7 @@ TypeConstraints?
             defined in <xref linkend="anonymousclasses"/>, imports the anonymous class 
             with that name from the imported package or type.</para>
             
-            <synopsis>ImportTypeElement: FunctionValueAlias? MemberName ("{" ImportElements "}")?</synopsis>
+            <synopsis>ImportObjectElement: FunctionValueAlias? MemberName ImportElements?</synopsis>
             
             <para>The specified name must be the name of an anonymous class declaration 
             belonging to the imported package or type.</para>
