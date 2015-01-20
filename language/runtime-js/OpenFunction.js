@@ -51,7 +51,7 @@ atr$($$openFunction,'annotation',function(){
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
         var mm=this.tipo.$crtmm$;
-        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
+        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==nothingType$meta$model())
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Return$memberApply))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
         validate$params(mm.ps,$mptypes.Arguments$memberApply,"Wrong number of Arguments for memberApply");

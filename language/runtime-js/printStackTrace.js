@@ -1,5 +1,5 @@
 function printStackTrace(exc, _write) {
-  if (_write===undefined)_write=getProcess().writeError;
+  if (_write===undefined)_write=$_process().writeError;
   var _c = className(exc);
   if (exc.message.size > 0) {
     _c += ' "' + exc.message + '"';
