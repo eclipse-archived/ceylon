@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class IssuesTest_0500_0999 extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
 

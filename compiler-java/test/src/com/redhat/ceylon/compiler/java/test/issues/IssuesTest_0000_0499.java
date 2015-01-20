@@ -36,7 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 public class IssuesTest_0000_0499 extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
 

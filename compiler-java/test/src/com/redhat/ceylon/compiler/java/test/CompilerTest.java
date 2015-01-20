@@ -573,7 +573,7 @@ public abstract class CompilerTest {
     }
 
     protected Object run(String main) {
-        return run(main, getDestModuleWithArtifact());
+        return run(main, getDestModuleWithArtifact(main));
     }
     
     public class ModuleWithArtifact {
@@ -820,7 +820,7 @@ public abstract class CompilerTest {
         return destDir;
     }
 
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact(Module.DEFAULT_MODULE_NAME, null);
     }
 

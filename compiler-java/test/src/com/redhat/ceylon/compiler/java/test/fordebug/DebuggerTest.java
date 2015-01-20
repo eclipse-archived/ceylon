@@ -30,7 +30,7 @@ public class DebuggerTest extends CompilerTest {
     }
     
     public Tracer tracer(String mainClass) throws Exception {
-        return tracer(mainClass, getDestModuleWithArtifact());
+        return tracer(mainClass, getDestModuleWithArtifact(mainClass));
     }
     
     /**

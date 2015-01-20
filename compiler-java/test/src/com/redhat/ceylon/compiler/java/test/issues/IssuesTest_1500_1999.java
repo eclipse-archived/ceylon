@@ -49,7 +49,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 public class IssuesTest_1500_1999 extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
     

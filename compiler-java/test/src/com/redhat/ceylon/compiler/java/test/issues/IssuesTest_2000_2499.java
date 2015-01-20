@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class IssuesTest_2000_2499 extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
     

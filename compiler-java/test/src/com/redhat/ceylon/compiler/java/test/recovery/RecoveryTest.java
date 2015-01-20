@@ -78,7 +78,7 @@ public class RecoveryTest extends CompilerTest {
             }
         };
         try {
-            run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact());
+            run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
             Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
         } catch (RuntimeException e) {
             Throwable e2 = e;
@@ -108,7 +108,7 @@ public class RecoveryTest extends CompilerTest {
                 return null;
             }
         };
-        run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact());
+        run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
         ArrayList<ceylon.language.Integer> expect = new ArrayList<ceylon.language.Integer>();
         for (int ii : sequence) {
             expect.add(ceylon.language.Integer.instance(ii));
@@ -126,7 +126,7 @@ public class RecoveryTest extends CompilerTest {
     private void checkClassHasCompileTimeErrorAnnotation(String brokenClass) {
         synchronized(RUN_LOCK){
             try {
-                URLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
+                URLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact(brokenClass));
                 try {
                     Class<?> c = Class.forName(brokenClass, false, classLoader);
                     Assert.assertTrue("class lacks @CompileTimeError", c.isAnnotationPresent((CompileTimeError.class)));

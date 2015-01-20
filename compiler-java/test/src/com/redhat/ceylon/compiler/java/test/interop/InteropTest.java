@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class InteropTest extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact() {
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main) {
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop", "1");
     }
     

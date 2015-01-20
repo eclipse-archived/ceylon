@@ -19,7 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.expression;
 
-import org.junit.Ignore;
+import java.io.File;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -27,6 +28,18 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class ExpressionTest extends CompilerTest {
 	
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
+        int p = main.lastIndexOf('.');
+        String mod = main.substring(0, p);
+        File modFile = new File(new File(new File(dir), mod.replace('.', File.separatorChar)), "module.ceylon");
+        if (modFile.isFile()) {
+            return new ModuleWithArtifact(mod, "1.0");
+        } else {
+            return super.getDestModuleWithArtifact(main);
+        }
+    }
+    
 	// Attributes
 	
     @Test

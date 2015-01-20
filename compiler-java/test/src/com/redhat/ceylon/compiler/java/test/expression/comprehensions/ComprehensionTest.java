@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class ComprehensionTest extends CompilerTest {
 
     @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.expression.comprehensions", "1.0");
     }
     
