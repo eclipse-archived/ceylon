@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.trace;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class defaultedParameters_ {
     
@@ -57,7 +57,7 @@ final class defaultedParameters_ {
         .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class defaultedParametersMain_ {
     

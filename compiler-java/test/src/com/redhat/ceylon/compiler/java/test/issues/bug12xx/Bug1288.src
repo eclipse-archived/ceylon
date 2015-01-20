@@ -4,7 +4,7 @@ interface Bug1288_Foo<T> {
     
     public abstract T foo(final .java.lang.Object t);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Element",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

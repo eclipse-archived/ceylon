@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -13,7 +13,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other Other = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Other {
         
@@ -37,7 +37,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 final class ClassAliasCtorDefault {
     
@@ -51,7 +51,7 @@ final class ClassAliasCtorDefault {
         throw new .ceylon.language.Exception();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 final class ClassAliasCtorQualDefault {
     
@@ -65,7 +65,7 @@ final class ClassAliasCtorQualDefault {
         throw new .ceylon.language.Exception();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias(
         value = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
         constructor = "Other")
@@ -81,7 +81,7 @@ final class ClassAliasCtorOther {
         throw new .ceylon.language.Exception();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias(
         value = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
         constructor = "Other")

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class useClassAliasCtor_ {
     
@@ -49,7 +49,7 @@ final class useClassAliasCtor_ {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.useClassAliasCtor_.useClassAliasCtor();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
@@ -67,7 +67,7 @@ class ClassAliasCtorDefaultSub extends .com.redhat.ceylon.compiler.java.test.str
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtorDefaultSub.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorQualDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
@@ -85,7 +85,7 @@ class ClassAliasCtorQualDefaultSub extends .com.redhat.ceylon.compiler.java.test
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtorQualDefaultSub.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorOtherSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
@@ -103,7 +103,7 @@ class ClassAliasCtorOtherSub extends .com.redhat.ceylon.compiler.java.test.struc
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtorOtherSub.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorAliasSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
@@ -121,7 +121,7 @@ class ClassAliasCtorAliasSub extends .com.redhat.ceylon.compiler.java.test.struc
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtorAliasSub.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(
         constructors = true,
         extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")

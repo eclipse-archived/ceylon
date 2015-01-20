@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Method
 public class bogusTopLevelMethodNotStatic_ {
     public Object bogusTopLevelMethodNotStatic(){

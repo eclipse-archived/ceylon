@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B$annotation$ x();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -50,7 +50,7 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({
@@ -61,7 +61,7 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
         .java.lang.annotation.ElementType.TYPE})
 @interface Bug1676_2_B$annotation$ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -108,7 +108,7 @@ final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.mode
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1676_2_A_ {
     
@@ -128,7 +128,7 @@ final class bug1676_2_A_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1676_2_A_.bug1676_2_A();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},

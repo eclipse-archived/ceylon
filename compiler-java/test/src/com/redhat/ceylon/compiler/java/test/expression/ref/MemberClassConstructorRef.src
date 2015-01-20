@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class),
@@ -22,7 +22,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Simple($name$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Simple$Nullary {
         
@@ -38,7 +38,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Simple($name$, s1$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Simple$Unary {
         
@@ -54,7 +54,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Simple($name$, s1$param$, s2$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Simple$Binary {
         
@@ -70,7 +70,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Simple($name$, s1$param$, s2$param$, s3$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Simple$Ternary {
         
@@ -86,7 +86,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Simple($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Simple$Nary {
         
@@ -96,7 +96,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple$Nary Simple$Nary = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -396,7 +396,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Defaulted($name$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Defaulted$Nullary {
         
@@ -412,7 +412,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Defaulted($name$, s1$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Defaulted$Unary {
         
@@ -445,7 +445,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Defaulted($name$, s1$param$, s2$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Defaulted$Binary {
         
@@ -496,7 +496,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Defaulted($name$, s1$param$, s2$param$, s3$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Defaulted$Ternary {
         
@@ -566,7 +566,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Defaulted($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Defaulted$Nary {
         
@@ -650,7 +650,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -1111,7 +1111,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Sequenced($name$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Sequenced$Nullary {
         
@@ -1127,7 +1127,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Sequenced($name$, s1$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Sequenced$Unary {
         
@@ -1155,7 +1155,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Sequenced($name$, s1$param$, s2$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Sequenced$Binary {
         
@@ -1183,7 +1183,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Sequenced($name$, s1$param$, s2$param$, s3$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Sequenced$Ternary {
         
@@ -1211,7 +1211,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Sequenced($name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Sequenced$Nary {
         
@@ -1233,7 +1233,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -2003,7 +2003,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Parameterized<T>($reified$T, $name$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Parameterized$Nullary {
         
@@ -2019,7 +2019,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Parameterized<T>($reified$T, $name$, s1$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Parameterized$Unary {
         
@@ -2035,7 +2035,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Parameterized$Binary {
         
@@ -2051,7 +2051,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$, s3$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Parameterized$Ternary {
         
@@ -2067,7 +2067,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return new Parameterized<T>($reified$T, $name$, s1$param$, s2$param$, s3$param$, s4$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final class Parameterized$Nary {
         
@@ -2077,7 +2077,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized$Nary Parameterized$Nary = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -2383,7 +2383,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class memberClassConstructorRef_ {
     

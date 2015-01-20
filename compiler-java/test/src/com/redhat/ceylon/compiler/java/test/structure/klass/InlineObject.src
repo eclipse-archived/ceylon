@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class testInlineObjects_ {
     
@@ -18,7 +18,7 @@ final class testInlineObjects_ {
         .com.redhat.ceylon.compiler.java.test.structure.klass.testInlineObjects_.testInlineObjects();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1anonymous_0_",
@@ -49,7 +49,7 @@ final class inlineObject_ {
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -163,7 +163,7 @@ final class inlineObject_ {
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -317,7 +317,7 @@ final class inlineObject_ {
         .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1anonymous_3_",
         "1anonymous_4_",
@@ -352,7 +352,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -405,7 +405,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -468,7 +468,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -567,7 +567,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_6_"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::InlineObjectInDefaultClassParam<ceylon.language::String>")
 class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> {
@@ -577,7 +577,7 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -627,7 +627,7 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("inlineObjectTopLevel")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_2_"})
@@ -644,7 +644,7 @@ final class inlineObjectTopLevel_ {
                 let
                 {
                     
-                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                     @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(isPackageLocal = true)
                     @.com.redhat.ceylon.compiler.java.metadata.Object

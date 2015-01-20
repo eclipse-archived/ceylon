@@ -23,7 +23,7 @@ class Bug1108 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("process")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class process_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
