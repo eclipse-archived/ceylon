@@ -1969,7 +1969,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             // Read the parameters from the instantiator, rather than the aliased class
             if (instantiator != null) {
-                setParameters(alias, instantiator, true, alias);
+                setParameters(alias, alias.classMirror, instantiator, true, alias);
             }
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
@@ -2103,7 +2103,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(constructor != null
                 && !isDefaultNamedCtor(classMirror, constructor)
                 && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
-            setParameters((Class)klass, constructor, isCeylon, klass);
+            setParameters((Class)klass, classMirror, constructor, isCeylon, klass);
         
         Boolean hasConstructors = hasConstructors(classMirror);
         if (hasConstructors != null && hasConstructors) {
@@ -2205,7 +2205,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibility(constructor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
-        setParameters(constructor, ctor, true, klass);
+        setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
     }
     
@@ -2424,7 +2424,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(isEqualsMethod(methodMirror))
             setEqualsParameters(method, methodMirror);
         else
-            setParameters(method, methodMirror, isCeylon, klass);
+            setParameters(method, classMirror, methodMirror, isCeylon, klass);
         
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
@@ -2880,7 +2880,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
-    private void setParameters(Functional decl, MethodMirror methodMirror, boolean isCeylon, Scope container) {
+    private void setParameters(Functional decl, ClassMirror classMirror, MethodMirror methodMirror, boolean isCeylon, Scope container) {
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
@@ -2959,6 +2959,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 DeclarationVisitor.setVisibleScope(value);
                 value.setUnit(((Element)decl).getUnit());
                 value.setName(paramName);
+            }else{
+                // Ceylon 1.1 had a bug where TypeInfo for functional parameters included the full CallableType on the method
+                // rather than just the method return type, so we try to detect this and fix it
+                if(value instanceof Method 
+                        && isCeylon1Dot1(classMirror)){
+                    ProducedType newType = getSimpleCallableReturnType(value.getType());
+                    if(!newType.isUnknown())
+                        value.setType(newType);
+                }
             }
             value.setInitializerParameter(parameter);
             parameter.setModel(value);
@@ -2992,6 +3001,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
     }
+
+    private boolean isCeylon1Dot1(ClassMirror classMirror) {
+        AnnotationMirror annotation = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION);
+        if(annotation == null)
+            return false;
+        Integer major = (Integer) annotation.getValue("major");
+        if(major == null)
+            major = 0;
+        Integer minor = (Integer) annotation.getValue("minor");
+        if(minor == null)
+            minor = 0;
+        return major == Versions.V1_1_BINARY_MAJOR_VERSION && minor == Versions.V1_1_BINARY_MINOR_VERSION;
+    }
+    
     private Method loadFunctionalParameter(Declaration decl, String paramName, ProducedType type, String parameterNames) {
         Method method = new Method();
         method.setName(paramName);
@@ -3336,7 +3359,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 markUntrustedType(method, meth, meth.getReturnType());
 
              // now its parameters
-                setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
+                setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method);
                 
                 method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
                 setAnnotations(method, meth);
