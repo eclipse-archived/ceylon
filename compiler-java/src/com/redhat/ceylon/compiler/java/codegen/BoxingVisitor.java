@@ -21,7 +21,9 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.List;
+import java.util.Stack;
 
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -64,7 +66,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
@@ -86,6 +87,9 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean isRaw(ProducedType type);
     protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type);
 
+    private Stack<Boolean> nextPreferredExpressionBoxings = null;
+    private Boolean preferredExpressionBoxing = null;
+    
     @Override
     public void visit(BaseMemberExpression that) {
         super.visit(that);
@@ -180,7 +184,10 @@ public abstract class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(Expression that) {
+        Stack<Boolean> npebs = setPEB();
         super.visit(that);
+        resetPEB(npebs);
+        
         Term term = that.getTerm();
         propagateFromTerm(that, term);
         
@@ -345,7 +352,11 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(ArithmeticOp that) {
         super.visit(that);
         // can't optimise the ** operator in Java
-        CodegenUtil.markUnBoxed(that);
+        // we are unboxed if any term is 
+        if(that.getLeftTerm().getUnboxed()
+                || that.getRightTerm().getUnboxed()
+                || BooleanUtil.isFalse(preferredExpressionBoxing))
+            CodegenUtil.markUnBoxed(that);
     }
 
     @Override
@@ -655,5 +666,49 @@ public abstract class BoxingVisitor extends Visitor {
                         CodegenUtil.markUnBoxed(that);
             }
         }
+    }
+    
+    // The following methods are only used to set the "Preferred Expression Boxing"
+    
+    @Override
+    public void visit(Tree.Parameter that) {
+        Boolean currentPEB = setNextPEBs(that.getParameterModel().getModel().getUnboxed());
+        super.visit(that);
+        preferredExpressionBoxing = currentPEB;
+    }
+    
+    
+    @Override
+    public void visit(Tree.ElementRange that) {
+        Boolean currentPEB = setNextPEBs(false, true);
+        super.visit(that);
+        preferredExpressionBoxing = currentPEB;
+    }
+    
+    // Set the stack for to preferred boxing that shall be used
+    // for the next N occurrences of Expression as the child
+    // nodes of the current node (where N is the number of
+    // booleans passed to this function)
+    private Boolean setNextPEBs(Boolean... boxings) {
+        nextPreferredExpressionBoxings = new Stack<Boolean>();
+        for (Boolean b : boxings) {
+            nextPreferredExpressionBoxings.push(b);
+        }
+        return preferredExpressionBoxing;
+    }
+    
+    // Set the next preferred boxing to be the currently active one
+    private Stack<Boolean> setPEB() {
+        Stack<Boolean> npebs = nextPreferredExpressionBoxings;
+        preferredExpressionBoxing = (npebs != null && !npebs.isEmpty()) ? npebs.pop() : null;
+        nextPreferredExpressionBoxings = null;
+        return npebs;
+    }
+    
+    // Unset the currently active preferred boxing and reset the
+    // list of next boxings to what's left of the list
+    private void resetPEB(Stack<Boolean> npebs) {
+        preferredExpressionBoxing = null;
+        nextPreferredExpressionBoxings = npebs;
     }
 }
