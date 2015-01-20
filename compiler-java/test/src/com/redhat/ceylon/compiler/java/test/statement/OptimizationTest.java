@@ -13,7 +13,8 @@ public class OptimizationTest extends CompilerTest {
         return name + "-optim";
     }
     
-    protected ModuleWithArtifact getDestModuleWithArtifact() {
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main) {
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.statement.loop.optim", "1");
     }
     

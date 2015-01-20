@@ -11,7 +11,8 @@ public class TryCatchTest extends CompilerTest {
         return name + "-trycatch";
     }
     
-    protected ModuleWithArtifact getDestModuleWithArtifact() {
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main) {
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.statement.trycatch", "1");
     }
 
