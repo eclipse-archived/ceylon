@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 21
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7) // line 20
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 20
 @.com.redhat.ceylon.compiler.java.metadata.Method // line 20
 final class name_ {
      // line 21
@@ -16,7 +16,7 @@ final class name_ {
         return new .java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 21
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7) // line 21
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 21
 @.ceylon.language.SharedAnnotation$annotation$ // line 24
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Main2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 24
