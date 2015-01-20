@@ -40,6 +40,7 @@ import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * Abstract repository.
@@ -280,9 +281,9 @@ public abstract class AbstractRepository implements Repository {
                 int[] versions = reader.getBinaryVersions(module, file);
                 if (versions == null)
                     return false; // can't verify
-                if (lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
-                    return false;
-                if (lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
+                if (lookup.getBinaryMajor() != null
+                        && lookup.getBinaryMinor() != null 
+                        && !Versions.isBinaryVersionCompatible(lookup.getBinaryMajor(), lookup.getBinaryMinor(), versions[0], versions[1]))
                     return false;
                 return true;
             }
