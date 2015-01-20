@@ -187,10 +187,11 @@ public class CallableBuilder {
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
                 instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                ProducedType primaryType = qmte.getPrimary().getTypeModel();
+                ProducedType primaryType = qmte.getTarget().getQualifyingType();
+                if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
+                    primaryType = gen.typeFact().getOptionalType(primaryType);
+                }
                 JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
-                //primaryExpr = gen.expressionGen().applyErasureAndBoxing(primaryExpr, primaryType, false, false, BoxingStrategy.UNBOXED, 
-                //        Decl.getPrivateAccessType(qmte), Decl.isPrivateAccessRequiringCompanion(qmte) ? ExpressionTransformer.EXPR_WANTS_COMPANION : 0);
                 if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
                     primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
                 }
