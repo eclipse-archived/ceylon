@@ -132,7 +132,7 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long sharedMethodAndParameter() {
         return sharedMethodAndParameter.$call$().longValue();
     }
@@ -202,7 +202,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long sharedMethodAndParameter() {
         return sharedMethodAndParameter.$call$().longValue();
     }
