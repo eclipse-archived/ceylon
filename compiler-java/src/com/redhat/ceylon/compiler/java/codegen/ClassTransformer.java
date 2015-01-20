@@ -546,7 +546,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Overloaded instantiators
             Parameter paramModel = param.getParameterModel();
             at(param);
-            transformParameter(instantiator, paramModel, Decl.getMemberDeclaration(def, param));
+            transformParameter(instantiator, param, paramModel, Decl.getMemberDeclaration(def, param));
         }
         instantiator.body(make().Throw(makeNewClass(makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CLASS_NEW))));
         return instantiator;
@@ -1019,7 +1019,7 @@ public class ClassTransformer extends AbstractTransformer {
     
 
     private void transformParameter(ParameterizedBuilder classBuilder, 
-            Parameter param, Tree.TypedDeclaration member) {
+            Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
@@ -1035,6 +1035,9 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.modelAnnotations(param.getModel().getAnnotations());
             if (member != null) {
                 pdb.userAnnotations(expressionGen().transform(member.getAnnotationList()));
+            } else if (p instanceof Tree.ParameterDeclaration &&
+                    param.getDeclaration() instanceof Constructor) {
+                pdb.userAnnotations(expressionGen().transform(((Tree.ParameterDeclaration)p).getTypedDeclaration().getAnnotationList()));
             }
         }
 
@@ -1102,7 +1105,7 @@ public class ClassTransformer extends AbstractTransformer {
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
             Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
-            transformParameter(constructorBuilder, paramModel, member);
+            transformParameter(constructorBuilder, param, paramModel, member);
             
             if (Strategy.hasDefaultParameterValueMethod(paramModel)
                     || Strategy.hasDefaultParameterOverload(paramModel)
