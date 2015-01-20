@@ -27,6 +27,10 @@ public class JsonModule extends Module {
             return;
         }
         model = value;
+        final String binVersion = (String)model.get("$mod-bin");
+        final int dotidx = binVersion.indexOf('.');
+        setMajor(Integer.parseInt((String)binVersion.substring(0,dotidx), 10));
+        setMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
     }
     public Map<String, Object> getModel() {
         return model;
