@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.fordebug;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -26,6 +27,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 public class SourcePositionsTest extends CompilerTest {
 	
     @Test
+    @Ignore
     public void testSimplePositions(){
         compareWithJavaSourceWithPositions("positions/simple");
     }
