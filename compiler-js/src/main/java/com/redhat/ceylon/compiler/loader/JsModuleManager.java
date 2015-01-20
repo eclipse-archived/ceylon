@@ -34,6 +34,8 @@ public class JsModuleManager extends ModuleManager {
     private boolean clLoaded;
 	private String encoding;
     private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION;
+    //ugly-ass hack for #490
+    private static final String V1_1_BIN_VERSION = Versions.V1_1_BINARY_MAJOR_VERSION + "." + Versions.V1_1_BINARY_MINOR_VERSION;
 
     public JsModuleManager(Context context, String encoding) {
         super(context);
@@ -209,7 +211,8 @@ public class JsModuleManager extends ModuleManager {
             if (!model.containsKey("$mod-bin")) {
                 throw new CeylonRunJsException("The JavaScript module " + jsFile +
                         " is not compatible with the current version of ceylon-js");
-            } else if (!model.get("$mod-bin").toString().equals(BIN_VERSION)) {
+            } else if (!(model.get("$mod-bin").toString().equals(BIN_VERSION)
+                    || model.get("$mod-bin").toString().equals(V1_1_BIN_VERSION))) {
                 throw new CompilerErrorException(String.format("This Ceylon-JS module has binary version %s is incompatible with the compiler version %s",
                         model.get("$mod-bin"), BIN_VERSION));
             }
