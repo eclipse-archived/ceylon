@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeFunction 
     extends FreeFunctionOrValue

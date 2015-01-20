@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @SatisfiedTypes({
     "ceylon.language::Integral<ceylon.language::Integer>",
     "ceylon.language::Binary<ceylon.language::Integer>",

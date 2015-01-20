@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
  *  
  * @author tom
  */
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class
 public class UninitializedMethodError extends Error {
 

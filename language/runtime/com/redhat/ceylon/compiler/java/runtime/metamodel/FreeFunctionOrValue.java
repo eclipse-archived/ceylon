@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeFunctionOrValue 
     extends FreeNestableDeclaration

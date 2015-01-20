@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Object
 public final class operatingSystem_ implements ReifiedType {
 

@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7) @Object
+@Ceylon(major = 8) @Object
 public final class language_ implements ReifiedType {
 
     @Ignore

@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.DeserializationCont
 
 import ceylon.language.serialization.DeserializationContext;
 
-@Ceylon(major=7, minor=0)
+@Ceylon(major = 8, minor=0)
 @Method
 public class deserialization_ {
     private deserialization_(){}

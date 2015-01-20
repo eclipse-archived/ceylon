@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeUnionType 
     implements ceylon.language.meta.declaration.OpenUnion, ReifiedType {

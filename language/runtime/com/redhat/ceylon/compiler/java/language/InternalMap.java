@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class
 public class InternalMap<Key, Item> 
 extends BaseMap<Key, Item> {

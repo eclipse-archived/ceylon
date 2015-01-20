@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 /**
  * The implementation of {@link SerializationContext}
  */
-@Ceylon(major=7)
+@Ceylon(major = 8)
 @Class
 @SatisfiedTypes("ceylon.language.serialization::SerializationContext")
 public class SerializationContextImpl 

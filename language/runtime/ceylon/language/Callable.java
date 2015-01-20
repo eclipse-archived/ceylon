@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @TypeParameters({
 	@TypeParameter(value="Return", variance=Variance.OUT),
 	@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)

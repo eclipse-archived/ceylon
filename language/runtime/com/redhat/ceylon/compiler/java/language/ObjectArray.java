@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 // specified.
 // 
 // Only the value type static methods are really invoked.
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class
 @ValueType
 @TypeParameters(@TypeParameter(value="T", variance=Variance.OUT,

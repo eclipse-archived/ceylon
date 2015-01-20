@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.SerializationContex
 
 import ceylon.language.serialization.SerializationContext;
 
-@Ceylon(major=7, minor=0)
+@Ceylon(major = 8, minor=0)
 @Method
 public class serialization_ {
     private serialization_(){}

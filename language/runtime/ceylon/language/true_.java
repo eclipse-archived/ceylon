@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7) 
+@Ceylon(major = 8) 
 @Object
 @Class(extendsType = "ceylon.language::Boolean")
 @ValueType

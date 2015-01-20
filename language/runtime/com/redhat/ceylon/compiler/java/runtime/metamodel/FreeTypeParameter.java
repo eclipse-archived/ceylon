@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameter
     implements ceylon.language.meta.declaration.TypeParameter, ReifiedType {

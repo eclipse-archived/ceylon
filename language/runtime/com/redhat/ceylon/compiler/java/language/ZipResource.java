@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({
     "ceylon.language::Resource"

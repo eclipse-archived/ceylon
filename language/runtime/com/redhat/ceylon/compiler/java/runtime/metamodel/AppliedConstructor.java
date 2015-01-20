@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-@Ceylon(major=7, minor=0)
+@Ceylon(major = 8, minor=0)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(variance=Variance.OUT, value="Type", defaultValue="ceylon.language::Anything"),

@@ -38,7 +38,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Generic;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Object", 
        basic = false, identifiable = false)
 @Annotations({

@@ -52,7 +52,7 @@ import ceylon.language.impl.BaseIterable;
 // in the case that an initial element is specified.
 // 
 // Only the value type static methods are really invoked.
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class
 @ValueType
 @Generated(value="ant")

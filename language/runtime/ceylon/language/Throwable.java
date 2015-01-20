@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7)
+@Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Basic")
 public abstract class Throwable extends java.lang.Object 
         implements ReifiedType {
