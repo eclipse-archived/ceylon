@@ -8,8 +8,11 @@
    language, compared with the English reference.
 -->
 <project name="Ceylon Language Specification" default="doc" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
     <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties"/>
+
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
@@ -357,7 +360,10 @@
                 destdir="${build.classes}"
                 debug="true"
                 encoding="UTF-8"
-                classpath="${antlr.lib}">
+                classpath="${antlr.lib}"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
         </javac>
     </target>
@@ -381,7 +387,10 @@
                 destdir="${build.classes}"
                 debug="true"
                 encoding="UTF-8"
-                classpathref="classpath">
+                classpathref="classpath"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java"/>
         </javac>
     </target>

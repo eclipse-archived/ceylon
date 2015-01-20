@@ -376,15 +376,17 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.VariablePattern) pattern;
                 Tree.Variable var = vp.getVariable();
                 Tree.Type varType = var.getType();
-                if (varType instanceof Tree.SequencedType) {
-                    inferSequencedValueType(type, var);
+                if (varType!=null) {
+                    if (varType instanceof Tree.SequencedType) {
+                        inferSequencedValueType(type, var);
+                    }
+                    else {
+                        inferValueType(var, type);
+                    }
+                    ProducedType declaredType = varType.getTypeModel();
+                    checkAssignable(type, declaredType, var, 
+                            "type of element of assigned value must be a subtype of declared type of pattern variable");
                 }
-                else {
-                    inferValueType(var, type);
-                }
-                ProducedType declaredType = varType.getTypeModel();
-                checkAssignable(type, declaredType, var, 
-                        "type of element of assigned value must be a subtype of declared type of pattern variable");
             }
         }
     }
@@ -399,18 +401,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void destructure(Tree.SpecifierExpression se, ProducedType et,
+    private void destructure(Tree.SpecifierExpression se, ProducedType entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
-        if (et.getSupertype(unit.getEntryDeclaration())==null) {
+        if (!unit.isEntryType(entryType)) {
             se.addError("assigned expression is not an entry type: '"
-                    + et.getProducedTypeName(unit) + 
+                    + entryType.getProducedTypeName(unit) + 
                     "' is not an entry type");
         }
         else {
-            destructure(key, se, unit.getKeyType(et));
-            destructure(value, se, unit.getValueType(et));
+            destructure(key, se, unit.getKeyType(entryType));
+            destructure(value, se, unit.getValueType(entryType));
         }
     }
 
@@ -435,105 +437,135 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             Tree.Pattern lastPattern = patterns.get(length-1);
-            boolean variadic = false;
-//            boolean nonempty = false;
-            if (lastPattern instanceof Tree.VariablePattern) {
-                VariablePattern variablePattern = 
-                        (Tree.VariablePattern) lastPattern;
-                Tree.Type type = 
-                        variablePattern.getVariable().getType();
-                if (type instanceof Tree.SequencedType) {
-                    variadic = true;
-//                    nonempty = ((Tree.SequencedType) type).getAtLeastOne();
-                }
-            }
             if (!unit.isSequentialType(sequenceType)) {
-                se.addError("assigned expression is not a sequence type: '" + 
+                se.addError("assigned expression is not a sequence type, so may not be destructured: '" + 
                         sequenceType.getProducedTypeName(unit) + 
                         "' is not a subtype of 'Sequential'");
-                return;
             }
-            
-            if (sequenceType.getSupertype(unit.getTupleDeclaration())==null) {
-                if (!variadic) {
-                    se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a tuple type");
-                }
-                else if (/*nonempty && length>1 ||*/ length>2) {
-                    se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a tuple type");
-                }
-                else if ((/*nonempty ||*/ length>1) && 
-                        !unit.isSequenceType(sequenceType)) {
-                    se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
-                            sequenceType.getProducedTypeName(unit) + 
-                            "' is not a subtype of 'Sequence'");
-                }
-                
-                if (length>1) {
-                    ProducedType elementType = 
-                            unit.getSequentialElementType(sequenceType);
-                    destructure(patterns.get(0), se, elementType);
-                    destructure(lastPattern, se, 
-                            unit.getSequentialType(elementType));
+            else if (unit.isEmptyType(sequenceType)) {
+                se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
+                        sequenceType.getProducedTypeName(unit) + 
+                        "' is a subtype of `Empty`");
+            }
+            else if (unit.isTupleType(sequenceType)) {
+                destructureTuple(se, sequenceType, patterns, 
+                        length, lastPattern);
+            }
+            else {
+                destructureSequence(se, sequenceType, patterns, 
+                        length, lastPattern);
+            }
+        }
+    }
+
+    private boolean isVariadicPattern(Tree.Pattern lastPattern) {
+        boolean variadic = false;
+//      boolean nonempty = false;
+        if (lastPattern instanceof Tree.VariablePattern) {
+            VariablePattern variablePattern = 
+                    (Tree.VariablePattern) lastPattern;
+            Tree.Type type = 
+                    variablePattern.getVariable().getType();
+            if (type instanceof Tree.SequencedType) {
+                variadic = true;
+//              nonempty = ((Tree.SequencedType) type).getAtLeastOne();
+            }
+        }
+        return variadic;
+    }
+
+    private void destructureTuple(Tree.SpecifierExpression se,
+            ProducedType sequenceType, List<Pattern> patterns, 
+            int length, Tree.Pattern lastPattern) {
+        boolean variadic = isVariadicPattern(lastPattern);
+        List<ProducedType> types = 
+                unit.getTupleElementTypes(sequenceType);
+        boolean tupleLengthUnbounded = 
+                unit.isTupleLengthUnbounded(sequenceType);
+//                boolean tupleVariantAtLeastOne = 
+//                        unit.isTupleVariantAtLeastOne(sequenceType);
+        int minimumLength = 
+                unit.getTupleMinimumLength(sequenceType);
+        if (!variadic && types.size()>length) {
+            se.addError("assigned tuple has too many elements");
+        }
+        if (!variadic && tupleLengthUnbounded) {
+            se.addError("assigned tuple has unbounded length");
+        }
+        if (!variadic && minimumLength<types.size()) {
+            se.addError("assigned tuple has variadic length");
+        }
+        int fixedLength = variadic ? length-1 : length;
+        for (int i=0; i<types.size() && i<fixedLength; i++) {
+            ProducedType type = types.get(i);
+            Tree.Pattern pattern = patterns.get(i);
+            destructure(pattern, se, type);
+        }
+        if (variadic) {
+            ProducedType tail = getTailType(sequenceType, fixedLength);
+            destructure(lastPattern, se, tail);
+        }
+        for (int i=types.size(); i<length; i++) {
+            Tree.Pattern pattern = patterns.get(i);
+            Node errNode = pattern instanceof Tree.VariablePattern ?
+                    ((Tree.VariablePattern) pattern).getVariable() : pattern;
+                    errNode.addError("assigned tuple has too few elements");
+        }
+    }
+
+    private void destructureSequence(Tree.SpecifierExpression se,
+            ProducedType sequenceType, List<Pattern> patterns, 
+            int length, Tree.Pattern lastPattern) {
+        boolean variadic = isVariadicPattern(lastPattern);
+        
+        if (!variadic) {
+            se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a tuple type");
+        }
+        else if (/*nonempty && length>1 ||*/ length>2) {
+            se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a tuple type");
+        }
+        else if ((/*nonempty ||*/ length>1) && 
+                !unit.isSequenceType(sequenceType)) {
+            se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
+                    sequenceType.getProducedTypeName(unit) + 
+                    "' is not a subtype of 'Sequence'");
+        }
+        
+        if (length>1) {
+            ProducedType elementType = 
+                    unit.getSequentialElementType(sequenceType);
+            destructure(patterns.get(0), se, elementType);
+            destructure(lastPattern, se, 
+                    unit.getSequentialType(elementType));
+        }
+        else {
+            destructure(lastPattern, se, sequenceType);
+        }
+    }
+
+    public ProducedType getTailType(ProducedType sequenceType, int fixedLength) {
+        int i=0;
+        ProducedType tail = sequenceType;
+        while (i++<fixedLength && tail!=null) {
+            if (unit.isTupleType(tail)) {
+                List<ProducedType> list = 
+                        tail.getTypeArgumentList();
+                if (list.size()>=3) {
+                    tail = list.get(2);
                 }
                 else {
-                    destructure(lastPattern, se, sequenceType);
+                    tail = null;
                 }
             }
             else {
-                List<ProducedType> types = 
-                        unit.getTupleElementTypes(sequenceType);
-                boolean tupleLengthUnbounded = 
-                        unit.isTupleLengthUnbounded(sequenceType);
-                boolean tupleVariantAtLeastOne = 
-                        unit.isTupleVariantAtLeastOne(sequenceType);
-                int minimumLength = 
-                        unit.getTupleMinimumLength(sequenceType);
-                if (!variadic && types.size()>length) {
-                    se.addError("assigned tuple has too many elements");
-                }
-                if (!variadic && tupleLengthUnbounded) {
-                    se.addError("assigned tuple has unbounded length");
-                }
-                if (!variadic && minimumLength<types.size()) {
-                    se.addError("assigned tuple has variadic length");
-                }
-                for (int i=0; i<types.size() && i < (variadic ? length-1 : length); i++) {
-                    ProducedType type = types.get(i);
-                    Tree.Pattern pattern = patterns.get(i);
-                    destructure(pattern, se, type);
-                }
-                if (variadic) {
-                    List<ProducedType> list = new ArrayList<ProducedType>();
-                    for (ProducedType t: types.subList(length-1, 
-                            tupleLengthUnbounded ? 
-                                    types.size()-1 : types.size())) {
-                        list.add(t);
-                    }
-                    if (tupleLengthUnbounded) {
-                        list.add(unit.getSequentialElementType(types.get(types.size()-1)));
-                    }
-                    
-                    ProducedType type = 
-                            unit.getTupleType(list, 
-                                    tupleLengthUnbounded, 
-                                    tupleVariantAtLeastOne, 
-                                    -1);
-                    destructure(lastPattern, se, type);
-                }
-                else {
-                    for (int i=types.size(); i<length; i++) {
-                        Tree.Pattern pattern = patterns.get(i);
-                        Node errNode = pattern instanceof Tree.VariablePattern ?
-                                ((Tree.VariablePattern) pattern).getVariable() : pattern;
-                                errNode.addError("assigned tuple has too few elements");
-                    }
-                }
+                tail = null;
             }
         }
+        return tail;
     }
     
     @Override public void visit(Tree.Variable that) {
@@ -650,7 +682,7 @@ public class ExpressionVisitor extends Visitor {
             
             ProducedType it = narrow(type, knownType, that.getNot());
             //check for disjointness
-            if (it.getDeclaration() instanceof NothingType) {
+            if (it.isNothing()) {
                 if (that.getNot()) {
                     /*that.addError("tests assignability to Nothing type: " +
                             knownType.getProducedTypeName(unit) + " is a subtype of " + 
@@ -2490,6 +2522,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferParameterTypes(ProducedReference pr, 
             Parameter param, Tree.Expression e, boolean variadic) {
+        if (param.getModel()==null) return;
         if (e!=null) {
             Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
             ProducedTypedReference tpr = pr.getTypedParameter(param);
@@ -2598,7 +2631,7 @@ public class ExpressionVisitor extends Visitor {
                         if (smte.getStaticMethodReferencePrimary()) {
                             template = producedType(unit.getTupleDeclaration(), 
                                     arg.getType(), arg.getType(), 
-                                    unit.getEmptyDeclaration().getType());
+                                    unit.getType(unit.getEmptyDeclaration()));
                         }
                         else {
                             template = unit.getCallableTuple(arg.getFullType());
@@ -3842,7 +3875,8 @@ public class ExpressionVisitor extends Visitor {
         
         for (int i=0; i<paramTypes.size(); i++) {
             if (i>=args.size()) {
-                if (i<firstDefaulted && (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
+                if (i<firstDefaulted && 
+                        (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
                     pal.addError("missing argument for required parameter " + i);
                 }
             }
@@ -3850,17 +3884,15 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument arg = args.get(i);
                 ProducedType at = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
-                    int fd = firstDefaulted<0?-1:firstDefaulted<i?0:firstDefaulted-i;
                     checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
-                            paramTypes.subList(i, paramTypes.size()), 
-                            sequenced, atLeastOne, fd, at);
+                            getTailType(paramTypesAsTuple, i), at);
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
                     ProducedType paramType = paramTypes.get(i);
                     if (sequenced && i==paramTypes.size()-1) {
                         checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
-                            paramType, atLeastOne);
+                                paramType, atLeastOne);
                     }
                     else {
                         arg.addError("not a variadic parameter: parameter " + i);
@@ -3897,40 +3929,29 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
-            List<ProducedType> psl, boolean sequenced, 
-            boolean atLeastOne, int firstDefaulted, ProducedType at) {
+            ProducedType tailType, ProducedType at) {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
-            if (!unit.isIterableType(at)) {
-              //note: check already done by visit(SpreadArgument)
-                /*sa.addError("spread argument is not iterable: " + 
-                        at.getProducedTypeName(unit) + 
-                        " is not a subtype of Iterable");*/
-            }
-            else {
+            if (unit.isIterableType(at)) {
                 ProducedType sat = spreadType(at, unit, true);
-                //TODO: this ultimately repackages the parameter
-                //      information as a tuple - it would be
-                //      better to just truncate the original
-                //      tuple type we started with
-                List<ProducedType> pts = new ArrayList<ProducedType>(psl);
-                if (sequenced) {
-                    pts.set(pts.size()-1, 
-                            unit.getIteratedType(pts.get(pts.size()-1)));
-                }
-                ProducedType ptt = unit.getTupleType(pts, sequenced, atLeastOne, 
-                        firstDefaulted);
-                if (!isTypeUnknown(sat) && !isTypeUnknown(ptt)) {
-                    checkAssignable(sat, ptt, sa, 
+                if (!isTypeUnknown(sat) && !isTypeUnknown(tailType)) {
+                    checkAssignable(sat, tailType, sa, 
                             "spread argument not assignable to parameter types");
                 }
+            }
+            else {
+              //note: check already done by visit(SpreadArgument)
+              /*sa.addError("spread argument is not iterable: " + 
+                      at.getProducedTypeName(unit) + 
+                      " is not a subtype of Iterable");*/
             }
         }
     }
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args,
             ProducedType paramType) {
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        ProducedType set = paramType==null ? 
+                null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             ProducedType at = a.getTypeModel();
@@ -3955,7 +3976,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionIndirectArgument(Tree.Comprehension c, 
             ProducedType paramType, boolean atLeastOne) {
-        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        Tree.InitialComprehensionClause icc = 
+                ((Tree.Comprehension) c).getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
@@ -3970,7 +3992,8 @@ public class ExpressionVisitor extends Visitor {
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
             List<Tree.PositionalArgument> args) {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        ProducedType set = paramType==null ? 
+                null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
@@ -4002,7 +4025,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
             Tree.Comprehension c, boolean atLeastOne) {
-        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        Tree.InitialComprehensionClause icc = 
+                ((Tree.Comprehension) c).getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
@@ -4032,6 +4056,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.ListedArgument a) {
+        if (p.getModel()==null) return;
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         a.setParameter(p);
         ProducedType at = a.getTypeModel();
@@ -4787,20 +4812,20 @@ public class ExpressionVisitor extends Visitor {
     private void visitIsOperator(Tree.IsOp that) {
         Tree.Type rt = that.getType();
         if (rt!=null) {
-            ProducedType t = rt.getTypeModel();
-            if (t!=null) {
+            ProducedType type = rt.getTypeModel();
+            if (type!=null) {
                 if (that.getTerm()!=null) {
-                    ProducedType pt = that.getTerm().getTypeModel();
-                    if (pt!=null && pt.isSubtypeOf(t)) {
+                    ProducedType knownType = that.getTerm().getTypeModel();
+                    if (knownType!=null && knownType.isSubtypeOf(type)) {
                         that.addError("expression type is a subtype of the type: '" +
-                                pt.getProducedTypeName(unit) + "' is assignable to '" +
-                                t.getProducedTypeName(unit) + "'");
+                                knownType.getProducedTypeName(unit) + "' is assignable to '" +
+                                type.getProducedTypeName(unit) + "'");
                     }
                     else {
-                        if (intersectionType(t, pt, unit).isNothing()) {
+                        if (intersectionType(type, knownType, unit).isNothing()) {
                             that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                                    pt.getProducedTypeName(unit) + "' and '" + 
-                                    t.getProducedTypeName(unit) + "' is empty");
+                                    knownType.getProducedTypeName(unit) + "' and '" + 
+                                    type.getProducedTypeName(unit) + "' is empty");
                         }
                     }
                 }
@@ -7011,39 +7036,39 @@ public class ExpressionVisitor extends Visitor {
         
         TypeDeclaration constructor = (TypeDeclaration) that.getScope();
         Scope container = constructor.getContainer();
-        if (constructor instanceof Constructor) {
-            if (container instanceof Class) {
-                Class containingClass = (Class) container;
-                Class superclass = 
-                        containingClass.getExtendedTypeDeclaration();
-                if (superclass!=null) {
-                    ProducedType extendedType = containingClass.getExtendedType();
-                    ProducedType constructedType = type.getTypeModel();
-                    Declaration delegate = type.getDeclarationModel();
-                    if (delegate instanceof Constructor) {
-                        ClassOrInterface delegatedType = 
-                                ((Constructor) delegate).getExtendedTypeDeclaration();
-                        if (!superclass.equals(delegatedType)) {
-                            type.addError("not a constructor of the immediate superclass: '" +
-                                    delegate.getName(unit) + "' is not a constructor of '" + 
-                                    superclass.getName(unit) + "'");
-                        }
-                        else {
-                            checkIsExactly(constructedType.getExtendedType(), 
-                                    extendedType, type, 
-                                    "type arguments must match type arguments in extended class expression");
-                        }
+        if (type!=null &&
+                constructor instanceof Constructor &&
+                container instanceof Class) {
+            Class containingClass = (Class) container;
+            Class superclass = 
+                    containingClass.getExtendedTypeDeclaration();
+            if (superclass!=null) {
+                ProducedType extendedType = containingClass.getExtendedType();
+                ProducedType constructedType = type.getTypeModel();
+                Declaration delegate = type.getDeclarationModel();
+                if (delegate instanceof Constructor) {
+                    ClassOrInterface delegatedType = 
+                            ((Constructor) delegate).getExtendedTypeDeclaration();
+                    if (!superclass.equals(delegatedType)) {
+                        type.addError("not a constructor of the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not a constructor of '" + 
+                                superclass.getName(unit) + "'");
                     }
-                    else if (delegate instanceof Class) {
-                        if (!superclass.equals(delegate)) {
-                            type.addError("does not instantiate the immediate superclass: '" +
-                                    delegate.getName(unit) + "' is not '" + 
-                                    superclass.getName(unit) + "'");
-                        }
-                        else {
-                            checkIsExactly(constructedType, extendedType, type, 
-                                    "type arguments must match type arguments in extended class expression");
-                        }
+                    else {
+                        checkIsExactly(constructedType.getExtendedType(), 
+                                extendedType, type, 
+                                "type arguments must match type arguments in extended class expression");
+                    }
+                }
+                else if (delegate instanceof Class) {
+                    if (!superclass.equals(delegate)) {
+                        type.addError("does not instantiate the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not '" + 
+                                superclass.getName(unit) + "'");
+                    }
+                    else {
+                        checkIsExactly(constructedType, extendedType, type, 
+                                "type arguments must match type arguments in extended class expression");
                     }
                 }
             }

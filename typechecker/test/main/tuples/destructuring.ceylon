@@ -1,4 +1,4 @@
-void destructuring([Integer,Integer, String] tuple, String->Float entry) {
+void destructuring([Integer,Integer,String] tuple, String->Float entry, String[] strings) {
     value [i,j,str] = tuple;
     Integer ii = i;
     Integer jj = j;
@@ -11,6 +11,8 @@ void destructuring([Integer,Integer, String] tuple, String->Float entry) {
     String n = name;
     Float q = quantity;
     value @error Integer name_->Float quantity_ = entry;
+    value [@type:"Tuple<Integer|String,Integer,Tuple<Integer|String,Integer,Tuple<String,String,Empty>>>" *tup] = tuple;
+    value [@type:"Sequential<String>" *ss] = strings;
 }
 
 void variadicDestructuring([String, String, String*] strings, 
@@ -103,4 +105,43 @@ void buggy() {
     @error value [w,z] = baz;
     [Integer,Integer+] list = [42, 53];
     value [@type:"Integer" first, @type:"Sequence<Integer>" *rest] = list;
+}
+
+void unknownTail<First,Rest>(Tuple<Anything,First,Rest> tup,
+    String(*Tuple<Anything,First,Rest>) fun)
+        given Rest satisfies Anything[]
+        given First satisfies Object {
+    value [@type:"First" x, @type:"Rest" *ys] = tup;
+    @type:"String" fun(*tup);
+    @type:"String" fun(x,*ys);
+    value [@type:"Rest" *zs] = ys;
+}
+
+void unknownTail2<First,Rest>(Tuple<Anything,First,Rest> tup,
+    String(*Tuple<Anything,First,Rest>) fun)
+        given Rest satisfies [Object,Object]
+        given First satisfies Object {
+    value [@type:"First" x, @type:"Rest" *ys] = tup;
+    @type:"String" fun(*tup);
+    @type:"String" fun(x,*ys);
+    value [@type:"Rest" *zs] = ys;
+}
+
+shared void tupleLengths(){
+    value [a0,@error b0,@error *c0] = [1];
+    value [a1,@error *c1] = [1];
+    value [a2,*c2] = [1,2];
+    value [a3,c3] = [1,2];
+    value [*a4] = [1,2];
+    value [*a5] = [1];
+    value [a6] = [1];
+    value [a7,@error *c7] = [1];
+    value [a8,@error c8] = [1];
+    value [a9,b9,@error *c9] = [1,2];
+    value [a10,b10,@error c10] = [1,2];
+    @error value [a11] = [];
+    @error value [*a12] = [];
+    @error value [*s] = "hello";
+    @error value x1->y1 = [1,2];
+    @error value [x2,y2] = 1->2;
 }

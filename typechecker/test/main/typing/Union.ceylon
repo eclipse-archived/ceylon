@@ -414,3 +414,15 @@ void disjointSequences(String[]|Integer[] x,
     case (is [String+]) {}
     case (is [Integer+]) {}
 }
+
+void isTest<Args>(Anything[] x, Args y) 
+        given Args satisfies Anything[] {
+    if (x is [String]) {}
+    if (is [String] x) {}
+    if (y is [String]) {}
+    if (is [String] y) {}
+    [Integer*] xs = [];
+    [Integer+] ys = [1];
+    if (is String[] xs) {}
+    @error if (is String[] ys) {}
+}

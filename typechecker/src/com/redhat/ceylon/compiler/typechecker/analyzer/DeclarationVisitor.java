@@ -1064,10 +1064,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.Variable that) {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
-            if (scope instanceof ControlBlock) {
-                if (!((ControlBlock) scope).isLet()) {
-                    scope = scope.getContainer();
-                }
+            if (scope instanceof ControlBlock &&
+                    !((ControlBlock) scope).isLet()) {
+                scope = scope.getContainer();
             }
             that.getSpecifierExpression().visit(this);
             scope = s;

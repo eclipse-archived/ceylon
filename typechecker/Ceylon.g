@@ -451,7 +451,7 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
 tuplePatternStart
     : LBRACKET
       (
-        compilerAnnotations LIDENTIFIER
+        compilerAnnotations PRODUCT_OP? LIDENTIFIER
       |
         (compilerAnnotations declarationStart) => 
         (compilerAnnotations declarationStart)
@@ -844,7 +844,7 @@ delegatedConstructor returns [DelegatedConstructor delegatedConstructor]
         ci=classInstantiation
         { $delegatedConstructor.setType($ci.type);
           $delegatedConstructor.setInvocationExpression($ci.invocationExpression); }
-      )
+      )?
     ;
 
 aliasDeclaration returns [TypeAliasDeclaration declaration]
@@ -924,7 +924,8 @@ classBody returns [ClassBody classBody]
     ;
 
 extendedType returns [ExtendedType extendedType]
-    : EXTENDS { $extendedType = new ExtendedType($EXTENDS); }
+    : EXTENDS
+      { $extendedType = new ExtendedType($EXTENDS); }
       (  
         ci=classInstantiation
         { $extendedType.setType($ci.type);
@@ -3901,14 +3902,11 @@ var returns [Variable variable]
       { $variable.setType( new ValueModifier(null) ); }
       mn2=memberName
       { $variable.setIdentifier($mn2.identifier); }
-    | 
-      { $variable.setType( new FunctionModifier(null) ); }
-      mn3=memberName 
-      { $variable.setIdentifier($mn3.identifier); }
       (
-        p3=parameters
-        { $variable.addParameterList($p3.parameterList); }
-      )+
+        p2=parameters
+        { $variable.setType( new FunctionModifier(null) );
+          $variable.addParameterList($p2.parameterList); }
+      )*
     )
     ;
 
@@ -4294,6 +4292,12 @@ MULTI_COMMENT
 BACKTICK
     : '`'
     ;
+
+/*
+    List of keywords.
+    
+    Note that this must be kept in sync with com.redhat.ceylon.compiler.typechecker.parser.ParseUtil
+*/
 
 ABSTRACTED_TYPE
     :   'abstracts'

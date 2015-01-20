@@ -61,7 +61,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         visitLocalDeclarationModel(that.getDeclarationModel());
     }
 
-    private void visitLocalDecl(Tree.ObjectArgument that) {
+    private void visitLocalDecl(Tree.TypedArgument that) {
         visitLocalDeclarationModel(that.getDeclarationModel());
     }
 
@@ -158,6 +158,30 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         localNames = oldLocalNames;
     }
 
+    @Override
+    public void visit(Tree.MethodArgument that) {
+        visitLocalDecl(that);
+
+        Map<String,Integer> oldLocalNames = localNames;
+        localNames = new HashMap<String,Integer>();
+
+        super.visit(that);
+        
+        localNames = oldLocalNames;
+    }
+
+    @Override
+    public void visit(Tree.AttributeArgument that) {
+        visitLocalDecl(that);
+
+        Map<String,Integer> oldLocalNames = localNames;
+        localNames = new HashMap<String,Integer>();
+
+        super.visit(that);
+        
+        localNames = oldLocalNames;
+    }
+    
     @Override
     public void visit(Tree.ObjectExpression that) {
         visitLocalDecl(that);

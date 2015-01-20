@@ -1566,7 +1566,7 @@ interface NumberLiteral
                     <para><literal>X</literal> has the principal supertype instantiation 
                     <literal>Sequence&lt;A&gt;</literal>, 
                     <literal>Y</literal> has the principal supertype instantiation 
-                    <literal>Sequence&lt;B&gt;</literal>,
+                    <literal>Sequential&lt;B&gt;</literal>,
                     and <literal>A</literal> and <literal>B</literal> are disjoint,</para>
                 </listitem>
                 <listitem>
@@ -1575,7 +1575,8 @@ interface NumberLiteral
                     <literal>Y</literal> has the principal supertype instantiation 
                     <literal>Tuple&lt;J,B,V&gt;</literal>,
                     and <literal>A</literal> and <literal>B</literal> are disjoint or 
-                    <literal>X</literal> and <literal>V</literal> are disjoint, or</para>
+                    <literal>Sequential&lt;A&gt;</literal> and <literal>V</literal> are 
+                    disjoint, or</para>
                 </listitem>
                 <listitem>
                     <para><literal>X</literal> has the principal supertype instantiation 

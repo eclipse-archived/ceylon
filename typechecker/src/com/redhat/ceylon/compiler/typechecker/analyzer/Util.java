@@ -902,14 +902,16 @@ public class Util {
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
                     if (!requireSequential) {
-                        ProducedType it = producedType(unit.getIterableDeclaration(), 
-                                et, icc.getFirstTypeModel());
+                        ProducedType it = 
+                                producedType(unit.getIterableDeclaration(), 
+                                        et, icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }
                 else {
                     ut = unionType(ut, et, unit);
-                    result = producedType(unit.getTupleDeclaration(), ut, et, result);
+                    result = producedType(unit.getTupleDeclaration(), 
+                            ut, et, result);
                 }
             }
         }

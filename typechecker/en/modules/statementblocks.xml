@@ -983,10 +983,14 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="patterns">
             <title>Patterns</title>
         
-            <para>An expression whose type is an instantiation of <literal>Sequence</literal>, 
-            <literal>Tuple</literal>, or <literal>Entry</literal> may be assigned to a 
-            <emphasis>pattern</emphasis>. The type of an expression assigned to a pattern 
-            is called the <emphasis>patterned type</emphasis>.</para>
+            <para>An expression whose type is an instantiation of <literal>Sequential</literal>, 
+            <literal>Sequence</literal>, <literal>Tuple</literal>, or <literal>Entry</literal> 
+            may be assigned to a <emphasis>pattern</emphasis>. The type of an expression 
+            assigned to a pattern is called the <emphasis>patterned type</emphasis>.</para>
+            
+            <comment><para>TODO: actually, the following section does not do justice to 
+            the compiler, which can actually handle subtypes of these types, including
+            type parameters upper bounded by these types.</para></comment>
             
             <para>Patterns are formed from:</para>
             
@@ -1037,11 +1041,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
             variable called a <emphasis>variadic</emphasis> element pattern. 
             Tuple patterns are enclosed in brackets.</para>
             
-            <synopsis>TuplePattern: "[" Pattern ("," Pattern)* ("," VariadicVariable)? "]"</synopsis>
+            <synopsis>TuplePattern: "[" (Pattern ",")* (Pattern | VariadicVariable) "]"</synopsis>
             
             <para>The patterned type must be an instantiation of the type
-            <literal>Tuple</literal> or <literal>Sequence</literal> in 
-            <literal>ceylon.language</literal>. Then:</para>
+            <literal>Tuple</literal>, <literal>Sequential</literal>, or 
+            <literal>Sequence</literal> in <literal>ceylon.language</literal>.
+            Then:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1076,6 +1081,13 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     and the patterned type of the second element pattern is 
                     <literal>[T*]</literal>.</para>
                 </listitem>
+                <!--listitem>
+                    <para>Or, if the patterned type is an instantiation 
+                    <literal>[T*]</literal> of <literal>Sequential</literal>, 
+                    then there must be exactly one pattern, and it must be 
+                    variadic. Then the patterned type of the element pattern 
+                    is <literal>[T*]</literal>.</para>
+                </listitem-->
             </itemizedlist>
             
             <programlisting>value [x, y, z] = [1.0, 2.0, 0.0];</programlisting>
