@@ -25,4 +25,5 @@ native class JsSerCtxt() satisfies SerializationContext {
     }
     throw AssertionError("Instance ``instance else "NULL"`` has not been registered for initialization");
   }
+  shared actual native SerializableReference<Instance>? getReference<Instance>(Instance instance);
 }

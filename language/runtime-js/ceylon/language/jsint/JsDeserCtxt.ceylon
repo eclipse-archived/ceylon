@@ -17,5 +17,5 @@ native class JsDeserCtxt() satisfies DeserializationContext {
   shared actual native Iterator<Reference<Anything>> iterator();
   shared native void put(Object id, DeserializableReference<Anything> ref);
   shared native Reference<Anything> update(Object id, RealizableReference<Anything> ref);
-  shared native Reference<Anything> getReference(Object id);
+  shared actual native Reference<Instance>? getReference<Instance>(Object id);
 }
