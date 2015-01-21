@@ -4629,6 +4629,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
         TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof Constructor){
+            pt = pt.getExtendedType();
+            declaration = pt.getDeclaration();
+        }
         if(declaration instanceof ClassOrInterface){
             if(declaration.isJavaEnum()){
                 pt = pt.getExtendedType();
