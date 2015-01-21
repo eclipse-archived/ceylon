@@ -215,6 +215,7 @@ public class JsModuleManager extends ModuleManager {
                 final String binVersion = model.get("$mod-bin").toString();
                 final String modname = model.get("$mod-name").toString();
                 final boolean isNewest = binVersion.equals(BIN_VERSION);
+                //TODO remove this shit when we break bincompat again
                 final boolean isRecent = binVersion.equals(V1_1_BIN_VERSION);
                 if (("ceylon.language".equals(modname) && !isNewest)
                         || !(isNewest || isRecent)) {

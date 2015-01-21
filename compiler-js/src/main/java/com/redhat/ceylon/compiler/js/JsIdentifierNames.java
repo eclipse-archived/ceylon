@@ -130,6 +130,7 @@ public class JsIdentifierNames {
             name = "$_" + name;
         }
         if (decl.isToplevel()) {
+            //TODO remove this shit when we break bincompat again
             final int binMajor = decl.getUnit().getPackage().getModule().getMajor();
             if (binMajor > 0 && binMajor < Versions.JS_BINARY_MAJOR_VERSION) {
                 return String.format("get%c%s()", Character.toUpperCase(name.charAt(0)), name.substring(1));
@@ -148,6 +149,7 @@ public class JsIdentifierNames {
     public String getter(Declaration decl, boolean forMetamodel) {
         if (decl == null) { return ""; }
         String name = getName(decl, true, false);
+        //TODO remove this shit when we break bincompat again
         final int binMajor = decl.getUnit().getPackage().getModule().getMajor();
         if (!forMetamodel && !decl.isClassOrInterfaceMember() &&
                 (binMajor == 0 || binMajor == Versions.JS_BINARY_MAJOR_VERSION)) {
