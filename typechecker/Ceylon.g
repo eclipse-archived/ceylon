@@ -14,12 +14,29 @@ options {
 @members {
     private java.util.List<ParseError> errors 
             = new java.util.ArrayList<ParseError>();
+
+    public ParseError newParseError(String[] tn,
+            RecognitionException re) {
+        ParseError parseError = new ParseError(this, re, expecting, tn);
+        expecting = -1;
+        return parseError;
+    }
+    
+    public ParseError newParseError(String[] tn, 
+            RecognitionException re,
+            int code) {
+        ParseError parseError = new ParseError(this, re, tn, code);
+        return parseError;
+    }
+
     @Override public void displayRecognitionError(String[] tn,
             RecognitionException re) {
-        errors.add(new ParseError(this, re, tn));
+        errors.add(newParseError(tn, re));
     }
-    public void displayRecognitionError(String[] tn, RecognitionException re, int code) {
-        errors.add(new ParseError(this, re, tn, code));
+    public void displayRecognitionError(String[] tn,
+            RecognitionException re, 
+            int code) {
+        errors.add(newParseError(tn, re, code));
     }
     public java.util.List<ParseError> getErrors() {
         return errors;

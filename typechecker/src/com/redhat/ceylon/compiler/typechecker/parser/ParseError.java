@@ -1,20 +1,20 @@
 package com.redhat.ceylon.compiler.typechecker.parser;
 
+import org.antlr.runtime.Parser;
 import org.antlr.runtime.RecognitionException;
 
 public class ParseError extends RecognitionError {
 	
-	private CeylonParser parser;
+	private Parser parser;
 	private int code;
 	private int expecting;
 	
-	public ParseError(CeylonParser parser, RecognitionException re, String[] tn) {
+	public ParseError(Parser parser, RecognitionException re, int expecting, String[] tn) {
 		this(parser, re, tn, -1);
-		expecting = parser.expecting;
-		parser.expecting=-1;
+		this.expecting = expecting;
 	}
 	
-    public ParseError(CeylonParser parser, RecognitionException re, String[] tn, int code) {
+    public ParseError(Parser parser, RecognitionException re, String[] tn, int code) {
         super(re, tn);
         this.parser = parser;
         this.code = code;
