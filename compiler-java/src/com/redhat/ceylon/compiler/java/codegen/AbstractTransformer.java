@@ -1636,8 +1636,19 @@ public abstract class AbstractTransformer implements Transformation {
             type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
         }
         
-        if(type.getDeclaration().isAnonymous())
-            type = typeFact().denotableType(type);
+        if(type.getDeclaration() instanceof UnionType){
+            for (ProducedType pt : type.getCaseTypes()){
+                if(pt.getDeclaration().isAnonymous()){
+                    // found one, let's try to make it simpler
+                    ProducedType simplerType = typeFact().denotableType(type);
+                    if(!simplerType.isNothing()
+                            && simplerType.getDeclaration() instanceof UnionType == false){
+                        type = simplerType;
+                    }
+                    break;
+                }
+            }
+        }
         
         // ERASURE
         if ((flags & JT_CLASS_LITERAL) == 0
