@@ -96,7 +96,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Boolean> $call$() {
-                return (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(true)});
+                return (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.ceylon.language.true_.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(true)});
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Comparison()", (short)-1){
@@ -117,7 +117,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Comparison> $call$() {
-                return (.ceylon.language.Sequence<? extends .ceylon.language.Comparison>).ceylon.language.Tuple.instance(.ceylon.language.Comparison.$TypeDescriptor$, new .java.lang.Object[]{
+                return (.ceylon.language.Sequence<? extends .ceylon.language.Comparison>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.larger_.$TypeDescriptor$, .ceylon.language.smaller_.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.larger_.get_(),
                         .ceylon.language.smaller_.get_()});
             }

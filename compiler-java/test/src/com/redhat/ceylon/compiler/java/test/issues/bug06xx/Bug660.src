@@ -6,7 +6,7 @@ public final class bug660_ {
     }
     
     public static void bug660() {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.null_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
