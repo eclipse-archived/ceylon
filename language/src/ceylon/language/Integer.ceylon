@@ -68,7 +68,7 @@ shared native final class Integer(Integer integer)
      Or if:
      
      - the given object is a [[Float]],
-     - its value is neither [[undefined]], nor [[infinite]],
+     - its value is neither [[Float.undefined]], nor [[infinity]],
      - the [[fractional part|Float.fractionalPart]] of its 
        value equals `0.0`, and
      - the [[integer part|Float.integer]] part of its value 

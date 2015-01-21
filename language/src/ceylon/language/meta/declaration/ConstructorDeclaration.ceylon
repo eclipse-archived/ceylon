@@ -1,3 +1,4 @@
+"A constructor declaration."
 shared sealed interface ConstructorDeclaration 
         satisfies FunctionalDeclaration & AnnotatedDeclaration & TypedDeclaration & Contained{
     

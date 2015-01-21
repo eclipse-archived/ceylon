@@ -1,5 +1,5 @@
-"Declaration which can be invoked, and may have parameters. Classes
- and functions are functional declarations.
+"Declaration which can be invoked, and may have parameters. Classes, 
+ constructors and functions are functional declarations.
  
  Note that multiple-parameter lists are not reified at runtime, so if you
  have a function declaration like this:
