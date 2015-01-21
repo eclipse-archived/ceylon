@@ -326,6 +326,12 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // To determine boxing for a setter we use its parameter
         TypedDeclaration paramDeclaration = declaration.getParameter().getModel();
         boxAttribute(paramDeclaration, that);
+        // Now copy the settings from the parameter to the setter itself
+        declaration.setUnboxed(paramDeclaration.getUnboxed());
+        // Then we check if there are any overriding compiler annotations
+        boxFromAnnotation(declaration, that);
+        // And finally we copy the setting back again to make sure they're really the same
+        paramDeclaration.setUnboxed(declaration.getUnboxed());
     }
 
     @Override

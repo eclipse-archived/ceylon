@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -1578,17 +1579,31 @@ public class StatementTransformer extends AbstractTransformer {
             SyntheticName indexName = naming.alias("index");
             
             List<JCStatement> transformedBlock = transformBlock(getBlock());
+            
+            ProducedType charType = typeFact().getCharacterDeclaration().getType();
+            boolean elemBoxed = BooleanUtil.isFalse(getElementOrKeyVariable().getDeclarationModel().getUnboxed());
+            
+            JCExpression elemNameExpr = naming.makeQuotedIdent(Naming.getVariableName(getElementOrKeyVariable()));
+            if (elemBoxed) {
+                elemNameExpr = unboxType(elemNameExpr, charType);
+            }
             transformedBlock = transformedBlock.prepend(make().Exec(
                     make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), 
                         make().Apply(null, 
                                 naming.makeQualIdent(make().Type(syms().characterObjectType), "charCount"), 
-                                List.<JCExpression>of(naming.makeQuotedIdent(Naming.getVariableName(getElementOrKeyVariable())))))));
+                                List.<JCExpression>of(elemNameExpr)))));
+            
+            JCExpression typeExpr = makeJavaType(charType, elemBoxed ? JT_NO_PRIMITIVES : 0);
+            JCExpression codePointAtCallExpr = make().Apply(null, 
+                    naming.makeQualIdent(stringName.makeIdent(), "codePointAt"), 
+                    List.<JCExpression>of(indexName.makeIdent()));
+            if (elemBoxed) {
+                codePointAtCallExpr = boxType(codePointAtCallExpr, charType);
+            }
             transformedBlock = transformedBlock.prepend(makeVar(FINAL,
                     Naming.getVariableName(getElementOrKeyVariable()), 
-                    make().Type(syms().intType), 
-                    make().Apply(null, 
-                            naming.makeQualIdent(stringName.makeIdent(), "codePointAt"), 
-                            List.<JCExpression>of(indexName.makeIdent()))));
+                    typeExpr, 
+                    codePointAtCallExpr));
             
             JCStatement block = make().Block(0, transformedBlock);
             
@@ -1712,7 +1727,7 @@ public class StatementTransformer extends AbstractTransformer {
                 transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
-                Tree.Pattern pat = patIter.getPattern();
+                Tree.KeyValuePattern pat = (Tree.KeyValuePattern)patIter.getPattern();
                 // FIXME DESCTRUCTURE
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName,
@@ -1720,21 +1735,27 @@ public class StatementTransformer extends AbstractTransformer {
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
-                String keyName = Naming.getVariableName(((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getKey()).getVariable());
+                Tree.Variable keyVar = ((Tree.VariablePattern)pat.getKey()).getVariable();
+                String keyName = Naming.getVariableName(keyVar);
+                Boolean keyUnboxed = keyVar.getDeclarationModel().getUnboxed();
+                BoxingStrategy keyBoxStrat = CodegenUtil.getBoxingStrategy(keyVar.getDeclarationModel());
                 JCStatement keyVariable = makeVar(FINAL,
                         keyName,
-                        makeJavaType(keyType),
+                        makeJavaType(keyType, BooleanUtil.isFalse(keyUnboxed) ? JT_NO_PRIMITIVES : 0),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
-                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, keyType));
+                                typeFact().getAnythingDeclaration().getType(), true, keyBoxStrat, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
-                String valueName = Naming.getVariableName(((Tree.VariablePattern)((Tree.KeyValuePattern)pat).getValue()).getVariable());
+                Tree.Variable valueVar = ((Tree.VariablePattern)pat.getValue()).getVariable();
+                String valueName = Naming.getVariableName(valueVar);
+                Boolean valueUnboxed = keyVar.getDeclarationModel().getUnboxed();
+                BoxingStrategy valueBoxStrat = CodegenUtil.getBoxingStrategy(valueVar.getDeclarationModel());
                 JCStatement valueVariable = makeVar(FINAL,
                         valueName,
-                        makeJavaType(valueType),
+                        makeJavaType(valueType, BooleanUtil.isFalse(valueUnboxed) ? JT_NO_PRIMITIVES : 0),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
-                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, valueType));
+                                typeFact().getAnythingDeclaration().getType(), true, valueBoxStrat, valueType));
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(valueVariable);
                 transformedBlock = transformedBlock.prepend(keyVariable);
@@ -2692,8 +2713,8 @@ public class StatementTransformer extends AbstractTransformer {
         private Tree.Variable getVariable() {
             return ((Tree.ValueIterator)stmt.getForClause().getForIterator()).getVariable();
         }
-        private JCExpression makeType() {
-            return make().Type(type);
+        private JCExpression makeType(boolean boxed) {
+            return makeJavaType(pt, boxed ? JT_NO_PRIMITIVES : 0);
         }
         private ProducedType getType() {
             return pt;
@@ -2705,18 +2726,18 @@ public class StatementTransformer extends AbstractTransformer {
             // Note: Must invoke lhs, rhs and increment in the correct order!
             // long start = <lhs>
             SyntheticName start = naming.temp("start");
-            result.append(make().VarDef(make().Modifiers(FINAL), start.asName(), makeType(), 
+            result.append(make().VarDef(make().Modifiers(FINAL), start.asName(), makeType(false), 
                     expressionGen().transformExpression(lhs, BoxingStrategy.UNBOXED, getType())));
             // long end = <rhs>
             SyntheticName end = naming.temp("end");
-            result.append(make().VarDef(make().Modifiers(FINAL), end.asName(), makeType(), 
+            result.append(make().VarDef(make().Modifiers(FINAL), end.asName(), makeType(false), 
                     expressionGen().transformExpression(rhs, BoxingStrategy.UNBOXED, getType())));
             
             final SyntheticName by;
             if (increment != null) {
                 by = naming.temp("by");
                 // by = increment;
-                result.append(make().VarDef(make().Modifiers(FINAL), by.asName(), makeType(), 
+                result.append(make().VarDef(make().Modifiers(FINAL), by.asName(), makeType(false), 
                         expressionGen().transformExpression(increment, BoxingStrategy.UNBOXED, getType())));
                 // if (by <= 0) throw Exception("step size must be greater than zero");
                 result.append(make().If(
@@ -2738,21 +2759,28 @@ public class StatementTransformer extends AbstractTransformer {
             
             SyntheticName incr = naming.temp("incr");
             
-            result.append(make().VarDef(make().Modifiers(FINAL), incr.asName(), makeType(), 
+            result.append(make().VarDef(make().Modifiers(FINAL), incr.asName(), makeType(false), 
                     make().Conditional(
                             increasing.makeIdent(), 
                             makeIncreasingIncrement(by), makeDecreasingIncrement(by))));
             
             SyntheticName varname = naming.alias(getVariable().getIdentifier().getText());
-            JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(), start.makeIdent());
+            JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(false), start.makeIdent());
+            
             Tree.ControlClause prevForclause = currentForClause;
             currentForClause = stmt.getForClause();
             List<JCStatement> blockStatements = transformBlock(getBlock());
             currentForClause = prevForclause;
+            
+            boolean elemBoxed = BooleanUtil.isFalse(getVariable().getDeclarationModel().getUnboxed());
+            JCExpression elemInit = varname.makeIdent();
+            if (elemBoxed) {
+                elemInit = boxType(elemInit, getType());
+            }
             blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
                     names().fromString(Naming.getVariableName(getVariable())), 
-                    makeType(),
-                    varname.makeIdent()));
+                    makeType(elemBoxed),
+                    elemInit));
             
             // for (long i = start; (increasing ? i -end <= 0 : i -end >= 0); i+=inc) {
             JCConditional cond = make().Conditional(increasing.makeIdent(), 
@@ -3430,6 +3458,16 @@ public class StatementTransformer extends AbstractTransformer {
         throw new BugException("Switch should have expression or variable");
     }
     
+    protected Boolean switchExpressionUnboxed(Tree.SwitchClause switchClause) {
+        Switched sw = switchClause.getSwitched();
+        if (sw.getExpression() != null) {
+            return sw.getExpression().getUnboxed();
+        } else if (sw.getVariable() != null) {
+            return sw.getVariable().getDeclarationModel().getUnboxed();
+        }
+        throw new BugException("Switch should have expression or variable");
+    }
+    
     abstract class SwitchTransformation {
         public SwitchTransformation() {
         }
@@ -3448,6 +3486,9 @@ public class StatementTransformer extends AbstractTransformer {
         protected ProducedType getSwitchExpressionType(Tree.SwitchClause switchClause) {
             return switchExpressionType(switchClause);
         }
+        protected Boolean getSwitchExpressionUnboxed(Tree.SwitchClause switchClause) {
+            return switchExpressionUnboxed(switchClause);
+        }
         protected ProducedType getDefiniteSwitchExpressionType(Tree.SwitchClause switchClause) {
             return typeFact().getDefiniteType(getSwitchExpressionType(switchClause));
         }
@@ -3463,6 +3504,7 @@ public class StatementTransformer extends AbstractTransformer {
                     ProducedType varType = elseClause.getVariable().getDeclarationModel().getType();
                     
                     String name = elseClause.getVariable().getIdentifier().getText();
+                    TypedDeclaration varDecl = elseClause.getVariable().getDeclarationModel();
     
                     Naming.SyntheticName tmpVarName = selectorAlias;
                     Name substVarName = naming.aliasName(name);
@@ -3474,18 +3516,23 @@ public class StatementTransformer extends AbstractTransformer {
                     
                     JCExpression tmpVarExpr = at(elseClause).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
                     JCExpression toTypeExpr;
-                    if (isCeylonBasicType(varType)) {
+                    if (isCeylonBasicType(varType) && BooleanUtil.isTrue(varDecl.getUnboxed())) {
                         toTypeExpr = makeJavaType(varType);
                         tmpVarExpr = unboxType(tmpVarExpr, varType);
                     } else {
                         toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                        if (BooleanUtil.isTrue(varDecl.getUnboxed())) {
+                            tmpVarExpr = boxType(tmpVarExpr, varType);
+                        } else if (varDecl.getOriginalDeclaration() != null && BooleanUtil.isTrue(varDecl.getOriginalDeclaration().getUnboxed())) {
+                            tmpVarExpr = boxType(tmpVarName.makeIdent(), varType);
+                        }
                     }
                     
                     // The variable holding the result for the code inside the code block
                     JCVariableDecl decl2 = at(elseClause).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
     
                     // Prepare for variable substitution in the following code block
-                    Substitution prevSubst = naming.addVariableSubst(elseClause.getVariable().getDeclarationModel(), substVarName.toString());
+                    Substitution prevSubst = naming.addVariableSubst(varDecl, substVarName.toString());
     
                     List<JCStatement> stats = List.<JCStatement> of(decl2);
                     stats = stats.appendList(transformElseClause(elseClause, tmpVar, outerExpression));
@@ -3737,8 +3784,9 @@ public class StatementTransformer extends AbstractTransformer {
             final BoxingStrategy bs;
             final JCExpression selectorType;
             ProducedType switchExpressionType = getSwitchExpressionType(switchClause);
+            Boolean switchUnboxed = getSwitchExpressionUnboxed(switchClause);
             boolean allMatches = isSwitchAllMatchCases(caseList);
-            boolean primitiveSelector = allMatches && isCeylonBasicType(getSwitchExpressionType(switchClause));
+            boolean primitiveSelector = allMatches && isCeylonBasicType(switchExpressionType) && BooleanUtil.isNotFalse(switchUnboxed);
             if (primitiveSelector) {
                 bs = BoxingStrategy.UNBOXED;
                 selectorType = makeJavaType(switchExpressionType);
@@ -3746,7 +3794,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 bs = BoxingStrategy.BOXED;
                 if (allMatches && isCeylonBasicType(getDefiniteSwitchExpressionType(switchClause))) {
-                    selectorType = makeJavaType(switchExpressionType);
+                    selectorType = makeJavaType(switchExpressionType, BooleanUtil.isFalse(switchUnboxed) ? JT_NO_PRIMITIVES : 0);
                 } else {
                     selectorType = make().Type(syms().objectType);
                 }
@@ -3766,7 +3814,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // TODO Support for 'case (satisfies ...)' is not implemented yet
                     return make().Exec(makeErroneous(caseItem, "compiler bug: switch/satisfies not implemented yet"));
                 } else if (caseItem instanceof Tree.MatchCase) {
-                    last = transformCaseMatch(selectorAlias, caseClause, tmpVar,outerExpression, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
+                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar,outerExpression, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
                 } else {
                     return make().Exec(makeErroneous(caseItem, "compiler bug: unknown switch case clause: "+caseItem));
                 }
@@ -3776,9 +3824,9 @@ public class StatementTransformer extends AbstractTransformer {
         
     }
     
-    private boolean isJavaSwitchableType(ProducedType type) {
-        return type.isExactly(typeFact().getCharacterDeclaration().getType())
-                || type.isExactly(typeFact().getStringDeclaration().getType())
+    private boolean isJavaSwitchableType(ProducedType type, Boolean switchUnboxed) {
+        return BooleanUtil.isNotFalse(switchUnboxed) && (type.isExactly(typeFact().getCharacterDeclaration().getType())
+                    || type.isExactly(typeFact().getStringDeclaration().getType()))
                 || isJavaEnumType(type);
     }
     
@@ -3794,8 +3842,9 @@ public class StatementTransformer extends AbstractTransformer {
     JCStatement transform(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, String tmpVar, Tree.Term outerExpression) {
         SwitchTransformation transformation = null;
         ProducedType exprType = switchExpressionType(switchClause);
+        Boolean switchUnboxed = switchExpressionUnboxed(switchClause);
         // Are we switching with just String literal or Character literal match cases? 
-        if (isJavaSwitchableType(exprType)) {
+        if (isJavaSwitchableType(exprType, switchUnboxed)) {
             boolean canUseSwitch = true;
             caseStmts: for (Tree.CaseClause clause : caseList.getCaseClauses()) {
                 if (clause.getCaseItem() instanceof Tree.MatchCase) {
@@ -3829,7 +3878,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Are we switching with just String literal or Character literal plus null 
             // match cases?
             ProducedType definiteType = typeFact().getDefiniteType(exprType);
-            if (isJavaSwitchableType(definiteType)) {
+            if (isJavaSwitchableType(definiteType, switchUnboxed)) {
                 boolean canUseIfElseSwitch = true;
                 boolean hasSingletonNullCase = false;
                 caseStmts: for (Tree.CaseClause clause : caseList.getCaseClauses()) {
@@ -3884,9 +3933,9 @@ public class StatementTransformer extends AbstractTransformer {
         return true;
     }
 
-    private JCStatement transformCaseMatch(Naming.SyntheticName selectorAlias, 
-            Tree.CaseClause caseClause, String tmpVar, Tree.Term outerExpression,
-            Tree.MatchCase matchCase, 
+    private JCStatement transformCaseMatch(Naming.SyntheticName selectorAlias,
+            Tree.SwitchClause switchClause, Tree.CaseClause caseClause, String tmpVar,
+            Tree.Term outerExpression, Tree.MatchCase matchCase,
             JCStatement last, ProducedType switchType, boolean primitiveSelector) {
         at(matchCase);
         
@@ -3933,7 +3982,20 @@ public class StatementTransformer extends AbstractTransformer {
                 tests = make().Binary(JCTree.OR, tests, test);
             }
         }
+        
+        Substitution prevSubst = null;
+        if (switchClause.getSwitched().getVariable() != null) {
+            // Prepare for variable substitution in the following code block
+            prevSubst = naming.addVariableSubst(switchClause.getSwitched().getVariable().getDeclarationModel(), selectorAlias.toString());
+        }
+        
         JCBlock block = transformCaseClauseBlock(caseClause, tmpVar, outerExpression);
+        
+        if (prevSubst != null) {
+            // Deactivate the above variable substitution
+            prevSubst.close();
+        }
+        
         return at(caseClause).If(tests, block, last);
     }
 
