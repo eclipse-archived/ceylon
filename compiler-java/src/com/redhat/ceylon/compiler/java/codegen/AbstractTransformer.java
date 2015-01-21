@@ -1624,7 +1624,7 @@ public abstract class AbstractTransformer implements Transformation {
             return make().Erroneous();
         
         if (type.getDeclaration() instanceof Constructor) {
-            type = type.getQualifyingType();
+            type = type.getExtendedType();
         }
         
         // resolve aliases
