@@ -2,7 +2,7 @@ function $_Array(elems,$$targs$$) {
     $init$$_Array();
     var e=[];
     if (!(elems === null || elems === undefined)) {
-        var item;for(var iter=elems.iterator();(item=iter.next())!==getFinished();) {
+        var item;for(var iter=elems.iterator();(item=iter.next())!==finished();) {
             e.push(item);
         }
     }

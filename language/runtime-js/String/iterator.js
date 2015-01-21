@@ -1,3 +1,3 @@
 function(){
-  return this.length === 0 ? getEmptyIterator() : StringIterator(this);
+  return this.length === 0 ? emptyIterator() : StringIterator(this);
 }

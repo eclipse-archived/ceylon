@@ -25,5 +25,5 @@ function members($$$mptypes){
       }
     }
   }
-  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$members});
+  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$members});
 }

@@ -1,3 +1,3 @@
 function($mpt) {
-  return getEmpty();
+  return empty();
 }

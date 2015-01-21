@@ -73,7 +73,7 @@ function coimoddcl$(ifc) {
 //Class.parameterTypes (works also for constructors)
 function clsparamtypes(cls) {
   var ps=cls.tipo.$crtmm$.ps;
-  if (!ps || ps.length==0)return getEmpty();
+  if (!ps || ps.length==0)return empty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
     var pt=ps[i].$t;
@@ -85,12 +85,12 @@ function clsparamtypes(cls) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
-  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
+  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
 //Basically the same as clsparamtypes but for functions
 function funparamtypes(fun) {
   var ps=fun.tipo.$crtmm$.ps;
-  if (!ps || ps.length==0)return getEmpty();
+  if (!ps || ps.length==0)return empty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
     var pt=ps[i].$t;
@@ -102,7 +102,7 @@ function funparamtypes(fun) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},fun.$targs));
   }
-  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
+  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }
 //FunctionModel.string
 function funmodstr$(fun) {
@@ -163,7 +163,7 @@ function funtypearg$(fun) {
       }
       return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
-    return getEmpty();
+    return empty();
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
@@ -275,7 +275,7 @@ function coitarg$(coi){
       }
       return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
-    return getEmpty();
+    return empty();
   }
   throw new Error("ClassOrInterface.typeArguments: missing metamodel!");
 }
@@ -326,13 +326,13 @@ function coisattype$(coi){
     }
     return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
-  return getEmpty();
+  return empty();
 }
 //ClassOrInterface.getClassOrInterface
 function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClassOrInterface);
-  if(types$3===undefined){types$3=getEmpty();}
+  if(types$3===undefined){types$3=empty();}
   var mm = getrtmm$$(_tipo);
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
   var ic = _tipo.$$.prototype[nom];
@@ -377,7 +377,7 @@ function coiTypeOf(coi,instance$8){
 }
 function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
-  if (anntypes===undefined)anntypes=getEmpty();
+  if (anntypes===undefined)anntypes=empty();
   var ats=coi$get$anns(anntypes);
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClasses);
   for (m in _tipo.$$.prototype) {
@@ -394,7 +394,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length===0?getEmpty():ArraySequence(mems,{Element$ArraySequence:{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}}});
+  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}}});
 }
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -406,7 +406,7 @@ function coicla$(coi,name,types,cont,noInherit) {
 }
 function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
-  if (anntypes===undefined)anntypes=getEmpty();
+  if (anntypes===undefined)anntypes=empty();
   var ats=coi$get$anns(anntypes);
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getInterfaces);
   for (m in _tipo.$$.prototype) {
@@ -423,7 +423,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length===0?getEmpty():ArraySequence(mems,{Element$ArraySequence:{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}}});
+  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}}});
 }
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -463,7 +463,7 @@ function coiatr$(coi,name,m,noInherit){
 }
 function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
-  if (anntypes===undefined)anntypes=getEmpty();
+  if (anntypes===undefined)anntypes=empty();
   var ats=coi$get$anns(anntypes);
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getAttributes);
   for (m in _tipo.$$.prototype) {
@@ -483,13 +483,13 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length==0?getEmpty():ArraySequence(mems,{Element$ArraySequence:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}}});
+  return mems.length==0?empty():ArraySequence(mems,{Element$ArraySequence:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}}});
 }
 function coimtd$(coi,name,types,$$$mptypes,noInherit){
   if (!extendsType({t:coi.tipo},$$$mptypes.Container$getMethod) && $$$mptypes.Container$getMethod.t!==Nothing) {
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
-  if (types===undefined)types=getEmpty();
+  if (types===undefined)types=empty();
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethod);
   var fun = _tipo.$$.prototype[name];
   if (!fun) return null;
@@ -521,7 +521,7 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
-  if (anntypes===undefined)anntypes=getEmpty();
+  if (anntypes===undefined)anntypes=empty();
   var ats=coi$get$anns(anntypes);
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethods);
   for (m in _tipo.$$.prototype) {
@@ -543,7 +543,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length===0?getEmpty():ArraySequence(mems,{Element$ArraySequence:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}}});
+  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}}});
 }
 function coicase$(coi){
   var cts = coi.tipo.$crtmm$.of;
@@ -554,9 +554,9 @@ function coicase$(coi){
         rv.push(cts[i]());
       }
     }
-    return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:coi.tipo}});
+    return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:coi.tipo}});
   }
-  return getEmpty();
+  return empty();
 }
 function allann$(mm) {
   if (typeof(mm.an)==='function')mm.an=mm.an();
@@ -597,7 +597,7 @@ function coi$get$anns(anntypes) {
   var ats=[];
   if (!anntypes)return ats;
   var iter=anntypes.iterator();
-  var a;while((a=iter.next())!==getFinished()){
+  var a;while((a=iter.next())!==finished()){
     ats.push({t:a.tipo});
   }
   return ats;

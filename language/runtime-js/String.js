@@ -10,7 +10,7 @@ function $_String(/*{Character*}*/value,size) {
     }
     var that = '';
     var _iter = value.iterator();
-    var _c; while ((_c = _iter.next()) !== getFinished()) {
+    var _c; while ((_c = _iter.next()) !== finished()) {
         that += _c.string;
     }
     if (size !== undefined) that.codePoints=size;

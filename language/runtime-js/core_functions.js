@@ -290,7 +290,7 @@ function throwexc(e,loc,file) {
 //for optimized ranges
 //"exit optimized range loop"
 function eorl$(comp) {
-  if (comp===getEqual())return function(a,b){return a.compare(b)===getEqual();}
+  if (comp===equal())return function(a,b){return a.compare(b)===equal();}
   return function(a,b){return a.compare(b)!==comp;}
 }
 //for shorter assert

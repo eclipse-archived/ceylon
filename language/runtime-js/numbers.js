@@ -142,7 +142,7 @@ JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other
 $addnm$('equals',$_Object.$$.prototype.equals);
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
-    return value==other ? getEqual() : (value<other ? getSmaller():getLarger());
+    return value==other ? equal() : (value<other ? smaller():larger());
 }
 $addnm$('compare',Comparable.$$.prototype.compare);
 JSNum$proto.smallerThan=function(o) {
@@ -274,9 +274,9 @@ atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ ||
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);
-function getInfinity() { return $infinity; }
-ex$.$prop$getInfinity={get:getInfinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
+function infinity() { return $infinity; }
+ex$.$prop$getInfinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
 
 ex$.Integer=Integer;
 ex$.Float=Float;
-ex$.getInfinity=getInfinity;
+ex$.infinity=infinity;

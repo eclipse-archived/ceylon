@@ -6,6 +6,6 @@ function(){
       idx++;
       return sc$.refs[idx-1];
     }
-    return getFinished();
+    return finished();
   },{Element$Iterator:{t:SerializableReference$serialization,a:{t:Anything}}});
 }

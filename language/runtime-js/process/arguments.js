@@ -1,5 +1,5 @@
 if (this.argv!==undefined)return this.argv;
-this.argv = getEmpty();
+this.argv = empty();
 this.namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     // parse command line arguments
@@ -27,7 +27,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
             }
             args[i] = $_String(args[i]);
         }
-        this.argv = args.length===0?getEmpty():ArraySequence(args, {Element$ArraySequence:{t:$_String}});
+        this.argv = args.length===0?empty():ArraySequence(args, {Element$ArraySequence:{t:$_String}});
     }
 } else if (typeof window !== "undefined") {
     // parse URL parameters
@@ -37,7 +37,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         //can't do "for (i in parts)" anymore because of the added stuff to arrays
         var i;
         for (i=0; i<parts.length; i++) { argStrings[i] = parts[i]; }
-        this.argv = parts.length===0?getEmpty():ArraySequence(argStrings, {Element$ArraySequence:{t:$_String}});
+        this.argv = parts.length===0?empty():ArraySequence(argStrings, {Element$ArraySequence:{t:$_String}});
         
         for (i=0; i < parts.length; i++) {
             var part = parts[i];

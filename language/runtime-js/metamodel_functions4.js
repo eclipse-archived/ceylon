@@ -31,7 +31,7 @@ function ocoitarg$(coi) {
     }
     return TpMap$jsint(targs,ord,{V$TpMap:{t:OpenType$meta$declaration}});
   }
-  return getEmpty();
+  return empty();
 }
 //OpenClassOrInterface.string
 function ocoistr$(coi){

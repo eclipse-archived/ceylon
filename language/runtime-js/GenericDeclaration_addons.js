@@ -8,12 +8,12 @@ atr$(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations
       for (var tp in tps) {
         rv.push(OpenTypeParam$jsint(this.tipo,tp));
       }
-      return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:TypeParameter$meta$declaration}});
+      return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:TypeParameter$meta$declaration}});
     }
-    return getEmpty();
+    return empty();
   }
   console.log("TODO GenericDeclaration.typeParameterDeclarations without a type");
-  return getEmpty();
+  return empty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
 GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=function (name$14){
   if (this.tipo) {

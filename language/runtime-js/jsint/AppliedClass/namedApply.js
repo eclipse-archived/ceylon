@@ -4,7 +4,7 @@ function(args){
   if (mdl&&mdl.mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
   if (mm.ps===undefined)throw InvocationException$meta$model("Applied function does not have metamodel parameter info for named args call");
   var mapped={};
-  var iter=args.iterator();var a;while((a=iter.next())!==getFinished()) {
+  var iter=args.iterator();var a;while((a=iter.next())!==finished()) {
     mapped[a.key]=a.item;
   }
   var ordered=[];

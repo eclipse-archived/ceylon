@@ -93,7 +93,7 @@ function JsCallableList(value,$mpt) {
             var c = value[i];
             rval[i] = c.f.apply(c.o, a);
         }
-        return value.length===0?getEmpty():sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
+        return value.length===0?empty():sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
     };
 }
 JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};

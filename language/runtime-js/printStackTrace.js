@@ -1,15 +1,15 @@
 function printStackTrace(exc, _write) {
-  if (_write===undefined)_write=getProcess().writeError;
+  if (_write===undefined)_write=$_process().writeError;
   var _c = className(exc);
   if (exc.message.size > 0) {
     _c += ' "' + exc.message + '"';
   }
-  _write(_c);_write(getOperatingSystem().newline);
+  _write(_c);_write(operatingSystem().newline);
   for (var i=0; i<exc.stack_trace.length; i++) {
     var f = exc.stack_trace[i];
     if (f == "CIRCULAR") {
       _write("    (Infinite loop detected)");
-      _write(getOperatingSystem().newline);
+      _write(operatingSystem().newline);
       return;
     }
     var mm = getrtmm$$(f);
@@ -20,7 +20,7 @@ function printStackTrace(exc, _write) {
       }
       var pkn=mm.d[0];
       if (pkn==='$')pkn='ceylon.language';
-      _write("    at " + pkn + "::" + mm.d[mm.d.length-1] + _src);_write(getOperatingSystem().newline);
+      _write("    at " + pkn + "::" + mm.d[mm.d.length-1] + _src);_write(operatingSystem().newline);
     }
   }
 }

@@ -70,7 +70,7 @@ function restype2$(t,targs) {
 }
 //Extract type for serialization (and whatever else needs it)
 function ser$et$(t) {
-  if (t===getNothingType$meta$model())return{t:Nothing};
+  if (t===nothingType$meta$model())return{t:Nothing};
   if (t.tipo.t)return t.tipo;
   var r={t:t.tipo};
   if (t.$targs)r.a=t.$targs;

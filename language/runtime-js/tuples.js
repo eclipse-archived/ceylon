@@ -4,14 +4,14 @@ function tpl$(elems,types,spread){
     if (is$(spread,{t:Sequence})) {
     } else {
       var e;
-      for (var iter=spread.iterator();(e=iter.next())!==getFinished();) {
+      for (var iter=spread.iterator();(e=iter.next())!==finished();) {
         elems.push(e);
       }
       types=undefined;
       spread=undefined;
     }
   }
-  if (elems.size===0&&(spread===undefined||spread.size===0))return getEmpty();
+  if (elems.size===0&&(spread===undefined||spread.size===0))return empty();
   if (types===undefined || types.t!=='T') {
     types=[];
     for (var i=0; i < elems.size; i++){
@@ -86,16 +86,16 @@ function tpl$(elems,types,spread){
       }
     }
     var r=elems.span(a,b);
-    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
   that.spanTo=function(x){
     if (spread) {
-      if (x<0)return getEmpty();
+      if (x<0)return empty();
       return this.span(0,x);
     }
     var r=elems.spanTo(x);
-    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
   that.spanFrom=function(x){
@@ -108,11 +108,11 @@ function tpl$(elems,types,spread){
       return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence}).sequence();
     }
     var r=elems.spanFrom(x);
-    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
   that.measure=function(a,b){//from,length
-    if(b===0)return getEmpty();
+    if(b===0)return empty();
     if (spread) {
       if (a>=elems.length) {
           var m1=spread.measure(a-elems.length,b);
@@ -129,7 +129,7 @@ function tpl$(elems,types,spread){
       }
     }
     var r=elems.measure(a,b);
-    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.measure.$crtmm$=Tuple.$$.prototype.measure.$crtmm$;
   that.equals=function(o){
@@ -140,7 +140,7 @@ function tpl$(elems,types,spread){
       var ot=this.iterator();
       var ni=oi.next();
       var nt=ot.next();
-      while (ni!==getFinished()) {
+      while (ni!==finished()) {
         if (!ni.equals(nt))return false;
         ni=oi.next();
         nt=ot.next();
@@ -169,7 +169,7 @@ function tpl$(elems,types,spread){
     return elems.hash+(spread?spread.hash:0);
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.size===1?spread||getEmpty():tpl$(elems.slice(1),{t:'T',l:types.l.slice(1)},spread);
+    return elems.size===1?spread||empty():tpl$(elems.slice(1),{t:'T',l:types.l.slice(1)},spread);
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.size+(spread?spread.size:0);
@@ -189,7 +189,7 @@ function tpl$(elems,types,spread){
       for (var i=0;i<elems.length;i++) {
         e[i]=elems[i];
       }
-      var elem;for(var iter=spread.iterator();(elem=iter.next())!==getFinished();) {
+      var elem;for(var iter=spread.iterator();(elem=iter.next())!==finished();) {
         e[i++]=elem;
       }
       return e;

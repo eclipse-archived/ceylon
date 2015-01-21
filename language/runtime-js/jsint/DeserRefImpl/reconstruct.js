@@ -14,11 +14,11 @@ function(){
         }
         if (r.state_==2) {
           //iterar por r.references()
-          var referred;for(var iter=this.decons_.iterator();(referred=iter.next())!=getFinished();){
+          var referred;for(var iter=this.decons_.iterator();(referred=iter.next())!=finished();){
             while (!(is$(referred,{t:Finished})||is$(referred.$_get(1),{t:Reference$serialization}))){
               referred=iter.next();
             }
-            if (referred===getFinished())break;
+            if (referred===finished())break;
             referred=referred.$_get(1);
             if (referred.state_===undefined) {
               throw AssertionError("reference " + referred.id.string + " has not been deserialized");

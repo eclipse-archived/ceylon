@@ -16,7 +16,7 @@ initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), 
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.$$targs$$={Element$Iterator:{t:Character}, Absent$Iterator:{t:Null}};
 StringIterator$proto.next = function() {
-    if (this.index >= this.str.length) { return getFinished(); }
+    if (this.index >= this.str.length) { return finished(); }
     var first = this.str.charCodeAt(this.index++);
     if ((first&0xfc00) !== 0xd800 || this.index >= this.str.length) {
         return Character(first);

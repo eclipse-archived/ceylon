@@ -14,7 +14,7 @@ function() {
       }
       this.declcn$=ArraySequence(c,{Element$ArraySequence:{t:ConstructorDeclaration$meta$declaration}});
     } else {
-      this.declcn$=getEmpty();
+      this.declcn$=empty();
     }
   }
   return this.declcn$;

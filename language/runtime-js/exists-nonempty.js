@@ -5,7 +5,7 @@ function ne$(value){
 
 //exists
 function nn$(e) {
-  return e!==null&&e!==undefined&&e!==getNull();
+  return e!==null&&e!==undefined&&e!==$_null();
 }
 ex$.ne$=ne$;
 ex$.nn$=nn$;
