@@ -733,14 +733,13 @@ public class TypeUtils {
                 if (_cont instanceof Value) {
                     if (gen.defineAsProperty(_cont)) {
                         gen.qualify(that, _cont);
-                        gen.out("$prop$");
                     }
-                    gen.out(gen.getNames().getter(_cont));
+                    gen.out(gen.getNames().getter(_cont, true));
                 } else if (_cont instanceof Setter) {
                     gen.out("{setter:");
                     if (gen.defineAsProperty(_cont)) {
                         gen.qualify(that, _cont);
-                        gen.out("$prop$", gen.getNames().getter(((Setter) _cont).getGetter()), ".set");
+                        gen.out(gen.getNames().getter(((Setter) _cont).getGetter(), true), ".set");
                     } else {
                         gen.out(gen.getNames().setter(((Setter) _cont).getGetter()));
                     }
@@ -778,7 +777,7 @@ public class TypeUtils {
                 if (!first)gen.out(",");
                 first=false;
                 if (st.getDeclaration().isAnonymous()) {
-                    gen.out("$prop$", gen.getNames().getter(st.getDeclaration()));
+                    gen.out(gen.getNames().getter(st.getDeclaration(), true));
                 } else {
                     metamodelTypeNameOrList(that, d.getUnit().getPackage(), st, gen);
                 }

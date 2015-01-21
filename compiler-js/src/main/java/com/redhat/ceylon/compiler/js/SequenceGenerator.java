@@ -28,7 +28,7 @@ public class SequenceGenerator {
         int count=0;
         for (Tree.PositionalArgument expr : args) {
             if (expr == seqarg) {
-                gen.out("}return ", gen.getClAlias(), "getFinished();},function(){return ");
+                gen.out("}return ", gen.getClAlias(), "finished();},function(){return ");
                 if (gen.isInDynamicBlock() && expr instanceof Tree.SpreadArgument
                         && Util.isTypeUnknown(expr.getTypeModel())) {
                     TypeUtils.spreadArrayCheck(((Tree.SpreadArgument)expr).getExpression(), gen);
@@ -44,7 +44,7 @@ public class SequenceGenerator {
             count++;
         }
         if (seqarg == null) {
-            gen.out("}return ", gen.getClAlias(), "getFinished();},undefined,");
+            gen.out("}return ", gen.getClAlias(), "finished();},undefined,");
         }
         TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false, seqType.getVarianceOverrides());
         gen.out(")");
@@ -53,7 +53,7 @@ public class SequenceGenerator {
     static void sequenceEnumeration(final Tree.SequenceEnumeration that, final GenerateJsVisitor gen) {
         final Tree.SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-            gen.out(gen.getClAlias(), "getEmpty()");
+            gen.out(gen.getClAlias(), "empty()");
         } else {
             final List<Tree.PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = isSpread(positionalArguments);
@@ -131,7 +131,7 @@ public class SequenceGenerator {
         //Iterate
         String elem = gen.getNames().createTempVariable();
         gen.out("var ", elem); gen.endLine(true);
-        gen.out("while((", elem, "=", iter, ".next())!==", gen.getClAlias(), "getFinished())");
+        gen.out("while((", elem, "=", iter, ".next())!==", gen.getClAlias(), "finished())");
         gen.beginBlock();
         //Add value or reference to the array
         gen.out(tmplist, ".push(");
@@ -177,7 +177,7 @@ public class SequenceGenerator {
             gen.out(gen.getClAlias(), "sequence(", tmplist, ",{Element$sequence:");
             TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
             gen.out(",Absent$sequence:{t:", gen.getClAlias(), "Null}})||",
-                    gen.getClAlias(), "getEmpty();");
+                    gen.getClAlias(), "empty();");
         }
         gen.endBlock();
         gen.out("())");
@@ -227,7 +227,7 @@ public class SequenceGenerator {
     static void tuple(final Tree.Tuple that, final GenerateJsVisitor gen) {
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-            gen.out(gen.getClAlias(), "getEmpty()");
+            gen.out(gen.getClAlias(), "empty()");
         } else {
             final List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = SequenceGenerator.isSpread(positionalArguments);

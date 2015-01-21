@@ -422,7 +422,7 @@ public class TypeGenerator {
                 for (int i = argList.getPositionalArguments().size(); i < plist.getParameters().size(); i++) {
                     com.redhat.ceylon.compiler.typechecker.model.Parameter p = plist.getParameters().get(i);
                     if (p.isSequenced()) {
-                        gen.out(gen.getClAlias(), "getEmpty(),");
+                        gen.out(gen.getClAlias(), "empty(),");
                     } else {
                         gen.out("undefined,");
                     }
@@ -491,8 +491,8 @@ public class TypeGenerator {
                     gen.getNames().name(d), "','", parentSuffix, "')");
         }
         else {
-            gen.out(gen.getNames().self(sub), ".", gen.getNames().getter(d), parentSuffix, "=",
-                    gen.getNames().self(sub), ".", gen.getNames().getter(d));
+            gen.out(gen.getNames().self(sub), ".", gen.getNames().getter(d, false), parentSuffix, "=",
+                    gen.getNames().self(sub), ".", gen.getNames().getter(d, false));
         }
         gen.endLine(true);
     }
@@ -557,8 +557,11 @@ public class TypeGenerator {
         final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
         final boolean isObjExpr = that instanceof Tree.ObjectExpression;
         final Class c = (Class)(isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration());
+        final String className = gen.getNames().name(c);
+        final String objectName = gen.getNames().name(d);
+        final String selfName = gen.getNames().self(c);
 
-        gen.out(GenerateJsVisitor.function, gen.getNames().name(c));
+        gen.out(GenerateJsVisitor.function, className);
         Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
         if (sats != null) {
             for (StaticType st : sats.getTypes()) {
@@ -571,11 +574,10 @@ public class TypeGenerator {
         gen.out(targs.isEmpty()?"()":"($$targs$$)");
         gen.beginBlock();
         if (isObjExpr) {
-            final String me = gen.getNames().self(c);
-            gen.out("var ", me, "=new ", gen.getNames().name(c), ".$$;");
+            gen.out("var ", selfName, "=new ", className, ".$$;");
             final ClassOrInterface coi = Util.getContainingClassOrInterface(c.getContainer());
             if (coi != null) {
-                gen.out(me, ".outer$=", gen.getNames().self(coi));
+                gen.out(selfName, ".outer$=", gen.getNames().self(coi));
                 gen.endLine(true);
             }
         } else {
@@ -591,7 +593,7 @@ public class TypeGenerator {
             new SuperVisitor(superDecs).visit(body);
         }
         if (!targs.isEmpty()) {
-            gen.out(gen.getNames().self(c), ".$$targs$$=$$targs$$");
+            gen.out(selfName, ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
         if (superType != null) {
@@ -601,19 +603,19 @@ public class TypeGenerator {
         TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
         
         body.visit(gen);
-        gen.out("return ", gen.getNames().self(c), ";");
+        gen.out("return ", selfName, ";");
         gen.endBlock();
-        gen.out(";", gen.getNames().name(c), ".$crtmm$=");
+        gen.out(";", className, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
-
         TypeGenerator.initializeType(that, gen);
+        final String objvar = (addToPrototype ? "this.":"")+gen.getNames().createTempVariable();
 
         if (d != null && !addToPrototype) {
-            gen.out("var ", gen.getNames().name(d));
+            gen.out("var ", objvar);
             //If it's a property, create the object here
             if (gen.defineAsProperty(d)) {
-                gen.out("=", gen.getNames().name(c), "(");
+                gen.out("=", className, "(");
                 if (!targs.isEmpty()) {
                     TypeUtils.printTypeArguments(that, targs, gen, false, null);
                 }
@@ -625,19 +627,18 @@ public class TypeGenerator {
         if (d != null && gen.defineAsProperty(d)) {
             gen.out(gen.getClAlias(), "atr$(");
             gen.outerSelf(d);
-            gen.out(",'", gen.getNames().name(d), "',function(){return ");
+            gen.out(",'", objectName, "',function(){return ");
             if (addToPrototype) {
                 gen.out("this.", gen.getNames().privateName(d));
             } else {
-                gen.out(gen.getNames().name(d));
+                gen.out(objvar);
             }
             gen.out(";},undefined,");
             TypeUtils.encodeForRuntime(d, annots, gen);
             gen.out(")");
             gen.endLine(true);
         } else if (d != null) {
-            final String objectGetterName = gen.getNames().getter(d);
-            final String objvar = (addToPrototype ? "this.":"")+gen.getNames().name(d);
+            final String objectGetterName = gen.getNames().getter(d, false);
             gen.out(GenerateJsVisitor.function, objectGetterName, "()");
             gen.beginBlock();
             //Create the object lazily
@@ -672,20 +673,15 @@ public class TypeGenerator {
             gen.out(objectGetterName, ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, annots, gen);
             gen.endLine(true);
-            //make available with the class name as well, for metamodel access
-            final String classGetterName = gen.getNames().getter(c);
-            if (!classGetterName.equals(objectGetterName)) {
-                gen.out(classGetterName, "=", objectGetterName, ";");
-            }
-            gen.out("$prop$", classGetterName, "=", objectGetterName);
+            gen.out(gen.getNames().getter(c, true), "=", objectGetterName);
             gen.endLine(true);
             if (d.isToplevel()) {
-                gen.out("ex$.$prop$", objectGetterName, "=$prop$",
-                        objectGetterName);
+                final String objectGetterNameMM = gen.getNames().getter(d, true);
+                gen.out("ex$.", objectGetterNameMM, "=", objectGetterNameMM);
                 gen.endLine(true);
             }
         } else if (that instanceof Tree.ObjectExpression) {
-            gen.out("return  ", gen.getNames().name(c), "();");
+            gen.out("return ", className, "();");
         }
     }
     static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {

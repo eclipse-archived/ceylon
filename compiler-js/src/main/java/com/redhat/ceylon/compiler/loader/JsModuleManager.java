@@ -211,10 +211,17 @@ public class JsModuleManager extends ModuleManager {
             if (!model.containsKey("$mod-bin")) {
                 throw new CeylonRunJsException("The JavaScript module " + jsFile +
                         " is not compatible with the current version of ceylon-js");
-            } else if (!(model.get("$mod-bin").toString().equals(BIN_VERSION)
-                    || model.get("$mod-bin").toString().equals(V1_1_BIN_VERSION))) {
-                throw new CompilerErrorException(String.format("This Ceylon-JS module has binary version %s is incompatible with the compiler version %s",
-                        model.get("$mod-bin"), BIN_VERSION));
+            } else {
+                final String binVersion = model.get("$mod-bin").toString();
+                final String modname = model.get("$mod-name").toString();
+                final boolean isNewest = binVersion.equals(BIN_VERSION);
+                //TODO remove this shit when we break bincompat again
+                final boolean isRecent = binVersion.equals(V1_1_BIN_VERSION);
+                if (("ceylon.language".equals(modname) && !isNewest)
+                        || !(isNewest || isRecent)) {
+                    throw new CompilerErrorException(String.format("The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
+                        modname, binVersion, BIN_VERSION));
+                }
             }
             return model;
         } catch (IOException ex) {

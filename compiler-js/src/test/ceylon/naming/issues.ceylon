@@ -13,20 +13,20 @@ shared String topValue483 = "value.";
 shared String getTopValue483() => "method.";
 
 shared class Test483() {
-  shared object nestedObject483 {
+  shared object member483 {
     string="object.";
   }
-  shared Object getNestedObject483() {
+  shared Object getMember483() {
     return object {
       string="method.";
     };
   }
-  shared String nestedValue="value.";
-  shared String getNestedValue() => "method.";
-  check(nestedObject483.string=="object.", "#483.1 member (inside) ``nestedObject483``");
-  check(getNestedObject483().string=="method.", "#483.2 member (inside) ``getNestedObject483()``");
-  check(nestedValue=="value.", "#483.3 member (inside) ``nestedValue``");
-  check(getNestedValue()=="method.", "#483.4 member (inside) ``getNestedValue()``");
+  shared String other="value.";
+  shared String getOther() => "method.";
+  check(member483.string=="object.", "#483.1 member (inside) ``member483``");
+  check(getMember483().string=="method.", "#483.2 member (inside) ``getMember483()``");
+  check(other=="value.", "#483.3 member (inside) ``other``");
+  check(getOther()=="method.", "#483.4 member (inside) ``getOther()``");
 }
 
 void issues() {
@@ -52,8 +52,8 @@ void issues() {
   check(getNestedValue483()=="method.", "#483.4 in method ``getNestedValue483()``");
 
   value t=Test483();
-  check(t.nestedObject483.string=="object.", "#483.1 member (outside) ``t.nestedObject483``");
-  check(t.getNestedObject483().string=="method.", "#483.2 member (outside) ``t.getNestedObject483()``");
-  check(t.nestedValue=="value.", "#483.3 member (outside) ``t.nestedValue``");
-  check(t.getNestedValue()=="method.", "#483.4 member (outside) ``t.getNestedValue()``");
+  check(t.member483.string=="object.", "#483.1 member (outside) ``t.member483``");
+  check(t.getMember483().string=="method.", "#483.2 member (outside) ``t.getMember483()``");
+  check(t.other=="value.", "#483.3 member (outside) ``t.other``");
+  check(t.getOther()=="method.", "#483.4 member (outside) ``t.getOther()``");
 }

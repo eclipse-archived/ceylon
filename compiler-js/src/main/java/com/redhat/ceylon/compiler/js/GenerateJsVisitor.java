@@ -1064,7 +1064,7 @@ public class GenerateJsVisitor extends Visitor
                         }
                     }
                 } else {
-                    out(getClAlias(), "getEmpty()");
+                    out(getClAlias(), "empty()");
                 }
                 out(";}");
                 endLine();
@@ -1119,10 +1119,10 @@ public class GenerateJsVisitor extends Visitor
             out(");");
         }
         else {
-            out(function, names.getter(d), "()");
+            out(function, names.getter(d, false), "()");
             AttributeGenerator.getter(that, this);
             endLine();
-            out(names.getter(d), ".$crtmm$=");
+            out(names.getter(d, false), ".$crtmm$=");
             TypeUtils.encodeForRuntime(that, d, this);
             if (!shareGetter(d)) { out(";"); }
             generateAttributeMetamodel(that, true, false);
@@ -1175,7 +1175,7 @@ public class GenerateJsVisitor extends Visitor
         if (isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
-            out(".", names.getter(d), "=", names.getter(d));
+            out(".", names.getter(d, false), "=", names.getter(d, false));
             endLine(true);
             shared = true;
         }
@@ -1262,7 +1262,7 @@ public class GenerateJsVisitor extends Visitor
                     defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
                     out("{");
                 } else {
-                    out(function, names.getter(d), "(){");
+                    out(function, names.getter(d, false), "(){");
                 }
                 initSelf(that);
                 out("return ");
@@ -1331,7 +1331,8 @@ public class GenerateJsVisitor extends Visitor
         }
         Declaration d = that.getDeclarationModel();
         if (d instanceof Setter) d = ((Setter)d).getGetter();
-        final String pname = names.getter(d);
+        final String pname = names.getter(d, false);
+        final String pnameMeta = names.getter(d, true);
         if (!generatedAttributes.contains(d)) {
             if (d.isToplevel()) {
                 out("var ");
@@ -1339,11 +1340,11 @@ public class GenerateJsVisitor extends Visitor
                 out(".");
             }
             //issue 297 this is only needed in some cases
-            out("$prop$", pname, "={$crtmm$:");
+            out(pnameMeta, "={$crtmm$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("}"); endLine(true);
             if (d.isToplevel()) {
-                out("ex$.$prop$", pname, "=$prop$", pname);
+                out("ex$.", pnameMeta, "=", pnameMeta);
                 endLine(true);
             }
             generatedAttributes.add(d);
@@ -1352,14 +1353,14 @@ public class GenerateJsVisitor extends Visitor
             if (!d.isToplevel()) {
                 if (outerSelf(d))out(".");
             }
-            out("$prop$", pname, ".get=");
+            out(pnameMeta, ".get=");
             if (isCaptured(d) && !defineAsProperty(d)) {
                 out(pname);
                 endLine(true);
-                out(pname, ".$crtmm$=$prop$", pname, ".$crtmm$");
+                out(pname, ".$crtmm$=", pnameMeta, ".$crtmm$");
             } else {
                 if (d.isToplevel()) {
-                    out(names.getter(d));
+                    out(pname);
                 } else {
                     out("function(){return ", names.name(d), "}");
                 }
@@ -1371,9 +1372,9 @@ public class GenerateJsVisitor extends Visitor
             if (!d.isToplevel()) {
                 if (outerSelf(d))out(".");
             }
-            out("$prop$", pname, ".set=", pset);
+            out(pnameMeta, ".set=", pset);
             endLine(true);
-            out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=$prop$", pname, ".$crtmm$");
+            out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=", pnameMeta, ".$crtmm$");
             endLine(true);
         }
     }
@@ -1712,6 +1713,7 @@ public class GenerateJsVisitor extends Visitor
             sb.append(decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? '_':'.');
         }
         Scope scope = getSuperMemberScope(node);
+        boolean metaGetter = false;
         if (opts.isOptimize() && (scope != null) &&
                 decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor == false) {
             sb.append("getT$all()['");
@@ -1722,9 +1724,10 @@ public class GenerateJsVisitor extends Visitor
                         + sb.toString() + ",'" + names.name(decl) + "')";
             }
             sb.append(".$$.prototype.");
+            metaGetter = true;
         }
         final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
-                ? (setter ? names.setter(decl) : names.getter(decl)) : names.name(decl);
+                ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
         sb.append(member);
         if (!opts.isOptimize() && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
@@ -1970,7 +1973,7 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         out ("var ");
                     }
-                    out(names.getter(bmeDecl), "=function()");
+                    out(names.getter(bmeDecl, false), "=function()");
                 }
                 beginBlock();
                 if (outer != null) { initSelf(specStmt); }
@@ -2622,14 +2625,14 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    getClAlias(), "getSmaller()))||", ltmp, "<", rtmp, ")");
+                    getClAlias(), "smaller()))||", ltmp, "<", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
                 Operators.simpleBinaryOp(that, "(", "<", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", getClAlias(), "getSmaller())");
+                out(".equals(", getClAlias(), "smaller())");
             }
         }
     }
@@ -2644,14 +2647,14 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    getClAlias(), "getLarger()))||", ltmp, ">", rtmp, ")");
+                    getClAlias(), "larger()))||", ltmp, ">", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
                 Operators.simpleBinaryOp(that, "(", ">", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", getClAlias(), "getLarger())");
+                out(".equals(", getClAlias(), "larger())");
             }
         }
     }
@@ -2666,7 +2669,7 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    getClAlias(), "getLarger())||", ltmp, "<=", rtmp, ")");
+                    getClAlias(), "larger())||", ltmp, "<=", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -2674,7 +2677,7 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out("(");
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", getClAlias(), "getLarger()");
+                out("!==", getClAlias(), "larger()");
                 out(")");
             }
         }
@@ -2690,7 +2693,7 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    getClAlias(), "getSmaller())||", ltmp, ">=", rtmp, ")");
+                    getClAlias(), "smaller())||", ltmp, ">=", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -2698,7 +2701,7 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out("(");
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", getClAlias(), "getSmaller()");
+                out("!==", getClAlias(), "smaller()");
                 out(")");
             }
         }
@@ -2717,31 +2720,31 @@ public class GenerateJsVisitor extends Visitor
             box(that.getUpperBound().getTerm());
             out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
             if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "getLarger())||", ttmp, ">", tmpl, ")");
+                out(")===", getClAlias(), "larger())||", ttmp, ">", tmpl, ")");
             } else {
-                out(")!==", getClAlias(), "getSmaller())||", ttmp, ">=", tmpl, ")");
+                out(")!==", getClAlias(), "smaller())||", ttmp, ">=", tmpl, ")");
             }
             out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
             if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "getSmaller())||", ttmp, "<", tmpu, ")");
+                out(")===", getClAlias(), "smaller())||", ttmp, "<", tmpu, ")");
             } else {
-                out(")!==", getClAlias(), "getLarger())||", ttmp, "<=", tmpu, ")");
+                out(")!==", getClAlias(), "larger())||", ttmp, "<=", tmpu, ")");
             }
         } else {
             out(ttmp, ".compare(");
             box(that.getLowerBound().getTerm());
             if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "getLarger()");
+                out(")===", getClAlias(), "larger()");
             } else {
-                out(")!==", getClAlias(), "getSmaller()");
+                out(")!==", getClAlias(), "smaller()");
             }
             out("&&");
             out(ttmp, ".compare(");
             box(that.getUpperBound().getTerm());
             if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "getSmaller()");
+                out(")===", getClAlias(), "smaller()");
             } else {
-                out(")!==", getClAlias(), "getLarger()");
+                out(")!==", getClAlias(), "larger()");
             }
         }
         out(")");
