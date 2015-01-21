@@ -3005,7 +3005,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // so give variable attribute declarations without 
                 // initializers a default value. See #1153.
                 initialValue = makeDefaultExprForType(t);
-                if (CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()) == BoxingStrategy.BOXED) {
+                if (CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()) == BoxingStrategy.BOXED && canUnbox(t)) {
                     initialValue = boxType(initialValue, t);
                 }
             }
