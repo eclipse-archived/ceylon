@@ -14,6 +14,7 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean overloaded;
     private boolean abstraction;
     private boolean anonymous;
+    private boolean javaEnum;
     private boolean named = true;
     private boolean fin;
     private boolean serializable;
@@ -175,6 +176,14 @@ public class Class extends ClassOrInterface implements Functional {
 
     public void setSerializable(boolean serializable) {
         this.serializable = serializable;
+    }
+
+    public boolean isJavaEnum() {
+        return javaEnum;
+    }
+
+    public void setJavaEnum(boolean javaEnum) {
+        this.javaEnum = javaEnum;
     }
     
 
