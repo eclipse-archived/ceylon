@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -129,6 +130,10 @@ public class JsIdentifierNames {
             name = "$_" + name;
         }
         if (decl.isToplevel()) {
+            final int binMajor = decl.getUnit().getPackage().getModule().getMajor();
+            if (binMajor > 0 && binMajor < Versions.JS_BINARY_MAJOR_VERSION) {
+                return String.format("get%c%s()", Character.toUpperCase(name.charAt(0)), name.substring(1));
+            }
             return String.format("%s()", name);
         }
         return name;
@@ -143,7 +148,9 @@ public class JsIdentifierNames {
     public String getter(Declaration decl, boolean forMetamodel) {
         if (decl == null) { return ""; }
         String name = getName(decl, true, false);
-        if (!forMetamodel && !decl.isClassOrInterfaceMember()) {
+        final int binMajor = decl.getUnit().getPackage().getModule().getMajor();
+        if (!forMetamodel && !decl.isClassOrInterfaceMember() &&
+                (binMajor == 0 || binMajor == Versions.JS_BINARY_MAJOR_VERSION)) {
             return reservedWords.contains(name) ? "$_" + name : name;
         }
         return String.format("%sget%c%s", forMetamodel?"$prop$":"",
