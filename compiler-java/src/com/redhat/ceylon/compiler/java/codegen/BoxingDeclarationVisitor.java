@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
@@ -48,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -71,6 +73,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
      */
     private Map<Method,Method> optimisedMethodSpecifiersToMethods = new HashMap<Method, Method>();
     
+    // This is mostly just for testing purposes. Using -Dceylon.compiler.forceBoxedLocals=true
+    // on the command line you can force all locals to be boxed (instead of the default unboxed)
+    private static final boolean forceBoxedLocals = Boolean.getBoolean("ceylon.compiler.forceBoxedLocals");
+    
     @Override
     public void visit(FunctionArgument that) {
         super.visit(that);
@@ -86,11 +92,11 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(AnyMethod that) {
         super.visit(that);
-        visitMethod(that.getDeclarationModel());
+        visitMethod(that.getDeclarationModel(), that);
     }
 
-    private void visitMethod(Method method) {
-        boxMethod(method);
+    private void visitMethod(Method method, Node that) {
+        boxMethod(method, that);
         rawTypedDeclaration(method);
         setErasureState(method);
     }
@@ -99,7 +105,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(FunctionalParameterDeclaration that) {
         if (Strategy.createMethod(that.getParameterModel())) {
             // Box the functional parameter as if it were a method
-            visitMethod((Method)that.getParameterModel().getModel());
+            visitMethod((Method)that.getParameterModel().getModel(), that);
             // Visit the parameters of the functional parameter
             that.visitChildren(this);
         } else {
@@ -141,7 +147,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
     }
 
-    private void boxMethod(Method method) {
+    private void boxMethod(Method method, Node that) {
         // deal with invalid input
         if(method == null)
             return;
@@ -153,14 +159,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         TypedDeclaration refinedMethod = (TypedDeclaration)refined;
         if (method.getName() != null) {
             // A Callable, which never have primitive parameters
-            setBoxingState(method, refinedMethod);
+            setBoxingState(method, refinedMethod, that);
         } else {
             // Anonymous methods are always boxed
             method.setUnboxed(false);
         }
     }
 
-    private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
+    private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration, Node that) {
         ProducedType type = declaration.getType();
         if(type == null){
             // an error must have already been reported
@@ -199,7 +205,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if (!Decl.equal(refinedDeclaration, declaration)) {
             // make sure refined declarations have already been set
             if(refinedDeclaration.getUnboxed() == null)
-                setBoxingState(refinedDeclaration, refinedDeclaration);
+                setBoxingState(refinedDeclaration, refinedDeclaration, that);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
         } else if (declaration instanceof Method
@@ -213,7 +219,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
            && (refinedDeclaration.getContainer() instanceof Declaration == false || !CodegenUtil.isContainerFunctionalParameter(refinedDeclaration))
            && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
-            declaration.setUnboxed(true);
+            boolean unbox = !forceBoxedLocals || !(declaration instanceof Value) || !Decl.isLocal(declaration) || Decl.isParameter(declaration) || Decl.isTransient(declaration);
+            declaration.setUnboxed(unbox);
         } else if (Decl.isValueParameter(declaration)
                 && CodegenUtil.isContainerFunctionalParameter(declaration)
                 && Strategy.createMethod((MethodOrValue)declaration.getContainer())) {
@@ -231,16 +238,19 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             } else {
                 // make sure refined declarations have already been set
                 if(refinedFrom.getUnboxed() == null)
-                    setBoxingState(refinedFrom, refinedFrom);
+                    setBoxingState(refinedFrom, refinedFrom, that);
                 // inherit
                 declaration.setUnboxed(refinedFrom.getUnboxed());
             }
         } else {   
             declaration.setUnboxed(false);
         }
+        
+        // Any "@boxed" or "@unboxed" compiler annotation overrides
+        boxFromAnnotation(declaration, that);
     }
 
-    private void boxAttribute(TypedDeclaration declaration) {
+    private void boxAttribute(TypedDeclaration declaration, Node that) {
         // deal with invalid input
         if(declaration == null)
             return;
@@ -249,14 +259,26 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
-        setBoxingState(declaration, refinedDeclaration);
+        setBoxingState(declaration, refinedDeclaration, that);
+    }
+    
+    private void boxFromAnnotation(TypedDeclaration declaration, Node that) {
+        // Let's see if the attribute has a "boxed" or "unboxed" annotation
+        // and set its state accordingly. NB this is not checked for validity!
+        if(that instanceof StatementOrArgument) {
+            if(CodegenUtil.hasCompilerAnnotation((StatementOrArgument)that, "boxed")) {
+                declaration.setUnboxed(false);
+            } else if(CodegenUtil.hasCompilerAnnotation((StatementOrArgument)that, "unboxed")) {
+                declaration.setUnboxed(true);
+            }
+        }
     }
     
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
         TypedDeclaration declaration = that.getParameterModel().getModel();
-        visitAttributeOrParameter(declaration);
+        visitAttributeOrParameter(declaration, that);
     }
     
     @Override
@@ -268,11 +290,11 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(AnyAttribute that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
-        visitAttributeOrParameter(declaration);
+        visitAttributeOrParameter(declaration, that);
     }
     
-    private void visitAttributeOrParameter(TypedDeclaration declaration) {
-        boxAttribute(declaration);
+    private void visitAttributeOrParameter(TypedDeclaration declaration, Node that) {
+        boxAttribute(declaration, that);
         rawTypedDeclaration(declaration);
         setErasureState(declaration);
     }
@@ -291,18 +313,19 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(AttributeArgument that) {
         super.visit(that);
-        boxAttribute(that.getDeclarationModel());
+        boxAttribute(that.getDeclarationModel(), that);
     }
 
     @Override
     public void visit(AttributeSetterDefinition that) {
         super.visit(that);
-        Setter declarationModel = that.getDeclarationModel();
+        Setter declaration = that.getDeclarationModel();
         // deal with invalid input
-        if(declarationModel == null)
+        if(declaration == null)
             return;
-        TypedDeclaration declaration = declarationModel.getParameter().getModel();
-        boxAttribute(declaration);
+        // To determine boxing for a setter we use its parameter
+        TypedDeclaration paramDeclaration = declaration.getParameter().getModel();
+        boxAttribute(paramDeclaration, that);
     }
 
     @Override
@@ -312,7 +335,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        setBoxingState(declaration, declaration);
+        setBoxingState(declaration, declaration, that);
         rawTypedDeclaration(declaration);
         setErasureState(declaration);
     }
@@ -342,9 +365,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration == null)
             return;
         if(declaration instanceof Method){
-            visitMethod((Method) declaration);
+            visitMethod((Method) declaration, that);
         }else if(declaration instanceof Value)
-            visitAttributeOrParameter(declaration);
+            visitAttributeOrParameter(declaration, that);
     }
 
     @Override
@@ -395,6 +418,19 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         typeParameter.setNonErasedBounds(false);
         return;
+    }
+
+    // The following are not really necessary under normal circumstances,
+    // they explicitly set what is already set by default, but when using
+    // the -Dceylon.compiler.forceBoxedLocals option they are needed
+    
+    @Override
+    public void visit(ValueIterator that) {
+        super.visit(that);
+        // The variable in a for over a Range is always unboxed
+        if (that.getVariable() != null && that.getSpecifierExpression().getExpression().getTerm() instanceof Tree.RangeOp) {
+            that.getVariable().getDeclarationModel().setUnboxed(true);
+        }
     }
 
 }
