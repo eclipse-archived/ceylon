@@ -474,6 +474,10 @@ public class Metamodel {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
+            pt = pt.getExtendedType();
+            declaration = pt.getDeclaration();
+        }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
@@ -489,20 +493,6 @@ public class Metamodel {
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
-        /*if (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor){
-            TypeDescriptor reifiedArguments;
-            if(!declaration.isAnonymous() && !isLocalType(declaration))
-                reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration.getContainer(), pt.getQualifyingType());
-            else
-                reifiedArguments = TypeDescriptor.NothingType;
-            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            if(declaration.isToplevel() || isLocalType(declaration))
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedConstructor(reifiedType, reifiedArguments, pt, null, null);
-            
-            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClassConstructor(reifiedContainer, reifiedType, reifiedArguments, pt);
-            
-        }*/
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel() || isLocalType(declaration))
