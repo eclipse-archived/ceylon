@@ -53,10 +53,10 @@ public class SerializationContextImpl
      */
     @Override
     public <Instance> SerializableReference<Instance> reference(TypeDescriptor reified$Instance, Object id, Instance instance) {
-        SerializableReferenceImpl ref = new SerializableReferenceImpl(reified$Instance, this, id, instance);
+        SerializableReferenceImpl<Instance> ref = new SerializableReferenceImpl<Instance>(reified$Instance, this, id, instance);
         SerializableReference<?> prevReference = map(instance).put(instance, ref);
         if (prevReference != null) {
-            throw new ceylon.language.AssertionError("An instance has already been registered with id "+id+": \"" + prevReference.instance() +"\", \""+ instance+"\"");
+            throw new ceylon.language.AssertionError("The instance \""+prevReference.instance()+"\" has already been registered with id "+id+": You cannot register \"" + instance + "\" again with a different id");
         }
         references.add(ref);
         return ref;
