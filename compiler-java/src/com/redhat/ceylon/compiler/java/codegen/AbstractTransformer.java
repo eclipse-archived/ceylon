@@ -1649,6 +1649,9 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         }
+        if(type.getDeclaration().isJavaEnum()){
+            type = type.getExtendedType();
+        }
         
         // ERASURE
         if ((flags & JT_CLASS_LITERAL) == 0
@@ -4621,12 +4624,16 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeReifiedTypeArgument(ProducedType pt) {
-        return makeReifiedTypeArgumentResolved(typeFact().denotableType(pt.resolveAliases()), false);
+        return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false);
     }
     
     private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof ClassOrInterface){
+            if(declaration.isJavaEnum()){
+                pt = pt.getExtendedType();
+                declaration = pt.getDeclaration();
+            }
             // see if we have an alias for it
             if(supportsReifiedAlias((ClassOrInterface) declaration)){
                 JCExpression qualifier = naming.makeDeclarationName(declaration, DeclNameFlag.QUALIFIED);
