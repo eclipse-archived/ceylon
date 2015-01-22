@@ -275,4 +275,16 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
         if(model != null)
             collect(that, model);
     }
+
+    @Override
+    public void visit(Tree.AttributeArgument that){
+        // if there's a block we end up generating an @Attribute class so we can stop there
+        if(that.getBlock() != null){
+            Value model = that.getDeclarationModel();
+            if(model != null)
+                collect(that, model);
+        }else{
+            super.visit(that);
+        }
+    }
 }
