@@ -355,12 +355,12 @@ public class CeylonEnter extends Enter {
                 }
                 nested.endTask();
                 if(isVerbose("ast")){
-                    System.err.println("Model tree for "+tree.getSourceFile());
-                    System.err.println(ceylonTree.ceylonTree);
+                    log.errWriter.println("Model tree for "+tree.getSourceFile());
+                    log.errWriter.println(ceylonTree.ceylonTree);
                 }
                 if(isVerbose("code")){
-                    System.err.println("Java code generated for "+tree.getSourceFile());
-                    System.err.println(ceylonTree);
+                    log.errWriter.println("Java code generated for "+tree.getSourceFile());
+                    log.errWriter.println(ceylonTree);
                 }
             }
         }

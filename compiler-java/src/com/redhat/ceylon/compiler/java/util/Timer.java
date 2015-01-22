@@ -38,10 +38,11 @@ public class Timer {
 
     private static final Context.Key<Timer> timerKey = new Context.Key<Timer>();
     
-    private Timer(long programStart, boolean verbose, Map<String,IgnoredCategory> ignoredCategories) {
+    private Timer(PrintWriter out, long programStart, boolean verbose, Map<String,IgnoredCategory> ignoredCategories) {
         this.programStart = programStart;
         this.verbose = verbose;
         this.ignoredCategories = ignoredCategories;
+        this.out = out;
     }
     
     public static Timer instance(Context context) {
@@ -127,6 +128,19 @@ public class Timer {
     }
 
     /**
+     * Prints a message
+     * @param string The message
+     */
+    public void print(String string) {
+        if(!verbose)
+            return;
+        if(out != null)
+            out.println(string);
+        else
+            System.err.println(string);
+    }
+
+    /**
      * Ends the current task, {@linkplain #log(String) logging} the name of 
      * the task and its elapsed time
      * @see #startTask(String)
@@ -164,7 +178,7 @@ public class Timer {
     private void printIgnoredCategories(){
         for(IgnoredCategory category : ignoredCategories.values()){
             if(category.total != 0){
-                System.err.println(" Including "+category.name+" for "+category.total+"ms");
+                print(" Including "+category.name+" for "+category.total+"ms");
             }
             category.reset();
         }
@@ -192,7 +206,7 @@ public class Timer {
         }
         public void reset() {
             if(count != 0)
-                System.err.println("Ignored category "+name+" count is "+count+" during reset: timings will be wrong");
+                print("Ignored category "+name+" count is "+count+" during reset: timings will be wrong");
             // try to fix it for next time?
             count = 0;
             total = 0;
@@ -206,6 +220,6 @@ public class Timer {
      * @return The new timer
      */
     public Timer nestedTimer() {
-        return new Timer(programStart, verbose, ignoredCategories);
+        return new Timer(out, programStart, verbose, ignoredCategories);
     }
 }
