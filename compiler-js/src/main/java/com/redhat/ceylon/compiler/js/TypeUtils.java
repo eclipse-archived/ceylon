@@ -120,7 +120,11 @@ public class TypeUtils {
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                gen.out(gen.getNames().name(t));
+                if (imported && t.isAnonymous()) {
+                    gen.out(gen.getNames().getter(t, true));
+                } else {
+                    gen.out(gen.getNames().name(t));
+                }
             }
             if (_init) {
                 gen.out("()");
