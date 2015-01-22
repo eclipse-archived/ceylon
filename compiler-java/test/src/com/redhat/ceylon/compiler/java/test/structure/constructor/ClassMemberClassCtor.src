@@ -196,7 +196,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$14$callable$ = this;
-                long arg$14$0 = Member$i();
+                long arg$14$0 = arg$14$callable$.Member$i();
             }
             returning arg$14$callable$.new Member(arg$14$0);
         );
@@ -268,7 +268,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$23$callable$ = other;
-                long arg$23$0 = Member$i();
+                long arg$23$0 = arg$23$callable$.Member$i();
             }
             returning arg$23$callable$.new Member(arg$23$0);
         );
