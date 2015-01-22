@@ -3273,6 +3273,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     JCExpression unboxType(JCExpression expr, ProducedType exprType) {
+        exprType = typeFact().denotableType(exprType);
         if (isCeylonInteger(exprType)) {
             expr = unboxInteger(expr);
         } else if (isCeylonFloat(exprType)) {
@@ -3296,6 +3297,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     JCExpression boxType(JCExpression expr, ProducedType exprType) {
+        exprType = typeFact().denotableType(exprType);
         if (isCeylonInteger(exprType)) {
             expr = boxInteger(expr);
         } else if (isCeylonFloat(exprType)) {
