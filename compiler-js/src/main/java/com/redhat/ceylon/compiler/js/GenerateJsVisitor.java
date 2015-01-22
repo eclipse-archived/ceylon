@@ -4,6 +4,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminatePare
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -112,6 +114,7 @@ public class GenerateJsVisitor extends Visitor
     private Writer out;
     private final Writer originalOut;
     final Options opts;
+    final PrintWriter verboseOut;
     private CompilationUnit root;
     static final String function="function ";
     private boolean needIndent = true;
@@ -135,12 +138,27 @@ public class GenerateJsVisitor extends Visitor
             List<CommonToken> tokens) throws IOException {
         this.jsout = out;
         this.opts = options;
+        if (options.hasVerboseFlag("code")) {
+            Writer vw = options.getOutWriter();
+            verboseOut = vw instanceof PrintWriter ? (PrintWriter)vw :
+                new PrintWriter(vw == null ? new OutputStreamWriter(System.out) : vw);
+        } else {
+            verboseOut = null;
+        }
         this.out = out.getWriter();
         originalOut = out.getWriter();
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
         invoker = new InvocationGenerator(this, names, retainedVars);
+    }
+
+    void spitOut(String s) {
+        if (verboseOut == null) {
+            System.out.println(s);
+        } else {
+            verboseOut.println(s);
+        }
     }
 
     InvocationGenerator getInvoker() { return invoker; }
@@ -168,12 +186,13 @@ public class GenerateJsVisitor extends Visitor
             for (String s : codez) {
                 out.write(s);
             }
-            if (opts.isVerbose() && out == originalOut) {
+            if (verboseOut != null && out == originalOut) {
                 //Print code to console (when printing to REAL output)
-                System.out.print(code);
+                verboseOut.print(code);
                 for (String s : codez) {
-                    System.out.print(s);
+                    verboseOut.print(s);
                 }
+                verboseOut.flush();
             }
         }
         catch (IOException ioe) {
@@ -917,7 +936,7 @@ public class GenerateJsVisitor extends Visitor
             if (d instanceof ClassOrInterface==false) {
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
                         + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
-                System.out.println(err);
+                spitOut(err);
                 out("/*", err, "*/");
             }
             return false;
@@ -943,8 +962,8 @@ public class GenerateJsVisitor extends Visitor
                     String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
         }
         if (f.exists() && f.isFile() && f.canRead()) {
-            if (opts.isVerbose() || JsCompiler.isCompilingLanguageModule()) {
-                System.out.println("Stitching in " + f + ". It must contain an anonymous function "
+            if (verboseOut != null || JsCompiler.isCompilingLanguageModule()) {
+                spitOut("Stitching in " + f + ". It must contain an anonymous function "
                         + "which will be invoked with the same arguments as the "
                         + names.name(coi.getDeclarationModel()) + " constructor.");
             }
@@ -2863,7 +2882,7 @@ public class GenerateJsVisitor extends Visitor
 
    //Don't know if we'll ever see this...
    @Override public void visit(final Tree.ConditionList that) {
-       System.out.println("ZOMG condition list in the wild! " + that.getLocation()
+       spitOut("ZOMG condition list in the wild! " + that.getLocation()
                + " of " + that.getUnit().getFilename());
        super.visit(that);
    }
