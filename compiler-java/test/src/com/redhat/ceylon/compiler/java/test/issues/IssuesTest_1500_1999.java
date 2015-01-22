@@ -21,10 +21,15 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeSet;
 
 import javax.tools.Diagnostic;
+import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -39,7 +44,9 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.sun.tools.javac.util.Position;
@@ -1009,7 +1016,40 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1958() {
         compareWithJavaSource("bug19xx/Bug1958");
     }
-    
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testBug1969() {
+        java.util.List<File> sourceFiles = new ArrayList<File>(1);
+        sourceFiles.add(new File(getPackagePath(), "bug19xx/Bug1969.ceylon"));
+
+        CeyloncTool runCompiler = makeCompiler();
+        StringWriter writer = new StringWriter();
+        CeyloncFileManager runFileManager = (CeyloncFileManager)runCompiler.getStandardFileManager(writer, null, null, null);
+
+        // make sure the destination repo exists
+        new File(destDir).mkdirs();
+
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultOptions);
+        if(!options.contains("-src"))
+            options.addAll(Arrays.asList("-src", getSourcePath()));
+        if(!options.contains("-cacherep"))
+            options.addAll(Arrays.asList("-cacherep", getCachePath()));
+        if(!options.contains("-cp"))
+            options.addAll(Arrays.asList("-cp", getClassPathAsPath()));
+        options.add("-verbose");
+        Iterable<? extends JavaFileObject> compilationUnits1 =
+                runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
+        
+        CeyloncTaskImpl task = runCompiler.getTask(writer, runFileManager, null, options, null, compilationUnits1);
+        
+        ErrorCollector collector = new ErrorCollector();
+        assertCompilesOk(collector, task.call2());
+
+        Assert.assertTrue(writer.toString().length() > 0);
+    }
+
     @Test
     public void testBug1972() {
         compareWithJavaSource("bug19xx/Bug1972");
