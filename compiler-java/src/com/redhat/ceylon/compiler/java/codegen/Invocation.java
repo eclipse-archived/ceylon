@@ -1440,15 +1440,15 @@ class NamedArgumentInvocation extends Invocation {
         ListBuffer<JCStatement> statements;
         final Value model = attrArg.getDeclarationModel();
         final String name = model.getName();
-        final Naming.SyntheticName alias = gen.naming.alias(name);
-        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null, null);
+        String className = Naming.getAttrClassName(model, 0);
+        final List<JCTree> attrClass = gen.gen().transformAttribute(model, name, className, null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null, null);
         ProducedTypedReference typedRef = gen.getTypedReference(model);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         ProducedType type = parameterType(declaredParam, model.getType(), 0);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
         JCExpression initValue = gen.make().Apply(null, 
-                gen.makeSelect(alias.makeIdent(), Naming.getGetterName(model)),
+                gen.makeSelect(gen.makeUnquotedIdent(className), Naming.getGetterName(model)),
                 List.<JCExpression>nil());
         initValue = gen.expressionGen().applyErasureAndBoxing(
                 initValue, 
