@@ -709,7 +709,7 @@ public class ExpressionVisitor extends Visitor {
 	    ProducedType it;
 	    if (not) {
 	        //a !is condition, narrow to complement
-	        it = unit.denotableType(knownType.minus(type));
+	        it = /*unit.denotableType(*/knownType.minus(type);
 	    }
 	    else {
 	        //narrow to the intersection of the outer type 
@@ -6554,7 +6554,8 @@ public class ExpressionVisitor extends Visitor {
                                 caseUnionType(switchCaseList);
                         if (caseUnionType!=null) {
                             ProducedType complementType = 
-                                    unit.denotableType(switchExpressionType.minus(caseUnionType));
+                                    /*unit.denotableType(*/
+                                    switchExpressionType.minus(caseUnionType);
                             var.getType().setTypeModel(complementType);
                             var.getDeclarationModel().setType(complementType);
                         }
