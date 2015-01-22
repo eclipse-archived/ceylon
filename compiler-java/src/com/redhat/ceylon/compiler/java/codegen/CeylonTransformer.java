@@ -329,6 +329,9 @@ public class CeylonTransformer extends AbstractTransformer {
                 scopeAnnotations = makeAtLocalDeclarations(decl);
             }
             builder.classAnnotations(scopeAnnotations);
+        }else if(block != null){
+            List<JCAnnotation> scopeAnnotations = makeAtLocalDeclarations(block);
+            builder.classAnnotations(scopeAnnotations);
         }
 
         // Remember the setter class if we generate a getter
