@@ -21,17 +21,17 @@ final class getterArgumentNamedInvocationGeneric_ {
             let
             {
                 
-                final class i$1 implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
+                final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
                     
-                    private i$1() {
+                    private i$getter$_() {
                     }
                     
                     public T get_() {
                         return t;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.Getter<T> i$1 = new i$1();
-                final T arg$0$0 = i$1.get_();
+                final .com.redhat.ceylon.compiler.java.language.Getter<T> i$getter$_ = new i$getter$_();
+                final T arg$0$0 = i$getter$_.get_();
                 callFunction.callFunction(arg$0$0);
             }
             returning null;

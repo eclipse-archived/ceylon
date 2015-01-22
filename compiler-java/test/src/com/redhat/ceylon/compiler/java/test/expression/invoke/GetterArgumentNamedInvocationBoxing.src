@@ -11,17 +11,17 @@ final class getterArgumentNamedInvocationBoxing_ {
             {
                 .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("getterarg");
                 
-                final class item$1 implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                final class item$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                     
-                    private item$1() {
+                    private item$getter$_() {
                     }
                     
                     public long get_() {
                         return 1L;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.GetterLong item$1 = new item$1();
-                final .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(item$1.get_());
+                final .com.redhat.ceylon.compiler.java.language.GetterLong item$getter$_ = new item$getter$_();
+                final .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(item$getter$_.get_());
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor$;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor$;
             }
@@ -30,23 +30,23 @@ final class getterArgumentNamedInvocationBoxing_ {
         (
             let
             {
-                .ceylon.language.String arg$2$0 = .ceylon.language.String.instance("getterarg");
+                .ceylon.language.String arg$1$0 = .ceylon.language.String.instance("getterarg");
                 
-                final class item$3 implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
+                final class item$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
                     
-                    private item$3() {
+                    private item$getter$_() {
                     }
                     
                     public T get_() {
                         return t;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.Getter<T> item$3 = new item$3();
-                final T arg$2$1 = item$3.get_();
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = $reified$T;
+                final .com.redhat.ceylon.compiler.java.language.Getter<T> item$getter$_ = new item$getter$_();
+                final T arg$1$1 = item$getter$_.get_();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = $reified$T;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.String, T>(arg$2$reified$0, arg$2$reified$1, arg$2$0, arg$2$1);
+            returning new .ceylon.language.Entry<.ceylon.language.String, T>(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
         );
     }
 }

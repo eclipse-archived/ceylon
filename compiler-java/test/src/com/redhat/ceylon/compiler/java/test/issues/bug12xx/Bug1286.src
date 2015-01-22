@@ -27,9 +27,9 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
             let
             {
                 
-                final class setterArgument$2 implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                final class setterArgument$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
                     
-                    private setterArgument$2() {
+                    private setterArgument$getter$_() {
                     }
                     
                     public .java.lang.String get_() {
@@ -55,8 +55,8 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return "";
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> setterArgument$2 = new setterArgument$2();
-                final .java.lang.String arg$1$0 = setterArgument$2.get_();
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> setterArgument$getter$_ = new setterArgument$getter$_();
+                final .java.lang.String arg$1$0 = setterArgument$getter$_.get_();
                 .ceylon.language.Callable arg$1$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
@@ -99,9 +99,9 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return (int)(
                             let
                             {
-                                long $ceylontmp$hash$3 = hash;
+                                long $ceylontmp$hash$2 = hash;
                             }
-                            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
+                            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
                         );
                     }
                     
@@ -203,7 +203,7 @@ final class bug1286_method_ {
         return (
             let
             {
-                .java.lang.Object arg$4$0 = (
+                .java.lang.Object arg$3$0 = (
                     let
                     {
                         
@@ -222,9 +222,9 @@ final class bug1286_method_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmp$hash$6 = hash;
+                                        long $ceylontmp$hash$5 = hash;
                                     }
-                                    returning $ceylontmp$hash$6 ^ $ceylontmp$hash$6 >>> 32;
+                                    returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
                                 );
                             }
                             
@@ -255,12 +255,12 @@ final class bug1286_method_ {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class));
                             }
                         }
-                        final objectArgument_ arg$5$0 = new objectArgument_();
+                        final objectArgument_ arg$4$0 = new objectArgument_();
                     }
-                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$5$0);
+                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$4$0);
                 );
             }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$4$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$3$0);
         );
     }
 }
@@ -276,7 +276,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .java.lang.Object arg$7$0 = (
+                .java.lang.Object arg$6$0 = (
                     let
                     {
                         
@@ -295,9 +295,9 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmp$hash$9 = hash;
+                                        long $ceylontmp$hash$8 = hash;
                                     }
-                                    returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
+                                    returning $ceylontmp$hash$8 ^ $ceylontmp$hash$8 >>> 32;
                                 );
                             }
                             
@@ -328,12 +328,12 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class));
                             }
                         }
-                        final objectArgument_ arg$8$0 = new objectArgument_();
+                        final objectArgument_ arg$7$0 = new objectArgument_();
                     }
-                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$8$0);
+                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$7$0);
                 );
             }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$7$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method(arg$6$0);
         );
     }
     
@@ -447,9 +447,9 @@ final class bug1286_getterSetter_ {
                 return (int)(
                     let
                     {
-                        long $ceylontmp$hash$10 = hash;
+                        long $ceylontmp$hash$9 = hash;
                     }
-                    returning $ceylontmp$hash$10 ^ $ceylontmp$hash$10 >>> 32;
+                    returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
                 );
             }
             
