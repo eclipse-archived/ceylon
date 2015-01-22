@@ -246,8 +246,13 @@ public class JsCompiler {
                 }
                 if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
-                    if (opts.isVerbose()) {
-                        logger.debug(pu.getCompilationUnit().toString());
+                    if (opts.hasVerboseFlag("ast")) {
+                        if (opts.getOutWriter() == null) {
+                            logger.debug(pu.getCompilationUnit().toString());
+                        } else {
+                            opts.getOutWriter().write(pu.getCompilationUnit().toString());
+                            opts.getOutWriter().write('\n');
+                        }
                     }
                 }
             }
@@ -442,7 +447,7 @@ public class JsCompiler {
                             outRepo,
                             opts.getSrcDirs(),
                             moduleName, moduleVersion,
-                            opts.isVerbose(), logger);
+                            opts.hasVerboseFlag("cmr"), logger);
                     sac.copy(FileUtil.filesToPathList(jsout.getSources()));
                 }
                 if (resFiles != null && !resFiles.isEmpty()) {
@@ -452,7 +457,7 @@ public class JsCompiler {
                             opts.getResourceDirs(),
                             opts.getResourceRootName(),
                             moduleName, moduleVersion,
-                            opts.isVerbose(), logger);
+                            opts.hasVerboseFlag("cmr"), logger);
                     sac.copy(FileUtil.filesToPathList(filterForModule(resFiles, opts.getResourceDirs(), moduleName)));
                 }
             }
