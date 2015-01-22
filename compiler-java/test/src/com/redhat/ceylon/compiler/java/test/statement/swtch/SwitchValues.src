@@ -38,33 +38,13 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             .ceylon.language.String sel$0 = name;
             if (sel$0 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("Nowhere"));
+            } else if (sel$0 != null && sel$0.toString().equals("Tako") || sel$0 != null && sel$0.toString().equals("Gavin")) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Spain"));
+            } else if (sel$0 != null && sel$0.toString().equals("Emmanuel") || sel$0 != null && sel$0.toString().equals("Stef") || sel$0 != null && sel$0.toString().equals("David")) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("France"));
             } else {
-                switch_1: switch (sel$0.toString()) {
-                case "Tako": 
-                
-                case "Gavin": 
-                    {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("Spain"));
-                    }
-                    break switch_1;
-                
-                case "Emmanuel": 
-                
-                case "Stef": 
-                
-                case "David": 
-                    {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("France"));
-                    }
-                    break switch_1;
-                
-                default: 
-                    {
-                        final .java.lang.String name$1 = ((.ceylon.language.String)name).toString();
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("Somewhere else"));
-                    }
-                
-                }
+                final .java.lang.String name$1 = ((.ceylon.language.String)sel$0).toString();
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Somewhere else"));
             }
         }
         {
@@ -142,51 +122,15 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             .ceylon.language.Character sel$6 = ch;
             if (sel$6 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
+            } else if (sel$6 != null && sel$6.intValue() == 43) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
+            } else if (sel$6 != null && sel$6.intValue() == 45) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
+            } else if (sel$6 != null && sel$6.intValue() == 48 || sel$6 != null && sel$6.intValue() == 49 || sel$6 != null && sel$6.intValue() == 50 || sel$6 != null && sel$6.intValue() == 51 || sel$6 != null && sel$6.intValue() == 52 || sel$6 != null && sel$6.intValue() == 53 || sel$6 != null && sel$6.intValue() == 54 || sel$6 != null && sel$6.intValue() == 55 || sel$6 != null && sel$6.intValue() == 56 || sel$6 != null && sel$6.intValue() == 57) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("digit"));
             } else {
-                switch_5: switch (sel$6.intValue()) {
-                case 43: 
-                    {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
-                    }
-                    break switch_5;
-                
-                case 45: 
-                    {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
-                    }
-                    break switch_5;
-                
-                case 48: 
-                
-                case 49: 
-                
-                case 50: 
-                
-                case 51: 
-                
-                case 52: 
-                
-                case 53: 
-                
-                case 54: 
-                
-                case 55: 
-                
-                case 56: 
-                
-                case 57: 
-                    {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("digit"));
-                    }
-                    break switch_5;
-                
-                default: 
-                    {
-                        final int ch$7 = ((.ceylon.language.Character)ch).intValue();
-                        .ceylon.language.print_.print(.ceylon.language.String.instance("invalid character"));
-                    }
-                
-                }
+                final int ch$7 = ((.ceylon.language.Character)sel$6).intValue();
+                .ceylon.language.print_.print(.ceylon.language.String.instance("invalid character"));
             }
         }
         {

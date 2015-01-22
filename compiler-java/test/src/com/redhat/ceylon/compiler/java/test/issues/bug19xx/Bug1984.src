@@ -35,25 +35,16 @@ class Bug1984 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                                 let
                                 {
                                     .ceylon.language.String $ceylontmp$ifResult$1;
-                                    switch_0: switch (e.toString()) {
-                                    case "": 
-                                        {
+                                    {
+                                        .ceylon.language.String sel$2 = e;
+                                        if (sel$2.toString().equals("")) {
                                             $ceylontmp$ifResult$1 = .ceylon.language.String.instance("");
-                                        }
-                                        break switch_0;
-                                    
-                                    case "foo": 
-                                        {
+                                        } else if (sel$2.toString().equals("foo")) {
                                             $ceylontmp$ifResult$1 = e;
+                                        } else {
+                                            final .java.lang.String e$3 = ((.ceylon.language.String)sel$2).toString();
+                                            $ceylontmp$ifResult$1 = .ceylon.language.String.instance(.ceylon.language.String.pad(e$3, 2L));
                                         }
-                                        break switch_0;
-                                    
-                                    default: 
-                                        {
-                                            final .java.lang.String e$2 = ((.ceylon.language.String)e).toString();
-                                            $ceylontmp$ifResult$1 = .ceylon.language.String.instance(.ceylon.language.String.pad(e$2, 2L));
-                                        }
-                                    
                                     }
                                 }
                                 returning $ceylontmp$ifResult$1;
