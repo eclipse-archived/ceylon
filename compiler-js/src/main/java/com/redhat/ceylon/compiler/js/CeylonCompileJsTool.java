@@ -297,11 +297,11 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 tcb.setModuleFilters(resolver.getSourceModules());
             }
             tcb.statistics(opts.isProfile());
-            JsModuleManagerFactory.setVerbose(opts.isVerbose());
+            JsModuleManagerFactory.setVerbose(opts.hasVerboseFlag("loader"));
             tcb.moduleManagerFactory(new JsModuleManagerFactory(encoding));
         }
         //getting the type checker does process all types in the source directory
-        tcb.verbose(opts.isVerbose()).setRepositoryManager(repoman);
+        tcb.verbose(opts.hasVerboseFlag("ast")).setRepositoryManager(repoman);
         tcb.usageWarnings(false).encoding(encoding);
 
         typeChecker = tcb.getTypeChecker();
