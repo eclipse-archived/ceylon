@@ -1249,7 +1249,10 @@ class NamedArgumentInvocation extends Invocation {
         switch (Strategy.defaultParameterMethodOwner(param.getModel())) {
         case SELF:
         case STATIC:
+            break;
         case OUTER:
+            if(getQmePrimary() != null && getPrimaryDeclaration() instanceof Constructor == false)
+                thisExpr = callVarName.makeIdent();
             break;
         case OUTER_COMPANION:
             thisExpr = callVarName.makeIdent();
