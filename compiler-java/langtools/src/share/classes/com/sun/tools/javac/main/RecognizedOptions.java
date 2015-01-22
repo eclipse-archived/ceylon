@@ -350,6 +350,9 @@ public class RecognizedOptions {
                 // enter all the -verbose suboptions as "-verbose:suboption"
                 for (StringTokenizer t = new StringTokenizer(suboptions, ","); t.hasMoreTokens(); ) {
                     String tok = t.nextToken();
+                    // make sure all is an alias for --verbose
+                    if(tok.equals("all"))
+                        options.put(VERBOSE, "true");
                     String opt = "-verbose:" + tok;
                     options.put(opt, opt);
                 }

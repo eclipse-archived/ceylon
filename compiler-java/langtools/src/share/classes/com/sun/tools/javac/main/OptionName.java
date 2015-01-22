@@ -47,7 +47,7 @@ public enum OptionName {
     DIAGS("-XDdiags="),
     NOWARN("-nowarn"),
     VERBOSE("-verbose"),
-    VERBOSE_CUSTOM("-verbose:{loader,ast,code,cmr}"),
+    VERBOSE_CUSTOM("-verbose:{all,loader,ast,code,cmr,benchmark}"),
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),
