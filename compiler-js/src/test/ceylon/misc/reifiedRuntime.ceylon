@@ -159,9 +159,12 @@ class Holder458<T>() {
     value t = `<T>`;
     if (is Class t) {
       check(t.declaration==`class Tuple`, "#458.2 expected Tuple");
-      check(t.typeArguments[`given Tuple.Element`] is UnionType<Integer|String>, "#458.3 Tuple.Element should be Integer|String");
-      check(t.typeArguments[`given Tuple.First`] is Class<Integer>, "#458.4 Tuple.First should be Integer");
-      check(t.typeArguments[`given Tuple.Rest`] is Class<[Integer,String]>, "#458.5 Tuple.Rest should be [Integer,String]");
+      Anything targElement = t.typeArguments[`given Tuple.Element`];
+      Anything targFirst = t.typeArguments[`given Tuple.First`];
+      Anything targRest = t.typeArguments[`given Tuple.Rest`];
+      check(targElement is UnionType<Integer|String>, "#458.3 Tuple.Element expected Integer|String => ``targElement else "NULL"`` ``className(targElement else "NULL")``");
+      check(targFirst is Class<Integer>, "#458.4 Tuple.First expected Integer => ``targFirst else "NULL"`` ``className(targFirst else "NULL")``");
+      check(targRest is Class<[Integer,String]>, "#458.5 Tuple.Rest expected [Integer,String] => ``targRest else "NULL"`` ``className(targRest else "NULL")``");
     } else {
       fail("#458.1 expected Class<Tuple> found ``t``");
     }
