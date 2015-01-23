@@ -254,14 +254,21 @@ function coitarg$(coi){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
     if (mm.tp) {
+      var typeTargs=coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
+      if (typeTargs) {
+        if (coi.tipo===Tuple && typeTargs.t==='T') {
+          typeTargs=retpl$(typeTargs);
+          coi.$$targs$$.Type$ClassOrInterface=typeTargs;
+        }
+        typeTargs=typeTargs.a;
+      }
       var targs={};
       var ord=[];
       for (var tp in mm.tp) {
         var param = OpenTypeParam$jsint(coi.tipo,tp);
         var targ;
-        if (coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface && coi.$$targs$$.Type$ClassOrInterface.a
-            && coi.$$targs$$.Type$ClassOrInterface.a[tp]) {
-          var _targ=coi.$$targs$$.Type$ClassOrInterface.a[tp];
+        var _targ=typeTargs && typeTargs[tp];
+        if (_targ) {
           if (typeof(_targ)==='string') {
             console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
             _targ={t:Anything};
