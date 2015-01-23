@@ -241,7 +241,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (sub != null) {
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
-                    d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
+                    if (MetamodelGenerator.METATYPE_ALIAS.equals(e.getValue().get(MetamodelGenerator.KEY_METATYPE))) {
+                        d.getMembers().add(loadTypeAlias(e.getKey(), e.getValue(), (Scope)d, tparms));
+                    } else {
+                        d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
+                    }
                 }
             }
         }
