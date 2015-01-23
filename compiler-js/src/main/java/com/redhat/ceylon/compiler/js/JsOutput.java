@@ -7,13 +7,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /** A container for things we need to keep per-module. */
 public class JsOutput {
@@ -132,6 +136,43 @@ public class JsOutput {
         }
         catch (IOException ioe) {
             throw new RuntimeException("Generating JS code", ioe);
+        }
+    }
+
+    public void publishUnsharedDeclarations(JsIdentifierNames names) {
+        //#489 lists with unshared toplevel members of each package
+        for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : module.getPackages()) {
+            ArrayList<Declaration> unsharedDecls = new ArrayList<>(pkg.getMembers().size());
+            for (Declaration d : pkg.getMembers()) {
+                if (!d.isShared() && !(d.isAnonymous() && d.getName().startsWith("anonymous#"))) {
+                    unsharedDecls.add(d);
+                }
+            }
+            if (!unsharedDecls.isEmpty()) {
+                out("ex$.$pkgunsh$", pkg.getNameAsString().replace('.', '$'), "={");
+                boolean first=true;
+                for (Declaration d : unsharedDecls) {
+                    //TODO only use quotes when absolutely necessary
+                    if (d.isAnonymous()) {
+                        if (first)first=false;else out(",");
+                        out("'", names.getter(d, true),
+                                "':", names.name(d));
+                    } else if (d instanceof Setter) {
+                        //ignore
+                        if (((Setter) d).getGetter() == null) {
+                            if (first)first=false;else out(",");
+                            out("'", d.getName(), "':", names.setter(d));
+                        }
+                    } else if (d instanceof Value) {
+                        if (first)first=false;else out(",");
+                        out("'", d.getName(), "':", names.getter(d, true));
+                    } else {
+                        if (first)first=false;else out(",");
+                        out("'", d.getName(), "':", names.name(d));
+                    }
+                }
+                out("};\n");
+            }
         }
     }
 
