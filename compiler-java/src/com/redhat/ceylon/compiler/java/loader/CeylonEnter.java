@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -76,6 +77,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.code.Symbol;
@@ -482,6 +484,11 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(dav);
             compilationUnit.visit(tpCaptureVisitor);
             compilationUnit.visit(localInterfaceVisitor);
+        }
+        
+        for (PhasedUnit pu : listOfUnits) {
+            CompilationUnit compilationUnit = pu.getCompilationUnit();
+            compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, pu.getSuppressedWarnings()));
         }
         
         collectTreeErrors(true, true);
