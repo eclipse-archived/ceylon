@@ -375,7 +375,6 @@ public class PhasedUnit {
             compilationUnit.visit(rc);
             compilationUnit.visit(new UsageVisitor(rc));
             compilationUnit.visit(new DeprecationVisitor());
-            compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, suppressedWarnings));
             usageAnalyzed = true;
         }
     }
@@ -442,5 +441,9 @@ public class PhasedUnit {
 
     public void setSuppressedWarnings(EnumSet<Warning> suppressedWarnings) {
         this.suppressedWarnings = suppressedWarnings;
+    }
+    
+    public EnumSet<Warning> getSuppressedWarnings() {
+        return this.suppressedWarnings;
     }
 }

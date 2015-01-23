@@ -13,5 +13,6 @@ public enum Warning {
     javaNamespace, 
     suppressedAlready, 
     suppressesNothing, 
-    unknownWarning;
+    unknownWarning, 
+    ambiguousAnnotation;
 }
