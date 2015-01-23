@@ -114,23 +114,9 @@ public class UnsupportedVisitor extends Visitor {
 
     private void interopAnnotationTargeting(EnumSet<AnnotationTarget> outputs,
             Tree.AnnotationList annotationList) {
-        for (Tree.Annotation a : annotationList.getAnnotations()) {
-            Declaration annoCtor = ((Tree.BaseMemberExpression)a.getPrimary()).getDeclaration();
-            if (annoCtor instanceof AnnotationProxyMethod) {
-                AnnotationProxyClass annoClass = ((AnnotationProxyMethod) annoCtor).getProxyClass();
-                EnumSet<AnnotationTarget> possibleTargets = AnnotationTarget.annotationTargets(annoClass);
-                if (possibleTargets == null) {
-                    continue;
-                }
-                
-                EnumSet<AnnotationTarget> actualTargets = possibleTargets.clone();
-                actualTargets.retainAll(outputs);
-                if (actualTargets.size() > 1) {
-                    a.addError("ambiguous annotation target: could be applied to any of " + actualTargets);
-                } else if (actualTargets.size() == 0) {
-                    a.addError("no target for annotation: @Target of @interface " + ((AnnotationProxyClass)annoClass).iface.getName() + " lists " + possibleTargets + " but annotated element tranforms to " + outputs);
-                }
-            }
+        for (Tree.Annotation annotation : annotationList.getAnnotations()) {
+            AnnotationTarget.interopAnnotationTargeting(outputs, annotation, true);
         }
     }
+
 }

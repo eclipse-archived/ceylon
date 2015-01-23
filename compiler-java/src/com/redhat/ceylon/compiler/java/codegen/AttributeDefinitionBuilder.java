@@ -89,6 +89,7 @@ public class AttributeDefinitionBuilder {
     private ListBuffer<JCAnnotation> modelAnnotations;
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
+    private ListBuffer<JCAnnotation> fieldAnnotations;
     private boolean isHash;
     
     private JCExpression setterClass;
@@ -195,6 +196,16 @@ public class AttributeDefinitionBuilder {
                 this.classAnnotations = ListBuffer.lb();
             }
             this.classAnnotations.appendList(annotations);
+        }
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder fieldAnnotations(List<JCAnnotation> annotations) {
+        if (annotations != null) {
+            if (this.fieldAnnotations == null) {
+                this.fieldAnnotations = ListBuffer.lb();
+            }
+            this.fieldAnnotations.appendList(annotations);
         }
         return this;
     }
@@ -350,7 +361,7 @@ public class AttributeDefinitionBuilder {
         }
 
         return owner.make().VarDef(
-                owner.make().Modifiers(flags),
+                owner.make().Modifiers(flags, fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
                 owner.names().fromString(Naming.quoteFieldName(fieldName)),
                 attrType(),
                 null

@@ -3,8 +3,12 @@ package com.redhat.ceylon.compiler.loader.model;
 import java.util.EnumSet;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 
 
 /**
@@ -39,15 +43,39 @@ public enum AnnotationTarget {
     }
     
     public static EnumSet<AnnotationTarget> outputs(Tree.AnyClass that) {
-        EnumSet<AnnotationTarget> result = EnumSet.of(TYPE, CONSTRUCTOR);
+        EnumSet<AnnotationTarget> result = EnumSet.of(TYPE);
+        if (!that.getDeclarationModel().hasConstructors()) {
+            result.add(CONSTRUCTOR);
+        }
         if (that.getDeclarationModel().isAnnotation()) {
             result.add(ANNOTATION_TYPE);
         }
         return result;
     }
+
+    public static EnumSet<AnnotationTarget> outputs(PackageDescriptor annotated) {
+        return EnumSet.of(TYPE);
+    }
+
+    public static EnumSet<AnnotationTarget> outputs(ImportModule annotated) {
+        return EnumSet.of(FIELD);
+    }
+
+    public static EnumSet<AnnotationTarget> outputs(ModuleDescriptor annotated) {
+        return EnumSet.of(TYPE);
+    }
+    
+    public static EnumSet<AnnotationTarget> outputs(Tree.TypeAliasDeclaration that) {
+        return EnumSet.of(TYPE);
+    }
     
     public static EnumSet<AnnotationTarget> outputs(Tree.AnyInterface that) {
         return EnumSet.of(TYPE);
+    }
+    
+    public static EnumSet<AnnotationTarget> outputs(
+            Tree.Constructor annotated) {
+        return EnumSet.<AnnotationTarget>of(CONSTRUCTOR);
     }
     
     public static EnumSet<AnnotationTarget> outputs(Tree.AnyMethod that) {
@@ -88,5 +116,30 @@ public enum AnnotationTarget {
             }
         }
         return result;
+    }
+    
+
+    public static EnumSet<AnnotationTarget> interopAnnotationTargeting(EnumSet<AnnotationTarget> outputs,
+            Tree.Annotation annotation, boolean errors) {
+        Declaration annoCtor = ((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration();
+        if (annoCtor instanceof AnnotationProxyMethod) {
+            AnnotationProxyClass annoClass = ((AnnotationProxyMethod) annoCtor).getProxyClass();
+            EnumSet<AnnotationTarget> possibleTargets = AnnotationTarget.annotationTargets(annoClass);
+            if (possibleTargets == null) {
+                return null;
+            }
+            EnumSet<AnnotationTarget> actualTargets = possibleTargets.clone();
+            actualTargets.retainAll(outputs);
+            if (errors) {
+                if (actualTargets.size() > 1) {
+                    annotation.addError("ambiguous annotation target: could be applied to any of " + actualTargets);
+                } else if (actualTargets.size() == 0) {
+                    annotation.addError("no target for annotation: @Target of @interface " + ((AnnotationProxyClass)annoClass).iface.getName() + " lists " + possibleTargets + " but annotated element tranforms to " + outputs);
+                }
+            }
+            return actualTargets;
+        } else {
+            return null;
+        }
     }
 }

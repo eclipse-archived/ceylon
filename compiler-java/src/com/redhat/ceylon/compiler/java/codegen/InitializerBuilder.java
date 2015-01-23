@@ -10,6 +10,7 @@ import javax.management.RuntimeErrorException;
 
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.TreeCopier;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
@@ -23,6 +24,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     private JCStatement superCall;
     private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
+    private final ListBuffer<JCAnnotation> userAnnos = ListBuffer.lb();
     
     public InitializerBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -45,6 +47,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         }
         MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
         constructor.modifiers(modifiers)
+            .userAnnotations(userAnnos.toList())
             .parameters(params.toList())
             .body(body);
         return constructor.build();
@@ -56,6 +59,11 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
             throw new BugException("illegal modifier for constructor " + Flags.toString(mods));
         }
         this.modifiers = mods;
+        return this;
+    }
+    
+    public InitializerBuilder userAnnotations(List<JCAnnotation> annos) {
+        this.userAnnos.addAll(annos);
         return this;
     }
     

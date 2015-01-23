@@ -26,6 +26,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
+import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -249,7 +250,6 @@ public class CeylonTransformer extends AbstractTransformer {
         final String attrClassName = Naming.getAttrClassName(declarationModel, 0);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
-        final Tree.AnnotationList annotationList = decl.getAnnotationList();
         if (decl instanceof Tree.AttributeDeclaration) {
             Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
             expression = adecl.getSpecifierOrInitializerExpression();
@@ -269,13 +269,13 @@ public class CeylonTransformer extends AbstractTransformer {
             throw new RuntimeException();
         }
         return transformAttribute(declarationModel, attrName, attrClassName,
-                annotationList, block, expression, decl, setterDecl);
+                decl, block, expression, decl, setterDecl);
     }
 
     public List<JCTree> transformAttribute(
             TypedDeclaration declarationModel,
             String attrName, String attrClassName,
-            final Tree.AnnotationList annotations,
+            final Tree.Declaration annotated,
             final Tree.Block block,
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.TypedDeclaration decl,
@@ -383,7 +383,7 @@ public class CeylonTransformer extends AbstractTransformer {
                         JCBlock setterBlock = makeSetterBlock(setterDecl.getDeclarationModel(),
                                 setterDecl.getBlock(), setterDecl.getSpecifierExpression());
                         builder.setterBlock(setterBlock);
-                        builder.userAnnotationsSetter(expressionGen().transform(setterDecl.getAnnotationList()));
+                        builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, setterDecl));
                     } else {
                         builder.immutable();
                     }
@@ -391,7 +391,9 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        builder.userAnnotations(expressionGen().transform(annotations));
+        if (annotated != null) {
+            builder.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, annotated));
+        }
         
         if (Decl.isLocal(declarationModel)) {
             if (expressionError != null) {
@@ -474,7 +476,7 @@ public class CeylonTransformer extends AbstractTransformer {
         builder.modifiers(Flags.FINAL)
                 .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
-        builder.annotations(expressionGen().transform(module.getAnnotationList()));
+        builder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, module));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
             String quotedName;
             if (imported.getImportPath() != null) {
@@ -493,7 +495,7 @@ public class CeylonTransformer extends AbstractTransformer {
             if (quotedName.equals("ceylon$language")) {
                 continue;
             }
-            List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
+            List<JCAnnotation> importAnnotations = expressionGen().transformAnnotations(true, AnnotationTarget.FIELD, imported);
             JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
             Name fieldName = names().fromString(quotedName);
             builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), makeNull())));
@@ -508,7 +510,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 .modifiers(Flags.FINAL)
                 .annotations(makeAtPackage(pack.getUnit().getPackage()));
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
-        builder.annotations(expressionGen().transform(pack.getAnnotationList()));
+        builder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, pack));
         return builder.build();
     }
 }
