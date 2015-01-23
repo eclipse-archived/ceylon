@@ -1,9 +1,13 @@
 package com.redhat.ceylon.compiler.loader.model;
 
 import java.util.EnumSet;
+import java.util.Iterator;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
@@ -136,11 +140,25 @@ public enum AnnotationTarget {
             }
             EnumSet<AnnotationTarget> actualTargets = possibleTargets.clone();
             actualTargets.retainAll(outputs);
-            if (errors) {
-                if (actualTargets.size() > 1) {
-                    annotation.addError("ambiguous annotation target: " + annoCtor.getName() + 
-                            " could be applied to any of " + actualTargets);
-                } else if (actualTargets.size() == 0) {
+            
+            if (actualTargets.size() > 1) {
+                if (errors) {
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("ambiguous annotation target: ").append(annoCtor.getName());
+                    sb.append(" could be applied to several targets, use one of ");
+                    for (Iterator<AnnotationTarget> iterator = actualTargets.iterator(); iterator.hasNext();) {
+                        AnnotationTarget x = iterator.next();
+                        sb.append(Naming.getDisambigAnnoCtorName((Interface)((AnnotationProxyMethod) annoCtor).getProxyClass().iface, x));
+                        if (iterator.hasNext()) {
+                            sb.append(", ");
+                        }
+                    }
+                    sb.append(" to disambiguate");
+                    annotation.addUsageWarning(Warning.ambiguousAnnotation, sb.toString());
+                }
+                return null;
+            } else if (actualTargets.size() == 0) {
+                if (errors) {
                     annotation.addError("no target for " + annoCtor.getName() + 
                             " annotation: @Target of @interface " + 
                             ((AnnotationProxyClass)annoClass).iface.getName() + 
@@ -148,6 +166,7 @@ public enum AnnotationTarget {
                             " but annotated element tranforms to " + outputs);
                 }
             }
+        
             return actualTargets;
         } else {
             return null;

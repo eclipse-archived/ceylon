@@ -240,7 +240,7 @@ public class LazyPackage extends Package {
         if (annotationTargets != null) {
             for (AnnotationTarget target : annotationTargets) {
                 compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass,  
-                        CodegenUtil.getJavaBeanName(iface.getName())+"__"+target, 
+                        Naming.getDisambigAnnoCtorName(iface, target), 
                         target));
             }
         }

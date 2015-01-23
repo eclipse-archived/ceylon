@@ -32,6 +32,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
@@ -2256,6 +2257,11 @@ public class Naming implements LocalId {
 
     public String getAnnotationSequenceMethodName() {
         return name(Unfix.$annotationSequence$);
+    }
+    
+
+    public static String getDisambigAnnoCtorName(Interface iface, AnnotationTarget target) {
+        return CodegenUtil.getJavaBeanName(iface.getName())+"__"+target;
     }
 
     public static String getToplevelAttributeSavedExceptionName() {
