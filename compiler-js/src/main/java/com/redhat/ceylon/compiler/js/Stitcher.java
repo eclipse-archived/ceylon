@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 
 /** A simple program that takes the main JS module file and replaces #include markers with the contents of other files.
@@ -39,8 +40,10 @@ public class Stitcher {
     public static final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
     public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
     public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
+    private static JsIdentifierNames names;
+    private static Module mod;
 
-    private static int compileLanguageModule(final String line, Writer writer)
+    private static int compileLanguageModule(final String line, final Writer writer)
             throws IOException {
         File clsrcTmpDir = Files.createTempDirectory(tmpDir, "clsrc").toFile();
         final File tmpout = new File(clsrcTmpDir, Constants.DEFAULT_MODULE_DIR);
@@ -100,6 +103,10 @@ public class Stitcher {
         JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
         jsc.setSourceFiles(includes);
         jsc.generate();
+        if (names == null) {
+            names = jsc.getNames();
+            mod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule();
+        }
         JsCompiler.compilingLanguageModule=false;
         File compsrc = new File(tmpout, "delete/me/delete-me.js");
         if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
@@ -160,7 +167,7 @@ public class Stitcher {
         return 0;
     }
 
-    private static int stitch(File infile, Writer writer, String version) throws IOException {
+    private static int stitch(File infile, final Writer writer, String version) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
@@ -183,6 +190,13 @@ public class Stitcher {
                         if (exitCode != 0) {
                             return exitCode;
                         }
+                    } else if (line.startsWith("//#UNSHARED")) {
+                        new JsOutput(mod, "UTF-8") {
+                            @Override
+                            protected Writer getWriter() throws IOException {
+                                return writer;
+                            }
+                        }.publishUnsharedDeclarations(names);
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.write(line);
                         writer.write("\n");
