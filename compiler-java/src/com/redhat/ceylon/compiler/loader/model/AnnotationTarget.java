@@ -29,6 +29,11 @@ public enum AnnotationTarget {
     LOCAL_VARIABLE,
     ANNOTATION_TYPE,
     PACKAGE;
+    // Note: Java 8 added TYPE_USE and TYPE_PARAMETER but we 
+    // don't really need to support these
+    // because they're not visible via reflection, but intended only for 
+    // compile time and that's not really a use case we 
+    // need to support, is it?
     
     /**
      * Returns the possible targets of the given annotation proxy class, 
@@ -102,9 +107,11 @@ public enum AnnotationTarget {
                 if (declarationModel.isParameter()) {
                     result.add(PARAMETER);
                 }
-                result.add(METHOD);
-                if (!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
-                    result.add(FIELD);
+                if (declarationModel.isShared() || declarationModel.isCaptured()) {
+                    result.add(METHOD);
+                    if (!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
+                        result.add(FIELD);
+                    }
                 }
             } else if (declarationModel.isInterfaceMember()) {
                 result.add(METHOD);
