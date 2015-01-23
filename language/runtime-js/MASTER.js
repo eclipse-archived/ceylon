@@ -48,7 +48,8 @@ ex$.Nothing=Nothing;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
 ex$.NatErr=NatErr;
-    });
+//#UNSHARED
+});
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
     if (typeof exports!=='undefined') {
