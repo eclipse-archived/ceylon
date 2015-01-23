@@ -20,26 +20,27 @@
 import ceylon.language.meta.declaration{
     ClassDeclaration
 }
-suppressWarnings("ambiguousAnnotation")
-typeOrConstructorTarget
+
+typeOrConstructorTarget__CONSTRUCTOR
 class AmbiguousClass(s2,s3) {
     
     
-    fieldOrMethodTarget
+    fieldOrMethodTarget__FIELD
     shared String s = "";
     
-    // TODO the natural target here is a getter, but because it's not captured we don't generate any annotation
-    parameterOrFieldTarget
+    
+    parameterOrFieldTarget__PARAMETER
     String s2;
     
-    parameterOrFieldOrMethodTarget
+    
+    parameterOrFieldOrMethodTarget__PARAMETER
     shared String s3;
 }
-suppressWarnings("ambiguousAnnotation")
-//typeOrConstructorTarget TODO since this one's natural target is neither of its contrained targets we generate crap
-fieldOrMethodTarget
+
+typeOrConstructorTarget__CONSTRUCTOR
+fieldOrMethodTarget__FIELD
 object ambiguousObject {}
 
-suppressWarnings("ambiguousAnnotation")
-typeOrAnnotationTypeTarget
+
+typeOrAnnotationTypeTarget__ANNOTATION_TYPE
 final annotation class AmbiguousAnnotationClass() satisfies OptionalAnnotation<AmbiguousAnnotationClass, ClassDeclaration> {}

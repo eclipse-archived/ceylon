@@ -43,9 +43,9 @@ class HeuristicTarget2(
     fieldTarget
     methodTarget
     shared variable String s3=s;
-
+    
 }
-
+ 
 "Targeting annotations on object definitions"
 typeTarget
 constructorTarget
