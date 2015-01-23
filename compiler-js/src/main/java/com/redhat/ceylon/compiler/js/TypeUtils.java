@@ -141,10 +141,10 @@ public class TypeUtils {
         }
         if (t.getContainer() instanceof ClassOrInterface) {
             final Scope scope = node == null ? null : Util.getContainingClassOrInterface(node.getScope());
-            List<ClassOrInterface> parents = new ArrayList<>();
             ClassOrInterface parent = (ClassOrInterface)t.getContainer();
+            final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
-            while (parent.getContainer() instanceof ClassOrInterface) {
+            while (parent != scope && parent.getContainer() instanceof ClassOrInterface) {
                 parent = (ClassOrInterface)parent.getContainer();
                 parents.add(0, parent);
             }
