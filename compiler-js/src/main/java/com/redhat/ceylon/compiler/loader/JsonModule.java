@@ -93,4 +93,11 @@ public class JsonModule extends Module {
         throw new CompilerErrorException("Package " + name + " not available in module " + this);
     }
 
+    public List<ModuleImport> getImports() {
+        final List<ModuleImport> s = super.getImports();
+        ArrayList<ModuleImport> r = new ArrayList<>(s.size());
+        r.addAll(s);
+        return r;
+    }
+
 }

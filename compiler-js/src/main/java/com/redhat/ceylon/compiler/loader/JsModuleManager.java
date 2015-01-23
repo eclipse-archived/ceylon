@@ -88,7 +88,7 @@ public class JsModuleManager extends ModuleManager {
                         System.out.println("Model not found in " + js);
                     }
                 } else {
-                    loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
+                    loadModuleFromMap(artifact, module, dependencyTree, phasedUnitsOfDependencies,
                             forCompiledModule, model);
                     return;
                 }
@@ -148,8 +148,7 @@ public class JsModuleManager extends ModuleManager {
         return pkg;
     }
 
-    protected void loadModuleFromMap(ArtifactResult artifact, Module module,
-            ModuleImport moduleImport, LinkedList<Module> dependencyTree,
+    protected void loadModuleFromMap(ArtifactResult artifact, Module module, LinkedList<Module> dependencyTree,
             List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule,
             Map<String, Object> model) {
         @SuppressWarnings("unchecked")
