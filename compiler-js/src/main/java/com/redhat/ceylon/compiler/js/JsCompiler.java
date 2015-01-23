@@ -59,6 +59,7 @@ public class JsCompiler {
     static boolean compilingLanguageModule;
     private int exitCode = 0;
     private Logger logger;
+    private JsIdentifierNames names;
 
     public int getExitCode() {
         return exitCode;
@@ -257,7 +258,7 @@ public class JsCompiler {
                 }
             }
             //Then write it out and output the reference in the module file
-            final JsIdentifierNames names = new JsIdentifierNames();
+            names = new JsIdentifierNames();
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                     e.getValue().encodeModel(names);
@@ -390,6 +391,13 @@ public class JsCompiler {
         return new JsOutput(m, opts.getEncoding());
     }
 
+    JsOutput getOutputForModule(Module m) {
+        return output.get(m);
+    }
+    JsIdentifierNames getNames() {
+        return names;
+    }
+
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected void finish() throws IOException {
         String outDir = opts.getOutRepo();
@@ -410,6 +418,9 @@ public class JsCompiler {
         for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
             JsOutput jsout = entry.getValue();
 
+            if (!compilingLanguageModule) {
+                jsout.publishUnsharedDeclarations(names);
+            }
             if (opts.isModulify()) {
                 endWrapper(jsout.getWriter());
             }
