@@ -19,7 +19,7 @@ class MethodIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final long x$2 = ((.ceylon.language.Integer)x$1).longValue();
             return x$2;
         } else {
-            return owt$priv$((.ceylon.language.Integer)x);
+            return owt$priv$(x);
         }
     }
     
