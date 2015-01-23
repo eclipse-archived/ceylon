@@ -123,8 +123,14 @@ public enum AnnotationTarget {
             Tree.Annotation annotation, boolean errors) {
         Declaration annoCtor = ((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration();
         if (annoCtor instanceof AnnotationProxyMethod) {
-            AnnotationProxyClass annoClass = ((AnnotationProxyMethod) annoCtor).getProxyClass();
-            EnumSet<AnnotationTarget> possibleTargets = AnnotationTarget.annotationTargets(annoClass);
+            EnumSet<AnnotationTarget> possibleTargets;
+            AnnotationProxyMethod proxyCtor = (AnnotationProxyMethod)annoCtor;
+            AnnotationProxyClass annoClass = proxyCtor.getProxyClass();
+            if (proxyCtor.getAnnotationTarget() != null) {
+                possibleTargets = EnumSet.of(proxyCtor.getAnnotationTarget());
+            } else {
+                possibleTargets = AnnotationTarget.annotationTargets(annoClass);
+            }
             if (possibleTargets == null) {
                 return null;
             }
@@ -132,9 +138,14 @@ public enum AnnotationTarget {
             actualTargets.retainAll(outputs);
             if (errors) {
                 if (actualTargets.size() > 1) {
-                    annotation.addError("ambiguous annotation target: could be applied to any of " + actualTargets);
+                    annotation.addError("ambiguous annotation target: " + annoCtor.getName() + 
+                            " could be applied to any of " + actualTargets);
                 } else if (actualTargets.size() == 0) {
-                    annotation.addError("no target for annotation: @Target of @interface " + ((AnnotationProxyClass)annoClass).iface.getName() + " lists " + possibleTargets + " but annotated element tranforms to " + outputs);
+                    annotation.addError("no target for " + annoCtor.getName() + 
+                            " annotation: @Target of @interface " + 
+                            ((AnnotationProxyClass)annoClass).iface.getName() + 
+                            " lists " + possibleTargets + 
+                            " but annotated element tranforms to " + outputs);
                 }
             }
             return actualTargets;

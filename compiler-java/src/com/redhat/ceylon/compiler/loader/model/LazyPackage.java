@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -45,7 +46,6 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -140,7 +140,7 @@ public class LazyPackage extends Package {
                 // So try to find the annotation type with two strategies:
                 // - urlDecoder -> UrlDecover and url -> Url
                 // - urlDecoder -> URLDecoder and url -> URL
-                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name))){
+                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name), Naming.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER)$", ""))){
                     Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
                     if (possibleAnnotationType != null
                             && possibleAnnotationType instanceof LazyInterface
@@ -225,9 +225,40 @@ public class LazyPackage extends Package {
      *   }
      *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
      * </pre>
-     * @param iface
+     * 
+     * We also make a {@code *__method}, {@code *__field} etc version for each
+     * {@code @Target} program element
+     * @param iface The model of the annotation @interface
      */
     private void makeInteropAnnotation(LazyInterface iface) {
+        AnnotationProxyClass klass = makeInteropAnnotationClass(iface);
+        
+        compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass,  
+                CodegenUtil.getJavaBeanName(iface.getName()), null));
+        
+        EnumSet<AnnotationTarget> annotationTargets = AnnotationTarget.annotationTargets(klass);
+        if (annotationTargets != null) {
+            for (AnnotationTarget target : annotationTargets) {
+                compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass,  
+                        CodegenUtil.getJavaBeanName(iface.getName())+"__"+target, 
+                        target));
+            }
+        }
+        
+        compiledDeclarations.add(klass);
+    }
+
+    /**
+     * <pre>
+     *   annotation class Annotation$Proxy(...) satisfies Annotation {
+     *       // a `shared` class parameter for each method of Annotation
+     *   }
+     * </pre>
+     * @param iface The model of the annotation @interface
+     * @return The annotation class for the given interface
+     */
+    protected AnnotationProxyClass makeInteropAnnotationClass(
+            LazyInterface iface) {
         AnnotationProxyClass klass = new AnnotationProxyClass(iface);
         klass.setContainer(this);
         klass.setScope(this);
@@ -241,13 +272,53 @@ public class LazyPackage extends Package {
         klass.setUnit(iface.getUnit());
         ParameterList classpl = new ParameterList();
         klass.addParameterList(classpl);
+        klass.setScope(this);
         
+        for (Declaration member : iface.getMembers()) {
+            boolean isValue = member.getName().equals("value");
+            if (member instanceof JavaMethod) {
+                JavaMethod m = (JavaMethod)member;
+                Parameter klassParam = new Parameter();
+                Value value = new Value();
+                klassParam.setModel(value);
+                value.setInitializerParameter(klassParam);
+                klassParam.setDeclaration(klass);
+                value.setContainer(klass);
+                value.setScope(klass);
+                value.setName(member.getName());
+                klassParam.setName(member.getName());
+                value.setType(annotationParameterType(iface.getUnit(), m));
+                value.setUnboxed(true);
+                value.setUnit(iface.getUnit());
+                if(isValue)
+                    classpl.getParameters().add(0, klassParam);
+                else
+                    classpl.getParameters().add(klassParam);
+                klass.addMember(value);
+            }
+        }
+        return klass;
+    }
+
+    /**
+     * <pre>
+     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
+     * </pre>
+     * @param iface The model of the annotation @interface
+     * @param klass The annotation class
+     * @param ctorName The name of the constructor to generate
+     * @param target The Java program element the constructor should target, 
+     * if this is a disambiguating constructor, otherwise null
+     * @return 
+     */
+    protected AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
+            AnnotationProxyClass klass, String ctorName, AnnotationTarget target) {
         AnnotationProxyMethod ctor = new AnnotationProxyMethod();
+        ctor.setAnnotationTarget(target);
         ctor.setProxyClass(klass);
         ctor.setContainer(this);
-        klass.setScope(this);
         ctor.setAnnotation(true);
-        ctor.setName(CodegenUtil.getJavaBeanName(iface.getName()));
+        ctor.setName(ctorName);
         ctor.setShared(iface.isShared());
         Annotation annotationAnnotation2 = new Annotation();
         annotationAnnotation2.setName("annotation");
@@ -272,60 +343,40 @@ public class LazyPackage extends Package {
                 ParameterAnnotationTerm term = new ParameterAnnotationTerm();
                 AnnotationArgument argument = new AnnotationArgument();
                 argument.setTerm(term);
-                {
-                    Parameter klassParam = new Parameter();
-                    Value value = new Value();
-                    klassParam.setModel(value);
-                    value.setInitializerParameter(klassParam);
-                    klassParam.setDeclaration(klass);
-                    value.setContainer(klass);
-                    value.setScope(klass);
-                    value.setName(member.getName());
-                    klassParam.setName(member.getName());
-                    value.setType(annotationParameterType(iface.getUnit(), m));
-                    value.setUnboxed(true);
-                    value.setUnit(iface.getUnit());
-                    if(isValue)
-                        classpl.getParameters().add(0, klassParam);
-                    else
-                        classpl.getParameters().add(klassParam);
-                    argument.setParameter(klassParam);
-                    klass.addMember(value);
-                }
-                {
-                    Parameter ctorParam = new Parameter();
-                    Value value = new Value();
-                    ctorParam.setModel(value);
-                    value.setInitializerParameter(ctorParam);
-                    ctorParam.setDeclaration(ctor);
-                    value.setContainer(klass);
-                    value.setScope(klass);
-                    ctorParam.setDefaulted(m.isDefaultedAnnotation());
-                    value.setName(member.getName());
-                    ctorParam.setName(member.getName());
-                    value.setType(annotationParameterType(iface.getUnit(), m));
-                    value.setUnboxed(true);
-                    value.setUnit(iface.getUnit());
-                    if(isValue)
-                        ctorpl.getParameters().add(0, ctorParam);
-                    else
-                        ctorpl.getParameters().add(ctorParam);
-                    term.setSourceParameter(ctorParam);
-                    ctor.addMember(value);
-                    
-                    AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
-                    acp.setParameter(ctorParam);
-                    if(isValue)
-                        ai.getConstructorParameters().add(0, acp);
-                    else
-                        ai.getConstructorParameters().add(acp);
-                }
+                argument.setParameter(klass.getParameter(member.getName()));
+                
+                Parameter ctorParam = new Parameter();
+                Value value = new Value();
+                ctorParam.setModel(value);
+                value.setInitializerParameter(ctorParam);
+                ctorParam.setDeclaration(ctor);
+                value.setContainer(klass);
+                value.setScope(klass);
+                ctorParam.setDefaulted(m.isDefaultedAnnotation());
+                value.setName(member.getName());
+                ctorParam.setName(member.getName());
+                value.setType(annotationParameterType(iface.getUnit(), m));
+                value.setUnboxed(true);
+                value.setUnit(iface.getUnit());
+                if(isValue)
+                    ctorpl.getParameters().add(0, ctorParam);
+                else
+                    ctorpl.getParameters().add(ctorParam);
+                term.setSourceParameter(ctorParam);
+                ctor.addMember(value);
+                
+                AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
+                acp.setParameter(ctorParam);
+                if(isValue)
+                    ai.getConstructorParameters().add(0, acp);
+                else
+                    ai.getConstructorParameters().add(acp);
+            
                 annotationArgs.add(argument);
             }
         }
         ai.getAnnotationArguments().addAll(annotationArgs);
-        compiledDeclarations.add(klass);
-        compiledDeclarations.add(ctor);
+        return ctor;
     }
 
     private ProducedType annotationParameterType(Unit unit, JavaMethod m) {
