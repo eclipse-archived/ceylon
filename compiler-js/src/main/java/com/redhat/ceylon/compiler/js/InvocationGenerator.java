@@ -584,7 +584,7 @@ public class InvocationGenerator {
         }
     }
 
-    private void describeMethodParameters(Tree.Term term) {
+    void describeMethodParameters(Tree.Term term) {
         ParameterList plist = null;
         if (term instanceof Tree.FunctionArgument) {
             plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);

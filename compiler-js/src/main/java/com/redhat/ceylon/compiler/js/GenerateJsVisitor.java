@@ -3091,6 +3091,25 @@ public class GenerateJsVisitor extends Visitor
         FunctionHelper.functionArgument(that, this);
     }
 
+    public void visit(final Tree.SpecifiedArgument that) {
+        if (errVisitor.hasErrors(that))return;
+        int _box=0;
+        final Tree.SpecifierExpression expr = that.getSpecifierExpression();
+        if (that.getParameter() != null && expr != null) {
+            _box = boxUnboxStart(expr.getExpression().getTerm(), that.getParameter().getModel());
+        }
+        expr.visit(this);
+        if (_box == 4) {
+            out(",");
+            //Add parameters
+            invoker.describeMethodParameters(expr.getExpression().getTerm());
+            out(",");
+            TypeUtils.printTypeArguments(that, expr.getExpression().getTypeModel().getTypeArguments(), this, false,
+                    expr.getExpression().getTypeModel().getVarianceOverrides());
+        }
+        boxUnboxEnd(_box);
+    }
+
     /** Generates the code for a function in a named argument list. */
     @Override
     public void visit(final Tree.MethodArgument that) {
