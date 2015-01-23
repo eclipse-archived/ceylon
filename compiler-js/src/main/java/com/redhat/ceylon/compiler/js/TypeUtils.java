@@ -228,7 +228,7 @@ public class TypeUtils {
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
-            if (lastType.isUnknown()) {
+            if (lastType.isUnknown() || lastType.getDeclaration() instanceof TypeParameter) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
                 printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
