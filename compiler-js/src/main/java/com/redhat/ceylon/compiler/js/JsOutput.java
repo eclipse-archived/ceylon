@@ -152,6 +152,7 @@ public class JsOutput {
                 out("ex$.$pkgunsh$", pkg.getNameAsString().replace('.', '$'), "={");
                 boolean first=true;
                 for (Declaration d : unsharedDecls) {
+                    if (d.getName() == null) continue;
                     //TODO only use quotes when absolutely necessary
                     if (d.isAnonymous()) {
                         if (first)first=false;else out(",");

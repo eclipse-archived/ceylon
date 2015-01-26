@@ -872,6 +872,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ObjectDefinition that) {
+        if (errVisitor.hasErrors(that))return;
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             TypeGenerator.objectDefinition(that, this);
@@ -890,6 +891,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ObjectExpression that) {
+        if (errVisitor.hasErrors(that))return;
         out("function(){");
         try {
             TypeGenerator.defineObject(that, null, that.getSatisfiedTypes(),
@@ -1116,6 +1118,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeGetterDefinition that) {
+        if (errVisitor.hasErrors(that))return;
         Value d = that.getDeclarationModel();
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -1203,6 +1206,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeSetterDefinition that) {
+        if (errVisitor.hasErrors(that))return;
         Setter d = that.getDeclarationModel();
         if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
@@ -1246,6 +1250,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeDeclaration that) {
+        if (errVisitor.hasErrors(that))return;
         final Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
@@ -1446,6 +1451,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.StringTemplate that) {
+        if (errVisitor.hasErrors(that))return;
         //TODO optimize to avoid generating initial "" and final .plus("")
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
@@ -1604,6 +1610,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.QualifiedMemberExpression that) {
+        if (errVisitor.hasErrors(that))return;
         //Big TODO: make sure the member is actually
         //          refined by the current class!
         if (that.getMemberOperator() instanceof SafeMemberOp) {
