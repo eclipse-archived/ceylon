@@ -1,4 +1,6 @@
 function $JsCallable(f$,parms,targs) {
+  //Do not wrap another $JsCallable
+  if (f$.jsc$)return f$;
   if (f$.getT$all === undefined) {
     f$.getT$all=Callable.getT$all;
   }
@@ -22,6 +24,10 @@ function $JsCallable(f$,parms,targs) {
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
   f.jsc$=f$;
+  f.equals=function(o) {
+    if (o.jsc$)return o.jsc$===f$;
+    return o===f;
+  }
   return f;
 }
 initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
