@@ -173,7 +173,13 @@ public class JsModuleManager extends ModuleManager {
                 if (p > 0) {
                     depname = s.substring(0,p);
                     depv = s.substring(p+1);
-                    if (depv.isEmpty()) depv = null;
+                    if (depv.isEmpty()) {
+                        depv = null;
+                    }
+                    //TODO Remove this hack after next bin compat breaks
+                    if (Module.LANGUAGE_MODULE_NAME.equals(depname) && "1.1.0".equals(depv)) {
+                        depv = "1.1.1";
+                    }
                 } else {
                     depname = s;
                 }
@@ -216,7 +222,7 @@ public class JsModuleManager extends ModuleManager {
                 final boolean isNewest = binVersion.equals(BIN_VERSION);
                 //TODO remove this shit when we break bincompat again
                 final boolean isRecent = binVersion.equals(V1_1_BIN_VERSION);
-                if (("ceylon.language".equals(modname) && !isNewest)
+                if ((Module.LANGUAGE_MODULE_NAME.equals(modname) && !isNewest)
                         || !(isNewest || isRecent)) {
                     throw new CompilerErrorException(String.format("The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
                         modname, binVersion, BIN_VERSION));
