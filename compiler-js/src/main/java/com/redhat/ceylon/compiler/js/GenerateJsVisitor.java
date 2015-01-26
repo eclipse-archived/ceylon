@@ -1850,7 +1850,13 @@ public class GenerateJsVisitor extends Visitor
     void box(final Tree.Term term) {
         final int t = boxStart(term);
         term.visit(this);
-        if (t == 4) out("/*TODO: callable targs 4*/");
+        if (t == 4) {
+            final ProducedType ct = term.getTypeModel();
+            out(",");
+            TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
+            out(",");
+            TypeUtils.printTypeArguments(term, ct.getTypeArguments(), this, true, null);
+        }
         boxUnboxEnd(t);
     }
 
