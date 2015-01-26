@@ -2962,7 +2962,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             callBuilder.argumentHandling(CallBuilder.CB_LET, naming.alias("spreadarg"));
         }
         callBuilder.voidMethod(invocation.getReturnType() == null 
-                || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())); 
+                || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())
+                || isWithinSuperInvocation()); 
         
         /* Cases:
             *[] -> () => nothing
