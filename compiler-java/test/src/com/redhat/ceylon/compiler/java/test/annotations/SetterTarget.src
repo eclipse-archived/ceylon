@@ -1,0 +1,99 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    SetterTarget(@.com.redhat.ceylon.compiler.java.metadata.Name("param3")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    .java.lang.String param3, @.com.redhat.ceylon.compiler.java.metadata.Name("param4")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    .java.lang.String param4) {
+        this.param3 = param3;
+        this.$init$attr = false;
+        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("no target for methodTarget__SETTER annotation: @Target of @interface MethodTarget lists [SETTER] but annotated element tranforms to [LOCAL_VARIABLE]");
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String attr;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private volatile boolean $init$attr;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("late")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getAttr() {
+        if (this.$init$attr) {
+            return attr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final void setAttr(@.com.redhat.ceylon.compiler.java.metadata.Name("attr")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String attr) {
+        if (!this.$init$attr) {
+            this.attr = attr;
+            this.$init$attr = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String attr3;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getAttr3() {
+        return attr3;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    public final void setAttr3(@.com.redhat.ceylon.compiler.java.metadata.Name("attr3")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String attr3) {
+        this.attr3 = attr3;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String param3;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getParam3() {
+        return param3;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    public final void setParam3(@.com.redhat.ceylon.compiler.java.metadata.Name("param3")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String param3) {
+        this.param3 = param3;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SetterTarget.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SetterTarget.class);
+}

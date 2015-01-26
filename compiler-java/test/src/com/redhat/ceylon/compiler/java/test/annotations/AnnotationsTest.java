@@ -282,4 +282,9 @@ public class AnnotationsTest extends CompilerTest {
         compile("Targets.java");
         compareWithJavaSource("HeuristicTargetDisambiguated");
     }
+    @Test
+    public void testSetterTarget(){
+        compile("Targets.java");
+        compareWithJavaSource("SetterTarget");
+    }
  }
