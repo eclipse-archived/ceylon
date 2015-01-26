@@ -27,6 +27,7 @@ import javax.tools.JavaFileObject;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
+import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -383,7 +384,8 @@ public class CeylonTransformer extends AbstractTransformer {
                         JCBlock setterBlock = makeSetterBlock(setterDecl.getDeclarationModel(),
                                 setterDecl.getBlock(), setterDecl.getSpecifierExpression());
                         builder.setterBlock(setterBlock);
-                        builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, setterDecl));
+                        //builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, OutputElement.METHOD, setterDecl));
+                        builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, OutputElement.SETTER, setterDecl));
                     } else {
                         builder.immutable();
                     }
@@ -392,7 +394,7 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (annotated != null) {
-            builder.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, annotated));
+            builder.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, annotated));
         }
         
         if (Decl.isLocal(declarationModel)) {
@@ -476,7 +478,7 @@ public class CeylonTransformer extends AbstractTransformer {
         builder.modifiers(Flags.FINAL)
                 .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
-        builder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, module));
+        builder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, module));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
             String quotedName;
             if (imported.getImportPath() != null) {
@@ -495,7 +497,7 @@ public class CeylonTransformer extends AbstractTransformer {
             if (quotedName.equals("ceylon$language")) {
                 continue;
             }
-            List<JCAnnotation> importAnnotations = expressionGen().transformAnnotations(true, AnnotationTarget.FIELD, imported);
+            List<JCAnnotation> importAnnotations = expressionGen().transformAnnotations(true, OutputElement.FIELD, imported);
             JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
             Name fieldName = names().fromString(quotedName);
             builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), makeNull())));
@@ -510,7 +512,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 .modifiers(Flags.FINAL)
                 .annotations(makeAtPackage(pack.getUnit().getPackage()));
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
-        builder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, pack));
+        builder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, pack));
         return builder.build();
     }
 }

@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -170,7 +171,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Member classes need a instantiator method
             boolean generateInstantiator = Strategy.generateInstantiator(cls);
             if (!cls.hasConstructors()) {
-                classBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, AnnotationTarget.CONSTRUCTOR, def));
+                classBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, OutputElement.CONSTRUCTOR, def));
             }
             if(generateInstantiator
                     && !cls.hasConstructors()){
@@ -178,7 +179,7 @@ public class ClassTransformer extends AbstractTransformer {
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb);
             }
             
-            classBuilder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, def));
+            classBuilder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, def));
             if(def instanceof Tree.ClassDefinition){
                 transformClass((Tree.ClassDefinition)def, cls, classBuilder, paramList, generateInstantiator, instantiatorDeclCb, instantiatorImplCb);
             }else{
@@ -191,7 +192,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
-            classBuilder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, def));
+            classBuilder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, def));
             if(def instanceof Tree.InterfaceDefinition){
                 transformInterface(def, (Interface)model, classBuilder);
             }else{
@@ -700,7 +701,7 @@ public class ClassTransformer extends AbstractTransformer {
         annoBuilder.getInitBuilder().modifiers(transformClassDeclFlags(klass) & ~FINAL);
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
         annoBuilder.annotations(makeAtIgnore());
-        annoBuilder.annotations(expressionGen().transformAnnotations(false, AnnotationTarget.ANNOTATION_TYPE, def));
+        annoBuilder.annotations(expressionGen().transformAnnotations(false, OutputElement.ANNOTATION_TYPE, def));
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getParameterModel();
@@ -967,14 +968,14 @@ public class ClassTransformer extends AbstractTransformer {
         final Value value = (Value)decl.getModel();
         if (decl.getDeclaration() instanceof Constructor) {
             classBuilder.field(PUBLIC | FINAL, decl.getName(), makeJavaType(decl.getType()), 
-                    null, false, expressionGen().transformAnnotations(false, AnnotationTarget.FIELD, memberTree));
+                    null, false, expressionGen().transformAnnotations(false, OutputElement.FIELD, memberTree));
             classBuilder.getInitBuilder().init(make().Exec(make().Assign(naming.makeQualIdent(naming.makeThis(), decl.getName()), naming.makeName(value, Naming.NA_IDENT))));
         } else if (parameterTree instanceof Tree.ValueParameterDeclaration
                 && (value.isShared() || value.isCaptured())) {
             makeFieldForParameter(classBuilder, decl, memberTree);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
             adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
-            adb.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, memberTree));
+            adb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, memberTree));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
                 AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl.getName(), decl.getModel());
@@ -1015,7 +1016,7 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter decl, Tree.Declaration annotated) {
         MethodOrValue model = decl.getModel();
         classBuilder.defs(make().VarDef(make().Modifiers(transformClassParameterDeclFlags(decl) | PRIVATE, 
-                makeAtIgnore().prependList(expressionGen().transformAnnotations(false, AnnotationTarget.FIELD, annotated))),
+                makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, annotated))),
                 names().fromString(Naming.quoteFieldName(decl.getName())), 
                 classGen().transformClassParameterType(decl), null));
         
@@ -1043,10 +1044,10 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if (member != null) {
             pdb.userAnnotations(expressionGen().transformAnnotations(p instanceof Tree.ParameterDeclaration
-                    && !(param.getModel().isShared() || param.getModel().isCaptured()), AnnotationTarget.PARAMETER, member));
+                    && !(param.getModel().isShared() || param.getModel().isCaptured()), OutputElement.PARAMETER, member));
         } else if (p instanceof Tree.ParameterDeclaration &&
                 param.getDeclaration() instanceof Constructor) {
-            pdb.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.PARAMETER, ((Tree.ParameterDeclaration)p).getTypedDeclaration()));
+            pdb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.PARAMETER, ((Tree.ParameterDeclaration)p).getTypedDeclaration()));
         }
 
         if (classBuilder instanceof ClassDefinitionBuilder
@@ -2668,7 +2669,7 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
                     // fields should be ignored, they are accessed by the getters
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, makeAtIgnore().prependList(expressionGen().transformAnnotations(false, AnnotationTarget.FIELD, decl)));
+                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, decl)));
                     if (model.isLate()) {
                         classBuilder.field(PRIVATE | Flags.VOLATILE, Naming.getInitializationFieldName(attrName), 
                                 make().Type(syms().booleanType), 
@@ -2733,7 +2734,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, decl));
+        builder.userAnnotationsSetter(expressionGen().transformAnnotations(true, OutputElement.SETTER, decl));
         return builder;
     }
 
@@ -2757,7 +2758,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        builder.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, decl));
+        builder.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, decl));
         return builder;    
     }
 
@@ -2918,7 +2919,7 @@ public class ClassTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, decl.getDeclarationModel());
         if(!forCompanion)
-            getter.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, decl));
+            getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, decl));
         else
             getter.ignoreAnnotations();
         
@@ -2943,6 +2944,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
+        setter.userAnnotationsSetter(expressionGen().transformAnnotations(false, OutputElement.SETTER, decl));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
 
@@ -3187,7 +3189,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (includeAnnotations
                     && parameter instanceof Tree.ParameterDeclaration
                     && ((Tree.ParameterDeclaration)parameter).getTypedDeclaration() != null) {
-                annotations = expressionGen().transformAnnotations(true, AnnotationTarget.PARAMETER, ((Tree.ParameterDeclaration)parameter).getTypedDeclaration());
+                annotations = expressionGen().transformAnnotations(true, OutputElement.PARAMETER, ((Tree.ParameterDeclaration)parameter).getTypedDeclaration());
             }
             
             methodBuilder.parameter(parameterModel, annotations, 0, true);
@@ -3243,7 +3245,7 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.isOverride(methodModel.isActual());
             }
             if (includeAnnotations) {
-                methodBuilder.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, annotated));
+                methodBuilder.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.METHOD, annotated));
                 methodBuilder.modelAnnotations(methodModel.getAnnotations());
             } else {
                 methodBuilder.ignoreModelAnnotations();
@@ -4439,14 +4441,14 @@ public class ClassTransformer extends AbstractTransformer {
                     .is(PUBLIC, Decl.isShared(klass))
                     .is(STATIC, true);
             if (annotated != null) {
-                builder.fieldAnnotations(expressionGen().transformAnnotations(false, AnnotationTarget.FIELD, annotated));
-                builder.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, annotated));
+                builder.fieldAnnotations(expressionGen().transformAnnotations(false, OutputElement.FIELD, annotated));
+                builder.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, annotated));
             }            
             objectClassBuilder.defs(builder.build());
         }
         if (annotated != null) {
-            objectClassBuilder.annotations(expressionGen().transformAnnotations(false, AnnotationTarget.TYPE, annotated));
-            objectClassBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, AnnotationTarget.CONSTRUCTOR, annotated));
+            objectClassBuilder.annotations(expressionGen().transformAnnotations(false, OutputElement.TYPE, annotated));
+            objectClassBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, OutputElement.CONSTRUCTOR, annotated));
         }
 
         // Make sure top types satisfy reified type
@@ -4499,7 +4501,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .getter(this, name, model)
                 .modifiers(transformAttributeGetSetDeclFlags(model, false));
                 if (def instanceof Tree.ObjectDefinition) {
-                    getter.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.METHOD, ((Tree.ObjectDefinition)def)));
+                    getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
                 }
                 result = result.appendList(getter.build());
             }
@@ -4590,7 +4592,7 @@ public class ClassTransformer extends AbstractTransformer {
         // class alias
         classBuilder.getInitBuilder().modifiers(PRIVATE);
         classBuilder.annotations(makeAtTypeAlias(model.getExtendedType()));
-        classBuilder.annotations(expressionGen().transformAnnotations(true, AnnotationTarget.TYPE, def));
+        classBuilder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, def));
         classBuilder.isAlias(true);
 
         // make sure we set the container in case we move it out
@@ -4626,7 +4628,7 @@ public class ClassTransformer extends AbstractTransformer {
             generateInstantiators(classBuilder, clz, ctor, decl, impl);
         }
         
-        ctorDb.userAnnotations(expressionGen().transformAnnotations(true, AnnotationTarget.CONSTRUCTOR, that));
+        ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
         ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         

@@ -140,7 +140,7 @@ public class LazyPackage extends Package {
                 // So try to find the annotation type with two strategies:
                 // - urlDecoder -> UrlDecover and url -> Url
                 // - urlDecoder -> URLDecoder and url -> URL
-                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name), Naming.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER)$", ""))){
+                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name), Naming.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER|SETTER)$", ""))){
                     Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
                     if (possibleAnnotationType != null
                             && possibleAnnotationType instanceof LazyInterface
@@ -233,14 +233,12 @@ public class LazyPackage extends Package {
     private void makeInteropAnnotation(LazyInterface iface) {
         AnnotationProxyClass klass = makeInteropAnnotationClass(iface);
         
-        compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass,  
-                CodegenUtil.getJavaBeanName(iface.getName()), null));
+        compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass, null));
         
         EnumSet<AnnotationTarget> annotationTargets = AnnotationTarget.annotationTargets(klass);
         if (annotationTargets != null) {
-            for (AnnotationTarget target : annotationTargets) {
+            for (OutputElement target : OutputElement.possibleCeylonTargets(annotationTargets)) {
                 compiledDeclarations.add(makeInteropAnnotationConstructor(iface, klass,  
-                        Naming.getDisambigAnnoCtorName(iface, target), 
                         target));
             }
         }
@@ -312,9 +310,11 @@ public class LazyPackage extends Package {
      * @return 
      */
     protected AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
-            AnnotationProxyClass klass, String ctorName, AnnotationTarget target) {
+            AnnotationProxyClass klass, OutputElement oe) {
+        
+        String ctorName = oe == null ? CodegenUtil.getJavaBeanName(iface.getName()) : Naming.getDisambigAnnoCtorName(iface, oe);
         AnnotationProxyMethod ctor = new AnnotationProxyMethod();
-        ctor.setAnnotationTarget(target);
+        ctor.setAnnotationTarget(oe);
         ctor.setProxyClass(klass);
         ctor.setContainer(this);
         ctor.setAnnotation(true);

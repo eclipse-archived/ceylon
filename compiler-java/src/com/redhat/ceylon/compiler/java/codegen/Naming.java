@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
@@ -2260,7 +2261,7 @@ public class Naming implements LocalId {
     }
     
 
-    public static String getDisambigAnnoCtorName(Interface iface, AnnotationTarget target) {
+    public static String getDisambigAnnoCtorName(Interface iface, OutputElement target) {
         return CodegenUtil.getJavaBeanName(iface.getName())+"__"+target;
     }
 

@@ -31,7 +31,7 @@ public class AnnotationProxyMethod extends Method {
     
     private AnnotationProxyClass proxyClass;
     
-    private AnnotationTarget annotationTarget;
+    private OutputElement annotationTarget;
     
     public AnnotationProxyClass getProxyClass() {
         return proxyClass;
@@ -41,7 +41,7 @@ public class AnnotationProxyMethod extends Method {
         this.proxyClass = proxyClass;
     }
 
-    public void setAnnotationTarget(AnnotationTarget annotationTarget) {
+    public void setAnnotationTarget(OutputElement annotationTarget) {
         this.annotationTarget = annotationTarget;
     }
     
@@ -49,7 +49,7 @@ public class AnnotationProxyMethod extends Method {
      * If this is a disambiguating proxy annotation method, then this is the 
      * Java program element that the constructor targets. Otherwise null
      */
-    public AnnotationTarget getAnnotationTarget() {
+    public OutputElement getAnnotationTarget() {
         return this.annotationTarget;
     }
 

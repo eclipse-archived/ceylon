@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import com.redhat.ceylon.compiler.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.compiler.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
+import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -78,41 +79,41 @@ public class UnsupportedVisitor extends Visitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
-        interopAnnotationTargeting(AnnotationTarget.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
-    private void interopAnnotationTargeting(EnumSet<AnnotationTarget> outputs,
+    private void interopAnnotationTargeting(EnumSet<OutputElement> outputs,
             Tree.AnnotationList annotationList) {
         for (Tree.Annotation annotation : annotationList.getAnnotations()) {
             AnnotationTarget.interopAnnotationTargeting(outputs, annotation, true);
