@@ -3197,7 +3197,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
                 if (Decl.equal(refinedDeclaration, methodModel)
-                        || (!Decl.withinInterface(methodModel) && body != null)) {
+                        || (!Decl.withinInterface(methodModel) && body != null)
+                        || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
                     
                     if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
                         DaoBody daoTrans = (body == null) ? daoAbstract : daoThis;
