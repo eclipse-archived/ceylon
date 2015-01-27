@@ -26,6 +26,8 @@ interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issu
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$impl();
     
+    public .java.lang.Object defaultedVar();
+    
     @.java.lang.Override
     public .java.lang.Object defaultedVar(final .java.lang.Object var);
     
