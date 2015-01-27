@@ -94,7 +94,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 double $ceylontmp$ifResult$15;
                 {
-                    .java.lang.Object sel$16 = arg;
+                    .ceylon.language.Integer sel$16 = arg;
                     if (sel$16 == null) {
                         $ceylontmp$ifResult$15 = 0.0;
                     } else if (sel$16 != null) {
@@ -110,7 +110,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .java.lang.String $ceylontmp$ifResult$18;
                 {
-                    .java.lang.Object sel$19 = arg;
+                    .ceylon.language.Integer sel$19 = arg;
                     if (sel$19 == null) {
                         $ceylontmp$ifResult$18 = "null";
                     } else if (sel$19 != null) {
@@ -126,7 +126,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .java.lang.Object $ceylontmp$ifResult$21;
                 {
-                    .java.lang.Object sel$22 = arg;
+                    .ceylon.language.Integer sel$22 = arg;
                     if (sel$22 == null) {
                         $ceylontmp$ifResult$21 = .ceylon.language.Float.instance(0.0);
                     } else if (sel$22 != null) {
@@ -142,7 +142,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .ceylon.language.Float $ceylontmp$ifResult$24;
                 {
-                    .java.lang.Object sel$25 = arg;
+                    .ceylon.language.Integer sel$25 = arg;
                     if (sel$25 == null) {
                         $ceylontmp$ifResult$24 = .ceylon.language.Float.instance(0.0);
                     } else if (sel$25 != null) {

@@ -21,10 +21,13 @@
 shared void bug2016() {
     Integer? wordBoundary = null;
     switch (wordBoundary)
-    case (is Null) {
-    }
-    case (0) {
-    }
-    else {
-    }
+    case (is Null) { }
+    case (0) { }
+    else { }
+
+    value enums = [1, 2.0];
+    value e0 = enums[0];
+    switch(e0)
+    case(is Integer) {}
+    else { }
 }

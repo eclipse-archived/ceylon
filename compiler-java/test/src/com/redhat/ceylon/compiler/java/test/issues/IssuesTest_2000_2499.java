@@ -19,7 +19,6 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -63,7 +62,7 @@ public class IssuesTest_2000_2499 extends CompilerTest {
         compareWithJavaSource("bug20xx/Bug2013");
     }
 
-    @Test @Ignore
+    @Test
     public void testBug2016() {
         compareWithJavaSource("bug20xx/Bug2016");
     }
