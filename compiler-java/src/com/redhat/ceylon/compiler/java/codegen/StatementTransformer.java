@@ -4269,7 +4269,7 @@ public class StatementTransformer extends AbstractTransformer {
                 (initExpr != null) ? 
                         expressionGen().applyErasureAndBoxing(
                                 initExpr, exprType, false, exprBoxed,
-                                boxingStrategy, var.getType().getTypeModel(),
+                                boxingStrategy, typeFact().denotableType(var.getType().getTypeModel()),
                                 ExpressionTransformer.EXPR_DOWN_CAST)
                     :
                         null;
