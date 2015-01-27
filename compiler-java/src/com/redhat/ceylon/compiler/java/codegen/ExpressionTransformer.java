@@ -6004,14 +6004,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(LetExpression op) {
-        ListBuffer<JCVariableDecl> defs = new ListBuffer<JCVariableDecl>();
+        ListBuffer<JCStatement> defs = new ListBuffer<JCStatement>();
         for(Tree.Statement stmt : op.getLetClause().getVariables()){
             defs.addAll(statementGen().transformVariableOrDestructure(stmt));
         }
-        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(op.getLetClause().getExpression());
-        JCExpression expr = transformExpression(op.getLetClause().getExpression(), boxingStrategy, op.getTypeModel());
+        Tree.Term term = op.getLetClause().getExpression().getTerm();
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
+        JCExpression expr = transformExpression(term, boxingStrategy, op.getTypeModel());
         at(op);
-        return make().LetExpr(defs.toList(), List.<JCStatement>nil(), expr);
+        if (isAnything(op.getTypeModel()) 
+                && CodegenUtil.isUnBoxed(term)) {
+            defs.add(make().Exec(expr));
+            expr = makeNull();
+        }
+        return make().LetExpr(defs.toList(), expr);
     }
     
 }
