@@ -4145,7 +4145,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public ProducedType model() {
-            return var.getType().getTypeModel();
+            return gen.typeFact().denotableType(var.getType().getTypeModel());
         }
         
         public SyntheticName name() {
