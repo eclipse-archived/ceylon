@@ -5630,6 +5630,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // see if we have an operator for it
         OperatorTranslation operator = Operators.getOperator(signature);
         if(operator != null){
+            JCExpression result;
             if(operator.getArity() == 2){
                 if(right == null)
                     return null;
@@ -5641,7 +5642,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
                 JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
-                return make().Binary(operator.javacOperator, leftExpr, rightExpr);
+                if (operator.valueMask != 0) {
+                    leftExpr = make().Binary(JCTree.BITAND, leftExpr, makeInteger(operator.valueMask));
+                }
+                
+                result =  make().Binary(operator.javacOperator, leftExpr, rightExpr);
             }else{
                 // must be unary
                 if(right != null)
@@ -5653,8 +5658,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 
                 JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
-                return make().Unary(operator.javacOperator, leftExpr);
+                if (operator.valueMask != 0) {
+                    leftExpr = make().Binary(JCTree.BITAND, leftExpr, makeInteger(operator.valueMask));
+                }
+                
+                result = make().Unary(operator.javacOperator, leftExpr);
             }
+            if (isCeylonByte(binaryType)) {
+                result = make().TypeCast(syms().byteType, result);
+            }
+            return result;
         }
         return null;
     }

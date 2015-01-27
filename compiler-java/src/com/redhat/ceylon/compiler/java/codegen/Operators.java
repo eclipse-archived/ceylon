@@ -37,7 +37,18 @@ import com.sun.tools.javac.tree.JCTree;
 public class Operators {
 
     private enum PrimitiveType {
-        BOOLEAN, BYTE, CHARACTER, INTEGER, FLOAT, STRING;
+        BOOLEAN("ceylon.language.Boolean"),
+        BYTE("ceylon.language.Byte"),
+        CHARACTER("ceylon.language.Character"),
+        INTEGER("ceylon.language.Integer"),
+        FLOAT("ceylon.language.Float"),
+        STRING("ceylon.language.String");
+        
+        public final String fqn;
+        
+        PrimitiveType(String fqn) {
+            this.fqn = fqn;
+        }
     }
 
     private static final PrimitiveType[] IntegerByte = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.BYTE};
@@ -90,7 +101,7 @@ public class Operators {
         UNARY_POSITIVE(Tree.PositiveOp.class, 1, "<noop>", JCTree.POS, IntegerFloatByte),
         UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.NEG, IntegerFloatByte),
         
-        UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, IntegerByte),
+        UNARY_BITWISE_NOT(1, "not", JCTree.COMPL, IntegerByte),
 
         UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.POSTINC, IntegerCharacterByte),
         UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.POSTDEC, IntegerCharacterByte),
@@ -107,12 +118,13 @@ public class Operators {
         
         BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
 
-        BINARY_BITWISE_AND("ceylon.language.Integer", 2, "and", JCTree.BITAND, IntegerByte),
-        BINARY_BITWISE_OR("ceylon.language.Integer", 2, "or", JCTree.BITOR, IntegerByte),
-        BINARY_BITWISE_XOR("ceylon.language.Integer", 2, "xor", JCTree.BITXOR, IntegerByte),
-        BINARY_BITWISE_LOG_LEFT_SHIFT("ceylon.language.Integer", 2, "leftLogicalShift", JCTree.SL, IntegerByte),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightLogicalShift", JCTree.USR, IntegerByte),
-        BINARY_BITWISE_ARI_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightArithmeticShift", JCTree.SR, IntegerByte),
+        BINARY_BITWISE_AND(2, "and", JCTree.BITAND, IntegerByte),
+        BINARY_BITWISE_OR(2, "or", JCTree.BITOR, IntegerByte),
+        BINARY_BITWISE_XOR(2, "xor", JCTree.BITXOR, IntegerByte),
+        BINARY_BITWISE_LOG_LEFT_SHIFT(2, "leftLogicalShift", JCTree.SL, IntegerByte),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_INT(2, "rightLogicalShift", 0, JCTree.USR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_BYTE(2, "rightLogicalShift", 0xff, JCTree.USR, PrimitiveType.BYTE),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT(2, "rightArithmeticShift", JCTree.SR, IntegerByte),
 
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
@@ -158,8 +170,6 @@ public class Operators {
 
         // we can have either a mapping from Tree operator class
         Class<? extends Tree.OperatorExpression> operatorClass;
-        // or from a FQN Type.method signature
-        String optimisedMethod;
         
         int arity;
         /** The name of the method which the boxed transformation invokes */
@@ -170,6 +180,8 @@ public class Operators {
         String ceylonValue;
         /** The operator with which to compare against {@link #ceylonValue} */
         int javacValueOperator;
+        /** A mask to apply to the LHS before applying the operator */
+        int valueMask;
         
         OperatorTranslation(int arity, String ceylonMethod, 
                 int javacOperator, PrimitiveType... optimisableTypes) {
@@ -178,10 +190,10 @@ public class Operators {
             this.optimisableTypes = optimisableTypes;
             this.arity = arity;
         }
-        OperatorTranslation(String typeSignature, int arity, String ceylonMethod, 
+        OperatorTranslation(int arity, String ceylonMethod, int valueMask,
                 int javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
-            this.optimisedMethod = typeSignature + "." + ceylonMethod;
+            this.valueMask = valueMask;
         }
         OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
                 int arity, String ceylonMethod, 
@@ -346,10 +358,14 @@ public class Operators {
         for(OperatorTranslation operator : OperatorTranslation.values()){
             // some operators are virtual translations from method calls to java operators and so don't have
             // a Tree class
-            if(operator.operatorClass != null)
+            if(operator.operatorClass != null) {
                 operators.put(operator.operatorClass, operator);
-            if(operator.optimisedMethod != null)
-                methodsAsOperators.put(operator.optimisedMethod, operator);
+            } else {
+                for (PrimitiveType t : operator.optimisableTypes) {
+                    String optimisedMethod = t.fqn + "." + operator.ceylonMethod;
+                    methodsAsOperators.put(optimisedMethod , operator);
+                }
+            }
         }
 
         for(AssignmentOperatorTranslation operator : AssignmentOperatorTranslation.values())
