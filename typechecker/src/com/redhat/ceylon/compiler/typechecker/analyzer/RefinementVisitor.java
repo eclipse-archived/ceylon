@@ -604,7 +604,7 @@ public class RefinementVisitor extends Visitor {
                     	checkRefiningParameterDynamicallyTyped(member,
                                 refinedMember, param, typeNode);
                     }
-            		else if (param.getModel().isDynamicallyTyped()) {
+            		else if (param.getModel() != null && param.getModel().isDynamicallyTyped()) {
                     	checkRefinedParameterDynamicallyTyped(member,
                                 refinedMember, rparam, param, typeNode);
                     }
