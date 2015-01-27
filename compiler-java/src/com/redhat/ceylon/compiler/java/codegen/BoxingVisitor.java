@@ -672,6 +672,8 @@ public abstract class BoxingVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Parameter that) {
+        if (that.getParameterModel().getModel() == null)
+            return;
         Boolean currentPEB = setNextPEBs(that.getParameterModel().getModel().getUnboxed());
         super.visit(that);
         preferredExpressionBoxing = currentPEB;

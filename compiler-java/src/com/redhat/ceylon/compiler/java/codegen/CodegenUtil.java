@@ -314,7 +314,7 @@ public class CodegenUtil {
                 // find the index of the parameter in the declaration
                 int index = 0;
                 for (Parameter px : func.getParameterLists().get(ii).getParameters()) {
-                    if (px.getModel().equals(decl)) {
+                    if (px.getModel() == null || px.getModel().equals(decl)) {
                         // And return the corresponding parameter from the refined declaration
                         return refinedFunc.getParameterLists().get(ii).getParameters().get(index).getModel();
                     }
