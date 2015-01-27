@@ -165,44 +165,44 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void unboxedAttributes$priv$() {
-        setI1(.ceylon.language.Byte.getNot(getN1()));
-        setN1(.ceylon.language.Byte.and(getN1(), getN2()));
-        setI1(.ceylon.language.Byte.or(getN1(), getN2()));
-        setN1(.ceylon.language.Byte.xor(getN1(), getN2()));
-        setN1(.ceylon.language.Byte.leftLogicalShift(getN1(), 1L));
-        setN1(.ceylon.language.Byte.rightLogicalShift(getN1(), 1L));
-        setN1(.ceylon.language.Byte.rightArithmeticShift(getN1(), 1L));
+        setI1((byte)~getN1());
+        setN1((byte)(getN1() & getN2()));
+        setI1((byte)(getN1() | getN2()));
+        setN1((byte)(getN1() ^ getN2()));
+        setN1((byte)(getN1() << (byte)1L));
+        setN1((byte)((getN1() & 255) >>> (byte)1L));
+        setN1((byte)(getN1() >> (byte)1L));
     }
     
     private final void unboxedGetterAttributes$priv$() {
-        setGetterByte3(.ceylon.language.Byte.getNot(getGetterByte1()));
-        setGetterByte1(.ceylon.language.Byte.and(getGetterByte1(), getGetterByte2()));
-        setGetterByte3(.ceylon.language.Byte.or(getGetterByte1(), getGetterByte2()));
-        setGetterByte1(.ceylon.language.Byte.xor(getGetterByte1(), getGetterByte2()));
-        setGetterByte1(.ceylon.language.Byte.leftLogicalShift(getGetterByte1(), 1L));
-        setGetterByte1(.ceylon.language.Byte.rightLogicalShift(getGetterByte1(), 1L));
-        setGetterByte1(.ceylon.language.Byte.rightArithmeticShift(getGetterByte1(), 1L));
+        setGetterByte3((byte)~getGetterByte1());
+        setGetterByte1((byte)(getGetterByte1() & getGetterByte2()));
+        setGetterByte3((byte)(getGetterByte1() | getGetterByte2()));
+        setGetterByte1((byte)(getGetterByte1() ^ getGetterByte2()));
+        setGetterByte1((byte)(getGetterByte1() << (byte)1L));
+        setGetterByte1((byte)((getGetterByte1() & 255) >>> (byte)1L));
+        setGetterByte1((byte)(getGetterByte1() >> (byte)1L));
     }
     
     public .java.lang.Object unboxedQualifiedAttributes() {
-        this.setI1(.ceylon.language.Byte.getNot(this.getN1()));
-        this.setN1(.ceylon.language.Byte.and(this.getN1(), this.getN2()));
-        this.setI1(.ceylon.language.Byte.or(this.getN1(), this.getN2()));
-        this.setN1(.ceylon.language.Byte.xor(this.getN1(), this.getN2()));
-        this.setN1(.ceylon.language.Byte.leftLogicalShift(this.getN1(), 1L));
-        this.setN1(.ceylon.language.Byte.rightLogicalShift(this.getN1(), 1L));
-        this.setN1(.ceylon.language.Byte.rightArithmeticShift(this.getN1(), 1L));
+        this.setI1((byte)~this.getN1());
+        this.setN1((byte)(this.getN1() & this.getN2()));
+        this.setI1((byte)(this.getN1() | this.getN2()));
+        this.setN1((byte)(this.getN1() ^ this.getN2()));
+        this.setN1((byte)(this.getN1() << (byte)1L));
+        this.setN1((byte)((this.getN1() & 255) >>> (byte)1L));
+        this.setN1((byte)(this.getN1() >> (byte)1L));
         return null;
     }
     
     public .java.lang.Object unboxedQualifiedGetterAttributes() {
-        this.setGetterByte3(.ceylon.language.Byte.getNot(this.getGetterByte1()));
-        this.setGetterByte1(.ceylon.language.Byte.and(this.getGetterByte1(), this.getGetterByte2()));
-        this.setGetterByte3(.ceylon.language.Byte.or(this.getGetterByte1(), this.getGetterByte2()));
-        this.setGetterByte1(.ceylon.language.Byte.xor(this.getGetterByte1(), this.getGetterByte2()));
-        this.setGetterByte1(.ceylon.language.Byte.leftLogicalShift(this.getGetterByte1(), 1L));
-        this.setGetterByte1(.ceylon.language.Byte.rightLogicalShift(this.getGetterByte1(), 1L));
-        this.setGetterByte1(.ceylon.language.Byte.rightArithmeticShift(this.getGetterByte1(), 1L));
+        this.setGetterByte3((byte)~this.getGetterByte1());
+        this.setGetterByte1((byte)(this.getGetterByte1() & this.getGetterByte2()));
+        this.setGetterByte3((byte)(this.getGetterByte1() | this.getGetterByte2()));
+        this.setGetterByte1((byte)(this.getGetterByte1() ^ this.getGetterByte2()));
+        this.setGetterByte1((byte)(this.getGetterByte1() << (byte)1L));
+        this.setGetterByte1((byte)((this.getGetterByte1() & 255) >>> (byte)1L));
+        this.setGetterByte1((byte)(this.getGetterByte1() >> (byte)1L));
         return null;
     }
     
@@ -221,13 +221,13 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         byte n1 = (byte)0L;
         byte n2 = (byte)0L;
         byte i1 = (byte)0L;
-        i1 = .ceylon.language.Byte.getNot(n1);
-        n1 = .ceylon.language.Byte.and(n1, n2);
-        i1 = .ceylon.language.Byte.or(n1, n2);
-        n1 = .ceylon.language.Byte.xor(n1, n2);
-        n1 = .ceylon.language.Byte.leftLogicalShift(n1, 1L);
-        n1 = .ceylon.language.Byte.rightLogicalShift(n1, 1L);
-        n1 = .ceylon.language.Byte.rightArithmeticShift(n1, 1L);
+        i1 = (byte)~n1;
+        n1 = (byte)(n1 & n2);
+        i1 = (byte)(n1 | n2);
+        n1 = (byte)(n1 ^ n2);
+        n1 = (byte)(n1 << (byte)1L);
+        n1 = (byte)((n1 & 255) >>> (byte)1L);
+        n1 = (byte)(n1 >> (byte)1L);
     }
     
     private final void unboxedLocalGetters$priv$() {
@@ -303,13 +303,13 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
         }
         final getterByte3$setter$_ getterByte3$setter$_ = new getterByte3$setter$_();
-        getterByte3$setter$_.set_(.ceylon.language.Byte.getNot(getterByte1$getter$_.get_()));
-        getterByte1$setter$_.set_(.ceylon.language.Byte.and(getterByte1$getter$_.get_(), getterByte2$getter$_.get_()));
-        getterByte3$setter$_.set_(.ceylon.language.Byte.or(getterByte1$getter$_.get_(), getterByte2$getter$_.get_()));
-        getterByte1$setter$_.set_(.ceylon.language.Byte.xor(getterByte1$getter$_.get_(), getterByte2$getter$_.get_()));
-        getterByte1$setter$_.set_(.ceylon.language.Byte.leftLogicalShift(getterByte1$getter$_.get_(), 1L));
-        getterByte1$setter$_.set_(.ceylon.language.Byte.rightLogicalShift(getterByte1$getter$_.get_(), 1L));
-        getterByte1$setter$_.set_(.ceylon.language.Byte.rightArithmeticShift(getterByte1$getter$_.get_(), 1L));
+        getterByte3$setter$_.set_((byte)~getterByte1$getter$_.get_());
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() & getterByte2$getter$_.get_()));
+        getterByte3$setter$_.set_((byte)(getterByte1$getter$_.get_() | getterByte2$getter$_.get_()));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() ^ getterByte2$getter$_.get_()));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() << (byte)1L));
+        getterByte1$setter$_.set_((byte)((getterByte1$getter$_.get_() & 255) >>> (byte)1L));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() >> (byte)1L));
     }
     
     private final void boxedLocals$priv$() {
@@ -326,23 +326,23 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void unboxedToplevel$priv$() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_(.ceylon.language.Byte.getNot(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(.ceylon.language.Byte.and(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_(.ceylon.language.Byte.or(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(.ceylon.language.Byte.xor(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(.ceylon.language.Byte.leftLogicalShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), 1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(.ceylon.language.Byte.rightLogicalShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), 1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(.ceylon.language.Byte.rightArithmeticShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_(), 1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_((byte)~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() << (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & 255) >>> (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() >> (byte)1L));
     }
     
     private final void unboxedToplevelGetter$priv$() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_(.ceylon.language.Byte.getNot(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_(.ceylon.language.Byte.and(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_(.ceylon.language.Byte.or(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_(.ceylon.language.Byte.xor(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_(.ceylon.language.Byte.leftLogicalShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), 1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_(.ceylon.language.Byte.rightLogicalShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), 1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_(.ceylon.language.Byte.rightArithmeticShift(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_(), 1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_((byte)~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() << (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & 255) >>> (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() >> (byte)1L));
     }
     
     @.java.lang.Override
@@ -359,25 +359,25 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
     
     @.java.lang.Override
     public final .java.lang.Object unboxedQualifiedAttributes() {
-        super.setI1(.ceylon.language.Byte.getNot(super.getN1()));
-        super.setN1(.ceylon.language.Byte.and(super.getN1(), super.getN2()));
-        super.setI1(.ceylon.language.Byte.or(super.getN1(), super.getN2()));
-        super.setN1(.ceylon.language.Byte.xor(super.getN1(), super.getN2()));
-        super.setN1(.ceylon.language.Byte.leftLogicalShift(super.getN1(), 1L));
-        super.setN1(.ceylon.language.Byte.rightLogicalShift(super.getN1(), 1L));
-        super.setN1(.ceylon.language.Byte.rightArithmeticShift(super.getN1(), 1L));
+        super.setI1((byte)~super.getN1());
+        super.setN1((byte)(super.getN1() & super.getN2()));
+        super.setI1((byte)(super.getN1() | super.getN2()));
+        super.setN1((byte)(super.getN1() ^ super.getN2()));
+        super.setN1((byte)(super.getN1() << (byte)1L));
+        super.setN1((byte)((super.getN1() & 255) >>> (byte)1L));
+        super.setN1((byte)(super.getN1() >> (byte)1L));
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object unboxedQualifiedGetterAttributes() {
-        super.setGetterByte3(.ceylon.language.Byte.getNot(super.getGetterByte1()));
-        super.setGetterByte1(.ceylon.language.Byte.and(super.getGetterByte1(), super.getGetterByte2()));
-        super.setGetterByte3(.ceylon.language.Byte.or(super.getGetterByte1(), super.getGetterByte2()));
-        super.setGetterByte1(.ceylon.language.Byte.xor(super.getGetterByte1(), super.getGetterByte2()));
-        super.setGetterByte1(.ceylon.language.Byte.leftLogicalShift(super.getGetterByte1(), 1L));
-        super.setGetterByte1(.ceylon.language.Byte.rightLogicalShift(super.getGetterByte1(), 1L));
-        super.setGetterByte1(.ceylon.language.Byte.rightArithmeticShift(super.getGetterByte1(), 1L));
+        super.setGetterByte3((byte)~super.getGetterByte1());
+        super.setGetterByte1((byte)(super.getGetterByte1() & super.getGetterByte2()));
+        super.setGetterByte3((byte)(super.getGetterByte1() | super.getGetterByte2()));
+        super.setGetterByte1((byte)(super.getGetterByte1() ^ super.getGetterByte2()));
+        super.setGetterByte1((byte)(super.getGetterByte1() << (byte)1L));
+        super.setGetterByte1((byte)((super.getGetterByte1() & 255) >>> (byte)1L));
+        super.setGetterByte1((byte)(super.getGetterByte1() >> (byte)1L));
         return null;
     }
     
