@@ -3793,11 +3793,7 @@ public class StatementTransformer extends AbstractTransformer {
                 last = transformElse(null, caseList, tmpVar, outerExpression);
             } else {
                 bs = BoxingStrategy.BOXED;
-                if (allMatches && isCeylonBasicType(getDefiniteSwitchExpressionType(switchClause))) {
-                    selectorType = makeJavaType(switchExpressionType, BooleanUtil.isFalse(switchUnboxed) ? JT_NO_PRIMITIVES : 0);
-                } else {
-                    selectorType = make().Type(syms().objectType);
-                }
+                selectorType = makeJavaType(switchExpressionType, JT_NO_PRIMITIVES);
                 last = transformElse(selectorAlias, caseList, tmpVar, outerExpression);
             }
             JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(switchClause), bs, switchExpressionType);
