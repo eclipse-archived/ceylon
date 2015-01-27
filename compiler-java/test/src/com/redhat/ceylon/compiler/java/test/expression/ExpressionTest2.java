@@ -554,6 +554,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testLetVoidExpression(){
+        compareWithJavaSource("let/LetVoid");
+    }
+    
+    @Test
     public void testDestructuring(){
         compareWithJavaSource("destructuring/Destruct");
     }
