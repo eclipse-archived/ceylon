@@ -1566,7 +1566,7 @@ public class Unit {
         return getType(getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration"));
     }
     
-    public ProducedType getValueDeclarationType(TypedDeclaration value) {
+    public ProducedType getValueDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ValueDeclaration"));
     }
     
