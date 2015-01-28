@@ -2780,9 +2780,10 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperInvocation(Tree.MemberOrTypeExpression qmte) {
         Declaration member = qmte.getDeclaration();
         if (member!=null) {
+            TypeDeclaration type = (TypeDeclaration) member.getContainer();
             if (member.isFormal() && !inExtendsClause) {
-                qmte.addError("supertype member is declared formal: '" + member.getName() + 
-                        "' of '" + ((TypeDeclaration) member.getContainer()).getName() + "'");
+                qmte.addError("supertype member is declared formal: '" + 
+                        member.getName() + "' of '" + type.getName() + "'");
             }
             else {
                 ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
@@ -2792,16 +2793,16 @@ public class ExpressionVisitor extends Visitor {
                     if (etm!=null && !etm.equals(member) && etm.refines(member)) {
                         qmte.addError("inherited member is refined by intervening superclass: '" + 
                                 ((TypeDeclaration) etm.getContainer()).getName() + 
-                                "' refines '" + member.getName() + "' declared by '" + 
-                                ((TypeDeclaration) member.getContainer()).getName() + "'");
+                                "' refines '" + member.getName() + 
+                                "' declared by '" + type.getName() + "'");
                     }
                     for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
                         Declaration stm = td.getMember(member.getName(), null, false);
                         if (stm!=null && !stm.equals(member) && stm.refines(member)) {
                             qmte.addError("inherited member is refined by intervening superinterface: '" + 
                                     ((TypeDeclaration) stm.getContainer()).getName() + 
-                                    "' refines '" + member.getName() + "' declared by '" + 
-                                    ((TypeDeclaration) member.getContainer()).getName() + "'");
+                                    "' refines '" + member.getName() + 
+                                    "' declared by '" + type.getName() + "'");
                         }
                     }
                 }
