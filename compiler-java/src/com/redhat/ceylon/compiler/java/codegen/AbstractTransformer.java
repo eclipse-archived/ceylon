@@ -1644,6 +1644,8 @@ public abstract class AbstractTransformer implements Transformation {
                     if(!simplerType.isNothing()
                             && simplerType.getDeclaration() instanceof UnionType == false){
                         type = simplerType;
+                    } else if (isCeylonBoolean(simplifyType(simplerType))) {
+                        type = simplerType;
                     }
                     break;
                 }
