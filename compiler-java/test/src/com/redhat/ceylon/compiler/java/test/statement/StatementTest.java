@@ -92,6 +92,11 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfElse(){
         compareWithJavaSource("conditional/MethodIfElse");
     }
+    
+    @Test
+    public void testConMethodIfElseAnonymous(){
+        compareWithJavaSource("conditional/MethodIfElseAnonymous");
+    }
 
     @Test
     public void testConMethodIfElseIf(){
