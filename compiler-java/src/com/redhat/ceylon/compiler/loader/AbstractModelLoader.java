@@ -2137,22 +2137,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // skip Java fields, which we only get if there is no getter method, in that case just add the setter method
             if (decl instanceof Value && decl instanceof FieldValue == false) {
                 Value value = (Value)decl;
-                VariableMirror setterParam = setter.getParameters().get(0);
-                ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
-                        "setter '"+setter.getName()+"'", klass);
-                // only add the setter if it has exactly the same type as the getter
-                if(paramType.isExactly(value.getType())){
-                    foundGetter = true;
-                    value.setVariable(true);
-                    if(decl instanceof JavaBeanValue)
-                        ((JavaBeanValue)decl).setSetterName(setter.getName());
-                    if(value.isTransient()){
-                        // must be a real setter
-                        makeSetter(value, null);
-                    }
-                }else
-                    logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
-            } 
+                // only add the setter if it has the same visibility as the getter
+                if (setter.isPublic() && ((JavaBeanValue)decl).mirror.isPublic()
+                        || setter.isProtected() && ((JavaBeanValue)decl).mirror.isProtected()
+                        || setter.isDefaultAccess() && ((JavaBeanValue)decl).mirror.isDefaultAccess()
+                        || (!setter.isPublic() && !((JavaBeanValue)decl).mirror.isPublic()
+                        && !setter.isProtected() && !((JavaBeanValue)decl).mirror.isProtected()
+                        && !setter.isDefaultAccess() && !((JavaBeanValue)decl).mirror.isDefaultAccess())) {
+                    VariableMirror setterParam = setter.getParameters().get(0);
+                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
+                            "setter '"+setter.getName()+"'", klass);
+                    // only add the setter if it has exactly the same type as the getter
+                    if(paramType.isExactly(value.getType())){
+                        foundGetter = true;
+                        value.setVariable(true);
+                        if(decl instanceof JavaBeanValue)
+                            ((JavaBeanValue)decl).setSetterName(setter.getName());
+                        if(value.isTransient()){
+                            // must be a real setter
+                            makeSetter(value, null);
+                        }
+                    }else
+                        logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+                } else {
+                    logVerbose("Setter visibility for "+name+" does not match corresponding getter visibility, adding setter as a method");
+                }
+            }
             
             if(!foundGetter){
                 // it was not a setter, it was a method, let's add it as such
