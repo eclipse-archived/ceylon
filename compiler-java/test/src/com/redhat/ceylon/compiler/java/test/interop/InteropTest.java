@@ -474,4 +474,10 @@ public class InteropTest extends CompilerTest {
         compile("Widening.ceylon");
         run("com.redhat.ceylon.compiler.java.test.interop.run");
     }
+
+    @Test
+    public void testIopBug2019(){
+        compile("access/JavaBug2019.java");
+        compile("Bug2019.ceylon");
+    }
 }
