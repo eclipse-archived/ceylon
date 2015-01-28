@@ -282,3 +282,13 @@ void testHigherOrderFun() {
     higherOrderFun(void(String b){});
     @error higherOrderFun(void(b){});
 }
+
+Bar anotherHigherOrderFun<Bar>(Bar b, void func(Bar b)){return b;}
+void testAnotherHigherOrderFun() {
+    Integer result1
+            = anotherHigherOrderFun(42, void(Integer b){});
+    Integer result2 
+            = anotherHigherOrderFun<Integer>(42, void(b){});
+    @error Integer result3
+            = anotherHigherOrderFun(42, void(b){});
+}
