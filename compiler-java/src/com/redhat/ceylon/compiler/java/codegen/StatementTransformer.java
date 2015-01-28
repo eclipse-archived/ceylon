@@ -3793,7 +3793,11 @@ public class StatementTransformer extends AbstractTransformer {
                 last = transformElse(null, caseList, tmpVar, outerExpression);
             } else {
                 bs = BoxingStrategy.BOXED;
-                selectorType = makeJavaType(switchExpressionType, JT_NO_PRIMITIVES);
+                if (allMatches && isCeylonBasicType(getDefiniteSwitchExpressionType(switchClause))) {
+                    selectorType = makeJavaType(switchExpressionType, JT_NO_PRIMITIVES);
+                } else {
+                    selectorType = make().Type(syms().objectType);
+                }
                 last = transformElse(selectorAlias, caseList, tmpVar, outerExpression);
             }
             JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(switchClause), bs, switchExpressionType);
@@ -3810,7 +3814,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // TODO Support for 'case (satisfies ...)' is not implemented yet
                     return make().Exec(makeErroneous(caseItem, "compiler bug: switch/satisfies not implemented yet"));
                 } else if (caseItem instanceof Tree.MatchCase) {
-                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar,outerExpression, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
+                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar, outerExpression, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
                 } else {
                     return make().Exec(makeErroneous(caseItem, "compiler bug: unknown switch case clause: "+caseItem));
                 }
@@ -3950,9 +3954,12 @@ public class StatementTransformer extends AbstractTransformer {
                         test = make().Apply(null, 
                                 makeSelect(unboxType(selectorAlias.makeIdent(), term.getTypeModel()), "equals"), List.<JCExpression>of(transformedExpression));
                     } else {
-                        test = make().Binary(JCTree.EQ, 
-                                primitiveSelector ? selectorAlias.makeIdent() : unboxType(selectorAlias.makeIdent(), term.getTypeModel()), 
-                                transformedExpression);
+                        JCExpression selectorExpr = selectorAlias.makeIdent();
+                        if (!primitiveSelector) {
+                            selectorExpr = make().TypeCast(makeJavaType(switchType, JT_NO_PRIMITIVES), selectorAlias.makeIdent());
+                            selectorExpr = unboxType(selectorExpr, term.getTypeModel());
+                        }
+                        test = make().Binary(JCTree.EQ, selectorExpr, transformedExpression);
                     }
                 } else {
                     test = make().Apply(null, makeSelect(selectorAlias.makeIdent(), "equals"), List.<JCExpression>of(transformedExpression));
