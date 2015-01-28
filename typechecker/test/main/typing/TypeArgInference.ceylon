@@ -275,3 +275,10 @@ void inferenceForRecursiveFuns() {
     T? extract2<T>(Foo<T>? foo) => extract1(foo);
     String|T echoST<T>(String|T val) => echoST(val);
 }
+
+void higherOrderFun<Bar>(void func(Bar b)) {} 
+void testHigherOrderFun() {
+    higherOrderFun<String>(void(b){ @type:"String" value bb=b; });
+    higherOrderFun(void(String b){});
+    @error higherOrderFun(void(b){});
+}
