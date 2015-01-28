@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -990,6 +991,21 @@ public class SpecificationVisitor extends Visitor {
             }
         }
         exit();
+    }
+    
+    @Override
+    public void visit(Tree.ExpressionStatement that) {
+        super.visit(that);
+        Tree.Expression expr = that.getExpression();
+        if (expr!=null) {
+            Tree.Term term = expr.getTerm();
+            if (term!=null) {
+                ProducedType type = term.getTypeModel();
+                if (type!=null && type.isNothing()) {
+                    exit();
+                }
+            }
+        }
     }
 
     private boolean isSharedDeclarationUninitialized() {

@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -336,7 +337,7 @@ public class ControlFlowVisitor extends Visitor {
         exit();
         exitLoopScope();
     }
-
+    
     @Override
     public void visit(Tree.Throw that) {
         super.visit(that);
@@ -580,17 +581,22 @@ public class ControlFlowVisitor extends Visitor {
         super.visit(that);
         Tree.Expression expr = that.getExpression();
         if (expr!=null) {
-            Tree.Term t = expr.getTerm();
-            if (t==null) {
+            Tree.Term term = expr.getTerm();
+            if (term==null) {
                 expr.addError("malformed expression statement");
             }
+            else if (!(term instanceof Tree.InvocationExpression 
+                    || term instanceof Tree.PostfixOperatorExpression
+                    || term instanceof Tree.PrefixOperatorExpression
+                    || term instanceof Tree.AssignmentOp)) {
+                expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)", 
+                        3000);
+            }
             else {
-                if (!(t instanceof Tree.InvocationExpression
-                        || t instanceof Tree.PostfixOperatorExpression
-                        || t instanceof Tree.PrefixOperatorExpression
-                        || t instanceof Tree.AssignmentOp)) {
-                    expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)", 
-                            3000);
+                ProducedType type = term.getTypeModel();
+                if (type!=null && type.isNothing()) {
+                    exit();
+                    exitLoopScope();
                 }
             }
         }
