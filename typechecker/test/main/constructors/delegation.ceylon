@@ -33,7 +33,7 @@ class C1 extends A {
     @error new New() extends Point(1.0,0.0) {}
 }
 @error class C2 extends New {
-    new New() extends New() {}
+    @error new New() extends New() {}
 }
 class C3 extends A {
     @error new New() extends New() {}

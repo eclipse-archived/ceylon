@@ -7,7 +7,6 @@ import static java.util.Collections.singleton;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -36,11 +35,12 @@ public class SupertypeVisitor extends Visitor {
     
     private boolean checkSupertypeVariance(ProducedType type, TypeDeclaration d, Node node) {
         List<TypeDeclaration> errors = type.resolveAliases().checkDecidability();
-        if (displayErrors)
-        for (TypeDeclaration td: errors) {
-            node.addError("type with contravariant type parameter '" + td.getName() + 
-                    "' appears in contravariant or invariant location in supertype: '" +
-                    type.getProducedTypeName(node.getUnit()) + "'");
+        if (displayErrors) {
+            for (TypeDeclaration td: errors) {
+                node.addError("type with contravariant type parameter '" + td.getName() + 
+                        "' appears in contravariant or invariant location in supertype: '" +
+                        type.getProducedTypeName(node.getUnit()) + "'");
+            }
         }
         return !errors.isEmpty();
     }
@@ -51,12 +51,14 @@ public class SupertypeVisitor extends Visitor {
         if (stn!=null) {
             for (Tree.StaticType st: stn.getTypes()) {
                 ProducedType t = st.getTypeModel();
-                if (t!=null && !(t.getDeclaration() instanceof Constructor)) {
-                    List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton(d));
+                if (t!=null /*&& !(t.getDeclaration() instanceof Constructor)*/) {
+                    List<TypeDeclaration> l = 
+                            t.isRecursiveRawTypeDefinition(singleton(d));
                     if (!l.isEmpty()) {
-                        if (displayErrors)
-                        stn.addError("inheritance is circular: definition of '" + 
-                                d.getName() + "' is recursive, involving " + typeList(l));
+                        if (displayErrors) {
+                            stn.addError("inheritance is circular: definition of '" + 
+                                    d.getName() + "' is recursive, involving " + typeList(l));
+                        }
                         d.getSatisfiedTypes().remove(t);
                         d.addBrokenSupertype(t);
                         d.clearProducedTypeCache();
@@ -70,12 +72,14 @@ public class SupertypeVisitor extends Visitor {
             Tree.StaticType et = etn.getType();
             if (et!=null) {
             	ProducedType t = et.getTypeModel();
-            	if (t!=null && !(t.getDeclaration() instanceof Constructor)) {
-            		List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
+            	if (t!=null /*&& !(t.getDeclaration() instanceof Constructor)*/) {
+            		List<TypeDeclaration> l = 
+            		        t.isRecursiveRawTypeDefinition(singleton(d));
             		if (!l.isEmpty()) {
-            	        if (displayErrors)
-            			etn.addError("inheritance is circular: definition of '" + 
-            					d.getName() + "' is recursive, involving " + typeList(l));
+            	        if (displayErrors) {
+                			etn.addError("inheritance is circular: definition of '" + 
+                					d.getName() + "' is recursive, involving " + typeList(l));
+            	        }
             			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
             			d.addBrokenSupertype(t);
                         d.clearProducedTypeCache();
@@ -95,10 +99,11 @@ public class SupertypeVisitor extends Visitor {
 				it.canonicalize().getType();
             }
             catch (RuntimeException re) {
-                if (displayErrors)
-                that.addError("inheritance hierarchy is undecidable: " + 
-                        "could not canonicalize the intersection of all supertypes of '" +
-                        d.getName() + "'");
+                if (displayErrors) {
+                    that.addError("inheritance hierarchy is undecidable: " + 
+                            "could not canonicalize the intersection of all supertypes of '" +
+                            d.getName() + "'");
+                }
                 d.getSatisfiedTypes().clear();
                 d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
                 d.clearProducedTypeCache();

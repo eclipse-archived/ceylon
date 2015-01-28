@@ -35,3 +35,7 @@ class Good1WithCircularConstraints() satisfies CircularConstraints<String,String
 class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
 class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,String> {}
 class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}
+
+@error class Circ satisfies Circ {
+    shared new Circ() {}  
+}
