@@ -7,7 +7,7 @@ final class bug1666_ {
     
     static <Num>Num bug1666(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Num, final Num number) {
         {
-            Num sel$0 = number;
+            .java.lang.Object sel$0 = number;
             if (sel$0 instanceof .ceylon.language.Float) {
                 final .java.lang.Object number$5 = (.java.lang.Object)sel$0;
                 final .java.lang.Object s$8;

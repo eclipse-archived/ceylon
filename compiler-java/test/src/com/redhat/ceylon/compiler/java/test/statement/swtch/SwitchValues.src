@@ -122,11 +122,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             .ceylon.language.Character sel$6 = ch;
             if (sel$6 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
-            } else if (sel$6 != null && sel$6.intValue() == 43) {
+            } else if (sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 43) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
-            } else if (sel$6 != null && sel$6.intValue() == 45) {
+            } else if (sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 45) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
-            } else if (sel$6 != null && sel$6.intValue() == 48 || sel$6 != null && sel$6.intValue() == 49 || sel$6 != null && sel$6.intValue() == 50 || sel$6 != null && sel$6.intValue() == 51 || sel$6 != null && sel$6.intValue() == 52 || sel$6 != null && sel$6.intValue() == 53 || sel$6 != null && sel$6.intValue() == 54 || sel$6 != null && sel$6.intValue() == 55 || sel$6 != null && sel$6.intValue() == 56 || sel$6 != null && sel$6.intValue() == 57) {
+            } else if (sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 48 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 49 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 50 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 51 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 52 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 53 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 54 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 55 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 56 || sel$6 != null && ((.ceylon.language.Character)sel$6).intValue() == 57) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("digit"));
             } else {
                 final int ch$7 = ((.ceylon.language.Character)sel$6).intValue();
@@ -135,11 +135,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
         {
             .ceylon.language.Character sel$8 = ch;
-            if (sel$8 == null || (sel$8 != null && sel$8.intValue() == 48 || sel$8 != null && sel$8.intValue() == 49 || sel$8 != null && sel$8.intValue() == 50 || sel$8 != null && sel$8.intValue() == 51 || sel$8 != null && sel$8.intValue() == 52 || sel$8 != null && sel$8.intValue() == 53 || sel$8 != null && sel$8.intValue() == 54 || sel$8 != null && sel$8.intValue() == 55 || sel$8 != null && sel$8.intValue() == 56 || sel$8 != null && sel$8.intValue() == 57)) {
+            if (sel$8 == null || (sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 48 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 49 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 50 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 51 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 52 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 53 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 54 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 55 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 56 || sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 57)) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("digit or null"));
-            } else if (sel$8 != null && sel$8.intValue() == 43) {
+            } else if (sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 43) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
-            } else if (sel$8 != null && sel$8.intValue() == 45) {
+            } else if (sel$8 != null && ((.ceylon.language.Character)sel$8).intValue() == 45) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
             } else {
                 final int ch$9 = ((.ceylon.language.Character)sel$8).intValue();
@@ -148,11 +148,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
         {
             .ceylon.language.Character sel$10 = ch;
-            if (sel$10 != null && sel$10.intValue() == 43) {
+            if (sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 43) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
-            } else if (sel$10 != null && sel$10.intValue() == 45) {
+            } else if (sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 45) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
-            } else if (sel$10 != null && sel$10.intValue() == 48 || sel$10 != null && sel$10.intValue() == 49 || sel$10 != null && sel$10.intValue() == 50 || sel$10 != null && sel$10.intValue() == 51 || sel$10 != null && sel$10.intValue() == 52 || sel$10 != null && sel$10.intValue() == 53 || sel$10 != null && sel$10.intValue() == 54 || sel$10 != null && sel$10.intValue() == 55 || sel$10 != null && sel$10.intValue() == 56 || sel$10 != null && sel$10.intValue() == 57) {
+            } else if (sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 48 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 49 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 50 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 51 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 52 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 53 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 54 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 55 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 56 || sel$10 != null && ((.ceylon.language.Character)sel$10).intValue() == 57) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("digit"));
             } else {
                 final .ceylon.language.Character ch$11 = (.ceylon.language.Character)sel$10;
@@ -181,11 +181,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             .ceylon.language.Integer sel$13 = num;
             if (sel$13 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
-            } else if (sel$13 != null && sel$13.longValue() == -1L) {
+            } else if (sel$13 != null && ((.ceylon.language.Integer)sel$13).longValue() == -1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("negative identity"));
-            } else if (sel$13 != null && sel$13.longValue() == 0L) {
+            } else if (sel$13 != null && ((.ceylon.language.Integer)sel$13).longValue() == 0L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("additive identity"));
-            } else if (sel$13 != null && sel$13.longValue() == 1L) {
+            } else if (sel$13 != null && ((.ceylon.language.Integer)sel$13).longValue() == 1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("multiplicative identity"));
             } else {
                 final long num$14 = ((.ceylon.language.Integer)sel$13).longValue();
@@ -194,11 +194,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
         {
             .ceylon.language.Integer sel$15 = num;
-            if (sel$15 == null || sel$15 != null && sel$15.longValue() == 1L) {
+            if (sel$15 == null || sel$15 != null && ((.ceylon.language.Integer)sel$15).longValue() == 1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("multiplicative identity or null"));
-            } else if (sel$15 != null && sel$15.longValue() == -1L) {
+            } else if (sel$15 != null && ((.ceylon.language.Integer)sel$15).longValue() == -1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("negative identity"));
-            } else if (sel$15 != null && sel$15.longValue() == 0L) {
+            } else if (sel$15 != null && ((.ceylon.language.Integer)sel$15).longValue() == 0L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("additive identity"));
             } else {
                 final long num$16 = ((.ceylon.language.Integer)sel$15).longValue();
@@ -209,11 +209,11 @@ class SwitchValues implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             .ceylon.language.Integer sel$17 = num;
             if (sel$17 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
-            } else if (sel$17 != null && sel$17.longValue() == -1L) {
+            } else if (sel$17 != null && ((.ceylon.language.Integer)sel$17).longValue() == -1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("negative identity"));
-            } else if (sel$17 != null && sel$17.longValue() == 0L) {
+            } else if (sel$17 != null && ((.ceylon.language.Integer)sel$17).longValue() == 0L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("additive identity"));
-            } else if (sel$17 != null && sel$17.longValue() == 1L) {
+            } else if (sel$17 != null && ((.ceylon.language.Integer)sel$17).longValue() == 1L) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("multiplicative identity"));
             } else {
                 final long num$18 = ((.ceylon.language.Integer)sel$17).longValue();
