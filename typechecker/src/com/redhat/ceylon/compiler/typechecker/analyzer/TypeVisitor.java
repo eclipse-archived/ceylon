@@ -458,7 +458,9 @@ public class TypeVisitor extends Visitor {
         }
         else {
             for (Declaration d: m.getContainer().getMembers()) {
-                if (d.getName().equals(name) && !d.sameKind(m)) {
+                if (d.getName().equals(name) && 
+                        !d.sameKind(m) &&
+                        !d.isAnonymous()) {
                     //crazy interop cases like isOpen() + open()
                     id.addError("ambiguous member declaration: '" +
                             name + "' of '" + td.getName() + "'");
