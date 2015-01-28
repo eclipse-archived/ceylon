@@ -77,6 +77,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     IssuesTest_2000_2499.class,
     MiscTest.class,
     CeylonDocToolTest.class,
+    CompilerToolsTests.class,
     
     // those can run in any order
     NamingTest.class,
@@ -95,7 +96,6 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ComprehensionTest.class,
     StaticRefTest.class,
-    CompilerToolsTests.class,
     // FIXME Disabled: it does not run currently in parallel
     // TopLevelToolTest.class,
     AntToolTests.class,
