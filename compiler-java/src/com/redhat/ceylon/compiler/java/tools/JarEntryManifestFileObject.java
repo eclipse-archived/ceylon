@@ -280,8 +280,11 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             for (ModuleImport moduleImport : module.getImports()) {
                 Module importedModule = moduleImport.getModule();
                 if (JDKUtils.isJDKModule(importedModule.getNameAsString())) {
-                    String version = importedModule.getVersion();
-                    main.put(Require_Capability, getRequireCapabilityJavaSE(version));
+                    // FIXME Hard-coding version 7 for now because we don't officially
+                    // support Java 8 yet and compiling with that compiler generates
+                    // the wrong requirements
+                    // String version = importedModule.getVersion();
+                    main.put(Require_Capability, getRequireCapabilityJavaSE("7"));
                     break;
                 }
             }
