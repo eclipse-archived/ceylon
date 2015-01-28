@@ -207,3 +207,29 @@ class Unshared() { }
 shared class SharedWithConstructor {
     shared new SharedWithConstructor(@error Unshared bar) { }
 }
+
+abstract class AbstractWithConstructor {
+    shared new ConstructorForAbstract() {}
+}
+
+class InheritsAbstractWithConstructor1() 
+        extends AbstractWithConstructor.ConstructorForAbstract() {
+}
+
+class InheritsAbstractWithConstructor2 
+        extends AbstractWithConstructor {
+    shared new Constructor() extends ConstructorForAbstract() {}
+}
+
+void testRefs<T>() {
+    @error value val1 = WithConst;
+    @error value val2 = T;
+    @error value val3 = Identifiable;
+    @error value val4 = AbstractWithConstructor.ConstructorForAbstract;
+    
+    @type:"InheritsAbstractWithConstructor1" 
+    value new1 = InheritsAbstractWithConstructor1();
+    
+    @type:"InheritsAbstractWithConstructor2" 
+    value new2 = InheritsAbstractWithConstructor2.Constructor();
+}

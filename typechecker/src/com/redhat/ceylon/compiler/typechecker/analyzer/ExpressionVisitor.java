@@ -5766,9 +5766,16 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (type instanceof Class) {
-                if (((Class) type).isAbstract()) {
+                Class c = (Class) type;
+                if (c.isAbstract()) {
                     that.addError("class cannot be instantiated: '" +
                             type.getName(unit) + "' is abstract");
+                    return false;
+                }
+                else if (c.getParameterList()==null) {
+                    that.addError("class cannot be instantiated: '" +
+                            type.getName(unit) + 
+                            "' does not have a default constructor");
                     return false;
                 }
                 else {
