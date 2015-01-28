@@ -164,8 +164,13 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-        if (!dec.isFormal() && type.isDynamic()) {
-            that.addError("non-formal member belongs to dynamic interface");
+        if (type.isDynamic()) {
+            if (dec instanceof Class) {
+                that.addError("member class belongs to dynamic interface");
+            }
+            else if (!dec.isFormal()) {
+                that.addError("non-formal member belongs to dynamic interface");
+            }
         }
         if (dec.getName().equals("mul")) {
             dec.getContainer();
