@@ -3711,6 +3711,10 @@ public abstract class AbstractTransformer implements Transformation {
         public R isInstanceof(JCExpression varExpr, ProducedType testedType);
         /** Make a type test using {@code Util.isReified()} */
         public R isReified(JCExpression varExpr, ProducedType testedType);
+        /** ceylon.language.true_.get().equals(expr) */
+        public R isTrue(JCExpression expr);
+        /** ceylon.language.false_.get().equals(expr) */
+        public R isFalse(JCExpression expr);
         
     }
     /**
@@ -3760,6 +3764,20 @@ public abstract class AbstractTransformer implements Transformation {
         public JCExpression isReified(JCExpression varExpr,
                 ProducedType testedType) {
             return utilInvocation().isReified(varExpr, testedType);
+        }
+
+        @Override
+        public JCExpression isTrue(JCExpression expr) {
+            return make().Apply(null,
+                    naming.makeQualIdent(makeLanguageValue("true"), "equals"),
+                    List.<JCExpression>of(expr));
+        }
+
+        @Override
+        public JCExpression isFalse(JCExpression expr) {
+            return make().Apply(null,
+                    naming.makeQualIdent(makeLanguageValue("false"), "equals"),
+                    List.<JCExpression>of(expr));
         }
     }
     JavacTypeTestTransformation javacTypeTester = null;
@@ -3822,6 +3840,16 @@ public abstract class AbstractTransformer implements Transformation {
         public Boolean isReified(JCExpression varExpr, ProducedType testedType) {
             // Util.isReified() is expensive
             return Boolean.FALSE;
+        }
+
+        @Override
+        public Boolean isTrue(JCExpression expr) {
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean isFalse(JCExpression expr) {
+            return Boolean.TRUE;
         }
         
     }
@@ -3919,6 +3947,10 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (testedType.isExactly(typeFact().getIdentifiableDeclaration().getType())){
                 // it's erased
                 return typeTester.isIdentifiable(varExpr);
+            } else if (testedType.getDeclaration().equals(typeFact().getTrueValueDeclaration().getTypeDeclaration())) {
+                return typeTester.isTrue(varExpr);
+            } else if (testedType.getDeclaration().equals(typeFact().getFalseValueDeclaration().getTypeDeclaration())) {
+                return typeTester.isFalse(varExpr);
             } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
                 return typeTester.isBasic(varExpr);
