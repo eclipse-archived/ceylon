@@ -1397,13 +1397,9 @@ public class ClassTransformer extends AbstractTransformer {
         mdb.isOverride(true);
         mdb.ignoreModelAnnotations();
         mdb.modifiers(PUBLIC);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, "dtorFactory");
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.deconstructor.toString());
         pdb.modifiers(FINAL);
-        pdb.type(makeJavaType(
-                
-                typeFact().getCallableType(
-                        
-                    typeFact().getDeconstructorType())), null);
+        pdb.type(makeJavaType(typeFact().getDeconstructorType()), null);
         mdb.parameter(pdb);
         
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
@@ -1411,17 +1407,8 @@ public class ClassTransformer extends AbstractTransformer {
             // invoke super.$serialize$()
             stmts.add(make().Exec(make().Apply(null,
                     naming.makeQualIdent(naming.makeSuper(), Unfix.$serialize$.toString()),
-                    List.<JCExpression>of(naming.makeUnquotedIdent("dtorFactory")))));
+                    List.<JCExpression>of(naming.makeUnquotedIdent(Unfix.deconstructor)))));
         }
-        
-        stmts.add(makeVar(FINAL, Unfix.deconstructor.toString(), 
-                makeJavaType(typeFact().getDeconstructorType()),
-                make().Apply(null,
-                        naming.makeQualIdent(naming.makeUnquotedIdent("dtorFactory"), 
-                                naming.getCallableMethodName()),
-                        List.<JCExpression>of(expressionGen().makeTypeLiteralCall(model.getType(), false, model.getType())))));
-        
-        
         
         // get reified type arguments
         for (TypeParameter tp : model.getTypeParameters()) {
