@@ -20,7 +20,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_RESOURCE_ROOT = "compiler.resourceroot";
     public final static String COMPILER_SCRIPT = "compiler.script";
     public final static String COMPILER_DOC = "compiler.doc";
-    public final static String COMPILER_SUPPRESSWARNINGS = "compiler.suppresswarnings";
+    public final static String COMPILER_SUPPRESSWARNING = "compiler.suppresswarning";
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
     public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_PACK200 = "compiler.pack200";
@@ -131,12 +131,17 @@ public class DefaultToolOptions {
         return Repositories.withConfig(config).getOutputRepository().getUrl();
     }
 
-    public static String getCompilerSuppressWarnings() {
+    public static List<String> getCompilerSuppressWarnings() {
         return getCompilerSuppressWarnings(CeylonConfig.get());
     }
 
-    public static String getCompilerSuppressWarnings(CeylonConfig config) {
-        return config.getOption(COMPILER_SUPPRESSWARNINGS);
+    public static List<String> getCompilerSuppressWarnings(CeylonConfig config) {
+        String[] warnings = config.getOptionValues(COMPILER_SUPPRESSWARNING);
+        if (warnings != null) {
+            return Arrays.asList(warnings);
+        } else {
+            return null;
+        }
     }
     
     public static boolean getCompilerNoOsgi() {
