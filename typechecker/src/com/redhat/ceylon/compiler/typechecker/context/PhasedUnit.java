@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
-import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 
 /**
  * Represent a unit and each of the type checking phases
