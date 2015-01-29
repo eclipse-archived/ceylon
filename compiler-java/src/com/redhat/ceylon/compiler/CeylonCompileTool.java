@@ -169,7 +169,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
-    private String suppressWarnings = DefaultToolOptions.getCompilerSuppressWarnings();
+    private String suppressWarnings = join(DefaultToolOptions.getCompilerSuppressWarnings());
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -560,7 +560,20 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 arguments.add(value);
             }
         }
-        
+    }
     
+    private String join(List<String> strings) {
+        if (strings != null) {
+            StringBuilder buf = new StringBuilder();
+            for (String s : strings) {
+                if (buf.length() > 0) {
+                    buf.append(",");
+                }
+                buf.append(s);
+            }
+            return buf.toString();
+        } else {
+            return null;
+        }
     }
 }
