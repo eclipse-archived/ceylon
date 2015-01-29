@@ -49,8 +49,7 @@ class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
     }
     
     @.java.lang.Override
@@ -105,8 +104,7 @@ class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.com
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U)));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
         deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).getTypeParameterDeclaration("U"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$U));
         deconstructor.<U>putValue($reified$U, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u"), this.u);
     }

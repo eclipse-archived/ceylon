@@ -71,8 +71,7 @@ class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serializati
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.$TypeDescriptor$));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
     }
     
     @.java.lang.Override
@@ -100,9 +99,8 @@ class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        super.$serialize$(dtorFactory);
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.$TypeDescriptor$));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
+        super.$serialize$(deconstructor);
     }
     
     @.java.lang.Override

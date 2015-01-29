@@ -17,8 +17,7 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.seri
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.$TypeDescriptor$));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
         deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedVariableInteger"), .ceylon.language.Integer.instance(this.sharedVariableInteger));
         deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedInteger"), .ceylon.language.Integer.instance(this.sharedInteger));
         deconstructor.<.ceylon.language.Integer>putValue(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedOptionalInteger"), this.sharedOptionalInteger);
@@ -106,9 +105,8 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        super.$serialize$(dtorFactory);
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$));
+    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
+        super.$serialize$(deconstructor);
         if (!$init$variablePartner) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variablePartner has not been initialized");
         deconstructor.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>putValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variablePartner"), this.getVariablePartner());
         if (!$init$partner) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.partner has not been initialized");
