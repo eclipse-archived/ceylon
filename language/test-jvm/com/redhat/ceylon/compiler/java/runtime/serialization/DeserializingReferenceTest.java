@@ -42,7 +42,7 @@ class GuineaPig<T> implements Serializable {
         return t;
     }
     @Override
-    public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
+    public void $serialize$(Deconstructor deconstructor) {
         
     }
     @Override

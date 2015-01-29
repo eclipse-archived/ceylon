@@ -1879,8 +1879,7 @@ public final class Array<Element>
     
     @Ignore
     @Override
-    public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
-        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral($getType$()));
+    public void $serialize$(Deconstructor dtor) {
         
         ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
         dtor.putTypeArgument(elementTypeParameter, Metamodel.getAppliedMetamodel(this.$reifiedElement));

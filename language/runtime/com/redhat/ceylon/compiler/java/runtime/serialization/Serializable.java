@@ -15,6 +15,6 @@ import ceylon.language.serialization.Deconstructed;
  */
 @Ignore
 public interface Serializable {
-    public void $serialize$(Callable<? extends Deconstructor> deconstructor);
+    public void $serialize$(Deconstructor deconstructor);
     public void $deserialize$(Deconstructed deconstructed);
 }

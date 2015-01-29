@@ -722,11 +722,10 @@ public final class Tuple<Element, First extends Element,
     }
     @Ignore
     @Override
-    public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
+    public void $serialize$(Deconstructor dtor) {
         // Don't call super.$serialize$() since our runtime super class is 
         // an implementation detail
         Generic myTd = (TypeDescriptor.Generic)$getType$();
-        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral(myTd));
         
         TypeDescriptor reifiedElement = myTd.getTypeArguments()[0];
         TypeDescriptor reifiedFirst = myTd.getTypeArguments()[1];
