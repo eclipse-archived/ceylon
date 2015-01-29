@@ -83,17 +83,18 @@ public class DeserializingReference<Instance>
         this(reified$Instance, 
                 id, 
                 classModel,
+                ST_STATELESS,
                 (Instance)createInstance(context, id, classModel, outerReference));
     }
     
     @Ignore
     DeserializingReference(TypeDescriptor reified$Instance, 
             Object id, 
-            @SuppressWarnings("rawtypes") ClassModel classModel, Instance instance) {
+            @SuppressWarnings("rawtypes") ClassModel classModel, int state, Instance instance) {
         this.reified$Instance = reified$Instance;
         this.id = id;
         this.classModel = classModel;
-        this.state = ST_STATELESS;
+        this.state = state;
         this.instance = instance;
     }
 

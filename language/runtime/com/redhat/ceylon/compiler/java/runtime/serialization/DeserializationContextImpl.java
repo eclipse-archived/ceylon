@@ -9,6 +9,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
+import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.DeserializationContext;
 import ceylon.language.serialization.Reference;
 
@@ -53,7 +54,12 @@ public class DeserializationContextImpl
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);
         }
-        ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, (Reference)null);
+        ValueDeclaration anon = classModel.getDeclaration().getObjectValue();
+        if (anon != null) {
+            ref = new DeserializingReference<Instance>(reified$Instance, id, classModel, DeserializingReference.ST_INITIALIZED, (Instance)anon.get());
+        } else {
+            ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, (Reference)null);
+        }
         idToReference.put(id, ref);
         references.add(ref);
         return (Reference)ref;
