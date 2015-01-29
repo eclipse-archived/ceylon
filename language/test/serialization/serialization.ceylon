@@ -51,7 +51,7 @@ shared void testSerializationRegisterTwice3() {
         sc.reference(1, instance);
         throw;
     } catch (AssertionError e) {
-        assert(e.startsWith("The instance \"1\" has already been registered with id 1"));
+        assert(e.message.startsWith("The instance \"1\" has already been registered with id 1"));
     }
 }
 
