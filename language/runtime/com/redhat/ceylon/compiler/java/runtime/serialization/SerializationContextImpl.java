@@ -9,6 +9,9 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
+import ceylon.language.meta.type_;
+import ceylon.language.meta.model.ClassModel;
+import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.SerializationContext;
 import ceylon.language.serialization.SerializableReference;
 
@@ -16,6 +19,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -53,7 +57,17 @@ public class SerializationContextImpl
      */
     @Override
     public <Instance> SerializableReference<Instance> reference(TypeDescriptor reified$Instance, Object id, Instance instance) {
-        SerializableReferenceImpl<Instance> ref = new SerializableReferenceImpl<Instance>(reified$Instance, this, id, instance);
+        SerializableReferenceImpl<Instance> ref;
+        if (type_.type(reified$Instance, instance).getDeclaration().getAnonymous()) {
+            ref = new SerializableReferenceImpl<Instance>(reified$Instance, this, id, instance) {
+                @Override
+                public Object serialize(final Deconstructor dtor) {
+                    return null;
+                }
+            };
+        } else {
+            ref = new SerializableReferenceImpl<Instance>(reified$Instance, this, id, instance);
+        }
         SerializableReference<?> prevReference = map(instance).put(instance, ref);
         if (prevReference != null) {
             throw new ceylon.language.AssertionError("The instance \""+prevReference.instance()+"\" has already been registered with id "+id+": You cannot register \"" + instance + "\" again with a different id");

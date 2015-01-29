@@ -10,7 +10,9 @@ import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.DeserializationContext;
+import ceylon.language.serialization.RealizableReference;
 import ceylon.language.serialization.Reference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -56,7 +58,12 @@ public class DeserializationContextImpl
         }
         ValueDeclaration anon = classModel.getDeclaration().getObjectValue();
         if (anon != null) {
-            ref = new DeserializingReference<Instance>(reified$Instance, id, classModel, DeserializingReference.ST_INITIALIZED, (Instance)anon.get());
+            ref = new DeserializingReference<Instance>(reified$Instance, id, classModel, DeserializingReference.ST_INITIALIZED, (Instance)anon.get()) {
+                @Override
+                public RealizableReference<Instance> deserialize(Deconstructed deconstructed) {
+                    return this;
+                }
+            };
         } else {
             ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, (Reference)null);
         }
