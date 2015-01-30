@@ -136,7 +136,9 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
                 after = 0;
             }
             if (after - before == 0) {
-                warningName.getValue().addUsageWarning(Warning.suppressesNothing, "suppresses no warnings");
+                if (suppressed.get(Warning.suppressesNothing) == null) {
+                    warningName.getValue().addUsageWarning(Warning.suppressesNothing, "suppresses no warnings");
+                }
             }
         }
         this.suppressed.putAll(added);
@@ -177,7 +179,8 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
                 String warningName = that.getText();
                 E warning = parseName(warningName);
                 if (warning == null) {
-                    if (warnAboutUnknownWarnings) {
+                    if (warnAboutUnknownWarnings && 
+                            suppressed.get(Warning.unknownWarning) == null) {
                         that.addUsageWarning(Warning.unknownWarning, "unknown warning: " + warningName);
                     }
                 } else {
