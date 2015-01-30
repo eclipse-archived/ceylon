@@ -77,4 +77,9 @@ public class IssuesTest_2000_2499 extends CompilerTest {
         compareWithJavaSource("bug20xx/Bug2021");
     }
     
+    @Test
+    public void testBug2024() {
+        compile("bug20xx/bug2024a/module.ceylon", "bug20xx/bug2024a/package.ceylon", "bug20xx/bug2024a/Instant.ceylon");
+        compile("bug20xx/bug2024b/module.ceylon", "bug20xx/bug2024b/Bug2024.ceylon", "bug20xx/bug2024b/Bug2024.java");
+    }
 }

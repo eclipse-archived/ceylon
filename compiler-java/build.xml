@@ -198,6 +198,7 @@
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/issues/bug20xx/bug2024a/**" />
             <include name="com/redhat/ceylon/tools/**" />
             <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
             <include name="com/redhat/ceylon/itest/**" />
