@@ -1012,7 +1012,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public boolean hasAliasedVariable() {
-            return !(getVariable().getType() instanceof Tree.SyntheticVariable);
+            return !(getVariable().getType() instanceof Tree.SyntheticVariable)
+                    || naming.isSubstituted(getVariable().getDeclarationModel().getOriginalDeclaration());
         }
         
         @Override
