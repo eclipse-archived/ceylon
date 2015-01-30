@@ -190,6 +190,7 @@ public class CeylonEnter extends Enter {
         if(isBootstrap){
             super.main(trees);
         }else if(!javaTrees.isEmpty()){
+            setupImportedPackagesForJavaTrees(javaTrees);
             super.main(javaTrees);
         }
         // now we can type-check the Ceylon code
@@ -207,6 +208,13 @@ public class CeylonEnter extends Enter {
                 sourceLanguage.pop();
             }
             timer.endTask();
+        }
+    }
+
+    private void setupImportedPackagesForJavaTrees(List<JCCompilationUnit> javaTrees) {
+        JCTree.Visitor visitor = new ImportScanner(modelLoader);
+        for(JCCompilationUnit unit : javaTrees){
+            unit.accept(visitor);
         }
     }
 
