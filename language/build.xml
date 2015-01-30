@@ -402,11 +402,14 @@
             executable="${ceylon.compiler.loc}"
             fork="true"
             verbose="false"
-            suppressWarnings="ceylonNamespace,unusedDeclaration,unusedImport,expressionTypeNothing"
             encoding="UTF-8"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
             out="${build.dist.repo}">
+            <suppressWarning>ceylonNamespace</suppressWarning>
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
             <javacoption>-Xbootstrapceylon</javacoption>
             <javacoption>-g</javacoption>
             <files>
