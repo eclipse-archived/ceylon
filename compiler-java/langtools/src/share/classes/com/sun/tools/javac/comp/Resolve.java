@@ -1060,20 +1060,25 @@ public class Resolve {
             ClassSymbol c = reader.loadClass(name);
             if (!isAccessible(env, c)) return new AccessError(c);
             if (modelLoader != null && !sourceLanguage.isCeylon()) {
-                // Check if the class is accessible according to Ceylon's access rules
-                String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
-                Package scopePackage = modelLoader.findPackage(scopePackageName);
-                // Don't check if we failed to find it
-                if(scopePackage != null){
-                    Module scopeModule = scopePackage.getModule();
-                    // Ugly special case where we skip the test when we're compiling the language module itself
-                    if (scopeModule != modelLoader.getLanguageModule()) {
-                        String nameString = name.toString();
-                        String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
-                        Package importedPackage = scopeModule.getPackage(importedPackageName);
-                        // Don't check if we failed to find it
-                        if(importedPackage == null){
-                            return new ImportError(c, scopeModule);
+                // special cases for java.lang.String and java.lang.Override which are fine
+                // See https://github.com/ceylon/ceylon-compiler/issues/2003
+                String nameString = name.toString();
+                if(!nameString.equals("java.lang.String")
+                        && !nameString.equals("java.lang.Override")){
+                    // Check if the class is accessible according to Ceylon's access rules
+                    String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
+                    Package scopePackage = modelLoader.findPackage(scopePackageName);
+                    // Don't check if we failed to find it
+                    if(scopePackage != null){
+                        Module scopeModule = scopePackage.getModule();
+                        // Ugly special case where we skip the test when we're compiling the language module itself
+                        if (scopeModule != modelLoader.getLanguageModule()) {
+                            String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
+                            Package importedPackage = scopeModule.getPackage(importedPackageName);
+                            // Don't check if we failed to find it
+                            if(importedPackage == null){
+                                return new ImportError(c, scopeModule);
+                            }
                         }
                     }
                 }
