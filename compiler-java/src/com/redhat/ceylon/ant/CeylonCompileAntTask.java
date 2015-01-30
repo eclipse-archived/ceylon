@@ -70,6 +70,18 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         }
     }
     
+    public static class SuppressWarning {
+        String value;
+        
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public void addText(String value) {
+            this.value = value;
+        }
+    }
+    
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
         public boolean accept(File pathname) {
@@ -89,8 +101,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Boolean noOsgi;
     private Boolean noPom;
     private Boolean pack200;
-    private String suppressWarnings;
-
+    private List<SuppressWarning> suppressWarnings = new ArrayList<SuppressWarning>(0);
+    private boolean suppressAllWarnings = false;
+    
     private List<File> compileList = new ArrayList<File>(2);
     private Set<Module> modules = null;
     
@@ -131,12 +144,11 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         this.pack200 = pack200;
     }
 
-    public String getSuppressWarnings() {
-        return suppressWarnings;
-    }
-
-    public void setSuppressWarnings(String suppressWarnings) {
-        this.suppressWarnings = suppressWarnings;
+    public void addConfiguredSuppressWarning(SuppressWarning sw) {
+        this.suppressWarnings.add(sw);
+        if (sw.value == null || sw.value.isEmpty()) {
+            suppressAllWarnings = true;
+        }
     }
 
     /**
@@ -451,10 +463,12 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             appendOption(cmd, "--pack200");
         
         if (suppressWarnings != null) {
-            if (suppressWarnings.isEmpty()) {
-                appendOption(cmd, "--suppress-warnings");
+            if (suppressAllWarnings) {
+                appendOption(cmd, "--suppress-warning");
             } else {
-                appendOption(cmd, "--suppress-warnings=" + suppressWarnings);
+                for (SuppressWarning sw : suppressWarnings) {
+                    appendOption(cmd, "--suppress-warning=" + sw.value);
+                }
             }
         }
         
