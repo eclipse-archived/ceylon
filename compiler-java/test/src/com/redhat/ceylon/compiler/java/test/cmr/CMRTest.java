@@ -1087,6 +1087,20 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlDefaultHasNoOsgiManifest() throws IOException {
+        compile("modules/def/CeylonClass.ceylon");
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
+        assertNull(manifest);
+        car.close();
+    }
+
+    @Test
     public void testMdlOsgiManifestDisabled() throws IOException {
         ErrorCollector c = new ErrorCollector();
         List<String> options = new ArrayList<String>(defaultOptions.size()+1);
