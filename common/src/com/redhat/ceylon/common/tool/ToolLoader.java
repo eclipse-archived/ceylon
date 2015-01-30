@@ -146,7 +146,7 @@ public abstract class ToolLoader {
         return model;
     }
 
-    protected <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType) {
+    protected <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType, boolean isSimpleType) {
         Subtool subtool = setter.getAnnotation(Subtool.class);
         ParsedBy pf = setter.getAnnotation(ParsedBy.class);
         if (subtool != null) {
@@ -166,7 +166,7 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return StandardArgumentParsers.forClass(setterType, this);
+        return StandardArgumentParsers.forClass(setterType, this, isSimpleType);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
@@ -223,7 +223,7 @@ public abstract class ToolLoader {
     private ArgumentModel<Boolean> buildPureOption(ToolModel<?> toolModel, Method method) {
         ArgumentModel<Boolean> argumentModel;
         argumentModel = new ArgumentModel<Boolean>();
-        argumentModel.setParser((ArgumentParser<Boolean>)getArgumentParser(method, boolean.class));
+        argumentModel.setParser((ArgumentParser<Boolean>)getArgumentParser(method, boolean.class, true));
         argumentModel.setToolModel(toolModel);
         argumentModel.setSetter(method);
         argumentModel.setType(boolean.class);
@@ -368,7 +368,7 @@ public abstract class ToolLoader {
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, OptionArgument.class);
-        argumentModel.setParser((ArgumentParser<A>)getArgumentParser(setter, argumentType));
+        argumentModel.setParser((ArgumentParser<A>)getArgumentParser(setter, argumentType, isSimpleType(setter)));
         argumentModel.setToolModel(toolModel);
         argumentModel.setType(argumentType);
         argumentModel.setMultiplicity(isSimpleType(setter) ? Multiplicity._0_OR_1 : Multiplicity._0_OR_MORE);
@@ -448,7 +448,7 @@ public abstract class ToolLoader {
         argumentModel.setName(argumentName);
         argumentModel.setType(argumentType);
         
-        final ArgumentParser<A> parser = (ArgumentParser<A>)getArgumentParser(setter, argumentType);
+        final ArgumentParser<A> parser = (ArgumentParser<A>)getArgumentParser(setter, argumentType, !multiplicity.isMultivalued());
         if (parser == null) {
             throw new ModelException("Unable to parse arguments of " + argumentModel.getType());
         }

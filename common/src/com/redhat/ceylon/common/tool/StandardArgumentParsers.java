@@ -3,11 +3,11 @@ package com.redhat.ceylon.common.tool;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -99,48 +99,77 @@ public class StandardArgumentParsers {
         
     }
     
-    public static class EnumArgumentParser<E extends Enum<E>> implements EnumerableParser<E> {
+    public abstract static class EnumParserBase<A, E extends Enum<E>> implements EnumerableParser<A> {
 
-        private final boolean denormalize;
-        private final Class<E> enumClass;
+        protected final boolean denormalize;
+        protected final Class<E> enumClass;
         
-        public EnumArgumentParser(Class<E> enumClass, boolean denormalize) {
+        public EnumParserBase(Class<E> enumClass, boolean denormalize) {
             this.enumClass = enumClass;
             this.denormalize = denormalize;
         }
         
+        protected String denormalize(String argument) {
+            argument = argument.replace('-', '_');
+            for (String nm : possibilities()) {
+                if (nm.equalsIgnoreCase(argument)) {
+                    argument = nm;
+                }
+            }
+            return argument;
+        }
+
+        protected E valueOf(String name) {
+            return EnumUtil.valueOf(enumClass, name);
+        }
+        
+        @Override
+        public Iterable<String> possibilities() {
+            return EnumUtil.possibilities(enumClass);
+        }
+    }
+    
+    public static class EnumArgumentParser<E extends Enum<E>> extends EnumParserBase<E, E> {
+
+        public EnumArgumentParser(Class<E> enumClass, boolean denormalize) {
+            super(enumClass, denormalize);
+        }
+
         @Override
         public E parse(String argument, Tool tool) {
             if (denormalize) {
                 argument = denormalize(argument);
             }
-            return Enum.valueOf(enumClass, argument);
+            return valueOf(argument);
         }
-        
-        protected String denormalize(String argument) {
-            return argument.replace('-', '_');
+    }
+    
+    public static class EnumArgumentsParser<E extends Enum<E>> extends EnumParserBase<List<E>, E> {
+
+        public EnumArgumentsParser(Class<E> enumClass, boolean denormalize) {
+            super(enumClass, denormalize);
         }
 
         @Override
-        public Iterable<String> possibilities() {
-            E[] values;
-            try {
-                Method method = enumClass.getMethod("values");
-                method.setAccessible(true);
-                values = (E[]) method.invoke(null);
-            } catch (ReflectiveOperationException e) {
-                // Should never happen
-                throw new RuntimeException(e);
+        public List<E> parse(String argument, Tool tool) {
+            if (!argument.isEmpty()) {
+                String[] elems = argument.split(",");
+                ArrayList<E> result = new ArrayList<E>(elems.length);
+                for (String elem : elems) {
+                    elem = elem.trim();
+                    if (denormalize) {
+                        elem = denormalize(elem);
+                    }
+                    result.add(valueOf(elem));
+                }
+                return result;
+            } else {
+                return Collections.emptyList();
             }
-            List<String> result = new ArrayList<>(values.length);
-            for (E value : values) {
-                result.add(value.toString());
-            }
-            return result;
-        }        
+        }
     }
     
-    public static ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader) {
+    public static ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType) {
         if (CharSequence.class.isAssignableFrom(setterType)) {
             return CHAR_SEQUENCE_PARSER;
         } else if (Integer.class.isAssignableFrom(setterType)
@@ -156,7 +185,11 @@ public class StandardArgumentParsers {
         } else if (URL.class.isAssignableFrom(setterType)) {
             return new ConstructorArgumentParser<>(URL.class);
         } else if (Enum.class.isAssignableFrom(setterType)) {
-            return new EnumArgumentParser(setterType, true);
+            if (isSimpleType) {
+                return new EnumArgumentParser(setterType, true);
+            } else {
+                return new EnumArgumentsParser(setterType, true);
+            }
         } else if (ToolModel.class.isAssignableFrom(setterType)) {
             return new ToolModelArgumentParser(toolLoader);
         } /*else if (Tool.class.isAssignableFrom(setterType)) {
