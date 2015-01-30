@@ -482,4 +482,9 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaBug2019.java");
         compile("Bug2019.ceylon");
     }
+    
+    @Test
+    public void testIopBug2027(){
+        compile("Bug2027.ceylon");
+    }
 }
