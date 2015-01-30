@@ -140,7 +140,7 @@ public class LazyPackage extends Package {
                 // So try to find the annotation type with two strategies:
                 // - urlDecoder -> UrlDecover and url -> Url
                 // - urlDecoder -> URLDecoder and url -> URL
-                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name), Naming.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER|SETTER)$", ""))){
+                for(String annotationName : Arrays.asList(Naming.capitalize(name), CodegenUtil.getReverseJavaBeanName(name), Naming.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER|SETTER|GETTER)$", ""))){
                     Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
                     if (possibleAnnotationType != null
                             && possibleAnnotationType instanceof LazyInterface
