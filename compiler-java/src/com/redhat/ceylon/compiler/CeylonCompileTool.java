@@ -33,6 +33,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -169,7 +170,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
-    private String suppressWarnings = join(DefaultToolOptions.getCompilerSuppressWarnings());
+    private List<Warning> suppressWarnings = warningsFromList(DefaultToolOptions.getCompilerSuppressWarnings());
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -263,7 +264,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.javac = javac;
     }
     
-    @Option
+    @Option(shortName='W')
     @OptionArgument(argumentName = "warnings")
     @Description("Suppress the reporting of the given warnings. " +
             "If no `warnings` are given then suppresss the reporting of all warnings, " +
@@ -273,24 +274,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
             "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
-    public void setSuppressWarnings(String warnings) {
-        if (warnings != null
-                && !warnings.isEmpty()) {
-            for (String warningName : warnings.trim().split(" *, *")) {
-                try {
-                    Warning.valueOf(warningName);
-                } catch (IllegalArgumentException e) {
-                    StringBuffer sb = new StringBuffer();
-                    for (Warning w : Warning.values()) {
-                        sb.append(w.name()).append(", ");
-                    }
-                    sb.setLength(sb.length() - 2);
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg(
-                            "option.error.syntax.suppress.warnings", 
-                            warningName, sb.toString()));
-                }
-            }
-        }
+    public void setSuppressWarning(List<Warning> warnings) {
         this.suppressWarnings = warnings;
     }
 
@@ -438,7 +422,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (suppressWarnings != null) {
             arguments.add("-suppress-warnings");
-            arguments.add(suppressWarnings);
+            arguments.add(warningsToString(suppressWarnings));
         }
         
         addJavacArguments(arguments);
@@ -562,14 +546,33 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
     
-    private String join(List<String> strings) {
-        if (strings != null) {
+    private List<Warning> warningsFromList(List<String> warnings) {
+        if (warnings != null) {
+            ArrayList<Warning> result = new ArrayList<Warning>(warnings.size());
+            for (String elem : warnings) {
+                elem = elem.trim();
+                elem = elem.replace('-', '_');
+                for (Warning w : Warning.values()) {
+                    if (w.name().equalsIgnoreCase(elem)) {
+                        elem = w.name();
+                    }
+                }
+                result.add(EnumUtil.valueOf(Warning.class, elem));
+            }
+            return result;
+        } else {
+            return null;
+        }
+    }
+    
+    private String warningsToString(List<Warning> warnings) {
+        if (warnings != null) {
             StringBuilder buf = new StringBuilder();
-            for (String s : strings) {
+            for (Warning w : warnings) {
                 if (buf.length() > 0) {
                     buf.append(",");
                 }
-                buf.append(s);
+                buf.append(w.name());
             }
             return buf.toString();
         } else {
