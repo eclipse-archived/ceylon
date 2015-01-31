@@ -113,7 +113,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     
     @Override
     public boolean isMember() {
-        return true;
+        return getContainer() instanceof ClassOrInterface;
     }
 
     @Override
