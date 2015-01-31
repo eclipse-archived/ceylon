@@ -35,7 +35,8 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         //look for it as a declared or inherited 
         //member of the current class or interface
     	if (d.isMember()) {
-	        ProducedType st = getType().getSupertype((TypeDeclaration) d.getContainer());
+    	    TypeDeclaration ctd = (TypeDeclaration) d.getContainer();
+    	    ProducedType st = getType().getSupertype(ctd);
 	        //return st;
 	        if (st!=null) {
 	            return st;
