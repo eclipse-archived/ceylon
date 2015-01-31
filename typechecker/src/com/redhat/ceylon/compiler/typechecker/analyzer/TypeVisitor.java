@@ -1113,8 +1113,8 @@ public class TypeVisitor extends Visitor {
                     cd.getName() + "' has a parameter list and a constructor");
         }
         if (pl==null && !cd.hasConstructors()) {
-            that.addError("class without parameters must declare constructors: class '" + 
-                    cd.getName() + "' has neither parameter list nor constructors");
+            that.addError("class without parameters must declare at least one constructor: class '" + 
+                    cd.getName() + "' has neither parameter list nor constructors", 1001);
         }
     }
 
