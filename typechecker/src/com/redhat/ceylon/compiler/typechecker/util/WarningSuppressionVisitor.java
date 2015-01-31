@@ -107,7 +107,7 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
     }
 
     private EnumMap<E,Boolean> pre(AnnotationList al) {
-        EnumMap<E,Boolean> added = new EnumMap(enumType);
+        EnumMap<E,Boolean> added = new EnumMap<E,Boolean>(enumType);
         for (Map.Entry<E, Tree.StringLiteral> entry : getWarningNames(findSuppressWarnings(al), true).entrySet()) {
             E warning = entry.getKey();
             Boolean suppressedByAnnotation = this.suppressed.get(warning);
