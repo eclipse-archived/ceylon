@@ -140,7 +140,8 @@ shared annotation InheritedAnnotation inherited()
 
 "The annotation class for the [[doc]] annotation."
 shared final annotation class DocAnnotation(
-    "Documentation, in Markdown syntax, about the annotated element"
+    "Documentation, in Markdown syntax, about the annotated 
+     program element"
     shared String description)
         satisfies OptionalAnnotation<DocAnnotation,Annotated> {}
 
@@ -165,13 +166,15 @@ shared annotation SeeAnnotation see(
 
 "The annotation class for [[by]]."
 shared final annotation class AuthorsAnnotation(
-    "The authors, in Markdown syntax, of the annotated element"
+    "The authors, in Markdown syntax, of the annotated 
+     program element"
     shared String* authors)
         satisfies OptionalAnnotation<AuthorsAnnotation,Annotated> {}
 
 "Annotation to specify API authors."
 shared annotation AuthorsAnnotation by(
-    "The authors, in Markdown syntax, of the annotated element"
+    "The authors, in Markdown syntax, of the annotated 
+     program element"
     String* authors)
         => AuthorsAnnotation(*authors);
 
@@ -197,14 +200,15 @@ shared annotation ThrownExceptionAnnotation throws(
 
 "The annotation class for [[deprecated]]."
 shared final annotation class DeprecationAnnotation(
-    "A description, in Markdown syntax, of why the element 
-     is deprecated, and of what alternatives are available."
+    "A description, in Markdown syntax, of why the program 
+     element is deprecated, and of what alternatives are 
+     available."
     shared String description)
         satisfies OptionalAnnotation<DeprecationAnnotation,
                 Annotated> {
-    "A description, in Markdown syntax, of why the element 
-     is deprecated, and what alternatives are available, or 
-     null."
+    "A description, in Markdown syntax, of why the program 
+     element is deprecated, and what alternatives are 
+     available, or `null`."
     shared String? reason
             => !description.empty then description;
 }
@@ -212,8 +216,9 @@ shared final annotation class DeprecationAnnotation(
 "Annotation to mark program elements which should not be 
  used anymore."
 shared annotation DeprecationAnnotation deprecated(
-    "A description, in Markdown syntax, of why the element 
-     is deprecated, and what alternatives are available."
+    "A description, in Markdown syntax, of why the program 
+     element is deprecated, and what alternatives are 
+     available."
     String reason = "")
         => DeprecationAnnotation(reason);
 
@@ -253,12 +258,34 @@ shared annotation OptionalImportAnnotation optional()
         => OptionalImportAnnotation();
 
 "The annotation class for [[suppressWarnings]]."
-shared final annotation class SuppressWarningsAnnotation([String*] warnings)
+shared final annotation class SuppressWarningsAnnotation(
+    "The warning types to suppress."
+    [String*] warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
             FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
 
-"Annotation to suppress the given warnings when typechecking the annotated element"
-shared annotation SuppressWarningsAnnotation suppressWarnings(String* warnings) 
+"Annotation to suppress compilation warnings of the 
+ [[specified types|warnings]] when typechecking the 
+ annotated program element."
+shared annotation SuppressWarningsAnnotation suppressWarnings(
+    "The warning types to suppress.
+     
+     Allowed warning types are:
+     `filenameNonAscii`,
+     `filenameCaselessCollision`,
+     `deprecation`,
+     `compilerAnnotation`,
+     `doclink`,
+     `expressionTypeNothing`,
+     `unusedDeclaration`,
+     `unusedImport`,
+     `ceylonNamespace`,
+     `javaNamespace,` 
+     `suppressedAlready`, 
+     `suppressesNothing`, 
+     `unknownWarning`, 
+     `ambiguousAnnotation`."
+    String* warnings) 
         => SuppressWarningsAnnotation(warnings);
 
 "The annotation class for serializable classes."
@@ -266,10 +293,11 @@ shared final annotation class SerializableAnnotation()
         satisfies OptionalAnnotation<SerializableAnnotation,ClassDeclaration> {
 }
 
-"Annotation to specify that a class is potentially serializable.
+"Annotation to specify that a class is serializable.
   
- A serializable class may have instances that cannot be serialized 
- if those instances have reachable references to instances of 
- non-serializable classes."
-shared annotation SerializableAnnotation serializable() => SerializableAnnotation();
+ A serializable class may have instances that cannot be 
+ serialized if those instances have reachable references to 
+ instances of non-serializable classes."
+shared annotation SerializableAnnotation serializable() 
+        => SerializableAnnotation();
 
