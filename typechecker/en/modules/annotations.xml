@@ -391,6 +391,10 @@ shared deprecated</programlisting>
                     an annotation type, or that a toplevel function is an annotation
                     constructor.</para>
                 </listitem>
+                <listitem>
+                    <para><literal>suppressWarnings</literal> hides compilation
+                    warnings occurring at the annotated program element.</para>
+                </listitem>
             </itemizedlist>
             
             <comment><para>Note: annotation constraints ensure that these annotations 
