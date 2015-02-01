@@ -2044,23 +2044,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>In the tables, the following pseudo-code is used, which is not legal
         Ceylon syntax:</para>
         
-        <para>First,</para>
-        
         <programlisting>if (b) then x else y   //pseudocode</programlisting>
         
         <para>means the value of <literal>result</literal> after execution of the
         following:</para>
         
         <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
-        
-        <para>Second,</para>
-        
-        <programlisting>let t=x in y   //pseudocode</programlisting>
-        
-        <para>means the value of <literal>result</literal> after execution of the
-        following:</para>
-        
-        <programlisting>X t = x; Y result=y;</programlisting>
     
     </section>
     
@@ -2243,7 +2232,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
-            <entry><literal>let x=lhs in rhs.contains(x)</literal></entry>
+            <entry><literal>let (x=lhs) rhs.contains(x)</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2298,19 +2287,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <itemizedlist>
             <listitem>
                 <para><literal>l&lt;x&lt;u</literal> means 
-                <literal>let t=x in l&lt;t &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let (t=x) l&lt;t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;u</literal> means 
-                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let (t=x) l&lt;=t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;x&lt;=u</literal> means 
-                <literal>let t=x in l&lt;t &amp;&amp; t&lt;=u</literal>, and</para>
+                <literal>let (t=x) l&lt;t &amp;&amp; t&lt;=u</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;=u</literal> means 
-                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;=u</literal></para>
+                <literal>let (t=x) l&lt;=t &amp;&amp; t&lt;=u</literal></para>
             </listitem>
         </itemizedlist>
         
