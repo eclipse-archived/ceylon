@@ -87,6 +87,27 @@ void multicheck(Pair<String, out Object> myout, Pair<String, in String> myin) {
     @type:"List<Anything>" myin.list();
 }
 
+interface Constrained<X> 
+        given X satisfies Identifiable {
+    shared formal List<X> list;
+    shared formal Constrained<X> clone;
+    shared formal Constrained<out X> clone1;
+    shared formal Constrained<in X> clone2;
+}
+
+class Foo() {}
+
+void constrainedCheck(Constrained<out Foo> myout, Constrained<in Foo> myin) {
+    @type:"List<Foo>" value _1 = myout.list;
+    @type:"List<Identifiable>" value _2 = myin.list;
+    @type:"Constrained<out Foo>" value _3 = myout.clone;
+    @type:"Constrained<in Foo>" value _4 = myin.clone;
+    @type:"Constrained<out Foo>" value _5 = myout.clone1;
+    @type:"Constrained<out Identifiable>" value _6 = myin.clone1;
+    @type:"Constrained<in Nothing>" value _7 = myout.clone2;
+    @type:"Constrained<in Foo>" value _8 = myin.clone2;
+}
+
 void instantiations() {
     
     interface Set<T> {}
