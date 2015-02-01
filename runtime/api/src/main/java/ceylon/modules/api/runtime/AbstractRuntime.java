@@ -18,6 +18,7 @@
 package ceylon.modules.api.runtime;
 
 import java.io.File;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -91,7 +92,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 // we add _ to run class
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
             } catch (ClassNotFoundException cnfe) {
-                String type = (Character.isUpperCase(runClassName.charAt(0)) ? "class" : "method");
+                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
                 String msg = String.format("Could not find toplevel %s '%s'.", type, runClassName);
                 if (!moduleName.equals(Constants.DEFAULT.toString()) && !runClassName.contains(".")) {
                     msg += String.format(" Class and method names need to be fully qualified, maybe you meant '%s'?", moduleName + "::" + runClassName);
@@ -99,11 +100,16 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 //msg += " [" + clh + "]";
                 throw new CeylonRuntimeException(msg);
             }
-
+            
+            if ((runClass.getModifiers()&Modifier.PUBLIC) == 0) {
+                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
+                String msg = String.format("Cannot run toplevel %s '%s': it should be shared.", type, runClassName);
+                throw new CeylonRuntimeException(msg);
+            }
             try {
                 SecurityActions.invokeRun(runClass, args);
             } catch (NoSuchMethodException ex) {
-                String type = (Character.isUpperCase(runClassName.charAt(0)) ? "class" : "method");
+                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
                 String msg = String.format("Cannot run toplevel %s '%s': it should have no parameters or they should all have default values.", type, runClassName);
                 throw new CeylonRuntimeException(msg);
             }
