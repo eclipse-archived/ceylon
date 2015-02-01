@@ -70,16 +70,21 @@ void check(My<out String> myout, My<in String> myin) {
 interface Pair<First, Second> {
     shared formal Pair<First, Second> clone();
     shared formal Pair<out First, out Second> clone2();
-    shared formal List<Second> clone3();
+    shared formal Pair<in First, in Second> clone3();
+    shared formal List<Second> list();
 }
 
 void multicheck(Pair<String, out Object> myout, Pair<String, in String> myin) {
     @type:"Pair<String,out Object>" myout.clone();
     @type:"Pair<String,in String>" myin.clone();
     @type:"Pair<out String,out Object>" myout.clone2();
-    @type:"Pair<out String,out Anything>" myin.clone();
-    @type:"List<Object>" myout.clone3();
-    @type:"List<Anything>" myin.clone3();
+    @type:"Pair<out String,out Anything>" myin.clone2();
+    @type:"Pair<in String,in Nothing>" myout.clone3();
+    @type:"Pair<in String,in String>" myin.clone3();
+    
+    
+    @type:"List<Object>" myout.list();
+    @type:"List<Anything>" myin.list();
 }
 
 void instantiations() {
