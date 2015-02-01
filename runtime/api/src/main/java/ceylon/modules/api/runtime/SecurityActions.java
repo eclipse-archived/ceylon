@@ -49,7 +49,6 @@ final class SecurityActions {
         }
     }
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     private static void invokeRunInternal(final Class<?> runClass, final String[] args) throws Exception {
         try {
             final Method main = runClass.getDeclaredMethod("main", String[].class);
