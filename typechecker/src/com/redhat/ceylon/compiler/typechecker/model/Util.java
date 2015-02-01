@@ -6,6 +6,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1520,10 +1521,14 @@ public class Util {
     }
     
     public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
+        return involvesTypeParameters(member.getTypeParameters(), pt);
+    }
+    
+    public static boolean involvesTypeParameters(Collection<TypeParameter> parameters, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
                 ProducedType args = ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(member, args)) {
+                if (involvesTypeParameters(parameters, args)) {
                     return true;
                 }
             }
@@ -1532,25 +1537,24 @@ public class Util {
         else if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
                 ProducedType args = ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(member, args)) {
+                if (involvesTypeParameters(parameters, args)) {
                     return true;
                 }
             }
             return false;
         }
         else {
-            if (member.getTypeParameters().contains(pt.getDeclaration())) {
+            if (parameters.contains(pt.getDeclaration())) {
                 return true;
             }
             for (ProducedType at: pt.getTypeArgumentList()) {
-                if (at!=null && involvesTypeParameters(member, at)) {
+                if (at!=null && involvesTypeParameters(parameters, at)) {
                     return true;
                 }
             }
             return false;
         }
     }
-
     
     public static boolean isCompletelyVisible(Declaration member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {

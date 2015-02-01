@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -2655,13 +2656,16 @@ public class ProducedType extends ProducedReference {
                             continue;
                         }
                     }
-                    ProducedType resultArg = applyVarianceOverrides(arg, 
-                            covariant, contravariant);
+                    ProducedType resultArg = 
+                            applyVarianceOverrides(arg, 
+                                    covariant, contravariant);
                     if (resultArg.isNothing()) {
                         return resultArg;
                     }
                     resultArgs.add(resultArg);
-                    varianceResults.put(param, OUT);
+                    if (involvesTypeParameters(overrides.keySet(), arg)) {
+                        varianceResults.put(param, OUT);
+                    }
                 }
             }
             ProducedType result = 
