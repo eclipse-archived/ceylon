@@ -2041,16 +2041,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>All other operators are defined below in terms of other operators 
         and/or invocations.</para>
         
-        <para>In the tables, the following pseudo-code is used, which is not legal
-        Ceylon syntax:</para>
-        
-        <programlisting>if (b) then x else y   //pseudocode</programlisting>
-        
-        <para>means the value of <literal>result</literal> after execution of the
-        following:</para>
-        
-        <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
-    
     </section>
     
     <section id="basic">
@@ -2342,7 +2332,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>!rhs</literal></entry>
             <entry>not</entry>
-            <entry><literal>if (rhs) false else true</literal></entry>
+            <entry><literal>if (rhs) then false else true</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2350,7 +2340,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs || rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else rhs</literal></entry>
+            <entry><literal>if (lhs) then true else rhs</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2358,7 +2348,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs &amp;&amp; rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) rhs else false</literal></entry>
+            <entry><literal>if (lhs) then rhs else false</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2369,7 +2359,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs=rhs</literal></entry>
+            <entry><literal>if (lhs) then true else lhs=rhs</literal></entry>
             <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2378,7 +2368,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs=rhs else false</literal></entry>
+            <entry><literal>if (lhs) then lhs=rhs else false</literal></entry>
             <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2420,7 +2410,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>if (exists lhs) true else false</literal></entry>
+            <entry><literal>if (exists lhs) then true else false</literal></entry>
             <entry>any type whose intersections with <literal>Object</literal>
             and <literal>Null</literal> are not <literal>Nothing</literal></entry>
             <entry></entry>
@@ -2429,7 +2419,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (nonempty lhs) true else false</literal></entry>
+            <entry><literal>if (nonempty lhs) then true else false</literal></entry>
             <entry>any subtype of <literal>Anything[]?</literal>
             whose intersections with <literal>[]</literal> and 
             <literal>[Nothing+]</literal> are not <literal>Nothing</literal></entry>
@@ -2442,7 +2432,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe attribute</entry>
-            <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
+            <entry><literal>if (exists lhs) then lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
             <entry>an attribute of type <literal>T</literal>
             of <literal>X</literal></entry>
