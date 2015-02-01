@@ -2184,13 +2184,10 @@ interface NumberLiteral
                     position is replaced by <literal>Nothing</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para>Every applied type expression <literal>E</literal> occurring
-                    as a type argument of an invariant type parameter which was replaced 
-                    by an applied type expression <literal>F</literal>, and where the
-                    differences between <literal>E</literal> and <literal>F</literal> 
-                    include replacement not resulting from the second rule above, is
-                    replaced by <literal>out F</literal>. This rule is applied 
-                    recursively.</para>
+                    <para>Every applied type expression <literal>E</literal> involving
+                    <literal>A</literal>, and occurring as a type argument of an 
+                    invariant type parameter, and which was replaced by <literal>F</literal>
+                    according to the previous rules is replaced by <literal>out F</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2213,13 +2210,10 @@ interface NumberLiteral
                     constraints on <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para>Every applied type expression <literal>E</literal> occurring
-                    as a type argument of an invariant type parameter which was replaced 
-                    by an applied type expression <literal>F</literal>, and where the
-                    differences between <literal>E</literal> and <literal>F</literal> 
-                    include replacement not resulting from the second rule above, is
-                    replaced by <literal>out F</literal>. This rule is applied 
-                    recursively.</para>
+                    <para>Every applied type expression <literal>E</literal> involving
+                    <literal>A</literal>, and occurring as a type argument of an 
+                    invariant type parameter, and which was replaced by <literal>F</literal>
+                    according to the previous rules is replaced by <literal>out F</literal>.</para>
                 </listitem>
             </itemizedlist>
             
