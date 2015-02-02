@@ -356,9 +356,16 @@ abstract class Invocation {
             Declaration primaryDeclaration) {
         if (primaryDeclaration instanceof Constructor) {
             return (Constructor)primaryDeclaration;
-        } else if (primaryDeclaration instanceof ClassAlias
-                && ((ClassAlias)primaryDeclaration).getConstructor() instanceof Constructor) {;
-            return (Constructor)((ClassAlias)primaryDeclaration).getConstructor();
+        } else if (primaryDeclaration instanceof ClassAlias) {
+            TypeDeclaration aliasCtor = ((ClassAlias) primaryDeclaration).getConstructor();
+            while (aliasCtor instanceof ClassAlias) {
+                aliasCtor = ((ClassAlias) aliasCtor).getConstructor();
+            }
+            if (aliasCtor instanceof Constructor) {
+                return (Constructor)aliasCtor;
+            } else {
+                return null;
+            }
         } else if (primaryDeclaration instanceof Class
                 && Decl.getDefaultConstructor((Class)primaryDeclaration) != null) {
             return Decl.getDefaultConstructor((Class)primaryDeclaration);
