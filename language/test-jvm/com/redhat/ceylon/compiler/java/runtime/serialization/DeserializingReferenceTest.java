@@ -129,8 +129,8 @@ public class DeserializingReferenceTest {
     public void testPair() {
         @SuppressWarnings("rawtypes")
         ClassModel cm = null;
-        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, new GuineaPig("A"));
-        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, new GuineaPig("B"));
+        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, DeserializingReference.ST_STATELESS, new GuineaPig("A"));
+        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, DeserializingReference.ST_STATELESS, new GuineaPig("B"));
         a.deserialize(new DeconstructedGineaPig(null, b));
         b.deserialize(new DeconstructedGineaPig(null, null));
         a.instance();
@@ -143,7 +143,7 @@ public class DeserializingReferenceTest {
     public void testCycle1() {
         @SuppressWarnings("rawtypes")
         ClassModel cm = null;
-        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, new GuineaPig("A"));
+        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, DeserializingReference.ST_STATELESS, new GuineaPig("A"));
         a.deserialize(new DeconstructedGineaPig(null, a));
         a.instance();
         Assert.assertEquals(3, a.getState());
@@ -154,8 +154,8 @@ public class DeserializingReferenceTest {
     public void testCycle2() {
         @SuppressWarnings("rawtypes")
         ClassModel cm = null;
-        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, new GuineaPig("A"));
-        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, new GuineaPig("B"));
+        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, DeserializingReference.ST_STATELESS, new GuineaPig("A"));
+        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, DeserializingReference.ST_STATELESS, new GuineaPig("B"));
         a.deserialize(new DeconstructedGineaPig(null, b));
         b.deserialize(new DeconstructedGineaPig(null, a));
         a.instance();
@@ -167,8 +167,8 @@ public class DeserializingReferenceTest {
     public void testMissingDeser() {
         @SuppressWarnings("rawtypes")
         ClassModel cm = null;
-        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, new GuineaPig("A"));
-        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, new GuineaPig("B"));
+        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, DeserializingReference.ST_STATELESS, new GuineaPig("A"));
+        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, DeserializingReference.ST_STATELESS, new GuineaPig("B"));
         a.deserialize(new DeconstructedGineaPig(null, b));
         try {
             a.instance();
@@ -187,9 +187,9 @@ public class DeserializingReferenceTest {
     public void testError() {
         @SuppressWarnings("rawtypes")
         ClassModel cm = null;
-        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, new GuineaPig("A"));
-        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, new GuineaPig("B"));
-        DeserializingReference<GuineaPig> c = new DeserializingReference<GuineaPig>(null, "c", cm, new GuineaPig("C"));
+        DeserializingReference<GuineaPig> a = new DeserializingReference<GuineaPig>(null, "a", cm, DeserializingReference.ST_STATELESS, new GuineaPig("A"));
+        DeserializingReference<GuineaPig> b = new DeserializingReference<GuineaPig>(null, "b", cm, DeserializingReference.ST_STATELESS, new GuineaPig("B"));
+        DeserializingReference<GuineaPig> c = new DeserializingReference<GuineaPig>(null, "c", cm, DeserializingReference.ST_STATELESS, new GuineaPig("C"));
         a.deserialize(new DeconstructedGineaPig(null, b));
         b.deserialize(new DeconstructedGineaPig(null, c) {
             @Override
