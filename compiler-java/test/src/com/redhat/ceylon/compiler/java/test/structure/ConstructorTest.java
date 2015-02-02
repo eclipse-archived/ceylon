@@ -122,4 +122,9 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorObjectDeclContainingClassWithCtor(){
         compareWithJavaSource("constructor/ObjectDeclContainingClassWithCtor");
     }
+    
+    @Test
+    public void testCtorAliasBoxing(){
+        compareWithJavaSource("constructor/CtorAliasBoxing");
+    }
 }
