@@ -3245,14 +3245,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(Tree.DynamicStatement that) {
         dynblock++;
         if (dynblock == 1 && !opts.isMinify()) {
-            out("/*BEG dynblock*/");
+            if (opts.isComment()) {
+                out("/*BEG dynblock*/");
+            }
             endLine();
         }
         for (Tree.Statement stmt : that.getDynamicClause().getBlock().getStatements()) {
             stmt.visit(this);
         }
         if (dynblock == 1 && !opts.isMinify()) {
-            out("/*END dynblock*/");
+            if (opts.isComment()) {
+                out("/*END dynblock*/");
+            }
             endLine();
         }
         dynblock--;
