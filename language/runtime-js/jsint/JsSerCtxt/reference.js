@@ -3,8 +3,7 @@ function(id,inst,$mpt){
   for (var i=1;i<this.refs.length;i++){
     if (id.equals(this.refs[i].id)){
       var cur=this.refs[i].instance();
-      throw AssertionError('A different instance has already been registered with id '+id.string+': "'
-                         +(cur?cur.string:"null")+'", "'+(inst?inst.string:"null")+'"');
+      throw AssertionError('The instance "'+(inst?inst.string:"null")+'" has already been registered with id '+id.string);
     }
   }
   //Check that the instance hasn't been registered with a different id
@@ -27,10 +26,14 @@ function(id,inst,$mpt){
     }
   }
   if (pi!==undefined) {
-    throw AssertionError('A different instance has already been registered with id '+id.string+': "'
-                         +(pi?pi.string:"null")+'", "'+(inst?inst.string:"null")+'"');
+    throw AssertionError('The instance "'+(inst?inst.string:"null")+'" has already been registered with id '+id.string);
   }
   var ref=SerRefImpl$jsint(this,id,inst,{Instance$SerRefImpl:$mpt.Instance$reference});
+  var clase=type$meta(inst,{Type$type:{t:inst}});
+  if (clase.declaration.anonymous) {
+    //anonymous types are a special case
+    ref.serialize=function(){return null;}
+  }
   this.instances[cur]=inst;
   this.refs[cur]=ref;
   return ref;

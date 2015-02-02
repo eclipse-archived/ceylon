@@ -6,7 +6,19 @@ function(id,model,$mpt){
     throw AssertionError("reference already made to instance with a different class");
   }
   if (model.declaration.abstract)throw AssertionError("class is abstract: " + model.string);
-  var r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
+  var vd=model.declaration.objectValue;
+  var r;
+  if (vd != null) {
+    var _self=this;
+    vd=vd.$_get();
+    var mm=getrtmm$$(getrtmm$$(vd).$t.t)['super'];
+    r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:mm,Outer$DeserRefImpl:{t:Nothing}});
+    r.deserialize=function(){return _self;}
+    r.inst_=vd;
+    r.state_=3;
+  } else {
+    r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
+  }
   this.ids.push(id);
   this.refs.push(r);
   return r;
