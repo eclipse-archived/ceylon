@@ -87,4 +87,10 @@ public class IssuesTest_2000_2499 extends CompilerTest {
         compile("bug20xx/bug2024a/module.ceylon", "bug20xx/bug2024a/package.ceylon", "bug20xx/bug2024a/Instant.ceylon");
         compile("bug20xx/bug2024b/module.ceylon", "bug20xx/bug2024b/Bug2024.ceylon", "bug20xx/bug2024b/Bug2024.java");
     }
+
+    @Test
+    public void testBug2034() {
+        compile("bug20xx/Bug2034.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2034");
+    }
 }
