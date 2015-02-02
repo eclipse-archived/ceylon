@@ -8,6 +8,6 @@ class NotDirectly() {
     shared UsesAntrl? uses = null;
 }
 
-void run() {
+shared void run() {
     print(`NotDirectly`.getAttribute<NotDirectly,UsesAntrl?>("uses"));
 }
