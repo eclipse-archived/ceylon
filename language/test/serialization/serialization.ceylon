@@ -47,7 +47,12 @@ shared void testSerializationRegisterTwice3() {
     variable value id = 0;
     value instance = 1;
     sc.reference(0, instance);
-    sc.reference(1, instance);
+    try {
+        sc.reference(1, instance);
+        throw;
+    } catch (AssertionError e) {
+        assert(e.startsWith("The instance \"1\" has already been registered with id 1"));
+    }
 }
 
 @test
