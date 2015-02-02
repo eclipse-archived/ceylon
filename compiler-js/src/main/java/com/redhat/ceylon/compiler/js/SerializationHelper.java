@@ -21,7 +21,6 @@ public class SerializationHelper {
     static void addSerializer(final Node node, final com.redhat.ceylon.compiler.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
-        final String ac = gen.getNames().createTempVariable();
         gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
         gen.beginBlock();
         gen.out("var ", gen.getNames().self(d), "=this;");
@@ -37,57 +36,16 @@ public class SerializationHelper {
                 et = et.getExtendedTypeDeclaration();
             }
         }
-        //Get the deconstructor for this class
-        gen.out("var ", ac, "=", dc, "(");
-        final String classOrMemberClass = d.isMember() ? "MemberClass" : "Class";
-        if (JsCompiler.isCompilingLanguageModule()) {
-            gen.out("Applied", classOrMemberClass, "$jsint");
-        } else {
-            gen.out(gen.getClAlias(), "$init$Applied", classOrMemberClass, "$jsint()");
-        }
-        gen.out("(", gen.getNames().name(d), ",{Type$Applied", classOrMemberClass, ":{t:",
-                gen.getNames().name(d));
-        if (!d.getTypeParameters().isEmpty()) {
-            gen.out(",a:{");
-            boolean first=true;
-            for (TypeParameter tp : d.getTypeParameters()) {
-                if (first)first=false;else gen.out(",");
-                gen.out(tp.getName(), "$", d.getName(), ":this.$$targs$$.", tp.getName(), "$", d.getName());
-            }
-            gen.out("}");
-        }
-        gen.out("},Arguments$Applied", classOrMemberClass, ":{t:");
-        if (d.getParameterList().getParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "Empty");
-        } else {
-            gen.out("'T',l:[");
-            boolean first=true;
-            for (Parameter param : d.getParameterList().getParameters()) {
-                if (first)first=false;else gen.out(",");
-                TypeUtils.typeNameOrList(node, param.getType(), gen, false);
-            }
-            gen.out("]");
-        }
-        gen.out("}");
-        if (d.isMember()) {
-            TypeDeclaration parentd = Util.getContainingClassOrInterface(d);
-            gen.out(",Container$MemberClass:{t:", gen.getNames().name(parentd));
-            if (!parentd.getTypeParameters().isEmpty()) {
-                gen.out(",a:this.outer$.$$targs$$");
-            }
-            gen.out("}");
-        }
-        gen.out("}));");
         gen.endLine();
         //Put the outer instance if it's a member
         if (d.isMember()) {
-            gen.out(ac, ".putOuterInstance(this.outer$,{Instance$putOuterInstance:",
+            gen.out(dc, ".putOuterInstance(this.outer$,{Instance$putOuterInstance:",
                     gen.getNames().name(Util.getContainingDeclaration(d)), "});");
             gen.endLine();
         }
         //Now the type arguments
         for (TypeParameter tp : d.getTypeParameters()) {
-            gen.out(ac,  ".putTypeArgument(", gen.getClAlias(), "OpenTypeParam$jsint(",
+            gen.out(dc,  ".putTypeArgument(", gen.getClAlias(), "OpenTypeParam$jsint(",
                     gen.getNames().name(d), ",'", tp.getName(), "$", d.getName(), "'),", gen.getClAlias(),
                     "typeLiteral$meta({Type$typeLiteral:");
             gen.out("this.$$targs$$.", tp.getName(), "$", d.getName(), "}));");
@@ -110,7 +68,7 @@ public class SerializationHelper {
         }
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
-            gen.out(ac, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
+            gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
                     pkgname, ",this.", gen.getNames().getter(v, true),")", ",",
                     "this.", gen.getNames().name(v), ",{Instance$putValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
