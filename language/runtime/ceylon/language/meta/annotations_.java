@@ -40,32 +40,20 @@ public final class annotations_ {
                 satisfies = {"ceylon.language::Annotated"}, 
                 variance=Variance.IN)
     })
-    public static <Value extends ConstrainedAnnotation
-                          <? extends Value, 
-                           ? extends Values, 
-                           ? super ProgramElement>, 
-                   Values, 
-                   ProgramElement extends Annotated>
-    Values annotations(
-            @Ignore
-            final TypeDescriptor $reifiedValue, 
-            @Ignore
-            final TypeDescriptor $reifiedValues, 
-            @Ignore
-            final TypeDescriptor $reifiedProgramElement, 
-            @Name("annotationType")
-            @TypeInfo("ceylon.language.meta.model::Class<ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>")
-            final Class<? extends ConstrainedAnnotation
-                    <? extends Value, 
-                     ? extends Values, 
-                     ? super ProgramElement>,
-                     ?> 
-            annotationType, 
-            @Name("programElement")
-            @TypeInfo("ProgramElement")
+    public static <Value extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends ceylon.language.Annotated>Values annotations(@com.redhat.ceylon.compiler.java.metadata.Ignore
+            final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @com.redhat.ceylon.compiler.java.metadata.Ignore
+            final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Values, @com.redhat.ceylon.compiler.java.metadata.Ignore
+            final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ProgramElement, @com.redhat.ceylon.compiler.java.metadata.Name("annotationType")
+            @com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                    value = "ceylon.language.meta.model::Class<ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>",
+                    erased = true)
+            final ceylon.language.meta.model.Class annotationType, @com.redhat.ceylon.compiler.java.metadata.Name("programElement")
+            @com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                    value = "ProgramElement",
+                    erased = true)
             final ProgramElement programElement) {
         Sequential<? extends Annotation> results = 
-                Metamodel.annotations($reifiedValue, programElement);
+                Metamodel.annotations($reified$Value, programElement);
         boolean optional = OptionalAnnotation.class
         		.isAssignableFrom(getReflectedAnnotationClass(annotationType));
 		if (optional) {
