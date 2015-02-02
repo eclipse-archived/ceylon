@@ -1,4 +1,5 @@
 function(id,inst,$mpt){
+  //Check that the id hasn't been used
   for (var i=1;i<this.refs.length;i++){
     if (id.equals(this.refs[i].id)){
       var cur=this.refs[i].instance();
@@ -6,10 +7,10 @@ function(id,inst,$mpt){
                          +(cur?cur.string:"null")+'", "'+(inst?inst.string:"null")+'"');
     }
   }
+  //Check that the instance hasn't been registered with a different id
   var cur=this.instances.indexOf(inst);
-  if (cur>0 && inst !== null && this.instances[cur]!==inst) {
-    throw AssertionError('A different instance has already been registered with id '+id.string+': "'
-                         +(cur?cur.string:"null")+'", "'+(inst?inst.string:"null")+'"');
+  if (cur>0 && inst !== null) {
+    throw AssertionError('The instance "'+(inst?inst.string:"null")+'" has already been registered with id '+id.string);
   }
   cur=this.instances.length;
   var pi=undefined;
@@ -29,8 +30,8 @@ function(id,inst,$mpt){
     throw AssertionError('A different instance has already been registered with id '+id.string+': "'
                          +(pi?pi.string:"null")+'", "'+(inst?inst.string:"null")+'"');
   }
-  this.instances[cur]=inst;
   var ref=SerRefImpl$jsint(this,id,inst,{Instance$SerRefImpl:$mpt.Instance$reference});
+  this.instances[cur]=inst;
   this.refs[cur]=ref;
   return ref;
 }
