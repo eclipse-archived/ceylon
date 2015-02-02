@@ -839,6 +839,7 @@ final class toplevelByte1_ {
     }
     
     public static void set_(final byte toplevelByte1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelByte1;
     }
 }
@@ -871,6 +872,7 @@ final class toplevelByte2_ {
     }
     
     public static void set_(final byte toplevelByte2) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelByte2;
     }
 }
@@ -903,6 +905,7 @@ final class toplevelByte3_ {
     }
     
     public static void set_(final byte toplevelByte3) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelByte3;
     }
 }

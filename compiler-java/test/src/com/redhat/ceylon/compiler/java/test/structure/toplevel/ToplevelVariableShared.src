@@ -29,6 +29,7 @@ public final class topLevelVariableShared_ {
     }
     
     public static void set_(final long topLevelVariableShared) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelVariableShared;
     }
 }

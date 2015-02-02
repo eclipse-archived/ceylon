@@ -1202,6 +1202,7 @@ final class toplevelN1_ {
     }
     
     public static void set_(final long toplevelN1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelN1;
     }
 }
@@ -1234,6 +1235,7 @@ final class toplevelN2_ {
     }
     
     public static void set_(final long toplevelN2) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelN2;
     }
 }
@@ -1266,6 +1268,7 @@ final class toplevelI1_ {
     }
     
     public static void set_(final long toplevelI1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = toplevelI1;
     }
 }

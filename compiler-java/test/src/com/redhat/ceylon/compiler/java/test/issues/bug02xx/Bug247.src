@@ -50,6 +50,7 @@ final class bug247_toplevel_ {
     }
     
     public static void set_(final long bug247_toplevel) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bug247_toplevel;
     }
 }

@@ -484,6 +484,7 @@ final class bwToplevelN1_ {
     }
     
     public static void set_(final long bwToplevelN1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelN1;
     }
 }
@@ -516,6 +517,7 @@ final class bwToplevelN2_ {
     }
     
     public static void set_(final long bwToplevelN2) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelN2;
     }
 }
@@ -548,6 +550,7 @@ final class bwToplevelI1_ {
     }
     
     public static void set_(final long bwToplevelI1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelI1;
     }
 }

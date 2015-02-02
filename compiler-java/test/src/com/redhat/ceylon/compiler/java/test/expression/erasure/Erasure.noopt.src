@@ -634,6 +634,7 @@ final class topLevelLeftAttribute_ {
     }
     
     public static void set_(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelLeftAttribute;
     }
 }

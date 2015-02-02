@@ -428,6 +428,7 @@ final class bwToplevelByte1_ {
     }
     
     public static void set_(final byte bwToplevelByte1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelByte1;
     }
 }
@@ -460,6 +461,7 @@ final class bwToplevelByte2_ {
     }
     
     public static void set_(final byte bwToplevelByte2) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelByte2;
     }
 }
@@ -492,6 +494,7 @@ final class bwToplevelByte3_ {
     }
     
     public static void set_(final byte bwToplevelByte3) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bwToplevelByte3;
     }
 }

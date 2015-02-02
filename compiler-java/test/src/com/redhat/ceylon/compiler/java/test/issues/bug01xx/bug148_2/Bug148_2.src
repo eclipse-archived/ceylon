@@ -44,6 +44,7 @@ final class f_ {
     }
     
     public static void set_(final long f) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = f;
     }
 }

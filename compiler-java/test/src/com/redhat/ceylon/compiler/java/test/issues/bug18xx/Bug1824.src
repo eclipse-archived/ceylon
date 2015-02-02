@@ -50,6 +50,7 @@ final class i1824_ {
     }
     
     public static void set_(final long i1824) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = i1824;
     }
 }

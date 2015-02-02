@@ -85,6 +85,7 @@ final class topLevelVariableGenerics_ {
     }
     
     public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelVariableGenerics;
     }
 }
@@ -117,6 +118,7 @@ public final class topLevelVariableGenericsShared_ {
     }
     
     public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelVariableGenericsShared;
     }
 }

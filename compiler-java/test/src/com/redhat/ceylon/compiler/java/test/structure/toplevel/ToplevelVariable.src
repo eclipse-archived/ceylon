@@ -29,6 +29,7 @@ final class topLevelVariable_ {
     }
     
     public static void set_(final long topLevelVariable) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelVariable;
     }
 }

@@ -29,6 +29,7 @@ final class topLevelGetterSetterX_ {
     }
     
     public static void set_(final long topLevelGetterSetterX) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = topLevelGetterSetterX;
     }
 }

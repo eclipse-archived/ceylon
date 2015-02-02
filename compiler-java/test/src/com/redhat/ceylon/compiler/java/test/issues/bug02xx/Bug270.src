@@ -183,6 +183,7 @@ final class bug270Variable_ {
     }
     
     public static void set_(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270Variable) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bug270Variable;
     }
 }

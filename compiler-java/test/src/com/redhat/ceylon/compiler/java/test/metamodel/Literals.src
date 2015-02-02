@@ -932,6 +932,7 @@ final class litVariable_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long litVariable) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = litVariable;
     }
 }

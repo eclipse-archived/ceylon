@@ -43,6 +43,7 @@ final class bug1814_ {
     }
     
     public static void set_(final long bug1814) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = bug1814;
     }
 }
