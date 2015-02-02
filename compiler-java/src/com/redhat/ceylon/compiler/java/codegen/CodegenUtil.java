@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -257,22 +258,30 @@ public class CodegenUtil {
             // aliases and actual classes actually do refine their extended type parameters so the same rules apply wrt
             // boxing and stuff
             if (isAlias || isActual) {
+                Functional ctor = null;
                 int index = c.getParameterList().getParameters().indexOf(findParamForDecl(((TypedDeclaration)decl)));
                 // ATM we only consider aliases if we're looking at aliases, and same for actual, not mixing the two.
                 // Note(Stef): not entirely sure about that one, what about aliases of actual classes?
                 while ((isAlias && c.isAlias())
                         || (isActual && c.isActual())) {
+                    ctor = isAlias ? (Functional)((ClassAlias)c).getConstructor() : c;
                     c = c.getExtendedTypeDeclaration();
                     // handle compile errors
                     if(c == null)
                         return null;
                 }
+                if (isActual) {
+                    ctor = c;
+                }
                 // be safe
-                if(c.getParameterList() == null
-                        || c.getParameterList().getParameters() == null
-                        || c.getParameterList().getParameters().size() <= index)
+                if(ctor == null 
+                        || ctor.getParameterLists() == null
+                        || ctor.getParameterLists().isEmpty()
+                        || ctor.getParameterLists().get(0) == null
+                        || ctor.getParameterLists().get(0).getParameters() == null
+                        || ctor.getParameterLists().get(0).getParameters().size() <= index)
                     return null;
-                decl = c.getParameterList().getParameters().get(index).getModel();
+                decl = ctor.getParameterLists().get(0).getParameters().get(index).getModel();
             }
             if (decl.isShared()) {
                 Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??
