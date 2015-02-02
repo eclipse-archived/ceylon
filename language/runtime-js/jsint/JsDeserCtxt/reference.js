@@ -11,11 +11,11 @@ function(id,model,$mpt){
   if (vd != null) {
     var _self=this;
     vd=vd.$_get();
-    var mm=getrtmm$$(getrtmm$$(vd).$t.t)['super'];
-    r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:mm,Outer$DeserRefImpl:{t:Nothing}});
+    r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
     r.deserialize=function(){return _self;}
     r.inst_=vd;
     r.state_=3;
+    r.realmpt_=getrtmm$$(getrtmm$$(vd).$t.t)['super'];
   } else {
     r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
   }
