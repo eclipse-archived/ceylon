@@ -219,6 +219,7 @@ public class TypeUtils {
     static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
+        int seq=0;
         if (d instanceof IntersectionType) {
             gen.out("{t:'i");
             subs = d.getSatisfiedTypes();
@@ -235,8 +236,15 @@ public class TypeUtils {
                 gen.out("}");
                 return true;
             }
-            if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())
-                    || d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
+            if (!d.getUnit().getEmptyDeclaration().equals(lastType.getDeclaration())) {
+                if (d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
+                    seq = 1;
+                }
+                if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())) {
+                    seq = 2;
+                }
+            }
+            if (seq > 0) {
                 //Non-empty, non-tuple tail; union it with its type parameter
                 UnionType utail = new UnionType(d.getUnit());
                 utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
@@ -251,7 +259,16 @@ public class TypeUtils {
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
-            typeNameOrList(node, t, gen, skipSelfDecl);
+            if (t==subs.get(subs.size()-1) && seq>0) {
+                //The non-empty, non-tuple tail
+                gen.out("{t:'u',l:[");
+                typeNameOrList(node, t.getCaseTypes().get(0), gen, skipSelfDecl);
+                gen.out(",");
+                typeNameOrList(node, t.getCaseTypes().get(1), gen, skipSelfDecl);
+                gen.out("],seq:", Integer.toString(seq), "}");
+            } else {
+                typeNameOrList(node, t, gen, skipSelfDecl);
+            }
             first = false;
         }
         gen.out("]}");
