@@ -11,7 +11,12 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Member {
     
     /**
-     * The member class
+     * The member class if it can be pointed to
      */
-    java.lang.Class<?> klass();
+    java.lang.Class<?> klass() default void.class;
+    
+    /**
+     * The member class if it cannot be pointed to because local types interfere with visibility
+     */
+    String javaClassName() default "";
 }
