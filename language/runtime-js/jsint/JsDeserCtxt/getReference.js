@@ -1,13 +1,11 @@
-function(id){
+function(id,mp$){
   var idx=this.ids.indexOf(id);
   if (idx<0) {
     throw AssertionError("cannot obtain reference to unregistered id: " + id);
   }
   var r=this.refs[idx];
-  //ok a little less ugly now
+  //and this is as ugly as it gets
   //This is for singletons in jsonlib
-  if (r.realmpt_) {
-    r.$$targs$$.Instance$Reference=r.realmpt_;
-  }
+  r.$$targs$$.Instance$Reference=mp$.Instance$getReference;
   return r;
 }
