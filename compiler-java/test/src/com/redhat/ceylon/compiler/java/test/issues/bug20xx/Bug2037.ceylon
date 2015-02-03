@@ -17,9 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.issues "1" {
-    import java.base "7";
-    import java.desktop "7";
-    import java.logging "7";
-    import javax.annotation "7";
+import javax.annotation { generated }
+
+shared void bug2037(p1, generated({"by me"}) String p2) {
+    generated({"by me"}) String p1;
+}
+
+shared class Bug2037(p1, generated({"by me"}) String p2) {
+    generated({"by me"}) String p1;
+    equals(generated({"by me"}) Object other) => false;
 }
