@@ -1728,7 +1728,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
             JCAnnotation atMember;
-            if(Decl.isLocal(model))
+            // interfaces are moved to toplevel so they can lose visibility of member types if they are local
+            if(Decl.isLocal(model) && model instanceof Interface)
                 atMember = makeAtMember(innerType.getName());
             else
                 atMember = makeAtMember(innerType.getType());
