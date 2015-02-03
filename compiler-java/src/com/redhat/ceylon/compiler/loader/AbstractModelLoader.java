@@ -192,6 +192,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_SEALED_ANNOTATION = "ceylon.language.SealedAnnotation$annotation$";
 
@@ -1207,7 +1208,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setDeclarationVisibility(Declaration decl, AccessibleMirror mirror, ClassMirror classMirror, boolean isCeylon) {
         if(isCeylon){
-            decl.setShared(mirror.isPublic());
+            // when we're in a local type somewhere we must turn public declarations into package or protected ones, so
+            // we have to check the shared annotation
+            decl.setShared(mirror.isPublic() || classMirror.getAnnotation(CEYLON_LANGUAGE_SHARED_ANNOTATION) != null);
         }else{
             decl.setShared(mirror.isPublic() || (mirror.isDefaultAccess() && classMirror.isInnerClass()) || mirror.isProtected());
             decl.setPackageVisibility(mirror.isDefaultAccess());
