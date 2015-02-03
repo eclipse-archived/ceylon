@@ -2530,18 +2530,35 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                 }
 
+                java.util.List<Tree.ParameterList> parameterListTrees = null;
+                if(op.getBaseMemberExpression() instanceof Tree.ParameterizedExpression){
+                    parameterListTrees = ((Tree.ParameterizedExpression)op.getBaseMemberExpression()).getParameterLists();
+                }
+
+                int plIndex = 0;
                 // copy from formal declaration
                 for (ParameterList pl : m.getParameterLists()) {
+                    Tree.ParameterList parameterListTree = null;
+                    if(parameterListTrees != null)
+                        parameterListTree = parameterListTrees.get(plIndex++);
                     Tree.ParameterList tpl = new Tree.ParameterList(null);
                     tpl.setModel(pl);
+                    int pIndex = 0;
                     for (Parameter p : pl.getParameters()) {
+                        Tree.Parameter parameterTree = null;
+                        if(parameterListTree != null)
+                            parameterTree = parameterListTree.getParameters().get(pIndex++);
                         Tree.Parameter tp = null;
                         if (p.getModel() instanceof Value) {
                             Tree.ValueParameterDeclaration tvpd = new Tree.ValueParameterDeclaration(null);
+                            if(parameterTree != null)
+                                tvpd.setTypedDeclaration(((Tree.ParameterDeclaration)parameterTree).getTypedDeclaration());
                             tvpd.setParameterModel(p);
                             tp = tvpd;
                         } else if (p.getModel() instanceof Method) {
                             Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
+                            if(parameterTree != null)
+                                tfpd.setTypedDeclaration(((Tree.ParameterDeclaration)parameterTree).getTypedDeclaration());
                             tfpd.setParameterModel(p);
                             tp = tfpd;
                         } else {
@@ -3178,10 +3195,13 @@ public class ClassTransformer extends AbstractTransformer {
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
             Parameter parameterModel = parameter.getParameterModel();
             List<JCAnnotation> annotations = null;
-            if (includeAnnotations
-                    && parameter instanceof Tree.ParameterDeclaration
-                    && ((Tree.ParameterDeclaration)parameter).getTypedDeclaration() != null) {
-                annotations = expressionGen().transformAnnotations(true, OutputElement.PARAMETER, ((Tree.ParameterDeclaration)parameter).getTypedDeclaration());
+            if (includeAnnotations){
+                Tree.TypedDeclaration typedDeclaration = Decl.getMemberDeclaration(annotated, parameter);
+                // it can be null in the case of specifier refinement with no param list, but which we still optimise
+                // to a real method
+                // f = function(Integer param) => 2;
+                if(typedDeclaration != null)
+                    annotations = expressionGen().transformAnnotations(true, OutputElement.PARAMETER, typedDeclaration);
             }
             
             methodBuilder.parameter(parameterModel, annotations, 0, true);

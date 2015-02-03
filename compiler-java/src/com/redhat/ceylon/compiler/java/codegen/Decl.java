@@ -753,7 +753,7 @@ public class Decl {
      * to the given parameter. For initializer parameters this involves 
      * walking the class.  
      */
-    public static Tree.TypedDeclaration getMemberDeclaration(Tree.AnyClass def, final Tree.Parameter parameter) {
+    public static Tree.TypedDeclaration getMemberDeclaration(Tree.Declaration def, final Tree.Parameter parameter) {
         if (parameter instanceof Tree.ParameterDeclaration) {
             return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration();
         } else if (parameter instanceof Tree.InitializerParameter) {
