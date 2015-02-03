@@ -137,7 +137,10 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       var mm=getrtmm$$(_prot[mem]);
       if (mm && inherited && mm.$cont!==this.tipo)continue;
       if (mem.substring(0,9)==='$prop$get' && extendsType($$$mptypes.Kind$memberDeclarations,{t:ValueDeclaration$meta$declaration})) {
-        _d=this.getMemberDeclaration(mm.d[mm.d.length-1],{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
+        var _nom=mm.d[mm.d.length-1];
+        var _idx=_nom.indexOf('$');
+        if (_idx>0)_nom=_nom.substring(0,_idx);
+        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
       } else if (_prot[mem].$$ && extendsType($$$mptypes.Kind$memberDeclarations,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
         var mt=mm.d[mm.d.length-2];
         if ((mt==='$c' && !extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations))
