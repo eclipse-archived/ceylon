@@ -27,7 +27,7 @@ function getTrue() {return true;}
 getTrue.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','true'],$t:{t:$_true}};};
 function getFalse() {return false;}
 getFalse.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','false'],$t:{t:$_false}};};
-ex$.$prop$getTrue={get:getTrue,$crtmm$:getTrue.$crtmm$};
-ex$.$prop$getFalse={get:getFalse,$crtmm$:getFalse.$crtmm$};
+ex$.$prop$getTrue=$_true;
+ex$.$prop$getFalse=$_false;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
