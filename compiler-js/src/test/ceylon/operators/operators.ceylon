@@ -565,13 +565,19 @@ void testSetOperators() {
   check((s1~=s2).size == 0, "~=");
 }
 
-void testIssue315() {
+void testIssues() {
+  //315
   String? s=null;
   check((s else "1") == "1", "Issue 315 [1]");
   dynamic {
     dynamic z=dynamic[a=1;];
     check((z.b else "2") == "2", "Issue 315 [2]");
   }
+  //c.l 624
+  Object t = [1, "hello", true, 1, 0, 1, 2, 3];
+  check(t is [Integer, String, Boolean, Integer,Integer,Integer,Integer,Integer], "c.l 624.1");
+  check(t is [Integer, String, Boolean, Integer*], "c.l 624.2");
+  check(t is [Integer, String, Boolean, Integer+], "c.l 624.3");
 }
 
 shared void test() {
@@ -590,6 +596,6 @@ shared void test() {
     testSegments();
     testEnumerations();
     compareStringNumber();
-    testIssue315();
+    testIssues();
     results();
 }
