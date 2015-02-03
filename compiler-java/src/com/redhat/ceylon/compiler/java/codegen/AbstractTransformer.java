@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -53,6 +54,7 @@ import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.ModifierAnnotation;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -144,6 +146,7 @@ public abstract class AbstractTransformer implements Transformation {
     final Naming naming;
     private Errors errors;
     private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
+    protected Map<String, Long> omittedModelAnnotations;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -2946,20 +2949,64 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTransientType);
     }
 
+    protected void initModelAnnotations() {
+        if (gen().omittedModelAnnotations == null) {
+            HashMap<String, Long> map = new HashMap<String, Long>();
+            for (ModifierAnnotation mod : ModifierAnnotation.values()) {
+                map.put(mod.name, mod.mask);
+            }
+            gen().omittedModelAnnotations = map;
+        }
+    }
+    
+    /** 
+     * Whether the given {@code Annotation} should be included in the 
+     * {@code @Annotations} model annotation.
+     * */
+    boolean isOmittedModelAnnotation(Annotation annotation) {
+        initModelAnnotations();
+        return !gen().omittedModelAnnotations.containsKey(annotation.getName());
+    }
+    
+    Long getModelModifierMask(Annotation annotation) {
+        initModelAnnotations();
+        return gen().omittedModelAnnotations.get(annotation.getName());
+    }
+    
     List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
         if(annotations == null || annotations.isEmpty())
             return List.nil();
+        long modifiers = 0;
         ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
         for(Annotation annotation : annotations){
-            array.append(makeAtAnnotation(annotation));
+            if (isOmittedModelAnnotation(annotation)) {
+                continue;
+            }
+            Long mask = getModelModifierMask(annotation);
+            if (mask != null){
+                modifiers |= mask;
+            } else {
+                array.append(makeAtAnnotation(annotation));
+            }
         }
-        JCExpression annotationsAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
-                make().NewArray(null, null, array.toList()));
-        
-        return makeModelAnnotation(syms().ceylonAtAnnotationsType, List.of(annotationsAttribute));
+        if (modifiers == 0 && array.isEmpty()) {
+            return List.<JCAnnotation>nil();
+        }
+        List<JCExpression> annotationsAndMods = List.<JCExpression>nil();
+        if (!array.isEmpty()) {
+            annotationsAndMods = annotationsAndMods.prepend(make().Assign(naming.makeUnquotedIdent("value"), 
+                        make().NewArray(null, null, array.toList())));
+        }
+        if (modifiers != 0L) {
+            annotationsAndMods = annotationsAndMods.prepend(
+                    make().Assign(naming.makeUnquotedIdent("modifiers"), 
+                            make().Literal(modifiers)));
+        }
+        return makeModelAnnotation(syms().ceylonAtAnnotationsType, annotationsAndMods);
     }
 
     private JCExpression makeAtAnnotation(Annotation annotation) {
+        
         JCExpression valueAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                                                     make().Literal(annotation.getName()));
         List<JCExpression> attributes;

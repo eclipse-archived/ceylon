@@ -2305,6 +2305,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
+        Long mods = (Long)getAnnotationValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION, "modifiers");
+        if (mods != null) {
+            for (ModifierAnnotation mod : ModifierAnnotation.values()) {
+                if ((mod.mask & mods) != 0) {
+                    decl.getAnnotations().add(mod.makeAnnotation());
+                }
+            }
+            
+        }
         List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
         if(annotations != null) {
             for(AnnotationMirror annotation : annotations){
