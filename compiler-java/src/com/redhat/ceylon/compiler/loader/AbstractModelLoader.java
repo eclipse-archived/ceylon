@@ -1021,11 +1021,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             switch(type){
             case ATTRIBUTE:
                 decl = makeToplevelAttribute(classMirror);
-                setDeclarationVisibility(decl, classMirror, classMirror, true);
+                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
                 break;
             case METHOD:
                 decl = makeToplevelMethod(classMirror);
-                setDeclarationVisibility(decl, classMirror, classMirror, true);
+                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
                 break;
             case OBJECT:
                 // we first make a class
@@ -1039,19 +1039,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-                    setDeclarationVisibility(objectDecl, classMirror, classMirror, true);
+                    setDeclarationVisibility(objectDecl, classMirror, classMirror, classMirror, true);
                 }else{
                     decl = objectClassDecl;
                 }
-                setDeclarationVisibility(objectClassDecl, classMirror, classMirror, true);
+                setDeclarationVisibility(objectClassDecl, classMirror, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                     decl = makeClassAlias(classMirror);
-                    setDeclarationVisibility(decl, classMirror, classMirror, true);
+                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
                 }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
                     decl = makeTypeAlias(classMirror);
-                    setDeclarationVisibility(decl, classMirror, classMirror, true);
+                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
                 }else{
                     final List<MethodMirror> constructors = getClassConstructors(classMirror);
                     if (!constructors.isEmpty()) {
@@ -1061,7 +1061,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         } else {
                             if (hasConstructors == null || !hasConstructors) {
@@ -1073,19 +1073,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // visibility is to be used
                                 if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
                                     decl = makeLazyClass(classMirror, null, constructor);
-                                    setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
                                 }else{
                                     decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                                 }
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
                         decl = makeLazyClass(classMirror, null, null);
-                        setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                        setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
                     } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
                         Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                         decl = klass;
@@ -1109,7 +1109,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else{
                     decl = makeLazyInterface(classMirror);
                 }
-                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
                 break;
             }
         }catch(ModelResolutionException x){
@@ -1190,14 +1190,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // a subclass of the original
         Class supercls = makeLazyClass(classMirror, null, null);
         // the abstraction class gets the class modifiers
-        setDeclarationVisibility(supercls, classMirror, classMirror, isCeylon);
+        setDeclarationVisibility(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
             // the subclasses class get the constructor modifiers
-            setDeclarationVisibility(subdecl, constructor, classMirror, isCeylon);
+            setDeclarationVisibility(subdecl, constructor, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
             overloads.add(subdecl);
             decls.add(subdecl);
@@ -1206,11 +1206,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return supercls;
     }
 
-    private void setDeclarationVisibility(Declaration decl, AccessibleMirror mirror, ClassMirror classMirror, boolean isCeylon) {
+    private void setDeclarationVisibility(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
         if(isCeylon){
             // when we're in a local type somewhere we must turn public declarations into package or protected ones, so
             // we have to check the shared annotation
-            decl.setShared(mirror.isPublic() || classMirror.getAnnotation(CEYLON_LANGUAGE_SHARED_ANNOTATION) != null);
+            decl.setShared(mirror.isPublic() || annotatedMirror.getAnnotation(CEYLON_LANGUAGE_SHARED_ANNOTATION) != null);
         }else{
             decl.setShared(mirror.isPublic() || (mirror.isDefaultAccess() && classMirror.isInnerClass()) || mirror.isProtected());
             decl.setPackageVisibility(mirror.isDefaultAccess());
@@ -2216,7 +2216,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
-        setDeclarationVisibility(constructor, ctor, classMirror, isCeylon);
+        setDeclarationVisibility(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
         setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
