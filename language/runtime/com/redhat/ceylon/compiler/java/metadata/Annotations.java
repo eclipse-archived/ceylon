@@ -9,4 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Annotations {
     Annotation[] value() default {};
+    long modifiers() default 0;
 }
