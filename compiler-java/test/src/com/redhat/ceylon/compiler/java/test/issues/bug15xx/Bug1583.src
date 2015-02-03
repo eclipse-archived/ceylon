@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>>")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class Bug1583Mixer {
     
     private Bug1583Mixer() {
@@ -12,14 +12,7 @@ public final class Bug1583Mixer {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("mixers")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "doc",
-                arguments = {"Nice stuff"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "see",
-                arguments = {"Bug1583Mixer"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private mixers_() {
@@ -43,14 +36,7 @@ public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.m
     @.ceylon.language.DocAnnotation$annotation$(description = "Nice stuff")
     @.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1:com.redhat.ceylon.compiler.java.test.issues:bug15xx:ABug1583Mixer")})
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                    value = "doc",
-                    arguments = {"Nice stuff"}),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                    value = "see",
-                    arguments = {"Bug1583Mixer"}),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug15xx::mixers")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ get_() {
         if (mixers_.$init$value) {

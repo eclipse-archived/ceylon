@@ -284,9 +284,7 @@ final class annotationClassMetamodelReferenceVariadic3_ {
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.AbstractAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language::Object")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 10L)
 public final class ClassAlias {
     
     private ClassAlias() {
@@ -300,13 +298,13 @@ public final class ClassAlias {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language.meta.declaration::Declaration")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public interface InterfaceAlias {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language.meta.declaration::Declaration")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class TypeAlias {
     
     private TypeAlias() {
@@ -315,7 +313,7 @@ public final class TypeAlias {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("obj")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private obj_() {
@@ -325,14 +323,14 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getAttribute() {
         return attribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long method() {
         return 2L;
@@ -354,7 +352,7 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::obj")
     public static .com.redhat.ceylon.compiler.java.test.annotations.obj_ get_() {
         if (obj_.$init$value) {

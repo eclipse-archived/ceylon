@@ -3,17 +3,11 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrConstructorTarget
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "suppressWarnings",
-                arguments = {"ambiguousAnnotation"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeOrConstructorTarget")})
 class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AmbiguousClass(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldTarget
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("parameterOrFieldTarget")})
     final .java.lang.String s2, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s3) {
@@ -25,9 +19,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldOrMethodTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
@@ -37,9 +29,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldOrMethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("parameterOrFieldOrMethodTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS3() {
         return s3;
@@ -56,11 +46,6 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("ambiguousObject")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "suppressWarnings",
-                arguments = {"ambiguousAnnotation"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldOrMethodTarget")})
 final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private ambiguousObject_() {
@@ -83,11 +68,6 @@ final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                    value = "suppressWarnings",
-                    arguments = {"ambiguousAnnotation"}),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldOrMethodTarget")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ambiguousObject")
     static .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ get_() {
         if (ambiguousObject_.$init$value) {
@@ -117,13 +97,7 @@ final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrAnnotationTypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "suppressWarnings",
-                arguments = {"ambiguousAnnotation"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeOrAnnotationTypeTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::AmbiguousAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
 final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
     

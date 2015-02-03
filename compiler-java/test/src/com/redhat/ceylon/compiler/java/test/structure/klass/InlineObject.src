@@ -62,14 +62,14 @@ final class inlineObject_ {
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
@@ -176,14 +176,14 @@ final class inlineObject_ {
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
@@ -365,14 +365,14 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
@@ -393,7 +393,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     private final .java.lang.Object param;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object getParam() {
         return param;
@@ -418,14 +418,14 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
                     public final T f() {
                         return (T).ceylon.language.nothing_.get_();
@@ -445,7 +445,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     private final .java.lang.Object attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object getAttribute() {
         return attribute;
@@ -481,14 +481,14 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
@@ -510,7 +510,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object method(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
@@ -520,7 +520,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void check(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
@@ -590,14 +590,14 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
@@ -657,14 +657,14 @@ final class inlineObjectTopLevel_ {
                         private final long a;
                         
                         @.ceylon.language.SharedAnnotation$annotation$
-                        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                         public final long getA() {
                             return a;
                         }
                         
                         @.ceylon.language.SharedAnnotation$annotation$
-                        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+                        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
                         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                         public final void f() {
                         }

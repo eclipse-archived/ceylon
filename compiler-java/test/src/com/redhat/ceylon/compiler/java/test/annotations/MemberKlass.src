@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public MemberKlass() {
@@ -18,7 +18,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class)})
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
@@ -32,7 +32,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected MemberMember() {
@@ -69,7 +69,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -90,7 +90,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private foo_() {
@@ -104,7 +104,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "TTT",
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -134,7 +134,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ParameterisedMemberKlass<T>.foo")
     public final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ getFoo() {
         return foo;

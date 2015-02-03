@@ -3,12 +3,6 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on a class")
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "doc",
-                arguments = {"Targeting annotations on a class"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("constructorTarget")})
 class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
@@ -31,9 +25,6 @@ class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on parameters and attributes")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
-        value = "doc",
-        arguments = {"Targeting annotations on parameters and attributes"})})
 class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     HeuristicTarget2(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
@@ -53,11 +44,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("parameterTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
@@ -68,11 +55,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("parameterTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS2() {
         return s2;
@@ -84,11 +67,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS3() {
         return s3;
@@ -112,14 +91,6 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
 @.com.redhat.ceylon.compiler.java.metadata.Name("heuristicTarget3")
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "doc",
-                arguments = {"Targeting annotations on object definitions"}),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("constructorTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget")})
 final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
@@ -144,14 +115,6 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on object definitions")
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                    value = "doc",
-                    arguments = {"Targeting annotations on object definitions"}),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("constructorTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("fieldTarget"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::heuristicTarget3")
     static .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_ get_() {
         if (heuristicTarget3_.$init$value) {
@@ -181,12 +144,7 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTypeTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("typeTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("constructorTarget"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
 final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
     

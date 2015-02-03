@@ -8,7 +8,7 @@ public final class coalesce_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object,ceylon.language::Null>")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Element",
@@ -19,9 +19,6 @@ public final class coalesce_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.com.redhat.ceylon.compiler.java.metadata.Name("values")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
     @.ceylon.language.DocAnnotation$annotation$(description = "The values, some of which may be null.")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
-            value = "doc",
-            arguments = {"The values, some of which may be null."})})
     final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> values) {
         return (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
     }

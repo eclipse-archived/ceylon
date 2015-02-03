@@ -7,7 +7,7 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke::ObjectArgumentNamedInvocationChained")
     public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
@@ -41,7 +41,7 @@ public final class objectArgumentNamedInvocationChained_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void objectArgumentNamedInvocationChained() {
         (
@@ -72,9 +72,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                            @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                             public final .java.lang.String toString() {
@@ -83,9 +81,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                            @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                             public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
@@ -98,9 +94,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                            @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                             public final int hashCode() {
@@ -144,9 +138,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                     public final .java.lang.String toString() {
@@ -155,9 +147,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
@@ -170,9 +160,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-                            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {

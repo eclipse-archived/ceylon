@@ -8,9 +8,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     .java.lang.String param3, @.com.redhat.ceylon.compiler.java.metadata.Name("param4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 4L)
     .java.lang.String param4) {
         this.param3 = param3;
         this.$init$attr = false;
@@ -23,10 +21,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("late")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 514L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getAttr() {
         if (this.$init$attr) {
@@ -53,10 +48,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getAttr3() {
         return attr3;
@@ -73,10 +65,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("methodTarget__SETTER"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
-            @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getParam3() {
         return param3;

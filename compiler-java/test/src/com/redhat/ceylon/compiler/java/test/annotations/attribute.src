@@ -55,7 +55,7 @@ final class attr2_ {
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 4L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (attr2_.$init$value) {

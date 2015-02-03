@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class)})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public KlassInMemberObject() {
@@ -15,7 +15,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public final class member_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private member_() {
@@ -29,7 +29,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class)
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected Klass() {
@@ -50,7 +50,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::KlassInMemberObject.member")
     public final .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ getMember() {
         return member;

@@ -152,7 +152,7 @@ final class enumeratedReference_zz_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 1L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference_X")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_zz() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X(new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.get_()));

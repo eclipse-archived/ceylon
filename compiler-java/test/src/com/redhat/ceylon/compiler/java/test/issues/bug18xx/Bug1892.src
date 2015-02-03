@@ -10,11 +10,6 @@ final class bug1892_1_ {
     @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
             value = "val",
             foo = (int)2L)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
-            value = "bug1892Annotation",
-            arguments = {
-                    "val",
-                    "2"})})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1892_1() {
     }
@@ -33,9 +28,6 @@ final class bug1892_2_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
-            value = "bug1892Annotation",
-            arguments = {"val"})})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1892_2() {
     }
@@ -54,7 +46,6 @@ final class bug1892_3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("bug1892Annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1892_3() {
     }
@@ -75,7 +66,6 @@ final class bug1892_4_ {
     @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
             value = "val",
             foo = (int)2L)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("bug1892Annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1892_4() {
     }

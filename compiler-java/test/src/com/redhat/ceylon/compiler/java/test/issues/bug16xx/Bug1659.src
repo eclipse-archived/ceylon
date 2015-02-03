@@ -11,7 +11,7 @@ final class bug1659_ {
     private static volatile boolean $init$value = false;
     
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("late")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 512L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (bug1659_.$init$value) {

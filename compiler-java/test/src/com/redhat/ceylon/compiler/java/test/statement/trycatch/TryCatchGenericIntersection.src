@@ -131,7 +131,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -147,7 +147,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionSubIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -163,7 +163,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericString(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -179,7 +179,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -198,7 +198,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrInteger2(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -214,7 +214,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrIntegerOrExceptionSub(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
@@ -236,7 +236,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
