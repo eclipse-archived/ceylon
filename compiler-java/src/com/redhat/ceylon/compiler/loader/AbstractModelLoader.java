@@ -2361,7 +2361,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<AnnotationMirror> members = (List<AnnotationMirror>) membersAnnotation.getValue();
         for(AnnotationMirror member : members){
             TypeMirror javaClassMirror = (TypeMirror)member.getValue("klass");
-            String javaClassName = javaClassMirror.getQualifiedName();
+            String javaClassName;
+            // void.class is the default value, I guess it's a primitive?
+            if(javaClassMirror != null && !javaClassMirror.isPrimitive()){
+                javaClassName = javaClassMirror.getQualifiedName();
+            }else{
+                // we get the class name as a string
+                String name = (String)member.getValue("javaClassName");
+                ClassMirror container = null;
+                if(klass instanceof LazyClass){
+                    container = ((LazyClass) klass).classMirror;
+                }else if(klass instanceof LazyInterface){
+                    if(((LazyInterface) klass).isCeylon())
+                        container = ((LazyInterface) klass).companionClass;
+                    else
+                        container = ((LazyInterface) klass).classMirror;
+                }
+                if(container == null)
+                    throw new ModelResolutionException("Unknown container type: " + klass 
+                            + " when trying to load inner class " + name);
+                javaClassName = container.getQualifiedName()+"$"+name;
+            }
             Declaration innerDecl = convertToDeclaration(Decl.getModuleContainer(klass), javaClassName, DeclarationType.TYPE);
             if(innerDecl == null)
                 throw new ModelResolutionException("Failed to load inner type " + javaClassName 

@@ -1727,7 +1727,11 @@ public class ClassTransformer extends AbstractTransformer {
                     continue;
                 }
             }
-            JCAnnotation atMember = makeAtMember(innerType.getType());
+            JCAnnotation atMember;
+            if(Decl.isLocal(model))
+                atMember = makeAtMember(innerType.getName());
+            else
+                atMember = makeAtMember(innerType.getType());
             members = members.prepend(atMember);
         }
         classBuilder.annotations(makeAtMembers(members));

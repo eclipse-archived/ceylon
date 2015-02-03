@@ -3024,6 +3024,14 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtMemberType), attributes);
     }
 
+    JCAnnotation makeAtMember(String typeName) {
+        JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("javaClassName"), 
+                                                    make().Literal(typeName));
+        List<JCExpression> attributes = List.of(classAttribute);
+
+        return make().Annotation(makeIdent(syms().ceylonAtMemberType), attributes);
+    }
+
     List<JCAnnotation> makeAtMembers(List<JCExpression> members) {
         if(members.isEmpty())
             return List.nil();
