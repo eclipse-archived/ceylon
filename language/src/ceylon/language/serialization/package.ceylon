@@ -23,7 +23,7 @@
    during deserialization.  
    (this includes instances reachable from other instances, transitively).
    
- The API cannot prevent serialization frameworks from obtaining access to 
+ The API cannot prevent serialization libraries from obtaining access to 
  non-`shared` state of instances (loss of encapsulation is 
  an inevitable part of serialization).
    
@@ -33,7 +33,7 @@
    calling [[serialization]] ,
  * is responsible for [[SerializationContext.reference|adding]] instances to the 
    `SerializationContext`, including instances reachable from those 
-   explicitly added by the client, according to framework-specific rules
+   explicitly added by the client, according to library-specific rules
  * then iterates over the [[SerializableReferences]] in 
    the `SerializationContext` generating the external representation 
 
@@ -50,7 +50,7 @@
    of an instance (including its reachable references) by inspecting 
    the information in external representation.
  * then [[DeserializableReference.deserialize|deserializes]] instances 
-   by providing a [[Deconstructed]] which gives yields the 
+   by providing a [[Deconstructed]] which yields the 
    serialized state of each instance,
  * finally obtains a reference to the reconstructed instance using 
    [[RealizableReference.instance]].
