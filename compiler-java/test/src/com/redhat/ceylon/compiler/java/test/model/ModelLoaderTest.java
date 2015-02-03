@@ -26,12 +26,15 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -370,11 +373,20 @@ public class ModelLoaderTest extends CompilerTest {
             if(validDeclaration instanceof Setter)
                 return;
             String name = validDeclaration.getQualifiedNameString();
-            List<Annotation> validAnnotations = validDeclaration.getAnnotations();
-            List<Annotation> modelAnnotations = modelDeclaration.getAnnotations();
+            Comparator<Annotation> cmp = new Comparator<Annotation>() {
+                public int compare(Annotation a, Annotation b) {
+                    return a.getName().compareTo(b.getName());
+                }
+            };
+            Set<Annotation> validAnnotations = new TreeSet<Annotation>(cmp);
+            validAnnotations.addAll(validDeclaration.getAnnotations());
+            Set<Annotation> modelAnnotations = new TreeSet<Annotation>(cmp);
+            modelAnnotations.addAll(modelDeclaration.getAnnotations());
             Assert.assertEquals(name+" [annotation count]", validAnnotations.size(), modelAnnotations.size());
-            for(int i=0;i<validAnnotations.size();i++){
-                compareAnnotation(name, validAnnotations.get(i), modelAnnotations.get(i));
+            Iterator<Annotation> validIter = validAnnotations.iterator();
+            Iterator<Annotation> modelIter = modelAnnotations.iterator();
+            while(validIter.hasNext() || modelIter.hasNext()){
+                compareAnnotation(name, validIter.next(), modelIter.next());
             }
         }
     
