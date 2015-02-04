@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -45,12 +46,20 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
+import com.redhat.ceylon.compiler.java.codegen.ClassTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer;
+import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
@@ -94,7 +103,19 @@ import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
 
+@RunWith(Parameterized.class)
 public class ModelLoaderTest extends CompilerTest {
+    
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.asList(new Object[]{true}, new Object[]{false});
+    }
+    
+    private final boolean simpleAnnotationModels;
+    
+    public ModelLoaderTest(boolean simpleAnnotationModels) {
+        this.simpleAnnotationModels = simpleAnnotationModels;
+    }
     
     protected static String getQualifiedPrefixedName(Declaration decl){
         String name = Decl.className(decl);
@@ -123,6 +144,13 @@ public class ModelLoaderTest extends CompilerTest {
         CeyloncTaskImpl task = getCompilerTask(ceylon);
         // get the context to grab the phased units
         Context context = task.getContext();
+        if (simpleAnnotationModels) {
+            CeylonEnter.instance(context);
+            ExpressionTransformer.getInstance(context).simpleAnnotationModels = true;
+            CeylonTransformer.getInstance(context).simpleAnnotationModels = true;
+            StatementTransformer.getInstance(context).simpleAnnotationModels = true;
+            ClassTransformer.getInstance(context).simpleAnnotationModels = true;
+        }
 
         Boolean success = task.call();
         
