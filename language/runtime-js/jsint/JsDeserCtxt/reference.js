@@ -9,10 +9,9 @@ function(id,model,$mpt){
   var vd=model.declaration.objectValue;
   var r;
   if (vd != null) {
-    var _self=this;
     vd=vd.$_get();
     r=DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
-    r.deserialize=function(){return _self;}
+    r.deserialize=function(){return r;}
     r.inst_=vd;
     r.state_=3;
     r.realmpt_=getrtmm$$(getrtmm$$(vd).$t.t)['super'];
