@@ -2345,20 +2345,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             // If the class lacks @Annotations then set the modifier annotations
             // according to the presence of @Shared$annotation etc
-            Declaration receiver;
-            if ((decl instanceof Value)
-                    && ((Value)decl).getTypeDeclaration().isAnonymous()) {
-                receiver = ((Value)decl).getTypeDeclaration();
-            } else {
-                receiver = null;
-            }
             for (LanguageAnnotation mod : LanguageAnnotation.values()) {
                 if (classMirror.getAnnotation(mod.annotationType) != null) {
                     decl.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
-                    if (receiver != null) {
-                        receiver.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
-                    }
                 }
+            }
+            // Hack for anonymous classes where the getter method has the annotations, 
+            // but the typechecker wants them on the Class model. 
+            if ((decl instanceof Class)
+                    && ((Class)decl).isAnonymous()) {
+                Declaration objectValue = decl.getContainer().getDirectMember(decl.getName(), null, false);
+                if (objectValue != null) {
+                    decl.getAnnotations().addAll(objectValue.getAnnotations());
+                }
+                
             }
         }
         // Add a ceylon deprecated("") if it's annotated with java.lang.Deprecated

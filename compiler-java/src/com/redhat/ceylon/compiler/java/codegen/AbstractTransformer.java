@@ -150,7 +150,7 @@ public abstract class AbstractTransformer implements Transformation {
     private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
     protected Map<String, Long> omittedModelAnnotations;
 
-    private boolean isBootstrap;
+    public boolean simpleAnnotationModels;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -161,7 +161,7 @@ public abstract class AbstractTransformer implements Transformation {
         typeFact = TypeFactory.instance(context);
         log = CeylonLog.instance(context);
         naming = Naming.instance(context);
-        isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
+        simpleAnnotationModels = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     Context getContext() {
@@ -2979,7 +2979,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
-        if(!isBootstrap || annotations == null || annotations.isEmpty())
+        if(!simpleAnnotationModels || annotations == null || annotations.isEmpty())
             return List.nil();
         long modifiers = 0;
         ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
@@ -2988,7 +2988,7 @@ public abstract class AbstractTransformer implements Transformation {
                 continue;
             }
             Long mask = getModelModifierMask(annotation);
-            if (mask != null){
+            if (mask != null && mask != 0){
                 modifiers |= mask;
             } else {
                 array.append(makeAtAnnotation(annotation));

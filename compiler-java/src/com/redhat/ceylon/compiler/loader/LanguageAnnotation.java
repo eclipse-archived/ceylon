@@ -145,6 +145,9 @@ public enum LanguageAnnotation {
     }
     
     protected String parseMetamodelReference(String s) {
-        return s.replaceAll("^.*::[C]", "").replaceAll("^.*\\.[C]", "");
+        // Ugly hack to save us having to actually parse the output of
+        // ExpressionTransfomer.serializeReferenceable() in order to get the 
+        // unqualified name
+        return s.replaceAll("^.*::[CIAVFP]", "").replaceAll("^.*\\.[CIAVFP]", "");
     }
 }
