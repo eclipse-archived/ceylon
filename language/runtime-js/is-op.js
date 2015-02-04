@@ -44,7 +44,7 @@ function is$(obj,type,containers){
     if (type.t==='T') {
       if (is$(obj,{t:Tuple})) {
           var last_type = type.l[type.l.length-1];
-          if (type.l.length===obj.$$targs$$.l.length || last_type.seq) {
+          if (type.l.length===obj.size || last_type.seq) {
             var lim=type.l.length; if (last_type.seq)lim--;
             for (var i=0;i<lim;i++) {
               if (!is$(obj.$_get(i),type.l[i]))return false;
