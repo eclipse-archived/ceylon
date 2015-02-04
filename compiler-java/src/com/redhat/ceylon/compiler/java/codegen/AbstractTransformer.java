@@ -94,6 +94,7 @@ import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -119,6 +120,7 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
+import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
 
@@ -148,6 +150,8 @@ public abstract class AbstractTransformer implements Transformation {
     private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
     protected Map<String, Long> omittedModelAnnotations;
 
+    private boolean isBootstrap;
+
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
@@ -157,6 +161,7 @@ public abstract class AbstractTransformer implements Transformation {
         typeFact = TypeFactory.instance(context);
         log = CeylonLog.instance(context);
         naming = Naming.instance(context);
+        isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     Context getContext() {
@@ -2974,7 +2979,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
-        if(annotations == null || annotations.isEmpty())
+        if(!isBootstrap || annotations == null || annotations.isEmpty())
             return List.nil();
         long modifiers = 0;
         ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
