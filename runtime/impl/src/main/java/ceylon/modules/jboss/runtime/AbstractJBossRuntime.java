@@ -79,7 +79,11 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return new ClassLoaderHolderImpl(module);
         } catch (ModuleNotFoundException e) {
-            String spec = e.getMessage().replace(':', '/');
+            String spec = e.getMessage();
+            int p = spec.lastIndexOf(':');
+            if (p >= 0) {
+                spec = spec.substring(0, p) + "/" + spec.substring(p + 1);
+            }
             final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + " (invalid version?)");
             cre.initCause(e);
             throw cre;
