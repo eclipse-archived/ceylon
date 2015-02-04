@@ -21,9 +21,9 @@ package com.redhat.ceylon.compiler.java.test.structure;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-public class SerializableTest extends CompilerTest {
+public class SerializableTests extends CompilerTests {
 
     @Test
     public void testKlsSerializableClass() {

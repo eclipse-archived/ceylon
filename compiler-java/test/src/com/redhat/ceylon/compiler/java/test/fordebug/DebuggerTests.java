@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-public class DebuggerTest extends CompilerTests {
+public class DebuggerTests extends CompilerTests {
     
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {
         List<File> files = getClassPathAsFiles(modules);
@@ -164,7 +164,7 @@ public class DebuggerTest extends CompilerTests {
                 new URL[]{
                         new File(srcDir).toURI().toURL(),
                         new File(jdiJar).toURI().toURL()},
-                DebuggerTest.class.getClassLoader());
+                DebuggerTests.class.getClassLoader());
     }
 
 }

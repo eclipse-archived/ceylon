@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.MethodEntry;
 import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.MethodExit;
 import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.Step;
 
-public class TraceTests extends DebuggerTest {
+public class TraceTests extends DebuggerTests {
     
     @Override
     protected String transformDestDir(String name) {

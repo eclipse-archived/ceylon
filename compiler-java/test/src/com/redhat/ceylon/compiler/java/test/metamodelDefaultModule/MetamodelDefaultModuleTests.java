@@ -21,9 +21,9 @@ package com.redhat.ceylon.compiler.java.test.metamodelDefaultModule;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-public class MetamodelDefaultModuleTest extends CompilerTest {
+public class MetamodelDefaultModuleTests extends CompilerTests {
 
     @Test
     public void testBugCL257() {
