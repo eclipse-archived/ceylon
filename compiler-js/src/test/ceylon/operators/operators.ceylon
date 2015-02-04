@@ -574,10 +574,17 @@ void testIssues() {
     check((z.b else "2") == "2", "Issue 315 [2]");
   }
   //c.l 624
-  Object t = [1, "hello", true, 1, 0, 1, 2, 3];
-  check(t is [Integer, String, Boolean, Integer,Integer,Integer,Integer,Integer], "c.l 624.1");
-  check(t is [Integer, String, Boolean, Integer*], "c.l 624.2");
-  check(t is [Integer, String, Boolean, Integer+], "c.l 624.3");
+  Object t1 = [1, "hello", true, 1, 0, 1, 2, 3];
+  Object t2 = [1, "hello", true];
+  Object t3 = [1, "hello", true, 1, "no"];
+  check(t1 is [Integer, String, Boolean, Integer,Integer,Integer,Integer,Integer], "c.l 624.1");
+  check(t1 is [Integer, String, Boolean, Integer*], "c.l 624.2");
+  check(t1 is [Integer, String, Boolean, Integer+], "c.l 624.3");
+  check(t2 is [Integer, String, Boolean, Integer*], "c.l 624.4");
+  check(t2 is [Integer, String, Boolean, String*], "c.l 624.5");
+  check(!t2 is [Integer, String, Boolean, Integer+], "c.l 624.6");
+  check(!t3 is [Integer, String, Boolean, Integer*], "c.l 624.7");
+  check(!t3 is [Integer, String, Boolean, Integer+], "c.l 624.8");
 }
 
 shared void test() {
