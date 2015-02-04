@@ -10,12 +10,15 @@ function $_Array(elems,$$targs$$) {
     List({Element$List:t}, e);
     return e.rt$(t);
 }
-$_Array.deser$$=function(a,cm){
+$_Array.inst$$=function(cm){
+  return [];
+}
+$_Array.deser$$=function(a,cm,b){
   var targ=cm.$$targs$$.Type$Class.a.Element$Array;
   var tam=a.getValue(OpenValue$jsint(lmp$(ex$,'$'),$_Array.$$.prototype.$prop$getSize),{Instance$getValue:{t:Integer}});
-  var b = new Array(tam);
   for (var i=0; i < tam; i++) {
-    b[i]=a.getElement(i,{Instance$getElement:targ});
+    b.push(a.getElement(i,{Instance$getElement:targ}));
+    if (is$(b[i],{t:Reference$serialization}))b[i]=b[i].leak();
   }
-  return b.rt$(targ);
+  b.rt$(targ);
 }

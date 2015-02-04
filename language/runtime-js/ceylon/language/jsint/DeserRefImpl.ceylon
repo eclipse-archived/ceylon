@@ -13,4 +13,5 @@ native class DeserRefImpl<Instance,Outer>(context, id, clazz, outerRef)
   shared actual native void reconstruct();
   shared actual native RealizableReference<Instance> deserialize(/*Deconstructed<Instance>*/ Deconstructed deconstructed);
   shared actual native String string;
+  shared native Instance leak();
 }
