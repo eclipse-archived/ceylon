@@ -44,10 +44,10 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.util.Util;
 
-public class BcTests extends CompilerTest {
+public class BcTests extends CompilerTests {
     
     private final String providerModuleSrc = "provider/module.ceylon";
     private final String providerPackageSrc = "provider/package.ceylon";

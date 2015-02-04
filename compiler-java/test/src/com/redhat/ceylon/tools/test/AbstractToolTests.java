@@ -17,24 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.itest;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+package com.redhat.ceylon.tools.test;
 
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-@RunWith(Suite.class) 
-@SuiteClasses({
-    // Tests of the new-style scripts
-    CeylonCompileScriptTests.class,
-    CeylonDocScriptTests.class,
-    CeylonRunScriptTests.class,
-    // Tests of the ant tasks
-    CeylonCompileAntTests.class,
-    CeylonDocAntTests.class,
-    CeylonRunAntTests.class,
-})
-public class IntegrationTests {
+/**
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public class AbstractToolTests extends CompilerTests {
+    
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+
+    protected CeylonTool getMainTool() {
+        return pluginLoader.instance("", null);
+    }
 
 }

@@ -23,31 +23,31 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.redhat.ceylon.tools.new_.NewProjectToolTest;
-import com.redhat.ceylon.tools.new_.TemplateTest;
-import com.redhat.ceylon.tools.test.ImportJarToolTest;
-import com.redhat.ceylon.tools.version.VersionToolTest;
-import com.redhat.ceylon.tools.bashcompletion.BashCompletionToolTest;
-import com.redhat.ceylon.tools.help.DocToolToolTest;
-import com.redhat.ceylon.tools.help.HelpToolTest;
-import com.redhat.ceylon.tools.help.MarkdownTest;
-import com.redhat.ceylon.tools.help.PlaintextTest;
+import com.redhat.ceylon.tools.new_.NewProjectToolTests;
+import com.redhat.ceylon.tools.new_.TemplateTests;
+import com.redhat.ceylon.tools.test.ImportJarToolTests;
+import com.redhat.ceylon.tools.version.VersionToolTests;
+import com.redhat.ceylon.tools.bashcompletion.BashCompletionToolTests;
+import com.redhat.ceylon.tools.help.DocToolToolTests;
+import com.redhat.ceylon.tools.help.HelpToolTests;
+import com.redhat.ceylon.tools.help.MarkdownTests;
+import com.redhat.ceylon.tools.help.PlaintextTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    BashCompletionToolTest.class,
-    CompilerToolTest.class,
-    DocToolTest.class,
-    ImportJarToolTest.class,
-    PlaintextTest.class,
-    MarkdownTest.class,
-    HelpToolTest.class,
-    DocToolToolTest.class,
-    NewProjectToolTest.class,
-    TemplateTest.class,
-    InfoToolTest.class,
-    SrcToolTest.class,
-    VersionToolTest.class
+    BashCompletionToolTests.class,
+    CompilerToolTests.class,
+    DocToolTests.class,
+    ImportJarToolTests.class,
+    PlaintextTests.class,
+    MarkdownTests.class,
+    HelpToolTests.class,
+    DocToolToolTests.class,
+    NewProjectToolTests.class,
+    TemplateTests.class,
+    InfoToolTests.class,
+    SrcToolTests.class,
+    VersionToolTests.class
 })
 public class CompilerToolsTests {
 

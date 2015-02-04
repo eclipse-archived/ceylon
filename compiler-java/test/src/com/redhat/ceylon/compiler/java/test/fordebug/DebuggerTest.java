@@ -11,9 +11,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-public class DebuggerTest extends CompilerTest {
+public class DebuggerTest extends CompilerTests {
     
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {
         List<File> files = getClassPathAsFiles(modules);

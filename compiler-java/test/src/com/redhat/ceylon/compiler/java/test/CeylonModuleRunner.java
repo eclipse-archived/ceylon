@@ -444,10 +444,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             public void run() {
                 // set up the runtime module system
                 Metamodel.resetModuleManager();
-                Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
-                Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
-                Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTest.makeArtifactResult(null), cl);
-                Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+                Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
+                Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
+                Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTests.makeArtifactResult(null), cl);
+                Metamodel.loadModule(moduleName, version, CompilerTests.makeArtifactResult(carFile), cl);
                 // dependencies
                 for (int dep = 0, c = 1; dep < dependencies.length; dep++) {
                     try {
@@ -464,7 +464,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                             version = version.substring(0, version.length()-4);
                         }else
                             throw new RuntimeException("Failed to find dependency module version for "+name);
-                        Metamodel.loadModule(name,  version, CompilerTest.makeArtifactResult(car), cl);
+                        Metamodel.loadModule(name,  version, CompilerTests.makeArtifactResult(car), cl);
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     }

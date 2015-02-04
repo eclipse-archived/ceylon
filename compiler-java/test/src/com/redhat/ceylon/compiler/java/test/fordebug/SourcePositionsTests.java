@@ -17,24 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.itest;
+package com.redhat.ceylon.compiler.java.test.fordebug;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.Ignore;
+import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
-@RunWith(Suite.class) 
-@SuiteClasses({
-    // Tests of the new-style scripts
-    CeylonCompileScriptTests.class,
-    CeylonDocScriptTests.class,
-    CeylonRunScriptTests.class,
-    // Tests of the ant tasks
-    CeylonCompileAntTests.class,
-    CeylonDocAntTests.class,
-    CeylonRunAntTests.class,
-})
-public class IntegrationTests {
+public class SourcePositionsTests extends CompilerTests {
+	
+    @Test
+    @Ignore
+    public void testSimplePositions(){
+        compareWithJavaSourceWithPositions("positions/simple");
+    }
 
+    @Test
+    public void testSimpleLines(){
+        compareWithJavaSourceWithLines("lines/simple");
+    }
+    
+    @Test
+    public void testAnonymousLines(){
+        compareWithJavaSourceWithLines("lines/anonymous");
+    }
 }

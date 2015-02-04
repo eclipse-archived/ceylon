@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP.RequestCounter;
+import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.RequestCounter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
