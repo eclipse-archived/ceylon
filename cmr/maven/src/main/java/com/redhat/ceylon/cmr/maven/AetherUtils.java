@@ -100,7 +100,7 @@ public class AetherUtils {
     }
 
     static boolean isOptional(MavenArtifactInfo info) {
-        return !(info.getScope() == ScopeType.COMPILE || info.getScope() == ScopeType.RUNTIME);
+        return info.isOptional() || !(info.getScope() == ScopeType.COMPILE || info.getScope() == ScopeType.RUNTIME);
     }
 
     void overrideSettingsXml(String settingsXml) {
