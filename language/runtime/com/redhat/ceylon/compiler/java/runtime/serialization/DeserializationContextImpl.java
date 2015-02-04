@@ -47,11 +47,7 @@ public class DeserializationContextImpl
             @SuppressWarnings("rawtypes") ceylon.language.meta.model.Class classModel) {
         DeserializingReference<?> ref = idToReference.get(id);
         if (ref != null) {
-            if (ref.getClazz().equals(classModel)) {
-                return (Reference)ref;
-            } else {
-                throw new AssertionError("reference already made to instance with a different class");
-            }
+            return (Reference)ref;
         }
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);

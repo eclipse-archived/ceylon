@@ -130,12 +130,11 @@ shared void testDerserializationRegisterTwice() {
     // TODO this is not symmetric with the serialization case (where registration is strictly once only)
     value dc = deserialization();
     value intRef = dc.reference(0, `Container<Integer>`);
-    try {
-        dc.reference(0, `Container<String>`);
-        throw Exception("Expecting an error");
-    } catch (AssertionError e) {
-        assert("reference already made to instance with a different class" == e.message);
-    }
+    dc.reference(0, `String`);
+    dc.reference(0, `Container<String>`);
+    assert(exists r = dc.getReference<Container<Integer>>(0));
+    assert(intRef == r);
+    
 }
 
 @test
