@@ -42,7 +42,11 @@ shared class DocAnnotations() satisfies DocAnnotationsInterface {
 
     "Bla bla doc on inner class"
     see(`class InnerClass`)
+    see(`interface DocAnnotationsInterface`)
+    see(`package ceylon.language.meta`)
+    see(`module ceylon.language`)
     by("Stef", "FroMage")
+    tagged("TODO", "XXX")
     shared class InnerClass(){}
 }
 
