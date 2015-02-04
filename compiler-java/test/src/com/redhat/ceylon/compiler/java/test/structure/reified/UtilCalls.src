@@ -8,7 +8,6 @@ public final class utilCalls_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void utilCalls() {
         final .ceylon.language.Sequence t1 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
@@ -229,7 +228,6 @@ public final class variadicMethod_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void variadicMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("ints")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced

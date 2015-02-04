@@ -138,7 +138,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private final long i;
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         public final long getI() {
             return i;
@@ -172,7 +171,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                 value = "com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal",
@@ -186,7 +184,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         public final long offset(@.com.redhat.ceylon.compiler.java.metadata.Name("other")

@@ -8,7 +8,6 @@ public final class bug1712Mixed_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug1712Mixed() {
         final .ceylon.file.Path fileDir = .ceylon.file.parsePath_.parsePath("");

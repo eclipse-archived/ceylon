@@ -8,7 +8,6 @@ public final class first_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "Absent|Value",
             erased = true)

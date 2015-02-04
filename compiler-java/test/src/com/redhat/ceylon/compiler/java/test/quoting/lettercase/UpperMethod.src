@@ -24,7 +24,6 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void UpperMethod() {
         

@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Key",
@@ -18,7 +17,6 @@ public interface Interface<Key, Value> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
 public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -26,7 +24,6 @@ public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.stru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<Key,ceylon.language::Integer>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -107,7 +104,6 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -140,7 +136,6 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
 @.com.redhat.ceylon.compiler.java.metadata.Name("toplevelObject")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
     
     private toplevelObject_() {
@@ -162,7 +157,6 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
     public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ get_() {
         if (toplevelObject_.$init$value) {

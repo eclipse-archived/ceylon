@@ -9,7 +9,6 @@ interface Bug630 {
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 322L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -18,7 +17,6 @@ interface Bug630 {
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 322L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")

@@ -24,7 +24,6 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> g;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long g(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -35,7 +34,6 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> h;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long h(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")

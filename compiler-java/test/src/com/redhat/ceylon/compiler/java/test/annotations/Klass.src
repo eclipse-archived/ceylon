@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -52,7 +51,6 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long m1(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -61,7 +59,6 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public final .ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
@@ -70,7 +67,6 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")

@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -28,7 +27,6 @@ public class ClassAliasWithTypeParameters_Foo<T> implements .com.redhat.ceylon.c
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAliasWithTypeParameters_Foo<T>")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -54,7 +52,6 @@ public final class ClassAliasWithTypeParameters<T> {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAliasWithTypeParameters_Foo<ceylon.language::Integer>")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class ClassAliasWithTypeParameters2 {
     
     private ClassAliasWithTypeParameters2() {

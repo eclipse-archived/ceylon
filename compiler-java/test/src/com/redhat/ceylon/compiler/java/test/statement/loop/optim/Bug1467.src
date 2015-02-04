@@ -33,7 +33,6 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void buffer() {
         final long startTime = .ceylon.language.system_.get_().getNanoseconds();

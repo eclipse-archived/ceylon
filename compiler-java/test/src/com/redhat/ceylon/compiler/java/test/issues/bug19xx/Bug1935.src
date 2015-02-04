@@ -74,7 +74,6 @@ interface Parameter1935<Key, Item, X, Y> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -84,7 +83,6 @@ interface Parameter1935<Key, Item, X, Y> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -96,7 +94,6 @@ interface Parameter1935<Key, Item, X, Y> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -106,7 +103,6 @@ interface Parameter1935<Key, Item, X, Y> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -162,7 +158,6 @@ class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
@@ -175,7 +170,6 @@ class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
@@ -190,7 +184,6 @@ class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
@@ -203,7 +196,6 @@ class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",

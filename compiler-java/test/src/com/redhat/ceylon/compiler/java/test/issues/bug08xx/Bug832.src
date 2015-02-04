@@ -8,7 +8,6 @@ interface Bug832Common {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 258L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public long getSign();

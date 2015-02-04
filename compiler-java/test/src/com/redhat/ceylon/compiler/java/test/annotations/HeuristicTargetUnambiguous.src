@@ -44,7 +44,6 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
@@ -55,7 +54,6 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS2() {
         return s2;
@@ -67,7 +65,6 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS3() {
         return s3;
@@ -144,7 +141,6 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
 final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
     

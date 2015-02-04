@@ -4,7 +4,6 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 @.com.redhat.ceylon.compiler.java.metadata.Name("ii")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class)
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public interface i$ii_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
@@ -22,14 +21,12 @@ interface i$m$mi_ {
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_.class)})
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::i$m$mi_"})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public interface i_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$impl_ $com$redhat$ceylon$compiler$java$test$quoting$lettercase$i$impl_();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public void m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

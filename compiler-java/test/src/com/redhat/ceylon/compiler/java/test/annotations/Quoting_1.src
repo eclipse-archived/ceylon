@@ -29,7 +29,6 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
         "ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::Quoting,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>",
         "com.redhat.ceylon.compiler.java.test.annotations::Cloneable<com.redhat.ceylon.compiler.java.test.annotations::Quoting>"})
@@ -60,7 +59,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String toString() {
@@ -70,7 +68,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final .java.lang.String toString;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getToString() {
         return toString;
@@ -80,7 +77,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final int hashCode() {
@@ -96,7 +92,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final long hashCode;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getHashCode() {
         return hashCode;
@@ -118,7 +113,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Quoting",
@@ -166,7 +160,6 @@ final class quoting_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 1L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     static .com.redhat.ceylon.compiler.java.test.annotations.Quoting quoting() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting("", "", -1L, 0L);
@@ -193,7 +186,6 @@ final class quoting2_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 1L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     static .com.redhat.ceylon.compiler.java.test.annotations.Quoting quoting2(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")

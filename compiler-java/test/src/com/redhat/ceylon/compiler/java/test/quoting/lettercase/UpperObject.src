@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private Object() {
@@ -13,14 +12,12 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public final class InnerObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private InnerObject() {
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
         public final void m() {
         }
@@ -33,14 +30,12 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
     public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
         return InnerObject;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void m() {
         getInnerObject().m();
@@ -62,7 +57,6 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
         if (Object.$init$value) {

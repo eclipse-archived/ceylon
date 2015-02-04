@@ -118,7 +118,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object attr;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -129,7 +128,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object param2;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -138,7 +136,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -155,7 +152,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -564,7 +560,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -574,7 +569,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -584,7 +578,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::String|ceylon.language::Null|T",
@@ -597,7 +590,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public final boolean contains(@.com.redhat.ceylon.compiler.java.metadata.Name("element")
@@ -608,7 +600,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public final boolean defines(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
@@ -619,7 +610,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
     public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> $clone() {
@@ -628,7 +618,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Iterator<ceylon.language::Entry<ceylon.language::Integer,ceylon.language::String|T>>",
@@ -639,7 +628,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -649,7 +637,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Collection<ceylon.language::String|T>",
@@ -679,7 +666,6 @@ public final class bug708_test2_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")

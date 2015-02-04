@@ -12,7 +12,6 @@ public final class bug1955r_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug1955r() {
         
@@ -145,7 +144,6 @@ public final class bug1955_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug1955() {
         ((.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug19xx").getFunction("bug1955r").apply(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)).$call$();

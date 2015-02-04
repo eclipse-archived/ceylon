@@ -99,7 +99,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Simple implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -107,7 +106,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String toString() {
@@ -185,7 +183,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void simple() {
         .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>> defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Simple(String)(MemberClassConstructorRef)", (short)-1){
@@ -651,7 +648,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Defaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -659,7 +655,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String toString() {
@@ -748,7 +743,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void defaulted() {
         .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>> defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Defaulted(String=)(MemberClassConstructorRef)", (short)-1){
@@ -1232,7 +1226,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1240,7 +1233,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String toString() {
@@ -1323,7 +1315,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void sequenced() {
         .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>> defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Sequenced(String*)(MemberClassConstructorRef)", (short)-1){
@@ -2074,7 +2065,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -2089,7 +2079,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String toString() {
@@ -2179,7 +2168,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void parameterized() {
         .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>> defRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "MemberClassConstructorRef.Parameterized<String>(String)(MemberClassConstructorRef)", (short)-1){

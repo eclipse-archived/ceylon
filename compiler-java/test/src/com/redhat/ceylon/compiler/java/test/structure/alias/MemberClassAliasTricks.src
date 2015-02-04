@@ -6,7 +6,6 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel2.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel.class)})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -71,7 +70,6 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public final class MemberClassAliasToToplevel {
         
         private MemberClassAliasToToplevel() {
@@ -96,7 +94,6 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public final class MemberClassAliasToToplevel2 {
         
         private MemberClassAliasToToplevel2() {
@@ -145,7 +142,6 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.MemberClassAliasToEnclosingMemberClass.class)})
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
@@ -175,7 +171,6 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo.Member")
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class)
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
         public final class MemberClassAliasToEnclosingMemberClass {
             
             private MemberClassAliasToEnclosingMemberClass() {

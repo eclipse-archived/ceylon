@@ -18,7 +18,6 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public class cc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected cc_() {

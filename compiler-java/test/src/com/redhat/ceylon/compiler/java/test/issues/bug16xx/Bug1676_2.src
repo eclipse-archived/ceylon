@@ -11,7 +11,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A,ceylon.language.meta.declaration::ClassDeclaration>"})
 final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration> {
     
@@ -62,7 +61,6 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B,ceylon.language::Annotated>"})
 final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated> {
     
@@ -112,7 +110,6 @@ final class bug1676_2_A_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 1L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A bug1676_2_A() {
         throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
@@ -135,7 +132,6 @@ final class bug1676_2_B_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 1L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B bug1676_2_B(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")

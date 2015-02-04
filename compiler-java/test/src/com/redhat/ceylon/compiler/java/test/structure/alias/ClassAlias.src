@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ClassAlias_Foo() {
@@ -25,7 +24,6 @@ public class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAlias_Foo")
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class ClassAlias {
     
     private ClassAlias() {

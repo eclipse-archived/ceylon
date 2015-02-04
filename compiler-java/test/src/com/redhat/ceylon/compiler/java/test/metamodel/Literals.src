@@ -14,7 +14,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getAttribute() {
         return attribute;
@@ -24,7 +23,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getVariableAttribute() {
         return variableAttribute;
@@ -37,7 +35,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long method(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -46,7 +43,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
@@ -68,7 +64,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
@@ -120,7 +115,6 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     private final long parameterAndSharedAttribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getParameterAndSharedAttribute() {
         return parameterAndSharedAttribute;
@@ -129,7 +123,6 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long sharedMethodAndParameter() {
         return sharedMethodAndParameter.$call$().longValue();
@@ -138,7 +131,6 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     private final long sharedAttributeAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getSharedAttributeAndParameter() {
         return sharedAttributeAndParameter;
@@ -190,7 +182,6 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     private final long parameterAndSharedAttribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getParameterAndSharedAttribute() {
         return parameterAndSharedAttribute;
@@ -199,7 +190,6 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long sharedMethodAndParameter() {
         return sharedMethodAndParameter.$call$().longValue();
@@ -208,7 +198,6 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     private final long sharedAttributeAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getSharedAttributeAndParameter() {
         return sharedAttributeAndParameter;
@@ -243,7 +232,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getAttribute() {
         return attribute;
@@ -253,7 +241,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 6L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getVariableAttribute() {
         return variableAttribute;
@@ -266,7 +253,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long method(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -275,7 +261,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
@@ -297,7 +282,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "X",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -381,7 +365,6 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -469,7 +452,6 @@ class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compil
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class)
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public interface LitInterface$Member {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
@@ -495,7 +477,6 @@ final class LitInterface$impl {
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface.class)
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "X",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -661,7 +642,6 @@ final class literals_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("obj")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private obj_() {
@@ -671,14 +651,12 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getAttribute() {
         return attribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
@@ -708,7 +686,6 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
     public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
         if (obj_.$init$value) {
@@ -770,7 +747,6 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .java.lang.String str;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getStr() {
         return str;
@@ -784,7 +760,6 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final long integer;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getInteger() {
         return integer;
@@ -798,7 +773,6 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Inner() {
@@ -812,7 +786,6 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "G",
@@ -914,7 +887,6 @@ final class litVariable_ {
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 4L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (litVariable_.$init$value) {

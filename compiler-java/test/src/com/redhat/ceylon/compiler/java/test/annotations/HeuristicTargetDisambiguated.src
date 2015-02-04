@@ -19,7 +19,6 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
@@ -28,7 +27,6 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .java.lang.String s3;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS3() {
         return s3;
@@ -95,7 +93,6 @@ final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 33L)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::AmbiguousAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
 final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
     

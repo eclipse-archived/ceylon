@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1918B() {
@@ -24,7 +23,6 @@ public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1918C() {
@@ -46,7 +44,6 @@ public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public class Bug1918Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1918Dummy() {

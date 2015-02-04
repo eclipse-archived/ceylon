@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder.class)})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public interface Charset {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -28,7 +27,6 @@ public final class Charset$impl {
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
     public abstract class Decoder implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Decoder() {
@@ -36,7 +34,6 @@ public final class Charset$impl {
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.FormalAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 130L)
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                 value = "ceylon.language::Anything",
                 declaredVoid = true)
@@ -53,7 +50,6 @@ public final class Charset$impl {
 @.com.redhat.ceylon.compiler.java.metadata.Name("utf8")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset"})
-@.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
 public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset {
     
     private utf8_() {
@@ -69,7 +65,6 @@ public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class)
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "<ceylon.language::Basic&com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset>.Decoder")
     public class Decoder extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder {
         
@@ -79,7 +74,6 @@ public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.mod
         
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 66L)
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                 value = "ceylon.language::Anything",
@@ -119,7 +113,6 @@ public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations(modifiers = 2L)
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::utf8")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ get_() {
         if (utf8_.$init$value) {
