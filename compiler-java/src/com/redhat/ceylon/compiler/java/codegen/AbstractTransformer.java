@@ -54,7 +54,7 @@ import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.ModifierAnnotation;
+import com.redhat.ceylon.compiler.loader.LanguageAnnotation;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -2957,7 +2957,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected void initModelAnnotations() {
         if (gen().omittedModelAnnotations == null) {
             HashMap<String, Long> map = new HashMap<String, Long>();
-            for (ModifierAnnotation mod : ModifierAnnotation.values()) {
+            for (LanguageAnnotation mod : LanguageAnnotation.values()) {
                 map.put(mod.name, mod.mask);
             }
             gen().omittedModelAnnotations = map;

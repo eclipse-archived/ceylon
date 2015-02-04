@@ -187,14 +187,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_DYNAMIC_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Dynamic";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
-    private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.AbstractAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.ActualAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_SEALED_ANNOTATION = "ceylon.language.SealedAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.AbstractAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.ActualAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_SEALED_ANNOTATION = "ceylon.language.SealedAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_VARIABLE_ANNOTATION = "ceylon.language.VariableAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_FINAL_ANNOTATION = "ceylon.language.FinalAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_NATIVE_ANNOTATION = "ceylon.language.NativeAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_OPTIONAL_ANNOTATION = "ceylon.language.OptionalAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION = "ceylon.language.SerializableAnnotation$annotation$";
+    
+    static final String CEYLON_LANGUAGE_DOC_ANNOTATION = "ceylon.language.DocAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_THROWS_ANNOTATIONS = "ceylon.language.ThrownExceptionAnnotation$annotations$";
+    static final String CEYLON_LANGUAGE_THROWS_ANNOTATION = "ceylon.language.ThrownExceptionAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_AUTHORS_ANNOTATION = "ceylon.language.AuthorsAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_SEE_ANNOTATIONS = "ceylon.language.SeeAnnotation$annotations$";
+    static final String CEYLON_LANGUAGE_SEE_ANNOTATION = "ceylon.language.SeeAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_DEPRECATED_ANNOTATION = "ceylon.language.DeprecationAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_SUPPRESS_WARNINGS_ANNOTATION = "ceylon.language.SuppressWarningsAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_LICENSE_ANNOTATION = "ceylon.language.LicenseAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_TAGS_ANNOTATION = "ceylon.language.TagsAnnotation$annotation$";
 
     // important that these are with ::
     private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
@@ -2305,19 +2321,44 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
-        Long mods = (Long)getAnnotationValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION, "modifiers");
-        if (mods != null) {
-            for (ModifierAnnotation mod : ModifierAnnotation.values()) {
-                if ((mod.mask & mods) != 0) {
-                    decl.getAnnotations().add(mod.makeAnnotation());
+        if (classMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION) != null) {
+            // If the class has @Annotations then use it (in >=1.2 only ceylon.language does)
+            Long mods = (Long)getAnnotationValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION, "modifiers");
+            if (mods != null) {
+                // If there is a modifiers value then use it to load the modifiers
+                for (LanguageAnnotation mod : LanguageAnnotation.values()) {
+                    if (mod.isModifier()) {
+                        if ((mod.mask & mods) != 0) {
+                            decl.getAnnotations().addAll(mod.makeFromCeylonAnnotation(null));
+                        }
+                    }
+                }
+                
+            }
+            // Load anything else the long way, reading the @Annotation(name=...)
+            List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
+            if(annotations != null) {
+                for(AnnotationMirror annotation : annotations){
+                    decl.getAnnotations().add(readModelAnnotation(annotation));
                 }
             }
-            
-        }
-        List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
-        if(annotations != null) {
-            for(AnnotationMirror annotation : annotations){
-                decl.getAnnotations().add(readModelAnnotation(annotation));
+        } else {
+            // If the class lacks @Annotations then set the modifier annotations
+            // according to the presence of @Shared$annotation etc
+            Declaration receiver;
+            if ((decl instanceof Value)
+                    && ((Value)decl).getTypeDeclaration().isAnonymous()) {
+                receiver = ((Value)decl).getTypeDeclaration();
+            } else {
+                receiver = null;
+            }
+            for (LanguageAnnotation mod : LanguageAnnotation.values()) {
+                if (classMirror.getAnnotation(mod.annotationType) != null) {
+                    decl.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
+                    if (receiver != null) {
+                        receiver.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
+                    }
+                }
             }
         }
         // Add a ceylon deprecated("") if it's annotated with java.lang.Deprecated
