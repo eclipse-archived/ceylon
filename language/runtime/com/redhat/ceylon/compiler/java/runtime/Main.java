@@ -431,14 +431,17 @@ public class Main {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
                 ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream);
-                Module module = new Module(name, version, moduleType, file);
-                for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
-                    module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
+                if (moduleDependencies != null) {
+                    Module module = new Module(name, version, moduleType, file);
+                    for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
+                        module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
+                    }
+                    return module;
                 }
-                return module;
             }finally{
                 inputStream.close();
             }
+            return null;
         }
 
         private Module loadJBossModuleXmlJar(File file, ZipFile zipFile, ZipEntry moduleXml, String name, String version) throws IOException {
