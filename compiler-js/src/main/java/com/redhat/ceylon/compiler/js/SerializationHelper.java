@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -159,8 +160,12 @@ public class SerializationHelper {
         first=true;
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
-            final String valname = v.isParameter() || v.isLate() ?
-                    gen.getNames().name(v)+"_" : gen.getNames().privateName(v);
+            final String valname;
+            if (v.isParameter()) {
+                valname = gen.getNames().name(d.getParameter(v.getName())) + "_";
+            } else {
+                valname = v.isLate() || v.isCaptured() ? gen.getNames().name(v)+ "_" : gen.getNames().privateName(v);
+            }
             if (first) {
                 first = false;
             } else {
