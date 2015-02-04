@@ -231,6 +231,7 @@ public class AetherTestCase extends AbstractAetherTest {
         try {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
+            exists = true;
             Assert.assertNotNull(result.filter());
             Assert.assertTrue(result.filter().accept("org/osgi/test"));
             Assert.assertFalse(result.filter().accept("com/redhat/test"));
@@ -240,4 +241,31 @@ public class AetherTestCase extends AbstractAetherTest {
             }
         }
     }
+
+/*
+
+    // @alesj - Added this test for some reason long ago ...
+
+    @Test
+    public void testOptionalDependency() throws Throwable {
+        Repository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("com.google.guava:guava", "18.0");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.name(), "com.google.guava:guava");
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            Assert.assertTrue(result.dependencies() == null || result.dependencies().isEmpty());
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+*/
 }
