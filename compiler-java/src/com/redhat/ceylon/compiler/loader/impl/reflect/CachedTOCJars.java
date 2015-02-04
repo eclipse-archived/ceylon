@@ -36,6 +36,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
@@ -131,8 +132,10 @@ public class CachedTOCJars {
                     ZipFile zf = new ZipFile(jar);
                     try{
                         ZipEntry entry = zf.getEntry(path);
-                        if(entry != null)
-                            return new URI("classpath:" + jar.getPath() + "!" + entry.getName());
+                        if (entry != null) {
+                            String uripath = FileUtil.absoluteFile(jar).toURI().getSchemeSpecificPart();
+                            return new URI("classpath:" + uripath + "!" + entry.getName());
+                        }
                     }finally{
                         zf.close();
                     }
