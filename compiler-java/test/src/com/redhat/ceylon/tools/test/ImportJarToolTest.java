@@ -144,7 +144,7 @@ public class ImportJarToolTest extends AbstractToolTest {
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/ImportJarToolTest.java does not end with '.xml' or '.properties' extension", e.getMessage());
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/ImportJarToolTest.java does not end with '.xml' or '.properties' extension", e.getMessage().replace('\\', '/'));
         }
     }
     
@@ -205,7 +205,7 @@ public class ImportJarToolTest extends AbstractToolTest {
             tool.run();
             Assert.fail();
         } catch (ImportJarException e) {
-            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml is not a valid module.xml file: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.", e.getMessage());
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml is not a valid module.xml file: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.", e.getMessage().replace('\\', '/'));
         }
     }
 
