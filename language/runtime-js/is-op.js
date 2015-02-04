@@ -43,18 +43,26 @@ function is$(obj,type,containers){
     if (obj.$$targs$$===undefined && Array.isArray(obj))return false;
     if (type.t==='T') {
       if (is$(obj,{t:Tuple})) {
-        if (obj.$$targs$$ && obj.$$targs$$.t==='T') {
-          if (type.l.length===obj.$$targs$$.l.length) {
-            for (var i=0;i<type.l.length;i++) {
-              if (!extendsType(obj.$$targs$$.l[i],type.l[i]))return false;
+          var last_type = type.l[type.l.length-1];
+          if (type.l.length===obj.$$targs$$.l.length || last_type.seq) {
+            var lim=type.l.length; if (last_type.seq)lim--;
+            for (var i=0;i<lim;i++) {
+              if (!is$(obj.$_get(i),type.l[i]))return false;
+            }
+            //This is for tuples with sequenced tails
+            if (last_type.seq==2 && obj.size<type.l.length) {
+              return false;
+            } else if (last_type.seq) {
+              for (var i=lim;i<obj.size;i++) {
+                if(!is$(obj.$_get(i),last_type)) {
+                  return false;
+                }
+              }
             }
             return true;
           } else {
             return false;
           }
-        } else {
-          type=retpl$(type);
-        }
       } else {
         return false;
       }
