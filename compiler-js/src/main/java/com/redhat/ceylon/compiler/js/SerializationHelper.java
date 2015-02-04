@@ -89,36 +89,38 @@ public class SerializationHelper {
         final String cmodel = gen.getNames().createTempVariable();
         final String ni = gen.getNames().self(d);
         final String typename = gen.getNames().name(d);
-        gen.out(typename, ".deser$$=function(", dc, ",", cmodel, ",", ni, ")");
+        //First of all, an instantiator from class model
+        gen.out(typename, ".inst$$=function(", cmodel, ")");
         gen.beginBlock();
         if (d.isMember()) {
             gen.out("//TODO getOuterInstance");
             gen.endLine();
         }
-        if (!d.isAbstract()) {
-            gen.out("if(", ni, "===undefined)");
-            gen.beginBlock();
-            gen.out(ni, "=new ", gen.getNames().name(d), ".$$;");
-            gen.endLine();
-            //Set type arguments, if any
-            boolean first=true;
-            for (TypeParameter tp : d.getTypeParameters()) {
-                if (first) {
-                    gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
-                    first=false;
-                } else {
-                    gen.out(",");
-                }
-                gen.out(tp.getName(), "$", d.getName(), ":", cmodel, ".$$targs$$.Type$Class.a.",
-                        tp.getName(), "$", d.getName());
+        gen.out("var ", ni, "=new ", gen.getNames().name(d), ".$$;");
+        gen.endLine();
+        //Set type arguments, if any
+        boolean first=true;
+        for (TypeParameter tp : d.getTypeParameters()) {
+            if (first) {
+                gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
+                first=false;
+            } else {
+                gen.out(",");
             }
-            if (!first) {
-                gen.out("});");
-                gen.endLine();
-            }
-            setDeserializedTypeArguments(d, d.getExtendedType(), true, that, ni, gen, new HashSet<TypeDeclaration>());
-            gen.endBlockNewLine();
+            gen.out(tp.getName(), "$", d.getName(), ":", cmodel, ".$$targs$$.Type$Class.a.",
+                    tp.getName(), "$", d.getName());
         }
+        if (!first) {
+            gen.out("});");
+            gen.endLine();
+        }
+        setDeserializedTypeArguments(d, d.getExtendedType(), true, that, ni, gen, new HashSet<TypeDeclaration>());
+        gen.out("return ", ni, ";");
+        gen.endBlockNewLine();
+
+        //Now, the deserializer
+        gen.out(typename, ".deser$$=function(", dc, ",", cmodel, ",", ni, ")");
+        gen.beginBlock();
         //Call super.deser$$ if possible
         boolean create = true;
         com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
@@ -147,11 +149,24 @@ public class SerializationHelper {
             pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
         }
         //Deserialize each value
+        final String atvar;
+        if (vals.isEmpty()) {
+            atvar = null;
+        } else {
+            atvar = gen.getNames().createTempVariable();
+            gen.out("var ", atvar);
+        }
+        first=true;
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
             final String valname = v.isParameter() || v.isLate() ?
                     gen.getNames().name(v)+"_" : gen.getNames().privateName(v);
-            gen.out(ni, ".", valname, "=", dc, ".getValue(", gen.getClAlias(),
+            if (first) {
+                first = false;
+            } else {
+                gen.out(atvar);
+            }
+            gen.out("=", dc, ".getValue(", gen.getClAlias(),
                     "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.",
                     gen.getNames().getter(v, true),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
@@ -161,9 +176,10 @@ public class SerializationHelper {
             }
             gen.out("});");
             gen.endLine();
-        }
-        if (!d.isAbstract()) {
-            gen.out("return ", ni, ";");
+            gen.out(ni, ".", valname, "=", gen.getClAlias(), "is$(", atvar, ",{t:",
+                    gen.getClAlias(), "Reference$serialization})?",
+                    atvar, ".leak():", atvar, ";");
+            gen.endLine();
         }
         gen.endBlockNewLine();
     }
