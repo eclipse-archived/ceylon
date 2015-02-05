@@ -172,7 +172,7 @@ public class SerializationHelper {
                 gen.out(atvar);
             }
             gen.out("=", dc, ".getValue(", gen.getClAlias(),
-                    "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.",
+                    "OpenValue$jsint(", pkgname, ",", ni, ".",
                     gen.getNames().getter(v, true),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
