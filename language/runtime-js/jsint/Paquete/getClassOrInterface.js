@@ -1,4 +1,5 @@
 function getClassOrInterface(name$5){
+  if (name$5==='Nothing' && this.name==='ceylon.language')return null;
   var ci = this._pkg[name$5];
   if (ci && ci['mt']==='c') {
     return OpenClass$jsint(this, ci);
