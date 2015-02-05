@@ -172,7 +172,7 @@ class Strategy {
     
     /**
      * Determines whether the given Class def should have a {@code main()} method generated.
-     * I.e. it's a concrete top level Class without initializer parameters
+     * I.e. it's a shared concrete top level Class without initializer parameters
      * @param def
      */
     public static boolean generateMain(Tree.ClassOrInterface def) {
@@ -183,6 +183,7 @@ class Strategy {
         }
         return def instanceof Tree.AnyClass 
                 && Decl.isToplevel(def) 
+                && Decl.isShared(def)
                 && !Decl.isAbstract(def)
                 && hasNoRequiredParameters((Class)def.getDeclarationModel());
     }
@@ -208,11 +209,12 @@ class Strategy {
 
     /**
      * Determines whether the given Method def should have a {@code main()} method generated.
-     * I.e. it's a top level method without parameters
+     * I.e. it's a shared top level method without parameters
      * @param def
      */
     public static boolean generateMain(Tree.AnyMethod def) {
-        return  Decl.isToplevel(def) 
+        return  Decl.isToplevel(def)
+                && Decl.isShared(def)
                 && hasNoRequiredParameters(def.getDeclarationModel());
     }
     
