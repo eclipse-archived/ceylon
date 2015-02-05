@@ -150,6 +150,7 @@
             <include name="com/redhat/**" />
             <include name="com/sun/tools/javac/**" />
             <include name="com/sun/source/**" />
+            <include name="javax/**" />
         </javac>
         <!-- 
           We need a second compilation step to compile entry points compatible with Java 5
