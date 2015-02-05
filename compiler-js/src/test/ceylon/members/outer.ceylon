@@ -17,4 +17,12 @@ void test_outer_inner_safety() {
   if (exists i2) {
     fail("i2 should not exist");
   }
+  //Issue 499
+  value cr1=o?.Inner;
+  check(!cr1() exists, "#499.1");
+  Outer? o2=Outer();
+  value cr2=o2?.Inner;
+  check(cr2() exists, "#499.2");
+  Anything() cr3=Outer().Inner;
+  check(cr3() exists, "#499.3");
 }
