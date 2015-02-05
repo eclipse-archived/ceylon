@@ -873,7 +873,7 @@ public class TypeUtils {
             ProducedType pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
-            pt = pkg.getUnit().getAnythingDeclaration().getType();
+            pt = node.getUnit().getAnythingDeclaration().getType();
         }
         if (!outputMetamodelTypeList(node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
