@@ -17,11 +17,6 @@ class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$.getFoo();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.$TypeDescriptor$;

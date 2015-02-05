@@ -35,11 +35,6 @@ final class bug1917_ {
             returning $ceylontmp$op$2;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1917_.bug1917();
-    }
 }
 final class bug1917fails_ {
     

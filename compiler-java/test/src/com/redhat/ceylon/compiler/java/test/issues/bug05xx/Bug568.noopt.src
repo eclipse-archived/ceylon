@@ -36,9 +36,4 @@ final class bug568_ {
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug568_.bug568();
-    }
 }

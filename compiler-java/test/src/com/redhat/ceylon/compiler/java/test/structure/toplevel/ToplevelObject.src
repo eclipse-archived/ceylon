@@ -45,9 +45,4 @@ final class accessTopLevelObject_ {
     static void accessTopLevelObject() {
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.get_().y();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObject_.accessTopLevelObject();
-    }
 }

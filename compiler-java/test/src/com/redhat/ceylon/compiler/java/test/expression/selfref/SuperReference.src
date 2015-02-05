@@ -24,11 +24,6 @@ class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.$TypeDescriptor$;
@@ -53,11 +48,6 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
         );
         super.test();
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild();
     }
     
     @.java.lang.Override

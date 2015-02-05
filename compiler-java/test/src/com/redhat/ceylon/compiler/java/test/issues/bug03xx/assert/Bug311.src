@@ -31,9 +31,4 @@ final class m_ {
     static void m() {
         .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.$volatile(true);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.m_.m();
-    }
 }

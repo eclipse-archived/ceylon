@@ -38,11 +38,6 @@ class DestroyableCategory implements .com.redhat.ceylon.compiler.java.runtime.mo
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory.$TypeDescriptor$;
@@ -117,10 +112,5 @@ final class bug1887_ {
                 } else ((.ceylon.language.Destroyable)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
             }
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1887_.bug1887();
     }
 }

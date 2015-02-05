@@ -8,9 +8,4 @@ final class bar_ {
     static void bar() {
         .bug187.main_.$main();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .bug187.bar_.bar();
-    }
 }

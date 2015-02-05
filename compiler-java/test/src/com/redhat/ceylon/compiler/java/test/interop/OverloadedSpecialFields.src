@@ -15,9 +15,4 @@ final class overloadedSpecialFields_ {
         sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString(.com.redhat.ceylon.compiler.java.Util.toInt(1L))));
         sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.overloadedSpecialFields_.overloadedSpecialFields();
-    }
 }

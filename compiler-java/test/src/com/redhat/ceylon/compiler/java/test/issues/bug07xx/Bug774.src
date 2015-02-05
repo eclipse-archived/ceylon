@@ -12,9 +12,4 @@ final class bug774_ {
             final .ceylon.language.Array<.ceylon.language.Integer> row$2 = row$1;
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug774_.bug774();
-    }
 }

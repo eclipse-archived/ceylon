@@ -81,11 +81,6 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.seri
         return deferred;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.$TypeDescriptor$;
@@ -164,11 +159,6 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass();
     }
     
     @.java.lang.Override

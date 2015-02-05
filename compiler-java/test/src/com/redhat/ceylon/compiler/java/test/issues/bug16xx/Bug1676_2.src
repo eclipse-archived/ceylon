@@ -87,12 +87,6 @@ final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.mode
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -113,12 +107,6 @@ final class bug1676_2_A_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A bug1676_2_A() {
         throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1676_2_A_.bug1676_2_A();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)

@@ -8,9 +8,4 @@ final class namedArgumentNoArgs_ {
     static void namedArgumentNoArgs() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs_.namedArgumentNoArgs();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs_.namedArgumentNoArgs();
-    }
 }

@@ -61,9 +61,4 @@ final class staticRefs_ {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers a = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.getAttribute());
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass a2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.getAttribute());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticRefs_.staticRefs();
-    }
 }

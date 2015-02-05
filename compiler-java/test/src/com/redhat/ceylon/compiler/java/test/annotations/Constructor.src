@@ -25,11 +25,6 @@ final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.ru
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation.$TypeDescriptor$;
@@ -46,11 +41,6 @@ final class constructorAnnotation_ {
     
     static .com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation constructorAnnotation() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.constructorAnnotation_.constructorAnnotation();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)

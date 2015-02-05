@@ -29,11 +29,6 @@ class Bug799 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         final .ceylon.language.Array<.java.lang.Object> n = a.getFromFirst(0L);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug799();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug799.$TypeDescriptor$;

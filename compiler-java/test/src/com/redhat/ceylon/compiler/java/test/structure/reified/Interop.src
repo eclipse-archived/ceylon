@@ -97,10 +97,4 @@ final class reifiedInstantiateInterop_ {
         };
         final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c3 = constr.$call$();
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiateInterop_.reifiedInstantiateInterop();
-    }
 }

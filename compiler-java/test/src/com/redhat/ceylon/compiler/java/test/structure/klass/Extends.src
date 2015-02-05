@@ -5,11 +5,6 @@ class Extends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Extends() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.Extends();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.Extends.$TypeDescriptor$;
@@ -20,11 +15,6 @@ class ExtendsB extends .com.redhat.ceylon.compiler.java.test.structure.klass.Ext
     
     ExtendsB() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsB();
     }
     
     @.java.lang.Override

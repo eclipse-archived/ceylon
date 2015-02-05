@@ -562,9 +562,4 @@ final class constructorRef_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryTp(s2,s3,s4,s5)\"==naryTp(\"s2\", \"s3\", \"s4\", \"s5\").string"));
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.ref.constructorRef_.constructorRef();
-    }
 }

@@ -12,9 +12,4 @@ final class bug1431_ {
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.String.instance("")})).getRest()));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1431_.bug1431();
-    }
 }

@@ -69,11 +69,6 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
         super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.get_());
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel.$TypeDescriptor$;
@@ -113,11 +108,6 @@ class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.m
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.Bug544CapturesFromOuterClass.class));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
     }
     
     @.java.lang.Override

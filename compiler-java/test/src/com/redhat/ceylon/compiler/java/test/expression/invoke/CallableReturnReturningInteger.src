@@ -8,11 +8,6 @@ final class callableReturnReturningInteger_foo_ {
     static long callableReturnReturningInteger_foo() {
         return 1L;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo();
-    }
 }
 final class callableReturnReturningInteger_bar_ {
     
@@ -27,10 +22,5 @@ final class callableReturnReturningInteger_bar_ {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo());
             }
         };
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_bar_.callableReturnReturningInteger_bar();
     }
 }

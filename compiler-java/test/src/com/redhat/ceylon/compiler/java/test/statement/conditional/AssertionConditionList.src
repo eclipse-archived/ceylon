@@ -161,11 +161,6 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
         return x1$20 + y1$22 == 0L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertionConditionList();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertionConditionList.$TypeDescriptor$;

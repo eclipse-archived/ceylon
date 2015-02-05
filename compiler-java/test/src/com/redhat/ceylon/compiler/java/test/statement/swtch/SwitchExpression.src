@@ -172,10 +172,4 @@ final class switchExpressionTest_ {
     static void switchExpressionTest() {
         new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionBottom(.ceylon.language.String.instance("asd"));
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.swtch.switchExpressionTest_.switchExpressionTest();
-    }
 }

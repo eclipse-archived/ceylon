@@ -14,11 +14,6 @@ final class staticMethods_ {
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
         final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticMethods_.staticMethods();
-    }
 }
 final class staticMethodsAndSubClassesOnInstance_ {
     
@@ -34,11 +29,6 @@ final class staticMethodsAndSubClassesOnInstance_ {
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = inst.field;
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = inst.topField;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnInstance_.staticMethodsAndSubClassesOnInstance();
-    }
 }
 final class staticMethodsAndSubClassesOnType_ {
     
@@ -52,11 +42,6 @@ final class staticMethodsAndSubClassesOnType_ {
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnType_.staticMethodsAndSubClassesOnType();
     }
 }
 class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -74,11 +59,6 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor$;
@@ -92,10 +72,5 @@ final class staticFields_ {
     
     static void staticFields() {
         final .java.lang.Boolean $false = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.staticFields_.staticFields();
     }
 }

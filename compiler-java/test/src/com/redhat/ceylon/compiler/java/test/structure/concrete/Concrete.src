@@ -427,11 +427,6 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return mFormal$canonical$(b, bseq);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl.class, $reified$B);
@@ -701,11 +696,6 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public final .java.lang.Object mDefault(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
         return mDefault$canonical$(c, cseq);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override
@@ -1135,11 +1125,6 @@ class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.con
     @.java.lang.Override
     public final .java.lang.Object mFormal(final E e, final .ceylon.language.Sequential<? extends E> eseq) {
         return mFormal$canonical$(e, eseq);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override
@@ -1597,11 +1582,6 @@ class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure
     @.java.lang.Override
     public final .java.lang.Object mDefault(final G g, final .ceylon.language.Sequential<? extends G> gseq) {
         return mDefault$canonical$(g, gseq);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

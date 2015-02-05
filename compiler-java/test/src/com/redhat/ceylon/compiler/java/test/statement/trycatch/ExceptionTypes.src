@@ -49,12 +49,6 @@ class ExceptionTypesException extends .ceylon.language.Exception {
         return null;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -69,12 +63,6 @@ class ExceptionTypesAssertionError extends .ceylon.language.AssertionError {
     
     ExceptionTypesAssertionError() {
         super("");
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError();
     }
     
     @.java.lang.Override
@@ -181,11 +169,5 @@ final class exceptionTypeAssignment_ {
         jt.takeThrowable(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
         jt.takeException(new .ceylon.language.Exception());
         jt.takeException(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.trycatch.exceptionTypeAssignment_.exceptionTypeAssignment();
     }
 }

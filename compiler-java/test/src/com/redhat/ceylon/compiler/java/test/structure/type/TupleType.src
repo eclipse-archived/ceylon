@@ -36,11 +36,6 @@ final class add_ {
     static double add(final .ceylon.language.Sequence<? extends .ceylon.language.Float> floats) {
         return ((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getFirst()).plus((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)floats).getRest()).getFirst()).doubleValue();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.type.add_.add();
-    }
 }
 final class tupleTypeTest_ {
     
@@ -122,10 +117,5 @@ final class tupleTypeTest_ {
                 };
             }
         }.sequence();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.type.tupleTypeTest_.tupleTypeTest();
     }
 }

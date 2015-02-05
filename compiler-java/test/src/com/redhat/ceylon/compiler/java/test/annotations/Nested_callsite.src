@@ -62,9 +62,4 @@ final class ctorDefaultedParam_callsite_ {
                     b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 512L))})
     static void ctorDefaultedParam_callsite() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.ctorDefaultedParam_callsite_.ctorDefaultedParam_callsite();
-    }
 }

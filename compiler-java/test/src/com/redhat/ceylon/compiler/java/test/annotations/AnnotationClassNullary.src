@@ -27,11 +27,6 @@ final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.r
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor$;
@@ -71,11 +66,6 @@ final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compil
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor$;
@@ -94,11 +84,6 @@ final class annotationClassNullary_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary annotationClassNullary() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullary_.annotationClassNullary();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
@@ -112,22 +97,12 @@ final class annotationClassNullarySequenced_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced annotationClassNullarySequenced() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullarySequenced_.annotationClassNullarySequenced();
-    }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation$
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation$})
 class AnnotationClassNullary_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassNullary_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary_callsite();
     }
     
     @.java.lang.Override

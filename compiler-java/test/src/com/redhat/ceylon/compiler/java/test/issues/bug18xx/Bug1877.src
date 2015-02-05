@@ -8,11 +8,6 @@ class Bug1877 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public final void meth() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$;
@@ -214,10 +209,5 @@ final class bug1877_ {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877Java.meth());
             }
         };
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1877_.bug1877();
     }
 }

@@ -65,11 +65,6 @@ class AssertExists2dArray implements .com.redhat.ceylon.compiler.java.runtime.mo
         r$14.set(0L, obj);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExists2dArray();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExists2dArray.$TypeDescriptor$;

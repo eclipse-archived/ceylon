@@ -53,11 +53,6 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         return bar$priv$$canonical$(ints);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs.$TypeDescriptor$;

@@ -8,11 +8,6 @@ final class concreteMethodBySpecificationMethod_ {
     static long concreteMethodBySpecificationMethod() {
         return 1L;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteMethodBySpecificationMethod_.concreteMethodBySpecificationMethod();
-    }
 }
 interface ConcreteMethodBySpecification {
     
@@ -296,11 +291,6 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     @.java.lang.Override
     public final long mFormal(final long i) {
         return i;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl();
     }
     
     @.java.lang.Override

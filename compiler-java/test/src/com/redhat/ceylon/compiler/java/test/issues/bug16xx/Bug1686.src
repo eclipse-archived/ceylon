@@ -43,11 +43,6 @@ class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$;

@@ -46,9 +46,4 @@ final class bug693_ {
     static void bug693() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class c = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class(.ceylon.language.Integer.instance(0L), true);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug693_.bug693();
-    }
 }

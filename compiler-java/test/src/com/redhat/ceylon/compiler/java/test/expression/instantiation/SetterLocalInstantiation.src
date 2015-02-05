@@ -39,11 +39,6 @@ class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
         final i$setter$_ i$setter$_ = new i$setter$_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation.$TypeDescriptor$;

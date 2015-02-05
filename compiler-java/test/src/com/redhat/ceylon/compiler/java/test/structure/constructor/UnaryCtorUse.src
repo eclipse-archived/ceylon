@@ -42,10 +42,4 @@ final class unaryCtorUse_ {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o13 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger, 0L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o14 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger, 0L);
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.unaryCtorUse_.unaryCtorUse();
-    }
 }

@@ -2349,12 +2349,6 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -2377,11 +2371,5 @@ final class memberClassConstructorRef_ {
         o.defaulted();
         o.sequenced();
         o.parameterized();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.ref.memberClassConstructorRef_.memberClassConstructorRef();
     }
 }

@@ -51,12 +51,6 @@ class Bug832Integer implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$.getSign();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Integer();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -87,12 +81,6 @@ class Bug832Float implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$.getSign();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Float();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -111,10 +99,5 @@ final class bug832_ {
         final long sign = ((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common)n).getSign();
         final .java.lang.Object l = .ceylon.language.empty_.get_();
         final long s = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)l).getSize();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug832_.bug832();
     }
 }

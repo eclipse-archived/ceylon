@@ -43,11 +43,6 @@ class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         z$11.foo2();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsFoo();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsFoo.$TypeDescriptor$;

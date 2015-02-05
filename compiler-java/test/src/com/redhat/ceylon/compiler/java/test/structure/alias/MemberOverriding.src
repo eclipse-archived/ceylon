@@ -6,12 +6,6 @@ class MemberOverriding_Foo implements .com.redhat.ceylon.compiler.java.runtime.m
     MemberOverriding_Foo() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -26,12 +20,6 @@ class MemberOverriding_Bar extends .com.redhat.ceylon.compiler.java.test.structu
     
     MemberOverriding_Bar() {
         super();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar();
     }
     
     @.java.lang.Override
@@ -68,12 +56,6 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
         
         private Inner() {
         }
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super();
     }
     
     @.java.lang.Override
@@ -114,12 +96,6 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -156,12 +132,6 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
         
         private Inner() {
         }
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2();
     }
     
     @.java.lang.Override
@@ -205,12 +175,6 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -251,12 +215,6 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -295,12 +253,6 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class));
         }
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5();
     }
     
     @.java.lang.Override

@@ -223,9 +223,4 @@ final class bug601_ {
             returning .com.redhat.ceylon.compiler.java.test.issues.bug06xx.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$2$reified$0, arg$2$reified$1, arg$2$0);
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug601_.bug601();
-    }
 }

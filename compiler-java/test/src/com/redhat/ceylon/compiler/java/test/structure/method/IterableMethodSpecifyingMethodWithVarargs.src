@@ -39,11 +39,6 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs.$TypeDescriptor$;

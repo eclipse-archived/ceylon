@@ -18,11 +18,6 @@ final class bug995_ {
     
     static void bug995() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug995_.bug995();
-    }
 }
 final class S {
     

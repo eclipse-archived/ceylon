@@ -61,11 +61,6 @@ class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.r
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.Single<.ceylon.language.Integer> s = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.Single<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(69L));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation.$TypeDescriptor$;
@@ -94,11 +89,6 @@ class KlassTypeParamsInstantiationT<T> implements .com.redhat.ceylon.compiler.ja
     
     private final void m$priv$() {
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

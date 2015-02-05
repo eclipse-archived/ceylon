@@ -84,12 +84,6 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -214,12 +208,6 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -239,11 +227,5 @@ final class concreteString_ {
     static void concreteString() {
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC().presentYourself();
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2().presentYourself();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteString_.concreteString();
     }
 }

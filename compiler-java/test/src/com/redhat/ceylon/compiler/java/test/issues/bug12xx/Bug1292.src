@@ -15,11 +15,6 @@ class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         i += super.hashCode();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.$TypeDescriptor$;
@@ -61,11 +56,6 @@ class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return super.equals(that);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2();
     }
     
     @.java.lang.Override

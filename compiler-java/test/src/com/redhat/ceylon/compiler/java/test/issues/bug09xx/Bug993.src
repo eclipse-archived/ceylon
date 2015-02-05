@@ -43,11 +43,6 @@ class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.mode
         return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$.e();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass.$TypeDescriptor$;
@@ -164,11 +159,6 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.$TypeDescriptor$;
@@ -273,11 +263,6 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.Inner.class));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass();
     }
     
     @.java.lang.Override

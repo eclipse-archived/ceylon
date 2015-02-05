@@ -19,11 +19,6 @@ final class bug605test_ {
         final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.get_();
         final .java.lang.String q = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.equals_.$equals(.ceylon.language.String.instance(""));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605test_.bug605test();
-    }
 }
 final class bug605mth_ {
     
@@ -68,11 +63,6 @@ final class bug605mth_ {
         final .java.lang.String s = string$getter$_.get_();
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605mth_.bug605mth();
-    }
 }
 class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -116,11 +106,6 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         final long i = hash$getter$_.get_();
         final .java.lang.String s = string$getter$_.get_();
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls();
     }
     
     @.java.lang.Override

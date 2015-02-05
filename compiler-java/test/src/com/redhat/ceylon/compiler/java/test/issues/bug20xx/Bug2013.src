@@ -11,11 +11,6 @@ class Bug2013Truck implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     Bug2013Truck() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Truck();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Truck.$TypeDescriptor$;
@@ -102,11 +97,6 @@ class Bug2013Trucker implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar(final double speed) {
         return driveCar$canonical$(speed);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
     }
     
     @.java.lang.Override

@@ -11,9 +11,4 @@ final class caseMismatch_ {
         klass.Method();
         final .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass klass2 = new .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.caseMismatch_.caseMismatch();
-    }
 }

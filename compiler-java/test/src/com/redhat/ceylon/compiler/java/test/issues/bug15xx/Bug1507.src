@@ -41,11 +41,6 @@ final class bug1507_ {
             .ceylon.language.process_.get_().write(e.toString());
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507_.bug1507();
-    }
 }
 class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -111,11 +106,6 @@ final class bug1507test_ {
         found = found$13;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test_.bug1507test();
-    }
 }
 final class bug1507test2_ {
     
@@ -147,11 +137,6 @@ final class bug1507test2_ {
         found = found$20;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test2_.bug1507test2();
-    }
 }
 final class bug1507test3_ {
     
@@ -181,11 +166,6 @@ final class bug1507test3_ {
         }
         found = found$28;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test3_.bug1507test3();
     }
 }
 final class bug1507test4_ {
@@ -218,11 +198,6 @@ final class bug1507test4_ {
         found = found$36;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test4_.bug1507test4();
-    }
 }
 final class bug1507test5_ {
     
@@ -253,11 +228,6 @@ final class bug1507test5_ {
         }
         found = found$43;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test5_.bug1507test5();
     }
 }
 final class bug1507test6_ {
@@ -290,10 +260,5 @@ final class bug1507test6_ {
         }
         found = found$50;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507test6_.bug1507test6();
     }
 }

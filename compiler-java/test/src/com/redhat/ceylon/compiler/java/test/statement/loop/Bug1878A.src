@@ -16,9 +16,4 @@ final class bug1878A_ {
         }
         throw new .java.lang.Error("Ceylon flow error");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878A_.bug1878A();
-    }
 }

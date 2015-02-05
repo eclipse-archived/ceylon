@@ -63,11 +63,6 @@ class Bug1765_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_Foo();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_Foo.$TypeDescriptor$;

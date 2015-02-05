@@ -26,11 +26,6 @@ class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .com.redhat.ceylon.
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<S, T>methodSpecifyingTopLevelWithTypeParam_f($reified$S, $reified$T, y);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam.class, $reified$S, $reified$T);

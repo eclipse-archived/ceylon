@@ -53,11 +53,6 @@ class ActualKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass.$TypeDescriptor$;
@@ -73,11 +68,6 @@ class ActualSubKlass extends .com.redhat.ceylon.compiler.java.test.structure.kla
     @.java.lang.Override
     public final .java.lang.Object test4() {
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ActualSubKlass();
     }
     
     @.java.lang.Override

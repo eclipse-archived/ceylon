@@ -101,11 +101,6 @@ class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return .com.redhat.ceylon.compiler.java.Util.<R>apply((.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)callable, (.ceylon.language.Sequential)args);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533.$TypeDescriptor$;
@@ -223,10 +218,5 @@ final class bug1533_callsite_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == inst.unionAlias((Integer|String x)=>x, [2])"));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1533_callsite_.bug1533_callsite();
     }
 }

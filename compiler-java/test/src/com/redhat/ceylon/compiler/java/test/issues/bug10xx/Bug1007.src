@@ -18,9 +18,4 @@ final class bug1007_ {
         final .java.io.FileInputStream fileIn = new .java.io.FileInputStream(file);
         fileIn.read(fileData);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1007_.bug1007();
-    }
 }

@@ -25,9 +25,4 @@ final class intPowerWithIntLiteralOptim_ {
         final long x0 = .ceylon.language.Integer.power(x, 0L);
         final long xm1 = .ceylon.language.Integer.power(x, -1L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.intPowerWithIntLiteralOptim_.intPowerWithIntLiteralOptim();
-    }
 }

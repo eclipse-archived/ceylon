@@ -13,11 +13,6 @@ class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric.class, $reified$T);
@@ -30,11 +25,6 @@ class ExtendsGeneric2<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2.class, $reified$T);
@@ -44,11 +34,6 @@ class ExtendsGeneric_FooSub extends .com.redhat.ceylon.compiler.java.test.struct
     
     ExtendsGeneric_FooSub() {
         super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo.class, .ceylon.language.Integer.$TypeDescriptor$));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_FooSub();
     }
     
     @.java.lang.Override
@@ -63,11 +48,6 @@ class ExtendsGeneric_BarSub extends .com.redhat.ceylon.compiler.java.test.struct
         super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar.class, .ceylon.language.Integer.$TypeDescriptor$));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub.$TypeDescriptor$;
@@ -78,11 +58,6 @@ class ExtendsGeneric_BazSub extends .com.redhat.ceylon.compiler.java.test.struct
     
     ExtendsGeneric_BazSub() {
         super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz.class, .ceylon.language.Integer.$TypeDescriptor$));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BazSub();
     }
     
     @.java.lang.Override

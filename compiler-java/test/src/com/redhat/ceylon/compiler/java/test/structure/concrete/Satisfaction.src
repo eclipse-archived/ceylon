@@ -84,11 +84,6 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return 1L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1.$TypeDescriptor$;
@@ -260,11 +255,6 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return m2$canonical$(n);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.$TypeDescriptor$;
@@ -396,11 +386,6 @@ class CA7 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.A7 {
     @.java.lang.Override
     public final long i4() {
         return 4L;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.CA7();
     }
     
     @.java.lang.Override

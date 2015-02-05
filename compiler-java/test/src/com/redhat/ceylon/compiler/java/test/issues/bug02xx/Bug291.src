@@ -40,9 +40,4 @@ final class run_ {
             holaMundo.holaMundo();
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.run_.run();
-    }
 }

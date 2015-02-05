@@ -39,11 +39,6 @@ class NumericLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final byte b6 = (byte)13L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral.$TypeDescriptor$;

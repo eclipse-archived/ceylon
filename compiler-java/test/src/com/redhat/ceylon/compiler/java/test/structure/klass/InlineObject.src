@@ -11,12 +11,6 @@ final class testInlineObjects_ {
     static void testInlineObjects() {
         .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<.ceylon.language.String>inlineObject(.ceylon.language.String.$TypeDescriptor$);
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.klass.testInlineObjects_.testInlineObjects();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -306,12 +300,6 @@ final class inlineObject_ {
             returning null;
         );
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
@@ -541,12 +529,6 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -595,12 +577,6 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
             }
             returning new anonymous_6_();
         ));
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam();
     }
     
     @.java.lang.Override

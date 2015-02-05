@@ -45,11 +45,6 @@ class ClassDefaultMemberClassWithDefaultedParams implements .com.redhat.ceylon.c
         return Member$new$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.$TypeDescriptor$;
@@ -99,11 +94,6 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
             returning Member$new$(arg$3$0);
         );
         return Member$new$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub();
     }
     
     @.java.lang.Override

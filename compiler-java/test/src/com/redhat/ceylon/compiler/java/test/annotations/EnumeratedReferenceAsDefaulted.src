@@ -128,11 +128,6 @@ final class enumeratedReference_z_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_z(final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X(y);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -155,12 +150,6 @@ final class enumeratedReference_zz_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference_X")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_zz() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X(new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.get_()));
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_zz_.enumeratedReference_zz();
     }
 }
 public final class enumeratedReference_callsite_ {

@@ -20,11 +20,6 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
         return "tom";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$TypeDescriptor$;
@@ -35,11 +30,6 @@ class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.j
     
     SubclassInstantiationDefaultParamSub() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub();
     }
     
     @.java.lang.Override

@@ -50,11 +50,6 @@ class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.run
         return (T)$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this$.getX();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_C.class, $reified$T);

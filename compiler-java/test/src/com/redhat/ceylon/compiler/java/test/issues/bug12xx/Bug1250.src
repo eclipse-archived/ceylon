@@ -49,10 +49,4 @@ final class bug1250_ {
         final Foo foo = new Foo();
         final Foo.Bar bar2 = (Foo.Bar)foo.Bar$new$();
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1250_.bug1250();
-    }
 }

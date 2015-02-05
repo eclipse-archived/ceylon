@@ -35,9 +35,4 @@ final class bug843_test_ {
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug843_test_.bug843_test();
-    }
 }

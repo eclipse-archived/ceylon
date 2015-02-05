@@ -12,10 +12,4 @@ final class assertFalse_ {
         final long foo = 1L + 1L;
         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.assertFalse();
-    }
 }

@@ -119,11 +119,6 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
         this.defaultSetter = defaultSetter;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1.$TypeDescriptor$;
@@ -185,11 +180,6 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final void setDefaultSetter(final long defaultSetter) {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2();
     }
     
     @.java.lang.Override

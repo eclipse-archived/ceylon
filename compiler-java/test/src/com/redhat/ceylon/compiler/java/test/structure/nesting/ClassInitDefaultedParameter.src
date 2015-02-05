@@ -20,11 +20,6 @@ class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         return 1L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.nesting.C1.$TypeDescriptor$;
@@ -65,11 +60,6 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public static long $default$n(final long i) {
         return 2L * i;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3();
     }
     
     @.java.lang.Override
@@ -146,11 +136,6 @@ final class positional_ {
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.C4(1L, 2L);
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, 1L);
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, 1L, .ceylon.language.String.instance(""));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional_.positional();
     }
 }
 final class named_ {
@@ -256,10 +241,5 @@ final class named_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(arg$17$reified$0, arg$17$0, arg$17$1);
         );
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.named_.named();
     }
 }

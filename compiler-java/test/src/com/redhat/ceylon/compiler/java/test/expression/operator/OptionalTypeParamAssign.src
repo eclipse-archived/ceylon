@@ -17,11 +17,6 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         this.t = t;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.C.class, $reified$T);
@@ -36,10 +31,5 @@ final class m_ {
         final .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object> c = new .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$);
         final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
         c.setT(o);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.m_.m();
     }
 }

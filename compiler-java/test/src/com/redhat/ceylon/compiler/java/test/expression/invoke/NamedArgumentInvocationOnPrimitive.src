@@ -30,9 +30,4 @@ final class v_ {
             returning .ceylon.language.Integer.equals(arg$1$callable$, arg$1$0);
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.v_.v();
-    }
 }

@@ -19,11 +19,6 @@ class Under implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return "Hello";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under.$TypeDescriptor$;
@@ -38,10 +33,5 @@ final class bug334_ {
     static void bug334() {
         final .java.lang.String foo1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under().foo((float)0.0);
         final long foo2 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under().foo(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.bug334_.bug334();
     }
 }

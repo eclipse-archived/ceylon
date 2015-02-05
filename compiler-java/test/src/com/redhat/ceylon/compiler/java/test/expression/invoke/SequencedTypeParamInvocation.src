@@ -31,11 +31,6 @@ class SequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.jav
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation.class, $reified$T);
@@ -50,10 +45,5 @@ final class sequencedTypeParamInvocationMethod_ {
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).algo((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
                 .ceylon.language.String.instance("x"),
                 .ceylon.language.String.instance("y")}));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocationMethod_.sequencedTypeParamInvocationMethod();
     }
 }

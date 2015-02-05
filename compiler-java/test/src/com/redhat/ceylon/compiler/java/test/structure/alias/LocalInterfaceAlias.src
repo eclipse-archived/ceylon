@@ -61,10 +61,4 @@ final class localInterfaceAliasMethod_ {
         final Class1 foo1 = new Class1();
         final Class2 foo2 = new Class2();
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod_.localInterfaceAliasMethod();
-    }
 }

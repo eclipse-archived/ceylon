@@ -93,11 +93,6 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
         return n;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$TypeDescriptor$;
@@ -140,11 +135,6 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
         return n + 1L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$TypeDescriptor$;
@@ -181,11 +171,6 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
     
     public static long $default$n() {
         return 5L;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5();
     }
     
     @.java.lang.Override

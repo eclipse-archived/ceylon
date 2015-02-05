@@ -10,9 +10,4 @@ final class specialFields_ {
         final long h = java.hashCode();
         final .java.lang.String s = java.toString();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.specialFields_.specialFields();
-    }
 }

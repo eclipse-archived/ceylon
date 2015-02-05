@@ -93,11 +93,6 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$TypeDescriptor$;
@@ -185,11 +180,6 @@ final class annotationClassMetamodelReferenceLiteral_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceLiteral_.annotationClassMetamodelReferenceLiteral();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -215,11 +205,6 @@ final class annotationClassMetamodelReferenceDefaulted2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted2() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceDefaulted2_.annotationClassMetamodelReferenceDefaulted2();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -256,11 +241,6 @@ final class annotationClassMetamodelReferenceVariadic2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic2() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic2_.annotationClassMetamodelReferenceVariadic2();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -404,11 +384,6 @@ class AnnotationClassMetamodelReference_callsite<X> implements .com.redhat.ceylo
         this.$reified$X = $reified$X;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

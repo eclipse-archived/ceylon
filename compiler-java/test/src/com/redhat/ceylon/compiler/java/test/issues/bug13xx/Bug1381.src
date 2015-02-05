@@ -137,11 +137,6 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
         };
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.$TypeDescriptor$;
@@ -152,11 +147,6 @@ class Bug1381_Subclass extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     
     Bug1381_Subclass() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subclass();
     }
     
     @.java.lang.Override

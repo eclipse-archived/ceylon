@@ -7,12 +7,6 @@ class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     JNI_Impl() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.JNI_Impl();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -26,12 +20,6 @@ class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
 class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String> {
     
     JNI_InnerInterface_Impl() {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl();
     }
     
     @.java.lang.Override
@@ -49,12 +37,6 @@ class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runt
     JN_IS_InnerInterface_Impl() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -68,12 +50,6 @@ class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runt
 class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String> {
     
     JN_InnerInterface_Impl() {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.JN_InnerInterface_Impl();
     }
     
     @.java.lang.Override
@@ -113,10 +89,5 @@ final class nesting_ {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String> jn_ii_i2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String>();
         final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String>.Inner3<.ceylon.language.Integer> jn_ii_i2_i3 = jn_ii_i2.new Inner3<.ceylon.language.Integer>();
         final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean> jn_ii_i2_is3 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean>();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.nesting_.nesting();
     }
 }

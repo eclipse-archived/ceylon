@@ -231,10 +231,4 @@ final class reifiedInstantiate_ {
         );
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.java.lang.Object, .java.lang.Object> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiate_.reifiedInstantiate();
-    }
 }

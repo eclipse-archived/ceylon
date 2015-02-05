@@ -9,11 +9,6 @@ class Bug1831B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return "";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1831B();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1831B.$TypeDescriptor$;

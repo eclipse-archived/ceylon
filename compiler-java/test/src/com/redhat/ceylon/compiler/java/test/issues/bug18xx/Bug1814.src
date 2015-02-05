@@ -8,11 +8,6 @@ final class bug1814_run_ {
     static void bug1814_run() {
         .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.set_(0L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_run_.bug1814_run();
-    }
 }
 final class bug1814_ {
     

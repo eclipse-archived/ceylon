@@ -148,11 +148,6 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
         return mDefaulted$canonical$(t);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInImplementor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.RawInImplementor.class, $reified$X, $reified$Y);
@@ -235,11 +230,6 @@ class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtim
     @.java.lang.Override
     public final Y getA2() {
         throw new .ceylon.language.Exception(null, null);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOutImplementor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

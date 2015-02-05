@@ -44,9 +44,4 @@ final class bug1043_ {
             }
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1043_.bug1043();
-    }
 }

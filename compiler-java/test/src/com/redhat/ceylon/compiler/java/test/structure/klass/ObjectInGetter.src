@@ -37,11 +37,6 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.$TypeDescriptor$;

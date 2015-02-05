@@ -8,11 +8,6 @@ final class bug1563_ {
     static void bug1563() {
         .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_helper_.<.ceylon.language.Integer, .ceylon.language.Integer>bug1563_helper(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_.bug1563();
-    }
 }
 final class bug1563_helper_ {
     
@@ -77,10 +72,5 @@ final class bug1563_helper_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array6 is ObjectArray<ObjectArray<IntArray>>"));
         }
         final .java.lang.Object[] array7 = new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_helper_.bug1563_helper(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

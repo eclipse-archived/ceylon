@@ -35,11 +35,6 @@ class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return m2();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.$TypeDescriptor$;

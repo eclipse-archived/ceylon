@@ -32,9 +32,4 @@ final class bug1406_ {
         };
         final double x2 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.staticX;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1406_.bug1406();
-    }
 }

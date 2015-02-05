@@ -127,9 +127,4 @@ final class bug1165_ {
         );
         .ceylon.language.print_.print(html);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.bug1165();
-    }
 }

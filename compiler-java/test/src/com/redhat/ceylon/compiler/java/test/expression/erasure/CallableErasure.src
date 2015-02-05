@@ -18,11 +18,6 @@ class CE_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         getNonErasedGetter$priv$().$call$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_Foo();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_Foo.$TypeDescriptor$;

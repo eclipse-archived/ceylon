@@ -10,11 +10,6 @@ final class bug1080_ {
             final .java.lang.Object a = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.get_();
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080_.bug1080();
-    }
 }
 final class bug1080Attr_ {
     

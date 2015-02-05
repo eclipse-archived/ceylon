@@ -32,11 +32,6 @@ class MethodWhileNonEmptySequence implements .com.redhat.ceylon.compiler.java.ru
         return 0L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence.$TypeDescriptor$;

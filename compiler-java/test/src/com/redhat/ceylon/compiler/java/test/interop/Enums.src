@@ -14,9 +14,4 @@ final class enums_ {
         e.method();
         e2 = .com.redhat.ceylon.compiler.java.Util.checkNull(e.enumMethod());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.enums_.enums();
-    }
 }

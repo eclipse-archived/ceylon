@@ -50,11 +50,6 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return leftAttribute;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft.$TypeDescriptor$;
@@ -100,11 +95,6 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.java.lang.Override
     public final long getRightAttribute() {
         return rightAttribute;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
     }
     
     @.java.lang.Override
@@ -746,11 +736,6 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.TestPrimitiveBound.class, $reified$T));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure();
     }
     
     @.java.lang.Override

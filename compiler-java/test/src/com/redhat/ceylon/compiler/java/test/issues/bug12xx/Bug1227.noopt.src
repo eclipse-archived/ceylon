@@ -66,11 +66,6 @@ final class bug1227_ifBreak_returnElse_opt_ {
         from = from$6;
         return from;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifBreak_returnElse_opt_.bug1227_ifBreak_returnElse_opt();
-    }
 }
 final class bug1227_ifBreak_specifiedElse_ {
     
@@ -130,11 +125,6 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
         }
         from = from$19;
         return from;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifBreak_specifiedElse_opt_.bug1227_ifBreak_specifiedElse_opt();
     }
 }
 final class bug1227_ifBreak_elseBreak_specifiedElse_ {
@@ -250,11 +240,6 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
         from = from$34;
         return from;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifBreak_elseBreak_specifiedElse_opt_.bug1227_ifBreak_elseBreak_specifiedElse_opt();
-    }
 }
 final class bug1227_ifReturn_specifiedElse_ {
     
@@ -327,11 +312,6 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
         from = from$48;
         return from;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifReturn_specifiedElse_opt_.bug1227_ifReturn_specifiedElse_opt();
-    }
 }
 final class bug1227_ifThrow_specifiedElse_ {
     
@@ -381,11 +361,6 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
         final long from$65 = from$60;
         from = from$60;
         return from;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifThrow_specifiedElse_opt_.bug1227_ifThrow_specifiedElse_opt();
     }
 }
 final class bug1227_for2_ifReturn_specifiedElse_ {

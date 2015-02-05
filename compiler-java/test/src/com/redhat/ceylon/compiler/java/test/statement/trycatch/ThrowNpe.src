@@ -11,9 +11,4 @@ final class test_ {
         } catch (final .java.lang.NullPointerException npe) {
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.trycatch.test_.test();
-    }
 }

@@ -11,9 +11,4 @@ final class classAliasFromModelLoader_ {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> d = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.classAliasFromModelLoader_.classAliasFromModelLoader();
-    }
 }

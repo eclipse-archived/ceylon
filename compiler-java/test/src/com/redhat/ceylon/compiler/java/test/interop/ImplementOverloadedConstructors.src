@@ -6,11 +6,6 @@ class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.t
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.$TypeDescriptor$;
@@ -21,11 +16,6 @@ class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.t
     
     ImplementOverloadedConstructor2() {
         super(2L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2();
     }
     
     @.java.lang.Override

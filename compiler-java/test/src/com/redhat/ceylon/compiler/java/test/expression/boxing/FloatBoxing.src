@@ -63,11 +63,6 @@ class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final void test$priv$(final double f) {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.$TypeDescriptor$;

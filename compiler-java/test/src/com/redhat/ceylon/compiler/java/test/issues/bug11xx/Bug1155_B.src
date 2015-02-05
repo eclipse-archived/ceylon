@@ -375,11 +375,6 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         };
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.$TypeDescriptor$;

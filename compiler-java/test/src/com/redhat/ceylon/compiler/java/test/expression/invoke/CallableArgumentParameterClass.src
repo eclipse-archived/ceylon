@@ -5,11 +5,6 @@ class CallableArgumentParameterClass implements .com.redhat.ceylon.compiler.java
     CallableArgumentParameterClass() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass.$TypeDescriptor$;
@@ -52,10 +47,5 @@ final class callableArgumentParameterClass_m_ {
                 );
             }
         });
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_m_.callableArgumentParameterClass_m();
     }
 }

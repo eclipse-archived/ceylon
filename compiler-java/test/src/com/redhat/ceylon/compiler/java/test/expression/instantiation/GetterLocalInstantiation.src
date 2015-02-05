@@ -28,11 +28,6 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
         final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.$TypeDescriptor$;

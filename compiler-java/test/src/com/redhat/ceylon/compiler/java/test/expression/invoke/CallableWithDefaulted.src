@@ -652,11 +652,6 @@ final class callableWithDefaulted_ {
         };
         final .ceylon.language.Callable<? extends .java.lang.Object> oneAgain = oneOrPlenty;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableWithDefaulted_.callableWithDefaulted();
-    }
 }
 class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -935,11 +930,6 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             }
             returning null;
         );
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableWithDefaulted();
     }
     
     @.java.lang.Override

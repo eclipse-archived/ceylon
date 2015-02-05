@@ -29,9 +29,4 @@ final class bug2012_ {
             final boolean theTruth = ((.ceylon.language.Boolean)truth).booleanValue();
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2012_.bug2012();
-    }
 }

@@ -8,9 +8,4 @@ final class bug410_ {
     static void bug410() {
         final .ceylon.language.Collection<? extends .ceylon.language.Character> s = .ceylon.language.String.instance("foo");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug410_.bug410();
-    }
 }

@@ -136,11 +136,6 @@ final class annotationClassIntegerStatic_ {
             returning new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger(arg$2$0, arg$2$1);
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.annotationClassIntegerStatic();
-    }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations$({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(i = -10L),
@@ -156,11 +151,6 @@ final class annotationClassIntegerStatic_ {
 class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassInteger_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite();
     }
     
     @.java.lang.Override

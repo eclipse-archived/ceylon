@@ -14,11 +14,6 @@ class Teste extends .javax.swing.JFrame implements .com.redhat.ceylon.compiler.j
         java.m(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Teste();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Teste.$TypeDescriptor$;

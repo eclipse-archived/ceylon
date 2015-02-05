@@ -99,11 +99,6 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
         qual.Alias$new$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.$TypeDescriptor$;

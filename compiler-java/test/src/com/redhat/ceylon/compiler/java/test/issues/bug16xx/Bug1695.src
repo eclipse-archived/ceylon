@@ -11,11 +11,6 @@ class Bug1695T implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return c;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T.$TypeDescriptor$;
@@ -26,11 +21,6 @@ class Bug1695A extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1
     
     Bug1695A() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A();
     }
     
     @.java.lang.Override
@@ -103,11 +93,6 @@ final class bug1695_ {
         );
         final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B b2 = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B((.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A()}));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1695_.bug1695();
-    }
 }
 interface Bug1695It<Element, Absent> {
     
@@ -157,11 +142,6 @@ class Bug1695Emp implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 return .ceylon.language.empty_.get_();
             }
         });
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695Emp();
     }
     
     @.java.lang.Override

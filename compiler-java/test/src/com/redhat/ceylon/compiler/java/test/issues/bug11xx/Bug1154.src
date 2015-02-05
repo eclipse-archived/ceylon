@@ -12,11 +12,6 @@ final class bug1154_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154 step = (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>>)((.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)first).<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor$, b2);
         final .ceylon.language.Sequence t = (.ceylon.language.Sequence)step.getTuple();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1154_.bug1154();
-    }
 }
 public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

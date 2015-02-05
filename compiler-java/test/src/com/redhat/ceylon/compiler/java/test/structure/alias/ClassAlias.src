@@ -48,9 +48,4 @@ final class classAliasMethod_ {
     static void classAliasMethod() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.classAliasMethod_.classAliasMethod();
-    }
 }

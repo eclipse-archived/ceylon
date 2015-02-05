@@ -559,11 +559,6 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = !.ceylon.language.String.instance(s1).equals(.ceylon.language.Boolean.instance(b2));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.Optim();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.$TypeDescriptor$;

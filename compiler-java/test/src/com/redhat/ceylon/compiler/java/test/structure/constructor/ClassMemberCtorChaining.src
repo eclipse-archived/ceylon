@@ -34,11 +34,6 @@ class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtim
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.$TypeDescriptor$;
@@ -110,11 +105,6 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub.class));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub();
     }
     
     @.java.lang.Override

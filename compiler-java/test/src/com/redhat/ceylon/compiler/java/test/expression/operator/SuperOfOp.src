@@ -200,11 +200,6 @@ class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.getA();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.$TypeDescriptor$;
@@ -245,11 +240,6 @@ class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model
         return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.m() + 2L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass.$TypeDescriptor$;
@@ -283,11 +273,6 @@ class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expre
     @.java.lang.Override
     public long m() {
         return super.m() + super.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.getA();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass();
     }
     
     @.java.lang.Override

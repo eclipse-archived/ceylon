@@ -5,11 +5,6 @@ final class bar_ {
     
     static void bar() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .bar_.bar();
-    }
 }
 public class Bug214 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

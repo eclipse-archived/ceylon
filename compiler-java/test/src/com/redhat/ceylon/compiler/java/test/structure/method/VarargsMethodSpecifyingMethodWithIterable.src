@@ -32,11 +32,6 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
         return bar$priv$$canonical$(ints);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable.$TypeDescriptor$;

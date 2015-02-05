@@ -33,11 +33,6 @@ class Bug1116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .ceylon.language.Sequence<? extends .java.lang.Object> objects = s;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116.$TypeDescriptor$;

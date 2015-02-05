@@ -7,11 +7,6 @@ final class toplevelMethod_ {
     
     static void toplevelMethod() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelMethod_.toplevelMethod();
-    }
 }
 final class anotherToplevelMethod_ {
     

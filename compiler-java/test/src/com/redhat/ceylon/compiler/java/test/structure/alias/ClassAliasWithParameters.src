@@ -62,9 +62,4 @@ final class classAliasWithParametersMethod_ {
     static void classAliasWithParametersMethod() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo(1L, "a");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.classAliasWithParametersMethod_.classAliasWithParametersMethod();
-    }
 }

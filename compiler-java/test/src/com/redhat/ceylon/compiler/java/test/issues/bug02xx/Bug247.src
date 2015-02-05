@@ -15,11 +15,6 @@ final class bug247_ {
             returning $ceylontmp$op$0;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_.bug247();
-    }
 }
 final class bug247_toplevel_ {
     

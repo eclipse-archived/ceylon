@@ -6,12 +6,6 @@ class LocalClassAlias_Toplevel implements .com.redhat.ceylon.compiler.java.runti
     LocalClassAlias_Toplevel() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -47,11 +41,5 @@ final class localClassAliasMethod_ {
         }
         final ClassAlias_Foo foo1 = new ClassAlias_Foo();
         final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.localClassAliasMethod_.localClassAliasMethod();
     }
 }

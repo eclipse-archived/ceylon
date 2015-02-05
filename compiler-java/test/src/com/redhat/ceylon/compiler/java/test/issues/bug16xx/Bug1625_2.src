@@ -17,11 +17,6 @@ class Bug1625_3Impl2<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl2.class, $reified$T);

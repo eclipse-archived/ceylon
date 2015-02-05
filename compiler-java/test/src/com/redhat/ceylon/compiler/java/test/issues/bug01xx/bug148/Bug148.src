@@ -8,11 +8,6 @@ final class f_ {
     static void f() {
         .bug148.f_.f();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .bug148.f_.f();
-    }
 }
 public final class bug148_ {
     

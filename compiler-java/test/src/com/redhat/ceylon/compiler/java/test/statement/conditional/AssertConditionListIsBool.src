@@ -41,11 +41,6 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.$TypeDescriptor$;

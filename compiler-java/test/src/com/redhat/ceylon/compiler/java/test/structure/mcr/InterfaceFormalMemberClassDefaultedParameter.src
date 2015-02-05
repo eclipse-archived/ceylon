@@ -87,11 +87,6 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.$TypeDescriptor$;
@@ -139,11 +134,6 @@ class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ce
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X.class));
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2();
     }
     
     @.java.lang.Override

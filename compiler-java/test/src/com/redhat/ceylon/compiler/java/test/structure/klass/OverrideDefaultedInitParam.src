@@ -20,11 +20,6 @@ class OverrideDefaultedInitParam implements .com.redhat.ceylon.compiler.java.run
         return "";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$TypeDescriptor$;
@@ -50,11 +45,6 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
     
     public static .java.lang.String $default$id() {
         return "";
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub();
     }
     
     @.java.lang.Override

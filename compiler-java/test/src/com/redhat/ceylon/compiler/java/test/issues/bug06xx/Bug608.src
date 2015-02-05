@@ -25,9 +25,4 @@ final class bug608_ {
         final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.sequence()));
         builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.sequence()));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug608_.bug608();
-    }
 }

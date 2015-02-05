@@ -11,11 +11,6 @@ class Bug490 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("a").appendCodePoint(c).append("b").append(2L).append("c").toString()));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug490();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug490.$TypeDescriptor$;

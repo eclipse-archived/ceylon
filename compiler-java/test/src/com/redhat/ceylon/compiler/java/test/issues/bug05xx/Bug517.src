@@ -8,9 +8,4 @@ final class bug517_ {
     static void bug517() {
         final .ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String> ran = (.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance("hello");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug517_.bug517();
-    }
 }

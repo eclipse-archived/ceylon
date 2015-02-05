@@ -44,9 +44,4 @@ final class bug1177_ {
         .ceylon.language.print_.print(m.m());
         .ceylon.language.print_.print(m.m(.ceylon.language.String.instance("foo")));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1177_.bug1177();
-    }
 }

@@ -73,11 +73,6 @@ final class bug1901_a_ {
     
     static void bug1901_a(final long a, final long b, final long c, final long d) {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a();
-    }
 }
 final class bug1901_ {
     
@@ -152,10 +147,5 @@ final class bug1901_ {
                 );
             }
         };
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_.bug1901();
     }
 }

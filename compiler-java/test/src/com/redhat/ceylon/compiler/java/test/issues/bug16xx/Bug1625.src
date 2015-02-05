@@ -102,11 +102,6 @@ class Bug1625_3Impl<T> implements .com.redhat.ceylon.compiler.java.runtime.model
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl.class, $reified$T);
@@ -131,23 +126,12 @@ final class bug1625_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1625() {
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1625_.bug1625();
-    }
 }
 interface Bug1625_Top<T> {
 }
 class Bug1625_Middle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Top<.java.lang.Object> {
     
     Bug1625_Middle() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle();
     }
     
     @.java.lang.Override
@@ -160,11 +144,6 @@ class Bug1625_Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug16x
     
     Bug1625_Bottom() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom();
     }
     
     @.java.lang.Override

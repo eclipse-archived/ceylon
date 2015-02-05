@@ -37,11 +37,6 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.$TypeDescriptor$;

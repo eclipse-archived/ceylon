@@ -224,9 +224,4 @@ final class bug1937_ {
             returning $ceylontmp$ifResult$38;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1937_.bug1937();
-    }
 }

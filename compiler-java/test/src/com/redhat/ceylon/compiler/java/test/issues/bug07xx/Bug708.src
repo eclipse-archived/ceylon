@@ -19,12 +19,6 @@ final class bug708_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return null;
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
 }
 class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -35,11 +29,6 @@ class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public final .java.lang.Object test() {
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override
@@ -57,11 +46,6 @@ final class bug708_test_ {
         if ((s$1 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor$)) != null) {
             final .java.lang.String s$2 = s$1.toString();
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_test_.bug708_test();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)

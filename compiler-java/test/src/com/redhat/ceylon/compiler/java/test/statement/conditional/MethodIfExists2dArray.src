@@ -50,11 +50,6 @@ class MethodIfExists2dArray implements .com.redhat.ceylon.compiler.java.runtime.
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray.$TypeDescriptor$;

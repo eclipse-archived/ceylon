@@ -48,11 +48,6 @@ class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.struc
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class.$TypeDescriptor$;
@@ -72,11 +67,6 @@ class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B get() {
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Interface();
     }
     
     @.java.lang.Override

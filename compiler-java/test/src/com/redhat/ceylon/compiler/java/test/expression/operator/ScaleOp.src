@@ -29,11 +29,6 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor$;

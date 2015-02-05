@@ -61,11 +61,6 @@ class ClassFormalMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.s
         qual.Member$new$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.$TypeDescriptor$;

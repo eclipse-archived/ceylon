@@ -180,11 +180,6 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> t5 = new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug919();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug919.$TypeDescriptor$;

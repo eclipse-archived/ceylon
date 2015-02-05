@@ -36,11 +36,6 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
         b2$setter$_.set_(true);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.$TypeDescriptor$;

@@ -8,11 +8,6 @@ final class methodSpecifyingCallable_f_ {
     static .ceylon.language.Callable<? extends .ceylon.language.String> methodSpecifyingCallable_f() {
         throw new .ceylon.language.Exception(null, null);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f();
-    }
 }
 class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -334,11 +329,6 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     
     private final .java.lang.Object secondSequencedParam4$priv$() {
         return getSecondSequencedParam$priv$().$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingCallable();
     }
     
     @.java.lang.Override

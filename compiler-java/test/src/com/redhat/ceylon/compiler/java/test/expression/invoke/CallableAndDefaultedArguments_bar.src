@@ -7,11 +7,6 @@ final class callableAndDefaultedArguments_bar_ {
     
     static void callableAndDefaultedArguments_bar() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar_.callableAndDefaultedArguments_bar();
-    }
 }
 final class callableAndDefaultedArguments_ {
     
@@ -32,10 +27,5 @@ final class callableAndDefaultedArguments_ {
                 );
             }
         }, .ceylon.language.String.instance(""));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_.callableAndDefaultedArguments();
     }
 }

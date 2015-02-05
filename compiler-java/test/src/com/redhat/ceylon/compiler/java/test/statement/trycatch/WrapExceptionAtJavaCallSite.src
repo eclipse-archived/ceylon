@@ -14,11 +14,6 @@ class ReplaceExceptionAtJavaCallSite implements .com.redhat.ceylon.compiler.java
         final boolean z = jt.throwsMultiple();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.$TypeDescriptor$;

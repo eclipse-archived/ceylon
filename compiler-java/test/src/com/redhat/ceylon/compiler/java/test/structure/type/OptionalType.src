@@ -10,11 +10,6 @@ class OptionalType implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         final .ceylon.language.Integer n2 = null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType.$TypeDescriptor$;

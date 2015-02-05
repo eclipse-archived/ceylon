@@ -82,11 +82,6 @@ class AppliedTypeDefaultedParameterSub implements .com.redhat.ceylon.compiler.ja
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.Member$new$(t);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameterSub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameterSub.$TypeDescriptor$;

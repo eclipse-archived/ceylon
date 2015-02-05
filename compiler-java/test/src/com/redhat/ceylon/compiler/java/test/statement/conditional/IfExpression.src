@@ -184,9 +184,4 @@ final class ifExpression_ {
             returning $ceylontmp$ifResult$35;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.ifExpression_.ifExpression();
-    }
 }

@@ -279,11 +279,6 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg.$TypeDescriptor$;
@@ -574,11 +569,6 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
                 throw new .ceylon.language.Exception(null, null);
             }
         };
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride();
     }
     
     @.java.lang.Override

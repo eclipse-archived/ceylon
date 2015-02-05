@@ -12,9 +12,4 @@ final class bug1285_ {
         final long hash4 = .ceylon.language.Boolean.hashCode(.ceylon.language.Character.equals(97, .ceylon.language.Character.instance(98)));
         final long hash5 = .ceylon.language.Boolean.hashCode(.ceylon.language.String.equals("", .ceylon.language.String.instance("")));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1285_.bug1285();
-    }
 }

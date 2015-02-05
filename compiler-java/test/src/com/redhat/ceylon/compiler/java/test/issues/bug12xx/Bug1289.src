@@ -186,11 +186,6 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.$TypeDescriptor$;
@@ -377,11 +372,6 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             returning zboxed.compare(middle$47) == .ceylon.language.smaller_.get_() && middle$47.compare(xboxed) == .ceylon.language.smaller_.get_();
         );
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2();
     }
     
     @.java.lang.Override
@@ -572,11 +562,6 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
             returning zboxed.compare(middle$71) == .ceylon.language.smaller_.get_() && middle$71.compare(xboxed) == .ceylon.language.smaller_.get_();
         );
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

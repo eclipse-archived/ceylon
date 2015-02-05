@@ -15,11 +15,6 @@ final class run1824_ {
             returning $ceylontmp$opV$1;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.run1824_.run1824();
-    }
 }
 final class i1824_ {
     

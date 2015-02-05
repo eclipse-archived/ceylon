@@ -50,11 +50,6 @@ final class fields_ {
         sync = java.fieldWithNoGetter;
         java.setFieldWithNoGetter(2L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.fields_.fields();
-    }
 }
 class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -98,11 +93,6 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
             }
             returning $ceylontmp$op$11;
         );
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.CeylonFields();
     }
     
     @.java.lang.Override

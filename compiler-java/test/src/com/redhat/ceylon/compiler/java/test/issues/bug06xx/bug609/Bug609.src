@@ -7,11 +7,6 @@ final class wait_ {
     
     static void $wait() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.wait_.$wait();
-    }
 }
 final class notify_ {
     
@@ -19,11 +14,6 @@ final class notify_ {
     }
     
     static void $notify() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.notify_.$notify();
     }
 }
 final class notifyAll_ {
@@ -33,11 +23,6 @@ final class notifyAll_ {
     
     static void $notifyAll() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.notifyAll_.$notifyAll();
-    }
 }
 final class getClass_ {
     
@@ -45,11 +30,6 @@ final class getClass_ {
     }
     
     static void $getClass() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.getClass_.$getClass();
     }
 }
 final class finalize_ {
@@ -59,11 +39,6 @@ final class finalize_ {
     
     static void $finalize() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.finalize_.$finalize();
-    }
 }
 final class clone_ {
     
@@ -71,11 +46,6 @@ final class clone_ {
     }
     
     static void $clone() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.clone_.$clone();
     }
 }
 final class bug609test_ {
@@ -90,11 +60,6 @@ final class bug609test_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.getClass_.$getClass();
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.finalize_.$finalize();
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.clone_.$clone();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.bug609test_.bug609test();
     }
 }
 final class bug609mth_ {
@@ -170,11 +135,6 @@ final class bug609mth_ {
         finalize.$finalize();
         clone.$clone();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.bug609mth_.bug609mth();
-    }
 }
 class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -248,11 +208,6 @@ class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         getClass.$getClass();
         finalize.$finalize();
         clone.$clone();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls();
     }
     
     @.java.lang.Override

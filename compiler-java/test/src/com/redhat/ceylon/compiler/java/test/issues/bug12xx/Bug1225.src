@@ -142,11 +142,6 @@ class Bug1225Test implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_()})});
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Test();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Test.$TypeDescriptor$;

@@ -12,11 +12,6 @@ final class methods_ {
         final long cmp = f1.compareTo(f2);
         f1.listFiles();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.methods_.methods();
-    }
 }
 final class overloadedMethodsAndSubClasses_ {
     
@@ -30,11 +25,6 @@ final class overloadedMethodsAndSubClasses_ {
         inst.method(1L, 2L);
         inst.topMethod();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.overloadedMethodsAndSubClasses_.overloadedMethodsAndSubClasses();
-    }
 }
 final class overloadedConstructors_ {
     
@@ -44,11 +34,6 @@ final class overloadedConstructors_ {
     static void overloadedConstructors() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass();
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass inst2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass(2L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.overloadedConstructors_.overloadedConstructors();
     }
 }
 class OverloadedMembersAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -64,11 +49,6 @@ class OverloadedMembersAndSubClasses extends .com.redhat.ceylon.compiler.java.te
         topMethod();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.OverloadedMembersAndSubClasses();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.OverloadedMembersAndSubClasses.$TypeDescriptor$;
@@ -79,11 +59,6 @@ class OverloadedMembersAndSubClasses2 extends .com.redhat.ceylon.compiler.java.t
     
     OverloadedMembersAndSubClasses2() {
         super(2L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.OverloadedMembersAndSubClasses2();
     }
     
     @.java.lang.Override
@@ -409,11 +384,6 @@ final class variadicMethods_ {
             }
         }.sequence()));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.variadicMethods_.variadicMethods();
-    }
 }
 final class tupleSpreading_ {
     
@@ -468,11 +438,6 @@ final class tupleSpreading_ {
                 .ceylon.language.Character.instance(99),
                 .ceylon.language.Character.instance(100)});
         java.takeAllVariadic(true, (byte)1L, .com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)tuple3, 97, 98));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.tupleSpreading_.tupleSpreading();
     }
 }
 final class comprehensions_ {
@@ -633,11 +598,6 @@ final class comprehensions_ {
             }
         }.sequence(), 1.0));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.comprehensions_.comprehensions();
-    }
 }
 final class moreOverloads_ {
     
@@ -672,11 +632,6 @@ final class moreOverloads_ {
             returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$27$0, new .java.nio.file.CopyOption[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$27$0.getSize()) + 1], .java.nio.file.StandardCopyOption.ATOMIC_MOVE);
         ));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.moreOverloads_.moreOverloads();
-    }
 }
 final class overloadsWithPrimitives_ {
     
@@ -707,10 +662,5 @@ final class overloadsWithPrimitives_ {
         overload.overloadedPrimitiveVariadic(new long[]{java.return_long()});
         final long a = overload.overloadedPrimitive2(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
         final boolean b = overload.overloadedPrimitive2(.ceylon.language.Boolean.instance(true));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.overloadsWithPrimitives_.overloadsWithPrimitives();
     }
 }

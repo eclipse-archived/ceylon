@@ -25,11 +25,6 @@ final class attributes_ {
         syncInt = java.getÉpardaud();
         java.setÉpardaud(0L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.attributes_.attributes();
-    }
 }
 class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -98,11 +93,6 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         setURL("");
         syncStr = getURLEncoderForHTML();
         setURLEncoderForHTML("");
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes();
     }
     
     @.java.lang.Override

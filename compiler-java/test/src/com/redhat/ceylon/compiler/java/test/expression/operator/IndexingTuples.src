@@ -13,11 +13,6 @@ class IndexingTuples implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final long v1 = ((.ceylon.language.Integer)(.java.lang.Object)t.getFromFirst(0L)).longValue();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.IndexingTuples();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.IndexingTuples.$TypeDescriptor$;

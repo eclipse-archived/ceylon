@@ -25,11 +25,6 @@ class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp.$TypeDescriptor$;

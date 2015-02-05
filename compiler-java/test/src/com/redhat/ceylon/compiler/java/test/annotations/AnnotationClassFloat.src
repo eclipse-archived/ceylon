@@ -91,11 +91,6 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$TypeDescriptor$;
@@ -128,10 +123,5 @@ final class annotationClassFloat_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat annotationClassFloat(final double f) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat(f);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat();
     }
 }

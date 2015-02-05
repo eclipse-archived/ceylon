@@ -23,11 +23,6 @@ class Bug1973<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1973(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1973.class, $reified$T);
@@ -44,11 +39,6 @@ class Bug1973Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bu
         final .ceylon.language.Sequence v = g.$call$();
         final .ceylon.language.Sequence w = h.$call$();
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1973Sub();
     }
     
     @.java.lang.Override

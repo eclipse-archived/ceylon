@@ -47,9 +47,4 @@ final class variadicArraysMethods_ {
         java.variadicObject((.java.lang.Object[])arr1);
         java.variadicInt(intArray);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.variadicArraysMethods_.variadicArraysMethods();
-    }
 }

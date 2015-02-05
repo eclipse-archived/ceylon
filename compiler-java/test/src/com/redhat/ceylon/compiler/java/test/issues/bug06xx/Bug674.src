@@ -12,9 +12,4 @@ final class bug674_ {
     static void bug674() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_).ceylon.language.nothing_.get_();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674_.bug674();
-    }
 }

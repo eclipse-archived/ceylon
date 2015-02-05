@@ -8,11 +8,6 @@ final class bug1001Foo_ {
     static long bug1001Foo() {
         return 0L;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo();
-    }
 }
 @.ceylon.language.SharedAnnotation$annotation$
 public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

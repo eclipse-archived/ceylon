@@ -1800,11 +1800,6 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$;
@@ -1826,11 +1821,5 @@ final class memberClassRef_ {
         mcr.sequenced();
         mcr.<.ceylon.language.String>parameterizedMethod(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("foo"));
         mcr.innerClass();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.ref.memberClassRef_.memberClassRef();
     }
 }

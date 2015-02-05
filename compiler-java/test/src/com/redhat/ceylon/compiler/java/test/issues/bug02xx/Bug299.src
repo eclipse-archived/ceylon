@@ -120,11 +120,6 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.$TypeDescriptor$;

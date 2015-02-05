@@ -13,11 +13,6 @@ class FunctionAndValueKeyword implements .com.redhat.ceylon.compiler.java.runtim
         final long n = test$priv$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword.$TypeDescriptor$;

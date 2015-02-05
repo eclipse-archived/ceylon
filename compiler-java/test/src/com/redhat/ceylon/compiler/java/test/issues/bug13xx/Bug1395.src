@@ -55,11 +55,6 @@ class Bug1395MyLinkedList<Element> extends .com.redhat.ceylon.compiler.java.test
         return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1395MyLinkedList(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1395MyLinkedList.class, $reified$Element);

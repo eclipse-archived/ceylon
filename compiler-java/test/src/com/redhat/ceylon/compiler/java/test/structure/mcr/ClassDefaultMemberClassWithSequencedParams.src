@@ -55,11 +55,6 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
                 .ceylon.language.Integer.instance(3L)}));
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.$TypeDescriptor$;
@@ -123,11 +118,6 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L),
                 .ceylon.language.Integer.instance(4L)}));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub();
     }
     
     @.java.lang.Override

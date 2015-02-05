@@ -194,11 +194,6 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$TypeDescriptor$;
@@ -227,11 +222,6 @@ final class annotationClassAnnotationClass_ {
 class AnnotationClassAnnotationClass_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassAnnotationClass_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass_callsite();
     }
     
     @.java.lang.Override

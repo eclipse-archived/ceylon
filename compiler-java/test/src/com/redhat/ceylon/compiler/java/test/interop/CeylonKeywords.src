@@ -10,9 +10,4 @@ final class ceylonKeywords_ {
         final long i = klass.satisfies;
         klass.of();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.ceylonKeywords_.ceylonKeywords();
-    }
 }

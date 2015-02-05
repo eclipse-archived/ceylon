@@ -278,11 +278,6 @@ final class ec_TOrOptionalString_ {
     static <T>.java.lang.Object ec_TOrOptionalString(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return null;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_TOrOptionalString_.ec_TOrOptionalString(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
 }
 final class ec_boundsOnElement_ {
     
@@ -501,11 +496,6 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$(p);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMemberImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMemberImpl.class, $reified$Element);
@@ -555,11 +545,6 @@ class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .ceylon.language.Empty e3 = (.ceylon.language.Empty)(.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$).<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>foo(.ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327.$TypeDescriptor$;
@@ -575,11 +560,6 @@ class Bug1327_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     public final <Arguments extends .ceylon.language.Sequential<? extends Element>>Arguments foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arguments, final Arguments args) {
         return (Arguments)args;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

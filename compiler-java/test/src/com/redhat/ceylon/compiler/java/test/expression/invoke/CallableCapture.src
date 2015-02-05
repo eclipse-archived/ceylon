@@ -34,9 +34,4 @@ final class callableCapture_m_ {
         };
         final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher_.higher(callableCapture_bar).equals("");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_m_.callableCapture_m();
-    }
 }

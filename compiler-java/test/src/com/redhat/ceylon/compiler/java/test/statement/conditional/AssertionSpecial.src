@@ -58,9 +58,4 @@ final class assertionSpecial_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer v1"));
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertionSpecial_.assertionSpecial();
-    }
 }

@@ -8,9 +8,4 @@ final class bug494_ {
     static void bug494() {
         final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor$, 20L, .ceylon.language.Integer.instance(0L));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug494_.bug494();
-    }
 }

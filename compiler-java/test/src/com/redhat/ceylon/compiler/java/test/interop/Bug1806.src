@@ -8,9 +8,4 @@ final class bug1806_ {
     static void bug1806() {
         final long x = new .java.lang.StringBuilder().length();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.bug1806_.bug1806();
-    }
 }

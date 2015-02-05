@@ -89,11 +89,6 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.mod
         return super.toString();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor$;

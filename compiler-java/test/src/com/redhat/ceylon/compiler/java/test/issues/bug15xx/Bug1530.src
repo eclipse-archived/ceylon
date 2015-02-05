@@ -52,11 +52,6 @@ final class bug1530_ {
         }
         new T();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.bug1530();
-    }
 }
 final class bug1530_foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -141,11 +136,6 @@ class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ getBar() {
         return bar;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530();
     }
     
     @.java.lang.Override

@@ -35,11 +35,6 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runt
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$.getI();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.$TypeDescriptor$;
@@ -63,11 +58,6 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtim
         return 2L;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.$TypeDescriptor$;
@@ -89,11 +79,6 @@ class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.runti
     @.java.lang.Override
     public long getI() {
         return 3L;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider2();
     }
     
     @.java.lang.Override

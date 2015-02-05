@@ -39,11 +39,6 @@ class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compi
         final long n = innerGetter$getter$_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.$TypeDescriptor$;

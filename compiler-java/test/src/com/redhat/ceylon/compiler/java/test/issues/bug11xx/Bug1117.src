@@ -148,9 +148,4 @@ final class bug1117_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus t = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus(new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus(new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant(2L)), new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant(3L));
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(t.evaluate()));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1117_.bug1117();
-    }
 }

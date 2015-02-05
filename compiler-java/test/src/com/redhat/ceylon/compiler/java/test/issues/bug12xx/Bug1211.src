@@ -15,11 +15,6 @@ class Bug1211Top<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1211Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1211Top.class, $reified$T);
@@ -39,11 +34,6 @@ class Bug1211Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx
     @.java.lang.Override
     public final .java.lang.Object f2(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1211Bottom();
     }
     
     @.java.lang.Override

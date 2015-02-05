@@ -17,9 +17,4 @@ final class bug975_2_test_ {
     static void bug975_2_test() {
         .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_2_dontSort_.<.ceylon.language.Comparable>bug975_2_dontSort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_2_test_.bug975_2_test();
-    }
 }

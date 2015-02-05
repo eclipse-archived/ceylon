@@ -11,11 +11,6 @@ class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C.class, $reified$T1, $reified$T2);
@@ -37,10 +32,5 @@ final class test_ {
     static void test() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C<.ceylon.language.String, .java.lang.Object> x = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
         .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f(.ceylon.language.String.$TypeDescriptor$, (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.test_.test();
     }
 }

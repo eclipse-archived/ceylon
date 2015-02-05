@@ -47,9 +47,4 @@ final class user_ {
         final long a = .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.$package();
         final long b = .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.module();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.user_.user();
-    }
 }

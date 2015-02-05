@@ -15,11 +15,6 @@ class Bug1746Obt implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt.$TypeDescriptor$;
@@ -48,10 +43,5 @@ final class bug1746_ {
                 } else $ceylontmp$try$0.release($ceylontmp$ex$1);
             }
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1746_.bug1746();
     }
 }

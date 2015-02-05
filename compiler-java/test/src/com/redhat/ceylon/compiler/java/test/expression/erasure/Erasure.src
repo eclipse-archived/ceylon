@@ -78,11 +78,6 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return param;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle.$TypeDescriptor$;
@@ -128,11 +123,6 @@ class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.java.lang.Override
     public final .java.lang.Object leftAndRightMethod(final .java.lang.Object param) {
         return param;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
     }
     
     @.java.lang.Override

@@ -68,11 +68,6 @@ final class annotationClassBoolean_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean annotationClassBoolean(final boolean x) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean(x);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.annotationClassBoolean();
-    }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
@@ -116,11 +111,6 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted();
     }
     
     @.java.lang.Override
@@ -434,11 +424,6 @@ final class annotationClassIterableIterable_ {
 class AnnotationClassBoolean_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassBoolean_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean_callsite();
     }
     
     @.java.lang.Override

@@ -31,11 +31,6 @@ class RefinedVarianceInheritance2Nothing extends .com.redhat.ceylon.compiler.jav
         return .ceylon.language.Integer.instance(1L);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing.$TypeDescriptor$;

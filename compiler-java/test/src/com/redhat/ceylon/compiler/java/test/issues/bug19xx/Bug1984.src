@@ -56,11 +56,6 @@ class Bug1984 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }.sequence();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1984();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1984.$TypeDescriptor$;

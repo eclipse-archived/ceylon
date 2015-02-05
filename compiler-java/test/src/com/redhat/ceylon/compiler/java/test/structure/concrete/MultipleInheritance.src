@@ -56,11 +56,6 @@ class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.runtim
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.$TypeDescriptor$;
@@ -97,11 +92,6 @@ class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.run
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.$TypeDescriptor$;
@@ -132,11 +122,6 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.$TypeDescriptor$;
@@ -165,11 +150,6 @@ class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.tes
     public final .java.lang.Object m() {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub();
     }
     
     @.java.lang.Override

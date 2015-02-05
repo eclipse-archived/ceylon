@@ -163,11 +163,6 @@ class ForIfConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.r
         }.sequence();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListBoolIsBool();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListBoolIsBool.$TypeDescriptor$;

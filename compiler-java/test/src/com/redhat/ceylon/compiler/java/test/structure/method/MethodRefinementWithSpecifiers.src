@@ -59,11 +59,6 @@ class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.
     MethodRefinementWithSpecifiers_ClassNoParam() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam.$TypeDescriptor$;
@@ -261,11 +256,6 @@ final class arg2_ {
     }
     
     static void arg2() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
     }
 }
 interface Bug891_Interface2 extends .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {

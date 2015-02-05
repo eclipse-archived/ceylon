@@ -90,9 +90,4 @@ final class m_ {
         final long $int = .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().getGoto();
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().$strictfp();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.m_.m();
-    }
 }

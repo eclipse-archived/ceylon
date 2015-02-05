@@ -11,11 +11,6 @@ class KlassTypeParamsSatisfies<U extends .ceylon.language.Invertible<.ceylon.lan
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies.class, $reified$U, $reified$V, $reified$W);

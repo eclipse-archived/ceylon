@@ -41,9 +41,4 @@ final class bug1701_ {
             };
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1701_.bug1701();
-    }
 }

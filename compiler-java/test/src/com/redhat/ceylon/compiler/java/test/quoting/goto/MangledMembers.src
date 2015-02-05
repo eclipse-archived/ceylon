@@ -33,11 +33,6 @@ class MangledMembers_class implements .com.redhat.ceylon.compiler.java.runtime.m
         return "";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.$TypeDescriptor$;
@@ -51,11 +46,6 @@ class MangledMembers_clone implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public final .java.lang.String getClone() {
         return "";
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone();
     }
     
     @.java.lang.Override

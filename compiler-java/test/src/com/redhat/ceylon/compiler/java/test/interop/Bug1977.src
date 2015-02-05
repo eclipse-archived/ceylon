@@ -5,11 +5,6 @@ class Bug1977 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1977() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.Bug1977();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.Bug1977.$TypeDescriptor$;

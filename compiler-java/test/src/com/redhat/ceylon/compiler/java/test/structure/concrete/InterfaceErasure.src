@@ -224,11 +224,6 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$(p, p2);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl.class, $reified$Element);

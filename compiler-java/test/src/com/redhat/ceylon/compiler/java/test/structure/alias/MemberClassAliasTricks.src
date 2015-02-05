@@ -219,9 +219,4 @@ final class memberClassAliasTricksMethod_ {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo foo1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo(1L, 2L).MemberClassAliasToToplevel$new$(3L, 4L);
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo(1L, 2L).MemberClassAliasToToplevel2$new$(3L, 4L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasTricksMethod_.memberClassAliasTricksMethod();
-    }
 }

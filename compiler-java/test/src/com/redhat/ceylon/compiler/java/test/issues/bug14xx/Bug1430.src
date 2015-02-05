@@ -582,11 +582,6 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(to.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.empty_.get_() : this);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.$TypeDescriptor$;

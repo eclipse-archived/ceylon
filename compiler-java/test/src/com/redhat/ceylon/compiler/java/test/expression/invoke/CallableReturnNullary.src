@@ -7,11 +7,6 @@ final class callableReturnNullary_foo_ {
     
     static void callableReturnNullary_foo() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo_.callableReturnNullary_foo();
-    }
 }
 final class callableReturnNullary_bar_ {
     
@@ -32,10 +27,5 @@ final class callableReturnNullary_bar_ {
                 );
             }
         };
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_bar_.callableReturnNullary_bar();
     }
 }

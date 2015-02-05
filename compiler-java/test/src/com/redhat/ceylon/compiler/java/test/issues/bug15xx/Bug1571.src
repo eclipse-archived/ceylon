@@ -10,11 +10,6 @@ class Bug1571 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         e.getKey().test$priv$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.$TypeDescriptor$;

@@ -77,9 +77,4 @@ final class memberClassAliasMethod_ {
     static void memberClassAliasMethod() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().MemberClassAlias$new$();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasMethod_.memberClassAliasMethod();
-    }
 }

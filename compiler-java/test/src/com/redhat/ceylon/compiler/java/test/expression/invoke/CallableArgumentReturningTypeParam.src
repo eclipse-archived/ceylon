@@ -16,11 +16,6 @@ final class callableArgumentReturningTypeParam_bar_ {
     static <X>X callableArgumentReturningTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         throw new .ceylon.language.Exception(null, null);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.callableArgumentReturningTypeParam_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
 }
 final class callableArgumentReturningTypeParam_baz_ {
     
@@ -29,11 +24,6 @@ final class callableArgumentReturningTypeParam_baz_ {
     
     static long callableArgumentReturningTypeParam_baz() {
         return 1L;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz_.callableArgumentReturningTypeParam_baz();
     }
 }
 final class callableArgumentReturningTypeParam_m_ {
@@ -56,10 +46,5 @@ final class callableArgumentReturningTypeParam_m_ {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz_.callableArgumentReturningTypeParam_baz());
             }
         });
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_m_.callableArgumentReturningTypeParam_m();
     }
 }

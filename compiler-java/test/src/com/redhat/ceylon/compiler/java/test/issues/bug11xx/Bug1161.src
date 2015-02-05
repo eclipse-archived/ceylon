@@ -17,11 +17,6 @@ class Bug1161 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1161();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1161.$TypeDescriptor$;
@@ -32,11 +27,6 @@ class Bug1161_sub extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.B
     
     Bug1161_sub() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1161_sub();
     }
     
     @.java.lang.Override

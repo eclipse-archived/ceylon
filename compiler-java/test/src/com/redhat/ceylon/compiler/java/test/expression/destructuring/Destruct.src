@@ -48,11 +48,6 @@ final class tupleLiteral_ {
         final double f3 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$5).getFromFirst(1)).doubleValue();
         final .java.lang.String s3 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$5).getFromFirst(2)).toString();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleLiteral_.tupleLiteral();
-    }
 }
 final class tupleGeneric_ {
     
@@ -94,11 +89,6 @@ final class tupleGeneric_ {
         final .ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>> $pattern$tuple$8 = (.ceylon.language.Sequence<? extends FooSub<.ceylon.language.Integer>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), new .java.lang.Object[]{new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$)});
         final Foo<.ceylon.language.Integer> f3 = (Foo<.ceylon.language.Integer>)(Foo)((.ceylon.language.Sequence)$pattern$tuple$8).getFromFirst(0);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.destructuring.tupleGeneric_.tupleGeneric();
-    }
 }
 final class entryVar_ {
     
@@ -132,11 +122,6 @@ final class entryLiteral_ {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> $pattern$entry$14 = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.String.instance("foo"));
         final long i3 = ((.ceylon.language.Integer)((.ceylon.language.Entry)$pattern$entry$14).getKey()).longValue();
         final .java.lang.String s3 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$14).getItem()).toString();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.destructuring.entryLiteral_.entryLiteral();
     }
 }
 final class entryGeneric_ {
@@ -181,11 +166,6 @@ final class entryGeneric_ {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends FooSub<.ceylon.language.Integer>> $pattern$entry$17 = new .ceylon.language.Entry<.ceylon.language.Integer, FooSub<.ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooSub.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.instance(0L), new FooSub<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
         final long i3 = ((.ceylon.language.Integer)((.ceylon.language.Entry)$pattern$entry$17).getKey()).longValue();
         final Foo<.ceylon.language.Integer> f3 = (Foo<.ceylon.language.Integer>)(Foo)((.ceylon.language.Entry)$pattern$entry$17).getItem();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.destructuring.entryGeneric_.entryGeneric();
     }
 }
 final class destructuringLet_ {

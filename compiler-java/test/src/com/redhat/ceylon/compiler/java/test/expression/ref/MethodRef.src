@@ -1346,11 +1346,6 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef.$TypeDescriptor$;
@@ -1374,11 +1369,5 @@ final class methodRef_ {
         mr.assortedLanguage();
         mr.<.ceylon.language.String>parameterizedMethod(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("foo"));
         mr.innerClass();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.ref.methodRef_.methodRef();
     }
 }

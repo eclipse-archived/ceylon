@@ -30,9 +30,4 @@ final class floatPowerWithIntLiteralOptim_ {
         final double x0_ = .ceylon.language.Float.power(x, 0.0);
         final double xm1_ = .ceylon.language.Float.power(x, -1.0);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.floatPowerWithIntLiteralOptim_.floatPowerWithIntLiteralOptim();
-    }
 }

@@ -91,11 +91,6 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.$TypeDescriptor$;
@@ -179,11 +174,6 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted();
     }
     
     @.java.lang.Override
@@ -284,11 +274,6 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$TypeDescriptor$;
@@ -357,11 +342,6 @@ final class annotationClassString_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassString(final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString(s);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -377,11 +357,6 @@ final class annotationClassStringStatic_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassStringStatic() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString("bar");
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.annotationClassStringStatic();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -422,11 +397,6 @@ final class annotationClassStringDefaulted_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted annotationClassStringDefaulted() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringDefaulted_.annotationClassStringDefaulted();
-    }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotations$({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation$(s = "baz"),
@@ -437,11 +407,6 @@ final class annotationClassStringDefaulted_ {
 class AnnotationClassString_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassString_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString_callsite();
     }
     
     @.java.lang.Override

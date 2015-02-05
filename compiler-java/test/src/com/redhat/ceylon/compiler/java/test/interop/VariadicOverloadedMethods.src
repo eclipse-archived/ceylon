@@ -30,9 +30,4 @@ final class variadicOverloadedMethods_ {
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b")})));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.variadicOverloadedMethods_.variadicOverloadedMethods();
-    }
 }

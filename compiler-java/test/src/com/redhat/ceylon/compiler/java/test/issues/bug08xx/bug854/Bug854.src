@@ -27,9 +27,4 @@ final class x_ {
         final .java.util.Iterator<Element> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(new .java.util.ArrayList<Element>().iterator());
         return jit.next();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.x_.x(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
 }

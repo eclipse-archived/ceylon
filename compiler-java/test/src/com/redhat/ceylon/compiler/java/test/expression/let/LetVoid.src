@@ -8,11 +8,6 @@ final class letVoidAnything_ {
     static .java.lang.Object letVoidAnything() {
         return null;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.let.letVoidAnything_.letVoidAnything();
-    }
 }
 final class letVoid_ {
     
@@ -85,10 +80,5 @@ final class letVoid_ {
             }
             returning .com.redhat.ceylon.compiler.java.test.expression.let.letVoidAnything_.letVoidAnything();
         );
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid();
     }
 }

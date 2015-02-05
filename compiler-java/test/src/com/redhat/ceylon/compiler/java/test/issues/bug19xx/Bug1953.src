@@ -9,9 +9,4 @@ final class bug1953_ {
         final .java.lang.Object x = .ceylon.language.nothing_.get_();
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = ((.ceylon.language.String)((.ceylon.language.Entry)x).getKey()).split();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1953_.bug1953();
-    }
 }

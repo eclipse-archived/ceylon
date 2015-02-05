@@ -8,11 +8,6 @@ class Bug781Class implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public final void c() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class.$TypeDescriptor$;

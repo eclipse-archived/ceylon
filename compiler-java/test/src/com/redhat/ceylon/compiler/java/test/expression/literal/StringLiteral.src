@@ -13,11 +13,6 @@ class StringLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         final .java.lang.String s5 = "\ud834\udd1e\ud834\udd1e";
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral.$TypeDescriptor$;

@@ -10,11 +10,6 @@ class ImportTypeMultiple implements .com.redhat.ceylon.compiler.java.runtime.mod
         new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C2();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeMultiple();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeMultiple.$TypeDescriptor$;

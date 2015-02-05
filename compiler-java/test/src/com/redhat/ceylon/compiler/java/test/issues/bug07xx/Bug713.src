@@ -11,11 +11,6 @@ class Bug713 extends .java.awt.Container implements .com.redhat.ceylon.compiler.
         return (.java.awt.Component).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug713();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug713.$TypeDescriptor$;

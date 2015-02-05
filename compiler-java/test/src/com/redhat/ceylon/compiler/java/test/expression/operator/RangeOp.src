@@ -15,11 +15,6 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .ceylon.language.Range<T> range = .ceylon.language.span_.<T>span($reified$T, (T)t1, (T)t2);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOp(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOp.class, $reified$T);
@@ -145,10 +140,5 @@ final class bug_ {
     
     static void bug() {
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>span(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_());
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bug_.bug();
     }
 }

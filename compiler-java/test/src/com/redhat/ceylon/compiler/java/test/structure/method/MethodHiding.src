@@ -14,11 +14,6 @@ class MethodHiding implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return m();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodHiding();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.MethodHiding.$TypeDescriptor$;
@@ -38,11 +33,6 @@ class MethodHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.me
     @.java.lang.Override
     public .java.lang.String toString() {
         return m$priv$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodHidingSub();
     }
     
     @.java.lang.Override

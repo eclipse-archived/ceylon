@@ -28,11 +28,6 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     Bug260_Intersection() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection.$TypeDescriptor$;
@@ -83,11 +78,6 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 m3() {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260();
     }
     
     @.java.lang.Override

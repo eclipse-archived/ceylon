@@ -48,11 +48,6 @@ class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compil
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood.$TypeDescriptor$;
@@ -70,11 +65,6 @@ class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.ja
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood.$TypeDescriptor$;
@@ -90,10 +80,5 @@ final class refinementAndIntersection_method_ {
         final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood sub = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
         ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)(.java.lang.Object)sub.get()).g();
         ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H)(.java.lang.Object)sub.get()).h();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.klass.refinementAndIntersection_method_.refinementAndIntersection_method();
     }
 }

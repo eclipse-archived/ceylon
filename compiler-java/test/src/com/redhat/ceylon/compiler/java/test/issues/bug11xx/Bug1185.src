@@ -47,9 +47,4 @@ final class bug1185_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1"));
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1185_.bug1185();
-    }
 }

@@ -34,11 +34,6 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972((.ceylon.language.String)null);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.$TypeDescriptor$;
@@ -49,11 +44,6 @@ class Bug1972Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bu
     
     public Bug1972Sub() {
         super((.ceylon.language.String)null);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub();
     }
     
     @.java.lang.Override
@@ -106,11 +96,6 @@ class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx
     @.java.lang.Override
     public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
         super.$deserialize$(deconstructed);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub();
     }
     
     @.java.lang.Override

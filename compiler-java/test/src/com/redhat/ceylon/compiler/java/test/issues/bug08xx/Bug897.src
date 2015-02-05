@@ -25,11 +25,6 @@ class Bug897 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         final foo_ foo = new foo_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897.$TypeDescriptor$;

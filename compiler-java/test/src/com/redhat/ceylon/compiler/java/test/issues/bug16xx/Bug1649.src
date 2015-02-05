@@ -98,11 +98,6 @@ class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return .ceylon.language.nothing_.get_();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz.$TypeDescriptor$;

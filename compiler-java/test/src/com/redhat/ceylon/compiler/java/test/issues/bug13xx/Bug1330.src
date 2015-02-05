@@ -32,11 +32,6 @@ class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         });
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor$;
@@ -75,11 +70,6 @@ class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 return .ceylon.language.Boolean.instance(false);
             }
         });
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

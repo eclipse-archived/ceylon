@@ -7,11 +7,6 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.C.class, $reified$T);
@@ -20,11 +15,6 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
 class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     A() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A();
     }
     
     @.java.lang.Override

@@ -20,11 +20,6 @@ class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$;
@@ -39,10 +34,5 @@ final class m_ {
     static void m() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
         final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.m_.m();
     }
 }

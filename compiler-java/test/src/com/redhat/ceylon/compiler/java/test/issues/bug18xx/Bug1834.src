@@ -17,11 +17,6 @@ class Left extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top {
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$;

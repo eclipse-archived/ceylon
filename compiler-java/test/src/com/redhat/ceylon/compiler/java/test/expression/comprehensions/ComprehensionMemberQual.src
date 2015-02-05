@@ -160,11 +160,6 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.$TypeDescriptor$;
@@ -496,10 +491,5 @@ final class comprehensionMemberQualLocal_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.comprehensionMemberQualLocal_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local2.class));
             }
         }
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.comprehensionMemberQualLocal_.comprehensionMemberQualLocal();
     }
 }

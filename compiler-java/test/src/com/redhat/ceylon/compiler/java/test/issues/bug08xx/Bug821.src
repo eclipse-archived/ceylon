@@ -14,11 +14,6 @@ final class bug821a_ {
         final .ceylon.language.Sequence ns = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         final .java.lang.Object num = ns.getFromFirst(0L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug821a_.bug821a();
-    }
 }
 final class bug821b_ {
     
@@ -29,10 +24,5 @@ final class bug821b_ {
         final .java.lang.Object n = .ceylon.language.Integer.instance(1L);
         final .ceylon.language.Sequence ns = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{n});
         final .java.lang.Object num = ns.getFromFirst(0L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug821b_.bug821b();
     }
 }

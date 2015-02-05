@@ -27,11 +27,6 @@ class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         }).where$priv$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.$TypeDescriptor$;

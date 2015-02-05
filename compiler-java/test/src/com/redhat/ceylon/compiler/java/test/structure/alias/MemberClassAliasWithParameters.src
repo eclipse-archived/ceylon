@@ -102,9 +102,4 @@ final class memberClassAliasWithParametersMethod_ {
     static void memberClassAliasWithParametersMethod() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo().MemberClassAlias$new$(1L, "a");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasWithParametersMethod_.memberClassAliasWithParametersMethod();
-    }
 }

@@ -10,9 +10,4 @@ final class constructors_ {
         final .java.io.File f2 = new .java.io.File("parent", "test");
         final .java.io.File f3 = new .java.io.File(f1, "test");
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.constructors_.constructors();
-    }
 }

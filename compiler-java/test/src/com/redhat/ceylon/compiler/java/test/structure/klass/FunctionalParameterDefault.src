@@ -33,11 +33,6 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
         };
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$TypeDescriptor$;
@@ -55,11 +50,6 @@ class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.tes
                 return .ceylon.language.String.instance(arg + "!");
             }
         });
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub();
     }
     
     @.java.lang.Override

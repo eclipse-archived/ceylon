@@ -27,11 +27,6 @@ class ClassAliasedDefaultMemberClass implements .com.redhat.ceylon.compiler.java
         qual.Member$new$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass.$TypeDescriptor$;
@@ -84,11 +79,6 @@ class ClassAliasedDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.jav
         Member$new$();
         qual.Member$new$();
         qual.Member$new$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass_sub();
     }
     
     @.java.lang.Override

@@ -8,11 +8,6 @@ final class bug895SideEffects_ {
     static .ceylon.language.Callable<? extends .java.lang.Object> bug895SideEffects() {
         return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects_.bug895SideEffects();
-    }
 }
 final class bug895_ {
     
@@ -22,11 +17,6 @@ final class bug895_ {
     static void bug895() {
         final .ceylon.language.Callable<? extends .java.lang.Object> foo1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects_.bug895SideEffects();
         final .ceylon.language.Callable<? extends .java.lang.Object> foo2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895_.bug895();
     }
 }
 abstract class Bug895A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -53,11 +43,6 @@ class Bug895B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug89
     @.java.lang.Override
     public final .java.lang.Object f() {
         return f$specifier$.$call$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B();
     }
     
     @.java.lang.Override

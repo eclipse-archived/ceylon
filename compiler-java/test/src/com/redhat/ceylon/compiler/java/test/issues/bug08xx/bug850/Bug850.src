@@ -20,9 +20,4 @@ final class bug850_ {
             returning $ceylontmp$1 != null ? $ceylontmp$1 : .ceylon.language.String.instance("");
         ).toString();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850.bug850_.bug850();
-    }
 }

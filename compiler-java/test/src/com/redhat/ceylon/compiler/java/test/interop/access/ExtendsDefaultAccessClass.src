@@ -6,11 +6,6 @@ class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.in
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.$TypeDescriptor$;
@@ -23,11 +18,6 @@ class ExtendsDefaultAccessClass2 extends .com.redhat.ceylon.compiler.java.test.i
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2.$TypeDescriptor$;
@@ -38,11 +28,6 @@ class ExtendsDefaultAccessClass3 extends .com.redhat.ceylon.compiler.java.test.i
     
     ExtendsDefaultAccessClass3() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass3();
     }
     
     @.java.lang.Override

@@ -1252,10 +1252,4 @@ final class functionalParameterRef_ {
         mr.assortedLanguage();
         mr.innerClass();
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.ref.functionalParameterRef_.functionalParameterRef();
-    }
 }

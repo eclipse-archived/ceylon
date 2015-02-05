@@ -10,11 +10,6 @@ final class testFiles_ {
         final .java.io.File[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(f.listFiles());
         final .java.io.File f2 = items[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.testFiles_.testFiles();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -142,11 +137,6 @@ final class test_booleans_ {
         }
         final boolean[] cloned = .com.redhat.ceylon.compiler.java.language.BooleanArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_booleans_.test_booleans();
-    }
 }
 final class test_JBooleans_ {
     
@@ -163,11 +153,6 @@ final class test_JBooleans_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = b$22;
         }
         java.take_Booleans(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JBooleans_.test_JBooleans();
     }
 }
 final class test_bytes_ {
@@ -203,11 +188,6 @@ final class test_bytes_ {
         };
         final byte[] cloned = .com.redhat.ceylon.compiler.java.language.ByteArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_bytes_.test_bytes();
-    }
 }
 final class test_JBytes_ {
     
@@ -224,11 +204,6 @@ final class test_JBytes_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = n$28;
         }
         java.take_Bytes(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JBytes_.test_JBytes();
     }
 }
 final class test_shorts_ {
@@ -264,11 +239,6 @@ final class test_shorts_ {
         };
         final short[] cloned = .com.redhat.ceylon.compiler.java.language.ShortArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_shorts_.test_shorts();
-    }
 }
 final class test_JShorts_ {
     
@@ -285,11 +255,6 @@ final class test_JShorts_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = n$34;
         }
         java.take_Shorts(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JShorts_.test_JShorts();
     }
 }
 final class test_ints_ {
@@ -325,11 +290,6 @@ final class test_ints_ {
         };
         final int[] cloned = .com.redhat.ceylon.compiler.java.language.IntArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_ints_.test_ints();
-    }
 }
 final class test_JIntegers_ {
     
@@ -346,11 +306,6 @@ final class test_JIntegers_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = n$40;
         }
         java.take_Integers(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JIntegers_.test_JIntegers();
     }
 }
 final class test_longs_ {
@@ -386,11 +341,6 @@ final class test_longs_ {
         };
         final long[] cloned = .com.redhat.ceylon.compiler.java.language.LongArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_longs_.test_longs();
-    }
 }
 final class test_JLongs_ {
     
@@ -407,11 +357,6 @@ final class test_JLongs_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = n$46;
         }
         java.take_Longs(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JLongs_.test_JLongs();
     }
 }
 final class test_floats_ {
@@ -447,11 +392,6 @@ final class test_floats_ {
         };
         final float[] cloned = .com.redhat.ceylon.compiler.java.language.FloatArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_floats_.test_floats();
-    }
 }
 final class test_JFloats_ {
     
@@ -468,11 +408,6 @@ final class test_JFloats_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = f$52;
         }
         java.take_Floats(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JFloats_.test_JFloats();
     }
 }
 final class test_doubles_ {
@@ -508,11 +443,6 @@ final class test_doubles_ {
         };
         final double[] cloned = .com.redhat.ceylon.compiler.java.language.DoubleArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_doubles_.test_doubles();
-    }
 }
 final class test_JDoubles_ {
     
@@ -529,11 +459,6 @@ final class test_JDoubles_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = f$58;
         }
         java.take_Doubles(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JDoubles_.test_JDoubles();
     }
 }
 final class test_chars_ {
@@ -556,11 +481,6 @@ final class test_chars_ {
         final .ceylon.language.Array<.ceylon.language.Character> chars2 = .com.redhat.ceylon.compiler.java.language.IntArray.getCodePointArray(ints);
         final char[] cloned = .com.redhat.ceylon.compiler.java.language.CharArray.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_chars_.test_chars();
-    }
 }
 final class test_JCharacters_ {
     
@@ -577,11 +497,6 @@ final class test_JCharacters_ {
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = c$64;
         }
         java.take_Characters(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JCharacters_.test_JCharacters();
     }
 }
 final class test_Strings_ {
@@ -606,11 +521,6 @@ final class test_Strings_ {
         final .ceylon.language.Array<.java.lang.String> javaStringArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .java.lang.String>.getArray(items);
         final .java.lang.String[] cloned = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .java.lang.String>.$clone(items);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_Strings_.test_Strings();
-    }
 }
 final class test_Objects_ {
     
@@ -630,10 +540,5 @@ final class test_Objects_ {
         }
         java.take_Objects(items);
         final .java.lang.Object[] cloned = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .java.lang.Object>.$clone(items);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_Objects_.test_Objects();
     }
 }

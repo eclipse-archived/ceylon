@@ -25,11 +25,6 @@ class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bu
         return .ceylon.language.Integer.instance(1L);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.$TypeDescriptor$;
@@ -224,11 +219,6 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final boolean existsOp2 = java.stringMethod() != null;
         final boolean existsOp3 = java.getTaProp() != null;
         final boolean existsOp4 = java.taMethod() != null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

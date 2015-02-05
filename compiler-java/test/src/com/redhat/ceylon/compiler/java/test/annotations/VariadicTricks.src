@@ -64,11 +64,6 @@ final class variadicTricksEmpty_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksEmpty() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksEmpty_.variadicTricksEmpty();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -145,11 +140,6 @@ final class variadicTricksIndirectEmpty_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirectEmpty() {
         return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirectEmpty_.variadicTricksIndirectEmpty();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -182,11 +172,6 @@ final class variadicTricksIndirectRepeated_ {
 class VariadicTricksCallsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     VariadicTricksCallsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricksCallsite();
     }
     
     @.java.lang.Override

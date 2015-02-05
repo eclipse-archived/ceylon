@@ -51,11 +51,6 @@ class Bug1569 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }.$call$(this).$call$();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$;

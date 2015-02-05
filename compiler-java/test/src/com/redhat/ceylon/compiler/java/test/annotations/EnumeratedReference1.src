@@ -266,12 +266,6 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted();
-    }
-    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -314,11 +308,5 @@ final class enumeratedReferenceDefaulted_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     final .ceylon.language.Comparison comparison) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted(comparison);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted();
     }
 }

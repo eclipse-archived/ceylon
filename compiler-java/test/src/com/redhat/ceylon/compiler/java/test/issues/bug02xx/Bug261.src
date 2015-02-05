@@ -58,9 +58,4 @@ final class bug261_ {
             returning $ceylontmp$op$2;
         );
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug261_.bug261();
-    }
 }

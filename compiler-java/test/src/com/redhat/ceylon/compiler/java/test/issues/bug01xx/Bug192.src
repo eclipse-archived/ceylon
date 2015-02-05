@@ -25,9 +25,4 @@ final class bug192_ {
         final printFoo_ printFoo = new printFoo_();
         printFoo.printFoo();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug01xx.bug192_.bug192();
-    }
 }

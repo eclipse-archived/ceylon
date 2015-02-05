@@ -39,11 +39,6 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         this.two = two;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.$TypeDescriptor$;
@@ -68,10 +63,5 @@ final class bug253_ {
             }
             returning $ceylontmp$opV$1;
         ));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug253_.bug253();
     }
 }

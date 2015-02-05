@@ -101,11 +101,6 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.m();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom.$TypeDescriptor$;
@@ -141,11 +136,6 @@ class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.m();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom2();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom2.$TypeDescriptor$;
@@ -163,12 +153,6 @@ final class bug1240_ {
     static void bug1240() {
         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1240Check_.bug1240Check(new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom());
         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1240Check_.bug1240Check(new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom2());
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1240_.bug1240();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)

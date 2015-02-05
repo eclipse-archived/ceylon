@@ -35,11 +35,6 @@ class Variable implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         final boolean $volatile = false;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.misc.keyword.Variable();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.misc.keyword.Variable.$TypeDescriptor$;

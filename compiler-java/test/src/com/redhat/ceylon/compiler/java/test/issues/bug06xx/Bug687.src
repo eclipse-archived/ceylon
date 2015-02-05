@@ -105,11 +105,6 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         f.$call$((.java.lang.Object).ceylon.language.empty_.get_());
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.$TypeDescriptor$;

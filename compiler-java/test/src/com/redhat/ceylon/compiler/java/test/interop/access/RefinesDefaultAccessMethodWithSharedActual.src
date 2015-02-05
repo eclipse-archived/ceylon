@@ -10,11 +10,6 @@ class RefinesDefaultAccessMethod extends .com.redhat.ceylon.compiler.java.test.i
     public final void defaultAccessMethod() {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod.$TypeDescriptor$;

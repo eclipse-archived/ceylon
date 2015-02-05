@@ -21,9 +21,4 @@ final class bug646_ {
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> v = .ceylon.language.empty_.get_();
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> bot = .ceylon.language.empty_.get_();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug646_.bug646();
-    }
 }

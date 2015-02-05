@@ -40,11 +40,6 @@ class CharacterBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.boxing.CharacterBoxing();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.boxing.CharacterBoxing.$TypeDescriptor$;

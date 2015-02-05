@@ -7,11 +7,6 @@ class Bug241<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241.class, $reified$T);
@@ -24,10 +19,5 @@ final class bug241_ {
     
     static <Key extends .ceylon.language.Summable<.ceylon.language.Integer>, Item extends .ceylon.language.Summable<.ceylon.language.Integer>>void bug241(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>> builder = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item));
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug241_.bug241(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

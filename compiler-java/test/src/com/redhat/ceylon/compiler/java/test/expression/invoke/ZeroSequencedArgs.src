@@ -29,9 +29,4 @@ final class zeroSequencedArgs_ {
         final m_ m = new m_();
         m.<.java.lang.Object>m(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.zeroSequencedArgs_.zeroSequencedArgs();
-    }
 }

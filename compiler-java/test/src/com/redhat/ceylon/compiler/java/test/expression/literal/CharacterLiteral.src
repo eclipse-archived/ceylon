@@ -16,11 +16,6 @@ class CharacterLiteral implements .com.redhat.ceylon.compiler.java.runtime.model
         final int c8 = 119070;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.literal.CharacterLiteral();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.literal.CharacterLiteral.$TypeDescriptor$;

@@ -9,9 +9,4 @@ final class bug953_ {
         .ceylon.language.sort_.<.ceylon.language.Comparable>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
         final .java.lang.Object i = .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug953_.bug953();
-    }
 }

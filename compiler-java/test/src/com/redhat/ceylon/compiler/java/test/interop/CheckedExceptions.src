@@ -9,11 +9,6 @@ final class checkedExceptionsInMethod_ {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions x = new .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions();
         x.m();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.checkedExceptionsInMethod_.checkedExceptionsInMethod();
-    }
 }
 class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -23,11 +18,6 @@ class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.Ja
     
     @.java.lang.Override
     public final void m() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.CheckedExceptions();
     }
     
     @.java.lang.Override

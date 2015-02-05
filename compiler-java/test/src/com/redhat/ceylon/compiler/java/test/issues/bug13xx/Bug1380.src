@@ -18,10 +18,4 @@ final class bug1380_ {
         ));
         new .java.lang.RuntimeException((.java.lang.Exception)null);
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1380_.bug1380();
-    }
 }

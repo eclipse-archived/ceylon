@@ -347,11 +347,6 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
         });
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection.$TypeDescriptor$;

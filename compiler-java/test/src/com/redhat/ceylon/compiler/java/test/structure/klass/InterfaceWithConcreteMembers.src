@@ -68,11 +68,6 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
         return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar2();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.$TypeDescriptor$;

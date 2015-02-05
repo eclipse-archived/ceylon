@@ -20,9 +20,4 @@ final class assertionSimple_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "i\n<\n        10"));
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertionSimple_.assertionSimple();
-    }
 }

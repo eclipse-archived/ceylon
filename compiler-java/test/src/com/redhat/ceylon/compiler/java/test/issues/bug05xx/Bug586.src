@@ -32,9 +32,4 @@ final class bug586_ {
             }.sequence();
         ).getFirst();
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug586_.bug586();
-    }
 }

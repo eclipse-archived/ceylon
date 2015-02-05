@@ -9,9 +9,4 @@ final class interfaceWithinFunction_ {
     
     static void interfaceWithinFunction() {
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction_.interfaceWithinFunction();
-    }
 }

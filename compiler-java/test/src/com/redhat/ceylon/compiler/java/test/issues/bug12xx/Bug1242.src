@@ -37,11 +37,6 @@ final class testBug1242_ {
     static void testBug1242() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Sequence<? extends .ceylon.language.Integer>> yi = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.testBug1242_.testBug1242();
-    }
 }
 final class bug1242_yi_ {
     

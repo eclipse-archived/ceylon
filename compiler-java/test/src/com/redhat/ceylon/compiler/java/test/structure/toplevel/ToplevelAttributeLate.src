@@ -9,11 +9,6 @@ final class toplevelAttributeLateInit_ {
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.set_(0L);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.set_(0L);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateInit_.toplevelAttributeLateInit();
-    }
 }
 final class toplevelAttributeLate_ {
     

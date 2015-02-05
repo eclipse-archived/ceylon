@@ -25,11 +25,6 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
         return null;
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable.class, $reified$T);
@@ -58,11 +53,6 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> t3$getter$_ = new t3$getter$_();
         return null;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub();
     }
     
     @.java.lang.Override

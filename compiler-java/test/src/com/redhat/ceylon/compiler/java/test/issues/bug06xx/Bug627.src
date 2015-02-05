@@ -17,11 +17,6 @@ class Bug627Four extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bu
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Four();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Four.$TypeDescriptor$;
@@ -34,11 +29,6 @@ class Bug627Three extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.B
         super();
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Three();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Three.$TypeDescriptor$;
@@ -49,11 +39,6 @@ class Bug627Two extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug
     
     Bug627Two() {
         super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Two();
     }
     
     @.java.lang.Override
@@ -75,11 +60,6 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.java.lang.Override
     public final .ceylon.language.Iterable elements() {
         return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Concrete();
     }
     
     @.java.lang.Override

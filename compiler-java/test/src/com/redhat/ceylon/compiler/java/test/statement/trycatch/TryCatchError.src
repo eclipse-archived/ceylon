@@ -85,9 +85,4 @@ final class tryCatchError_ {
         } catch (final .ceylon.language.AssertionError e) {
         }
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.trycatch.tryCatchError_.tryCatchError();
-    }
 }

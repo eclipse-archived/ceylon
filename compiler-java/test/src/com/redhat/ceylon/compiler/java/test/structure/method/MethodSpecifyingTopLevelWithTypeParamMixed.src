@@ -11,11 +11,6 @@ class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         throw new .ceylon.language.Exception(null, null);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.C.class, $reified$X);
@@ -44,11 +39,6 @@ class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> implements .com.redhat.ce
     
     private final S bar$priv$(final S x, final T y) {
         return getC2().<T>f($reified$T, x, y);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override

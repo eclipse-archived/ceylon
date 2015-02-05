@@ -8,9 +8,4 @@ final class assertFalse_ {
     static .java.lang.String assertFalse() {
         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertFalse_.assertFalse();
-    }
 }

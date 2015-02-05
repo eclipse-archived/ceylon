@@ -86,11 +86,6 @@ class Parameter implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     private final void m30$priv$(final boolean $volatile) {
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.misc.keyword.Parameter();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.misc.keyword.Parameter.$TypeDescriptor$;

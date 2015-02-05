@@ -33,11 +33,6 @@ class Bug1360 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360.$TypeDescriptor$;
@@ -131,11 +126,6 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     
     private void $main$canonical$(final .java.lang.String[] s) {
         $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$.$main(s);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C();
     }
     
     @.java.lang.Override

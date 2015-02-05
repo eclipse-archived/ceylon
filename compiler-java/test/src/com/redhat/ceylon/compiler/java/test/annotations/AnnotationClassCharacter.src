@@ -99,11 +99,6 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor$;
@@ -137,21 +132,11 @@ final class annotationClassCharacter_ {
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter(final int c) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter(c);
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter();
-    }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$(c = 122)})
 class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassCharacter_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite();
     }
     
     @.java.lang.Override
