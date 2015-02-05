@@ -42,7 +42,11 @@ public class InvocationGenerator {
                 final String fname = names.createTempVariable();
                 gen.out("(", fname, "=");
                 //Call a native js constructor passing a native js object as parameter
-                typeArgSource.visit(gen);
+                if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen, true);
+                } else {
+                    typeArgSource.visit(gen);
+                }
                 gen.out(",", fname, ".$$===undefined?new ", fname, "(");
                 nativeObject(argList);
                 gen.out("):", fname, "(");
@@ -53,6 +57,8 @@ public class InvocationGenerator {
                 Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
                 if (typeArgSource instanceof Tree.BaseMemberExpression) {
                     BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen, true);
+                } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen, true);
                 } else {
                     typeArgSource.visit(gen);
                 }
@@ -103,7 +109,11 @@ public class InvocationGenerator {
                 }
                 final String fname = names.createTempVariable();
                 gen.out(fname,"=");
-                typeArgSource.visit(gen);
+                if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen, true);
+                } else {
+                    typeArgSource.visit(gen);
+                }
                 String fuckingargs = "";
                 if (!argnames.isEmpty()) {
                     fuckingargs = argnames.toString().substring(1);
@@ -126,9 +136,12 @@ public class InvocationGenerator {
                         }
                     }
                     BmeGenerator.generateBme(_bme, gen, true);
+                } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen, true);
                 } else {
                     typeArgSource.visit(gen);
                 }
+
                 if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
                     gen.out(".call(this");
                     if (!argList.getPositionalArguments().isEmpty()) {

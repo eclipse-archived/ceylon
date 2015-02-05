@@ -142,4 +142,19 @@ public class BmeGenerator {
         }, lhs, gen);
     }
 
+    static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen, boolean forInvoke) {
+        if (forInvoke && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
+            that.getPrimary().visit(gen);
+            if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
+                gen.out(".", that.getIdentifier().getText());
+            } else if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                gen.out("_", gen.getNames().name(that.getDeclaration()));
+            } else {
+                gen.out(".", gen.getNames().name(that.getDeclaration()));
+            }
+        } else {
+            gen.generateCallable(that, gen.getNames().name(that.getDeclaration()));
+        }
+    }
+
 }

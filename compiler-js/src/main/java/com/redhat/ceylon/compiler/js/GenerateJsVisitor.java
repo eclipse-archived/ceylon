@@ -1644,7 +1644,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name) {
+    void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name) {
         if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //it's a static method ref
             if (name == null) {
@@ -1818,18 +1818,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.QualifiedTypeExpression that) {
-        if (that.getMemberOperator() instanceof SafeMemberOp) {
-            generateCallable(that, names.name(that.getDeclaration()));
-        } else {
-            super.visit(that);
-            if (isInDynamicBlock() && that.getDeclaration() == null) {
-                out(".", that.getIdentifier().getText());
-            } else if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-                out("_", names.name(that.getDeclaration()));
-            } else {
-                out(".", names.name(that.getDeclaration()));
-            }
-        }
+        BmeGenerator.generateQte(that, this, false);
     }
 
     public void visit(final Tree.Dynamic that) {
