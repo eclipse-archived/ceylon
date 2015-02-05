@@ -76,12 +76,12 @@ public class DeserializationContextImpl
     }
     
     @Override
-    public <Outer, Instance> Reference<Instance> memberReference(
+    public <Outer, Instance> Reference<? extends Instance> memberReference(
             TypeDescriptor reified$Outer,
             TypeDescriptor reified$Instance, 
             Object id,
             @SuppressWarnings("rawtypes") ceylon.language.meta.model.MemberClass classModel,
-            Reference<Outer> outerReference) {
+            Reference<? extends Outer> outerReference) {
         DeserializingReference<?> ref = idToReference.get(id);
         if (ref != null) {
             if (ref.getClazz().equals(classModel)) {

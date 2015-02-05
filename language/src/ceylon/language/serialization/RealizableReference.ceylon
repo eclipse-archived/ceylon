@@ -1,6 +1,6 @@
 "A reference with sufficient state to realize an instance."
 shared sealed
-interface RealizableReference<Instance> satisfies Reference<Instance> {
+interface RealizableReference<out Instance> satisfies Reference<Instance> {
     
     /*"Get the flattened state of the instance."
     shared formal
