@@ -3,7 +3,6 @@ function(id,model,$mpt){
   if (idx>=0) {
     var ref=this.refs[idx];
     if (ref.clazz.equals(model))return ref;
-    throw AssertionError("reference already made to instance with a different class");
   }
   if (model.declaration.abstract)throw AssertionError("class is abstract: " + model.string);
   var vd=model.declaration.objectValue;
