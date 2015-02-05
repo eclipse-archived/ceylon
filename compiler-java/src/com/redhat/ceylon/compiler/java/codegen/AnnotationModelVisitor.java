@@ -195,6 +195,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     errorDefaultedParameter(d);
                 }
             } else if (term instanceof Tree.Literal
+                    || (term instanceof Tree.NegativeOp && ((Tree.NegativeOp)term).getTerm() instanceof Tree.Literal) 
                     || (term instanceof Tree.BaseMemberExpression
                     && (((Tree.BaseMemberExpression)term).getDeclaration().equals(t)
                         || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)
