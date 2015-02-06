@@ -3,6 +3,7 @@ package com.redhat.ceylon.common.tool;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -331,7 +332,13 @@ public class ToolFactory {
         
         private <A> void setValue(Binding<A> binding) {
             try {
-                binding.argumentModel.getSetter().invoke(tool, binding.value);
+                Object value;
+                if (binding.argumentModel.getSetter().getParameterTypes()[0].equals(EnumSet.class)) {
+                    value = EnumSet.copyOf((List)binding.value);
+                } else {
+                    value = binding.value;
+                }
+                binding.argumentModel.getSetter().invoke(tool, value);
             } catch (IllegalAccessException e) {
                 throw new ToolException(e);
             } catch (InvocationTargetException e) {

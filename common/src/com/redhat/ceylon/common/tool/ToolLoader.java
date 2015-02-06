@@ -9,6 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -488,8 +489,8 @@ public abstract class ToolLoader {
         if (ToolModel.class.equals(rt)) {
             return (Class)rt;
         }
-        if (!List.class.equals(rt)) {
-            throw new ModelException("Method " + setter + " is annotated with " + annoType.getSimpleName() + " but the parameter type is not java.util.List");
+        if (!List.class.equals(rt) && !EnumSet.class.equals(rt)) {
+            throw new ModelException("Method " + setter + " is annotated with " + annoType.getSimpleName() + " but the parameter type is not java.util.List or java.util.EnumSet");
         }
         Type ta = pt.getActualTypeArguments()[0];
         if (ta instanceof ParameterizedType) {
