@@ -2,6 +2,8 @@ function is$(obj,type,containers){
   if(type && type.t){
     if(type.t==='i'||type.t==='u'){
       return isOfTypes(obj, type);
+    } else if (type.t===Finished) {
+      return obj===finished();
     }
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;
