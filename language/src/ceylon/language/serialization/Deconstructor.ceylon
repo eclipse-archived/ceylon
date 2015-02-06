@@ -17,11 +17,6 @@ shared interface Deconstructor {
      to the flattened state."
     shared formal void putOuterInstance<Instance>(Instance outerInstance);
     
-    "Add the given type argument of the given type parameter to the flattened state."
-    throws (`class AssertionError`,
-        "if there is already a value for the given type argument")
-    shared formal void putTypeArgument(TypeParameter typeParameter, Type typeArgument);
-    
     "Add the value of the given attribute to the flattened state."
     throws (`class AssertionError`,
         "if there is already a value for the given attribute")

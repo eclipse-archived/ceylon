@@ -727,21 +727,8 @@ public final class Tuple<Element, First extends Element,
         // an implementation detail
         Generic myTd = (TypeDescriptor.Generic)$getType$();
         
-        TypeDescriptor reifiedElement = myTd.getTypeArguments()[0];
         TypeDescriptor reifiedFirst = myTd.getTypeArguments()[1];
         TypeDescriptor reifiedRest = myTd.getTypeArguments()[2];
-        
-        dtor.putTypeArgument(
-                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("Element"), 
-                Metamodel.getAppliedMetamodel(reifiedElement));
-        
-        dtor.putTypeArgument(
-                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("First"), 
-                Metamodel.getAppliedMetamodel(reifiedFirst));
-        
-        dtor.putTypeArgument(
-                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("Rest"), 
-                Metamodel.getAppliedMetamodel(reifiedRest));
         
         ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
         dtor.putValue(reifiedFirst, firstAttribute, getFirst());

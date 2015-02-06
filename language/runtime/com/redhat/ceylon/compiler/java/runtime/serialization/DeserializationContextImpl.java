@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @SatisfiedTypes("ceylon.language.serialization::DeserializationContext")
 public class DeserializationContextImpl 
-    extends BaseIterable<Reference<Object>, Object> 
+    extends BaseIterable<Reference<? extends Object>, Object> 
     implements DeserializationContext, ReifiedType {
 
     // TODO Shouldn't this be keyed on (id, class), and in fact shouldn't 

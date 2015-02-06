@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @SatisfiedTypes("ceylon.language.serialization::SerializationContext")
 public class SerializationContextImpl 
-        extends BaseIterable<SerializableReference<Object>, Object> 
+        extends BaseIterable<SerializableReference<? extends Object>, Object> 
         implements SerializationContext, ReifiedType {
     
     private final ArrayList<SerializableReference<?>> references = new ArrayList<>();

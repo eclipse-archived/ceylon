@@ -1881,9 +1881,6 @@ public final class Array<Element>
     @Override
     public void $serialize$(Deconstructor dtor) {
         
-        ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
-        dtor.putTypeArgument(elementTypeParameter, Metamodel.getAppliedMetamodel(this.$reifiedElement));
-        
         ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
         
         dtor.putValue(Integer.$TypeDescriptor$, 

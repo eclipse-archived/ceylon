@@ -11,16 +11,11 @@ import ceylon.language.meta.declaration {
  
  This interface is implemented by a serialization library."
 shared interface Deconstructed
-        satisfies {[ValueDeclaration, Anything]*} {
+        satisfies {[Integer|ValueDeclaration, Anything]*} {
     
     "The outer instance if the class of the instance is a 
      member class, otherwise null."
     shared formal Reference<Instance>? getOuterInstance<Instance>();
-    
-    "The type argument of the given type parameter."
-    throws (`class AssertionError`,
-        "if the type argument is absent")
-    shared formal Type getTypeArgument(TypeParameter typeParameter);
     
     "The value of the given attribute."
     throws (`class AssertionError`,
@@ -30,7 +25,5 @@ shared interface Deconstructed
     "The array element at the given index."
     shared formal Instance|Reference<Instance> getElement<Instance>(Integer index);
     
-    //shared formal Array<Element>
-    //getArray<Element>(ValueDeclaration attribute);
 }
 
