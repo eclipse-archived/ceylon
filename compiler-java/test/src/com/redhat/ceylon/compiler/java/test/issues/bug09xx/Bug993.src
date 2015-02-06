@@ -275,6 +275,9 @@ interface Bug993BottomInterface extends .com.redhat.ceylon.compiler.java.test.is
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993BottomInterface$impl();
     
+    @.java.lang.Override
+    public abstract .ceylon.language.Sequence<? extends .ceylon.language.Character> e();
+    
     public void f();
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner Inner$new$();
