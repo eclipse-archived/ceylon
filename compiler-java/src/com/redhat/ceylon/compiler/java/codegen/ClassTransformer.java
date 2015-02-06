@@ -1924,7 +1924,7 @@ public class ClassTransformer extends AbstractTransformer {
                         for (Parameter param : parameters) {
                             if (Strategy.hasDefaultParameterValueMethod(param)
                                     && CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getContainer().equals(member)) {
-                                final ProducedTypedReference typedParameter = refinedTypedMember.getTypedParameter(param);
+                                final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
                                 // If that method has a defaulted parameter, 
                                 // we need to generate a default value method
                                 // which also delegates to the $impl
