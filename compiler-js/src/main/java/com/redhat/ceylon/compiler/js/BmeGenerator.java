@@ -144,6 +144,9 @@ public class BmeGenerator {
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen, boolean forInvoke) {
         if (forInvoke && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
+            if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
+                gen.out("new ");
+            }
             that.getPrimary().visit(gen);
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out(".", that.getIdentifier().getText());
