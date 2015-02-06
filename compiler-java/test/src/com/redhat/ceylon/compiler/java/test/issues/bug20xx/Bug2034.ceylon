@@ -22,15 +22,17 @@ variable Integer bug2034_attr = nothing;
 
 @noanno
 void bug2034() {
+    AssertionError x;
     try{
         bug2034_attr = 2;
         assert(false);
     }catch(AssertionError x1){
-        try{
-            print(bug2034_attr);
-            assert(false);
-        }catch(AssertionError x2){
-            assert(x1 == x2);
-        }
+        x = x1;
+    }
+    try{
+        print(bug2034_attr);
+        assert(false);
+    }catch(AssertionError x2){
+        assert(x == x2);
     }
 }
