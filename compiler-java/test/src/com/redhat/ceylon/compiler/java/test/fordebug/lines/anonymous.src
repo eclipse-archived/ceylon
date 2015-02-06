@@ -16,12 +16,12 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 1
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class); // line 1
-}
+} // line 6
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Method // line 1
 final class anonymous_ {
-    
-    private anonymous_() {
+     // line 6
+    private anonymous_() { // line 6
     }
      // line 6
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything") // line 6
@@ -65,11 +65,5 @@ final class anonymous_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$1$0); // line 6, 9
         );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.fordebug.lines.anonymous_.anonymous();
     }
 }
