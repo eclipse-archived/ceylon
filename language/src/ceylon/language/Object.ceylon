@@ -72,6 +72,7 @@ shared abstract class Object()
      are encouraged to refine this implementation to produce 
      a more meaningful representation."
     shared default String string
-            => className(this) + "@" + hash.string;
+            => className(this) + "@" + 
+               formatInteger(hash, #10);
     
 }
