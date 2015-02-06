@@ -168,31 +168,31 @@ void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Obj
 
 @noanno
 void destructureWhile() {
-    //variable [Float, Integer]? maybePair = [1.0, 2];
-    //while (exists [x, i] = maybePair) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    maybePair = null;
-    //}
-    //variable <String->Object>? maybeEntry = ""->2;
-    //while (exists k->v = maybeEntry) {
-    //    String key = k;
-    //    Object item = v;
-    //    maybeEntry = null;
-    //}
-    //variable String[] names = ["Enrique", "Tako"];
-    //while (nonempty [name, *rest] = names) {
-    //    String n = name;
-    //    String[] ns = rest;
-    //    names = rest;
-    //}
-    //variable [Float, Integer]? maybePair2 = [1.0, 2];
-    //variable String[] names2 = ["Enrique", "Tako"];
-    //if (exists [x, i] = maybePair2, nonempty [name, *rest] = names2) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    String n = name;
-    //    String[] ns = rest;
-    //    maybePair = null;
-    //}
+    variable [Float, Integer]? maybePair = [1.0, 2];
+    while (exists [x, i] = maybePair) {
+        Float c = x;
+        Integer j = i;
+        maybePair = null;
+    }
+    variable <String->Object>? maybeEntry = ""->2;
+    while (exists k->v = maybeEntry) {
+        String key = k;
+        Object item = v;
+        maybeEntry = null;
+    }
+    variable String[] names = ["Enrique", "Tako"];
+    while (nonempty [name, *rest] = names) {
+        String n = name;
+        String[] ns = rest;
+        names = rest;
+    }
+    variable [Float, Integer]? maybePair2 = [1.0, 2];
+    variable String[] names2 = ["Enrique", "Tako"];
+    if (exists [x, i] = maybePair2, nonempty [name, *rest] = names2) {
+        Float c = x;
+        Integer j = i;
+        String n = name;
+        String[] ns = rest;
+        maybePair = null;
+    }
 }
