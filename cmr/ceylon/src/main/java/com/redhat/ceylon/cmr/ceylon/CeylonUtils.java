@@ -510,7 +510,7 @@ public class CeylonUtils {
             try {
                 if (repoUrl.startsWith("+")) {
                     // The token is the name of a repository defined in the Ceylon configuration file
-                    String path = absolute(repoUrl.substring(1));
+                    String path = repoUrl.substring(1);
                     Repositories.Repository repo = repositories.getRepository(path);
                     if (repo != null) {
                         repoUrl = repo.getUrl();
