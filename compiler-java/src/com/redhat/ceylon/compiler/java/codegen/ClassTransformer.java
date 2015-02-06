@@ -1726,7 +1726,6 @@ public class ClassTransformer extends AbstractTransformer {
         Set<Interface> ambiguousInterfaces = new HashSet<Interface>();
         for(Interface satisfiedInterface : satisfiedInterfaces){
             if(isInheritedWithDifferentTypeArguments(satisfiedInterface, model.getType()) != null){
-                System.err.println("Ambiguous interface "+satisfiedInterface.getName()+" in "+model.getName());
                 ambiguousInterfaces.add(satisfiedInterface);
             }
         }
@@ -1763,9 +1762,6 @@ public class ClassTransformer extends AbstractTransformer {
                         ProducedType type1 = simplifyType(typedMember1.getType());
                         ProducedType type2 = simplifyType(typedMember2.getType());
                         if(!type1.isExactly(type2)){
-                            System.err.println("Got "+ambiguousInterface.getName()+"."+name+" twice in "+model.getName()+" from "+firstInterface+" and "+secondInterface);
-                            System.err.println(typedMember1.getType());
-                            System.err.println(typedMember2.getType());
                             // treat it and stop looking for other interfaces
                             addAmbiguousMember(classBuilder, model, name);
                             break LOOKUP;
