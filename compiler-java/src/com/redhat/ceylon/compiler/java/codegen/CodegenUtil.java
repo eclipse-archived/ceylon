@@ -264,7 +264,7 @@ public class CodegenUtil {
                 // Note(Stef): not entirely sure about that one, what about aliases of actual classes?
                 while ((isAlias && c.isAlias())
                         || (isActual && c.isActual())) {
-                    ctor = isAlias ? (Functional)((ClassAlias)c).getConstructor() : c;
+                    ctor = (isAlias && c.isAlias()) ? (Functional)((ClassAlias)c).getConstructor() : c;
                     c = c.getExtendedTypeDeclaration();
                     // handle compile errors
                     if(c == null)
