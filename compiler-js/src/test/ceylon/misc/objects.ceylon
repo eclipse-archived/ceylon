@@ -67,6 +67,15 @@ void test_objects() {
   } catch (Throwable t) {
     fail("#455");
   }
+  class Test497() {
+    variable Integer i=1;
+    object o { i=5; }
+    check(i==5, "#497.2");
+  }
+  variable Integer test497 = 0;
+  object o497 { test497 = 42;}
+  check(test497==42, "#497.1");
+  Test497();
 }
 
 shared object testObject461 {
