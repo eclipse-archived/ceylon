@@ -5106,44 +5106,45 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // variable substitution
                 
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
+                List<VarDefBuilder> vars = addVarSubs(transformedCond.getVarTrans());
                 return transformCommon(transformedCond.getVarTrans(),
                         test,
                         insideCheck,
-                        resultVarName);
+                        vars);
             }
             
             protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
                 Cond transformedCond = getConditionTransformer(condition);
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
-                return transformCommon(transformedCond.getVarTrans(), test, transformList(rest), resultVarName);
+                List<VarDefBuilder> vars = addVarSubs(transformedCond.getVarTrans());
+                return transformCommon(transformedCond.getVarTrans(), test, transformList(rest), vars);
             }
 
-            private SyntheticName addVarSubs(VarTrans vartrans) {
+            private List<VarDefBuilder> addVarSubs(VarTrans vartrans) {
                 if (vartrans.hasResultDecl()) {
-                    Tree.Variable var = vartrans.getVariable();
-                    SyntheticName resultVarName = naming.alias(vartrans.getVariableName().getName());
-                    fieldSubst.add(naming.addVariableSubst(var.getDeclarationModel(), resultVarName.getName()));
-                    return resultVarName;
+                    List<VarDefBuilder> vars = statementGen().transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                    for (VarDefBuilder v : vars) {
+                        fieldSubst.add(naming.substituteAlias(v.var.getDeclarationModel()));
+                    }
+                    return vars;
                 }
                 return null;
             }
             
             protected List<JCStatement> transformCommon(VarTrans vartrans, 
                     JCExpression test, List<JCStatement> stmts,
-                    SyntheticName resultVarName) {
+                    List<VarDefBuilder> vars) {
                 
                 JCStatement decl = vartrans.makeTestVarDecl(0, true);
                 if (decl != null) {
                     varDecls.append(decl);
                 }
-                if (vartrans.hasResultDecl()) {
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 
-                            resultVarName.asName(), vartrans.makeTypeExpr(), null));
-                    valueCaptures.add(make().VarDef(make().Modifiers(Flags.FINAL),
-                            resultVarName.asName(), vartrans.makeTypeExpr(), resultVarName.makeIdentWithThis()));
-                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), vartrans.makeResultExpr())));
+                if (vars != null) {
+                    for (VarDefBuilder v : vars) {
+                        fields.add(v.buildField());
+                        valueCaptures.add(v.buildFromField());
+                        stmts = stmts.prepend(make().Exec(v.buildAssign()));
+                    }
                 }
                 stmts = List.<JCStatement>of(make().If(
                         test, 

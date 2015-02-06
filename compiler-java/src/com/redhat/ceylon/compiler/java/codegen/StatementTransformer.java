@@ -4155,6 +4155,24 @@ public class StatementTransformer extends AbstractTransformer {
             return def;
         }
         
+        JCVariableDecl buildField() {
+            gen.at(var);
+            JCVariableDecl def = gen.makeVar(Flags.PRIVATE, name(), type(), null);
+            return def;
+        }
+        
+        JCVariableDecl buildFromField() {
+            gen.at(var);
+            JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), name().makeIdentWithThis());
+            return def;
+        }
+        
+        JCAssign buildAssign() {
+            gen.at(var);
+            JCAssign def = gen.make().Assign(name().makeIdent(), expr());
+            return def;
+        }
+        
         static List<JCVariableDecl> buildAll(List<VarDefBuilder> vars) {
             List<JCVariableDecl> result = List.nil();
             for (VarDefBuilder vdb : vars) {
