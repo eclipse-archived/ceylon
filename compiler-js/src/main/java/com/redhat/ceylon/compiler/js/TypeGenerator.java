@@ -690,6 +690,10 @@ public class TypeGenerator {
         gen.comment(that);
         defineObject(that, that.getDeclarationModel(), that.getSatisfiedTypes(), that.getExtendedType(),
                 that.getClassBody(), that.getAnnotationList(), gen);
+        //Objects defined inside methods need their init sections are exec'd
+        if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {
+            gen.out(gen.getNames().objectName(that.getDeclarationModel()), "();");
+        }
     }
 
     static void classConstructor(final Tree.Constructor that,
