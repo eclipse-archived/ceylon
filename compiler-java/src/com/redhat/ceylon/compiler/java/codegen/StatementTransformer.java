@@ -698,13 +698,12 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected List<JCStatement> transformCommonResultDecl(
-                VarTrans var, List<JCStatement> stmts) {
-            if (var.hasResultDecl()) {
-                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        var.getVariableName().asName(), 
-                        var.makeTypeExpr(), 
-                        var.makeResultExpr());
-                stmts = stmts.prepend(resultVarDecl);
+                VarTrans vartrans, List<JCStatement> stmts) {
+            if (vartrans.hasResultDecl()) {
+                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                for (VarDefBuilder v : vars) {
+                    stmts = stmts.prepend(v.build());
+                }
             }
             return stmts;
         }
