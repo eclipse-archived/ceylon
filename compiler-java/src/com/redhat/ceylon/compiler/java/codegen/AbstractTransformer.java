@@ -927,7 +927,7 @@ public abstract class AbstractTransformer implements Transformation {
         return getRefinedTypedReference(typedReference, modelRefinedDecl);
     }
 
-    private ProducedType isInheritedWithDifferentTypeArguments(Scope container, ProducedType currentType) {
+    protected ProducedType isInheritedWithDifferentTypeArguments(Scope container, ProducedType currentType) {
         // only interfaces can be inherited twice
         if(container instanceof Interface == false)
             return null;

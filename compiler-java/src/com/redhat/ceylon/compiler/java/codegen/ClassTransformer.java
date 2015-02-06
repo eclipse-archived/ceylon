@@ -1706,9 +1706,171 @@ public class ClassTransformer extends AbstractTransformer {
             buildCompanion(def, (Interface)model, classBuilder);
         }
         
+        addAmbiguousMembers(classBuilder, model);
+        
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model, def);
         addAtLocalDeclarations(classBuilder, def);
+    }
+
+    private void addAmbiguousMembers(ClassDefinitionBuilder classBuilder, Interface model) {
+        // only if we refine more than one interface
+        java.util.List<ProducedType> satisfiedTypes = model.getSatisfiedTypes();
+        if(satisfiedTypes.size() <= 1)
+            return;
+        Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
+        for(TypeDeclaration interfaceDecl : model.getSatisfiedTypeDeclarations()){
+            collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+        }
+
+        Set<Interface> ambiguousInterfaces = new HashSet<Interface>();
+        for(Interface satisfiedInterface : satisfiedInterfaces){
+            if(isInheritedWithDifferentTypeArguments(satisfiedInterface, model.getType()) != null){
+                System.err.println("Ambiguous interface "+satisfiedInterface.getName()+" in "+model.getName());
+                ambiguousInterfaces.add(satisfiedInterface);
+            }
+        }
+        Set<String> treated = new HashSet<String>();
+        for(Interface ambiguousInterface : ambiguousInterfaces){
+            for(Declaration member : ambiguousInterface.getMembers()){
+                String name = member.getName();
+                // skip if already handled
+                if(treated.contains(name))
+                    continue;
+                // skip if it's implemented directly
+                if(model.getDirectMember(name, null, false) != null){
+                    treated.add(name);
+                    continue;
+                }
+                // find if we have different implementations in two direct interfaces
+                LOOKUP:
+                for(int i=0;i<satisfiedTypes.size();i++){
+                    ProducedType firstInterface = satisfiedTypes.get(i);
+                    Declaration member1 = firstInterface.getDeclaration().getMember(name, null, false);
+                    // if we can't find it in this interface, move to the next
+                    if(member1 == null)
+                        continue;
+                    // try to find member in other interfaces
+                    for(int j=i+1;j<satisfiedTypes.size();j++){
+                        ProducedType secondInterface = satisfiedTypes.get(j);
+                        Declaration member2 = secondInterface.getDeclaration().getMember(name, null, false);
+                        // if we can't find it in this interface, move to the next
+                        if(member2 == null)
+                            continue;
+                        // we have it in two separate interfaces
+                        ProducedReference typedMember1 = firstInterface.getTypedReference(member1, Collections.<ProducedType>emptyList());
+                        ProducedReference typedMember2 = secondInterface.getTypedReference(member2, Collections.<ProducedType>emptyList());
+                        ProducedType type1 = simplifyType(typedMember1.getType());
+                        ProducedType type2 = simplifyType(typedMember2.getType());
+                        if(!type1.isExactly(type2)){
+                            System.err.println("Got "+ambiguousInterface.getName()+"."+name+" twice in "+model.getName()+" from "+firstInterface+" and "+secondInterface);
+                            System.err.println(typedMember1.getType());
+                            System.err.println(typedMember2.getType());
+                            // treat it and stop looking for other interfaces
+                            addAmbiguousMember(classBuilder, model, name);
+                            break LOOKUP;
+                        }
+                    }
+                }
+                // that member has no conflict
+                treated.add(name);
+            }
+        }
+    }
+
+    private void addAmbiguousMember(ClassDefinitionBuilder classBuilder, Interface model, String name) {
+        Declaration member = model.getMember(name, null, false);
+        ProducedType satisfiedType = model.getType().getSupertype(model);
+        if (member instanceof Class) {
+            Class klass = (Class)member;
+            if (Strategy.generateInstantiator(member)
+                    && !klass.hasConstructors()) {
+                // instantiator method implementation
+                generateInstantiatorDelegate(classBuilder, satisfiedType,
+                        model, klass, null, model.getType(), false);
+            } 
+            if (klass.hasConstructors()) {
+                for (Declaration m : klass.getMembers()) {
+                    if (m instanceof Constructor
+                            && Strategy.generateInstantiator(m)) {
+                        Constructor ctor = (Constructor)m;
+                        generateInstantiatorDelegate(classBuilder, satisfiedType,
+                                model, klass, ctor, model.getType(), false);
+                    }
+                }
+                
+            }
+        }else if (member instanceof Method) {
+            Method method = (Method)member;
+            final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
+            java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = producedTypeParameterBounds(
+                    typedMember, method);
+            final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
+            final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+
+            for (Parameter param : parameters) {
+
+                if (Strategy.hasDefaultParameterOverload(param)) {
+                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, method);
+                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(null, typedMember)
+                    .makeOverload(
+                            overloadBuilder, 
+                            method.getParameterLists().get(0),
+                            param,
+                            typeParameters);
+                    overload.modifiers(PUBLIC | ABSTRACT);
+                    classBuilder.method(overload);
+                }
+            }
+        
+            final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(null,
+                    typedMember,
+                    model.getType(),
+                    PUBLIC | ABSTRACT,
+                    method.getTypeParameters(), 
+                    producedTypeParameterBounds, 
+                    typedMember.getType(), 
+                    naming.selector(method), 
+                    method.getParameterLists().get(0).getParameters(),
+                    ((Method) member).getTypeErased(),
+                    null, 
+                    false);
+            classBuilder.method(concreteMemberDelegate);
+        } else if (member instanceof Value
+                || member instanceof Setter) {
+            TypedDeclaration attr = (TypedDeclaration)member;
+            final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, Collections.<ProducedType>emptyList());
+            if (member instanceof Value) {
+                final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(null, 
+                        typedMember,
+                        model.getType(),
+                        PUBLIC | ABSTRACT, 
+                        Collections.<TypeParameter>emptyList(), 
+                        Collections.<java.util.List<ProducedType>>emptyList(),
+                        typedMember.getType(), 
+                        Naming.getGetterName(attr), 
+                        Collections.<Parameter>emptyList(),
+                        attr.getTypeErased(),
+                        null,
+                        false);
+                classBuilder.method(getterDelegate);
+            }
+            if (member instanceof Setter) { 
+                final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(null, 
+                        typedMember,
+                        model.getType(),
+                        PUBLIC | ABSTRACT, 
+                        Collections.<TypeParameter>emptyList(), 
+                        Collections.<java.util.List<ProducedType>>emptyList(),
+                        typeFact().getAnythingDeclaration().getType(), 
+                        Naming.getSetterName(attr), 
+                        Collections.<Parameter>singletonList(((Setter)member).getParameter()),
+                        ((Setter) member).getTypeErased(),
+                        null,
+                        false);
+                classBuilder.method(setterDelegate);
+            }
+        }
     }
 
     private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model, 
@@ -1880,7 +2042,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && model.getDirectMember(member.getName(), null, false) == null) {
                     // instantiator method implementation
                     generateInstantiatorDelegate(classBuilder, satisfiedType,
-                            iface, klass, null, model.getType());
+                            iface, klass, null, model.getType(), true);
                 } 
                 if (klass.hasConstructors()) {
                     for (Declaration m : klass.getMembers()) {
@@ -1888,7 +2050,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 && Strategy.generateInstantiator(m)) {
                             Constructor ctor = (Constructor)m;
                             generateInstantiatorDelegate(classBuilder, satisfiedType,
-                                    iface, klass, ctor, model.getType());
+                                    iface, klass, ctor, model.getType(), true);
                         }
                     }
                     
@@ -2067,13 +2229,18 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
-            Interface iface, Class klass, Constructor ctor, ProducedType currentType) {
+            Interface iface, Class klass, Constructor ctor, ProducedType currentType, boolean includeBody) {
         ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
         if (ctor != null) {
             typeMember = ctor.getProducedType(typeMember, Collections.<ProducedType>emptyList());
         }
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
         java.util.List<Parameter> parameters = (ctor != null ? ctor.getParameterLists() : klass.getParameterLists()).get(0).getParameters();
+        long flags = PUBLIC;
+        if(includeBody)
+            flags |= FINAL;
+        else
+            flags |= ABSTRACT;
         
         String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
         for (Parameter param : parameters) {
@@ -2086,42 +2253,45 @@ public class ClassTransformer extends AbstractTransformer {
                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
                         typedParameter,
                         currentType,
-                        PUBLIC | FINAL, 
+                        flags, 
                         typeParameters, 
                         producedTypeParameterBounds(typeMember, klass),
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(ctor != null ? ctor : klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
                         param.getModel().getTypeErased(),
-                        null);
+                        null,
+                        includeBody);
                 classBuilder.method(defaultValueDelegate);
             }
             if (Strategy.hasDefaultParameterOverload(param)) {
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                         typeMember,
                         currentType,
-                        PUBLIC | FINAL, 
+                        flags, 
                         typeParameters, 
                         producedTypeParameterBounds(typeMember, klass),
                         typeMember.getType(), 
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
                         false,
-                        null);
+                        null,
+                        includeBody);
                 classBuilder.method(overload);
             }
         }
         final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                 typeMember,
                 currentType,
-                PUBLIC | FINAL, 
+                flags, 
                 typeParameters, 
                 producedTypeParameterBounds(typeMember, klass),
                 typeMember.getType(), 
                 instantiatorMethodName, 
                 parameters,
                 false,
-                null);
+                null,
+                includeBody);
         classBuilder.method(overload);
     }
 
@@ -2151,6 +2321,25 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName) {
+        return makeDelegateToCompanion(iface, typedMember, currentType, mods, typeParameters,
+                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, true);
+    }
+    
+    /**
+     * Generates a method which delegates to the companion instance $Foo$impl
+     */
+    private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
+            ProducedReference typedMember,
+            ProducedType currentType,
+            final long mods,
+            final java.util.List<TypeParameter> typeParameters,
+            final java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds,
+            final ProducedType methodType,
+            final String methodName,
+            final java.util.List<Parameter> parameters, 
+            boolean typeErased,
+            final String targetMethodName,
+            boolean includeBody) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
         concreteWrapper.ignoreModelAnnotations();
@@ -2221,56 +2410,58 @@ public class ClassTransformer extends AbstractTransformer {
             concreteWrapper.parameter(param, type, FINAL, 0, true);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER));
         }
-        JCExpression qualifierThis = makeUnquotedIdent(getCompanionFieldName(iface));
-        // if the best satisfied type is not the one we think we implement, we may need to cast
-        // our impl accessor to get the expected bounds of the qualifying type
-        if(explicitReturn){
-            ProducedType javaType = getBestSatisfiedType(currentType, iface);
-            ProducedType ceylonType = typedMember.getQualifyingType();
-            // don't even bother if the impl accessor is turned to raw because casting it to raw doesn't help
-            if(!isTurnedToRaw(ceylonType)
-                    // if it's exactly the same we don't need any cast
-                    && !javaType.isExactly(ceylonType))
-                // this will add the proper cast to the impl accessor
-                qualifierThis = expressionGen().applyErasureAndBoxing(qualifierThis, currentType, 
-                        false, true, BoxingStrategy.BOXED, ceylonType,
-                        ExpressionTransformer.EXPR_WANTS_COMPANION);
-        }
-        JCExpression expr = make().Apply(
-                null,  // TODO Type args
-                makeSelect(qualifierThis, (targetMethodName != null) ? targetMethodName : methodName),
-                arguments.toList());
-        if (isUnimplementedMemberClass(currentType, typedMember)) {
-            concreteWrapper.body(makeThrowUnresolvedCompilationError(
-                    // TODO encapsulate the error message
-                    "formal member '"+typedMember.getDeclaration().getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
-            current().broken();
-        } else if (!explicitReturn) {
-            concreteWrapper.body(gen().make().Exec(expr));
-        } else {
-            // deal with erasure and stuff
-            BoxingStrategy boxingStrategy;
-            boolean exprBoxed;
-            if(member instanceof TypedDeclaration){
-                TypedDeclaration typedDecl = (TypedDeclaration) member;
-                exprBoxed = !CodegenUtil.isUnBoxed(typedDecl);
-                boxingStrategy = CodegenUtil.getBoxingStrategy(typedDecl);
-            }else{
-                // must be a class or interface
-                exprBoxed = true;
-                boxingStrategy = BoxingStrategy.UNBOXED;
+        if(includeBody){
+            JCExpression qualifierThis = makeUnquotedIdent(getCompanionFieldName(iface));
+            // if the best satisfied type is not the one we think we implement, we may need to cast
+            // our impl accessor to get the expected bounds of the qualifying type
+            if(explicitReturn){
+                ProducedType javaType = getBestSatisfiedType(currentType, iface);
+                ProducedType ceylonType = typedMember.getQualifyingType();
+                // don't even bother if the impl accessor is turned to raw because casting it to raw doesn't help
+                if(!isTurnedToRaw(ceylonType)
+                        // if it's exactly the same we don't need any cast
+                        && !javaType.isExactly(ceylonType))
+                    // this will add the proper cast to the impl accessor
+                    qualifierThis = expressionGen().applyErasureAndBoxing(qualifierThis, currentType, 
+                            false, true, BoxingStrategy.BOXED, ceylonType,
+                            ExpressionTransformer.EXPR_WANTS_COMPANION);
             }
-            // if our interface impl is turned to raw, the whole call will be seen as raw by javac, so we may need
-            // to force an additional cast
-            if(isTurnedToRaw(typedMember.getQualifyingType())
-                    // see note in BoxingVisitor.visit(QualifiedMemberExpression) about mixin super calls and variant type args
-                    // in invariant locations
-                    || needsRawCastForMixinSuperCall(iface, methodType))
-                typeErased = true;
-            expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
-                                                               exprBoxed, boxingStrategy,
-                                                               returnType, 0);
-            concreteWrapper.body(gen().make().Return(expr));
+            JCExpression expr = make().Apply(
+                    null,  // TODO Type args
+                    makeSelect(qualifierThis, (targetMethodName != null) ? targetMethodName : methodName),
+                    arguments.toList());
+            if (isUnimplementedMemberClass(currentType, typedMember)) {
+                concreteWrapper.body(makeThrowUnresolvedCompilationError(
+                        // TODO encapsulate the error message
+                        "formal member '"+typedMember.getDeclaration().getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
+                current().broken();
+            } else if (!explicitReturn) {
+                concreteWrapper.body(gen().make().Exec(expr));
+            } else {
+                // deal with erasure and stuff
+                BoxingStrategy boxingStrategy;
+                boolean exprBoxed;
+                if(member instanceof TypedDeclaration){
+                    TypedDeclaration typedDecl = (TypedDeclaration) member;
+                    exprBoxed = !CodegenUtil.isUnBoxed(typedDecl);
+                    boxingStrategy = CodegenUtil.getBoxingStrategy(typedDecl);
+                }else{
+                    // must be a class or interface
+                    exprBoxed = true;
+                    boxingStrategy = BoxingStrategy.UNBOXED;
+                }
+                // if our interface impl is turned to raw, the whole call will be seen as raw by javac, so we may need
+                // to force an additional cast
+                if(isTurnedToRaw(typedMember.getQualifyingType())
+                        // see note in BoxingVisitor.visit(QualifiedMemberExpression) about mixin super calls and variant type args
+                        // in invariant locations
+                        || needsRawCastForMixinSuperCall(iface, methodType))
+                    typeErased = true;
+                expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
+                        exprBoxed, boxingStrategy,
+                        returnType, 0);
+                concreteWrapper.body(gen().make().Return(expr));
+            }
         }
         return concreteWrapper;
     }
@@ -3722,6 +3913,9 @@ public class ClassTransformer extends AbstractTransformer {
     abstract class DefaultedArgumentOverload {
         protected final DaoBody daoBody;
         
+        /**
+         * @param daoBody for the body, or null if no body required
+         */
         protected DefaultedArgumentOverload(DaoBody daoBody){
             this.daoBody = daoBody;
         }
@@ -3810,14 +4004,16 @@ public class ClassTransformer extends AbstractTransformer {
             appendImplicitParameters(typeParameterList, overloadBuilder);
             parameters(overloadBuilder, parameterList, currentParameter);
             
-            // Make the body
+            // Make the body, but only if we want one. null means we want a formal method
             // TODO MPL
             // TODO Type args on method call
             
-            daoBody.makeBody(this, overloadBuilder,
-                    parameterList,
-                    currentParameter,
-                    typeParameterList);
+            if(daoBody != null){
+                daoBody.makeBody(this, overloadBuilder,
+                        parameterList,
+                        currentParameter,
+                        typeParameterList);
+            }
             
             return overloadBuilder;
         }
