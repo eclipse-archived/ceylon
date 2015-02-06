@@ -1148,13 +1148,13 @@ public class ClassTransformer extends AbstractTransformer {
                         if (cbForDevaultValuesDecls != null) {
                             cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
                         }
-                    } else if (Strategy.hasDelegatedDpm(cls)) {
+                    } else if (Strategy.hasDelegatedDpm(cls) && cls.getContainer() instanceof Class) {
                         java.util.List<Parameter> parameters = paramList.getModel().getParameters();
                         MethodDefinitionBuilder mdb = 
                         makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
                                 paramModel.getModel().getProducedTypedReference(cls.getType(), null),
                                 ((TypeDeclaration)cls.getContainer()).getType(),
-                                FINAL | transformClassDeclFlags(cls), 
+                                FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
                                 List.<TypeParameter>nil(), Collections.<java.util.List<ProducedType>>emptyList(),
                                 paramModel.getType(), 
                                 Naming.getDefaultedParamMethodName(cls, paramModel),
@@ -2077,7 +2077,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
         for (Parameter param : parameters) {
-            if (Strategy.hasDefaultParameterValueMethod(param)) {
+            if (Strategy.hasDefaultParameterValueMethod(param)
+                    && !klass.isActual()) {
                 final ProducedTypedReference typedParameter = typeMember.getTypedParameter(param);
                 // If that method has a defaulted parameter, 
                 // we need to generate a default value method
@@ -4103,8 +4104,13 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected JCIdent makeDefaultArgumentValueMethodQualifier() {
-            if (defaultParameterMethodOnSelf() 
-                    || defaultParameterMethodOnOuter()
+            if (defaultParameterMethodOnOuter()){
+                // if we're refining a class we can't declare new default values, so we should get
+                // them from the instance rather than the outer interface impl
+                if(getModel().isActual() && getModel().getContainer() instanceof Interface)
+                    return naming.makeUnquotedIdent("$this");
+                return null;
+            }else if (defaultParameterMethodOnSelf() 
                     || daoBody instanceof DaoCompanion) {
                 return null;
             } else if (defaultParameterMethodStatic()){
