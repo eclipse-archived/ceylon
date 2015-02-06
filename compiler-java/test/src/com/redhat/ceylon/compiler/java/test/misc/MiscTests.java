@@ -441,38 +441,61 @@ public class MiscTests extends CompilerTests {
         }
     }
     
-    @Test
-    public void testLaunchDistCeylon() throws IOException, InterruptedException {
+    private void testLaunchDistCeylon(String sampleDir, String sampleModule, String sampleVersion) throws IOException, InterruptedException {
         String[] args1 = {
                 script(),
                 "compile",
                 "--src",
-                "../ceylon-dist/dist/samples/helloworld/source",
+                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
                 "--out",
                 "build/test-cars",
-                "com.example.helloworld"
+                sampleModule
         };
         launchCeylon(args1);
         String[] args2 = {
                 script(),
                 "doc",
                 "--src",
-                "../ceylon-dist/dist/samples/helloworld/source",
+                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
                 "--out",
                 "build/test-cars",
-                "com.example.helloworld"
+                sampleModule
         };
         launchCeylon(args2);
+        String modVer = (sampleVersion != null) ? sampleModule + "/" + sampleVersion : sampleModule;
         String[] args3 = {
                 script(),
                 "run",
+                "--no-default-repositories",
                 "--rep",
                 "build/test-cars",
-                "com.example.helloworld/1.1.0"
+                "--rep",
+                "+USER",
+                modVer
         };
         launchCeylon(args3);
     }
     
+    @Test
+    public void testDistSampleHelloworld() throws IOException, InterruptedException {
+        testLaunchDistCeylon("helloworld", "com.example.helloworld", "1.1.1");
+    }
+        
+    @Test
+    public void testDistSampleJavaInterop() throws IOException, InterruptedException {
+        testLaunchDistCeylon("interop-java", "com.example.interop", "1.1.1");
+    }
+        
+    @Test
+    public void testDistSampleNoModule() throws IOException, InterruptedException {
+        testLaunchDistCeylon("no-module", "default", null);
+    }
+    
+    @Test
+    public void testDistSampleWithModule() throws IOException, InterruptedException {
+        testLaunchDistCeylon("with-module", "com.example.withmodule", "1.1.1");
+    }
+        
     public void launchCeylon(String[] args) throws IOException, InterruptedException {
         ProcessBuilder pb = new ProcessBuilder(args);
         pb.redirectInput(Redirect.INHERIT);
