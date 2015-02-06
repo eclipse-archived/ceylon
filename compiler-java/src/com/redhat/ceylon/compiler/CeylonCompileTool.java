@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
@@ -170,7 +171,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
-    private List<Warning> suppressWarnings = warningsFromList(DefaultToolOptions.getCompilerSuppressWarnings());
+    private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -274,7 +275,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
             "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
-    public void setSuppressWarning(List<Warning> warnings) {
+    public void setSuppressWarning(EnumSet<Warning> warnings) {
         this.suppressWarnings = warnings;
     }
 
@@ -422,7 +423,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (suppressWarnings != null) {
             arguments.add("-suppress-warnings");
-            arguments.add(warningsToString(suppressWarnings));
+            arguments.add(EnumUtil.enumsToString(Warning.class, suppressWarnings));
         }
         
         addJavacArguments(arguments);
@@ -543,40 +544,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             if (value != null) {
                 arguments.add(value);
             }
-        }
-    }
-    
-    private List<Warning> warningsFromList(List<String> warnings) {
-        if (warnings != null) {
-            ArrayList<Warning> result = new ArrayList<Warning>(warnings.size());
-            for (String elem : warnings) {
-                elem = elem.trim();
-                elem = elem.replace('-', '_');
-                for (Warning w : Warning.values()) {
-                    if (w.name().equalsIgnoreCase(elem)) {
-                        elem = w.name();
-                    }
-                }
-                result.add(EnumUtil.valueOf(Warning.class, elem));
-            }
-            return result;
-        } else {
-            return null;
-        }
-    }
-    
-    private String warningsToString(List<Warning> warnings) {
-        if (warnings != null) {
-            StringBuilder buf = new StringBuilder();
-            for (Warning w : warnings) {
-                if (buf.length() > 0) {
-                    buf.append(",");
-                }
-                buf.append(w.name());
-            }
-            return buf.toString();
-        } else {
-            return null;
         }
     }
 }
