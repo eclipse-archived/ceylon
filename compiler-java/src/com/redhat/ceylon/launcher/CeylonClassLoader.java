@@ -90,7 +90,6 @@ public class CeylonClassLoader extends URLClassLoader {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();
         File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
-        File ceylonLib = LauncherUtil.determineLibs(ceylonHome);
 
         // Perform some sanity checks
         if (!ceylonHome.isDirectory()) {
@@ -99,14 +98,8 @@ public class CeylonClassLoader extends URLClassLoader {
         if (!ceylonRepo.isDirectory()) {
             throw new FileNotFoundException("The Ceylon system repository could not be found (" + ceylonRepo + ")");
         }
-        if (!ceylonLib.isDirectory()) {
-            throw new FileNotFoundException("The Ceylon system libraries could not be found (" + ceylonLib + ")");
-        }
 
         List<File> archives = new LinkedList<File>();
-
-        // List all the JARs we find in the LIB directory
-        findLibraries(archives, ceylonLib);
 
         // List all the necessary Ceylon JARs and CARs
         String version = LauncherUtil.determineSystemVersion();
@@ -151,17 +144,6 @@ public class CeylonClassLoader extends URLClassLoader {
 
     private static File getRepoUrl(File repo, String moduleName, String version, String extension) {
         return new File(repo, moduleName.replace('.', '/') + "/" + version + "/" + moduleName + "-" + version + "." + extension);
-    }
-
-    private static void findLibraries(List<File> libs, File folder) {
-        File[] items = folder.listFiles();
-        for (File f : items) {
-            if (f.isDirectory()) {
-                findLibraries(libs, f);
-            } else if (f.getName().toLowerCase().endsWith(".jar")) {
-                libs.add(f);
-            }
-        }
     }
 
     @Override
