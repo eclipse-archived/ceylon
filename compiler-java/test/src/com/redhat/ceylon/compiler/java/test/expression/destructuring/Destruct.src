@@ -798,61 +798,61 @@ final class destructureIf_ {
         }
         .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$82$83;
         if (($pattern$entry$82$83 = maybeEntry) != null) {
-            final .java.lang.Object v$84 = ((.ceylon.language.Entry)$pattern$entry$82$83).getItem();
-            final .java.lang.String k = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$82$83).getKey()).toString();
-            final .java.lang.String key = k;
-            final .java.lang.Object item = v$84;
+            final .java.lang.Object v$85 = ((.ceylon.language.Entry)$pattern$entry$82$83).getItem();
+            final .java.lang.String k$84 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$82$83).getKey()).toString();
+            final .java.lang.String key = k$84;
+            final .java.lang.Object item = v$85;
         }
-        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$86$87;
-        if (($pattern$tuple$86$87 = names) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$89 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$86$87).skip(1).sequence();
-            final .java.lang.String name$88 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$86$87).getFromFirst(0)).toString();
-            final .java.lang.String n = name$88;
-            final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$89;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$87$88;
+        if (($pattern$tuple$87$88 = names) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$90 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$87$88).skip(1).sequence();
+            final .java.lang.String name$89 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$87$88).getFromFirst(0)).toString();
+            final .java.lang.String n = name$89;
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$90;
         }
-        .ceylon.language.Sequence $pattern$tuple$91$92;
-        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$95$96;
-        if (($pattern$tuple$91$92 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
-            final long i$94 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$91$92).getFromFirst(1)).longValue();
-            final double x$93 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$91$92).getFromFirst(0)).doubleValue();
-            if (($pattern$tuple$95$96 = names) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$98 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$95$96).skip(1).sequence();
-                final .java.lang.String name$97 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$95$96).getFromFirst(0)).toString();
-                final double c = x$93;
-                final long j = i$94;
-                final .java.lang.String n = name$97;
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$98;
+        .ceylon.language.Sequence $pattern$tuple$92$93;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$96$97;
+        if (($pattern$tuple$92$93 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+            final long i$95 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$92$93).getFromFirst(1)).longValue();
+            final double x$94 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$92$93).getFromFirst(0)).doubleValue();
+            if (($pattern$tuple$96$97 = names) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$99 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$96$97).skip(1).sequence();
+                final .java.lang.String name$98 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$96$97).getFromFirst(0)).toString();
+                final double c = x$94;
+                final long j = i$95;
+                final .java.lang.String n = name$98;
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$99;
             }
         }
-        boolean $ceylontmp$if$99 = false;
-        .ceylon.language.Sequence $pattern$tuple$100$101;
-        final long i$103;
-        final double x$102;
-        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$104$105;
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$107;
-        final .java.lang.String name$106;
-        if (($pattern$tuple$100$101 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
-            i$103 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$100$101).getFromFirst(1)).longValue();
-            x$102 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$100$101).getFromFirst(0)).doubleValue();
-            if (($pattern$tuple$104$105 = names) instanceof .ceylon.language.Sequence) {
-                rest$107 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$104$105).skip(1).sequence();
-                name$106 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$104$105).getFromFirst(0)).toString();
-                $ceylontmp$if$99 = true;
+        boolean $ceylontmp$if$100 = false;
+        .ceylon.language.Sequence $pattern$tuple$101$102;
+        final long i$104;
+        final double x$103;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$105$106;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$108;
+        final .java.lang.String name$107;
+        if (($pattern$tuple$101$102 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+            i$104 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$101$102).getFromFirst(1)).longValue();
+            x$103 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$101$102).getFromFirst(0)).doubleValue();
+            if (($pattern$tuple$105$106 = names) instanceof .ceylon.language.Sequence) {
+                rest$108 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$105$106).skip(1).sequence();
+                name$107 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$105$106).getFromFirst(0)).toString();
+                $ceylontmp$if$100 = true;
             } else {
-                rest$107 = null;
-                name$106 = null;
+                rest$108 = null;
+                name$107 = null;
             }
         } else {
-            i$103 = 0L;
-            x$102 = 0.0;
-            rest$107 = null;
-            name$106 = null;
+            i$104 = 0L;
+            x$103 = 0.0;
+            rest$108 = null;
+            name$107 = null;
         }
-        if ($ceylontmp$if$99) {
-            final double c = x$102;
-            final long j = i$103;
-            final .java.lang.String n = name$106;
-            final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$107;
+        if ($ceylontmp$if$100) {
+            final double c = x$103;
+            final long j = i$104;
+            final .java.lang.String n = name$107;
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$108;
         } else {
         }
     }
@@ -863,6 +863,69 @@ final class destructureAssert_ {
     }
     
     static void destructureAssert(final .ceylon.language.Sequence maybePair, final .ceylon.language.Sequential<? extends .ceylon.language.String> names, final .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> maybeEntry) {
+        final double x$112;
+        final long i$113;
+        .ceylon.language.Sequence $pattern$tuple$110$111 = null;
+        if (($pattern$tuple$110$111 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+            i$113 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$110$111).getFromFirst(1)).longValue();
+            x$112 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$110$111).getFromFirst(0)).doubleValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists [x, i] = maybePair"));
+        }
+        final double c = x$112;
+        final long j = i$113;
+        final .java.lang.String k$117;
+        final .java.lang.Object v$118;
+        .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$115$116 = null;
+        if (($pattern$entry$115$116 = maybeEntry) != null) {
+            v$118 = ((.ceylon.language.Entry)$pattern$entry$115$116).getItem();
+            k$117 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$115$116).getKey()).toString();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists k->v = maybeEntry"));
+        }
+        final .java.lang.String key = k$117;
+        final .java.lang.Object item = v$118;
+        final .java.lang.String name$122;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$123;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$120$121 = null;
+        if (($pattern$tuple$120$121 = names) instanceof .ceylon.language.Sequence) {
+            rest$123 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$120$121).skip(1).sequence();
+            name$122 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$120$121).getFromFirst(0)).toString();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty [name, *rest] = names"));
+        }
+        final .java.lang.String n = name$122;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$123;
+        .java.lang.String $ceylontmp$assert$124 = null;
+        final .java.lang.String name2$131;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> rest2$132;
+        final double x2$127;
+        final long i2$128;
+        .ceylon.language.Sequence $pattern$tuple$125$126 = null;
+        if (($pattern$tuple$125$126 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+            i2$128 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$125$126).getFromFirst(1)).longValue();
+            x2$127 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$125$126).getFromFirst(0)).doubleValue();
+            .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$129$130 = null;
+            if (($pattern$tuple$129$130 = names) instanceof .ceylon.language.Sequence) {
+                rest2$132 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$129$130).skip(1).sequence();
+                name2$131 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$129$130).getFromFirst(0)).toString();
+            } else {
+                rest2$132 = null;
+                name2$131 = null;
+                $ceylontmp$assert$124 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists [x2, i2] = maybePair" + (.java.lang.System.lineSeparator() + "\tviolated ") + "nonempty [name2, *rest2] = names";
+            }
+        } else {
+            i2$128 = 0L;
+            x2$127 = 0.0;
+            rest2$132 = null;
+            name2$131 = null;
+            $ceylontmp$assert$124 = .java.lang.System.lineSeparator() + "\tviolated " + "exists [x2, i2] = maybePair" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty [name2, *rest2] = names";
+        }
+        if ($ceylontmp$assert$124 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$124);
+        final double c2 = x2$127;
+        final long j2 = i2$128;
+        final .java.lang.String n2 = name2$131;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> ns2 = rest2$132;
     }
 }
 final class destructureWhile_ {
@@ -875,12 +938,12 @@ final class destructureWhile_ {
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.Integer.instance(2L)});
         loop_2: while (true) {
-            .ceylon.language.Sequence $pattern$tuple$108$109;
-            if (($pattern$tuple$108$109 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
-                final long i$111 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$108$109).getFromFirst(1)).longValue();
-                final double x$110 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$108$109).getFromFirst(0)).doubleValue();
-                final double c = x$110;
-                final long j = i$111;
+            .ceylon.language.Sequence $pattern$tuple$133$134;
+            if (($pattern$tuple$133$134 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair) != null) {
+                final long i$136 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$133$134).getFromFirst(1)).longValue();
+                final double x$135 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$133$134).getFromFirst(0)).doubleValue();
+                final double c = x$135;
+                final long j = i$136;
                 maybePair = null;
             } else {
                 break loop_2;
@@ -888,12 +951,12 @@ final class destructureWhile_ {
         }
         .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> maybeEntry = new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.Integer>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(2L));
         loop_3: while (true) {
-            .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$112$113;
-            if (($pattern$entry$112$113 = maybeEntry) != null) {
-                final .java.lang.Object v$114 = ((.ceylon.language.Entry)$pattern$entry$112$113).getItem();
-                final .java.lang.String k = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$112$113).getKey()).toString();
-                final .java.lang.String key = k;
-                final .java.lang.Object item = v$114;
+            .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$137$138;
+            if (($pattern$entry$137$138 = maybeEntry) != null) {
+                final .java.lang.Object v$140 = ((.ceylon.language.Entry)$pattern$entry$137$138).getItem();
+                final .java.lang.String k$139 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$137$138).getKey()).toString();
+                final .java.lang.String key = k$139;
+                final .java.lang.Object item = v$140;
                 maybeEntry = null;
             } else {
                 break loop_3;
@@ -903,13 +966,13 @@ final class destructureWhile_ {
                 .ceylon.language.String.instance("Enrique"),
                 .ceylon.language.String.instance("Tako")});
         loop_4: while (true) {
-            .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$115$116;
-            if (($pattern$tuple$115$116 = names) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$118 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$115$116).skip(1).sequence();
-                final .java.lang.String name$117 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$115$116).getFromFirst(0)).toString();
-                final .java.lang.String n = name$117;
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$118;
-                names = rest$118;
+            .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$141$142;
+            if (($pattern$tuple$141$142 = names) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$144 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$141$142).skip(1).sequence();
+                final .java.lang.String name$143 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$141$142).getFromFirst(0)).toString();
+                final .java.lang.String n = name$143;
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$144;
+                names = rest$144;
             } else {
                 break loop_4;
             }
@@ -920,18 +983,18 @@ final class destructureWhile_ {
         .ceylon.language.Sequential<? extends .ceylon.language.String> names2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("Enrique"),
                 .ceylon.language.String.instance("Tako")});
-        .ceylon.language.Sequence $pattern$tuple$120$121;
-        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$124$125;
-        if (($pattern$tuple$120$121 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair2) != null) {
-            final long i$123 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$120$121).getFromFirst(1)).longValue();
-            final double x$122 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$120$121).getFromFirst(0)).doubleValue();
-            if (($pattern$tuple$124$125 = names2) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$127 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$124$125).skip(1).sequence();
-                final .java.lang.String name$126 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$124$125).getFromFirst(0)).toString();
-                final double c = x$122;
-                final long j = i$123;
-                final .java.lang.String n = name$126;
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$127;
+        .ceylon.language.Sequence $pattern$tuple$146$147;
+        .ceylon.language.Sequential<? extends .ceylon.language.String> $pattern$tuple$150$151;
+        if (($pattern$tuple$146$147 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)maybePair2) != null) {
+            final long i$149 = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$146$147).getFromFirst(1)).longValue();
+            final double x$148 = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$146$147).getFromFirst(0)).doubleValue();
+            if (($pattern$tuple$150$151 = names2) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> rest$153 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$150$151).skip(1).sequence();
+                final .java.lang.String name$152 = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$150$151).getFromFirst(0)).toString();
+                final double c = x$148;
+                final long j = i$149;
+                final .java.lang.String n = name$152;
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> ns = rest$153;
                 maybePair = null;
             }
         }

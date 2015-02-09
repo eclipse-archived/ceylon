@@ -150,20 +150,20 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
 
 @noanno
 void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
-    //assert (exists [x, i] = maybePair);
-    //Float c = x;
-    //Integer j = i;
-    //assert (exists k->v = maybeEntry);
-    //String key = k;
-    //Object item = v;
-    //assert (nonempty [name, *rest] = names);
-    //String n = name;
-    //String[] ns = rest;
-    //assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
-    //Float c2 = x2;
-    //Integer j2 = i2;
-    //String n2 = name2;
-    //String[] ns2 = rest2;
+    assert (exists [x, i] = maybePair);
+    Float c = x;
+    Integer j = i;
+    assert (exists k->v = maybeEntry);
+    String key = k;
+    Object item = v;
+    assert (nonempty [name, *rest] = names);
+    String n = name;
+    String[] ns = rest;
+    assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
+    Float c2 = x2;
+    Integer j2 = i2;
+    String n2 = name2;
+    String[] ns2 = rest2;
 }
 
 @noanno
