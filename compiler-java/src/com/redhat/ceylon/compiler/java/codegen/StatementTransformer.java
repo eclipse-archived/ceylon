@@ -3028,7 +3028,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             int modifiers = transformLocalFieldDeclFlags(decl);
             JCExpression typeExpr = makeJavaType(decl.getDeclarationModel(), t, modifiers);
-            result.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, typeExpr, initialValue));
+            result.append(at(decl.getIdentifier()).VarDef(at(decl.getIdentifier()).Modifiers(modifiers, annots), attrName, typeExpr, initialValue));
             
             JCStatement outerSubs = openOuterSubstitutionIfNeeded(
                     decl.getDeclarationModel(), t, annots, modifiers);
