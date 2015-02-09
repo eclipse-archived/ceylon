@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.test.fordebug.Tracer;
+import com.redhat.ceylon.compiler.java.test.fordebug.Opcode;
 import com.sun.jdi.Location;
 import com.sun.jdi.Method;
 import com.sun.jdi.ThreadReference;
@@ -297,7 +298,7 @@ public class TracerImpl implements Tracer {
     }
     
     public class StepImpl implements Step, Handler<StepEvent> {
-
+        private ThreadReference mainThread;
         private String within = null;
         private final StepRequest request;
         private HandlerResult result = HandlerResult.RESUME;
@@ -305,7 +306,7 @@ public class TracerImpl implements Tracer {
         
         StepImpl() {
             super();
-            ThreadReference mainThread = findMainThread(vm);
+            mainThread = findMainThread(vm);
             request = rm.createStepRequest(mainThread, StepRequest.STEP_LINE, StepRequest.STEP_INTO);
         }
         
@@ -338,7 +339,40 @@ public class TracerImpl implements Tracer {
         }
         
         public StepImpl log() {
-            this.logger = STEP_EVENT_LOGGER;
+            this.logger = new EventLogger<StepEvent>() {
+                @Override
+                public void log(StepEvent event) throws Exception {
+                    Location location = event.location();
+                    StringBuilder sb = new StringBuilder();
+                    for (int ii = 0; ii < mainThread.frames().size(); ii++) {
+                        sb.append('.');
+                    }
+                    sb.append(location.sourceName()).append(':');
+                    if (location.lineNumber() == -1) {
+                        sb.append('?');
+                    } else {
+                        sb.append(location.lineNumber());
+                    }
+                    sb.append(':');
+                    Method m = location.method();
+                    String atns = m.argumentTypeNames().toString();
+                    sb.append(m.name()).append('(').append(atns.substring(1, atns.length()-1)).append(')');
+                    sb.append(':');
+                    long ci = location.codeIndex();
+                    if (ci == -1) {
+                        sb.append('?');
+                        sb.append(':');
+                        sb.append('?');
+                    } else {
+                        sb.append(ci);
+                        byte instuction = m.bytecodes()[(int)ci];
+                        sb.append(':');
+                        sb.append(Opcode.values()[(int)instuction & 0xFF]);
+                    }
+                    TracerImpl.this.log(sb.toString());
+                }
+                
+            };
             return this;
         }
         
@@ -354,24 +388,5 @@ public class TracerImpl implements Tracer {
             }
             return result;
         }
-        
     }
-    
-    EventLogger<StepEvent> STEP_EVENT_LOGGER = new EventLogger<StepEvent>() {
-        @Override
-        public void log(StepEvent event) throws Exception {
-            Location location = event.location();
-            Method m = location.method();
-            String atns = m.argumentTypeNames().toString();
-            String aa = atns.substring(1, atns.length()-1);
-            String methodDesc = m.name()+"(" + aa + ")";
-            if (location.lineNumber() == -1) {
-                TracerImpl.this.log(location.sourceName() + ":?:" + methodDesc);
-            } else {
-                TracerImpl.this.log(location.sourceName() + ":" + location.lineNumber() + ":" + methodDesc);
-            }
-        }
-        
-    };
-    
 }
