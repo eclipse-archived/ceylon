@@ -158,7 +158,10 @@ public class DebuggerTests extends CompilerTests {
         javac.appendClassPath(jdiJar);
         javac.appendClassPath("build/classes");
         System.out.println("Compiling test classes: "+ javac);
-        javac.exec();
+        int sc = javac.exec();
+        if (sc != 0) {
+            throw new RuntimeException("javac did not return normally");
+        }
         
         tracerClassLoader = new URLClassLoader(
                 new URL[]{
