@@ -109,6 +109,7 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCSwitch;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -3511,7 +3512,7 @@ public abstract class AbstractTransformer implements Transformation {
             int flags) {
         java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
         int i = 0;
-        ListBuffer<JCExpression> expressions = new ListBuffer<JCExpression>();
+        ListBuffer<JCStatement> returns = new ListBuffer<JCStatement>();
         boolean spread = false;
         boolean old = expressionGen().withinSyntheticClassBody(true);
         try{
@@ -3541,11 +3542,12 @@ public abstract class AbstractTransformer implements Transformation {
                 }else{
                     jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
                 }
+                at(arg);
                 // the last iterable goes first if spread
-                expressions.add(jcExpression);
+                returns.add(make().Return(jcExpression));
                 i++;
             }
-            
+            at(sequencedArgument);
             if (Strategy.preferLazySwitchingIterable(sequencedArgument.getPositionalArguments())) {
                 // use a LazySwitchingIterable
                 MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$evaluate$.toString());
@@ -3554,14 +3556,18 @@ public abstract class AbstractTransformer implements Transformation {
                 mdb.resultType(null, make().Type(syms().objectType));
                 mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, Unfix.$index$.toString())
                         .type(make().Type(syms().intType), null));
-
-                ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
-                i = 0;
-                for (JCExpression e : expressions) {
-                    cases.add(make().Case(make().Literal(i++), List.<JCStatement>of(make().Return(e))));
+                JCSwitch swtch;
+                try (SavedPosition sp = noPosition()) {
+                    ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+                
+                    i = 0;
+                    for (JCStatement e : returns) {
+                        cases.add(make().Case(make().Literal(i++), List.<JCStatement>of(e)));
+                    }
+                    cases.add(make().Case(null, List.<JCStatement>of(make().Return(makeNull()))));
+                    swtch = make().Switch(naming.makeUnquotedIdent(Unfix.$index$), cases.toList());
                 }
-                cases.add(make().Case(null, List.<JCStatement>of(make().Return(makeNull()))));
-                mdb.body(make().Switch(naming.makeUnquotedIdent(Unfix.$index$), cases.toList()));
+                mdb.body(swtch);
 
                 return make().NewClass(null, 
                         List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
@@ -3596,12 +3602,12 @@ public abstract class AbstractTransformer implements Transformation {
                         List.<JCExpression>of(naming.makeThis()))));
                 methods.add(mdb.build());
                 i = 0;
-                for (JCExpression expr : expressions) {
+                for (JCStatement expr : returns) {
                     mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
                     i++;
                     mdb.modifiers(PRIVATE | FINAL);
                     mdb.resultType(null, make().Type(syms().objectType));
-                    mdb.body(make().Return(expr));
+                    mdb.body(expr);
                     methods.add(mdb.build());
                 }
                 return make().NewClass(null, 

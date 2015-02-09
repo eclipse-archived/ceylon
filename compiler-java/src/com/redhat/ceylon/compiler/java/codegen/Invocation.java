@@ -1248,6 +1248,7 @@ class NamedArgumentInvocation extends Invocation {
         Naming.SyntheticName argName = argName(parameter);
 
         JCTree.JCVariableDecl varDecl = gen.makeVar(argName, sequenceType, sequenceValue);
+        gen.at(getPrimary());
         bind(parameter, argName, gen.makeJavaType(parameterType, flags), List.<JCTree.JCStatement>of(varDecl));
     }
 
