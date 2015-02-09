@@ -31,7 +31,7 @@ public class TraceTests extends DebuggerTests {
             // resume until we hit that, then disable it
             tracer.resume();
             entry.disable();
-            // now log everything within DefaultedParameters.ceylon
+            // now step into everything, logging only events which come from code in the given source file.
             Step step = tracer.step().within(sourceName).log().enable();
             // and also listen out for when we exit main()
             MethodExit exit = tracer.methodExit().classFilter(mainClass).methodFilter("main").result(HandlerResult.SUSPEND).enable();
@@ -59,6 +59,14 @@ public class TraceTests extends DebuggerTests {
         compileAndTrace(
                 "com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParametersMain_",
                 "trace/DefaultedParameters"
+                );
+    }
+    
+    @Test
+    public void testBug2046() throws Exception {
+        compileAndTrace(
+                "com.redhat.ceylon.compiler.java.test.fordebug.trace.bug2046_",
+                "trace/Bug2046"
                 );
     }
     
