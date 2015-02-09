@@ -68,7 +68,12 @@ public class Javac {
 
     private List<String> buildArgs() {
         List<String> args = new ArrayList<String>();
-        args.add("javac");
+        String home = System.getenv("JAVA_HOME");
+        if (home != null) {
+            args.add(home+"bin/javac");
+        } else {
+            args.add("javac");
+        }
         if (verbose) {
             args.add("-verbose");
         }
