@@ -53,13 +53,14 @@ final class defaultedParameters_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class defaultedParametersMain_ {
+public final class defaultedParametersMain_ {
     
     private defaultedParametersMain_() {
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    static void defaultedParametersMain() {
+    public static void defaultedParametersMain() {
         .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters();
         .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters("1");
         (
@@ -70,5 +71,11 @@ final class defaultedParametersMain_ {
             }
             returning .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters(arg$3$0, arg$3$1);
         );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParametersMain_.defaultedParametersMain();
     }
 }
