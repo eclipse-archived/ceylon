@@ -360,7 +360,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<Substitution> getSubstitutions(VarTrans vartrans) {
             if (vartrans.hasResultDecl()) {
                 List<Substitution> subs = List.nil();
-                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), null, null, true);
+                List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
                 for (VarDefBuilder v : vars) {
                     subs = subs.append(naming.substituteAlias(v.var.getDeclarationModel()));
                 }
@@ -517,12 +517,12 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformCommonResultDecl(
                 VarTrans vartrans, List<JCStatement> stmts) {
             if (vartrans.hasResultDecl()) {
-                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
                 for (VarDefBuilder vdb : vars) {
                     if (isDeferred()) {
-                        unassignedResultVars = unassignedResultVars.prepend(makeDefaultAssignment(vdb.model(), vdb.name()));
+                        unassignedResultVars = unassignedResultVars.prepend(make().Exec(vdb.buildDefaultAssign()));
                         varDecls.prepend(vdb.buildDefOnly());
-                        stmts = stmts.prepend(make().Exec(make().Assign(vdb.name().makeIdent(), vdb.expr())));
+                        stmts = stmts.prepend(make().Exec(vdb.buildAssign()));
                     } else {
                         stmts = stmts.prepend(vdb.build());
                     }
@@ -700,7 +700,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformCommonResultDecl(
                 VarTrans vartrans, List<JCStatement> stmts) {
             if (vartrans.hasResultDecl()) {
-                List<VarDefBuilder> vars = transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
                 for (VarDefBuilder v : vars) {
                     stmts = stmts.prepend(v.build());
                 }
@@ -773,25 +773,32 @@ public class StatementTransformer extends AbstractTransformer {
             return this.conditions.size() > 1;
         }
         
-        protected List<Substitution> getSubstitutions(VarTrans var) {
-            List<Substitution> subs = super.getSubstitutions(var);
+        protected List<Substitution> getSubstitutions(VarTrans vartrans) {
+            List<Substitution> subs = super.getSubstitutions(vartrans);
             if (subs == null) {
                 return subs;
             }
-            Scope scope = var.getVariable().getScope().getScope();
-            while (scope instanceof ConditionScope) {
-                scope = scope.getScope();
+            List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
+            Set<Scope> scopes = new HashSet<Scope>();
+            for (VarDefBuilder v : vars) {
+                Scope scope = v.var.getScope().getScope();
+                while (scope instanceof ConditionScope) {
+                    scope = scope.getScope();
+                }
+                scopes.add(scope);
+                // make sure we get a variable name now, and that it doesn't change over time, because
+                // we will need this variable name in transformCommonResultDecl(), which declares it,
+                // and it runs after we process inner conditions, and if we are an assert, inner conditions
+                // may declare new substitutions, which do not close until the end of the outer scope,
+                // so if we use substitutions we will get substituted names, rather than the name we should
+                // be declaring. See https://github.com/ceylon/ceylon-compiler/issues/1532
+                v.name();
             }
-            for (Substitution s : subs) {
-                s.scopeClose(scope);
+            for (Scope scope : scopes) {
+                for (Substitution s : subs) {
+                    s.scopeClose(scope);
+                }
             }
-            // make sure we get a variable name now, and that it doesn't change over time, because
-            // we will need this variable name in transformCommonResultDecl(), which declares it,
-            // and it runs after we process inner conditions, and if we are an assert, inner conditions
-            // may declare new substitutions, which do not close until the end of the outer scope,
-            // so if we use substitutions we will get substituted names, rather than the name we should
-            // be declaring. See https://github.com/ceylon/ceylon-compiler/issues/1532
-            var.getVariableName();
             return subs;
         }
         
@@ -815,17 +822,16 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
 
-        protected List<JCStatement> transformCommonResultDecl(VarTrans var,
+        protected List<JCStatement> transformCommonResultDecl(VarTrans vartrans,
                 List<JCStatement> stmts) {
-            if (var.hasResultDecl()) {
-                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        var.getVariableName().asName(), 
-                        var.makeTypeExpr(), 
-                        null);
-                unassignedResultVars = unassignedResultVars.prepend(makeDefaultAssignment(var.getType(), var.getVariableName()));
-                (Decl.getNonConditionScope(ass.getScope()) instanceof ClassOrInterface
-                        && var.getVariable().getDeclarationModel().isCaptured() ? fieldDecls : varDecls).append(resultVarDecl);
-                stmts = stmts.prepend(make().Exec(make().Assign(var.getVariableName().makeIdent(), var.makeResultExpr())));
+            if (vartrans.hasResultDecl()) {
+                List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
+                for (VarDefBuilder v : vars) {
+                    unassignedResultVars = unassignedResultVars.prepend(make().Exec(v.buildDefaultAssign()));
+                    (Decl.getNonConditionScope(ass.getScope()) instanceof ClassOrInterface
+                            && v.var.getDeclarationModel().isCaptured() ? fieldDecls : varDecls).append(v.buildDefOnly());
+                    stmts = stmts.prepend(make().Exec(v.buildAssign()));
+                }
             }
             return stmts;
         }
@@ -907,7 +913,7 @@ public class StatementTransformer extends AbstractTransformer {
     interface VarTrans {
         
         public Tree.Variable getVariable();
-        public Tree.Statement getVarOrDestructure();
+        public List<VarDefBuilder> getVarDefBuilders();
         
         public CName getVariableName();
         public CName getTestVariableName();
@@ -932,6 +938,7 @@ public class StatementTransformer extends AbstractTransformer {
         private final Tree.Expression specifierExpr;
         private final Tree.Statement varOrDes;
         private final CName testVarName;
+        private final List<VarDefBuilder> vdBuilders;
         
         private CName variableName;
         
@@ -959,6 +966,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 this.toType = specifierExpr.getTypeModel();
             }
+            vdBuilders = transformDestructure(varOrDes, getTestVariableName().makeIdent(), getResultType(), true);
         }
         
         @Override
@@ -967,8 +975,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        public final Tree.Statement getVarOrDestructure() {
-            return varOrDes;
+        public List<VarDefBuilder> getVarDefBuilders() {
+            return vdBuilders;
         }
         
         @Override
@@ -985,7 +993,7 @@ public class StatementTransformer extends AbstractTransformer {
                 variableName = naming.substituted(getVariable().getDeclarationModel()).capture();
             return variableName;
         }
-        
+
         @Override
         public final CName getTestVariableName() {
             return testVarName;
@@ -1315,7 +1323,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
 
                 @Override
-                public final Tree.Statement getVarOrDestructure() {
+                public List<VarDefBuilder> getVarDefBuilders() {
                     return null;
                 }
                 
@@ -4116,8 +4124,10 @@ public class StatementTransformer extends AbstractTransformer {
 
     static class VarDefBuilder {
         private final ExpressionTransformer gen;
-        public final Variable var;
-        public final JCExpression initExpr;
+        private final Variable var;
+        private final JCExpression initExpr;
+        private SyntheticName name;
+        private boolean built;
         
         public VarDefBuilder(ExpressionTransformer gen, Variable var, JCExpression initExpr) {
             this.gen = gen;
@@ -4125,26 +4135,37 @@ public class StatementTransformer extends AbstractTransformer {
             this.initExpr = initExpr;
         }
         
-        public ProducedType model() {
+        private ProducedType model() {
             return gen.typeFact().denotableType(var.getType().getTypeModel());
         }
         
-        public SyntheticName name() {
-            return gen.naming.substituted(var.getDeclarationModel()).capture();
+        private SyntheticName name() {
+            if (name == null) {
+                name = gen.naming.substituted(var.getDeclarationModel()).capture();
+            }
+            return name;
         }
         
-        public JCExpression type() {
+        private JCExpression type() {
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
             return gen.makeJavaType(model(), (boxingStrategy == BoxingStrategy.BOXED) ? JT_NO_PRIMITIVES : 0);
         }
         
-        public JCExpression expr() {
+        private JCExpression expr() {
+            if (built) {
+                throw new BugException(var, "Variable expression can only be used once");
+            }
             return initExpr;
+        }
+        
+        Substitution alias() {
+            return gen.naming.substituteAlias(var.getDeclarationModel());
         }
         
         JCVariableDecl build() {
             gen.at(var);
             JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), expr());
+            built = true;
             return def;
         }
         
@@ -4169,6 +4190,13 @@ public class StatementTransformer extends AbstractTransformer {
         JCAssign buildAssign() {
             gen.at(var);
             JCAssign def = gen.make().Assign(name().makeIdent(), expr());
+            built = true;
+            return def;
+        }
+        
+        JCAssign buildDefaultAssign() {
+            gen.at(var);
+            JCAssign def = gen.make().Assign(name().makeIdent(), gen.makeDefaultExprForType(model()));
             return def;
         }
         

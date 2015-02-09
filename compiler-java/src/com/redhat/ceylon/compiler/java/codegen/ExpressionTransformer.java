@@ -75,10 +75,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
@@ -5122,9 +5119,9 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             private List<VarDefBuilder> addVarSubs(VarTrans vartrans) {
                 if (vartrans.hasResultDecl()) {
-                    List<VarDefBuilder> vars = statementGen().transformDestructure(vartrans.getVarOrDestructure(), vartrans.getTestVariableName().makeIdent(), vartrans.getResultType(), true);
+                    List<VarDefBuilder> vars = vartrans.getVarDefBuilders();
                     for (VarDefBuilder v : vars) {
-                        fieldSubst.add(naming.substituteAlias(v.var.getDeclarationModel()));
+                        fieldSubst.add(v.alias());
                     }
                     return vars;
                 }
@@ -5290,9 +5287,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return null;
             }
             for (VarDefBuilder vdb : vdbs) {
-                valueCaptures.append(makeVar(Flags.FINAL, vdb.name(), vdb.type(), vdb.name().makeIdentWithThis()));
-                fields.add(makeVar(Flags.PRIVATE, vdb.name(), vdb.type(), null));
-                elseBody.add(make().Exec(make().Assign(vdb.name().makeIdent(), vdb.expr())));
+                valueCaptures.append(vdb.buildFromField());
+                fields.add(vdb.buildField());
+                elseBody.add(make().Exec(vdb.buildAssign()));
             }
             fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy(Suffix.$exhausted$).asName(),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
