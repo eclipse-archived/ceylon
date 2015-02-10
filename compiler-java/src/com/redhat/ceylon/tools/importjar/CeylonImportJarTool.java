@@ -76,7 +76,21 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
         "`com.example.foobar/1.2.0`.\n" +
         "\n" +
         "`<jar-file>` is the name of the Jar file to import.")
-@RemainingSections(OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
+@RemainingSections("## Descriptors" +
+        "\n\n" +
+        "When the import-jar tool analyses the <jar-file> and complains about missing " +
+        "dependencies a module descriptor file should be provided. The name of this " +
+        "file can be provided using the `--descriptor` option or, when left out, the tool " +
+        "will look for `<jar-file>.module.properties` or `<jar-file>.module.xml`. " +
+        "\n\n" +
+        "The format of these `.properties` or `.xml` files is documented online: " +
+        "http://www.ceylon-lang.org/documentation/1.1/reference/structure/module/#legacy_modules " +
+        "\n\n" +
+        "If the option `--update-descriptor` is given the tool will try to update the " +
+        "given descriptor file with the available information (for now this only works " +
+        "for the `.properties` files). If the file didn't exist yet it will be created." +
+        "\n\n" +
+        OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     private ModuleSpec module;
@@ -771,7 +785,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             }
             append(".").newline();
         } else {
-            throw new ToolUsageError(Messages.msg(ImportJarMessages.RESOURCE_BUNDLE, "error.problemsFound"));
+            String msgKey;
+            if (!updateDescriptor && descriptor == null) {
+                msgKey = "error.problemsFoundSuggest";
+            } else {
+                msgKey = "error.problemsFound";
+            }
+            throw new ToolUsageError(Messages.msg(ImportJarMessages.RESOURCE_BUNDLE, msgKey));
         }
     }
 
