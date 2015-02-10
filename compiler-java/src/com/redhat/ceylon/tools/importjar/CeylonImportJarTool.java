@@ -220,7 +220,6 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                             append("    ").append(mod).newline();
                             expectedDependencies.add(new ModuleDependencyInfo(mod, JDKUtils.jdk.version, false, true));
                         }
-                        hasProblems = true;
                     }
                     if (!externalPackages.isEmpty()) {
                         msg("info.declare.module.imports").newline();
