@@ -215,26 +215,31 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
         
         @OptionArgument
+        @Description("Specifies the name for the new module.")
         public void setModuleName(String moduleName) {
             this.moduleName.setVariableValue(new GivenValue(moduleName));
         }
         
         @OptionArgument
+        @Description("Specifies the version for the new module.")
         public void setModuleVersion(String moduleVersion) {
             this.moduleVersion.setVariableValue(new GivenValue(moduleVersion));
         }
         
         @OptionArgument
+        @Description("Indicates if an Eclipse project should be generated or not.")
         public void setEclipse(boolean eclipse) {
             this.eclipse.setVariableValue(new GivenValue(Boolean.toString(eclipse)));
         }
         
         @OptionArgument
+        @Description("Specifies the name for the Eclipse project.")
         public void setEclipseProjectName(String eclipseProjectName) {
             this.eclipseProjectName.setVariableValue(new GivenValue(eclipseProjectName));
         }
         
         @OptionArgument
+        @Description("Indicates if an Ant build file should be generated or not.")
         public void setAnt(boolean ant) {
             this.ant.setVariableValue(new GivenValue(Boolean.toString(ant)));
         }
@@ -292,7 +297,9 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
     }
     
-    @Description("Generates a 'Hello World' style project")
+    @Description("Generates a 'Hello World' style project." +
+            "\n\n" +
+            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
     public class HelloWorld extends BaseProject {
 
         public HelloWorld() {
@@ -300,7 +307,9 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
     }
     
-    @Description("Generates a very simple empty project")
+    @Description("Generates a very simple empty project" +
+            "\n\n" +
+            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
     public class Simple extends BaseProject {
 
         public Simple() {
@@ -308,7 +317,9 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
     }
     
-    @Description("Generates a project that is able to use Java legacy code")
+    @Description("Generates a project that is able to use Java legacy code" +
+            "\n\n" +
+            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
     public class JavaInterop extends BaseProject {
 
         public JavaInterop() {
