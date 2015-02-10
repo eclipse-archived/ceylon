@@ -158,10 +158,9 @@ void destructureInForComprehensions({[String, Float[], String->String]*} iter, {
     } else {
         fail("destr comps 7");
     }
-    // FIXME Still fails in the JVM backend
-    //value xsif1 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup) [s1->s2, y, x] };
-    //value xsif2 = { for ([x, y, s1->s2] in iter) if (nonempty [y1, *restys] = y) [s1->s2, y1, x] };
-    //value xsif3 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup, nonempty [y1, *restys] = y) [s1->s2, y1, x] };
+    value xsif1 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup) [s1->s2, y, x] };
+    value xsif2 = { for ([x, y, s1->s2] in iter) if (nonempty [y1, *restys] = y) [s1->s2, y1, x] };
+    value xsif3 = { for (tup in iter2) if (exists [x, y, s1->s2]=tup, nonempty [y1, *restys] = y) [s1->s2, y1, x] };
 }
 
 void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
@@ -193,82 +192,79 @@ void destructureIf([Float, Integer]? maybePair, String[] names, <String->Object>
         check(n=="Tako", "destr if 3");
         check(ns==["Enrique"], "destr if 4");
     }
-    // FIXME Still fails in the JVM backend
-    //if (exists [x, i] = maybePair, nonempty [name, *rest] = names) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    String n = name;
-    //    String[] ns = rest;
-    //} else {
-    //    // Do nothing, just need an else block
-    //}
+    if (exists [x, i] = maybePair, nonempty [name, *rest] = names) {
+        Float c = x;
+        Integer j = i;
+        String n = name;
+        String[] ns = rest;
+    } else {
+        // Do nothing, just need an else block
+    }
 }
 
 void destructureAssert([Float, Integer]? maybePair, String[] names, <String->Object>? maybeEntry) {
-    // FIXME Still fails in the JVM backend
-    //assert (exists [x, i] = maybePair);
-    //Float c = x;
-    //Integer j = i;
-    //check(c==1.0, "destr assert 1");
-    //check(j==2, "destr assert 2");
-    //assert (exists k->v = maybeEntry);
-    //String key = k;
-    //Object item = v;
-    //check(key=="K", "destr assert 3");
-    //check(item is Singleton<String>, "destr assert 4");
-    //assert (nonempty [name, *rest] = names);
-    //String n = name;
-    //String[] ns = rest;
-    //check(n=="Tako", "destr assert 5");
-    //check(ns==["Enrique"], "destr assert 6");
-    //assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
-    //Float c2 = x2;
-    //Integer j2 = i2;
-    //String n2 = name2;
-    //String[] ns2 = rest2;
-    //check(c2==1.0 && j2==2, "destr assert 7");
-    //check(n2=="Tako" && ns2==["Enrique"], "destr assert 8");
+    assert (exists [x, i] = maybePair);
+    Float c = x;
+    Integer j = i;
+    check(c==1.0, "destr assert 1");
+    check(j==2, "destr assert 2");
+    assert (exists k->v = maybeEntry);
+    String key = k;
+    Object item = v;
+    check(key=="K", "destr assert 3");
+    check(item is Singleton<String>, "destr assert 4");
+    assert (nonempty [name, *rest] = names);
+    String n = name;
+    String[] ns = rest;
+    check(n=="Tako", "destr assert 5");
+    check(ns==["Enrique"], "destr assert 6");
+    assert (exists [x2, i2] = maybePair, nonempty [name2, *rest2] = names);
+    Float c2 = x2;
+    Integer j2 = i2;
+    String n2 = name2;
+    String[] ns2 = rest2;
+    check(c2==1.0 && j2==2, "destr assert 7");
+    check(n2=="Tako" && ns2==["Enrique"], "destr assert 8");
 }
 
 void destructureWhile() {
-    // FIXME Still fails in the JVM backend
-    //variable [Float, Integer]? maybePair = [1.0, 2];
-    //while (exists [x, i] = maybePair) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    check(c==1.0, "destr while 1");
-    //    check(j==2, "destr while 2");
-    //    maybePair = null;
-    //}
-    //variable <String->Object>? maybeEntry = "K"->Singleton("V");
-    //while (exists k->v = maybeEntry) {
-    //    String key = k;
-    //    Object item = v;
-    //    check(key=="K", "destr while 3");
-    //    check(item is Singleton<String>, "destr while 4");
-    //    maybeEntry = null;
-    //}
-    //variable String[] names = ["Tako", "Enrique"];
-    //while (nonempty [name, *rest] = names) {
-    //    String n = name;
-    //    String[] ns = rest;
-    //    check(n=="Tako", "destr while 5");
-    //    check(ns==["Enrique"], "destr while 6");
-    //    names = [];
-    //}
-    //variable [Float, Integer]? maybePair2 = [1.0, 2];
-    //variable String[] names2 = ["Tako", "Enrique"];
-    //if (exists [x, i] = maybePair2, nonempty [name, *rest] = names2) {
-    //    Float c = x;
-    //    Integer j = i;
-    //    String n = name;
-    //    String[] ns = rest;
-    //    check(c==1.0, "destr while 7");
-    //    check(j==2, "destr while 8");
-    //    check(n=="Tako", "destr while 9");
-    //    check(ns==["Enrique"], "destr while 10");
-    //    maybePair = null;
-    //}
+    variable [Float, Integer]? maybePair = [1.0, 2];
+    while (exists [x, i] = maybePair) {
+        Float c = x;
+        Integer j = i;
+        check(c==1.0, "destr while 1");
+        check(j==2, "destr while 2");
+        maybePair = null;
+    }
+    variable <String->Object>? maybeEntry = "K"->Singleton("V");
+    while (exists k->v = maybeEntry) {
+        String key = k;
+        Object item = v;
+        check(key=="K", "destr while 3");
+        check(item is Singleton<String>, "destr while 4");
+        maybeEntry = null;
+    }
+    variable String[] names = ["Tako", "Enrique"];
+    while (nonempty [name, *rest] = names) {
+        String n = name;
+        String[] ns = rest;
+        check(n=="Tako", "destr while 5");
+        check(ns==["Enrique"], "destr while 6");
+        names = [];
+    }
+    variable [Float, Integer]? maybePair2 = [1.0, 2];
+    variable String[] names2 = ["Tako", "Enrique"];
+    if (exists [x, i] = maybePair2, nonempty [name, *rest] = names2) {
+        Float c = x;
+        Integer j = i;
+        String n = name;
+        String[] ns = rest;
+        check(c==1.0, "destr while 7");
+        check(j==2, "destr while 8");
+        check(n=="Tako", "destr while 9");
+        check(ns==["Enrique"], "destr while 10");
+        maybePair = null;
+    }
 }
 
 void simpleDestructuring() {
