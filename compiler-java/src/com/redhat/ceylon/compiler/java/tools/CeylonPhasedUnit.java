@@ -38,7 +38,7 @@ public class CeylonPhasedUnit extends PhasedUnit {
     public CeylonPhasedUnit(VirtualFile unitFile, VirtualFile srcDir,
             CompilationUnit cu, Package p, ModuleManager moduleManager,
             Context context, JavaFileObject fileObject, LineMap map) {
-        super(unitFile, srcDir, cu, p, moduleManager, context);
+        super(unitFile, srcDir, cu, p, moduleManager, context, null);
         this.fileObject = fileObject;
         this.lineMap = map;
     }
