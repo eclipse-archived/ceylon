@@ -135,7 +135,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         moduleManager.push(dir.getName());
         
         // See if we're defining a new module
-        final List<VirtualFile> files = dir.getChildren();
+        final List<? extends VirtualFile> files = dir.getChildren();
         boolean definesModule = false;
         for (VirtualFile file : files) {
             if (ModuleManager.MODULE_FILE.equals(file.getName())) {
