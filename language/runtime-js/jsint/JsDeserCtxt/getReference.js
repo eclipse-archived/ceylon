@@ -1,7 +1,7 @@
 function(id,mp$){
   var idx=this.ids.indexOf(id);
   if (idx<0) {
-    throw AssertionError("cannot obtain reference to unregistered id: " + id);
+    return null;
   }
   var r=this.refs[idx];
   //and this is as ugly as it gets
