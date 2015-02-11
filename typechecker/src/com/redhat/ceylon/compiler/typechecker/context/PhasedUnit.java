@@ -122,12 +122,6 @@ public class PhasedUnit {
         this.flowAnalyzed = other.flowAnalyzed;
     }
 
-    @Deprecated
-    protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleManager moduleManager, Context context) {
-        this(unitFile, srcDir, cu, p, moduleManager, context, null);
-    }
-    
     protected boolean reuseExistingDescriptorModels() {
         return false;
     }
