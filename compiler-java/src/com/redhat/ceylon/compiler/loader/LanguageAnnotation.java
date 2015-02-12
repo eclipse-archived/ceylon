@@ -99,7 +99,9 @@ public enum LanguageAnnotation {
     SUPPRESS_WARNINGS("suppressWarnings", 0, AbstractModelLoader.CEYLON_LANGUAGE_SUPPRESS_WARNINGS_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            anno.addPositionalArgment((String)mirror.getValue("warnings"));
+            for (String tag : (List<String>)mirror.getValue("warnings")) {
+                anno.addPositionalArgment(tag);
+            }
             return Collections.singletonList(anno);
         }
     };
