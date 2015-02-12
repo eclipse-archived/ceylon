@@ -25,10 +25,12 @@ function className(obj) {
             return tn;
         }
     }
-    var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
-    if (tn === 'UNKNOWN') {
+    var tn = obj.getT$name && obj.getT$name();
+    if (!tn) {
         if (typeof obj === 'function') {
             tn = 'ceylon.language::Callable';
+        } else {
+            tn = 'UNKNOWN';
         }
     }
     /*else if (obj.$$targs$$) {

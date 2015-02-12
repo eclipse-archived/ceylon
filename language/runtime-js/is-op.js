@@ -8,7 +8,7 @@ function is$(obj,type,containers){
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;
     }
-    if(obj.getT$all===undefined){
+    if(obj.getT$all===undefined || !obj.getT$all()){
       if(obj.$crtmm$){
         var _mm=getrtmm$$(obj);
         //We can navigate the metamodel
