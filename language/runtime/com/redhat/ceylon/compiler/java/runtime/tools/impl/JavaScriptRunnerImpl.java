@@ -39,10 +39,12 @@ public class JavaScriptRunnerImpl implements Runner {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        tool.setNoDefRepos(options.isNoDefaultRepositories());
         tool.setSystemRepository(options.getSystemRepository());
         tool.setOffline(options.isOffline());
+        tool.setRun(options.getRun());
         if(options.isVerbose())
-            tool.setVerbose("");
+            tool.setVerbose(options.getVerboseCategory());
     }
 
     @Override

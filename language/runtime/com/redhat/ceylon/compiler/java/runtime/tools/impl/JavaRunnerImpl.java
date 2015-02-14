@@ -39,12 +39,14 @@ public class JavaRunnerImpl implements JavaRunner {
     private ClassLoader delegateClassLoader;
     private String module;
     private Map<String, String> extraModules;
+    private String className;
     
     public JavaRunnerImpl(RunnerOptions options, String module, String version){
         repositoryManager = CeylonUtils.repoManager()
                 .userRepos(options.getUserRepositories())
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
+                .noDefaultRepos(options.isNoDefaultRepositories())
                 .buildManager();
         if(options instanceof JavaRunnerOptions){
             delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();
@@ -54,6 +56,12 @@ public class JavaRunnerImpl implements JavaRunner {
         
         this.module = module;
         this.extraModules = options.getExtraModules();
+        if(options.getRun() != null)
+            className = options.getRun().replace("::", ".");
+        else if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
+            className = "run_";
+        else
+            className = module + ".run_";
         try {
             // those come from the delegate class loader
             loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
@@ -135,11 +143,6 @@ public class JavaRunnerImpl implements JavaRunner {
     }
     
     private void invokeMain(String module, String[] arguments) {
-        String className;
-        if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
-            className = "run_";
-        else
-            className = module + ".run_";
         try {
             Class<?> runClass = moduleClassLoader.loadClass(className);
             Method main = runClass.getMethod("main", String[].class);

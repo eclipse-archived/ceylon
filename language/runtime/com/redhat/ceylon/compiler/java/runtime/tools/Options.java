@@ -8,6 +8,9 @@ public class Options {
     private List<String> userRepositories = new LinkedList<String>();
     private boolean offline;
     private boolean verbose;
+    private String verboseCategory;
+    private boolean noDefaultRepositories;
+    private String run;
     
     public String getSystemRepository() {
         return systemRepository;
@@ -38,5 +41,39 @@ public class Options {
     }
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+        if(verbose){
+            if(verboseCategory == null)
+                verboseCategory = "all";
+        }else{
+            verboseCategory = null;
+        }
+    }
+
+    public String getVerboseCategory() {
+        return verboseCategory;
+    }
+    public void setVerboseCategory(String verboseCategory) {
+        if(verboseCategory == null)
+            verbose = false;
+        else{
+            verbose = true;
+            if(verboseCategory.isEmpty())
+                verboseCategory = "all";
+        }
+        this.verboseCategory = verboseCategory;
+    }
+    
+    public boolean isNoDefaultRepositories() {
+        return noDefaultRepositories;
+    }
+    public void setNoDefaultRepositories(boolean noDefaultRepositories) {
+        this.noDefaultRepositories = noDefaultRepositories;
+    }
+    
+    public String getRun() {
+        return run;
+    }
+    public void setRun(String run) {
+        this.run = run;
     }
 }
