@@ -43,6 +43,10 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
+import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
+import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -74,6 +78,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private String moduleNameOptVersion;
     private String run;
     private String compileFlags;
+    private boolean flatClasspath;
     private List<String> args = Collections.emptyList();
 
     private boolean autoExportMavenDependencies;
@@ -82,6 +87,12 @@ public class CeylonRunTool extends RepoUsingTool {
         super(CeylonMessages.RESOURCE_BUNDLE);
     }
     
+    @Option(longName="flat-classpath")
+    @Description("Launches the Ceylon module using a flat classpath.")
+    public void setFlatClasspath(boolean flatClasspath) {
+        this.flatClasspath = flatClasspath;
+    }
+
     @Argument(argumentName = "module", multiplicity = "1", order = 1)
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
@@ -132,6 +143,24 @@ public class CeylonRunTool extends RepoUsingTool {
     @Override
     public void run() throws IOException {
         setSystemProperties();
+        String module = ModuleUtil.moduleName(moduleNameOptVersion);
+        String version = checkModuleVersionsOrShowSuggestions(
+                getRepositoryManager(),
+                module,
+                ModuleUtil.moduleVersion(moduleNameOptVersion),
+                ModuleQuery.Type.JVM,
+                Versions.JVM_BINARY_MAJOR_VERSION,
+                Versions.JVM_BINARY_MINOR_VERSION,
+                compileFlags);
+        if (version == null) {
+            return;
+        }
+        if(flatClasspath){
+            startInFlatClasspath(module, version);
+            return;
+        }
+        // else go on with JBoss modules
+
         ArrayList<String> argList = new ArrayList<String>();
 
         String ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
@@ -201,18 +230,6 @@ public class CeylonRunTool extends RepoUsingTool {
             compileFlags = COMPILE_ONCE;
         }
         
-        String module = ModuleUtil.moduleName(moduleNameOptVersion);
-        String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
-                module,
-                ModuleUtil.moduleVersion(moduleNameOptVersion),
-                ModuleQuery.Type.JVM,
-                Versions.JVM_BINARY_MAJOR_VERSION,
-                Versions.JVM_BINARY_MINOR_VERSION,
-                compileFlags);
-        if (version == null) {
-            return;
-        }
         if (!version.isEmpty()) {
             moduleNameOptVersion = ModuleUtil.makeModuleName(module, version);
         }
@@ -249,6 +266,21 @@ public class CeylonRunTool extends RepoUsingTool {
         }
     }
     
+    private void startInFlatClasspath(String module, String version) {
+        JavaRunnerOptions options = new JavaRunnerOptions();
+        if(repo != null){
+            for(URI userRepository : repo){
+                options.addUserRepository(userRepository.toASCIIString());
+            }
+        }
+        options.setOffline(offline);
+        options.setSystemRepository(systemRepo);
+        options.setVerboseCategory(verbose);
+        options.setRun(run);
+        Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
+        runner.run(args.toArray(new String[args.size()]));
+    }
+
     private String[] setupArguments(List<String> argList, String sysRep, String ceylonVersion) {
         ArrayList<String> setupArgs = new ArrayList<String>();
         setupArgs.addAll(Arrays.asList(
