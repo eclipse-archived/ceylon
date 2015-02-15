@@ -278,6 +278,16 @@ public class AnnotationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
+//        TypedDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getValueDeclarationType());
+//                unit.getValueMetatype(dm.getTypedReference()));
+    }
+
+    @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
         Method a = that.getDeclarationModel();
