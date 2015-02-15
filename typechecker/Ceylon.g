@@ -2217,9 +2217,12 @@ functionOrExpression returns [Expression expression]
       anonymousFunction
       { $expression = new Expression(null);
         $expression.setTerm($anonymousFunction.function); }
-    | conditionalExpression
-      { $expression = new Expression(null); 
-        $expression.setTerm($conditionalExpression.term); }
+    | let
+      { $expression = new Expression(null);
+        $expression.setTerm($let.let); }
+    | ifExpression
+      { $expression = new Expression(null);
+        $expression.setTerm($ifExpression.term); }
     | switchExpression
       { $expression = new Expression(null); 
         $expression.setTerm($switchExpression.term); }
@@ -2279,13 +2282,6 @@ letClause returns [LetClause letClause]
       conditionalBranch
       { $letClause.setExpression($conditionalBranch.expression); 
         $letClause.setEndToken(null); }
-    ;
-
-conditionalExpression returns [Term term]
-    : ifExpression
-      { $term = $ifExpression.term; }
-    | let
-      { $term = $let.let; }
     ;
 
 switchExpression returns [SwitchExpression term]
@@ -2430,9 +2426,12 @@ ifExpression returns [IfExpression term]
     ;
 
 conditionalBranch returns [Expression expression]
-    : conditionalExpression
+    : ifExpression
       { $expression = new Expression(null);
-        $expression.setTerm($conditionalExpression.term); }
+        $expression.setTerm($ifExpression.term); }
+    | let
+      { $expression = new Expression(null);
+        $expression.setTerm($let.let); }
     | disjunctionExpression
       { $expression = new Expression(null);
         $expression.setTerm($disjunctionExpression.term); }
