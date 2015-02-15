@@ -41,7 +41,7 @@
  
  - `x.neighbour(count)==x`,
  - `x.offset(y) >= 0` for any instance `y` of `X`, and 
- - `x.predecessor.offset(x) == count`.
+ - `x.predecessor.offset(x) == count - 1`.
  
  A range of values of an enumerable type may be specified 
  using:
