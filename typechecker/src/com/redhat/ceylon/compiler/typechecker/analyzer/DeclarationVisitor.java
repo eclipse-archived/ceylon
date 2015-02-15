@@ -1177,7 +1177,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (model.isClassOrInterfaceMember() &&
                 ((ClassOrInterface) model.getContainer()).isFinal()) {
             if (model.isDefault()) {
-                that.addError("member of final class may not be annotated default");
+                that.addError("member of final class may not be annotated default", 1350);
             }
         }
         if (model.isToplevel()) {
@@ -1234,7 +1234,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             model.setNative(true);
         }
         if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default");
+            that.addError("declaration may not be annotated both formal and default", 1320);
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
@@ -1263,7 +1263,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Constructor) model).setSealed(true);
             }
             else {
-                that.addError("declaration is not a class or interface, and may not be annotated sealed");
+                that.addError("declaration is not a class or interface, and may not be annotated sealed", 1800);
             }
         }
         if (hasAnnotation(al, "variable", unit)) {
@@ -1281,17 +1281,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     ((Value) model).setLate(true);
                 }
                 else {
-                    that.addError("value is not an uninitialized reference, and may not be annotated late");
+                    that.addError("value is not an uninitialized reference, and may not be annotated late", 1900);
                 }
             }
             else {
-                that.addError("declaration is not a value, and may not be annotated late");
+                that.addError("declaration is not a value, and may not be annotated late", 1900);
             }
         }
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("getter may not be annotated variable: '" + model.getName() + "'");
+                that.addError("getter may not be annotated variable: '" + model.getName() + "'", 1501);
             }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
@@ -1299,10 +1299,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         if (hasAnnotation(al, "annotation", unit)) {
             if (!(model instanceof Method) && !(model instanceof Class)) {
-                that.addError("declaration is not a function or class, and may not be annotated annotation");
+                that.addError("declaration is not a function or class, and may not be annotated annotation", 1950);
             }
             else if (!model.isToplevel()) {
-                that.addError("declaration is not toplevel, and may not be annotated annotation");
+                that.addError("declaration is not toplevel, and may not be annotated annotation", 1951);
             }
             else {
                 model.setAnnotation(true);
@@ -1366,7 +1366,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 if (d instanceof Class) {
                     if (((Class) d).isSealed() && 
                             !((ClassOrInterface) container).isSealed()) {
-                        that.addError("sealed formal member class does not belong to a sealed type");
+                        that.addError("sealed formal member class does not belong to a sealed type", 1801);
                     }
                 }
             } 
@@ -1414,7 +1414,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
-                    name + "'", 1700);
+                    name + "'", 2500);
             p = new TypeParameter();
             p.setDeclaration(declaration);
             that.setDeclarationModel(p);
