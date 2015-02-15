@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
@@ -195,21 +196,21 @@ public class CeylonWarTool extends ModuleLoadingTool {
 	
 	protected void addLibEntries() throws MalformedURLException { 
 		final List<String> libs = new ArrayList<>();
-		
-		for (ArtifactResult module : this.loadedModules.values()) {
+
+		for (Map.Entry<String, ArtifactResult> entry : this.loadedModules.entrySet()) {
+		        ArtifactResult module = entry.getValue();
 			if (module == null) {
 				// it's an optional, missing module (likely java.*) 
 				continue;
 			}
 			
 			final File artifact = module.artifact();
-			String name = artifact.getName();
+			final String moduleName = entry.getKey();
 
-			if (name.endsWith(".car")) {
-				// turn cars into jars so they'll get loaded by the container classloader
-				name = name.substring(0, name.length() - 4) + ".jar";
-			}
-			
+			// use "-" for the version separator
+			// use ".jar" so they'll get loaded by the container classloader
+			final String name = moduleName.replace('/', '-') + ".jar";
+
 			addSpec(new URLEntrySpec(artifact.toURI().toURL(),
 							"WEB-INF/lib/" + name));
 			libs.add(name);
