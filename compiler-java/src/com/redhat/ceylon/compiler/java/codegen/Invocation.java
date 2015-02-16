@@ -161,7 +161,8 @@ abstract class Invocation {
         Scope paramContainer = param.getModel().getContainer();
         if(paramContainer instanceof TypedDeclaration){
             TypedDeclaration method = (TypedDeclaration) paramContainer;
-            if(method.getContainer() instanceof TypeDeclaration){
+            if(method.getContainer() instanceof TypeDeclaration
+                    && !(method.getContainer() instanceof Constructor)){
                 TypeDeclaration container = (TypeDeclaration) method.getContainer();
                 ProducedType qualifyingType = producedReference.getQualifyingType();
                 ProducedType supertype = qualifyingType.getSupertype(container);
