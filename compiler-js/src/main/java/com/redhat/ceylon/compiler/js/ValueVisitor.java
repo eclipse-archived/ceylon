@@ -59,7 +59,8 @@ public class ValueVisitor extends Visitor {
             TypedDeclaration d = (TypedDeclaration) ((Tree.MemberOrTypeExpression) that).getDeclaration();
             if (d==declaration) {
                 if (d.isParameter()) {
-                    if (!d.getContainer().equals(that.getScope()) || sameScope>0) { //a reference from a default argument 
+                    if (!d.getContainer().equals(that.getScope()) || sameScope>0) {
+                        //a reference from a default argument 
                         //expression of the same parameter 
                         //list does not capture a parameter
                         ((MethodOrValue) d).setCaptured(true);
@@ -101,7 +102,7 @@ public class ValueVisitor extends Visitor {
     
     @Override public void visit(Tree.ClassDefinition that) {
         boolean cs = enterCapturingScope();
-        super.visit(that);
+        super.visit(that.getClassBody());
         exitCapturingScope(cs);
     }
     
