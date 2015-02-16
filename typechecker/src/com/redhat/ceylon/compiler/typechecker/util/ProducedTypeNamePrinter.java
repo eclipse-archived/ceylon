@@ -21,7 +21,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 public class ProducedTypeNamePrinter {
 
     public static final ProducedTypeNamePrinter DEFAULT = 
-            new ProducedTypeNamePrinter(true, true, false, true);
+            new ProducedTypeNamePrinter(true, true, false, true, false);
+
+    public static final ProducedTypeNamePrinter ESCAPED = 
+            new ProducedTypeNamePrinter(true, true, false, true, true);
 
     private boolean printAbbreviated;
     private boolean printTypeParameters;
@@ -29,22 +32,24 @@ public class ProducedTypeNamePrinter {
     private boolean printQualifyingType;
     private boolean printQualifier;
     private boolean printFullyQualified;
+    private boolean escapeLowercased;
     
-    public ProducedTypeNamePrinter() {
-    }
+    public ProducedTypeNamePrinter() {}
 
     public ProducedTypeNamePrinter(boolean printAbbreviated) {
-        this(printAbbreviated, true, false, true);
+        this(printAbbreviated, true, false, true, false);
     }
 
     public ProducedTypeNamePrinter(boolean printAbbreviated, 
             boolean printTypeParameters, 
             boolean printTypeParameterDetail,
-            boolean printQualifyingType) {
+            boolean printQualifyingType,
+            boolean escapeLowercased) {
         this.printAbbreviated = printAbbreviated;
         this.printTypeParameters = printTypeParameters;
         this.printTypeParameterDetail = printTypeParameterDetail;
         this.printQualifyingType = printQualifyingType;
+        this.escapeLowercased = escapeLowercased;
     }
     
     protected boolean printAbbreviated() {
@@ -562,19 +567,21 @@ public class ProducedTypeNamePrinter {
                     && container instanceof Declaration == false){
                 container = container.getContainer();
             }
-            if(container != null){
+            if (container != null) {
                 if(container instanceof Package){
                     String q = container.getQualifiedNameString();
-                    if(!q.isEmpty())
+                    if (!q.isEmpty()) {
                         ptn.append(q).append("::");
-                }else{
+                    }
+                }
+                else {
                     printDeclaration(ptn, (Declaration) container, 
                             fullyQualified, unit);
                     ptn.append(".");
                 }
             }
         }
-        if(printQualifier()){
+        if (printQualifier()) {
             String qualifier = declaration.getQualifier();
             if(qualifier != null)
                 ptn.append(qualifier);
@@ -584,7 +591,14 @@ public class ProducedTypeNamePrinter {
 
     protected String getSimpleDeclarationName(Declaration declaration, 
             Unit unit) {
-        return declaration.getName(unit);
+        String name = declaration.getName(unit);
+        if (escapeLowercased) {
+            int firstCodePoint = name.codePointAt(0);
+            if (!Character.isUpperCase(firstCodePoint)) {
+                name = "\\I" + name;
+            }
+        }
+        return name;
     }
 
 }

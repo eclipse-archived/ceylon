@@ -146,7 +146,8 @@ public class Util {
     
     public static boolean isOverloadedVersion(Declaration decl) {
         return (decl instanceof Functional) &&
-                ((Functional) decl).isOverloaded();
+                ((Functional) decl).isOverloaded() &&
+                !((Functional) decl).isAbstraction();
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 

@@ -1880,6 +1880,10 @@ public class ProducedType extends ProducedReference {
         return ProducedTypeNamePrinter.DEFAULT.getProducedTypeName(this, unit);
     }
     
+    public String getProducedTypeNameInSource(Unit unit) {
+        return ProducedTypeNamePrinter.ESCAPED.getProducedTypeName(this, unit);
+    }
+    
     public String getProducedTypeName(boolean abbreviate) {
         return getProducedTypeName(abbreviate, null);
     }
