@@ -5101,7 +5101,6 @@ public abstract class AbstractTransformer implements Transformation {
         // make sure we do not insert null checks if we're going to allow testing for null
         if(expectedType != null
                 && hasUncheckedNulls(term)
-                && isOptional(expectedType)
                 && !isOptional(termType)){
             // get rid of null-check if we accept an optional type on the LHS
             return typeFact().getOptionalType(termType);
