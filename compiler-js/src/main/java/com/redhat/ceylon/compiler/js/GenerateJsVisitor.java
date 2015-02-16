@@ -1090,7 +1090,8 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && pd.getModel().isCaptured()) {
+            if ((typeDecl != null) && (pd.getModel().isCaptured() ||
+                    pd.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)) {
                 out(names.self(typeDecl), ".", paramName, "_=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
                     out(";", names.self(typeDecl), ".", paramName, "=", paramName);
@@ -1221,8 +1222,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     boolean isCaptured(Declaration d) {
-        if (d.isToplevel()||d.isClassOrInterfaceMember()) { //TODO: what about things nested inside control structures
-            if (d.isShared() || d.isCaptured() ) {
+        if (d.isToplevel()||d.isClassOrInterfaceMember()) {
+            if (d.isShared() || d.isCaptured()) {
                 return true;
             }
             else {
