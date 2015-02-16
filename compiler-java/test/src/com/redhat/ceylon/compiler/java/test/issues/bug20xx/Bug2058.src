@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public final class bug2058_ {
+    
+    private bug2058_() {
+    }
+    
+    public static void bug2058() {
+        final .java.util.HashMap<.ceylon.language.String, .java.lang.Object> hm = new .java.util.HashMap<.ceylon.language.String, .java.lang.Object>();
+        .java.lang.Object item$1;
+        if ((item$1 = hm.get(.ceylon.language.String.instance(""))) instanceof .ceylon.language.String) {
+            final .java.lang.String item$2 = ((.ceylon.language.String)item$1).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(item$2));
+        }
+        .java.lang.Object item$4;
+        if ((item$4 = hm.get(.ceylon.language.String.instance(""))) == null || item$4 instanceof .ceylon.language.String) {
+            final .ceylon.language.String item$5 = (.ceylon.language.String)item$4;
+            .ceylon.language.print_.print((
+                let
+                {
+                    .ceylon.language.String $ceylontmp$6 = item$5;
+                }
+                returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.String.instance("null");
+            ));
+        }
+        .java.lang.Object item$8;
+        if ((item$8 = hm.get(.ceylon.language.String.instance(""))) != null) {
+            final .java.lang.Object item$9 = item$8;
+            .ceylon.language.print_.print(item$9);
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2058_.bug2058();
+    }
+}
