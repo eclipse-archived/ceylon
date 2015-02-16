@@ -471,7 +471,7 @@ public class CeylonTransformer extends AbstractTransformer {
     
     /** Creates a module class in the package, with the Module annotation required by the runtime. */
     public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
-        at(module);
+        at(null);
         
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, Naming.MODULE_DESCRIPTOR_CLASS_NAME, null, false);
@@ -506,7 +506,7 @@ public class CeylonTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
-        at(pack);
+        at(null);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, Naming.PACKAGE_DESCRIPTOR_CLASS_NAME, null, false)
                 .modifiers(Flags.FINAL)
