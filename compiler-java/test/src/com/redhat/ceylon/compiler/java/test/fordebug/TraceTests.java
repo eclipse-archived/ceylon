@@ -78,5 +78,11 @@ public class TraceTests extends DebuggerTests {
                 );
     }
     
-    
+    @Test
+    public void testBug2047() throws Exception {
+        compileAndTrace(
+                "com.redhat.ceylon.compiler.java.test.fordebug.trace.bug2047_",
+                "trace/Bug2047"
+                );
+    }
 }
