@@ -1683,6 +1683,7 @@ public class Gen extends JCTree.Visitor {
 
     public void visitApply(JCMethodInvocation tree) {
         // Generate code for method.
+        code.statBegin(tree.pos);
         Item m = genExpr(tree.meth, methodType);
         // Generate code for all arguments, where the expected types are
         // the parameters of the method's external type (that is, any implicit
@@ -1721,7 +1722,7 @@ public class Gen extends JCTree.Visitor {
         // Enclosing instances or anonymous classes should have been eliminated
         // by now.
         Assert.check(tree.encl == null && tree.def == null);
-
+        code.statBegin(tree.pos);
         code.emitop2(new_, makeRef(tree.pos(), tree.type));
         code.emitop0(dup);
 
