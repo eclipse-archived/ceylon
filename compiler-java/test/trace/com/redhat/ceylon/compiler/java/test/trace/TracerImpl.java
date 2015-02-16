@@ -356,7 +356,7 @@ public class TracerImpl implements Tracer {
                     sb.append(':');
                     Method m = location.method();
                     String atns = m.argumentTypeNames().toString();
-                    sb.append(m.name()).append('(').append(atns.substring(1, atns.length()-1)).append(')');
+                    sb.append(m.declaringType().name()).append('.').append(m.name()).append('(').append(atns.substring(1, atns.length()-1)).append(')');
                     sb.append(':');
                     long ci = location.codeIndex();
                     if (ci == -1) {
