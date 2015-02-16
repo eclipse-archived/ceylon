@@ -1515,6 +1515,7 @@ public class CallableBuilder {
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;
+        gen.at(null);
         JCNewClass instance = gen.make().NewClass(null, 
                 null, 
                 gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
