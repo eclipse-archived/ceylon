@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -214,7 +212,7 @@ public class SerializationHelper {
                 decs.add(pt.getDeclaration());
                 setDeserializedTypeArguments(root, pt, first, that, ni, gen, decs);
             }
-            pt = pt.getSupertype(root);
+            pt = pt.getExtendedType();
         }
         for (ProducedType sat : sats) {
             if (!decs.contains(sat.getDeclaration())) {
@@ -241,7 +239,7 @@ public class SerializationHelper {
     static List<Value> serializableValues(com.redhat.ceylon.compiler.typechecker.model.Class d) {
         ArrayList<Value> vals = new ArrayList<>();
         for (Declaration m : d.getMembers()) {
-            if (!m.isFormal() && m instanceof Value && !m.isSetter()) {
+            if (!m.isFormal() && m instanceof Value && !m.isSetter() && m.isCaptured()) {
                 Value v = (Value)m;
                 if (!v.isTransient()) {
                     vals.add(v);
