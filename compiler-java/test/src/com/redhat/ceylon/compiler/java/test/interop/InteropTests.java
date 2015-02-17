@@ -488,4 +488,9 @@ public class InteropTests extends CompilerTests {
     public void testIopBug2027(){
         compile("Bug2027.ceylon");
     }
+    
+    @Test
+    public void testIopBug2054(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.interop.bug2054", "Bug2054.ceylon");
+    }
 }
