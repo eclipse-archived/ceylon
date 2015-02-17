@@ -421,4 +421,9 @@ public class StructureTests2 extends CompilerTests {
     public void testCncAppliedTypeDefaultedParameter(){
         compareWithJavaSource("concrete/AppliedTypeDefaultedParameter");
     }
+    
+    @Test
+    public void testCncRefinedMethodWithDefaultTypeParameter(){
+        compareWithJavaSource("concrete/RefinedMethodWithDefaultTypeParameter");
+    }
 }
