@@ -1159,8 +1159,10 @@ public class Util {
                             ProducedType psta = pst.getTypeArguments().get(tp);
                             ProducedType qsta = qst.getTypeArguments().get(tp);
                             //TODO: why isWellDefined() instead of isTypeUnknown() ?
-                            if (psta.isWellDefined() && !pst.containsTypeParameters() && 
-                                qsta.isWellDefined() && !qst.containsTypeParameters()) {
+                            if (psta!=null && psta.isWellDefined() && 
+                                    !pst.containsTypeParameters() && 
+                                qsta!=null && qsta.isWellDefined() && 
+                                    !qst.containsTypeParameters()) {
                                 boolean psti = pst.isInvariant(tp);
                                 boolean pstcov = pst.isCovariant(tp);
                                 boolean pstcontra = pst.isContravariant(tp);
