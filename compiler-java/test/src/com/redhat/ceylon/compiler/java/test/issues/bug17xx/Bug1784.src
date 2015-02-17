@@ -39,7 +39,7 @@ final class bug1784_ {
         final .java.lang.String d = .com.redhat.ceylon.compiler.java.Util.checkNull((
             let
             {
-                .ceylon.language.String $ceylontmp$8 = (
+                .ceylon.language.String $ceylontmp$9 = (
                     let
                     {
                         .java.lang.String $ceylontmp$7 = vl.getFoo();
@@ -47,29 +47,35 @@ final class bug1784_ {
                     returning $ceylontmp$7 != null ? .ceylon.language.String.instance($ceylontmp$7) : null;
                 );
             }
-            returning $ceylontmp$8 != null ? $ceylontmp$8 : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(vl.getBar()));
-        )).toString();
-        .ceylon.language.String c$10;
-        if ((c$10 = (
-            let
-            {
-                .ceylon.language.String $ceylontmp$13 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$11 = vl.getFoo();
-                    }
-                    returning $ceylontmp$11 != null ? .ceylon.language.String.instance($ceylontmp$11) : null;
-                );
-            }
-            returning $ceylontmp$13 != null ? $ceylontmp$13 : (
+            returning $ceylontmp$9 != null ? $ceylontmp$9 : (
                 let
                 {
-                    .java.lang.String $ceylontmp$12 = vl.getBar();
+                    .java.lang.String $ceylontmp$8 = vl.getBar();
                 }
-                returning $ceylontmp$12 != null ? .ceylon.language.String.instance($ceylontmp$12) : null;
+                returning $ceylontmp$8 != null ? .ceylon.language.String.instance($ceylontmp$8) : null;
+            );
+        )).toString();
+        .ceylon.language.String c$11;
+        if ((c$11 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$14 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$12 = vl.getFoo();
+                    }
+                    returning $ceylontmp$12 != null ? .ceylon.language.String.instance($ceylontmp$12) : null;
+                );
+            }
+            returning $ceylontmp$14 != null ? $ceylontmp$14 : (
+                let
+                {
+                    .java.lang.String $ceylontmp$13 = vl.getBar();
+                }
+                returning $ceylontmp$13 != null ? .ceylon.language.String.instance($ceylontmp$13) : null;
             );
         )) != null) {
-            final .java.lang.String c$14 = c$10.toString();
+            final .java.lang.String c$15 = c$11.toString();
         }
     }
 }
