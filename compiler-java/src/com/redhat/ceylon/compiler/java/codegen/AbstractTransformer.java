@@ -1101,7 +1101,16 @@ public abstract class AbstractTransformer implements Transformation {
 
     private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
             TypedDeclaration refinedDeclaration) {
-        return getRefinedTypedReference(typedReference.getQualifyingType(), refinedDeclaration);
+        TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
+
+        ProducedType refinedContainerType = typedReference.getQualifyingType().getSupertype(refinedContainer);
+        ArrayList<ProducedType> typeArgs = new ArrayList<ProducedType>();
+        if (typedReference.getDeclaration() instanceof Generic) {
+            for (TypeParameter tp : ((Generic)typedReference.getDeclaration()).getTypeParameters()) {
+                typeArgs.add(typedReference.getTypeArguments().get(tp));
+            }
+        }
+        return refinedDeclaration.getProducedTypedReference(refinedContainerType, typeArgs);
     }
 
     private ProducedTypedReference getRefinedTypedReference(ProducedType qualifyingType, 
