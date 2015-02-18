@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+public final class bug2053_ {
+    
+    private bug2053_() {
+    }
+    
+    public static <Element>void bug2053(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.test.interop.Bug2053Varargs<.java.lang.Long> x, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> items) {
+        x.<Element>unbounded((
+            let
+            {
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$0$0 = items.sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<Element>toArray($ceylontmp$0$0, (Element[])new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items$3;
+        .java.lang.Object items$2 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$2 = items, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$3 = (.ceylon.language.Iterable)items$2;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Number*} items"));
+        }
+        x.<.java.lang.Number>bound((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$4$0 = items$3.sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Number>toArray($ceylontmp$4$0, new .java.lang.Number[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items$7;
+        .java.lang.Object items$6 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$6 = items$3, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$7 = (.ceylon.language.Iterable)items$6;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Long*} items"));
+        }
+        x.<.java.lang.Long>indirectBound((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$8$0 = items$7.sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$8$0, (.java.lang.Long[])new .java.lang.Number[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        ((.com.redhat.ceylon.compiler.java.test.interop.Right)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(x.<.com.redhat.ceylon.compiler.java.test.interop.Top>bound2((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$9$0 = items3.sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.com.redhat.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$9$0, (.com.redhat.ceylon.compiler.java.test.interop.Left[])new .com.redhat.ceylon.compiler.java.test.interop.Top[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize())]);
+        )))).right();
+    }
+}
