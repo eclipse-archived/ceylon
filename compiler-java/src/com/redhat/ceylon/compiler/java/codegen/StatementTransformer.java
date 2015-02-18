@@ -36,8 +36,6 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.compiler.loader.model.LazyClass;
-import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -59,7 +57,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -414,22 +411,19 @@ public class StatementTransformer extends AbstractTransformer {
         private JCBlock thenBlock;
         private Tree.Variable elseVar;
         private Node elsePart;
-        private boolean trustedElseType;
         
         public IfCondList(java.util.List<Tree.Condition> conditions, Tree.Block thenPart,
-                Tree.Variable elseVar, Tree.Block elsePart, boolean trustedElseType) {
+                Tree.Variable elseVar, Tree.Block elsePart) {
             super(conditions, thenPart);
             this.elseVar = elseVar;
             this.elsePart = elsePart;
-            this.trustedElseType = trustedElseType;
         }
 
         public IfCondList(java.util.List<Tree.Condition> conditions, Tree.Expression thenPart,
-                Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression, boolean trustedElseType) {
+                Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
             super(conditions, thenPart, tmpVar, outerExpression);
             this.elseVar = elseVar;
             this.elsePart = elsePart;
-            this.trustedElseType = trustedElseType;
         }     
 
         /** 
@@ -531,22 +525,6 @@ public class StatementTransformer extends AbstractTransformer {
                         stmts = stmts.prepend(make().Exec(vdb.buildAssign()));
                     } else {
                         stmts = stmts.prepend(vdb.build());
-                        if (elseVar != null
-                                && !trustedElseType) {
-                            JCThrow oops = make().Throw(
-                                    make().NewClass(null, List.<JCExpression>nil(), 
-                                            makeIdent(syms().ceylonAssertionErrorType), 
-                                            List.<JCExpression>of(make().Literal(
-                                                    "Generic Java type could not satisfy is condition due to erasure of type arguments")), null));
-                            stmts = List.<JCStatement>of(make().If(
-                                    expressionGen().makeTypeTest(
-                                            vartrans.getTestVariableName().makeIdent(),
-                                            vartrans.getTestVariableName(), 
-                                            this.elseVar.getType().getTypeModel(),
-                                            typeFact().getAnythingDeclaration().getType()),
-                                    make().Block(0, stmts), 
-                                    oops));
-                        }
                     }
                 }
             }
@@ -627,99 +605,15 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Block elsePart = (stmt.getElseClause() != null) ? stmt.getElseClause().getBlock() : null;
         java.util.List<Tree.Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
         Tree.Variable elseVar = (stmt.getElseClause() != null) ? stmt.getElseClause().getVariable() : null;
-        return transformIf(conditions, thenPart, elseVar, elsePart, ifElseVisitor.trustElseType(stmt));
+        return transformIf(conditions, thenPart, elseVar, elsePart);
     }
 
-    IfElseVisitor ifElseVisitor = new IfElseVisitor();
-    /** 
-     * Used to determine whether an if/else if/else chain has {@code is} 
-     * conditions with Java generic types. 
-     * If so, we can't trust the type of the synthetic 
-     * Variable in the else block because the reified is tests will fail
-     * (because Java types don't support reified type arguments).
-     * See #2054
-     */
-    static class IfElseVisitor extends Visitor {
-        boolean trustedElseType = true;
-        boolean seenGenericJavaType = false;
-        
-        public boolean trustElseType(Tree.IfStatement stmt) {
-            trustedElseType = true;
-            seenGenericJavaType = false;
-            stmt.visit(this);
-            return trustedElseType;
-        }
-        
-        public boolean trustElseType(Tree.IfExpression stmt) {
-            trustedElseType = true;
-            seenGenericJavaType = false;
-            stmt.visit(this);
-            return trustedElseType;
-        }
-        
-        static boolean containsJavaGenericType(TypeDeclaration t) {
-            if (t instanceof LazyClass) {
-                return !t.getTypeParameters().isEmpty() && !((LazyClass)t).isCeylon();
-            } else if (t instanceof LazyInterface) {
-                return !t.getTypeParameters().isEmpty() && !((LazyInterface)t).isCeylon();
-            } else if (t instanceof UnionType) {
-                for (TypeDeclaration td : ((UnionType)t).getCaseTypeDeclarations()) {
-                    if (containsJavaGenericType(td)) {
-                        return true;
-                    }
-                    return false;
-                }
-            } else if (t instanceof IntersectionType) {
-                for (TypeDeclaration td : ((IntersectionType)t).getSatisfiedTypeDeclarations()) {
-                    if (containsJavaGenericType(td)) {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            return false;
-        }
-        
-        public void visit(Tree.IfClause that) {
-            for (Tree.Condition condition : that.getConditionList().getConditions()) {
-                if (condition instanceof Tree.IsCondition
-                        && containsJavaGenericType(((Tree.IsCondition)condition).getType().getTypeModel().resolveAliases().getDeclaration())) {
-                    seenGenericJavaType |= true;
-                    break;
-                }
-            }
-            super.visit(that);
-        }
-        public void visit(Tree.ElseClause that) {
-            if (that.getBlock() != null) {
-                java.util.List<Statement> elseStmts = that.getBlock().getStatements();
-                if (elseStmts.size() == 1 
-                        && elseStmts.get(0) instanceof Tree.IfStatement) {
-                    // another else if
-                } else {
-                    if (that.getVariable() != null
-                            && seenGenericJavaType) {
-                        trustedElseType = false;
-                    }
-                    seenGenericJavaType = false;
-                }
-            } else {
-                if (that.getVariable() != null
-                        && seenGenericJavaType) {
-                    trustedElseType = false;
-                }
-                seenGenericJavaType = false;
-            }
-            super.visit(that);
-        }
-    }
-    
-    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Block thenPart, Tree.Variable elseVar, Tree.Block elsePart, boolean trustedElseType) {
-        return new IfCondList(conditions, thenPart, elseVar, elsePart, trustedElseType).getResult();
+    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Block thenPart, Tree.Variable elseVar, Tree.Block elsePart) {
+        return new IfCondList(conditions, thenPart, elseVar, elsePart).getResult();
     }
 
-    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Expression thenPart, Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression, boolean trustedElseType) {
-        return new IfCondList(conditions, thenPart, elseVar, elsePart, tmpVar, outerExpression, trustedElseType).getResult();
+    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Expression thenPart, Tree.Variable elseVar, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
+        return new IfCondList(conditions, thenPart, elseVar, elsePart, tmpVar, outerExpression).getResult();
     }
 
     private List<JCStatement> evaluateAndAssign(String tmpVar, Tree.Expression expr, Tree.Term outerExpression){
