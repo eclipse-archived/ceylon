@@ -2918,7 +2918,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType lastType = invocation.getArgumentType(numArguments-1);
 
             // must translate it into a Util call
-            expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
+            expr = sequenceToJavaArray(invocation, last, parameterType, boxingStrategy, lastType, x);
         }else{
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
             JCExpression sequentialExpr = utilInvocation().sequentialInstance(typeExpr, makeReifiedTypeArgument(iteratedType), x.head, x.tail);
@@ -3025,7 +3025,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(invocation.isJavaMethod()){
                 // no need to handle leading arguments since that is handled by transformSpreadArgument
                 // if ever we have leading arguments we never end up in this method
-                expr = sequenceToJavaArray(tupleElement, paramType, boxingStrategy, paramType, List.<JCExpression>nil());                
+                expr = sequenceToJavaArray(invocation, tupleElement, paramType, boxingStrategy, paramType, List.<JCExpression>nil());
             }else{
                 expr = tupleElement;
             }

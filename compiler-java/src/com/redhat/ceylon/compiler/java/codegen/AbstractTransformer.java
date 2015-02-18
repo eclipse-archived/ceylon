@@ -3675,7 +3675,9 @@ public abstract class AbstractTransformer implements Transformation {
      * @param exprType the (source) expression type
      * @param initialElements the elements to place at the beginning of the Java array
      */
-    JCExpression sequenceToJavaArray(JCExpression expr, ProducedType sequenceType, 
+    JCExpression sequenceToJavaArray(
+            SimpleInvocation invocation,
+            JCExpression expr, ProducedType sequenceType, 
                                      BoxingStrategy boxingStrategy, ProducedType exprType,
                                      List<JCTree.JCExpression> initialElements) {
         // find the sequence element type
@@ -3704,40 +3706,47 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (isJavaString(type)) {
                 return utilInvocation().toJavaStringArray(expr, initialElements);
             } else if (isCeylonString(type)) {
-                return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
+                return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
             }
-            
-            return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
+            return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
         }else{
-            return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
+            return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
         }
     }
 
-    private JCExpression objectVariadicToJavaArray(ProducedType type,
-            ProducedType sequenceType, JCExpression expr, ProducedType exprType, List<JCExpression> initialElements) {
-        if(typeFact().getSequentialType(exprType) != null){
-            return objectSequentialToJavaArray(type, expr, initialElements);
+    private JCExpression objectVariadicToJavaArray(
+            SimpleInvocation invocation,
+            ProducedType type,
+            ProducedType exprType,
+            JCExpression expr,
+            List<JCExpression> initialElements) {
+        // The type that the java varargs parameter erases to: 
+        // this is the type of the array which we need to construct
+        java.util.List<Parameter> pl = ((Functional)invocation.getPrimaryDeclaration()).getParameterLists().get(0).getParameters();
+        Parameter varargsParameter = pl.get(pl.size()-1);
+        ProducedType arrayType = simplifyType(typeFact().getIteratedType(varargsParameter.getType()));
+        while (arrayType.getDeclaration() instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter)arrayType.getDeclaration();
+            arrayType = tp.getSatisfiedTypes().get(0);
         }
-        return objectIterableToJavaArray(type, typeFact().getIterableType(sequenceType), expr, initialElements);
-    }
-
-    // This can't be reached anymore since we can't spread iterables anymore ATM
-    private JCExpression objectIterableToJavaArray(ProducedType type,
-            ProducedType iterableType, JCExpression expr, List<JCExpression> initialElements) {
-        JCExpression klass = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
-        JCExpression klassLiteral = make().Select(klass, names().fromString("class"));
-        return utilInvocation().toArray(expr, klassLiteral, initialElements);
-    }
-    
-    private JCExpression objectSequentialToJavaArray(ProducedType type, JCExpression expr, List<JCExpression> initialElements) {
-        JCExpression klass1 = makeJavaType(type, JT_RAW | JT_NO_PRIMITIVES);
-        JCExpression klass2 = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
+        
+        // we could have a <X>variadic(X&Object), so we need to pick a type which satisfies the bound
+        ProducedType castType = simplifyType(type);
+        if (typeFact().isIntersection(castType)) {
+            for (ProducedType t : castType.getSatisfiedTypes()) {
+                if (t.isSubtypeOf(arrayType)) {
+                    castType = t;
+                    break;
+                }
+            }
+        }
+        
         Naming.SyntheticName seqName = naming.temp().suffixedBy(0);
-
-        ProducedType fixedSizedType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
-        JCExpression seqTypeExpr1 = makeJavaType(fixedSizedType);
+        
+        ProducedType sequentialType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
+        JCExpression seqTypeExpr1 = makeJavaType(sequentialType);
         //JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
-
+        
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
                 make().Select(seqName.makeIdent(), names().fromString("getSize")),
                 List.<JCExpression>nil());
@@ -3748,16 +3757,23 @@ public abstract class AbstractTransformer implements Transformation {
             sizeExpr = make().Binary(JCTree.PLUS, 
                                      sizeExpr,
                                      makeInteger(initialElements.size()));
-
-        JCExpression newArrayExpr = make().NewArray(klass1, List.of(sizeExpr), null);
+        
+        JCExpression array = make().NewArray(makeJavaType(arrayType, JT_RAW | JT_NO_PRIMITIVES), List.of(sizeExpr), null);
+        if (!arrayType.isExactly(castType)) {
+            array = make().TypeCast(
+                    make().TypeArray(makeJavaType(castType, JT_CLASS_NEW | JT_NO_PRIMITIVES)),
+                    array);
+        }
         JCExpression sequenceToArrayExpr = utilInvocation().toArray(
-                seqName.makeIdent(), newArrayExpr, initialElements,
-                klass2);
+                seqName.makeIdent(), array, initialElements,
+                makeJavaType(castType, JT_CLASS_NEW | JT_NO_PRIMITIVES));
         
         // since T[] is erased to Sequential<T> we probably need a cast to FixedSized<T>
         //JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
         
-        return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, expr, sequenceToArrayExpr);
+        return //make().TypeCast(
+                //make().TypeArray(makeJavaType(arrayType)),
+                makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, expr, sequenceToArrayExpr)/*)*/;
     }
 
     /** 
