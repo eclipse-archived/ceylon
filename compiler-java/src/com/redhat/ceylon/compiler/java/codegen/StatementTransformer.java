@@ -4268,9 +4268,14 @@ public class StatementTransformer extends AbstractTransformer {
             return gen.naming.substituteAlias(var.getDeclarationModel());
         }
         
-        JCVariableDecl build() {
+        JCVariableDecl buildInternal() {
             gen.at(var);
             JCVariableDecl def = gen.makeVar(Flags.FINAL, name(), type(), expr());
+            return def;
+        }
+        
+        JCVariableDecl build() {
+            JCVariableDecl def = buildInternal();
             built = true;
             return def;
         }
@@ -4316,7 +4321,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         public String toString() {
-            return "VarDefBuilder [build()=" + build() + "]";
+            return "VarDefBuilder [build()=" + buildInternal() + "]";
         }
     }
     
