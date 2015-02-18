@@ -76,6 +76,11 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
     }
 
+    @Override
+    public boolean isErasedTypeArguments() {
+        return !isCeylon();
+    }
+    
     public boolean isCeylon() {
         return isCeylon;
     }

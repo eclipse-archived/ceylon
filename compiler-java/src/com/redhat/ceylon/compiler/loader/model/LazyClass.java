@@ -81,6 +81,11 @@ public class LazyClass extends Class implements LazyContainer {
         this.isValueType = classMirror.getAnnotation(AbstractModelLoader.CEYLON_VALUETYPE_ANNOTATION) != null;
     }
 
+    @Override
+    public boolean isErasedTypeArguments() {
+        return !isCeylon();
+    }
+    
     public boolean isCeylon() {
         return isCeylon;
     }
