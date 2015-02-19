@@ -28,7 +28,6 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
-import static com.sun.tools.javac.code.Flags.VOLATILE;
 
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -1410,7 +1409,6 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.makeQualIdent(naming.makeSuper(), Unfix.$serialize$.toString()),
                     List.<JCExpression>of(naming.makeUnquotedIdent(Unfix.deconstructor)))));
         }
-        stmts.add(make().Exec(make().Apply(null, naming.makeUnquotedIdent(naming.getSerializationInitMeta()), List.<JCExpression>nil())));
         
         // Get the outer instance, if any
         if (model.getContainer() instanceof ClassOrInterface) {
@@ -1423,15 +1421,14 @@ public class ClassTransformer extends AbstractTransformer {
                             expressionGen().makeOuterExpr(outerInstanceType)))));
         }
         
-        
-        
         // get state from fields
-        ListBuffer<JCStatement> init= ListBuffer.<JCStatement>lb();
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
                 Value value = (Value)member;
                 final ProducedType serializedValueType;
                 JCExpression serializedValue;
+                //if (Decl.isValueTypeDecl(simplifyType(value.getType()))) {
+                
                 if (value.isLate()) {
                     stmts.add(make().If(
                             make().Unary(JCTree.NOT, 
@@ -1451,44 +1448,18 @@ public class ClassTransformer extends AbstractTransformer {
                         !CodegenUtil.isUnBoxed(value), 
                         BoxingStrategy.BOXED, 
                         value.getType());
-                SyntheticName valueDecl = naming.synthetic(naming.getSerializationValueDeclaration(value));
                 stmts.add(make().Exec(make().Apply(
                         List.of(makeJavaType(serializedValueType, JT_TYPE_ARGUMENT)), 
                         naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructor.toString()), "putValue"),
                         List.of(makeReifiedTypeArgument(serializedValueType),
-                                valueDecl.makeIdent(),
+                                makeValueDeclaration(value),
                                 serializedValue))));
-                
-                classBuilder.defs(make().VarDef(make().Modifiers(PRIVATE | STATIC), valueDecl.asName(), makeJavaType(typeFact().getValueDeclarationType()), makeNull()));
-                init.add(make().Exec(make().Assign(valueDecl.makeIdent(), makeValueDeclaration(value))));
-                
             }
         }
         
         mdb.body(stmts.toList());
         classBuilder.method(mdb);
-        String initVar = naming.getSerializationInitMeta();
-        classBuilder.defs(makeVar(PRIVATE | STATIC | VOLATILE, 
-                initVar, 
-                make().Type(syms().booleanType), 
-                make().Literal(false)));
-        init.add(make().Exec(make().Assign(naming.makeUnquotedIdent(initVar), make().Literal(true))));
-        MethodDefinitionBuilder initMdb = MethodDefinitionBuilder.systemMethod(this, naming.getSerializationInitMeta());
-        initMdb.modifiers(PRIVATE | STATIC);
-        initMdb.body(make().If(make().Unary(JCTree.NOT, naming.makeUnquotedIdent(initVar)), 
-                make().Synchronized(makeClassLiteral(model.getType()), 
-                        make().Block(0, 
-                                List.<JCStatement>of(make().If(make().Unary(JCTree.NOT, naming.makeUnquotedIdent(initVar)), 
-                                
-                                        make().Block(0, init.toList()),
-                                        null)))),
-                null));
-        classBuilder.method(initMdb);
     }
-    
-    
-    
-    
     /**
      * <p>Generates the {@code $deserialize$()} method to deserialize 
      * the classes state, which:</p>
@@ -1515,7 +1486,6 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
         boolean requiredLookup = false;
         
-        stmts.add(make().Exec(make().Apply(null, naming.makeUnquotedIdent(naming.getSerializationInitMeta()), List.<JCExpression>nil())));
         
         // assign fields
         for (Declaration member : model.getMembers()) {
@@ -1556,7 +1526,7 @@ public class ClassTransformer extends AbstractTransformer {
                 naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructed.toString()), "getValue"),
                 List.<JCExpression>of(
                         makeReifiedTypeArgument(typeOrReferenceType),
-                        naming.makeUnquotedIdent(naming.getSerializationValueDeclaration(value))));
+                        makeValueDeclaration(value)));
         // let ( 
         // Object valueOrRef = ^^;
         // valueOrRef instanceof Reference ? (($InstanceLeaker$)valueOrRef).$leakInstance$() : (Type)valueOrRef;

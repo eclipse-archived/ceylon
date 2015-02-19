@@ -149,7 +149,7 @@ public class Naming implements LocalId {
         $setter$,
         $specifier$,
         $this$,
-        $variadic$, $meta$, 
+        $variadic$, 
     }
     
     /**
@@ -2291,14 +2291,6 @@ public class Naming implements LocalId {
     
     public JCExpression makeNamedConstructorType(Constructor constructor) {
         return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
-    }
-    
-    public String getSerializationInitMeta() {
-        return "$initmeta$";
-    }
-    
-    public String getSerializationValueDeclaration(Value v) {
-        return suffixName(Suffix.$meta$, v.getName());
     }
 }
 
