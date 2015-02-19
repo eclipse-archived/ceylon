@@ -1425,6 +1425,7 @@ class NamedArgumentInvocation extends Invocation {
         
         ProducedType callableType = model.getProducedReference(null, Collections.<ProducedType>emptyList()).getFullType();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(),
+                methodArg,
                 model,
                 callableType, 
                 Collections.singletonList(methodArg.getParameterLists().get(0)),

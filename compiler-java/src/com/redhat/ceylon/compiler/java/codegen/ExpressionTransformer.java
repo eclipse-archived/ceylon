@@ -372,6 +372,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         ProducedType callableType = model.getTypedReference().getFullType();//functionArg.getTypeModel();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(),
+                functionArg,
                 model,
                 callableType, 
                 Collections.singletonList(functionArg.getParameterLists().get(0)),
