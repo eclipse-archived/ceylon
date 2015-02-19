@@ -4,7 +4,7 @@
    elements must be countable. That is, for any given
    element of the stream, every iterator of the stream must
    eventually return the element, even if the iterator
-   itself is not exhaustable.
+   itself is not exhaustible.
    
    A stream may have null elements. That is, an iterator for
    the stream may produce the value [[null]] one or more
