@@ -2,8 +2,9 @@ var arrprot$=Array.prototype;
 arrprot$.ser$$=function(d){
   var targ=this._elemTarg();
   d.putValue(OpenValue$jsint(lmp$(ex$,'$'),this.$prop$getSize),this.length,{Instance$putValue:{t:Integer}});
+  var elemtarg={Instance$putElement:targ};
   for (var i=0; i < this.length; i++) {
-    d.putElement(i,this[i],{Instance$putElement:targ});
+    d.putElement(i,this[i],elemtarg);
   }
 }
 var origArrToString = arrprot$.toString;
