@@ -1410,19 +1410,6 @@ public class ClassTransformer extends AbstractTransformer {
                     List.<JCExpression>of(naming.makeUnquotedIdent(Unfix.deconstructor)))));
         }
         
-        // get reified type arguments
-        for (TypeParameter tp : model.getTypeParameters()) {
-            JCExpression reifiedType = makeMetamodelInvocation("getAppliedMetamodel", 
-                    List.<JCExpression>of(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp))), 
-                    null);
-            stmts.add(make().Exec(make().Apply(
-                    null, 
-                    naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructor.toString()), "putTypeArgument"),
-                    List.<JCExpression>of(
-                            expressionGen().makeTypeParameterDeclaration(null, tp),
-                            reifiedType))));
-        }
-        
         // Get the outer instance, if any
         if (model.getContainer() instanceof ClassOrInterface) {
             ClassOrInterface outerInstanceModel = (ClassOrInterface)model.getContainer();
@@ -1499,18 +1486,6 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
         boolean requiredLookup = false;
         
-        // assign reified type arguments
-        /*for (TypeParameter tp : model.getTypeParameters()) {
-            requiredLookup = true;
-            String descriptorName = naming.getTypeArgumentDescriptorName(tp);
-            // Get the c.l.m.m.Type
-            JCExpression reifiedType = make().Apply(null, 
-                    naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructed.toString()), "getTypeArgument"),
-                    List.of(expressionGen().makeTypeParameterDeclaration(null, tp)));
-            // Now convert it to a TypeDescriptor, which is what we actually need
-            JCExpression reifiedTypeDescriptor = makeMetamodelInvocation("getTypeDescriptor", List.of(reifiedType), null); 
-            stmts.add(makeReassignFinalField(makeTypeDescriptorType(), descriptorName, reifiedTypeDescriptor));
-        }*/
         
         // assign fields
         for (Declaration member : model.getMembers()) {
