@@ -1,7 +1,7 @@
 import ceylon.language.serialization { DeserializableReference, RealizableReference, Deconstructed, Reference }
 import ceylon.language.meta.model { ClassModel }
 
-native class DeserRefImpl<Instance,Outer>(context, id, clazz, outerRef)
+native class DeserRefImpl<out Instance,Outer>(context, id, clazz, outerRef)
     satisfies DeserializableReference<Instance> & RealizableReference<Instance> {
 
   shared JsDeserCtxt context;
