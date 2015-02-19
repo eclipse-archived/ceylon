@@ -15,7 +15,6 @@ class SerializableGenericClass<T> implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
-        deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).getTypeParameterDeclaration("T"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$T));
         deconstructor.<T>putValue($reified$T, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "t"), this.t);
     }
     
@@ -83,7 +82,6 @@ class SerializableGenericSubclass2<U> extends .com.redhat.ceylon.compiler.java.t
     @.java.lang.Override
     public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
         super.$serialize$(deconstructor);
-        deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass2.class)).getTypeParameterDeclaration("U"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$U));
     }
     
     @.java.lang.Override
