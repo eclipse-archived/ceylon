@@ -29,7 +29,7 @@ final class anonymous_ {
         .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1)
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 4
@@ -38,7 +38,7 @@ final class anonymous_ {
                     @.java.lang.Override // line 4
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 4
                     public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 4
-                        final .java.lang.Object t = $param$0;
+                        final .java.lang.Object t = $param$0; // line 4
                         return t; // line 4
                     }
                 };
@@ -48,16 +48,16 @@ final class anonymous_ {
         id = ( // line 6
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1)
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 9
                 {
-                     // line 9
-                    @.java.lang.Override // line 9
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 9
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 9
-                        final .java.lang.Object t = $param$0;
+                     // line 7
+                    @.java.lang.Override // line 7
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 7
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 7
+                        final .java.lang.Object t = $param$0; // line 7
                         .ceylon.language.print_.print(.ceylon.language.String.instance("f")); // line 8
                         return t; // line 9
                     }

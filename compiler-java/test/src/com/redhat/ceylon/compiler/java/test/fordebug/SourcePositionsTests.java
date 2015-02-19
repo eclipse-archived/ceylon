@@ -41,4 +41,9 @@ public class SourcePositionsTests extends CompilerTests {
     public void testAnonymousLines(){
         compareWithJavaSourceWithLines("lines/anonymous");
     }
+    
+    @Test
+    public void testDoerLines(){
+        compareWithJavaSourceWithLines("lines/doer");
+    }
 }
