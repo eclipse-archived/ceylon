@@ -42,14 +42,6 @@ public class SerializationHelper {
                     gen.getNames().name(Util.getContainingDeclaration(d)), "});");
             gen.endLine();
         }
-        //Now the type arguments
-        for (TypeParameter tp : d.getTypeParameters()) {
-            gen.out(dc,  ".putTypeArgument(", gen.getClAlias(), "OpenTypeParam$jsint(",
-                    gen.getNames().name(d), ",'", tp.getName(), "$", d.getName(), "'),", gen.getClAlias(),
-                    "typeLiteral$meta({Type$typeLiteral:");
-            gen.out("this.$$targs$$.", tp.getName(), "$", d.getName(), "}));");
-            gen.endLine();
-        }
         //Get the type's package
         String pkgname = d.getUnit().getPackage().getNameAsString();
         if ("ceylon.language".equals(pkgname)) {
