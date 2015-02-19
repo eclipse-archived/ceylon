@@ -7,6 +7,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -16,6 +17,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -28,6 +30,7 @@ import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
@@ -81,6 +84,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private List<String> files = Arrays.asList("*");
     private DiagnosticListener diagnosticListener;
     private boolean throwOnError;
+    private EnumSet<Warning> suppwarns = EnumUtil.enumsFromStrings(Warning.class,
+            DefaultToolOptions.getCompilerSuppressWarnings());
 
     public CeylonCompileJsTool() {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
@@ -226,7 +231,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .generateSourceArchive(!skipSrc)
                 .encoding(encoding)
                 .diagnosticListener(diagnosticListener)
-                .outWriter(writer);
+                .outWriter(writer)
+                .suppressWarnings(suppwarns);
         final TypeChecker typeChecker;
         if (opts.hasVerboseFlag("cmr")) {
             append("Using repositories: "+getRepositoryAsStrings());
@@ -377,5 +383,19 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
      */
     public boolean isThrowOnError() {
         return throwOnError;
+    }
+
+    @Option(shortName='W')
+    @OptionArgument(argumentName = "warnings")
+    @Description("Suppress the reporting of the given warnings. " +
+            "If no `warnings` are given then suppresss the reporting of all warnings, " +
+            "otherwise just suppresss those which are present. " +
+            "Allowed flags include: " +
+            "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
+            "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
+            "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
+            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
+    public void setSuppressWarning(EnumSet<Warning> warnings) {
+        suppwarns = warnings;
     }
 }

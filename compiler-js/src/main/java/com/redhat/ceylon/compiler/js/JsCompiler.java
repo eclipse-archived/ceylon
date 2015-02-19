@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -40,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 
 public class JsCompiler {
 
@@ -246,6 +248,10 @@ public class JsCompiler {
                     }
                 }
                 if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
+                    if (opts.getSuppressWarnings() != null) {
+                        pu.getCompilationUnit().visit(
+                                new WarningSuppressionVisitor<Warning>(Warning.class, opts.getSuppressWarnings()));
+                    }
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.hasVerboseFlag("ast")) {
                         if (opts.getOutWriter() == null) {
@@ -495,6 +501,10 @@ public class JsCompiler {
         int count = 0;
         DiagnosticListener diagnosticListener = opts.getDiagnosticListener();
         for (Message err: errors) {
+            final boolean suppress = err instanceof UsageWarning && ((UsageWarning)err).isSuppressed();
+            if (suppress) {
+                continue;
+            }
             if (err instanceof UsageWarning) {
                 out.write("warning");
             } else {

@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.DiagnosticListener;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 
 /** Represents all the options for compiling.
  * 
@@ -43,6 +45,7 @@ public class Options {
     private Logger logger;
     private Writer outWriter;
     private DiagnosticListener diagnosticListener;
+    private EnumSet<Warning> suppwarns;
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
      * @param args The argument list from which to parse repositories
@@ -379,4 +382,13 @@ public class Options {
         this.diagnosticListener = diagnosticListener;
         return this;
     }
+
+    public Options suppressWarnings(EnumSet<Warning> value) {
+        suppwarns = value;
+        return this;
+    }
+    public EnumSet<Warning> getSuppressWarnings() {
+        return suppwarns;
+    }
+
 }
