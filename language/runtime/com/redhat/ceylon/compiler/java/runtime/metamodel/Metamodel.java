@@ -288,7 +288,15 @@ public class Metamodel {
         if (o == null) {
             return type.containsNull();
         }
-        if (!(o instanceof ReifiedType)// we lack reified types
+        
+        TypeDescriptor instanceType = getTypeDescriptor(o);
+        if(instanceType == null)
+            return false;
+        
+        boolean result = getProducedType(instanceType).isSubtypeOf(getProducedType(type));
+        
+        if (!result
+                && !(o instanceof ReifiedType)// we lack reified types
                 && type instanceof TypeDescriptor.Class// we're testing for a generic type
                 && ((TypeDescriptor.Class) type).getTypeArguments().length > 0
                 && ((TypeDescriptor.Class)type).getKlass().isInstance(o)// the instance is an instance of the base type
@@ -297,12 +305,14 @@ public class Metamodel {
             // throw when asked if an instance of a Java class is
             // of a generic type and we don't have sufficient information to 
             // answer correctly.
+            // note we do this only if the isSubtypeOf() test fails
+            // that's so that we don't have to worry about type applications 
+            // such as like <out Anything> which is true even in the absence 
+            // of reified type arguments
             throw new ReifiedTypeError("Cannot determine whether " + o.getClass() + " is a " + type);
         }
-        TypeDescriptor instanceType = getTypeDescriptor(o);
-        if(instanceType == null)
-            return false;
-        return getProducedType(instanceType).isSubtypeOf(getProducedType(type));
+        
+        return result;
     }
 
     public static ProducedType getProducedType(Object instance) {
