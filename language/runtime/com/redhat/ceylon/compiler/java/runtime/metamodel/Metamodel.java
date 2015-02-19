@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ReifiedTypeError;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -219,10 +220,84 @@ public class Metamodel {
         // FIXME: what about local or anonymous types?
         return TypeDescriptor.klass(klass);
     }
-
+    
+    /**
+     * Is the given type one that is "completely reifiable"? 
+     * That is, does it consist only of class or interface types. 
+     * For example:
+     * <table><tbody>
+     * <tr><th>Type<th>                  <th>Result</th></tr>
+     * <tr><td>{@code String}</td>       <td>true</td></tr>
+     * <tr><td>{@code j.u.List}</td>     <td>false (generic declaration, raw application)</td></tr>
+     * <tr><td>{@code j.u.List<String>}</td><td>true</td></tr>
+     * <tr><td>{@code j.u.List<X>}</td>  <td>false (where X is a type parameter)</td></tr>
+     * </tbody></table>
+     */
+    private static boolean reifiedGeneric(java.lang.reflect.Type t) {
+        if (t instanceof Class
+                && ((Class<?>)t).getTypeParameters().length == 0) {
+            return true;
+        } else if (t instanceof java.lang.reflect.ParameterizedType) {
+            java.lang.reflect.ParameterizedType pt = (java.lang.reflect.ParameterizedType)t;
+            for (java.lang.reflect.Type t2 : pt.getActualTypeArguments()) {
+                if (!reifiedGeneric(t2)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Does the type {@code o} "completely reify" the type {@code tested} 
+     * in it's inheritance hierarchy?
+     * @see #reifiedGeneric(java.lang.reflect.Type)
+     */
+    private static boolean reifiedByInheritance(Class<?> o, Class<?> tested) {
+        int index = 0;
+        // Try to avoid instantiation of ParameterizedTypes and their TypeVariables
+        // by testing the Class instances for equality first. 
+        for (Class<?> c : o.getInterfaces()) {
+            if (c.equals(tested)
+                    && reifiedGeneric(o.getGenericInterfaces()[index])) {
+                return true;
+            }
+            if (reifiedByInheritance(c, tested)) {
+                return true;
+            }
+            index++;
+        }
+        
+        Class<?> sup = o.getSuperclass();
+        if (sup != null) {
+            if (sup.equals(tested)
+                    && reifiedGeneric(o.getGenericSuperclass())) {
+                return true;
+            }
+            if (reifiedByInheritance(sup, tested)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Implementation of {@code is} operator */
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
         if (o == null) {
             return type.containsNull();
+        }
+        if (!(o instanceof ReifiedType)// we lack reified types
+                && type instanceof TypeDescriptor.Class// we're testing for a generic type
+                && ((TypeDescriptor.Class) type).getTypeArguments().length > 0
+                && ((TypeDescriptor.Class)type).getKlass().isInstance(o)// the instance is an instance of the base type
+                && !reifiedByInheritance(o.getClass(), ((TypeDescriptor.Class)type).getKlass())// the type isn't reified by inheritance
+                ) {
+            // throw when asked if an instance of a Java class is
+            // of a generic type and we don't have sufficient information to 
+            // answer correctly.
+            throw new ReifiedTypeError("Cannot determine whether " + o.getClass() + " is a " + type);
         }
         TypeDescriptor instanceType = getTypeDescriptor(o);
         if(instanceType == null)
