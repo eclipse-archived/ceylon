@@ -5,9 +5,17 @@ package com.redhat.ceylon.compiler.java.metadata;
  */
 public enum Variance {
     /** Contravariant ({@code in}) type parameter */
-    IN, 
+    IN("in"), 
     /** Conavariant ({@code out}) type parameter */
-    OUT,
+    OUT("out"),
     /** Invariant type parameter */
-    NONE;
+    NONE("");
+    
+    private final String pretty;
+    Variance(String pretty) {
+        this.pretty = pretty;
+    }
+    public String getPretty() {
+        return pretty;
+    }
 }

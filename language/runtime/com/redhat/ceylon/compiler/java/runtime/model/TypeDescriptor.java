@@ -56,7 +56,12 @@ public abstract class TypeDescriptor {
     
     public abstract int hashCode();
     
-    public abstract String toString();
+    @Override
+    public final String toString() {
+        StringBuilder b = new StringBuilder();
+        stringTo(b);
+        return b.toString();
+    }
     
     protected abstract void stringTo(StringBuilder sb);
     
@@ -86,6 +91,10 @@ public abstract class TypeDescriptor {
 
         public Generic(Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
             this.typeArguments = typeArguments;
+            if (useSiteVariance != NO_VARIANCE
+                    && useSiteVariance.length != typeArguments.length) {
+                throw new IllegalArgumentException("Undefined variance");
+            }
             this.useSiteVariance = useSiteVariance;
         }
 
@@ -97,25 +106,17 @@ public abstract class TypeDescriptor {
             return Arrays.equals(typeArguments, other.typeArguments)
                     && Arrays.equals(useSiteVariance, other.useSiteVariance);
         }
-        
-        protected void toString(StringBuilder b) {
-            if(typeArguments.length > 0){
-                b.append("<");
-                for(int i=0;i<typeArguments.length;i++){
-                    if(i>0)
-                        b.append(",");
-                    b.append(typeArguments[i]);
-                }
-                b.append(">");
-            }
-        }
-        
+        /** Appends the type arguments */
         protected void stringTo(StringBuilder b) {
             if(typeArguments.length > 0){
                 b.append("<");
                 for(int i=0;i<typeArguments.length;i++){
-                    if(i>0)
+                    if(i>0) {
                         b.append(",");
+                    }
+                    if (useSiteVariance != NO_VARIANCE) {
+                        b.append(useSiteVariance[i].getPretty()).append(' ');
+                    }
                     typeArguments[i].stringTo(b);
                 }
                 b.append(">");
@@ -182,19 +183,6 @@ public abstract class TypeDescriptor {
             ret = 37 * ret + Arrays.hashCode(useSiteVariance);
             ret = 37 * ret + klass.hashCode();
             return  ret;
-        }
-        
-        @Override
-        public String toString() {
-            String className = klass.getName();
-            if (typeArguments.length != 0) {
-                StringBuilder b = new StringBuilder(className);
-                // add type arguments
-                super.stringTo(b);
-                return b.toString();
-            } else {
-                return className;
-            }
         }
         
         @Override
@@ -386,15 +374,13 @@ public abstract class TypeDescriptor {
         }
         
         @Override
-        public String toString() {
-            StringBuilder b = new StringBuilder();
+        public void stringTo(StringBuilder b) {
             if(klass != null)
                 b.append(klass.getName());
             else
                 b.append(name);
             // add type arguments
-            super.toString(b);
-            return b.toString();
+            super.stringTo(b);
         }
     }
     
@@ -435,19 +421,12 @@ public abstract class TypeDescriptor {
             ret = 37 * ret + member.hashCode();
             return ret;
         }
-
-        @Override
-        public String toString() {
-            StringBuilder b = new StringBuilder();
-            stringTo(b);
-            return b.toString();
-        }
         
         @Override
         public void stringTo(StringBuilder sb) {
-            sb.append(container);
+            container.stringTo(sb);
             sb.append(".");
-            sb.append(member);
+            member.stringTo(sb);
         }
 
         @Override
@@ -483,11 +462,6 @@ public abstract class TypeDescriptor {
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
             return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
-        }
-        
-        @Override
-        public String toString() {
-            return "ceylon.language.Nothing";
         }
         
         @Override
@@ -537,24 +511,24 @@ public abstract class TypeDescriptor {
             return true;
         }
 
-        protected String toString(char sep) {
-            StringBuilder b = new StringBuilder();
+        protected abstract char getSep();
+        
+        @Override
+        protected final void stringTo(StringBuilder sb) {
+            char sep = getSep();
             if(members.length > 0){
                 for(int i=0;i<members.length;i++){
-                    if(i>0)
-                        b.append(sep);
-                    b.append(members[i]);
-                }
-            }
-            return b.toString();
-        }
-        protected void stringTo(StringBuilder sb, char sep) {
-            
-            if(members.length > 0){
-                for(int i=0;i<members.length;i++){
-                    if(i>0)
+                    if(i>0) {
                         sb.append(sep);
-                    members[i].stringTo(sb);
+                    }
+                    TypeDescriptor member = members[i];
+                    if (member instanceof Composite) {
+                        sb.append('<');
+                    }
+                    member.stringTo(sb);
+                    if (member instanceof Composite) {
+                        sb.append('>');
+                    }
                 }
             }
         }
@@ -584,13 +558,8 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public String toString() {
-            return super.toString('|');
-        }
-        
-        @Override
-        public void stringTo(StringBuilder sb) {
-            super.stringTo(sb, '|');
+        public char getSep() { 
+            return '|';
         }
 
         @Override
@@ -657,13 +626,8 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public String toString() {
-            return super.toString('&');
-        }
-        
-        @Override
-        public void stringTo(StringBuilder sb) {
-            super.stringTo(sb, '&');
+        public char getSep() { 
+            return '&';
         }
 
         @Override
