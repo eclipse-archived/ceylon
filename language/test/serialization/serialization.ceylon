@@ -66,13 +66,6 @@ shared void testBasicDeserializationOfObject() {
             shared actual Iterator<[ValueDeclaration, Anything]> iterator() => {[`value Container.element`, 1]}.iterator();
             shared actual Reference<Instance>? getOuterInstance<Instance>() => null;
             
-            shared actual Type getTypeArgument(TypeParameter typeParameter) {
-                assert(exists element = `Container<Integer>`.declaration.getTypeParameterDeclaration("Element"));
-                assert (typeParameter == element);
-                assert(is TypeParameter->Type<Anything> result =`Container<Integer>`.typeArguments.first);
-                return result.item;
-            }
-            
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
                 assert (attribute == `value Container.element`);
                 assert(is Instance|Reference<Instance> result = 1);
@@ -96,13 +89,6 @@ shared void testBasicDeserializationOfArray() {
         object deconstructed satisfies Deconstructed {
             shared actual Iterator<[ValueDeclaration, Anything]> iterator() => {[`value Array.size`, 1]}.iterator();
             shared actual Reference<Instance>? getOuterInstance<Instance>() => null;
-            
-            shared actual Type getTypeArgument(TypeParameter typeParameter) {
-                assert(exists element = `Array<Integer>`.declaration.getTypeParameterDeclaration("Element"));
-                assert (typeParameter == element);
-                assert(is TypeParameter->Type<Anything> result =`Array<Integer>`.typeArguments.first);
-                return result.item;
-            }
             
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
                 assert (attribute == `value Array.size`);
@@ -146,13 +132,6 @@ shared void testDerserializationDeserializeTwice() {
         shared actual Iterator<[ValueDeclaration, Anything]> iterator() => {[`value Array.size`, 1]}.iterator();
         shared actual Reference<Instance>? getOuterInstance<Instance>() => null;
         
-        shared actual Type getTypeArgument(TypeParameter typeParameter) {
-            assert(exists element = `Array<Integer>`.declaration.getTypeParameterDeclaration("Element"));
-            assert (typeParameter == element);
-            assert(exists result =`Array<Integer>`.typeArguments.first);
-            return result.item;
-        }
-        
         shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
             assert (attribute == `value Array.size`);
             assert(is Instance|Reference<Instance> result = 1);
@@ -184,13 +163,6 @@ shared void testDerserializationInstanceTwice() {
         object deconstructed satisfies Deconstructed {
             shared actual Iterator<[ValueDeclaration, Anything]> iterator() => {[`value Container.element`, 1]}.iterator();
             shared actual Reference<Instance>? getOuterInstance<Instance>() => null;
-            
-            shared actual Type getTypeArgument(TypeParameter typeParameter) {
-                assert(exists element = `Container<Integer>`.declaration.getTypeParameterDeclaration("Element"));
-                assert (typeParameter == element);
-                assert(exists result =`Container<Integer>`.typeArguments.first);
-                return result.item;
-            }
             
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
                 assert (attribute == `value Container.element`);
