@@ -480,7 +480,7 @@ public class RefinementVisitor extends Visitor {
             checkAssignableToOneOf(refiningMember.getType(), refinedMember.getType(), 
             		optionalRefinedType, that, 
             		"type of member must be assignable to type of refined member: " + 
-            				message(refined));
+            				message(refined), 9000);
         }
         else {
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,

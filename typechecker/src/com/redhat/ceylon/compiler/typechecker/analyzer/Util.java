@@ -345,7 +345,7 @@ public class Util {
 
     static void checkAssignableToOneOf(ProducedType type, 
     		ProducedType supertype1, ProducedType supertype2, 
-            Node node, String message) {
+            Node node, String message, int code) {
         if (isTypeUnknown(type) || 
         		isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
             addTypeUnknownError(node, message);
@@ -354,7 +354,7 @@ public class Util {
                 && !type.isSubtypeOf(supertype2)) {
             node.addError(message + 
                     message(type, " is not assignable to ", 
-                            supertype1, node.getUnit()));
+                            supertype1, node.getUnit()), code);
         }
     }
 
