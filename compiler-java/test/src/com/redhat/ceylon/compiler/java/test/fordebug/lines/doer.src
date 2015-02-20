@@ -4,10 +4,10 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
      // line 1
     Doer(final .ceylon.language.Callable<? extends .java.lang.Object> $do) { // line 1
     }
-     // line 1
-    @.java.lang.Override // line 1
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() { // line 1
-        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$; // line 1
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
 } // line 2

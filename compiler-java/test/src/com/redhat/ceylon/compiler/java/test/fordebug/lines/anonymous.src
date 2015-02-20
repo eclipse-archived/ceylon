@@ -8,11 +8,11 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Anything,ceylon.language::Anything,ceylon.language::Empty>>") // line 1
     final .ceylon.language.Callable<? extends .java.lang.Object> $do) { // line 1
     }
-     // line 1
-    @.java.lang.Override // line 1
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 1
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() { // line 1
-        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$; // line 1
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);

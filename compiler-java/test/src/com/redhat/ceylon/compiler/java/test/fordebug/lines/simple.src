@@ -15,12 +15,12 @@ final class name_ {
     final .java.lang.String lastName) { // line 21
         return new .java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 21
     }
-}
+} // line 24
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 21
 @.ceylon.language.SharedAnnotation$annotation$ // line 24
 public class Main2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 24
-    
-    public Main2() {
+     // line 24
+    public Main2() { // line 24
         final .java.lang.String firstName = "David"; // line 25
         final .java.lang.String lastName = "Festal"; // line 26
         .ceylon.language.process_.get_().writeLine(.com.redhat.ceylon.compiler.java.test.fordebug.lines.name_.name(firstName, lastName)); // line 27
