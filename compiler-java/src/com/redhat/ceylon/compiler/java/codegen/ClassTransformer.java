@@ -208,7 +208,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
-
+        // everything else is synthetic
+        at(null);
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method
@@ -229,7 +230,8 @@ public class ClassTransformer extends AbstractTransformer {
             if(supportsReifiedAlias(model))
                 classBuilder.reifiedAlias(model.getType());
         }
-        
+        // reset position before initializer constructor is generated. 
+        at(def);
         List<JCTree> result;
         if (Decl.isAnnotationClass(def)) {
             ListBuffer<JCTree> trees = ListBuffer.lb();
