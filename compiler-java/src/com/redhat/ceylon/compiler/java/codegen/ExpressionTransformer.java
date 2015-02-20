@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -4745,7 +4746,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // instanceof Tree.ParameterizedExpression
             boxing = CodegenUtil.getBoxingStrategy(leftTerm);
             Tree.ParameterizedExpression paramExpr = (Tree.ParameterizedExpression)leftTerm;
-            Method decl = (Method) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
+            MethodOrValue decl = (MethodOrValue) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
                     paramExpr,
@@ -4753,7 +4754,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     (Tree.Expression)rightTerm,
                     paramExpr.getParameterLists(),
                     paramExpr.getPrimary().getTypeModel(),
-                    !decl.isDeferred());
+                    decl instanceof Method ? !((Method)decl).isDeferred() : false);
             rhs = callableBuilder.build();
         }
 

@@ -527,7 +527,7 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen,
             Node node,
-            Method model,
+            MethodOrValue model,
             Tree.Expression expr,  
             java.util.List<Tree.ParameterList> parameterListTree, 
             ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
@@ -568,7 +568,7 @@ public class CallableBuilder {
     private static CallableBuilder methodArgument(
             CeylonTransformer gen,
             Node node,
-            Method model,
+            MethodOrValue model,
             ProducedType callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts, boolean delegateDefaultedCalls) {
