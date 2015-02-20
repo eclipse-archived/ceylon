@@ -490,6 +490,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopBug2042(){
+        compareWithJavaSource("Bug2042");
+    }
+    
+    @Test
     public void testIopBug2053(){
         compile("Bug2053Varargs.java");
         compareWithJavaSource("Bug2053");
