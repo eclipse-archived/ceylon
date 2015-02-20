@@ -83,11 +83,6 @@ class DeconstructedGineaPig extends BaseIterable<Sequence<? extends Object>, Obj
     }
 
     @Override
-    public Type<? extends Object> getTypeArgument(TypeParameter arg0) {
-        return typeArgument;
-    }
-
-    @Override
     public <Instance> Object getValue(TypeDescriptor arg0, ValueDeclaration arg1) {
         return value;
     }
