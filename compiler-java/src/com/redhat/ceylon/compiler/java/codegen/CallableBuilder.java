@@ -180,7 +180,7 @@ public class CallableBuilder {
     public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
         ListBuffer<JCStatement> letStmts = ListBuffer.<JCTree.JCStatement>lb();
-        CallableBuilder cb = new CallableBuilder(gen, null, forwardCallTo.getTypeModel(), parameterList);
+        CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
         boolean instanceFieldIsBoxed = false;
@@ -526,6 +526,7 @@ public class CallableBuilder {
      */
     public static CallableBuilder anonymous(
             CeylonTransformer gen,
+            Node node,
             Method model,
             Tree.Expression expr,  
             java.util.List<Tree.ParameterList> parameterListTree, 
@@ -610,7 +611,7 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree,
             List<JCStatement> body) {
 
-        CallableBuilder cb = new CallableBuilder(gen, null, typeModel, parameterList);
+        CallableBuilder cb = new CallableBuilder(gen, parameterListTree, typeModel, parameterList);
         if (body == null) {
             body = List.<JCStatement>nil();
         }

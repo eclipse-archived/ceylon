@@ -2580,7 +2580,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
                 Method fp = (Method)fpTree.getParameterModel().getModel();
                 
-                expr = CallableBuilder.anonymous(gen(), (Method)fpTree.getTypedDeclaration().getDeclarationModel(), lazy.getExpression(), 
+                expr = CallableBuilder.anonymous(gen(), param, (Method)fpTree.getTypedDeclaration().getDeclarationModel(), lazy.getExpression(), 
                         ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists(),
                         getTypeForFunctionalParameter(fp),
                         true).build();
@@ -4748,6 +4748,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Method decl = (Method) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
+                    paramExpr,
                     decl,
                     (Tree.Expression)rightTerm,
                     paramExpr.getParameterLists(),
