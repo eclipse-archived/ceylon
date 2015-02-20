@@ -20,13 +20,21 @@
 package com.redhat.ceylon.compiler.java.test;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.runners.model.RunnerScheduler;
 
 public class ConcurrentScheduler implements RunnerScheduler {
-    ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+            new ThreadFactory() {
+                int ii = 0;
+                @Override
+                public Thread newThread(Runnable r) {
+                    return new Thread(r, "testrunner-thread-"+(ii++));
+                }
+            });
     
     @Override
     public void schedule(Runnable r) {
