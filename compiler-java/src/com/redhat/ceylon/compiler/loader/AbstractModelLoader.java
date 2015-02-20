@@ -2154,15 +2154,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
             // skip Java fields, which we only get if there is no getter method, in that case just add the setter method
-            if (decl instanceof Value && decl instanceof FieldValue == false) {
-                Value value = (Value)decl;
+            if (decl instanceof JavaBeanValue) {
+                JavaBeanValue value = (JavaBeanValue)decl;
                 // only add the setter if it has the same visibility as the getter
-                if (setter.isPublic() && ((JavaBeanValue)decl).mirror.isPublic()
-                        || setter.isProtected() && ((JavaBeanValue)decl).mirror.isProtected()
-                        || setter.isDefaultAccess() && ((JavaBeanValue)decl).mirror.isDefaultAccess()
-                        || (!setter.isPublic() && !((JavaBeanValue)decl).mirror.isPublic()
-                        && !setter.isProtected() && !((JavaBeanValue)decl).mirror.isProtected()
-                        && !setter.isDefaultAccess() && !((JavaBeanValue)decl).mirror.isDefaultAccess())) {
+                if (setter.isPublic() && value.mirror.isPublic()
+                        || setter.isProtected() && value.mirror.isProtected()
+                        || setter.isDefaultAccess() && value.mirror.isDefaultAccess()
+                        || (!setter.isPublic() && !value.mirror.isPublic()
+                        && !setter.isProtected() && !value.mirror.isProtected()
+                        && !setter.isDefaultAccess() && !value.mirror.isDefaultAccess())) {
                     VariableMirror setterParam = setter.getParameters().get(0);
                     ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
                             "setter '"+setter.getName()+"'", klass);
@@ -2170,8 +2170,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if(paramType.isExactly(value.getType())){
                         foundGetter = true;
                         value.setVariable(true);
-                        if(decl instanceof JavaBeanValue)
-                            ((JavaBeanValue)decl).setSetterName(setter.getName());
+                        value.setSetterName(setter.getName());
                         if(value.isTransient()){
                             // must be a real setter
                             makeSetter(value, null);
