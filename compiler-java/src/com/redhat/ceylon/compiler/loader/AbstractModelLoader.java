@@ -2540,8 +2540,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return result;
     }
     
-    private boolean isStartOfJavaBeanPropertyName(char c){
-        return Character.isUpperCase(c) || c == '_'; 
+    private boolean isStartOfJavaBeanPropertyName(int c){
+        return (c == Character.toUpperCase(c)) || c == '_'; 
     }
 
     private boolean isNonGenericMethod(MethodMirror methodMirror){
@@ -2554,10 +2554,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return false;
         String name = methodMirror.getName();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") 
-                && isStartOfJavaBeanPropertyName(name.charAt(3)) 
+                && isStartOfJavaBeanPropertyName(name.codePointAt(3)) 
                 && !"getString".equals(name) && !"getHash".equals(name) && !"getEquals".equals(name);
         boolean matchesIs = name.length() > 2 && name.startsWith("is") 
-                && isStartOfJavaBeanPropertyName(name.charAt(2)) 
+                && isStartOfJavaBeanPropertyName(name.codePointAt(2)) 
                 && !"isString".equals(name) && !"isHash".equals(name) && !"isEquals".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
@@ -2570,7 +2570,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return false;
         String name = methodMirror.getName();
         boolean matchesSet = name.length() > 3 && name.startsWith("set") 
-                && isStartOfJavaBeanPropertyName(name.charAt(3))
+                && isStartOfJavaBeanPropertyName(name.codePointAt(3))
                 && !"setString".equals(name) && !"setHash".equals(name) && !"setEquals".equals(name);
         boolean hasOneParam = methodMirror.getParameters().size() == 1;
         boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
