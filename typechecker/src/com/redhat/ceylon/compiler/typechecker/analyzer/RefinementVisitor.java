@@ -264,10 +264,12 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             if (!found) {
-                that.addError("actual member does not exactly refine any overloaded inherited member");
+                if (dec instanceof Method && root instanceof Method) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
+                    that.addError("overloaded member does not refine any inherited member");
+                }
             }
             else if (!legallyOverloaded) {
-                that.addError("overloaded member does not refine an inherited overloaded member");
+                that.addError("overloaded member does not exactly refine an inherited overloaded member");
             }
         }
     }
