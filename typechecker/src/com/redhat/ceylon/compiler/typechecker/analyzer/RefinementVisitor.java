@@ -77,7 +77,7 @@ public class RefinementVisitor extends Visitor {
 
     private void inheritDefaultedArguments(Declaration d) {
         Declaration rd = d.getRefinedDeclaration();
-        if (rd!=d && rd!=null) {
+        if (rd!=d && rd instanceof Functional && d instanceof Functional) {
             List<ParameterList> tdpls = ((Functional) d).getParameterLists();
             List<ParameterList> rdpls = ((Functional) rd).getParameterLists();
             if (!tdpls.isEmpty() && !rdpls.isEmpty()) {
