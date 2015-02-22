@@ -276,19 +276,23 @@ public class ExpressionVisitor extends Visitor {
                     new ArrayList<ProducedType>();
             for (Tree.CaseClause cc: 
                     that.getSwitchCaseList().getCaseClauses()) {
-                ProducedType t = 
-                        cc.getExpression().getTypeModel();
-                if (t!=null) {
-                    addToUnion(list, t);
+                Tree.Expression e = cc.getExpression();
+                if (e!=null) {
+                    ProducedType t = e.getTypeModel();
+                    if (t!=null) {
+                        addToUnion(list, t);
+                    }
                 }
             }
             Tree.ElseClause elseClause = 
                     that.getSwitchCaseList().getElseClause();
             if (elseClause!=null) {
-                ProducedType t = 
-                        elseClause.getExpression().getTypeModel();
-                if (t!=null) {
-                    addToUnion(list, t);
+                Tree.Expression e = elseClause.getExpression();
+                if (e!=null) {
+                    ProducedType t = e.getTypeModel();
+                    if (t!=null) {
+                        addToUnion(list, t);
+                    }
                 }
             }
             UnionType ut = new UnionType(unit);
