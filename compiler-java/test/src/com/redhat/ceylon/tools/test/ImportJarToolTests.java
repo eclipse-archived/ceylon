@@ -20,22 +20,17 @@
 package com.redhat.ceylon.tools.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.importjar.CeylonImportJarTool;
 import com.redhat.ceylon.tools.importjar.ImportJarException;
 
@@ -149,7 +144,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testSimpleModuleVersionJar() throws IOException {
+    public void testSimpleModuleVersionJar() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -161,7 +156,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testVerbosePackageModuleVersionJar() throws IOException {
+    public void testVerbosePackageModuleVersionJar() throws Exception {
         FileUtil.delete(destFile("importtest/imptest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -173,7 +168,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testWithMissingXmlDescriptor() throws IOException {
+    public void testWithMissingXmlDescriptor() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -193,7 +188,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
 
     @Test
-    public void testWithInvalidXmlDescriptor() throws IOException {
+    public void testWithInvalidXmlDescriptor() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -210,7 +205,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
 
     @Test
-    public void testWithInvalidPropertiesDescriptor() throws IOException {
+    public void testWithInvalidPropertiesDescriptor() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -227,7 +222,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
 
     @Test
-    public void testWithXmlDescriptor() throws IOException {
+    public void testWithXmlDescriptor() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -243,7 +238,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testWithPropertiesDescriptor() throws IOException {
+    public void testWithPropertiesDescriptor() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -259,7 +254,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testWithUnknownModule() throws IOException {
+    public void testWithUnknownModule() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -275,7 +270,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testDryRun() throws IOException {
+    public void testDryRun() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -292,7 +287,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testBug1630() throws IOException {
+    public void testBug1630() throws Exception {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -309,7 +304,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     }
     
     @Test
-    public void testWithPropertiesDescriptorCwd() throws IOException {
+    public void testWithPropertiesDescriptorCwd() throws Exception {
         File destDir = destFile("importtest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
