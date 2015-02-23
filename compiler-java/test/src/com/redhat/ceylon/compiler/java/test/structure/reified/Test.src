@@ -62,7 +62,7 @@ final class test_ {
             returning $ceylontmp$18 != null;
         );
         {
-            .java.lang.Object sel$19 = objOrNot;
+            Key sel$19 = objOrNot;
             if (sel$19 != null) {
                 final Key objOrNot$21 = (Key)sel$19;
             } else {

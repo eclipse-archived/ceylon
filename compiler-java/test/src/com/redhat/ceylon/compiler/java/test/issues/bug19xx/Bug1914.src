@@ -7,7 +7,7 @@ public final class bug1914_ {
     
     public static .java.lang.String bug1914(final .ceylon.language.String arg) {
         {
-            .java.lang.Object sel$0 = arg;
+            .ceylon.language.String sel$0 = arg;
             if (sel$0 != null || sel$0 == null) {
                 final .ceylon.language.String arg$1 = (.ceylon.language.String)sel$0;
                 return (

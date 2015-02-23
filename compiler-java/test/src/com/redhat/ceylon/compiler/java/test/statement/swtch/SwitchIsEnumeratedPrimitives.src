@@ -7,7 +7,7 @@ class SwitchIsEnumeratedPrimitive implements .com.redhat.ceylon.compiler.java.ru
     
     private final <Number>void m$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number, final Number n) {
         {
-            .java.lang.Object sel$0 = n;
+            Number sel$0 = n;
             if (sel$0 instanceof .ceylon.language.Integer) {
                 final .java.lang.Object n$3 = (.java.lang.Object)sel$0;
                 final double f = ((.ceylon.language.Integer)n$3).getFloat();
