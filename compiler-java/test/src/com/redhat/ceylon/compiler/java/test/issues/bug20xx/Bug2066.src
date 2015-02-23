@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2066_ {
+    
+    private bug2066_() {
+    }
+    
+    static void bug2066() {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_()).$callvariadic$();
+        final .java.lang.Object b = ((.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_()).$callvariadic$();
+        final .java.lang.String c = ((.ceylon.language.String)((.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_()).$callvariadic$()).toString();
+        final .java.lang.Object n = .ceylon.language.nothing_.get_();
+        final .java.lang.Object a2 = ((.ceylon.language.Callable<? extends .java.lang.Object>)n).$callvariadic$();
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> f1 = null;
+        final .ceylon.language.Empty c1 = (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.Empty> $ceylontmp$0 = f1;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : (.ceylon.language.Callable<? extends .ceylon.language.Empty>).ceylon.language.nothing_.get_();
+        ).$call$();
+        final .ceylon.language.Empty c2 = (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.Empty> $ceylontmp$ifResult$1;
+                {
+                    .ceylon.language.Callable sel$2 = f1;
+                    if (sel$2 != null) {
+                        final .ceylon.language.Callable<? extends .ceylon.language.Empty> f1$4 = (.ceylon.language.Callable)sel$2;
+                        $ceylontmp$ifResult$1 = f1$4;
+                    } else {
+                        final .java.lang.Object f1$3 = (.java.lang.Object)sel$2;
+                        $ceylontmp$ifResult$1 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$1;
+        ).$call$();
+    }
+}
