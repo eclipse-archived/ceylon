@@ -211,4 +211,6 @@ public interface RepositoryManager {
      * Makes sure that content cached as "unavailable" is reasessed
      */
     void refresh(boolean recurse);
+    
+    Overrides getOverrides();
 }

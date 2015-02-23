@@ -17,27 +17,12 @@
 package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
-import com.redhat.ceylon.cmr.impl.IOUtils;
-import com.redhat.ceylon.cmr.impl.NodeUtils;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.util.PathFilterParser;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.Resolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
@@ -51,6 +36,24 @@ import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactOverrides;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.PathFilter;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.util.PathFilterParser;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Aether utils.
@@ -67,7 +70,6 @@ public class AetherUtils {
     private int timeout;
     private boolean offline;
     private String settingsXml;
-    private Overrides overrides;
 
     AetherUtils(Logger log, boolean offline, int timeout) {
         this.log = log;
@@ -109,24 +111,6 @@ public class AetherUtils {
         }
     }
 
-    void setOverrides(String overridesXml) {
-        if (overridesXml != null) {
-            File overridesFile = new File(overridesXml);
-            if (overridesFile.exists() == false) {
-                throw new IllegalArgumentException("No such Maven overrides file: " + overridesFile);
-            }
-            try {
-                this.overrides = Overrides.parse(new FileInputStream(overridesFile));
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
-    private ArtifactOverrides findArtifactOverrides(MavenCoordinate mc) {
-        return (overrides != null) ? overrides.getArtifactOverrides(mc) : null;
-    }
-
     File findDependency(Node node) {
         final ArtifactResult result = findDependencies(node, true);
         return (result != null) ? result.artifact() : null;
@@ -136,18 +120,28 @@ public class AetherUtils {
         return findDependencies(node, null);
     }
 
-    private ArtifactResult findDependencies(Node node, Boolean fetchSingleArtifact) {
-        final ArtifactContext ac = ArtifactContext.fromNode(node);
-        if (ac == null)
-            return null;
-
-        final String name = ac.getName();
+    private String[] nameToGroupArtifactIds(String name){
         final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
         if (p == -1) {
             return null;
         }
         final String groupId = name.substring(0, p);
         final String artifactId = name.substring(p + 1);
+        return new String[]{groupId, artifactId};
+    }
+    
+    private ArtifactResult findDependencies(Node node, Boolean fetchSingleArtifact) {
+        final ArtifactContext ac = ArtifactContext.fromNode(node);
+        if (ac == null)
+            return null;
+
+        final String name = ac.getName();
+        String[] groupArtifactIds = nameToGroupArtifactIds(name);
+        if (groupArtifactIds == null) {
+            return null;
+        }
+        final String groupId = groupArtifactIds[0];
+        final String artifactId = groupArtifactIds[1];
         final String version = ac.getVersion();
 
         String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
@@ -162,17 +156,21 @@ public class AetherUtils {
 
     private ArtifactResult fetchDependencies(Repository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
         MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-        ArtifactOverrides ao = findArtifactOverrides(mc);
+        ArtifactOverrides ao = findArtifactOverrides(repository, mc);
         if (ao != null && ao.getReplace() != null) {
             DependencyOverride replace = ao.getReplace();
-            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getMvn()));
+            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getArtifactContext()));
             // replace fetched dependency
-            groupId = replace.getMvn().getGroupId();
-            artifactId = replace.getMvn().getArtifactId();
-            version = replace.getMvn().getVersion();
-            // new AO
-            mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-            ao = findArtifactOverrides(mc);
+            ArtifactContext context = replace.getArtifactContext();
+            String[] nameToGroupArtifactIds = nameToGroupArtifactIds(context.getName());
+            if(nameToGroupArtifactIds != null){
+                groupId = nameToGroupArtifactIds[0];
+                artifactId = nameToGroupArtifactIds[1];
+                version = context.getVersion();
+                // new AO
+                mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
+                ao = findArtifactOverrides(repository, mc);
+            }
         }
 
         final String name = toCanonicalForm(groupId, artifactId);
@@ -197,11 +195,12 @@ public class AetherUtils {
                     final MavenCoordinate dCo = dep.getCoordinate();
 
                     if (ao != null) {
-                        if (ao.isRemoved(dCo)) {
+                        ArtifactContext dContext = getArtifactContext(dCo);
+                        if (ao.isRemoved(dContext)) {
                             log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
-                        if (ao.isAdded(dCo)) {
+                        if (ao.isAddedOrUpdated(dContext)) {
                             log.debug(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
@@ -213,8 +212,8 @@ public class AetherUtils {
 
                 if (ao != null) {
                     for (DependencyOverride addon : ao.getAdd()) {
-                        dependencies.add(createArtifactResult(repository, addon.getMvn(), addon.isShared(), repositoryDisplayString));
-                        log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getMvn(), mc));
+                        dependencies.add(createArtifactResult(repository, addon.getArtifactContext(), addon.isShared(), repositoryDisplayString));
+                        log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), mc));
                     }
                 }
 
@@ -234,9 +233,44 @@ public class AetherUtils {
         }
     }
 
+    private ArtifactOverrides findArtifactOverrides(Repository repository, MavenCoordinate mc) {
+        Overrides overrides = repository.getRoot().getService(Overrides.class);
+        System.err.println("Overrides: "+overrides);
+        if(overrides != null){
+            ArtifactOverrides or = overrides.getArtifactOverrides(getArtifactContext(mc));
+            System.err.println(" ["+mc+"] => "+or);
+            return or;
+        }
+        return null;
+    }
+
+    private ArtifactContext getArtifactContext(MavenCoordinate mc){
+        String packaging;
+        if(mc.getPackaging() == PackagingType.JAR)
+            packaging = null; // that's the default for us
+        else
+            // FIXME: is this extension?
+            packaging = mc.getPackaging().getExtension();
+        String classifier = mc.getClassifier();
+        if(classifier != null && classifier.isEmpty())
+            classifier = null;
+        return Overrides.createMavenArtifactContext(mc.getGroupId(), mc.getArtifactId(), mc.getVersion(),
+                packaging, classifier);
+    }
+
     protected ArtifactResult createArtifactResult(Repository repository, final MavenCoordinate dCo, final boolean shared, final String repositoryDisplayString) {
-        final String dName = toCanonicalForm(dCo.getGroupId(), dCo.getArtifactId());
-        final String dVersion = dCo.getVersion();
+        return createArtifactResult(repository, dCo.getGroupId(), dCo.getArtifactId(), dCo.getVersion(), shared, repositoryDisplayString);
+    }
+
+    protected ArtifactResult createArtifactResult(Repository repository, final ArtifactContext dCo, final boolean shared, final String repositoryDisplayString) {
+        String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
+        if(groupArtifactIds == null)
+            return null;
+        return createArtifactResult(repository, groupArtifactIds[0], groupArtifactIds[1], dCo.getVersion(), shared, repositoryDisplayString);
+    }
+
+    protected ArtifactResult createArtifactResult(Repository repository, final String groupId, final String artifactId, final String dVersion, final boolean shared, final String repositoryDisplayString) {
+        final String dName = toCanonicalForm(groupId, artifactId);
 
         return new MavenArtifactResult(repository, dName, dVersion, repositoryDisplayString) {
             private ArtifactResult result;
@@ -248,7 +282,7 @@ public class AetherUtils {
 
             private synchronized ArtifactResult getResult() {
                 if (result == null) {
-                    result = fetchDependencies(repository(), dCo.getGroupId(), dCo.getArtifactId(), dVersion, false, repositoryDisplayString);
+                    result = fetchDependencies(repository(), groupId, artifactId, dVersion, false, repositoryDisplayString);
                 }
                 return result;
             }

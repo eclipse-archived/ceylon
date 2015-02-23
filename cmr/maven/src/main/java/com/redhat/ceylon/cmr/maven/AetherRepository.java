@@ -47,14 +47,9 @@ public class AetherRepository extends MavenRepository {
     }
 
     public static Repository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
-        return createRepository(log, settingsXml, null, offline, timeout);
-    }
-
-    public static Repository createRepository(Logger log, String settingsXml, String overridesXml, boolean offline, int timeout) {
         AetherContentStore acs = new AetherContentStore(log, offline, timeout);
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);
-        repo.utils.setOverrides(overridesXml);
         return repo;
     }
 

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.maven;
+package com.redhat.ceylon.cmr.api;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,36 +26,37 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 import com.redhat.ceylon.cmr.util.PathFilterParser;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Overrides {
-    private Map<MavenCoordinate, ArtifactOverrides> overrides = new HashMap<>();
+    
+    private Map<ArtifactContext, ArtifactOverrides> overrides = new HashMap<>();
+    private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
 
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
+        if(ao.getOwner().getVersion() == null)
+            overridesNoVersion.put(ao.getOwner().getName(), ao);
     }
 
-    public ArtifactOverrides getArtifactOverrides(MavenCoordinate mc) {
-        return overrides.get(mc);
+    public ArtifactOverrides getArtifactOverrides(ArtifactContext mc) {
+        ArtifactOverrides ao = overrides.get(mc);
+        if(ao == null){
+            // fall-back to overrides with no version specified
+            return overridesNoVersion.get(mc.getName());
+        }
+        return ao;
     }
 
     static Overrides parse(InputStream is) throws Exception {
@@ -65,9 +65,9 @@ public class Overrides {
             Document document = parseXml(is);
             List<Element> artifacts = getChildren(document.getDocumentElement(), "artifact");
             for (Element artifact : artifacts) {
-                MavenCoordinate mc = getMavenCoordinate(artifact);
+                ArtifactContext mc = getArtifactContext(artifact, true); // version is optional
                 ArtifactOverrides ao = new ArtifactOverrides(mc);
-                result.overrides.put(mc, ao);
+                result.addArtifactOverride(ao);
                 addOverrides(ao, artifact, DependencyOverride.Type.ADD);
                 addOverrides(ao, artifact, DependencyOverride.Type.REMOVE);
                 addOverrides(ao, artifact, DependencyOverride.Type.REPLACE);
@@ -87,22 +87,28 @@ public class Overrides {
         }
     }
 
-    protected static MavenCoordinate getMavenCoordinate(Element element) {
-        String groupId = getRequiredAttribute(element, "groupId");
-        String artifactId = getRequiredAttribute(element, "artifactId");
-        String version = getRequiredAttribute(element, "version");
-        String packaging = getAttribute(element, "packaging");
-        PackagingType pt = (packaging != null) ? PackagingType.of(packaging) : PackagingType.JAR;
-        String classifier = getAttribute(element, "classifier");
-        return MavenCoordinates.createCoordinate(groupId, artifactId, version, pt, classifier);
+    protected static ArtifactContext getArtifactContext(Element element, boolean optionalVersion) {
+        String groupId = getAttribute(element, "groupId");
+        if(groupId != null){
+            String artifactId = getRequiredAttribute(element, "artifactId");
+            String version = optionalVersion ? getAttribute(element, "version") : getRequiredAttribute(element, "version");
+            String packaging = getAttribute(element, "packaging");
+            String classifier = getAttribute(element, "classifier");
+            return createMavenArtifactContext(groupId, artifactId, version, packaging, classifier);
+        }else{
+            String module = getRequiredAttribute(element, "module");
+            String version = optionalVersion ? getAttribute(element, "version") : getRequiredAttribute(element, "version");
+            return new ArtifactContext(module, version);
+        }
     }
 
     protected static void addOverrides(ArtifactOverrides ao, Element artifact, DependencyOverride.Type type) {
         List<Element> overrides = getChildren(artifact, type.name().toLowerCase());
         for (Element override : overrides) {
-            MavenCoordinate dep = getMavenCoordinate(override);
+            ArtifactContext dep = getArtifactContext(override, type == Type.REMOVE);
             boolean shared = getBooleanAttribute(override, "shared");
-            DependencyOverride doo = new DependencyOverride(dep, type, shared);
+            boolean optional = getBooleanAttribute(override, "optional");
+            DependencyOverride doo = new DependencyOverride(dep, type, shared, optional);
             ao.addOverride(doo);
         }
     }
@@ -140,5 +146,10 @@ public class Overrides {
             elements.add((Element) nodes.item(i));
         }
         return elements;
+    }
+
+    public static ArtifactContext createMavenArtifactContext(String groupId, String artifactId, String version, 
+                                                             String packaging, String classifier) {
+        return new MavenArtifactContext(groupId, artifactId, version, packaging, classifier);
     }
 }

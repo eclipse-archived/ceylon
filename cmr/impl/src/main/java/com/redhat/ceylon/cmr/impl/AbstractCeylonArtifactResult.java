@@ -20,14 +20,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
@@ -55,12 +60,36 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
     protected ModuleInfo resolve(){
         if(!resolved){
-            infos = Configuration.getResolvers(manager).resolve(this);
+            ModuleInfo infos = Configuration.getResolvers(manager).resolve(this);
+            this.infos = applyOverrides(infos);
             resolved = true;
         }
         return infos;
     }
     
+    private ModuleInfo applyOverrides(ModuleInfo infos) {
+        Overrides overrides = repository().getRoot().getService(Overrides.class);
+        System.err.println("overrides for "+infos+" -> "+overrides);
+        if(overrides == null)
+            return infos;
+        ArtifactOverrides artifactOverrides = overrides.getArtifactOverrides(new ArtifactContext(name(), version()));
+        if(artifactOverrides == null)
+            return infos;
+        Set<ModuleDependencyInfo> newDependencies = new HashSet<ModuleDependencyInfo>();
+        for(ModuleDependencyInfo dep : infos.getDependencies()){
+            ArtifactContext depCtx = new ArtifactContext(dep.getName(), dep.getVersion());
+            if(artifactOverrides.isRemoved(depCtx) || artifactOverrides.isAddedOrUpdated(depCtx))
+                continue;
+            newDependencies.add(dep);
+        }
+        // add the extras
+        for(DependencyOverride add : artifactOverrides.getAdd()){
+            newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                    add.isOptional(), add.isShared()));
+        }
+        return new ModuleInfo(infos.getFilter(), newDependencies);
+    }
+
     protected RepositoryManager getManager(){
         return manager;
     }

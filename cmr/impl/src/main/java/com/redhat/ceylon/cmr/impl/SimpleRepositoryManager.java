@@ -32,7 +32,7 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
 
     public SimpleRepositoryManager(StructureBuilder structureBuilder, Logger log) {
-        super(log);
+        super(log, null);
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 
@@ -41,7 +41,11 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     public SimpleRepositoryManager(Repository root, Logger log) {
-        super(log);
+        this(root, log, null);
+    }
+    
+    public SimpleRepositoryManager(Repository root, Logger log, String overridesFileName) {
+        super(log, overridesFileName);
         if (root == null)
             throw new IllegalArgumentException("Null root!");
 

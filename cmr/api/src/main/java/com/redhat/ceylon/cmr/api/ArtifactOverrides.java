@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.maven;
+package com.redhat.ceylon.cmr.api;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -28,13 +26,13 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 public class ArtifactOverrides {
     private static final Logger log = Logger.getLogger(ArtifactOverrides.class.getName());
 
-    private MavenCoordinate owner;
+    private ArtifactContext owner;
     private Set<DependencyOverride> add = new HashSet<>();
     private Set<DependencyOverride> remove = new HashSet<>();
     private DependencyOverride replace;
     private String filter;
 
-    public ArtifactOverrides(MavenCoordinate owner) {
+    public ArtifactOverrides(ArtifactContext owner) {
         this.owner = owner;
     }
 
@@ -48,14 +46,14 @@ public class ArtifactOverrides {
                 break;
             case REPLACE:
                 if (replace != null) {
-                    log.warning(String.format("Replace for %s is already defined: %s, current: %s", owner, replace.getMvn(), override.getMvn()));
+                    log.warning(String.format("Replace for %s is already defined: %s, current: %s", owner, replace.getArtifactContext(), override.getArtifactContext()));
                 }
                 replace = override;
                 break;
         }
     }
 
-    public MavenCoordinate getOwner() {
+    public ArtifactContext getOwner() {
         return owner;
     }
 
@@ -63,18 +61,20 @@ public class ArtifactOverrides {
         return add;
     }
 
-    public boolean isRemoved(MavenCoordinate mc) {
+    public boolean isRemoved(ArtifactContext mc) {
         for (DependencyOverride override : remove) {
-            if (mc.equals(override.getMvn())) {
+            // match with optional version
+            if (override.matches(mc)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isAdded(MavenCoordinate mc) {
+    public boolean isAddedOrUpdated(ArtifactContext mc) {
         for (DependencyOverride override : add) {
-            if (mc.equals(override.getMvn())) {
+            // match just the name, so we can update with another version
+            if (override.matchesName(mc)) {
                 return true;
             }
         }

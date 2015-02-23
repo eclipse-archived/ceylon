@@ -44,11 +44,11 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
 
     public OutputRepositoryManager(File outputDir, RepositoryManager manager, Logger log) {
-        this(new RootRepositoryManager(outputDir, log), manager, log);
+        this(new RootRepositoryManager(outputDir, log, null), manager, log);
     }
 
     public OutputRepositoryManager(RepositoryManager output, RepositoryManager manager, Logger log) {
-        super(log);
+        super(log, null);
         if (output == null)
             throw new IllegalArgumentException("Output is null!");
         if (manager == null)

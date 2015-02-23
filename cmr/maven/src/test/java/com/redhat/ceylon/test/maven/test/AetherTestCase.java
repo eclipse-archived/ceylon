@@ -17,6 +17,8 @@
 package com.redhat.ceylon.test.maven.test;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -28,6 +30,7 @@ import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -164,10 +167,15 @@ public class AetherTestCase extends AbstractAetherTest {
         }
     }
 
+    private String getOverridesFileName() throws URISyntaxException{
+        URL overridessURL = getClass().getClassLoader().getResource("maven-settings/overrides.xml");
+        return new File(overridessURL.toURI()).getPath();
+    }
+    
     @Test
     public void testAddRemoveOverrides() throws Throwable {
-        Repository repository = createAetherRepository(true);
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        Repository repository = createAetherRepository();
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);
         File artifact = result.artifact();
@@ -190,8 +198,8 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testReplaceOverrides() throws Throwable {
-        Repository repository = createAetherRepository(true);
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        Repository repository = createAetherRepository();
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
         ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");
@@ -212,8 +220,8 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testFilterOverrides() throws Throwable {
-        Repository repository = createAetherRepository(true);
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        Repository repository = createAetherRepository();
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
         ArtifactResult result = manager.getArtifactResult("org.osgi:org.osgi.core", "4.0.0");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");

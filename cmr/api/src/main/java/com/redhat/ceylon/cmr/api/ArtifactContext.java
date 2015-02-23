@@ -20,6 +20,7 @@ package com.redhat.ceylon.cmr.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -434,5 +435,25 @@ public class ArtifactContext implements Serializable, ContentOptions {
         ignoreDependencies = ac.ignoreDependencies;
         callback = ac.callback;
         return ac;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // WARNING: this is only about equality of coordinates, as used in Overrides
+        if(obj == this)
+            return true;
+        if(obj instanceof ArtifactContext == false)
+            return false;
+        ArtifactContext other = (ArtifactContext) obj;
+        return Objects.equals(name, other.name)
+                && Objects.equals(version, other.version);
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = 37 * hash + (name != null ? name.hashCode() : 0);
+        hash = 37 * hash + (version != null ? version.hashCode() : 0);
+        return hash;
     }
 }

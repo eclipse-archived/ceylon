@@ -38,6 +38,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
@@ -62,8 +63,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected Repository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
 
-    public AbstractNodeRepositoryManager(Logger log) {
-        super(log);
+    public AbstractNodeRepositoryManager(Logger log, String overridesFileName) {
+        super(log, overridesFileName);
     }
 
     public synchronized void setAddCacheAsRoot(boolean addCacheAsRoot) {
@@ -90,12 +91,18 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         this.cache = cache;
         if (addCacheAsRoot) {
             roots.add(cache);
+            setupOverrides(cache);
             allRoots = null;
         }
     }
 
+    private void setupOverrides(Repository repo) {
+        repo.getRoot().addService(Overrides.class, overrides);
+    }
+
     protected synchronized void addRepository(Repository external) {
         roots.add(external);
+        setupOverrides(external);
         allRoots = null;
     }
 
@@ -466,6 +473,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             if (addLeaf) {
                 Node parent = node;
                 context.toNode(parent);
+                NodeUtils.keepRepository(parent, repository);
                 try {
                     String[] names = repository.getArtifactNames(context);
                     for (String name : names) {

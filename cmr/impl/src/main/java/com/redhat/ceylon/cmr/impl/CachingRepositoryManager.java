@@ -41,7 +41,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
     private final File cachingDir;
 
     public CachingRepositoryManager(StructureBuilder root, File cachingDir, Logger log) {
-        super(log);
+        super(log, null);
         if (root == null)
             throw new IllegalArgumentException("Null structure builder!");
 
@@ -52,7 +52,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     public CachingRepositoryManager(Repository root, File cachingDir, Logger log) {
-        super(log);
+        super(log, null);
         if (root == null)
             throw new IllegalArgumentException("Null root!");
 

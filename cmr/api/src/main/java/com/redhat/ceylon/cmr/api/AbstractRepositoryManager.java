@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +35,24 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public abstract class AbstractRepositoryManager implements RepositoryManager {
 
-    protected Logger log;
+    protected final Logger log;
+    protected final Overrides overrides;
 
-    public AbstractRepositoryManager(Logger log) {
+    public AbstractRepositoryManager(Logger log, String overridesFileName) {
         this.log = log;
+        if(overridesFileName != null){
+            File overridesFile = new File(overridesFileName);
+            if (overridesFile.exists() == false) {
+                throw new IllegalArgumentException("No such overrides file: " + overridesFile);
+            }
+            try {
+                this.overrides = Overrides.parse(new FileInputStream(overridesFile));
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }else{
+            this.overrides = null;
+        }
     }
 
     /**
@@ -185,5 +200,10 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         context.setName(name);
         context.setVersion(version);
         removeArtifact(context);
+    }
+    
+    @Override
+    public Overrides getOverrides() {
+        return overrides;
     }
 }

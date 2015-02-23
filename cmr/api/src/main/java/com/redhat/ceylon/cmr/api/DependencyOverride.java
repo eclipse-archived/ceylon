@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.maven;
-
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+package com.redhat.ceylon.cmr.api;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -28,18 +26,20 @@ public class DependencyOverride {
         REPLACE
     }
 
-    private MavenCoordinate mvn;
+    private ArtifactContext ctx;
     private Type type;
     private boolean shared;
+    private boolean optional;
 
-    public DependencyOverride(MavenCoordinate mvn, Type type, boolean shared) {
-        this.mvn = mvn;
+    public DependencyOverride(ArtifactContext mvn, Type type, boolean shared, boolean optional) {
+        this.ctx = mvn;
         this.type = type;
         this.shared = shared;
+        this.optional = optional;
     }
 
-    public MavenCoordinate getMvn() {
-        return mvn;
+    public ArtifactContext getArtifactContext() {
+        return ctx;
     }
 
     public Type getType() {
@@ -50,9 +50,13 @@ public class DependencyOverride {
         return shared;
     }
 
+    public boolean isOptional() {
+        return optional;
+    }
+
     @Override
     public int hashCode() {
-        return mvn.hashCode() + 7 * type.hashCode();
+        return ctx.hashCode() + 7 * type.hashCode();
     }
 
     @Override
@@ -61,7 +65,21 @@ public class DependencyOverride {
             return false;
         } else {
             DependencyOverride doo = (DependencyOverride) obj;
-            return mvn.equals(doo.mvn) && (type == doo.type);
+            return ctx.equals(doo.ctx) && (type == doo.type);
         }
+    }
+
+    public boolean matches(ArtifactContext other) {
+        // name must match
+        if(!ctx.getName().equals(other.getName()))
+            return false;
+        if(ctx.getVersion() == null)
+            return true;
+        return ctx.getVersion().equals(other.getVersion());
+    }
+
+    public boolean matchesName(ArtifactContext other) {
+        // name must match
+        return ctx.getName().equals(other.getName());
     }
 }

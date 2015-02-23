@@ -50,12 +50,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return new File(rootRepo.getUrl());
     }
 
-    public RootRepositoryManager(Logger log) {
-        this(getRootDir(), log);
+    public RootRepositoryManager(Logger log, String overridesFileName) {
+        this(getRootDir(), log, overridesFileName);
     }
 
-    public RootRepositoryManager(File rootDir, Logger log) {
-        super(log);
+    public RootRepositoryManager(File rootDir, Logger log, String overridesFileName) {
+        super(log, overridesFileName);
         if (!rootDir.exists() && !rootDir.mkdirs()) {
             throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
         }

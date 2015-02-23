@@ -38,13 +38,11 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
     private Logger log;
     private int timeout;
     private boolean offline;
-    private String mavenOverrides;
     
-    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, String mavenOverrides) {
+    RepositoryBuilderImpl(Logger log, boolean offline, int timeout) {
         this.log = log;
         this.timeout = timeout;
         this.offline = offline;
-        this.mavenOverrides = mavenOverrides;
     }
 
     public Repository buildRepository(String token) throws Exception {
@@ -63,8 +61,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class);
-            return (Repository) createRepository.invoke(null, log, null, mavenOverrides, offline, timeout);
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
+            return (Repository) createRepository.invoke(null, log, null, offline, timeout);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
@@ -92,22 +90,17 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
 
     protected Repository createMavenRepository(String token, String prefix) throws Exception {
         String config = token.substring(prefix.length());
+        // backwards compat: ignore overrides from here, previously located after | symbol
         int p = config.indexOf("|");
         String settingsXml = null;
-        String overridesXml = null;
         if (p < 0) {
             settingsXml = config;
-        } else if (p == 0) {
-            overridesXml = config.substring(1);
         } else {
             settingsXml = config.substring(0, p);
-            overridesXml = config.substring(p + 1);
         }
-        if(overridesXml == null)
-            overridesXml = mavenOverrides;
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class);
-        return (Repository) createRepository.invoke(null, log, settingsXml, overridesXml, offline, timeout);
+        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
+        return (Repository) createRepository.invoke(null, log, settingsXml, offline, timeout);
     }
 
     public boolean isRemote(String token) {

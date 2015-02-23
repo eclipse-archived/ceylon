@@ -33,18 +33,8 @@ public abstract class AbstractAetherTest {
     protected static final Logger log = new CMRJULLogger();
 
     protected Repository createAetherRepository() throws Exception {
-        return createAetherRepository(false);
-    }
-
-    protected Repository createAetherRepository(boolean useOverrides) throws Exception {
         URL settingsURL = getClass().getClassLoader().getResource("maven-settings/settings.xml");
         String settingsXml = new File(settingsURL.toURI()).getPath();
-        if (useOverrides) {
-            URL overridessURL = getClass().getClassLoader().getResource("maven-settings/overrides.xml");
-            String overridesXml = new File(overridessURL.toURI()).getPath();
-            return AetherRepository.createRepository(log, settingsXml, overridesXml, false, 60000);
-        } else {
-            return AetherRepository.createRepository(log, settingsXml, false, 60000);
-        }
+        return AetherRepository.createRepository(log, settingsXml, false, 60000);
     }
 }
