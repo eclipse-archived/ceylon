@@ -2447,6 +2447,8 @@ public abstract class AbstractTransformer implements Transformation {
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
         if (!isCeylonCallableSubtype(typeModel)) {
             throw new BugException("expected Callable<...>, but was " + typeModel);
+        } else if (typeFact().getNothingDeclaration().getType().isExactly(typeModel)) {
+            return typeFact().getNothingDeclaration().getType();
         }
         ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
         return ct.getTypeArgumentList().get(0);
@@ -2479,6 +2481,9 @@ public abstract class AbstractTransformer implements Transformation {
      * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
      */
     boolean isUnknownArgumentsCallable(ProducedType callableType) {
+        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+            return false;
+        }
         ProducedType args = typeFact().getCallableTuple(callableType);
         return isUnknownTuple(args);
     }
@@ -2536,6 +2541,9 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     int getNumParametersOfCallable(ProducedType callableType) {
+        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+            return 0;
+        }
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         int simpleNumParametersOfCallable = getSimpleNumParametersOfCallable(tuple);
         if(simpleNumParametersOfCallable != -1)
@@ -2606,6 +2614,9 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isVariadicCallable(ProducedType callableType) {
+        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+            return true;
+        }
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         return typeFact().isTupleOfVariadicCallable(tuple);
     }

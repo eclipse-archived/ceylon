@@ -334,7 +334,12 @@ abstract class Invocation {
         ProducedType primaryModel = primary.getTypeModel();
         if(!gen.isCeylonCallable(primaryModel)){
             // if it's not exactly a Callable we may have to unerase it to one
-            ProducedType expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
+            ProducedType expectedType;
+            if (gen.typeFact().getNothingDeclaration().getType().isExactly(primaryModel)) {
+                expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingDeclaration().getType());
+            } else {
+                expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
+            }
             return gen.expressionGen().applyErasureAndBoxing(actualPrimExpr, primaryModel, 
                                                              primary.getTypeErased(), !primary.getUnboxed(), BoxingStrategy.BOXED, 
                                                              expectedType, 0);
