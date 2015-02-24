@@ -1,6 +1,6 @@
-"A comparator which orders elements in increasing order 
- according to the `Comparable` value returned by the given 
- [[comparable]] function.
+"Produces a comparator function which orders elements in 
+ increasing order according to the [[Comparable]] value 
+ returned by the given [[comparable]] function.
  
       \"Hello World!\".sort(byIncreasing(Character.lowercased))
  
@@ -14,3 +14,15 @@ shared Comparison byIncreasing<Element,Value>
             (Element x, Element y)
         given Value satisfies Comparable<Value> 
                 => comparable(x)<=>comparable(y);
+
+"A comparator function which orders elements in increasing 
+ [[natural order|Comparable]].
+ 
+        \"Hello World!\".sort(increasing)
+ 
+ This function is intended for use with [[Iterable.sort]]
+ and [[Iterable.max]]."
+shared Comparison increasing<Element>(Element x, Element y)
+        given Element satisfies Comparable<Element> 
+        => x<=>y;
+
