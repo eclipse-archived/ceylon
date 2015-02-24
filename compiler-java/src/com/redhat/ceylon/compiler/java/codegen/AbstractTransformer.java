@@ -1635,6 +1635,100 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(producedType, 0);
     }
 
+    
+    /** 
+     * Determine whether the given type, when appearing in 
+     * an {@code extends} or {@code implements} clause, should be made raw.
+     * This can happen because the type itself must be made raw, or because 
+     * any of its supertypes were made raw.
+     * See #1875.
+     */
+    public boolean rawSupertype(ProducedType ceylonType, int flags) {
+        if (ceylonType == null
+                || (flags & (JT_SATISFIES | JT_EXTENDS)) == 0) {
+            return false;
+        }
+        ProducedType simpleType = simplifyType(ceylonType);
+        Map<TypeParameter, ProducedType> tas = simpleType.getTypeArguments();
+        java.util.List<TypeParameter> tps = simpleType.getDeclaration().getTypeParameters();
+        for (TypeParameter tp : tps) {
+            ProducedType ta = tas.get(tp);
+            // error handling
+            if(ta == null)
+                continue;
+            
+            // Null will claim to be optional, but if we get its non-null type we will land with Nothing, which is not what
+            // we want, so we make sure it's not Null
+            if (isOptional(ta) && !isNull(ta)) {
+                // For an optional type T?:
+                // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
+                ta = getNonNullType(ta);
+            }
+            // In a type argument Foo<X&Object> or Foo<X?> transform to just Foo<X>
+            ta = simplifyType(ta);
+            if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
+                // For any other union type U|V (U nor V is Optional):
+                // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
+                // For any other intersection type U&V:
+                // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
+                // use raw types if:
+                // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
+                //   or we're in an extends or satisfies and the type parameter is a self type
+                // Note: it used to be we used raw types when calling constructors, but that was wrong as it did not
+                // conform with where raw types would be used between expressions and constructors
+                if(((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
+                    // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    return true;
+                } else if ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0) {
+                    return true;
+                }
+                // otherwise just go on
+            }
+            JCExpression jta;
+            
+            if(!tp.getSatisfiedTypes().isEmpty()){
+                boolean needsCastForBounds = false;
+                for(ProducedType bound : tp.getSatisfiedTypes()){
+                    bound = bound.substitute(tas);
+                    needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
+                }
+                if(needsCastForBounds){
+                    // replace with the first bound
+                    ta = tp.getSatisfiedTypes().get(0).substitute(tas);
+                    if(tp.getSatisfiedTypes().size() > 1
+                            || isBoundsSelfDependant(tp)
+                            || willEraseToObject(ta)
+                            // we should reject it for all non-covariant types, unless we're in satisfies/extends
+                            || ((flags & (JT_SATISFIES | JT_EXTENDS)) == 0 && !simpleType.isCovariant(tp))){
+                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                        return true;
+                    }
+                }
+            }
+            
+            if (ta.getDeclaration() instanceof NothingType
+                    // if we're in a type argument, extends or satisfies already, union and intersection types should 
+                    // use the same erasure rules as bottom: prefer wildcards
+                    || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
+                        && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
+                // For the bottom type Bottom:
+                if ((flags & (JT_CLASS_NEW)) != 0) {
+                    // - The Ceylon type Foo<Bottom> or Foo<erased_type> appearing in an instantiation
+                    //   clause results in the Java raw type Foo
+                    // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    return true;
+                }
+            }
+        }
+        // deal with supertypes which were raw
+        for (ProducedType superType : ceylonType.getSatisfiedTypes()) {
+            if (rawSupertype(superType, flags)) {
+                return true;
+            }
+        }
+        return rawSupertype(ceylonType.getExtendedType(), flags);
+    }
+    
     JCExpression makeJavaType(final ProducedType ceylonType, final int flags) {
         ProducedType type = ceylonType;
         if(type == null
@@ -1817,7 +1911,8 @@ public abstract class AbstractTransformer implements Transformation {
             Collections.reverse(qualifyingTypes);
         }
         
-        if (((flags & JT_RAW) == 0) && hasTypeParameters) {
+        if (((flags & JT_RAW) == 0) && hasTypeParameters
+                && !rawSupertype(ceylonType, flags)) {
             // special case for interfaces because we pull them into toplevel types
             if(Decl.isCeylon(simpleType.getDeclaration())
                     && qualifyingTypes != null
@@ -1861,10 +1956,13 @@ public abstract class AbstractTransformer implements Transformation {
                 jt = makeParameterisedType(type, type, flags, jt, qualifyingTypes, 0, 0);
             }
         } else {
-            TypeDeclaration tdecl = simpleType.getDeclaration();            
+            TypeDeclaration tdecl = simpleType.getDeclaration();
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
-            if(tdecl instanceof TypeParameter)
+            if (isCeylonCallable(type) && 
+                    (flags & JT_CLASS_NEW) != 0) {
+                jt = makeIdent(syms().ceylonAbstractCallableType);
+            } else if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
             else if((flags & (JT_SATISFIES | JT_NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
@@ -2130,9 +2228,11 @@ public abstract class AbstractTransformer implements Transformation {
                 // conform with where raw types would be used between expressions and constructors
                 if(((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
                 } else if ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0) {
+                    if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
                 }
@@ -2158,6 +2258,7 @@ public abstract class AbstractTransformer implements Transformation {
                             || willEraseToObject(ta)
                             // we should reject it for all non-covariant types, unless we're in satisfies/extends
                             || ((flags & (JT_SATISFIES | JT_EXTENDS)) == 0 && !simpleType.isCovariant(tp))){
+                        if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -2175,6 +2276,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // - The Ceylon type Foo<Bottom> or Foo<erased_type> appearing in an instantiation
                     //   clause results in the Java raw type Foo
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
                 } else {
