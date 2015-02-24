@@ -33,6 +33,8 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.ArtifactOverrides;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -157,6 +159,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
+        context = applyOverrides(context);
         final Node node = getLeafNode(context);
         if (node != null) {
             String foundSuffix = ArtifactContext.getSuffixFromNode(node);
@@ -177,6 +180,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         } else {
             return handleNotFound(context, null);
         }
+    }
+
+    private ArtifactContext applyOverrides(ArtifactContext context) {
+        if(overrides == null)
+            return context;
+        ArtifactContext replacedContext = overrides.replace(context);
+        return replacedContext != null ? replacedContext : context;
     }
 
     private ArtifactResult handleNotFound(ArtifactContext context, String foundSuffix) {

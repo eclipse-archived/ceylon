@@ -47,6 +47,9 @@ public class Overrides {
     private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
     private Set<DependencyOverride> removed = new HashSet<DependencyOverride>();
 
+    private Map<ArtifactContext, ArtifactContext> replaced = new HashMap<>();
+    private Map<String, ArtifactContext> replacedNoVersion = new HashMap<>();
+
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
         if(ao.getOwner().getVersion() == null)
@@ -73,7 +76,49 @@ public class Overrides {
         }
         return false;
     }
-    
+
+    public ArtifactContext getReplacement(ArtifactContext mc) {
+        ArtifactContext ao = replaced.get(mc);
+        if(ao == null){
+            // fall-back to overrides with no version specified
+            return replacedNoVersion.get(mc.getName());
+        }
+        return ao;
+    }
+
+    public ArtifactContext replace(ArtifactContext context) {
+        ArtifactOverrides artifactOverrides = getArtifactOverrides(context);
+        if(artifactOverrides != null && artifactOverrides.getReplace() != null){
+            ArtifactContext replacingContext = artifactOverrides.getReplace().getArtifactContext();
+            return replace(context, replacingContext);
+        }
+        ArtifactContext replacingContext = getReplacement(context);
+        if(replacingContext != null){
+            return replace(context, replacingContext);
+        }
+        return null;
+    }
+
+    private ArtifactContext replace(ArtifactContext context, ArtifactContext replacingContext) {
+        // FIXME: perhaps something smarter? I don't want to use replace.getContext() as it will be missing
+        // query info such as what type of artifact we're looking for 
+        ArtifactContext ret = context.copy();
+        ret.setName(replacingContext.getName());
+        // inherit version from the artifact we replace
+        if(replacingContext.getVersion() != null)
+            ret.setVersion(replacingContext.getVersion());
+        else
+            ret.setVersion(context.getVersion());
+        return ret;
+    }
+
+    private void addReplacedArtifact(ArtifactContext context, ArtifactContext withContext) {
+        if(context.getVersion() == null)
+            replacedNoVersion.put(context.getName(), withContext);
+        else
+            replaced.put(context, withContext);
+    }
+
     static Overrides parse(InputStream is) throws Exception {
         try {
             Overrides result = new Overrides();
@@ -98,6 +143,15 @@ public class Overrides {
                 ArtifactContext context = getArtifactContext(artifact, true);
                 DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
                 result.addRemovedArtifact(doo);
+            }
+            List<Element> replacedArtifacts = getChildren(document.getDocumentElement(), "replace");
+            for (Element artifact : replacedArtifacts) {
+                ArtifactContext context = getArtifactContext(artifact, true);
+                List<Element> withs = getChildren(artifact, "with");
+                for (Element with : withs) {
+                    ArtifactContext withContext = getArtifactContext(with, true);
+                    result.addReplacedArtifact(context, withContext);
+                }
             }
             return result;
         } finally {

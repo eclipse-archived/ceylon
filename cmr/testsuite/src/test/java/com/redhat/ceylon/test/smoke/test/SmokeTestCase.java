@@ -330,6 +330,48 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testOverridesReplace() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplace.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals("com.acme.helloworld", result.name());
+        Assert.assertEquals("1.0.0", result.version());
+        Assert.assertEquals(0, result.dependencies().size());
+    }
+
+    @Test
+    public void testOverridesReplaceGlobal() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceGlobal.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals("com.acme.helloworld", result.name());
+        Assert.assertEquals("1.0.0", result.version());
+        Assert.assertEquals(0, result.dependencies().size());
+    }
+
+    @Test
+    public void testOverridesReplaceGlobalNoVersion() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceGlobalNoVersion.xml");
+        ArtifactResult result = manager.getArtifactResult("com.acme.helloworld", "1.0.0");
+        Assert.assertNotNull(result);
+        Assert.assertEquals("hello", result.name());
+        Assert.assertEquals("1.0.0", result.version());
+        Assert.assertEquals(0, result.dependencies().size());
+    }
+
+    @Test
+    public void testOverridesReplaceImport() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceImport.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals("com.acme.helloworld", dep.name());
+        Assert.assertEquals("1.0.0", dep.version());
+        Assert.assertEquals(0, dep.dependencies().size());
+    }
+
+    @Test
     public void testOverridesRemoveNoVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesNoVersion.xml");
         ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");

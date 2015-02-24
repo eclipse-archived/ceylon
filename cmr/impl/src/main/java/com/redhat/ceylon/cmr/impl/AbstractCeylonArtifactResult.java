@@ -76,10 +76,17 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         Set<ModuleDependencyInfo> newDependencies = new HashSet<ModuleDependencyInfo>();
         for(ModuleDependencyInfo dep : infos.getDependencies()){
             ArtifactContext depCtx = new ArtifactContext(dep.getName(), dep.getVersion());
+            ArtifactContext replacedCtx = overrides.replace(depCtx);
+            if(replacedCtx != null)
+                depCtx = replacedCtx;
             if(overrides.isRemoved(depCtx) 
-                    || artifactOverrides.isRemoved(depCtx) 
-                    || artifactOverrides.isAddedOrUpdated(depCtx))
+                    || (artifactOverrides != null 
+                        && (artifactOverrides.isRemoved(depCtx) 
+                            || artifactOverrides.isAddedOrUpdated(depCtx))))
                 continue;
+            if(replacedCtx != null){
+                dep = new ModuleDependencyInfo(replacedCtx.getName(), replacedCtx.getVersion(), dep.isOptional(), dep.isExport());
+            }
             newDependencies.add(dep);
         }
         // add the extras if any

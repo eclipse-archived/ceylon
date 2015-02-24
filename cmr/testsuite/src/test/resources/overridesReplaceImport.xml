@@ -1,0 +1,5 @@
+<maven-overrides>
+    <artifact module="hello" version="1.0.0">
+        <replace module="com.acme.helloworld" version="1.0.0"/>
+    </artifact>
+</maven-overrides>

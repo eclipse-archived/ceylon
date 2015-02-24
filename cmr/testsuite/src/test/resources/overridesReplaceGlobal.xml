@@ -1,0 +1,5 @@
+<maven-overrides>
+    <replace module="moduletest" version="0.1">
+        <with module="com.acme.helloworld" version="1.0.0"/>
+    </replace>
+</maven-overrides>
