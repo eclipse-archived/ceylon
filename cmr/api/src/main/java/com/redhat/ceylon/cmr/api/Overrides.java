@@ -20,8 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,6 +45,7 @@ public class Overrides {
     
     private Map<ArtifactContext, ArtifactOverrides> overrides = new HashMap<>();
     private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
+    private Set<DependencyOverride> removed = new HashSet<DependencyOverride>();
 
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
@@ -59,6 +62,18 @@ public class Overrides {
         return ao;
     }
 
+    private void addRemovedArtifact(DependencyOverride context) {
+        removed.add(context);
+    }
+
+    public boolean isRemoved(ArtifactContext context){
+        for(DependencyOverride ro : removed){
+            if(ro.matches(context))
+                return true;
+        }
+        return false;
+    }
+    
     static Overrides parse(InputStream is) throws Exception {
         try {
             Overrides result = new Overrides();
@@ -77,6 +92,12 @@ public class Overrides {
                     Node node = filterNode.item(0);
                     ao.setFilter(PathFilterParser.convertNodeToString(node));
                 }
+            }
+            List<Element> removedArtifacts = getChildren(document.getDocumentElement(), "remove");
+            for (Element artifact : removedArtifacts) {
+                ArtifactContext context = getArtifactContext(artifact, true);
+                DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
+                result.addRemovedArtifact(doo);
             }
             return result;
         } finally {

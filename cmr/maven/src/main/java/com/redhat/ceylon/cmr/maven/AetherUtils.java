@@ -156,7 +156,13 @@ public class AetherUtils {
 
     private ArtifactResult fetchDependencies(Repository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
         MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-        ArtifactOverrides ao = findArtifactOverrides(repository, mc);
+        Overrides overrides = repository.getRoot().getService(Overrides.class);
+        ArtifactOverrides ao = null;
+        System.err.println("Overrides: "+overrides);
+        if(overrides != null){
+            ao = overrides.getArtifactOverrides(getArtifactContext(mc));
+            System.err.println(" ["+mc+"] => "+ao);
+        }
         if (ao != null && ao.getReplace() != null) {
             DependencyOverride replace = ao.getReplace();
             log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getArtifactContext()));
@@ -169,7 +175,7 @@ public class AetherUtils {
                 version = context.getVersion();
                 // new AO
                 mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-                ao = findArtifactOverrides(repository, mc);
+                ao = overrides.getArtifactOverrides(getArtifactContext(mc));
             }
         }
 
@@ -196,7 +202,7 @@ public class AetherUtils {
 
                     if (ao != null) {
                         ArtifactContext dContext = getArtifactContext(dCo);
-                        if (ao.isRemoved(dContext)) {
+                        if (overrides.isRemoved(dContext) || ao.isRemoved(dContext)) {
                             log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
@@ -231,17 +237,6 @@ public class AetherUtils {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
         }
-    }
-
-    private ArtifactOverrides findArtifactOverrides(Repository repository, MavenCoordinate mc) {
-        Overrides overrides = repository.getRoot().getService(Overrides.class);
-        System.err.println("Overrides: "+overrides);
-        if(overrides != null){
-            ArtifactOverrides or = overrides.getArtifactOverrides(getArtifactContext(mc));
-            System.err.println(" ["+mc+"] => "+or);
-            return or;
-        }
-        return null;
     }
 
     private ArtifactContext getArtifactContext(MavenCoordinate mc){

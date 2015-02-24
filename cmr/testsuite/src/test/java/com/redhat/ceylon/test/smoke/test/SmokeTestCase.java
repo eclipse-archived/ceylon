@@ -338,6 +338,14 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testOverridesRemoveGlobal() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesGlobal.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0, result.dependencies().size());
+    }
+
+    @Test
     public void testPropertiesResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext context = new ArtifactContext("old-jar", "1.2.CR1", ArtifactContext.JAR);

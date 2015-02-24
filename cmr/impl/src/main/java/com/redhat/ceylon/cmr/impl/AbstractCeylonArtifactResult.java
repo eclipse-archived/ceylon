@@ -73,19 +73,21 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         if(overrides == null)
             return infos;
         ArtifactOverrides artifactOverrides = overrides.getArtifactOverrides(new ArtifactContext(name(), version()));
-        if(artifactOverrides == null)
-            return infos;
         Set<ModuleDependencyInfo> newDependencies = new HashSet<ModuleDependencyInfo>();
         for(ModuleDependencyInfo dep : infos.getDependencies()){
             ArtifactContext depCtx = new ArtifactContext(dep.getName(), dep.getVersion());
-            if(artifactOverrides.isRemoved(depCtx) || artifactOverrides.isAddedOrUpdated(depCtx))
+            if(overrides.isRemoved(depCtx) 
+                    || artifactOverrides.isRemoved(depCtx) 
+                    || artifactOverrides.isAddedOrUpdated(depCtx))
                 continue;
             newDependencies.add(dep);
         }
-        // add the extras
-        for(DependencyOverride add : artifactOverrides.getAdd()){
-            newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
-                    add.isOptional(), add.isShared()));
+        // add the extras if any
+        if(artifactOverrides != null){
+            for(DependencyOverride add : artifactOverrides.getAdd()){
+                newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                        add.isOptional(), add.isShared()));
+            }
         }
         return new ModuleInfo(infos.getFilter(), newDependencies);
     }
