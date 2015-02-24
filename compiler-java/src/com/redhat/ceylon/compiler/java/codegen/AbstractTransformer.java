@@ -1635,6 +1635,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(producedType, 0);
     }
 
+    public boolean rawParameters(Declaration d) {
+        if (d.isMember()
+                && rawSupertype(((ClassOrInterface)d.getContainer()).getType(), JT_SATISFIES | JT_EXTENDS)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     /** 
      * Determine whether the given type, when appearing in 

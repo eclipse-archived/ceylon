@@ -140,7 +140,11 @@ public class AttributeDefinitionBuilder {
         pdb.modifiers(Flags.FINAL);
         
         pdb.aliasName(attrName);
-        pdb.type(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, 0, true), 
+        int seterParamFlags = 0;
+        if (owner.rawParameters(attrType)) {
+            seterParamFlags |= AbstractTransformer.JT_RAW;
+        }
+        pdb.type(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags, true), 
                 owner.makeJavaTypeAnnotations(attrType));
         
         

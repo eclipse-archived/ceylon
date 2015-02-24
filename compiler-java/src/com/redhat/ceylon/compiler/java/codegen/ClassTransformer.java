@@ -3368,8 +3368,11 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(true, OutputElement.PARAMETER, typedDeclaration);
             }
-            
-            methodBuilder.parameter(parameterModel, annotations, 0, true);
+            int flags = 0;
+            if (rawParameters(methodModel)) {
+                flags |= JT_RAW;
+            }
+            methodBuilder.parameter(parameterModel, annotations, flags, true);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {

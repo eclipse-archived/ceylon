@@ -427,6 +427,9 @@ public class MethodDefinitionBuilder
                 }
             }
         }
+        if (gen.rawParameters(param.getDeclaration())) {
+            flags |= AbstractTransformer.JT_RAW;
+        }
         return parameter(mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);
     }
 
