@@ -688,8 +688,8 @@ shared interface Iterable<out Element, out Absent=Null>
      Note that the toplevel function [[ceylon.language::sort]] 
      may be used to sort a stream of [[Comparable]] values 
      according to the natural order of its elements."
-    see (`function byIncreasing`, 
-         `function byDecreasing`)
+    see (`function increasing`, `function decreasing`,
+         `function byIncreasing`, `function byDecreasing`)
     shared default 
     Element[] sort(
             "The function comparing pairs of elements."

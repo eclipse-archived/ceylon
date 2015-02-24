@@ -7,6 +7,7 @@
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
 see (`function byDecreasing`,
+     `function increasing`,
      `function Iterable.max`,
      `function Iterable.sort`)
 shared Comparison byIncreasing<Element,Value>
@@ -22,6 +23,10 @@ shared Comparison byIncreasing<Element,Value>
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
+see (`function decreasing`,
+     `function byIncreasing`,
+     `function Iterable.max`,
+     `function Iterable.sort`)
 shared Comparison increasing<Element>(Element x, Element y)
         given Element satisfies Comparable<Element> 
         => x<=>y;
