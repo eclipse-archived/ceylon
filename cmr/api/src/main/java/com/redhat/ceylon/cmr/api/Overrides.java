@@ -212,7 +212,7 @@ public class Overrides {
             String part = replace(string, firstReplacement+2, end, interpolation);
             strbuf.append(part);
             // move to the end of replacement
-            start = end[0]+1;
+            start = Math.min(end[0]+1, string.length());
             firstReplacement = string.indexOf("${", start);
         }
         // now put whatever remains
@@ -264,6 +264,7 @@ public class Overrides {
             }
         }
         // if we've gone to the end without finding the end of "}" then let's no substitute
+        end[0] = string.length();
         return "${" + strbufName.toString();
     }
 
