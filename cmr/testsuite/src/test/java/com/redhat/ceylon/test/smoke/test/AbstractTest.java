@@ -121,7 +121,7 @@ public class AbstractTest {
     }
 
     protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout) throws Exception {
-        return getRepositoryManagerBuilder(root, offline, timeout);
+        return getRepositoryManagerBuilder(root, offline, timeout, null);
     }
 
     protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout, String overrideFileName) throws Exception {
