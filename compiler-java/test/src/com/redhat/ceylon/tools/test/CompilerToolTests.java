@@ -436,4 +436,19 @@ public class CompilerToolTests extends AbstractToolTests {
         }
         
     }
+    
+    @Test
+    public void testDefaultModuleNoFiles()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
+                    options("--src=test/src/com/redhat/ceylon/tools/test/empty", "default"));
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        } catch (ToolInitializationException e) {
+            Assert.assertEquals("Module default does not contain any sources or resources", e.getMessage());
+        }
+        
+    }
 }
