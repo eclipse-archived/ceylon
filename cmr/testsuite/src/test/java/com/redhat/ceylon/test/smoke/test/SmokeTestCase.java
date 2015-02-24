@@ -340,12 +340,15 @@ public class SmokeTestCase extends AbstractTest {
         Assert.assertEquals(null, Overrides.interpolate(null, interpolation));
         Assert.assertEquals("foo", Overrides.interpolate("foo", interpolation));
         Assert.assertEquals("bar", Overrides.interpolate("${foo}", interpolation));
+        Assert.assertEquals("$foo", Overrides.interpolate("$foo", interpolation));
+        Assert.assertEquals("${foo", Overrides.interpolate("${foo", interpolation));
         Assert.assertEquals("abarb", Overrides.interpolate("a${foo}b", interpolation));
         Assert.assertEquals("abarb-abarb", Overrides.interpolate("a${foo}b-a${foo}b", interpolation));
 
         interpolation.put("gee", "foo");
         interpolation.put("g", "o");
         Assert.assertEquals("bar", Overrides.interpolate("${${gee}}", interpolation));
+        Assert.assertEquals("${foo", Overrides.interpolate("${${gee}", interpolation));
         Assert.assertEquals("bar", Overrides.interpolate("${f${g}o}", interpolation));
 
         interpolation.put("val", "${foo}");
