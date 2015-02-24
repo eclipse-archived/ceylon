@@ -127,6 +127,9 @@ public class SourceArgumentsResolver {
                     resMods.add(moduleOrFile);
                 }
             }
+            if (srcFiles.isEmpty() && resFiles.isEmpty()) {
+                throw new ToolUsageError(CeylonToolMessages.msg("error.no.files", moduleOrFile));
+            }
         }
         // Now expand the sources of any single source modules we encountered
         for (String modName : singleFileMods) {
