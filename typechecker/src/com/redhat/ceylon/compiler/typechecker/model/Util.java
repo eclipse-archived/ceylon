@@ -633,34 +633,52 @@ public class Util {
     }
     
     public static boolean isNameMatching(String startingWith, String name) {
-        if (startingWith==null ||
-                startingWith.isEmpty()) {
+        if (startingWith==null || startingWith.isEmpty()) {
             return true;
         }
-        if (name==null || name.isEmpty() || 
-                name.length()<startingWith.length()) {
+        if (name==null || name.isEmpty()) {
             return false;
         }
-        if (name.regionMatches(true,0,startingWith,0,startingWith.length())) {
+        int nameLength = name.length();
+        int startingWithLength = startingWith.length();
+        if (nameLength<startingWithLength) {
+            return false;
+        }
+        if (name.regionMatches(true,0,startingWith,0,startingWithLength)) {
             return true;
         }
         if (startingWith.charAt(0)!=name.charAt(0)) {
             return false;
         }
+        //camel hump matching, starting from second character:
         int i=1, j=1;
-        while (i<startingWith.length()) {
-            char swc = startingWith.charAt(i++);
-            if (!Character.isUpperCase(swc)) {
+        while (i<startingWithLength) {
+            if (j>=nameLength) {
                 return false;
             }
-            while (j<name.length() && 
+            while (i<startingWithLength && 
+                    Character.isLowerCase(startingWith.charAt(i))) {
+                if (name.charAt(j)==startingWith.charAt(i)) {
+                    j++; i++;
+                    if (i>=startingWithLength) {
+                        return true;
+                    }
+                    if (j>=nameLength) {
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+            while (j<nameLength && 
                     Character.isLowerCase(name.charAt(j))) {
                 j++;
+                if (j>=nameLength) {
+                    return false;
+                }
             }
-            if (j>=name.length()) {
-                return false;
-            }
-            if (name.charAt(j++)!=swc) {
+            if (name.charAt(j++)!=startingWith.charAt(i++)) {
                 return false;
             }
         }
