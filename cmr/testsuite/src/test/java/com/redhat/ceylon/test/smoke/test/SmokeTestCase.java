@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -37,6 +39,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -324,6 +327,34 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesRemove() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overrides.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0, result.dependencies().size());
+    }
+
+    @Test
+    public void testInterpolation() {
+        Map<String,String> interpolation = new HashMap<>();
+        interpolation.put("foo", "bar");
+        Assert.assertEquals("", Overrides.interpolate("", interpolation));
+        Assert.assertEquals(null, Overrides.interpolate(null, interpolation));
+        Assert.assertEquals("foo", Overrides.interpolate("foo", interpolation));
+        Assert.assertEquals("bar", Overrides.interpolate("${foo}", interpolation));
+        Assert.assertEquals("abarb", Overrides.interpolate("a${foo}b", interpolation));
+        Assert.assertEquals("abarb-abarb", Overrides.interpolate("a${foo}b-a${foo}b", interpolation));
+
+        interpolation.put("gee", "foo");
+        interpolation.put("g", "o");
+        Assert.assertEquals("bar", Overrides.interpolate("${${gee}}", interpolation));
+        Assert.assertEquals("bar", Overrides.interpolate("${f${g}o}", interpolation));
+
+        interpolation.put("val", "${foo}");
+        Assert.assertEquals("bar", Overrides.interpolate("${val}", interpolation));
+    }
+    
+    @Test
+    public void testOverridesInterpolation() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesInterpolation.xml");
         ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.dependencies().size());

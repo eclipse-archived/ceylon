@@ -145,39 +145,47 @@ public class Overrides {
         try {
             Overrides result = new Overrides();
             Document document = parseXml(is);
+            Map<String,String> interpolation = new HashMap<>();
+            List<Element> defines = getChildren(document.getDocumentElement(), "define");
+            for (Element define : defines) {
+                // do not interpolate while we're defining things
+                String name = getRequiredAttribute(define, "name", null);
+                String value = getRequiredAttribute(define, "value", null);
+                interpolation.put(name, value);
+            }
             List<Element> artifacts = getChildren(document.getDocumentElement(), "artifact");
             for (Element artifact : artifacts) {
-                ArtifactContext mc = getArtifactContext(artifact, true); // version is optional
+                ArtifactContext mc = getArtifactContext(artifact, true, interpolation); // version is optional
                 ArtifactOverrides ao = new ArtifactOverrides(mc);
                 result.addArtifactOverride(ao);
-                addOverrides(ao, artifact, DependencyOverride.Type.ADD);
-                addOverrides(ao, artifact, DependencyOverride.Type.REMOVE);
-                addOverrides(ao, artifact, DependencyOverride.Type.REPLACE);
+                addOverrides(ao, artifact, DependencyOverride.Type.ADD, interpolation);
+                addOverrides(ao, artifact, DependencyOverride.Type.REMOVE, interpolation);
+                addOverrides(ao, artifact, DependencyOverride.Type.REPLACE, interpolation);
                 // filter
                 NodeList filterNode = artifact.getElementsByTagName("filter");
                 if (filterNode != null && filterNode.getLength() > 0) {
                     Node node = filterNode.item(0);
-                    ao.setFilter(PathFilterParser.convertNodeToString(node));
+                    ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
                 }
             }
             List<Element> removedArtifacts = getChildren(document.getDocumentElement(), "remove");
             for (Element artifact : removedArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true);
+                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
                 DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
                 result.addRemovedArtifact(doo);
             }
             List<Element> replacedArtifacts = getChildren(document.getDocumentElement(), "replace");
             for (Element artifact : replacedArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true);
+                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
                 List<Element> withs = getChildren(artifact, "with");
                 for (Element with : withs) {
-                    ArtifactContext withContext = getArtifactContext(with, true);
+                    ArtifactContext withContext = getArtifactContext(with, true, interpolation);
                     result.addReplacedArtifact(context, withContext);
                 }
             }
             List<Element> setArtifacts = getChildren(document.getDocumentElement(), "set");
             for (Element artifact : setArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true);
+                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
                 result.addSetArtifact(context);
             }
             return result;
@@ -189,44 +197,114 @@ public class Overrides {
         }
     }
 
-    protected static ArtifactContext getArtifactContext(Element element, boolean optionalVersion) {
-        String groupId = getAttribute(element, "groupId");
+    public static String interpolate(String string, Map<String, String> interpolation) {
+        if(interpolation == null || string == null || string.isEmpty())
+            return string;
+        int firstReplacement = string.indexOf("${");
+        if(firstReplacement == -1)
+            return string;
+        StringBuffer strbuf = new StringBuffer(string.length());
+        int start = 0;
+        int[] end = new int[1];
+        while(firstReplacement != -1){
+            // put the start
+            strbuf.append(string, start, firstReplacement);
+            String part = replace(string, firstReplacement+2, end, interpolation);
+            strbuf.append(part);
+            // move to the end of replacement
+            start = end[0]+1;
+            firstReplacement = string.indexOf("${", start);
+        }
+        // now put whatever remains
+        strbuf.append(string, start, string.length());
+        return strbuf.toString();
+    }
+
+    private static String replace(String string, int start, int[] end, Map<String, String> interpolation) {
+        StringBuffer strbufName = new StringBuffer(string.length());
+        // now find the end
+        boolean seenDollar = false;
+        for(int i=start;i<string.length();i++){
+            char c = string.charAt(i);
+            // new subst second char
+            if(seenDollar){
+                if(c == '{'){
+                    String replacement = replace(string, i+1, end, interpolation);
+                    strbufName.append(replacement);
+                    // move to the end of the variable
+                    i = end[0];
+                    seenDollar = false;
+                    continue;
+                }
+                // previous dollar was not a pattern match, add it
+                strbufName.append('$');
+            }
+            // new subst first char
+            if(c == '$'){
+                seenDollar = true;
+                continue;
+            }else{
+                seenDollar = false;
+            }
+            // end of subst
+            if(c == '}'){
+                String name = strbufName.toString();
+                // we are done: now return
+                end[0] = i;
+                if(interpolation.containsKey((name))){
+                    String value = interpolation.get(name);
+                    // do not forget to interpolate values too
+                    return interpolate(value, interpolation);
+                }else{
+                    // missing interpolation
+                    return "${" + name + '}';
+                }
+            }else{
+                strbufName.append(c);
+            }
+        }
+        // if we've gone to the end without finding the end of "}" then let's no substitute
+        return "${" + strbufName.toString();
+    }
+
+    protected static ArtifactContext getArtifactContext(Element element, boolean optionalVersion, Map<String, String> interpolation) {
+        String groupId = getAttribute(element, "groupId", interpolation);
         if(groupId != null){
-            String artifactId = getRequiredAttribute(element, "artifactId");
-            String version = optionalVersion ? getAttribute(element, "version") : getRequiredAttribute(element, "version");
-            String packaging = getAttribute(element, "packaging");
-            String classifier = getAttribute(element, "classifier");
+            String artifactId = getRequiredAttribute(element, "artifactId", interpolation);
+            String version = optionalVersion ? getAttribute(element, "version", interpolation) : getRequiredAttribute(element, "version", interpolation);
+            String packaging = getAttribute(element, "packaging", interpolation);
+            String classifier = getAttribute(element, "classifier", interpolation);
             return createMavenArtifactContext(groupId, artifactId, version, packaging, classifier);
         }else{
-            String module = getRequiredAttribute(element, "module");
-            String version = optionalVersion ? getAttribute(element, "version") : getRequiredAttribute(element, "version");
+            String module = getRequiredAttribute(element, "module", interpolation);
+            String version = optionalVersion ? getAttribute(element, "version", interpolation) : getRequiredAttribute(element, "version", interpolation);
             return new ArtifactContext(module, version);
         }
     }
 
-    protected static void addOverrides(ArtifactOverrides ao, Element artifact, DependencyOverride.Type type) {
+    protected static void addOverrides(ArtifactOverrides ao, Element artifact, DependencyOverride.Type type, Map<String, String> interpolation) {
         List<Element> overrides = getChildren(artifact, type.name().toLowerCase());
         for (Element override : overrides) {
-            ArtifactContext dep = getArtifactContext(override, type == Type.REMOVE);
-            boolean shared = getBooleanAttribute(override, "shared");
-            boolean optional = getBooleanAttribute(override, "optional");
+            ArtifactContext dep = getArtifactContext(override, type == Type.REMOVE, interpolation);
+            boolean shared = getBooleanAttribute(override, "shared", interpolation);
+            boolean optional = getBooleanAttribute(override, "optional", interpolation);
             DependencyOverride doo = new DependencyOverride(dep, type, shared, optional);
             ao.addOverride(doo);
         }
     }
 
-    protected static boolean getBooleanAttribute(Element element, String name) {
-        String val = getAttribute(element, name);
+    protected static boolean getBooleanAttribute(Element element, String name, Map<String, String> interpolation) {
+        String val = getAttribute(element, name, interpolation);
         return val != null && val.toLowerCase().equals("true");
     }
 
-    protected static String getAttribute(Element element, String name) {
-        String value = element.getAttribute(name);
+    protected static String getAttribute(Element element, String name, Map<String, String> interpolation) {
+        String value = interpolate(element.getAttribute(name), interpolation);
         return (value == null || value.length() == 0) ? null : value;
     }
 
-    protected static String getRequiredAttribute(Element element, String name) {
-        String value = getAttribute(element, name);
+    protected static String getRequiredAttribute(Element element, String name, Map<String, String> interpolation) {
+        String value = getAttribute(element, name, interpolation);
         if (value == null) {
             throw new IllegalArgumentException(String.format("Missing '%s' attribute in element %s.", name, element));
         }
