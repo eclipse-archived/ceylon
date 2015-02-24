@@ -159,24 +159,37 @@ public class AetherUtils {
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
         System.err.println("Overrides: "+overrides);
+        ArtifactContext context = getArtifactContext(mc);
         if(overrides != null){
-            ao = overrides.getArtifactOverrides(getArtifactContext(mc));
+            ao = overrides.getArtifactOverrides(context);
             System.err.println(" ["+mc+"] => "+ao);
         }
+        // entire replacement
+        ArtifactContext replacementContext = null;
         if (ao != null && ao.getReplace() != null) {
-            DependencyOverride replace = ao.getReplace();
-            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getArtifactContext()));
+            replacementContext = ao.getReplace().getArtifactContext();
+        }else if(overrides != null){
+            replacementContext = overrides.replace(context);
+        }
+        if(replacementContext != null){
+            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replacementContext));
             // replace fetched dependency
-            ArtifactContext context = replace.getArtifactContext();
-            String[] nameToGroupArtifactIds = nameToGroupArtifactIds(context.getName());
+            String[] nameToGroupArtifactIds = nameToGroupArtifactIds(replacementContext.getName());
             if(nameToGroupArtifactIds != null){
                 groupId = nameToGroupArtifactIds[0];
                 artifactId = nameToGroupArtifactIds[1];
-                version = context.getVersion();
+                version = replacementContext.getVersion();
                 // new AO
                 mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-                ao = overrides.getArtifactOverrides(getArtifactContext(mc));
+                context = getArtifactContext(mc);
+                ao = overrides.getArtifactOverrides(context);
             }
+        }
+        // version replacement
+        if(overrides != null && overrides.isVersionOverridden(context)){
+            version = overrides.getVersionOverride(context);
+            context.setVersion(version);
+            mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
         }
 
         final String name = toCanonicalForm(groupId, artifactId);
@@ -199,9 +212,11 @@ public class AetherUtils {
                 final MavenArtifactInfo[] infos = info.getDependencies();
                 for (MavenArtifactInfo dep : infos) {
                     final MavenCoordinate dCo = dep.getCoordinate();
+                    ArtifactContext dContext = null;
+                    if(overrides != null)
+                        dContext = getArtifactContext(dCo);
 
                     if (ao != null) {
-                        ArtifactContext dContext = getArtifactContext(dCo);
                         if (overrides.isRemoved(dContext) || ao.isRemoved(dContext)) {
                             log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
                             continue; // skip dependency
@@ -212,13 +227,23 @@ public class AetherUtils {
                         }
                     }
 
-                    ArtifactResult dr = createArtifactResult(repository, dCo, false, repositoryDisplayString);
+                    String dGroupId = dCo.getGroupId();
+                    String dArtifactId = dCo.getArtifactId();
+                    String dVersion = dCo.getVersion();
+                    // do we have a version update?
+                    if(overrides != null && overrides.isVersionOverridden(dContext)){
+                        dVersion = overrides.getVersionOverride(dContext);
+                    }
+                    
+                    ArtifactResult dr = createArtifactResult(repository, dGroupId, dArtifactId, dVersion, false, repositoryDisplayString);
                     dependencies.add(dr);
                 }
 
                 if (ao != null) {
                     for (DependencyOverride addon : ao.getAdd()) {
-                        dependencies.add(createArtifactResult(repository, addon.getArtifactContext(), addon.isShared(), repositoryDisplayString));
+                        ArtifactContext dContext = addon.getArtifactContext();
+                        String dVersion = overrides.getVersionOverride(dContext);
+                        dependencies.add(createArtifactResult(repository, dContext, dVersion, addon.isShared(), repositoryDisplayString));
                         log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), mc));
                     }
                 }
@@ -253,15 +278,11 @@ public class AetherUtils {
                 packaging, classifier);
     }
 
-    protected ArtifactResult createArtifactResult(Repository repository, final MavenCoordinate dCo, final boolean shared, final String repositoryDisplayString) {
-        return createArtifactResult(repository, dCo.getGroupId(), dCo.getArtifactId(), dCo.getVersion(), shared, repositoryDisplayString);
-    }
-
-    protected ArtifactResult createArtifactResult(Repository repository, final ArtifactContext dCo, final boolean shared, final String repositoryDisplayString) {
+    protected ArtifactResult createArtifactResult(Repository repository, final ArtifactContext dCo, String version, final boolean shared, final String repositoryDisplayString) {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
             return null;
-        return createArtifactResult(repository, groupArtifactIds[0], groupArtifactIds[1], dCo.getVersion(), shared, repositoryDisplayString);
+        return createArtifactResult(repository, groupArtifactIds[0], groupArtifactIds[1], version, shared, repositoryDisplayString);
     }
 
     protected ArtifactResult createArtifactResult(Repository repository, final String groupId, final String artifactId, final String dVersion, final boolean shared, final String repositoryDisplayString) {

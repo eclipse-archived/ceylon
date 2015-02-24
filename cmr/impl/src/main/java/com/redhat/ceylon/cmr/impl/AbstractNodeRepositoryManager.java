@@ -186,7 +186,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         if(overrides == null)
             return context;
         ArtifactContext replacedContext = overrides.replace(context);
-        return replacedContext != null ? replacedContext : context;
+        if(replacedContext != null)
+            context = replacedContext;
+        context.setVersion(overrides.getVersionOverride(context));
+        return context;
     }
 
     private ArtifactResult handleNotFound(ArtifactContext context, String foundSuffix) {

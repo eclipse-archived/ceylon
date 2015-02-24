@@ -87,13 +87,17 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
             if(replacedCtx != null){
                 dep = new ModuleDependencyInfo(replacedCtx.getName(), replacedCtx.getVersion(), dep.isOptional(), dep.isExport());
             }
+            if(overrides.isVersionOverridden(depCtx)){
+                dep = new ModuleDependencyInfo(dep.getName(), overrides.getVersionOverride(depCtx), dep.isOptional(), dep.isExport());
+            }
             newDependencies.add(dep);
         }
         // add the extras if any
         if(artifactOverrides != null){
             for(DependencyOverride add : artifactOverrides.getAdd()){
-                newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
-                        add.isOptional(), add.isShared()));
+                String version = overrides.getVersionOverride(add.getArtifactContext());
+                newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), version,
+                                                             add.isOptional(), add.isShared()));
             }
         }
         return new ModuleInfo(infos.getFilter(), newDependencies);

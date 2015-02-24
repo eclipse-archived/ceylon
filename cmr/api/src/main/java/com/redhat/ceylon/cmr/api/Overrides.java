@@ -39,7 +39,10 @@ import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 import com.redhat.ceylon.cmr.util.PathFilterParser;
 
 /**
+ * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
+ * 
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Stef Epardaud
  */
 public class Overrides {
     
@@ -49,6 +52,8 @@ public class Overrides {
 
     private Map<ArtifactContext, ArtifactContext> replaced = new HashMap<>();
     private Map<String, ArtifactContext> replacedNoVersion = new HashMap<>();
+
+    private Map<String, String> setVersions = new HashMap<>();
 
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
@@ -109,6 +114,8 @@ public class Overrides {
             ret.setVersion(replacingContext.getVersion());
         else
             ret.setVersion(context.getVersion());
+        // even if we replace, respect the set version
+        ret.setVersion(getVersionOverride(ret));
         return ret;
     }
 
@@ -117,6 +124,21 @@ public class Overrides {
             replacedNoVersion.put(context.getName(), withContext);
         else
             replaced.put(context, withContext);
+    }
+
+    private void addSetArtifact(ArtifactContext context) {
+        setVersions.put(context.getName(), context.getVersion());
+    }
+    
+    public String getVersionOverride(ArtifactContext context){
+        String overriddenVersion = setVersions.get(context.getName());
+        if(overriddenVersion != null)
+            return overriddenVersion;
+        return context.getVersion();
+    }
+    
+    public boolean isVersionOverridden(ArtifactContext context){
+        return setVersions.containsKey(context.getName());
     }
 
     static Overrides parse(InputStream is) throws Exception {
@@ -152,6 +174,11 @@ public class Overrides {
                     ArtifactContext withContext = getArtifactContext(with, true);
                     result.addReplacedArtifact(context, withContext);
                 }
+            }
+            List<Element> setArtifacts = getChildren(document.getDocumentElement(), "set");
+            for (Element artifact : setArtifacts) {
+                ArtifactContext context = getArtifactContext(artifact, true);
+                result.addSetArtifact(context);
             }
             return result;
         } finally {

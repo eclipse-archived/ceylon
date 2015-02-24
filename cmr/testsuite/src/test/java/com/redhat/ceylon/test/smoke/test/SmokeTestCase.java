@@ -372,6 +372,17 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testOverridesSet() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+
+        manager = getRepositoryManager("testsuite/src/test/resources/overridesSet.xml");
+        result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNull(result);
+}
+    
+    @Test
     public void testOverridesRemoveNoVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesNoVersion.xml");
         ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
