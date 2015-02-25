@@ -2011,11 +2011,12 @@ public class ClassTransformer extends AbstractTransformer {
                 Class klass = (Class)member;
                 if (Strategy.generateInstantiator(member)
                         && !klass.hasConstructors()
-                    && !model.isAbstract() && !model.isFormal()
+                    && !model.isFormal()
+                    && needsCompanionDelegate(model, member)
                     && model.getDirectMember(member.getName(), null, false) == null) {
                     // instantiator method implementation
                     generateInstantiatorDelegate(classBuilder, satisfiedType,
-                            iface, klass, null, model.getType(), true);
+                            iface, klass, null, model.getType(), !member.isFormal());
                 } 
                 if (klass.hasConstructors()) {
                     for (Declaration m : klass.getMembers()) {
