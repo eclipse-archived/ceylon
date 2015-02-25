@@ -27,6 +27,10 @@
         <resource-root path="ceylon.language-@ceylon-version@.car"/>
     </resources>
 
+    <!--
+      WARNING! Make sure this list is always the same as the one in
+      /ceylon-compiler/src/com/redhat/ceylon/compiler/loader/AbstractModelLoader.java
+    -->
     <dependencies>
         <module name="com.redhat.ceylon.compiler.java" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
