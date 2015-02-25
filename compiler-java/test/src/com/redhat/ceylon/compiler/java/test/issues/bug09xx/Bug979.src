@@ -618,7 +618,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     @.java.lang.Override
     public final <Other>.ceylon.language.Set<? extends .ceylon.language.String> complement(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Set<? extends Other> set) {
-        return (.ceylon.language.Set).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Set<? extends .ceylon.language.String>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

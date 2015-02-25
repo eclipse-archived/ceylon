@@ -33,7 +33,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     }
                     
                     public .java.lang.String get_() {
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_).ceylon.language.nothing_.get_();
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_)times1;
                         
                         final class Consumer$impl<E> {
@@ -61,7 +61,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     
                     @.java.lang.Override
                     public .java.lang.Object $call$() {
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_).ceylon.language.nothing_.get_();
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_)times1;
                         
                         final class Consumer$impl<E> {
@@ -89,7 +89,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     private objectArgument_() {
                         super();
                         this.hash = 0L;
-                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_).ceylon.language.nothing_.get_();
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_)times1;
                     }
                     private final long hash;
@@ -212,7 +212,7 @@ final class bug1286_method_ {
                             private objectArgument_() {
                                 super();
                                 this.hash = 0L;
-                                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_).ceylon.language.nothing_.get_();
+                                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_)times1;
                             }
                             private final long hash;
@@ -285,7 +285,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                             private objectArgument_() {
                                 super();
                                 this.hash = 0L;
-                                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer).ceylon.language.nothing_.get_();
+                                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer)times1;
                             }
                             private final long hash;
@@ -374,7 +374,7 @@ final class bug1286_getterSetter_ {
             }
             
             public .java.lang.String get_() {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_).ceylon.language.nothing_.get_();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_)times1;
                 
                 final class Consumer$impl<E> {
@@ -405,7 +405,7 @@ final class bug1286_getterSetter_ {
             private .java.lang.String value;
             
             public void set_(final .java.lang.String getterSetter) {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_).ceylon.language.nothing_.get_();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_)times1;
                 
                 final class Consumer$impl<E> {
@@ -437,7 +437,7 @@ final class bug1286_getterSetter_ {
             private objectDefinition_() {
                 super();
                 this.hash = 0L;
-                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_).ceylon.language.nothing_.get_();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_)times1;
             }
             private final long hash;

@@ -541,7 +541,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends X> getRest() {
-        return (.ceylon.language.List).ceylon.language.nothing_.get_();
+        return (.ceylon.language.List<? extends X>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

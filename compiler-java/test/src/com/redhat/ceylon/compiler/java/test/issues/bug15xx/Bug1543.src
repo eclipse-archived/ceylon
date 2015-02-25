@@ -209,22 +209,22 @@ public final class My1543Empty$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Other>.ceylon.language.Sequence withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
-        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends Other>).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Other>.ceylon.language.Sequence withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
-        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends Other>).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final .ceylon.language.Sequence getA() {
-        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Sequence m() {
-        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
     }
 }

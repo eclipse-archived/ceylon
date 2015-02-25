@@ -6,7 +6,7 @@ final class bug895SideEffects_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> bug895SideEffects() {
-        return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }
 final class bug895_ {
@@ -57,6 +57,6 @@ final class bug895SideEffects2_ {
     }
     
     public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
-        return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }

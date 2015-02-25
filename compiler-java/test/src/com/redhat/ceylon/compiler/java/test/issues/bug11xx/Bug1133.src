@@ -6,7 +6,7 @@ public final class bug1133_ {
     }
     
     public static <Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>void bug1133(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args) {
-        final .ceylon.language.Callable<? extends .java.lang.Object> o = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> o = (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         if (o instanceof .ceylon.language.meta.model.Function && .com.redhat.ceylon.compiler.java.Util.isReified(o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.Function.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))) {
             final .ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty> other = (.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function)o;
         }

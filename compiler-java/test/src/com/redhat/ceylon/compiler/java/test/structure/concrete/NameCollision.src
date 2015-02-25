@@ -260,7 +260,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
     }
     private final boolean empty;
     

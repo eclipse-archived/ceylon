@@ -19,7 +19,7 @@ public final class coalesce_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
     @.ceylon.language.DocAnnotation$annotation$(description = "The values, some of which may be null.")
     final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> values) {
-        return (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }
 class Bug1403 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

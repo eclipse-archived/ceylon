@@ -518,7 +518,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T> $clone() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     
@@ -1067,7 +1067,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends T> $clone() {
-        return (.ceylon.language.List).ceylon.language.nothing_.get_();
+        return (.ceylon.language.List<? extends T>).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     

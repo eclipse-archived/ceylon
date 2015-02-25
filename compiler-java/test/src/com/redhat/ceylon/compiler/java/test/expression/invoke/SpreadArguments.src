@@ -76,7 +76,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, 0L, (.ceylon.language.String)tuple$7.get(.ceylon.language.Integer.instance(0L)));
         );
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         (
             let
             {
@@ -91,7 +91,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
             returning f.$call$(.ceylon.language.Integer.instance(1L), (.ceylon.language.String)tuple$11.get(.ceylon.language.Integer.instance(0L)));
         );
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> sa = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> sa = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>).ceylon.language.nothing_.get_();
         (
             let
             {
@@ -162,7 +162,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final void spreadTupleWithSpreadOp$priv$(final .ceylon.language.Sequence args) {
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iter = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iter = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         (
             let
             {
@@ -531,7 +531,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final void spreadIteratorWithSpreadOp$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> sas = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> sas = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         (
             let
             {

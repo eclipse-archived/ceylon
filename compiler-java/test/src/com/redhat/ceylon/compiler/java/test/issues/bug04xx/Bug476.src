@@ -47,7 +47,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>).ceylon.language.nothing_.get_();
     }
     private .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr;
     
@@ -575,22 +575,22 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends T>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends T>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanTo(final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends T>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> measure(final .ceylon.language.Integer from, final long length) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends T>).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     

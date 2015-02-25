@@ -26,11 +26,11 @@ final class Bug1765_I1$impl<Element> {
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar1() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element>).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element>).ceylon.language.nothing_.get_();
     }
 }
 interface Bug1765_I2 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<.ceylon.language.Integer> {
@@ -60,7 +60,7 @@ class Bug1765_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1 bar1() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

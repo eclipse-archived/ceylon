@@ -38,7 +38,7 @@ final class bug1508_ {
     }
     
     static <X, Y>.ceylon.language.Callable<? extends Y> bug1508(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .ceylon.language.Callable<? extends Y> fun) {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y> it = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y> it = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y>).ceylon.language.nothing_.get_();
         final .ceylon.language.Callable<? extends Y> f3 = (.ceylon.language.Callable<? extends Y>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>($reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .ceylon.language.Empty.$TypeDescriptor$), "Y(Bug1508It<Y,Y>)", (short)-1){
             
             @.java.lang.Override

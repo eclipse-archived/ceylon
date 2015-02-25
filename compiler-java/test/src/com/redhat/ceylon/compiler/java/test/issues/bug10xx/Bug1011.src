@@ -669,6 +669,6 @@ final class foo_ {
                 }
             }
         };
-        return (.ceylon.language.Map).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Map<? extends Item, ? extends .ceylon.language.Set<? extends Key>>).ceylon.language.nothing_.get_();
     }
 }

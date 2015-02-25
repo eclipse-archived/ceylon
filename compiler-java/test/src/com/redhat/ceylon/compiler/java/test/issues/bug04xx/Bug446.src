@@ -518,7 +518,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public final <Absent>.ceylon.language.Iterable<? extends T, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
-        return (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends T, ? extends Absent>).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     

@@ -10,7 +10,7 @@ final class bug1157_annotations_ {
     }
     
     static <A extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends A>>.ceylon.language.Sequential<? extends A> bug1157_annotations(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends A>).ceylon.language.nothing_.get_();
     }
 }
 final class bug1157_call_ {

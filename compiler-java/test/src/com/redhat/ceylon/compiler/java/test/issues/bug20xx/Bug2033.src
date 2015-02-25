@@ -338,7 +338,7 @@ class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     private .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> repeat$canonical$(final long times) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -348,7 +348,7 @@ class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> getRepeatAttr() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

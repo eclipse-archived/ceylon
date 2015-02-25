@@ -10,6 +10,6 @@ final class bug674_ {
     }
     
     static void bug674() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_>).ceylon.language.nothing_.get_();
     }
 }

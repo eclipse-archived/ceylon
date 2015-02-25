@@ -631,12 +631,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends Element>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends Element>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

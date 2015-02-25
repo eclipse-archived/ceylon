@@ -35,12 +35,12 @@ final class variadicArraysMethods_ {
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$0$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())][]);
         ));
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         final .java.lang.Object[] objectArray1 = new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
         f.$call$((.java.lang.Object)(.java.lang.Object)objectArray1);
         final int[] intArray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
         f.$call$((.java.lang.Object)intArray);
-        final .ceylon.language.Callable<? extends .java.lang.Object> f2 = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f2 = (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
         f2.$call$((.java.lang.Object)(.java.lang.Object)null);
         java.variadicObject((.java.lang.Object)null);
         java.variadicObject((.java.lang.Object)arr1);

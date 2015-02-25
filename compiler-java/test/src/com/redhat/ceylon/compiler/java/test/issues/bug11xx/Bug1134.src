@@ -9,7 +9,7 @@ final class bug1134Toplevel1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+            value = (.ceylon.language.Callable<? extends .ceylon.language.String>).ceylon.language.nothing_.get_();
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {

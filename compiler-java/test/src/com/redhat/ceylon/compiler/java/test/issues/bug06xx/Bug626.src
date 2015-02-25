@@ -294,7 +294,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

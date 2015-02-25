@@ -24,7 +24,7 @@ final class arrayOfSome_ {
     }
     
     static <Element>.ceylon.language.Array<Element> arrayOfSome(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> elements) {
-        return (.ceylon.language.Array).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Array<Element>).ceylon.language.nothing_.get_();
     }
 }
 final class bug647test_ {

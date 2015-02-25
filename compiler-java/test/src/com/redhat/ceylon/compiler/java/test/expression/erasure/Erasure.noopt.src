@@ -425,7 +425,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         .ceylon.language.Iterator<? extends .java.lang.Object> it$iterator$$29 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)naturals).iterator();
         loop_0: while (!((elem$28 = it$iterator$$29.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.Object it = elem$28;
-            final .ceylon.language.Numeric<.ceylon.language.Integer> n6 = (.ceylon.language.Numeric)it;
+            final .ceylon.language.Numeric<.ceylon.language.Integer> n6 = (.ceylon.language.Numeric<.ceylon.language.Integer>)it;
         }
         .java.lang.Object elem$30;
         .ceylon.language.Iterator<? extends .java.lang.Object> itLeft$iterator$$31 = ((.ceylon.language.Iterable)leftsAndRights).iterator();
