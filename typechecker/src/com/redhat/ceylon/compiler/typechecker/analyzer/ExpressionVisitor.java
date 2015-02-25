@@ -3535,8 +3535,10 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
             
-            if (checkCallable(pt, p, "invoked expression must be callable") &&
-                    !pt.isNothing()) {
+            if (pt.isNothing()) {
+                that.setTypeModel(unit.getNothingDeclaration().getType());
+            }
+            else if (checkCallable(pt, p, "invoked expression must be callable")) {
                 List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
                         .getTypeArgumentList();
                 if (!typeArgs.isEmpty()) {
@@ -4603,12 +4605,12 @@ public class ExpressionVisitor extends Visitor {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
-            if (rhst.getDeclaration().inherits(fd) &&
-                lhst.getDeclaration().inherits(id)) {
+            if (!rhst.isNothing() && rhst.getDeclaration().inherits(fd) &&
+                !lhst.isNothing() && lhst.getDeclaration().inherits(id)) {
                 lhst = fd.getType();
             }
-            else if (rhst.getDeclaration().inherits(id) &&
-                     lhst.getDeclaration().inherits(fd)) {
+            else if (!rhst.isNothing() && rhst.getDeclaration().inherits(id) &&
+                     !lhst.isNothing() && lhst.getDeclaration().inherits(fd)) {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
@@ -4644,8 +4646,8 @@ public class ExpressionVisitor extends Visitor {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
-            if (rhst.getDeclaration().inherits(id) &&
-                lhst.getDeclaration().inherits(fd)) {
+            if (!rhst.isNothing() && rhst.getDeclaration().inherits(id) &&
+                !lhst.isNothing() && lhst.getDeclaration().inherits(fd)) {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(),
