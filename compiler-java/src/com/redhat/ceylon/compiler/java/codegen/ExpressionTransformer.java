@@ -459,7 +459,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }else if(exprType.getDeclaration() instanceof NothingType){
                     // type param erasure
                     JCExpression targetType = makeJavaType(expectedType, 
-                            AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
+                            AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
                     result = make().TypeCast(targetType, result);
                 }else if(// expression was forcibly erased
                          exprErased
