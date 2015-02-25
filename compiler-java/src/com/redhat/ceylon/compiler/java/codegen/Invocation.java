@@ -250,7 +250,17 @@ abstract class Invocation {
             Declaration declaration = type.getDeclaration();
             if (Strategy.generateInstantiator(declaration)) {
                 if (Decl.withinInterface(declaration)) {
-                    actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                    if (primaryExpr != null) {
+                        // if we have some other primary then respect that
+                        actualPrimExpr = primaryExpr;
+                    } else {
+                        // if the class being instantiated is 
+                        // within a class we expect the instantiation to be
+                        // accessible from `this`, so use null
+                        // otherwise we must be in an companion class, so we 
+                        // need to qualify the instantiator invocation with $this
+                        actualPrimExpr =  type.getScope().getInheritingDeclaration(declaration) instanceof Class ? null : gen.naming.makeQuotedThis();
+                    }
                 } else if (declaration.isToplevel()) {
                     actualPrimExpr = null;
                 }
