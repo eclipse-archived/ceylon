@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.fordebug;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,8 @@ public class Javac {
         List<String> args = new ArrayList<String>();
         String home = System.getenv("JAVA_HOME");
         if (home != null) {
-            args.add(home+"bin/javac");
+            File javac = new File(home, "bin/javac");
+            args.add(javac.getPath());
         } else {
             args.add("javac");
         }
