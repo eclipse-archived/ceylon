@@ -657,7 +657,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         defaultExtendedToBasic(c);
         c.setAnonymous(true);
         that.setAnonymousClass(c);
-        visitDeclaration(that, c);
+        visitDeclaration(that, c, false);
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
