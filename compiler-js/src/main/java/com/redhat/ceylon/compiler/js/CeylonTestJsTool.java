@@ -42,7 +42,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
     private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjs";
     private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjs.run";
     
-    private static final String COLOR_WHITE = "com.redhat.ceylon.common.tool.terminal.color.white";
+    private static final String COLOR_RESET = "com.redhat.ceylon.common.tool.terminal.color.reset";
     private static final String COLOR_GREEN = "com.redhat.ceylon.common.tool.terminal.color.green";
     private static final String COLOR_RED = "com.redhat.ceylon.common.tool.terminal.color.red";
 
@@ -177,11 +177,11 @@ public class CeylonTestJsTool extends RepoUsingTool {
             args.add("--report");
         }
         
-        if (System.getProperties().containsKey(COLOR_WHITE)
+        if (System.getProperties().containsKey(COLOR_RESET)
                 && System.getProperties().containsKey(COLOR_GREEN)
                 && System.getProperties().containsKey(COLOR_RED)) {
-            args.add("--" + COLOR_WHITE);
-            args.add(System.getProperty(COLOR_WHITE));
+            args.add("--" + COLOR_RESET);
+            args.add(System.getProperty(COLOR_RESET));
             args.add("--" + COLOR_GREEN);
             args.add(System.getProperty(COLOR_GREEN));
             args.add("--" + COLOR_RED);
