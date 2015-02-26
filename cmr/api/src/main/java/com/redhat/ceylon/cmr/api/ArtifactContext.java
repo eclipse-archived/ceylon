@@ -108,12 +108,22 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public ArtifactContext() {
     }
 
+    // Returns true if the suffix that was passed can have
+    // an associated .sha1 suffix
+    private static boolean isShaAllowed(String suffix) {
+        if (MODULE_PROPERTIES.equals(suffix) || MODULE_XML.equals(suffix)
+                || suffix.endsWith(SHA1) || isDirectoryName(suffix)) {
+            return false;
+        }
+        return true;
+    }
+
     // Returns the SHA1 version of the current context or null
     // if the current context is already an SHA1 artifact or
     // if the artifact doesn't allow or need signing
     public ArtifactContext getSha1Context() {
         if (suffixes.length == 1) {
-            if (!suffixes[0].endsWith(SHA1) && !isDirectoryName(suffixes[0])) {
+            if (isShaAllowed(suffixes[0])) {
                 String[] sha1Suffixes = { suffixes[0] + SHA1 };
                 return new ArtifactContext(name, version, sha1Suffixes);
             }
