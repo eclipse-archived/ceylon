@@ -215,17 +215,6 @@ public class Metamodel {
         // TODO: what about Throwable/j.l.Exception/RuntimeException?
         if(klass == Object.class)
             return ceylon.language.Object.$TypeDescriptor$;
-
-        if(klass.isAnonymousClass()) {
-            if (klass.getSuperclass() != null && ! klass.getSuperclass().equals(Object.class)) {
-                klass = klass.getSuperclass();
-            } else if (klass.getInterfaces().length > 0) {
-                klass = klass.getInterfaces()[0];
-            } else {
-                return ceylon.language.Object.$TypeDescriptor$;
-            }
-        }
-        
         if(klass.isMemberClass())
             return TypeDescriptor.member(getJavaTypeDescriptor(klass.getEnclosingClass()), TypeDescriptor.klass(klass));
         // FIXME: what about local or anonymous types?
@@ -334,21 +323,15 @@ public class Metamodel {
     }
 
     public static ProducedType getProducedType(TypeDescriptor reifiedType) {
-        try {
-            ProducedType producedType;
-            synchronized(getLock()){
-                producedType = typeDescriptorToProducedType.get(reifiedType);
-                if(producedType == null){
-                    producedType = reifiedType.toProducedType(moduleManager);
-                    typeDescriptorToProducedType.put(reifiedType, producedType);
-                }
+        ProducedType producedType;
+        synchronized(getLock()){
+            producedType = typeDescriptorToProducedType.get(reifiedType);
+            if(producedType == null){
+                producedType = reifiedType.toProducedType(moduleManager);
+                typeDescriptorToProducedType.put(reifiedType, producedType);
             }
-            return producedType;
-        } catch(RuntimeException t) {
-            System.err.println("Exception when trying to retrieve the produced type of " + reifiedType + " : ");
-            t.printStackTrace();
-            throw t;
         }
+        return producedType;
     }
 
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
