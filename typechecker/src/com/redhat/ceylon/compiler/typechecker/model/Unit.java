@@ -1323,6 +1323,7 @@ public class Unit {
     
     public ProducedType getCallableReturnType(ProducedType t) {
         if (t==null) return null;
+        if (t.isNothing()) return t;
         ProducedType ct = t.getSupertype(getCallableDeclaration());
         if (ct!=null) {
             List<ProducedType> typeArgs = ct.getTypeArgumentList();
