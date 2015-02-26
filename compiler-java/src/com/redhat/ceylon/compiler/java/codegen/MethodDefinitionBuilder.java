@@ -424,6 +424,8 @@ public class MethodDefinitionBuilder
                     nonWideningType = gen.typeFact().getObjectDeclaration().getType();
                 else if (CodegenUtil.isRaw(refinedParameter)) {
                     flags |= AbstractTransformer.JT_RAW;
+                } else if (!refinedParameterType.getTypeArgumentList().isEmpty()) {
+                    flags |= AbstractTransformer.JT_TYPE_ARGUMENT;
                 }
             }
         }
