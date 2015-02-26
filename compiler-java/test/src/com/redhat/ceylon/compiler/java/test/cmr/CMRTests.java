@@ -654,6 +654,18 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlImplicitAetherDependencyDefault() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aetherdefault/module.ceylon", "modules/aetherdefault/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        // We're assuming a standard Maven configuration here!
+        File camelJar = new File(System.getProperty("user.home"), ".m2/repository/org/apache/camel/camel-core/2.9.2/camel-core-2.9.2.jar");
+        assertTrue(camelJar.exists());
+    }
+
+    @Test
     public void testMdlAetherIgnoreRecursiveDependencies() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
