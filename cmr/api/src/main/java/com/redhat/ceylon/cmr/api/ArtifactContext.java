@@ -118,9 +118,12 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return true;
     }
 
-    // Returns the SHA1 version of the current context or null
-    // if the current context is already an SHA1 artifact or
-    // if the artifact doesn't allow or need signing
+    /**
+     * Returns the SHA1 version of the current context or null
+     * if the current context is already an SHA1 artifact or
+     * if the artifact doesn't allow or need signing
+     * @return A new SHA1 context
+     */
     public ArtifactContext getSha1Context() {
         if (suffixes.length == 1) {
             if (isShaAllowed(suffixes[0])) {
@@ -131,9 +134,12 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return null;
     }
 
-    // Returns the ZIP version of the current context or null
-    // if the current context is already a ZIP artifact or
-    // if the artifact doesn't allow or need zipping
+    /**
+     * Returns the ZIP version of the current context or null
+     * if the current context is already a ZIP artifact or
+     * if the artifact doesn't allow or need zipping
+     * @return A new ZIP context
+     */
     public ArtifactContext getZipContext() {
         if (suffixes.length == 1) {
             if (!suffixes[0].endsWith(ZIP) && isDirectoryName(suffixes[0])) {
