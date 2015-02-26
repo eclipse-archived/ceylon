@@ -187,7 +187,7 @@ public class Util {
             name = (String)annot.getValue();
         } else {
             name = mirror.getName();
-            name = Naming.stripLeadingDollar(name);
+            name = name.isEmpty() ? name : Naming.stripLeadingDollar(name);
             if (mirror instanceof ClassMirror
                     && Util.isInitialLowerCase(name)
                     && name.endsWith("_")
