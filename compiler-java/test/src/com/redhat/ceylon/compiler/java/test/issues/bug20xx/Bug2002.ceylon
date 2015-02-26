@@ -21,7 +21,7 @@
 [<Head|Tail>*] bug2002Builder1
         <Head, Tail>
         (Head head, [Tail*]() tail)()
-        given Tail //satisfies Anything
+        given Tail satisfies Anything
     => tail().withLeading(head);
 
 [<String|Integer>*]() bug2002BuilderTest1 =
@@ -32,7 +32,7 @@
 [<Head|Tail>*] bug2002Builder2
         <Head, Tail>
         (Head head, [Tail*]() tail)()
-        given Tail //satisfies Boolean
+        given Tail satisfies Boolean
     => tail().withLeading(head);
 
 [<Boolean>*]() bug2002BuilderTest2 =
