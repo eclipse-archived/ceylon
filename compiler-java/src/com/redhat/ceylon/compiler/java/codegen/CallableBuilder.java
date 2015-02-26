@@ -667,7 +667,7 @@ public class CallableBuilder {
          * @param boxed 
          */
         private JCExpression makeCallParameterExpr(Parameter param, boolean boxed, int argIndex, boolean varargs) {
-            ProducedType paramType = parameterTypes.get(Math.min(argIndex, numParams-1));
+            ProducedType paramType = gen.typeFact().denotableType(parameterTypes.get(Math.min(argIndex, numParams-1)));
             return makeParameterExpr(param, argIndex, paramType, boxed, varargs);
         }
         
