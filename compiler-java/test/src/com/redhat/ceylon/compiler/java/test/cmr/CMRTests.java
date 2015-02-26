@@ -651,8 +651,6 @@ public class CMRTests extends CompilerTests {
         // We're assuming a standard Maven configuration here!
         File camelJar = new File(System.getProperty("user.home"), ".m2/repository/org/apache/camel/camel-core/2.9.2/camel-core-2.9.2.jar");
         assertTrue(camelJar.exists());
-        File slf4jJar = new File(System.getProperty("user.home"), ".m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar");
-        assertTrue(slf4jJar.exists());
     }
 
     @Test
