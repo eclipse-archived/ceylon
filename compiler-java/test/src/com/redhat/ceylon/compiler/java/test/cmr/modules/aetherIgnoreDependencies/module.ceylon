@@ -21,6 +21,6 @@
 by("The Ceylon Team")
 license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.aetherIgnoreDependencies "6.6.6" {
-  import "org.apache.camel.camel-core" "2.9.4";
-  import "org.apache.camel.camel-jetty" "2.9.4";
+  import "org.apache.camel:camel-core" "2.9.4";
+  import "org.apache.camel:camel-jetty" "2.9.4";
 }
