@@ -596,12 +596,10 @@ public abstract class BoxingVisitor extends Visitor {
                 && CodegenUtil.isUnBoxed(elseExpr)
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
-        if(CodegenUtil.isRaw(ifExpr) || CodegenUtil.isRaw(elseExpr))
-            CodegenUtil.markRaw(that);
-        if(CodegenUtil.hasTypeErased(ifExpr) || CodegenUtil.hasTypeErased(elseExpr))
-            CodegenUtil.markTypeErased(that);
-        if(CodegenUtil.hasUntrustedType(ifExpr) || CodegenUtil.hasUntrustedType(elseExpr))
-            CodegenUtil.markUntrustedType(that);
+        // An If expression can never be raw, type erased or untrusted because
+        // it uses a Let with a new variable declaration, so the rawness, 
+        // erasedness and untrustedness of its branches cannot propagate further 
+        // up the tree.
     }
 
     @Override
@@ -618,13 +616,10 @@ public abstract class BoxingVisitor extends Visitor {
             // a single boxed one makes the whole switch boxed
             if(!CodegenUtil.isUnBoxed(expr))
                 unboxed = false;
-            // for the rest a single raw/erased/untrusted marks the switch as so
-            if(CodegenUtil.isRaw(expr))
-                CodegenUtil.markRaw(that);
-            if(CodegenUtil.hasTypeErased(expr))
-                CodegenUtil.markTypeErased(that);
-            if(CodegenUtil.hasUntrustedType(expr))
-                CodegenUtil.markUntrustedType(that);
+            // A Switch expression can never be raw, type erased or untrusted because
+            // it uses a Let with a new variable declaration, so the rawness, 
+            // erasedness and untrustedness of its branches cannot propagate further 
+            // up the tree.
         }
         if(caseList.getElseClause() != null){
             Expression expr = caseList.getElseClause().getExpression();
@@ -633,13 +628,7 @@ public abstract class BoxingVisitor extends Visitor {
             // a single boxed one makes the whole switch boxed
             if(!CodegenUtil.isUnBoxed(expr))
                 unboxed = false;
-            // for the rest a single raw/erased/untrusted marks the switch as so
-            if(CodegenUtil.isRaw(expr))
-                CodegenUtil.markRaw(that);
-            if(CodegenUtil.hasTypeErased(expr))
-                CodegenUtil.markTypeErased(that);
-            if(CodegenUtil.hasUntrustedType(expr))
-                CodegenUtil.markUntrustedType(that);
+            // see comment about about why we don't propagate rawness etc here.
         }
         if(unboxed 
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
