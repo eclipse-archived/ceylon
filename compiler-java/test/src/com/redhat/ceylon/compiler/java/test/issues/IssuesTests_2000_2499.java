@@ -98,6 +98,22 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         compile("bug20xx/bug2024a/module.ceylon", "bug20xx/bug2024a/package.ceylon", "bug20xx/bug2024a/Instant.ceylon");
         compile("bug20xx/bug2024b/module.ceylon", "bug20xx/bug2024b/Bug2024.ceylon", "bug20xx/bug2024b/Bug2024.java");
     }
+    
+    @Test @Ignore
+    public void testBug2026() {
+        // In this order everything compiles okay
+        compile("bug20xx/bug2026/module.ceylon", "bug20xx/bug2026/Identifier.ceylon",
+                "bug20xx/bug2026/ImportElements.ceylon", "bug20xx/bug2026/Node.ceylon",
+                "bug20xx/bug2026/ImportElement.ceylon",
+                "bug20xx/bug2026/ImportTypeElement.ceylon"
+                );
+        // In this order it doesn't
+        compile("bug20xx/bug2026/module.ceylon", "bug20xx/bug2026/Identifier.ceylon",
+                "bug20xx/bug2026/ImportElements.ceylon", "bug20xx/bug2026/Node.ceylon",
+                "bug20xx/bug2026/ImportTypeElement.ceylon",
+                "bug20xx/bug2026/ImportElement.ceylon"
+                );
+    }
 
     @Test
     public void testBug2032() {
