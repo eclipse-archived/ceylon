@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -93,6 +94,12 @@ public class Main {
     
     static class ClassPath {
         
+        private static final String METAINF_JBOSSMODULES = "META-INF/jbossmodules/";
+        private static final String METAINF_MAVEN = "META-INF/maven/";
+        private static final String MODULE_PROPERTIES = "module.properties";
+        private static final String MODULE_XML = "module.xml";
+        private static final String POM_XML = "pom.xml";
+
         @SuppressWarnings("serial")
         public class ModuleNotFoundException extends Exception {
 
@@ -265,6 +272,8 @@ public class Main {
         private Map<String,Module> modules = new HashMap<String,Module>();
         private static DependencyResolver MavenResolver = getResolver(Configuration.MAVEN_RESOLVER_CLASS);
         
+        private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
+        
         ClassPath(){
             String classPath = System.getProperty("java.class.path");
             String[] classPathEntries = classPath.split(File.pathSeparator);
@@ -274,11 +283,48 @@ public class Main {
                     potentialJars.add(entry);
                 }
             }
+            initJars();
         }
         
         // for tests
         ClassPath(List<File> potentialJars){
             this.potentialJars = potentialJars;
+            initJars();
+        }
+        
+        private List<ZipEntry> findEntries(ZipFile zipFile, String startFolder, String entryName) {
+            List<ZipEntry> result = new LinkedList<ZipEntry>();
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                String name = entry.getName();
+                if (name.startsWith(startFolder) && name.endsWith(entryName)) {
+                    result.add(entry);
+                }
+            }
+            return result;
+        }
+
+        private ModuleSpec moduleFromEntry(ZipEntry entry) {
+            String fullName = entry.getName();
+            if (fullName.startsWith(METAINF_JBOSSMODULES)) {
+                fullName = fullName.substring(METAINF_JBOSSMODULES.length());
+            }
+            if (fullName.endsWith(MODULE_PROPERTIES)) {
+                fullName = fullName.substring(0, fullName.length() - MODULE_PROPERTIES.length() - 1);
+            } else if (fullName.endsWith(MODULE_XML)) {
+                fullName = fullName.substring(0, fullName.length() - MODULE_XML.length() - 1);
+            }
+            int p = fullName.lastIndexOf('/');
+            if (p > 0) {
+                String name = fullName.substring(0, p);
+                String version = fullName.substring(p + 1);
+                if (!name.isEmpty() && !version.isEmpty()) {
+                    name = name.replace('/', '.');
+                    return new ModuleSpec(name, version);
+                }
+            }
+            return null;
         }
         
         private static DependencyResolver getResolver(String className) {
@@ -304,11 +350,39 @@ public class Main {
                 modules.put(key, module);
                 return module;
             }
+            module = searchJars(name, version);
+            if (module != null) {
+                return module;
+            } else {
+                if(allowMissingModules){
+                    return new Module(name, version, Type.UNKNOWN, null);
+                }else{
+                    throw new ModuleNotFoundException("Module "+key+" not found");
+                }
+            }
+        }
+        
+        // Pre-loads as much modules as possible by going over all potential jar/car files
+        // in the class path and trying to determine which modules they contain
+        private void initJars() {
+            searchJars(null, null);
+        }
+        
+        // Goes over all the potential jar/car files in the class path and if a name and
+        // version were given tries to determine if any of them contain that module.
+        // If name and version are both `null` it will try to determine the module
+        // information from the jar/car file itself.
+        private Module searchJars(String name, String version) {
+            Module module;
             Iterator<File> iterator = potentialJars.iterator();
             while(iterator.hasNext()){
                 File file = iterator.next();
                 try {
-                    module = loadJar(file, name, version);
+                    if (name == null && version == null) {
+                        module = initJar(file);
+                    } else {
+                        module = loadJar(file, name, version);
+                    }
                 } catch (IOException e) {
                     // faulty jar
                     iterator.remove();
@@ -317,15 +391,73 @@ public class Main {
                     continue;
                 }
                 if(module != null){
-                    modules.put(key, module);
+                    if (module != NO_MODULE) {
+                        String key = module.name() + "/" + module.version();
+                        modules.put(key, module);
+                    }
                     iterator.remove();
-                    return module;
+                    if (name != null || version != null) {
+                        return module;
+                    }
                 }
             }
-            if(allowMissingModules){
-                return new Module(name, version, Type.UNKNOWN, null);
-            }else{
-                throw new ModuleNotFoundException("Module "+key+" not found");
+            return null;
+        }
+        
+        private Module initJar(File file) throws IOException {
+            ZipFile zipFile = new ZipFile(file);
+            try{
+                // Try Ceylon module first
+                List<ZipEntry> moduleDescriptors = findEntries(zipFile, "", Naming.MODULE_DESCRIPTOR_CLASS_NAME+".class");
+                if(moduleDescriptors.size() == 1) {
+                    try {
+                        return loadCeylonModuleCar(file, zipFile, moduleDescriptors.get(0), null, null);
+                    } catch (IOException ex) {
+                        // Ignore
+                    }
+                }
+                
+                // Try JBoss modules next
+                List<ZipEntry> moduleXmls = findEntries(zipFile, METAINF_JBOSSMODULES, MODULE_XML);
+                if(moduleXmls.size() == 1) {
+                    ModuleSpec mod = moduleFromEntry(moduleXmls.get(0));
+                    if (mod != null) {
+                        return loadJBossModuleXmlJar(file, zipFile, moduleXmls.get(0), mod.getName(), mod.getVersion());
+                    }
+                }
+                List<ZipEntry> moduleProperties = findEntries(zipFile, METAINF_JBOSSMODULES, MODULE_PROPERTIES);
+                if(moduleProperties.size() == 1) {
+                    ModuleSpec mod = moduleFromEntry(moduleProperties.get(0));
+                    if (mod != null) {
+                        return loadJBossModulePropertiesJar(file, zipFile, moduleProperties.get(0), mod.getName(), mod.getVersion());
+                    }
+                }
+                
+                // try Maven
+                List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
+                // TODO: we should try to retrieve the module information (name/version) from the pom.xml entry
+                
+                // last OSGi
+                ZipEntry osgiProperties = zipFile.getEntry(JarFile.MANIFEST_NAME);
+                if(osgiProperties != null){
+                    Module module = loadOsgiJar(file, zipFile, osgiProperties, null, null);
+                    // it's possible we have a MANIFEST but not for the module we're looking for
+                    if(module != null)
+                        return module;
+                }
+                
+                if (moduleDescriptors.isEmpty() && moduleXmls.isEmpty() && moduleProperties.isEmpty()
+                        && mavenDescriptors.isEmpty() && osgiProperties == null) {
+                    // There's nothing we can retrieve from this jar
+                    // let's return a dummy module so the jar will
+                    // get removed from the list of potentials at least
+                    return NO_MODULE;
+                }
+                
+                // not found
+                return null;
+            }finally{
+                zipFile.close();
             }
         }
         
@@ -415,10 +547,13 @@ public class Main {
                 AnnotationValue moduleVersion = moduleAnnotation.value("version");
                 if(moduleName == null || moduleVersion == null)
                     throw new IOException("Invalid module annotation");
-                if(!moduleName.asString().equals(name))
+                
+                if(name != null && !moduleName.asString().equals(name))
                     throw new IOException("Module name does not match module descriptor");
-                if(!moduleVersion.asString().equals(version))
+                if(version != null && !moduleVersion.asString().equals(version))
                     throw new IOException("Module version does not match module descriptor");
+                name = moduleName.asString();
+                version = moduleVersion.asString();
                 
                 Module module = new Module(name, version, Type.CEYLON, file);
                 AnnotationValue moduleDependencies = moduleAnnotation.value("dependencies");
@@ -483,10 +618,15 @@ public class Main {
             try{
                 Manifest manifest = new Manifest(inputStream);
                 Attributes attributes = manifest.getMainAttributes();
-                if(!Objects.equals(name, attributes.getValue(OsgiManifest.Bundle_SymbolicName))
-                        || !Objects.equals(version, attributes.getValue(OsgiManifest.Bundle_Version)))
-                    return null;
-                
+                String bundleName = attributes.getValue(OsgiManifest.Bundle_SymbolicName);
+                String bundleVersion = attributes.getValue(OsgiManifest.Bundle_Version);
+                if (name != null && version != null) {
+                    if(!Objects.equals(name, bundleName)|| !Objects.equals(version, bundleVersion))
+                        return null;
+                } else {
+                    name = bundleName;
+                    version = bundleVersion;
+                }
             }finally{
                 inputStream.close();
             }
