@@ -1594,9 +1594,11 @@ public abstract class AbstractTransformer implements Transformation {
      */
     static final int JT_RAW_TP_BOUND = JT_RAW | __JT_RAW_TP_BOUND;
     
-    private static final int __JT_TYPE_ARGUMENT = 1 << 10;
+    /* Do not perform any simplifications/reductions on the type */
+    private static final int __JT_FULL_TYPE = 1 << 10;
+    
     /** For use when generating a type argument. Implies {@code JT_NO_PRIMITIVES} */
-    static final int JT_TYPE_ARGUMENT = JT_NO_PRIMITIVES | __JT_TYPE_ARGUMENT;
+    static final int JT_TYPE_ARGUMENT = JT_NO_PRIMITIVES | __JT_FULL_TYPE;
 
     /** For use when we want a value type class. */
     static final int JT_VALUE_TYPE = 1 << 11;
@@ -1608,6 +1610,9 @@ public abstract class AbstractTransformer implements Transformation {
 
     /** Do not resolve aliases, useful if we want a class literal pointing to the alias class itself. */
     static final int JT_CLASS_LITERAL = 1 << 14;
+    
+    /** For use when generating the parameter of an overriding method */
+    static final int JT_REFINED = __JT_FULL_TYPE;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -1687,7 +1692,7 @@ public abstract class AbstractTransformer implements Transformation {
                 if(((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                     return true;
-                } else if ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0) {
+                } else if ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) == 0) {
                     return true;
                 }
                 // otherwise just go on
@@ -1717,7 +1722,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (ta.getDeclaration() instanceof NothingType
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
-                    || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
+                    || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
                 if ((flags & (JT_CLASS_NEW)) != 0) {
@@ -2239,7 +2244,7 @@ public abstract class AbstractTransformer implements Transformation {
                     if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
-                } else if ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0) {
+                } else if ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) == 0) {
                     if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
@@ -2277,7 +2282,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (ta.getDeclaration() instanceof NothingType
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
-                    || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
+                    || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
                 if ((flags & (JT_CLASS_NEW)) != 0) {
