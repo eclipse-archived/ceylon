@@ -40,14 +40,12 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     private Logger log;
     private int timeout;
     private boolean offline;
-    private String mavenOverrides;
 
     public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, String mavenOverrides) {
         repository = new RootRepositoryManager(log, mavenOverrides);
         this.log = log;
         this.timeout = timeout;
         this.offline = offline;
-        this.mavenOverrides = mavenOverrides;
         init();
     }
 
@@ -56,7 +54,6 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         this.log = log;
         this.timeout = timeout;
         this.offline = offline;
-        this.mavenOverrides = mavenOverrides;
         init();
     }
 
@@ -106,4 +103,8 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         return repository;
     }
 
+    @Override
+    public boolean hasMavenRepository() {
+        return repository.hasMavenRepository();
+    }
 }

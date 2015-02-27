@@ -216,4 +216,9 @@ public class JDKRepository extends AbstractRepository {
         return null;
     }
 
+    @Override
+    public boolean isMaven() {
+        return false;
+    }
+
 }

@@ -468,6 +468,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug("Looking for " + context);
 
         for (Repository repository : repositories) {
+            if(context.isMaven() && !repository.isMaven()){
+                log.debug("  -> Skipping non-Maven repo for Maven lookup");
+                continue;
+            }
+            if(!context.isMaven() && repository.isMaven()){
+                log.debug("  -> Skipping Maven repo for non-Maven lookup");
+                continue;
+            }
             Node child = fromRepository(repository, context, addLeaf);
             if (child != null)
                 return child;

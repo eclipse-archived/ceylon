@@ -313,4 +313,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     public String toString() {
         return "RootRepositoryManager: " + fileContentStore;
     }
+
+    public boolean hasMavenRepository() {
+        for(Repository root : getRepositories()){
+            if(root.isMaven())
+                return true;
+        }
+        return false;
+    }
 }

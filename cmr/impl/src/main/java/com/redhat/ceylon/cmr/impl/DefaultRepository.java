@@ -85,4 +85,9 @@ public class DefaultRepository extends AbstractRepository {
             return repositoryDisplayString;
         }
     }
+
+    @Override
+    public boolean isMaven() {
+        return false;
+    }
 }

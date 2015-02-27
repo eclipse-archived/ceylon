@@ -142,4 +142,8 @@ public class RepositoryManagerBuilder {
     public RepositoryManager buildRepository() {
         return getDelegate().buildRepository();
     }
+
+    public boolean hasMavenRepository() {
+        return getDelegate().hasMavenRepository();
+    }
 }

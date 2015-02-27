@@ -393,6 +393,15 @@ public class CeylonUtils {
                 for (Repositories.Repository lookup : others) {
                     addRepo(builder, lookup);
                 }
+                // finally add the Aether repo if we don't have one already
+                if(!builder.hasMavenRepository()){
+                    try {
+                        Repository repo = builder.repositoryBuilder().buildRepository("aether:");
+                        builder.addRepository(repo);
+                    } catch (Exception e) {
+                        log.debug("Failed to add Maven (aether) repository as input repository: " + e.getMessage());
+                    }
+                }
             }
 
             log.debug("Repository lookup order:");

@@ -90,4 +90,9 @@ public class MavenRepository extends AbstractRepository {
             return NodeUtils.getRepositoryDisplayString(node);
         }
     }
+
+    @Override
+    public boolean isMaven() {
+        return true;
+    }
 }

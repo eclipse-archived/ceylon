@@ -76,4 +76,9 @@ public interface Repository extends ContentFinder {
      * Makes sure that content cached as "unavailable" is reasessed
      */
     void refresh(boolean recurse);
+
+    /**
+     * Return true if this is a Maven repo
+     */
+    boolean isMaven();
 }
