@@ -71,6 +71,11 @@ public class CeylonInfoTool extends RepoUsingTool {
         super(CeylonInfoMessages.RESOURCE_BUNDLE);
     }
     
+    @Override
+    protected boolean includeJDK() {
+        return true;
+    }
+    
     @Argument(argumentName="module", multiplicity="+")
     public void setModules(List<String> modules) {
         setModuleSpecs(ModuleSpec.parseEachList(modules));
