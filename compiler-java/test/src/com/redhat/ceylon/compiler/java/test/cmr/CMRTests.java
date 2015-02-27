@@ -760,8 +760,8 @@ public class CMRTests extends CompilerTests {
                 "modules/ceylonAetherConflict/module.ceylon", "modules/ceylonAetherConflict/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
-                new CompilerError(Kind.WARNING, null, 20, "source code imports two different versions of module 'org.apache.httpcomponents:httpclient': version \"4.3.2\" and version \"4.3.3\""),
-                new CompilerError(Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of dependency 'org.apache.httpcomponents:httpclient': version '4.3.2' and version '4.3.3'")
+                new CompilerError(Kind.WARNING, null, 20, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
+                new CompilerError(Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
 }
 

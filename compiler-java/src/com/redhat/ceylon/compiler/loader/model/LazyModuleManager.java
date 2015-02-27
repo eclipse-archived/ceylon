@@ -95,15 +95,28 @@ public abstract class LazyModuleManager extends ModuleManager {
                     // allows more than we do, such as having direct imports of the same module with different versions
                     // as long as they are not reexported, but we don't support that since they all go in the same
                     // classpath (direct imports of compiled modules)
-                    String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
-                    String error = "source code imports two different versions of module '" + 
-                            moduleName + "': "+
-                            "version \""+versions[0] + "\" and version \""+ versions[1] +
-                            "\"";
-                    if(sameModule)
+
+                    if(sameModule){
+                        String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
+                        String error = "source code imports two different versions of module '" + 
+                                moduleName + "': "+
+                                "version \""+versions[0] + "\" and version \""+ versions[1] +
+                                "\"";
                         addErrorToModule(dependencyTree.getFirst(), error);
-                    else
+                    }else{
+                        String moduleA;
+                        String moduleB;
+                        if(loadedModuleName.compareTo(moduleName) < 0){
+                            moduleA = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
+                            moduleB = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                        }else{
+                            moduleA = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                            moduleB = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
+                        }
+                        String error = "source code imports two different versions of similar modules '" + 
+                                moduleA + "' and '"+ moduleB + "'";
                         addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
+                    }
                     return;
                 }
             }
