@@ -74,6 +74,22 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class Main {
+    private boolean allowMissingModules;
+    
+    private ClassPath classPath;
+    private Set<ClassPath.Module> visited;
+    
+    public static Main instance() {
+        return new Main();
+    }
+    
+    private Main() {
+    }
+    
+    public Main allowMissingModules(boolean allowMissingModules) {
+        this.allowMissingModules = allowMissingModules;
+        return this;
+    }
     
     static class ClassPath {
         
@@ -275,6 +291,10 @@ public class Main {
         }
 
         public Module loadModule(String name, String version) throws ModuleNotFoundException{
+            return loadModule(name, version, false);
+        }
+
+        public Module loadModule(String name, String version, boolean allowMissingModules) throws ModuleNotFoundException{
             String key = name + "/" + version;
             Module module = modules.get(key);
             if(module != null)
@@ -302,7 +322,11 @@ public class Main {
                     return module;
                 }
             }
-            throw new ModuleNotFoundException("Module "+key+" not found");
+            if(allowMissingModules){
+                return new Module(name, version, Type.UNKNOWN, null);
+            }else{
+                throw new ModuleNotFoundException("Module "+key+" not found");
+            }
         }
         
         private Module loadJar(File file, String name, String version) throws IOException {
@@ -482,7 +506,22 @@ public class Main {
      * @throws RuntimeException if anything wrong happens
      */
     public static void runModule(String module, String version, String runClass, String... arguments){
-        setupMetamodel(module, version);
+        instance().run(module, version, runClass, arguments);
+    }
+
+    /**
+     * Sets up the metamodel for the specified module and execute the <code>main</code> method on the
+     * specified Java class name representing a toplevel Ceylon class or method.
+     * 
+     * @param module the module name to initialise in the metamodel
+     * @param version the module version
+     * @param runClass the Java class name representing a toplevel Ceylon class or method
+     * @param arguments the arguments to pass to the Ceylon program
+     * 
+     * @throws RuntimeException if anything wrong happens
+     */
+    public void run(String module, String version, String runClass, String... arguments){
+        setup(module, version);
         try {
             Class<?> klass = ClassLoader.getSystemClassLoader().loadClass(runClass);
             invokeMain(klass, arguments);
@@ -504,7 +543,22 @@ public class Main {
      * @throws RuntimeException if anything wrong happens
      */
     public static void runModule(String module, String version, Class<?> runClass, String... arguments){
-        setupMetamodel(module, version);
+        instance().run(module, version, runClass, arguments);
+    }
+
+    /**
+     * Sets up the metamodel for the specified module and execute the <code>main</code> method on the
+     * specified Java class representing a toplevel Ceylon class or method.
+     * 
+     * @param module the module name to initialise in the metamodel
+     * @param version the module version
+     * @param runClass the Java class representing a toplevel Ceylon class or method
+     * @param arguments the arguments to pass to the Ceylon program
+     * 
+     * @throws RuntimeException if anything wrong happens
+     */
+    public void run(String module, String version, Class<?> runClass, String... arguments){
+        setup(module, version);
         try {
             invokeMain(runClass, arguments);
         } catch (NoSuchMethodException | SecurityException 
@@ -527,16 +581,30 @@ public class Main {
      * @param version the version to load. Ignored if the module is the default module.
      */
     public static void setupMetamodel(String module, String version){
-        ClassPath classPath = new ClassPath();
-        Set<ClassPath.Module> visited = new HashSet<ClassPath.Module>();
-        registerInMetamodel(classPath, "ceylon.language", Versions.CEYLON_VERSION_NUMBER, visited, false);
-        registerInMetamodel(classPath, "com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, visited, false);
-        registerInMetamodel(classPath, "com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, visited, false);
-        registerInMetamodel(classPath, "com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, visited, false);
-        registerInMetamodel(classPath, "com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, visited, false);
+        instance().setup(module, version);
+    }
+
+    /**
+     * Sets up the Ceylon metamodel by adding the specified module to it. This does not run any Ceylon code,
+     * nor does it reset the metamodel first. You can repeatedly invoke this method to add new Ceylon modules
+     * to the metamodel.
+     * 
+     * @param module the module name to load.
+     * @param version the version to load. Ignored if the module is the default module.
+     */
+    public void setup(String module, String version){
+        if (classPath == null) {
+            classPath = new ClassPath();
+            visited = new HashSet<ClassPath.Module>();
+            registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, false);
+            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, false);
+            registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, false);
+            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, false);
+            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, false);
+        }
         if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
-        registerInMetamodel(classPath, module, version, visited, false);
+        registerInMetamodel(module, version, false, allowMissingModules);
     }
 
     /**
@@ -544,13 +612,21 @@ public class Main {
      * threads, and will crash them if they are not done running.
      */
     public static void resetMetamodel(){
+        instance().reset();
+    }
+    
+    /**
+     * Resets the metamodel. This will impact any Ceylon code running on the same ClassLoader, across
+     * threads, and will crash them if they are not done running.
+     */
+    public void reset(){
         Metamodel.resetModuleManager();
     }
     
-    private static void registerInMetamodel(ClassPath classPath, String name, String version, Set<ClassPath.Module> visited, boolean optional) {
+    private void registerInMetamodel(String name, String version, boolean optional, boolean allowMissingModules) {
         ClassPath.Module module;
         try {
-            module = classPath.loadModule(name, version);
+            module = classPath.loadModule(name, version, allowMissingModules);
         } catch (com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.ModuleNotFoundException e) {
             if(optional)
                 return;
@@ -564,7 +640,7 @@ public class Main {
         Metamodel.loadModule(name, version, module, ClassLoader.getSystemClassLoader());
         // also register its dependencies
         for(ClassPath.Dependency dep : module.dependencies)
-            registerInMetamodel(classPath, dep.name(), dep.version(), visited, dep.optional);
+            registerInMetamodel(dep.name(), dep.version(), dep.optional, allowMissingModules);
     }
 
     /**
@@ -579,19 +655,27 @@ public class Main {
      * </p>
      */
     public static void main(String[] args) {
-        if(args.length < 2){
+        int idx = 0;
+        boolean allowMissingModules = false;
+        if (args.length > 0 && args[0].equals("--allow-missing-modules")) {
+            allowMissingModules = true;
+            idx++;
+        }
+        if(args.length < (2 + idx)){
             System.err.println("Invalid arguments.");
             System.err.println("Usage: \n");
-            System.err.println(Main.class.getName()+" moduleSpec mainJavaClassName args*");
+            System.err.println(Main.class.getName()+" [--allow-missing-modules] moduleSpec mainJavaClassName args*");
             System.exit(1);
         }
-        ModuleSpec moduleSpec = ModuleSpec.parse(args[0], Option.VERSION_REQUIRED);
+        ModuleSpec moduleSpec = ModuleSpec.parse(args[idx], Option.VERSION_REQUIRED);
         String version;
         if(moduleSpec.getName().equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
         else
             version = moduleSpec.getVersion();
-        String[] moduleArgs = Arrays.copyOfRange(args, 2, args.length);
-        runModule(moduleSpec.getName(), version, args[1], moduleArgs);
+        String[] moduleArgs = Arrays.copyOfRange(args, 2 + idx, args.length);
+        instance()
+            .allowMissingModules(allowMissingModules)
+            .run(moduleSpec.getName(), version, args[idx + 1], moduleArgs);
     }
 }
