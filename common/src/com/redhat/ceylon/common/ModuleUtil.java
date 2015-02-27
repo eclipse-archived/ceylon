@@ -71,4 +71,20 @@ public abstract class ModuleUtil {
         }
     }
 
+    /**
+     * Turns foo:bar into foo.bar
+     * Turns maven:foo:bar into foo.bar
+     */
+    public static String toCeylonModuleName(String name){
+        int firstColon = name.indexOf(':');
+        if(firstColon == -1)
+            return name;
+        // if we have more than one colon, we can start with "maven:"
+        if(name.indexOf(':', firstColon+1) != -1){
+            // remove the prefix
+            if(name.startsWith("maven:"))
+                name = name.substring("maven:".length());
+        }
+        return name.replace(':', '.');
+    }
 }
