@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -590,6 +591,7 @@ public class Main {
             version = null;
         else
             version = moduleSpec.getVersion();
-        runModule(moduleSpec.getName(), version, args[1]);
+        String[] moduleArgs = Arrays.copyOfRange(args, 2, args.length);
+        runModule(moduleSpec.getName(), version, args[1], moduleArgs);
     }
 }
