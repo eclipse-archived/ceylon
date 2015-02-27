@@ -28,9 +28,11 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -78,9 +80,14 @@ public abstract class LazyModuleManager extends ModuleManager {
         // if this is for a module we're compiling, or for an indirectly imported module, we need to check because the
         // module in question will be in the classpath
         if(moduleLoadedFromSource || forCompiledModule){
+            String standardisedModuleName = ModuleUtil.toCeylonModuleName(moduleName);
             // check for an already loaded module with the same name but different version
             for(Module loadedModule : getContext().getModules().getListOfModules()){
-                if(loadedModule.getNameAsString().equals(moduleName)
+                String loadedModuleName = loadedModule.getNameAsString();
+                String standardisedLoadedModuleName = ModuleUtil.toCeylonModuleName(loadedModuleName);
+                boolean sameModule = loadedModuleName.equals(moduleName);
+                boolean similarModule = standardisedLoadedModuleName.equals(standardisedModuleName);
+                if((sameModule || similarModule)
                         && !loadedModule.getVersion().equals(module.getVersion())
                         && getModelLoader().isModuleInClassPath(loadedModule)){
                     // abort
@@ -90,10 +97,13 @@ public abstract class LazyModuleManager extends ModuleManager {
                     // classpath (direct imports of compiled modules)
                     String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
                     String error = "source code imports two different versions of module '" + 
-                            module.getNameAsString() + "': "+
+                            moduleName + "': "+
                             "version \""+versions[0] + "\" and version \""+ versions[1] +
                             "\"";
-                    addErrorToModule(dependencyTree.getFirst(), error);
+                    if(sameModule)
+                        addErrorToModule(dependencyTree.getFirst(), error);
+                    else
+                        addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
                     return;
                 }
             }
