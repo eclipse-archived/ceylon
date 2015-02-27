@@ -200,7 +200,15 @@ public class ArtifactContext implements Serializable, ContentOptions {
         }
     }
 
+    public boolean isMaven(){
+        return name != null
+                && (name.startsWith("maven:")
+                        || name.indexOf(':') != -1);
+    }
+    
     public String getName() {
+        if(name != null && name.startsWith("maven:"))
+            return name.substring("maven:".length());
         return name;
     }
 
@@ -445,14 +453,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
         if(obj instanceof ArtifactContext == false)
             return false;
         ArtifactContext other = (ArtifactContext) obj;
-        return Objects.equals(name, other.name)
+        return Objects.equals(getName(), other.getName())
                 && Objects.equals(version, other.version);
     }
     
     @Override
     public int hashCode() {
         int hash = 17;
-        hash = 37 * hash + (name != null ? name.hashCode() : 0);
+        hash = 37 * hash + (getName() != null ? getName().hashCode() : 0);
         hash = 37 * hash + (version != null ? version.hashCode() : 0);
         return hash;
     }
