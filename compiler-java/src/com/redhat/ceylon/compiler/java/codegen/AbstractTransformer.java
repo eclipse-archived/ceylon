@@ -1611,8 +1611,10 @@ public abstract class AbstractTransformer implements Transformation {
     /** Do not resolve aliases, useful if we want a class literal pointing to the alias class itself. */
     static final int JT_CLASS_LITERAL = 1 << 14;
     
-    /** For use when generating the parameter of an overriding method */
-    static final int JT_REFINED = __JT_FULL_TYPE;
+    /** For use when generating a narrower type for a refinement, for example when the
+     * parameter of an overriding method is of type T<U|V> while the original was T<E>
+     */
+    static final int JT_NARROWED = __JT_FULL_TYPE;
 
     /**
      * This function is used solely for method return types and parameters 

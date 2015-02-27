@@ -425,7 +425,7 @@ public class MethodDefinitionBuilder
                 else if (CodegenUtil.isRaw(refinedParameter)) {
                     flags |= AbstractTransformer.JT_RAW;
                 } else {
-                    flags |= AbstractTransformer.JT_REFINED;
+                    flags |= AbstractTransformer.JT_NARROWED;
                 }
             }
         }
