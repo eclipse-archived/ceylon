@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.util;
+package com.redhat.ceylon.cmr.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

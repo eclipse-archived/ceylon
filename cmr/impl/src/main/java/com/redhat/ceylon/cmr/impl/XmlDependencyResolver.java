@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.util.PathFilterParser;
+import com.redhat.ceylon.cmr.api.PathFilterParser;
 
 /**
  * Read module info from module.xml.

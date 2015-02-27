@@ -52,7 +52,7 @@ import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.util.PathFilterParser;
+import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.common.log.Logger;
 
 /**

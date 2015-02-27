@@ -37,7 +37,7 @@ import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.util.PathFilterParser;
+import com.redhat.ceylon.cmr.api.PathFilterParser;
 
 /**
  * Abstract, use Jandex to read off Module info.

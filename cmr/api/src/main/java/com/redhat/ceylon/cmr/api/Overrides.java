@@ -36,7 +36,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
-import com.redhat.ceylon.cmr.util.PathFilterParser;
 
 /**
  * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
