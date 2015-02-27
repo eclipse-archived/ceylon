@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
@@ -134,6 +135,16 @@ public class JDKRepository extends AbstractRepository {
             newVersion.setVersion(JDK_VERSION);
             newVersion.setRemote(false);
             newVersion.setOrigin(JAVA_ORIGIN);
+        }
+
+        private boolean rightQueryType(Type type) {
+            if(type == Type.ALL)
+                return true;
+            for(String suffix : type.getSuffixes()){
+                if(suffix.equals(ArtifactContext.JAR))
+                    return true;
+            }
+            return false;
         }
 
         @Override
