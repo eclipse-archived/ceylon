@@ -18,6 +18,7 @@ import java.util.WeakHashMap;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -295,6 +296,20 @@ public class ModuleManager {
         }
     }
 
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addWarningToModule(Module module, Warning warningType, String error) {
+        Node node = moduleToNode.get(module);
+        if (node != null) {
+            node.addUsageWarning(warningType, error);
+            node.addError(new UsageWarning(node, error, ""));
+        }
+        else {
+            //might happen if the faulty module is a compiled module
+            System.err.println("This is a type checker bug, please report. " +
+                    "\nExpecting to add error on non present module node: " + module.toString() + ". Error " + error);
+        }
+    }
+
     //only used if we really don't know the version
     protected void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
@@ -343,6 +358,23 @@ public class ModuleManager {
     public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
         for(Module current : listOfModules) {
             if (equalsForModules(module, current, exactVersionMatch)) return current;
+        }
+        return null;
+    }
+
+    public boolean similarForModules(Module left, Module right) {
+        if (left == right) return true;
+        String leftName = ModuleUtil.toCeylonModuleName(left.getNameAsString());
+        String rightName = ModuleUtil.toCeylonModuleName(right.getNameAsString());
+        return leftName.equals(rightName);
+    }
+
+    /**
+     * This treats Maven and Ceylon modules as similar: com:foo and com.foo will match
+     */
+    public Module findSimilarModule(Module module, List<Module> listOfModules) {
+        for(Module current : listOfModules) {
+            if (similarForModules(module, current)) return current;
         }
         return null;
     }

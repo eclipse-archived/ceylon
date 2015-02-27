@@ -244,13 +244,19 @@ public class ModuleValidator {
     
     private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
         Module dupe = moduleManager.findModule(module, dependencies, false);
+        boolean isDupe = dupe != null;
+        if(dupe == null)
+            dupe = moduleManager.findSimilarModule(module, dependencies);
         if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
             StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency '");
             error.append(module.getNameAsString()).append("': ");
             String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
             error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
-            moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+            if(isDupe)
+                moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+            else // just possibly a dupe
+                moduleManager.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error.toString());
         }
         else {
             dependencies.add(module);
