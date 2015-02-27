@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -89,18 +90,22 @@ public class ModuleVisitor extends Visitor {
     }
 
     private static String getNameString(Tree.QuotedLiteral quoted) {
+        return getNameString(quoted, true);
+    }
+
+    private static String getNameString(Tree.QuotedLiteral quoted, boolean addErrorOnInvalidQuotes) {
         String nameString = quoted.getText();
         if (nameString.length()<2) {
             return "";
         }
         else {
-            if (nameString.charAt(0)=='\'') {
+            if (addErrorOnInvalidQuotes && nameString.charAt(0)=='\'') {
                 quoted.addError("module name should be double-quoted");
             }
             return nameString.substring(1, nameString.length()-1);
         }
     }
-    
+
     @Override
     public void visit(Tree.ModuleDescriptor that) {
         super.visit(that);
@@ -160,6 +165,13 @@ public class ModuleVisitor extends Visitor {
                         String mp = formatPath(ip.getIdentifiers());
                         if (!set.add(mp)) {
                             ip.addError("duplicate module import: '" + mp + "'");
+                        }
+                    }
+                    QuotedLiteral ql = im.getQuotedLiteral();
+                    if(ql != null){
+                        String mp = getNameString(ql, false);
+                        if (!set.add(mp)) {
+                            ql.addError("duplicate module import: '" + mp + "'");
                         }
                     }
                 }
