@@ -151,17 +151,23 @@ class DeclarationParser {
             throw parseError("Expecting a colon at start of package");
         }
         String packageName;
+        boolean expectColon = false;
         if (at(':')) {
             packageName = module.getName();
         } else if (at('.')) {
            packageName = packageName();
+           expectColon = true;
         } else {
             packageName = module.getName() + '.' + packageName();
+            expectColon = true;
         }
         Package package_ = makePackage(module, packageName);
         if (atEnd()) {
             return package_;
-        } 
+        } else if (expectColon
+                && !at(':')) {
+            throw parseError("Expecting a colon at end of package");
+        }
         return declaration(package_);
     }
 
