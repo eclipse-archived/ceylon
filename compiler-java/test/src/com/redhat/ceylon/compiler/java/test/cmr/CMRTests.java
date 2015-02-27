@@ -58,6 +58,7 @@ import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaCompiler;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
@@ -730,6 +731,39 @@ public class CMRTests extends CompilerTests {
                 "modules/bug1104/module.ceylon", "modules/bug1104/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
     }
+
+    @Test
+    public void testMdlCeylonAetherDuplicateImports() throws IOException{
+        // Try to compile the ceylon module
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-verbose:cmr"), 
+                collector, 
+                "modules/ceylonAetherDuplicateImports/module.ceylon", "modules/ceylonAetherDuplicateImports/foo.ceylon");
+        assertEquals(Boolean.FALSE, ceylonTask.call());
+        compareErrors(collector.get(Diagnostic.Kind.ERROR), 
+                new CompilerError(22, "duplicate module import: 'org.apache.httpcomponents.httpclient'"),
+                new CompilerError(24, "duplicate module import: 'org.apache.httpcomponents:httpclient'")
+        );
+    }
+
+    @Test
+    public void testMdlCeylonAetherDependencyConflict() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/ceylonAetherConflict2/module.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+
+        ErrorCollector collector = new ErrorCollector();
+        ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-verbose:cmr"), 
+                collector, 
+                "modules/ceylonAetherConflict/module.ceylon", "modules/ceylonAetherConflict/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        compareErrors(collector.get(Diagnostic.Kind.WARNING), 
+                new CompilerError(Kind.WARNING, null, 20, "source code imports two different versions of module 'org.apache.httpcomponents:httpclient': version \"4.3.2\" and version \"4.3.3\""),
+                new CompilerError(Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of dependency 'org.apache.httpcomponents:httpclient': version '4.3.2' and version '4.3.3'")
+        );
+}
 
     @Test
     public void testMdlSourceArchive() throws IOException{
