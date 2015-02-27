@@ -176,10 +176,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .userRepos(getRepositoryAsStrings())
                 .offline(offline)
                 .timeout((timeout >= 0) ? timeout * 1000 : -1)
+                .isJDKIncluded(includeJDK())
                 .logger(log);
         return rmb;
     }
     
+    protected boolean includeJDK() {
+        return false;
+    }
+
     protected synchronized RepositoryManager getRepositoryManager() {
         if (rm == null) {
             CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
