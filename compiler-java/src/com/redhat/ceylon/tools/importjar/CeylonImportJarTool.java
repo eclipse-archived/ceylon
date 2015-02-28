@@ -303,10 +303,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        LegacyImporter importer = createImporter();
+        LegacyImporter importer = createImporter().moduleDescriptor(applyCwd(descriptor));
         if (!force || updateDescriptor) {
             try {
-                importer.loadModuleDescriptor(applyCwd(descriptor));
+                importer.loadModuleDescriptor();
             } catch (ImportJarException x) {
                 throw x;
             } catch (Exception x) {
