@@ -497,7 +497,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             Class clazz = (Class) scope;
             if (!c.isShared() && 
                     Objects.equals(clazz.getName(), c.getName())) {
-                that.addError("default constructor must be shared");
+                that.addError("default constructor must be shared", 401);
             }
             //constructor of sealed class implicitly inherits sealed
             if (clazz.isSealed()) {
