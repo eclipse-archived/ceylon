@@ -254,7 +254,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
 
             @Override
             public void packageName(String pkg) throws IOException {
-                append("    ").append(pkg);
+                append("    ").append(pkg).newline();
             }
 
             @Override
