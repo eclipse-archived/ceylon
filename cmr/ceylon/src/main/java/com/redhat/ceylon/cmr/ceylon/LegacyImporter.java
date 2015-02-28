@@ -485,7 +485,7 @@ public class LegacyImporter {
                 throw new FileNotFoundException("Could not find " + jarFile);
             }
             checkedTypes = new HashSet<>();
-            externalClasses = new HashSet<>();
+            externalClasses = new TreeSet<>();
             expectedDependencies = new HashSet<>();
             jarClassNames = JarUtils.gatherClassnamesFromJar(jarFile);
             try (URLClassLoader cl = new URLClassLoader(new URL[] { jarFile.toURI().toURL() })) {
