@@ -58,6 +58,7 @@ public class LegacyImporter {
     private Set<String> externalClasses;
     private Set<Type> checkedTypes;
     private Set<ModuleDependencyInfo> expectedDependencies;
+    private boolean descriptorLoaded;
     private boolean hasProblems;
     private boolean hasErrors;
     
@@ -244,6 +245,11 @@ public class LegacyImporter {
         return hasErrors;
     }
 
+    public LegacyImporter moduleDescriptor(File descriptorFile) {
+        this.descriptorFile = descriptorFile;
+        return this;
+    }
+    
     /**
      * The descriptor to use, this can either be a <code>module.xml</code> or
      * a <code>module.properties</code> file.
@@ -254,20 +260,19 @@ public class LegacyImporter {
      * @param descriptorFile
      * @throws Exception
      */
-    public void loadModuleDescriptor(File descriptorFile) throws Exception {
-        this.descriptorFile = descriptorFile;
-        
-        gatherExternalClasses();
-        
-        if (descriptorFile != null) {
+    public LegacyImporter loadModuleDescriptor() throws Exception {
+        if (descriptorFile != null && !descriptorLoaded) {
+            gatherExternalClasses();
             if (descriptorFile.exists()) {
                 if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
                     checkModuleXml(descriptorFile);
                 } else if(descriptorFile.toString().toLowerCase().endsWith(".properties")) {
                     checkModuleProperties(descriptorFile);
                 }
+                descriptorLoaded = true;
             }
         }
+        return this;
     }
     
     /**
@@ -284,7 +289,7 @@ public class LegacyImporter {
      * @param makeSuggestions
      * @throws Exception
      */
-    public void listPackages(boolean makeSuggestions) throws Exception {
+    public LegacyImporter listPackages(boolean makeSuggestions) throws Exception {
         gatherExternalClasses();
         
         if (!externalClasses.isEmpty()) {
@@ -322,6 +327,8 @@ public class LegacyImporter {
                 feedback.afterClasses();
             }
         }
+        
+        return this;
     }
     
     /**
@@ -332,7 +339,7 @@ public class LegacyImporter {
      * <code>className()</code>.
      * @throws Exception Any exception that can be thrown by the feedback handler
      */
-    public void listClasses() throws Exception {
+    public LegacyImporter listClasses() throws Exception {
         gatherExternalClasses();
         
         if (!externalClasses.isEmpty()) {
@@ -343,13 +350,15 @@ public class LegacyImporter {
             hasErrors = true;
             feedback.afterClasses();
         }
+        
+        return this;
     }
     
     /**
      * Updates (or creates) the module descriptor with the expected dependencies
      * @throws IOException Any exception that occurred during the update
      */
-    public void updateModuleDescriptor() throws IOException {
+    public LegacyImporter updateModuleDescriptor() throws IOException {
         if (hasProblems) {
             if (descriptorFile != null) {
                 if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
@@ -359,6 +368,7 @@ public class LegacyImporter {
                 }
             }
         }
+        return this;
     }
 
     /**
@@ -368,7 +378,7 @@ public class LegacyImporter {
      * @param moduleName The name for the published module
      * @param moduleVersion The version for the published module
      */
-    public void publish(String moduleName, String moduleVersion) {
+    public LegacyImporter publish(String moduleName, String moduleVersion) {
         ArtifactContext context = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JAR);
         context.setForceOperation(true);
         outRepoman.putArtifact(context, jarFile);
@@ -385,6 +395,8 @@ public class LegacyImporter {
             descriptorContext.setForceOperation(true);
             outRepoman.putArtifact(descriptorContext, descriptorFile);
         }
+        
+        return this;
     }
     
     // Check the properties descriptor file for problems and at the same time
