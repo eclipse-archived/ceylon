@@ -841,18 +841,26 @@ public class RefinementVisitor extends Visitor {
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
-        final ProducedReference rm = getRefinedMember(sm, c);
+        Declaration refined = 
+                ((ClassOrInterface) sm.getContainer())
+                        .getRefinedMember(sm.getName(), 
+                                getSignature(sm), false);
+        Method root = refined instanceof Method ? 
+                (Method) refined : sm;
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
                     message(sm));
         }
+        final ProducedReference rm = getRefinedMember(sm,c);
         Method m = new Method();
         m.setName(sm.getName());
         List<Tree.ParameterList> tpls;
         Tree.Term me = that.getBaseMemberExpression();
         if (me instanceof Tree.ParameterizedExpression) {
-            tpls = ((Tree.ParameterizedExpression) me).getParameterLists();
+            Tree.ParameterizedExpression pe = 
+                    (Tree.ParameterizedExpression) me;
+            tpls = pe.getParameterLists();
         }
         else {
             tpls = Collections.emptyList();
@@ -874,7 +882,7 @@ public class RefinementVisitor extends Visitor {
                     v.setInitializerParameter(vp);
                     vp.setSequenced(p.isSequenced());
                     vp.setAtLeastOne(p.isAtLeastOne());
-                    vp.setDefaulted(p.isDefaulted());
+//                    vp.setDefaulted(p.isDefaulted());
                     vp.setName(p.getName());
                     v.setName(p.getName());
                     vp.setDeclaration(m);
@@ -883,13 +891,16 @@ public class RefinementVisitor extends Visitor {
                     l.getParameters().add(vp);
                     v.setType(new LazyProducedType(that.getUnit()) {
                         @Override
-                        public Map<TypeParameter, ProducedType> initTypeArguments() {
-                            return rm.getTypedParameter(p).getFullType()
+                        public Map<TypeParameter,ProducedType> 
+                        initTypeArguments() {
+                            return rm.getTypedParameter(p)
+                                    .getFullType()
                                     .getTypeArguments();
                         }
                         @Override
                         public TypeDeclaration initDeclaration() {
-                            return rm.getTypedParameter(p).getFullType()
+                            return rm.getTypedParameter(p)
+                                    .getFullType()
                                     .getDeclaration();
                         }
                     });
@@ -913,7 +924,7 @@ public class RefinementVisitor extends Visitor {
         m.setActual(true);
         m.getAnnotations().add(new Annotation("shared"));
         m.getAnnotations().add(new Annotation("actual"));
-        m.setRefinedDeclaration(sm.getRefinedDeclaration()); //Note: this is not the real root, so we set it again in ExpressionVisitor
+        m.setRefinedDeclaration(root);
         m.setUnit(that.getUnit());
         m.setContainer(c);
         m.setShortcutRefinement(true);
@@ -929,7 +940,8 @@ public class RefinementVisitor extends Visitor {
         }
         m.setType(new LazyProducedType(that.getUnit()) {
             @Override
-            public Map<TypeParameter, ProducedType> initTypeArguments() {
+            public Map<TypeParameter,ProducedType> 
+            initTypeArguments() {
                 return rm.getType().getTypeArguments();
             }
             @Override
@@ -937,6 +949,7 @@ public class RefinementVisitor extends Visitor {
                 return rm.getType().getDeclaration();
             }
         });
+        inheritDefaultedArguments(m);
     }
     
 }

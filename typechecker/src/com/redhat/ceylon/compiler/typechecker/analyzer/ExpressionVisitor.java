@@ -1281,8 +1281,9 @@ public class ExpressionVisitor extends Visitor {
         Method method = (Method) that.getDeclaration();
         ClassOrInterface ci = 
                 (ClassOrInterface) method.getContainer();
-        Declaration root = refinedMethod.getRefinedDeclaration();
-        method.setRefinedDeclaration(root);
+        Declaration root = method.getRefinedDeclaration();
+//        Declaration root = refinedMethod.getRefinedDeclaration();
+//        method.setRefinedDeclaration(root);
         List<Declaration> interveningRefinements = 
                 getInterveningRefinements(method.getName(), 
                         getSignature(method), root, ci, 
@@ -1299,8 +1300,9 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.ParameterList> parameterLists;
             Tree.Term me = that.getBaseMemberExpression();
             if (me instanceof Tree.ParameterizedExpression) {
-                parameterLists = 
-                        ((Tree.ParameterizedExpression) me).getParameterLists();
+                Tree.ParameterizedExpression pe = 
+                        (Tree.ParameterizedExpression) me;
+                parameterLists = pe.getParameterLists();
             }
             else {
                 parameterLists = emptyList();
