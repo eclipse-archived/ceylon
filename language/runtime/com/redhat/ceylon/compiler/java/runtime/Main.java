@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
  */
 public class Main {
     private boolean allowMissingModules;
+    private boolean allowMissingSystem;
     
     private ClassPath classPath;
     private Set<ClassPath.Module> visited;
@@ -87,8 +88,30 @@ public class Main {
     private Main() {
     }
     
+    /**
+     * When enabled no exceptions will be thrown for not encountering
+     * proper module dependency information for the module to be loaded
+     * or any of its dependencies. The system modules still need to be
+     * present and have proper dependency information.
+     * @param allowMissingModules If true no exceptions will be thrown
+     * for missing module dependency information
+     * @return This object for chaining
+     */
     public Main allowMissingModules(boolean allowMissingModules) {
         this.allowMissingModules = allowMissingModules;
+        return this;
+    }
+    
+    /**
+     * When enabled no exceptions will be thrown for not encountering
+     * proper module dependency information for the system modules or
+     * any of their dependencies.
+     * @param allowMissingModules If true no exceptions will be thrown
+     * for missing module dependency information
+     * @return This object for chaining
+     */
+    public Main allowMissingSystem(boolean allowMissingSystem) {
+        this.allowMissingSystem = allowMissingSystem;
         return this;
     }
     
@@ -736,11 +759,11 @@ public class Main {
         if (classPath == null) {
             classPath = new ClassPath();
             visited = new HashSet<ClassPath.Module>();
-            registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, false);
-            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, false);
-            registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, false);
-            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, false);
-            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, false);
+            registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
+            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
+            registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
+            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
+            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
         }
         if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
