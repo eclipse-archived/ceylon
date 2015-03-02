@@ -2,14 +2,19 @@ package com.redhat.ceylon.tools.info;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -402,7 +407,8 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
         if (!version.getDependencies().isEmpty()) {
             msg("module.dependencies", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
-            recurseDependencies(version, 0);
+            Map<String, SortedSet<String>> names = new HashMap<>();
+            recurseDependencies(version, names, 0);
         }
     }
 
@@ -500,23 +506,37 @@ public class CeylonInfoTool extends RepoUsingTool {
         return this;
     }
     
-    private void recurseDependencies(ModuleVersionDetails version, final int depth) throws IOException {
+    private void recurseDependencies(ModuleVersionDetails version, Map<String, SortedSet<String>> names, final int depth) throws IOException {
         for (ModuleDependencyInfo dep : version.getDependencies()) {
-            dependency(dep, depth+1);
+            dependency(dep, names, depth+1);
         }
     }
     
-    private void dependency(ModuleDependencyInfo dep, final int depth) throws IOException {
+    private void dependency(ModuleDependencyInfo dep, Map<String, SortedSet<String>> names, final int depth) throws IOException {
         for (int ii = 0; ii < depth; ii++) {
             append("  ");
         }
         append(dep);
+        SortedSet<String> seenVersions = names.get(dep.getName());
+        boolean recurse = this.depth == -1 || depth < this.depth;
+        if(seenVersions != null){
+            // already seen
+            if(seenVersions.size() == 1 && seenVersions.first().equals(dep.getVersion()))
+                append(" (already imported)");
+            else
+                append(" (already imported other version)");
+            recurse = false;
+        }else{
+            seenVersions = new TreeSet<>(VersionComparator.INSTANCE);
+            names.put(dep.getName(), seenVersions);
+        }
+        seenVersions.add(dep.getVersion());
         newline();
         
-        if (this.depth == -1 || depth < this.depth) {
+        if (recurse) {
             Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, binaryMajor, binaryMinor);
             if (!versions.isEmpty()) {
-                recurseDependencies(versions.iterator().next(), depth + 1);
+                recurseDependencies(versions.iterator().next(), names, depth + 1);
             }
         }
     }
