@@ -2047,6 +2047,7 @@ shared void run() {
     sandbox(bugC1244);
     sandbox(bugC1523);
     sandbox(langbug539);
+    sandbox(bugJ505);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
