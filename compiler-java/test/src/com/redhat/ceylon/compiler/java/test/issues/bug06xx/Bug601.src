@@ -93,15 +93,15 @@ final class bug601_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                .ceylon.language.Iterable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                     
                     @.java.lang.Override
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
                                 
                                 @.java.lang.Override
                                 protected final .java.lang.Object $evaluate$(int $index$) {
@@ -144,21 +144,21 @@ final class bug601_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                     
                     @.java.lang.Override
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
                                 
                                 @.java.lang.Override
                                 protected final .java.lang.Object $evaluate$(int $index$) {
                                     switch ($index$) {
                                     case 0: 
-                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                                             
                                             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                                                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
