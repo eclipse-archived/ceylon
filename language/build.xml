@@ -557,6 +557,7 @@
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
+                <include name="**/*.java"/>
                 <include name="**/*.txt"/>
             </files>
             <rep url="aether"/>
