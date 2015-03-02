@@ -109,7 +109,7 @@ public class JVMModuleUtil {
      */
     public static String quoteJavaKeywords(String qualifiedName){
         // try not to work for nothing if we don't have to
-        if(needsJavaKeywordsQuoting(qualifiedName))
+        if(qualifiedName != null && needsJavaKeywordsQuoting(qualifiedName))
             return join(".", quoteJavaKeywords(qualifiedName.split("\\.")));
         else
             return qualifiedName;
