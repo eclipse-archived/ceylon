@@ -40,6 +40,7 @@ import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -679,7 +680,7 @@ public abstract class AbstractRepository implements Repository {
     private SortedSet<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
         // We're actually looking for a module containing a specific member
         SortedSet<String> found = new TreeSet<String>();
-        String name = query.getMemberName();
+        String name = JVMModuleUtil.quoteJavaKeywords(query.getMemberName());
         boolean matchPackage = query.isMemberSearchPackageOnly();
         if (query.isMemberSearchExact()) {
             for (String member : mvd.getMembers()) {
