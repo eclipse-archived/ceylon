@@ -121,10 +121,10 @@ public class MetamodelHelper {
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         if (td instanceof Class) {
-            if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
-                gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
-            } else {
+            if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
+            } else {
+                gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
             }
             //Tuple is a special case, otherwise gets gen'd as {t:'T'...
             if (that.getUnit().getTupleDeclaration().equals(td)) {
