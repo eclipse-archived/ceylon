@@ -50,8 +50,9 @@ class Union() {
     }
     
     BadU|BadV buv = BadU();
+    BadContainer<out Anything> buvsup = buv;
     
-    @error String buvs = buv.hello;
+    String buvs = buv.hello;
     @error Container<String> bc = buv;
     
     BadContainer<Nothing> bcb = BadV();
@@ -318,7 +319,7 @@ class Union1() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = InvariantSome<String>();
-    @error value ival = iall.val;
+    @type:"Union1.GenericAll<String|Integer>" value ival = iall.val;
     List<InvariantSome<String>>|List<InvariantNone<Integer>> ialls = [InvariantSome<String>()];
     @type:"Null|Union1.InvariantSome<String>|Union1.InvariantNone<Integer>" value ifirstAll = ialls.first;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
@@ -361,7 +362,7 @@ class Union2() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = nothing;
-    @error value ival = iall.val;
+    @type:"Union2.InvariantAll<out String|Integer>" value ival = iall.val;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
     Nothing ing1 = iall2;
     InvariantAll<String>&InvariantAll<Integer> iall5 = nothing;

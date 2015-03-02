@@ -1183,11 +1183,11 @@ public class ProducedType extends ProducedReference {
         Map<TypeParameter,SiteVariance> variances = 
                 new HashMap<TypeParameter,SiteVariance>();
         for (TypeParameter tp: typeParameters) {
-            List<ProducedType> list2 = 
-                    new ArrayList<ProducedType>(caseTypes.size());
             ProducedType result;
             Unit unit = getDeclaration().getUnit();
-            if (tp.isContravariant()) { 
+            if (tp.isCovariant()) {
+                List<ProducedType> union = 
+                        new ArrayList<ProducedType>(caseTypes.size());
                 for (ProducedType pt: caseTypes) {
                     if (pt==null) {
                         return null;
@@ -1197,17 +1197,45 @@ public class ProducedType extends ProducedReference {
                     if (st==null) {
                         return null;
                     }
-                    addToIntersection(list2, 
+                    addToUnion(union, 
+                            st.getTypeArguments().get(tp));
+                }
+                UnionType ut = 
+                        new UnionType(unit);
+                ut.setCaseTypes(union);
+                result = ut.getType();
+            }
+            else if (tp.isContravariant()) { 
+                List<ProducedType> intersection = 
+                        new ArrayList<ProducedType>(caseTypes.size());
+                for (ProducedType pt: caseTypes) {
+                    if (pt==null) {
+                        return null;
+                    }
+                    ProducedType st = 
+                            pt.getSupertypeInternal(dec);
+                    if (st==null) {
+                        return null;
+                    }
+                    addToIntersection(intersection, 
                             st.getTypeArguments().get(tp), 
                             unit, 
                             false);
                 }
                 IntersectionType it = 
                         new IntersectionType(unit);
-                it.setSatisfiedTypes(list2);
+                it.setSatisfiedTypes(intersection);
                 result = it.canonicalize(false).getType();
             }
             else {
+                //invariant is harder, need to account for
+                //use site variances!
+                List<ProducedType> union = 
+                        new ArrayList<ProducedType>(caseTypes.size());
+                List<ProducedType> intersection = 
+                        new ArrayList<ProducedType>(caseTypes.size());
+                boolean covariant = false;
+                boolean contravariant = false;
                 for (ProducedType pt: caseTypes) {
                     if (pt==null) {
                         return null;
@@ -1217,21 +1245,69 @@ public class ProducedType extends ProducedReference {
                     if (st==null) {
                         return null;
                     }
-                    addToUnion(list2, 
-                            st.getTypeArguments().get(tp));
-                    if (tp.isInvariant()) {
-                        if (st.isCovariant(tp)) {
-                            variances.put(tp, OUT);
-                        }
-                        //TODO: handle contravariance!
-                        //      we need to be forming an
-                        //      intersection in that case
+                    if (st.isCovariant(tp)) {
+                        covariant = true;
+                        addToUnion(union, 
+                                st.getTypeArguments().get(tp));
+                    } 
+                    else if (st.isContravariant(tp)) {
+                        contravariant = true;
+                        addToIntersection(intersection, 
+                                st.getTypeArguments().get(tp), 
+                                unit, 
+                                false);
+                    }
+                    else {
+                        addToUnion(union, 
+                                st.getTypeArguments().get(tp));
+                        addToIntersection(intersection, 
+                                st.getTypeArguments().get(tp), 
+                                unit, 
+                                false);
                     }
                 }
                 UnionType ut = 
                         new UnionType(unit);
-                ut.setCaseTypes(list2);
-                result = ut.getType();
+                ut.setCaseTypes(union);
+                ProducedType utt = ut.getType();
+                IntersectionType it = 
+                        new IntersectionType(unit);
+                it.setSatisfiedTypes(intersection);
+                ProducedType itt = it.getType();
+                if (!covariant && !contravariant) {
+                    if (utt.isExactly(itt)) {
+                        result = utt; //invariant!
+                    }
+                    else {
+                        //NOTE: big asymmetry here that
+                        //      privileges covariance over
+                        //      contravariance. More elegant
+                        //      would be to have double
+                        //      bounded wildcards like
+                        //      "in ITT out UTT"
+                        result = utt;
+                        variances.put(tp, OUT);
+                    }
+                }
+                else if (covariant && !contravariant) {
+                    result = utt;
+                    variances.put(tp, OUT);
+                }
+                else if (contravariant && !covariant) {
+                    result = itt;
+                    variances.put(tp, IN);
+                }
+                else {
+                    //we have mixed covariant and invariant
+                    //instantiations - that's only OK if we
+                    //have something of form
+                    ProducedType upperBound = 
+                            intersectionOfSupertypes(tp);
+                    result = upperBound;
+                    variances.put(tp, OUT);
+                    //Note: we could have used "in Nothing"
+                    //      here instead
+                }
             }
             args.add(result);
         }
