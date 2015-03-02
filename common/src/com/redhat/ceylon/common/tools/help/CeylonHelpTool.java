@@ -205,12 +205,12 @@ public class CeylonHelpTool implements Tool {
         if(tool.getName() != null && !tool.getName().isEmpty())
             toolDoc += "-"+tool.getName();
         toolDoc += ".html";
-        String docHome = ceylonHome+"/doc/en/toolset/";
+        File docHome = new File(ceylonHome, "doc/en/toolset/");
         File toolDocFile = new File(docHome, toolDoc);
         if(toolDocFile.exists() && toolDocFile.isFile()){
             try {
                 Desktop.getDesktop().browse(toolDocFile.toURI());
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new ToolUsageError("Could not open browser for uri '"+toolDocFile.toURI()+"'. Please invoke with the --no-pager command-line option.");
             }
             return true;
