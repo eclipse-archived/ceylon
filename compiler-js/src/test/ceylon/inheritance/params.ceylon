@@ -15,6 +15,34 @@ class SubDef1(String name) extends WithDefaulted1<String>(name) {}
 class SubDef2(String n) extends WithDefaulted2(n) {}
 class SubDef3(String n) extends WithDefaulted2(n,6,6,6) {}
 
+class Issue504() satisfies Issue504_5 {
+    shared actual Integer m1(Integer i) => i*2;
+    shared actual Integer m2(Integer i) {
+        return i*2;
+    }
+}
+
+interface Issue504_5 satisfies Issue504_4 {
+    shared actual formal Integer m1(Integer i);
+    shared actual formal Integer m2(Integer i);
+}
+interface Issue504_3 satisfies Issue504_2 {
+    shared actual formal Integer m1(Integer i);
+    shared actual formal Integer m2(Integer i);
+}
+interface Issue504_1 {
+    shared formal void m1(Integer i=1);
+    shared formal void m2(Integer i=2);
+}
+interface Issue504_2 satisfies Issue504_1 {
+    shared actual formal Integer m1(Integer i);
+    shared actual formal Integer m2(Integer i);
+}
+interface Issue504_4 satisfies Issue504_3 {
+    shared actual formal Integer m1(Integer i);
+    shared actual formal Integer m2(Integer i);
+}
+
 void testDefaulted() {
   WithDefaulted1<Object> wd1 = WithDefaulted1(1);
   check(wd1.a == "A", "WithDefaulted1.a [1]");
@@ -28,4 +56,6 @@ void testDefaulted() {
   check(SubDef1("U").b=="B", "SubDef2.a [9]");
   check(SubDef2("C").count==0, "SubDef2.count [10]");
   check(SubDef3("K").count==3, "SubDef3.count [11]");
+  check(Issue504().m1() == 2, "#504.1");
+  check(Issue504().m2() == 4, "#504.2");
 }
