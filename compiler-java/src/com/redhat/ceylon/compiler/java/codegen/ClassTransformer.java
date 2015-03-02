@@ -3093,7 +3093,8 @@ public class ClassTransformer extends AbstractTransformer {
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, decl.getDeclarationModel());
-        if(!forCompanion)
+        if(!decl.getDeclarationModel().isInterfaceMember()
+                || (decl.getDeclarationModel().isShared() ^ forCompanion))
             getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, decl));
         else
             getter.ignoreAnnotations();
