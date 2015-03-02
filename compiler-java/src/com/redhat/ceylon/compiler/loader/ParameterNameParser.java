@@ -147,6 +147,7 @@ class ParameterNameParser {
         p.setAtLeastOne(atLeastOne);
         p.setDeclaredAnything(declaredVoid);
         p.setModel(result);
+        result.setInitializerParameter(p);
         container.addMember(result);
         return p;
     }

@@ -3119,6 +3119,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 v.setContainer(method);
                 v.setScope(method);
                 p.setModel(v);
+                v.setInitializerParameter(p);
                 pl.getParameters().add(p);
                 method.addMember(v);
             }
