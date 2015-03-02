@@ -746,10 +746,10 @@ public abstract class TypeDescriptor {
                 TypeDescriptor[] extra = ((Composite)td).members;
                 TypeDescriptor[] n = new TypeDescriptor[iterating.length -1 + extra.length];
                 System.arraycopy(iterating, 0, n, 0, ii);
+                System.arraycopy(extra, 0, n, ii, extra.length);
                 if (ii + 1 < iterating.length) {
-                    System.arraycopy(iterating, ii+1, n, ii, iterating.length-ii-1);
+                    System.arraycopy(iterating, ii+1, n, ii+extra.length, iterating.length-ii-1);
                 }
-                System.arraycopy(extra, 0, n, iterating.length-1, extra.length);
                 iterating = n;
             }
         }
