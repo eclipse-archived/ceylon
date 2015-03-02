@@ -76,6 +76,9 @@ interface TestShortLongDocs {
   shared void d() {}
 }
 
+"Issue 506"
+object issue506{}
+
 //annotest1("should be two")
 annotest2{count=5;}
 shared void test() {
@@ -153,5 +156,7 @@ shared void test() {
       throw e;
     }
   }
+  check(!annotations(`DocAnnotation`, `class issue506`) exists, "#506.1 (anonymous class shouldn't have annotations)");
+  check(annotations(`DocAnnotation`, `value issue506`) exists, "#506.2 (value should have annotations)");
   results();
 }
