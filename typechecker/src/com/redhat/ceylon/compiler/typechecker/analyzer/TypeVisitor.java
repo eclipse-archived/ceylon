@@ -81,6 +81,11 @@ public class TypeVisitor extends Visitor {
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
+    public TypeVisitor() {}
+    public TypeVisitor(Unit unit) {
+        this.unit = unit;
+    }
+    
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         super.visit(that);

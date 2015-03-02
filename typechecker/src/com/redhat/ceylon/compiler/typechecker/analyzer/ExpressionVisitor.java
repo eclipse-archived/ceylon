@@ -139,6 +139,12 @@ public class ExpressionVisitor extends Visitor {
     
     private Unit unit;
     
+    public ExpressionVisitor() {}
+    
+    public ExpressionVisitor(Unit unit) {
+        this.unit = unit;
+    }
+    
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         super.visit(that);
