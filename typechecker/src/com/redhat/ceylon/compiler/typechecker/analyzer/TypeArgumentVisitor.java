@@ -109,11 +109,12 @@ public class TypeArgumentVisitor extends Visitor {
     private ClassOrInterface constructorClass;
     
     @Override public void visit(Tree.Constructor that) {
+        ClassOrInterface occ = constructorClass;
         constructorClass = 
                 that.getDeclarationModel()
                     .getExtendedTypeDeclaration();
         super.visit(that);
-        constructorClass = null;
+        constructorClass = occ;
     }
     
 //    @Override public void visit(Tree.FunctionArgument that) {}
