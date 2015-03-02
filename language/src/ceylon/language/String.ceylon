@@ -77,8 +77,16 @@ shared native final class String(characters)
      
      The flags [[discardSeparators]] and [[groupSeparators]]
      determine how separator characters should occur in the
-     resulting stream."
-    shared native {String*} split(
+     resulting stream.
+     
+     Note that for the case of the empty string, `split()` 
+     always produces a stream containing a single empty 
+     token. For example:
+     
+         \"\".split('/'.equals)
+     
+     evaluates to the nonempty stream `{ \"\" }`."
+    shared native {String+} split(
             "A predicate that determines if a character is a
              separator characters at which to split. Default 
              to split at any 
