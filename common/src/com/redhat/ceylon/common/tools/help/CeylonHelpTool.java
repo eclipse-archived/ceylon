@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.common.tools.help;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -207,12 +208,10 @@ public class CeylonHelpTool implements Tool {
         String docHome = ceylonHome+"/doc/en/toolset/";
         File toolDocFile = new File(docHome, toolDoc);
         if(toolDocFile.exists() && toolDocFile.isFile()){
-            String uri = toolDocFile.toURI().toString();
             try {
-                // we should not wait for that process, though and just exit while the browser keeps running
-                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", uri});
+                Desktop.getDesktop().browse(toolDocFile.toURI());
             } catch (IOException e) {
-                throw new ToolUsageError("Could not open browser for uri '"+uri+"'. Please invoke with the --no-pager command-line option.");
+                throw new ToolUsageError("Could not open browser for uri '"+toolDocFile.toURI()+"'. Please invoke with the --no-pager command-line option.");
             }
             return true;
         }else
