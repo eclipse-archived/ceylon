@@ -513,7 +513,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         append(dep);
         newline();
         
-        if (depth < this.depth) {
+        if (this.depth == -1 || depth < this.depth) {
             Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, binaryMajor, binaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), depth + 1);
