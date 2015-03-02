@@ -233,3 +233,11 @@ void testRefs<T>() {
     @type:"InheritsAbstractWithConstructor2" 
     value new2 = InheritsAbstractWithConstructor2.Constructor();
 }
+
+shared class C<out X> {
+    shared new C({X*} items) {}
+    shared class B<out Y> {
+        shared new B(@error [X*] items) {}
+        shared new Other([Y*] items) {}
+    }
+}

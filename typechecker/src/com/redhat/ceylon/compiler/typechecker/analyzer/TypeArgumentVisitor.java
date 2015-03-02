@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -34,7 +35,8 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = dec.getDeclaration();
             flip();
             if (that.getSatisfiedTypes()!=null) {
-                for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
+                for (Tree.Type type: 
+                        that.getSatisfiedTypes().getTypes()) {
                     check(type, false, null);
                 }
             }
@@ -53,7 +55,9 @@ public class TypeArgumentVisitor extends Visitor {
         	flip();
             boolean topLevel = parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
-            	parameterizedDeclaration = ((MethodOrValue) dec).getInitializerParameter().getDeclaration();
+            	parameterizedDeclaration = 
+            	        ((MethodOrValue) dec).getInitializerParameter()
+            	                .getDeclaration();
             }
 			check(that.getType(), false, parameterizedDeclaration);
 			super.visit(that);
@@ -67,7 +71,8 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
-            for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
                 check(type, false, null);
             }
         }
@@ -101,7 +106,17 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.FunctionArgument that) {}
+    private ClassOrInterface constructorClass;
+    
+    @Override public void visit(Tree.Constructor that) {
+        constructorClass = 
+                that.getDeclarationModel()
+                    .getExtendedTypeDeclaration();
+        super.visit(that);
+        constructorClass = null;
+    }
+    
+//    @Override public void visit(Tree.FunctionArgument that) {}
 
     private void check(Tree.Type that, boolean variable, Declaration d) {
         if (that!=null) {
@@ -109,11 +124,15 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
 
-    private void check(ProducedType type, boolean variable, Declaration d, Node that) {
-        if (d==null || d.isShared() || d.getOtherInstanceAccess()) {
+    private void check(ProducedType type, boolean variable, Declaration d, 
+            Node that) {
+        if (d==null || d.isShared() || 
+                d.getOtherInstanceAccess()) {
             if (type!=null) {
-                List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
-                        contravariant && !variable, parameterizedDeclaration);
+                List<TypeParameter> errors = 
+                        type.checkVariance(!contravariant && !variable, 
+                                contravariant && !variable, 
+                                parameterizedDeclaration);
                 displayErrors(that, type, errors);
             }
         }
@@ -122,21 +141,25 @@ public class TypeArgumentVisitor extends Visitor {
     private void displayErrors(Node that, ProducedType type,
             List<TypeParameter> errors) {
         for (TypeParameter tp: errors) {
-            String var; String loc;
-            if (tp.isContravariant()) {
-                var = "contravariant (in)";
-                loc = "covariant or invariant";
+            if (constructorClass==null || !
+                    constructorClass.getTypeParameters()
+                            .contains(tp)) {
+                String var; String loc;
+                if (tp.isContravariant()) {
+                    var = "contravariant (in)";
+                    loc = "covariant or invariant";
+                }
+                else if (tp.isCovariant()) {
+                    var = "covariant (out)";
+                    loc = "contravariant or invariant";
+                }
+                else {
+                    throw new RuntimeException();
+                }
+                that.addError(var + " type parameter '" + tp.getName() + 
+                        "' appears in " + loc + " location in type: '" + 
+                        type.getProducedTypeName(that.getUnit()) + "'");
             }
-            else if (tp.isCovariant()) {
-                var = "covariant (out)";
-                loc = "contravariant or invariant";
-            }
-            else {
-                throw new RuntimeException();
-            }
-            that.addError(var + " type parameter '" + tp.getName() + 
-                    "' appears in " + loc + " location in type: '" + 
-                    type.getProducedTypeName(that.getUnit()) + "'");
         }
     }
     
