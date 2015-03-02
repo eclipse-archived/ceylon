@@ -22,14 +22,16 @@ function type$meta(x,$$targs$$) {
   }
   if (mm===undefined&&x.rt$)mm=$_Array.$crtmm$;
   if (mm===undefined)throw new Error("Cannot retrieve metamodel for " + x);
+  var _cntr=mm.$cont ? get_model(getrtmm$$(mm.$cont)) : undefined;
+  var _classOrInterfaceMember = _cntr && (_cntr.mt==='c' || _cntr.mt==='i' || _cntr.mt==='o');
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
-      if (mm.$cont) {
+      if (_classOrInterfaceMember) {
         return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}});
       }
       return AppliedFunction$jsint(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }
-    var rv=mm.$cont?AppliedMemberClass$jsint(mm.$t.t, {Type$AppliedMemberClass:mm.$t,Arguments$AppliedMemberClass:{t:Nothing},Container$AppliedMemberClass:{t:mm.$cont}})
+    var rv=_classOrInterfaceMember?AppliedMemberClass$jsint(mm.$t.t, {Type$AppliedMemberClass:mm.$t,Arguments$AppliedMemberClass:{t:Nothing},Container$AppliedMemberClass:{t:mm.$cont}})
            : AppliedClass$jsint(mm.$t.t, {Type$AppliedClass:mm.$t,Arguments$AppliedClass:{t:Nothing}});
     rv.src$=x;
     return rv;
@@ -45,7 +47,7 @@ function type$meta(x,$$targs$$) {
       _ta.C={t:x.outer$.getT$all()[x.outer$.getT$name()]};
       if (x.outer$.$$targs$$)_ta.C.a=x.outer$.$$targs$$;
     }
-    if (mm.$cont) {
+    if (_classOrInterfaceMember) {
       c=AppliedMemberClass$jsint(_t, {Type$AppliedMemberClass:_ta.T,Arguments$AppliedMemberClass:_ta.A,Container$AppliedMemberClass:_ta.C});
     } else {
       c=AppliedClass$jsint(_t, {Type$AppliedClass:_ta.T,Arguments$AppliedClass:_ta.A});
