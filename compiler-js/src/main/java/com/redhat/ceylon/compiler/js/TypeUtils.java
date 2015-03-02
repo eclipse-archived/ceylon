@@ -620,7 +620,8 @@ public class TypeUtils {
     }
 
     static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
-        if (d.getAnnotations() == null || d.getAnnotations().isEmpty()) {
+        if (d.getAnnotations() == null || d.getAnnotations().isEmpty() ||
+                (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAnonymous())) {
             encodeForRuntime(that, d, gen, null);
         } else {
             encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
