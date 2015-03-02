@@ -22,12 +22,15 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Aether repository.
@@ -103,5 +106,26 @@ public class AetherRepository extends MavenRepository {
 
     public ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         return utils.findDependencies(node);
+    }
+    
+    @Override
+    public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
+        if(lookup.getType() != Type.ALL && lookup.getType() != null){
+            boolean ok = false;
+            for(String suffix : lookup.getType().getSuffixes()){
+                if(suffix.equals(ArtifactContext.JAR)){
+                    ok = true;
+                    break;
+                }
+            }
+            if(!ok)
+                return;
+        }
+        String[] groupArtifactIds = utils.nameToGroupArtifactIds(lookup.getName());
+        // this means only for explicitly Maven modules that have a ":"
+        if(groupArtifactIds == null)
+            return;
+        // FIXME: does not respect paging or count
+        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), result, getDisplayString());
     }
 }

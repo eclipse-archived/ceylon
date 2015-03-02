@@ -17,11 +17,18 @@
 package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.Resolvers;
@@ -31,11 +38,16 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenVersionRangeResult;
 import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactOverrides;
@@ -43,8 +55,13 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.PathFilter;
+import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -52,7 +69,6 @@ import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -120,7 +136,7 @@ public class AetherUtils {
         return findDependencies(node, null);
     }
 
-    private String[] nameToGroupArtifactIds(String name){
+    String[] nameToGroupArtifactIds(String name){
         final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
         if (p == -1) {
             return null;
@@ -264,6 +280,111 @@ public class AetherUtils {
         }
     }
 
+    public void search(String groupId, String artifactId, String version, ModuleVersionResult result, String repositoryDisplayString){
+        MavenResolverSystem resolver = getResolver();
+        if(version == null || version.isEmpty()){
+            MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":(,)");
+            List<MavenCoordinate> versions = resolveVersionRange.getVersions();
+            for(MavenCoordinate co : versions){
+                if(co.getVersion() != null && !co.getVersion().isEmpty())
+                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, repositoryDisplayString);
+            }
+        }else{
+            MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":["+version+",]");
+            List<MavenCoordinate> versions = resolveVersionRange.getVersions();
+            for(MavenCoordinate co : versions){
+                // make sure the version matches because with maven if we ask for [1,] we also get 2.x
+                if(co.getVersion() != null && co.getVersion().startsWith(version))
+                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, repositoryDisplayString);
+            }
+        }
+    }
+
+    private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, String repositoryDisplayString) {
+        MavenResolverSystem resolver = getResolver();
+        final MavenStrategyStage mss = resolver.resolve(groupId+":"+artifactId+":"+version);
+        final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
+        final MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
+        if(info != null){
+            StringBuilder description = new StringBuilder();
+            StringBuilder licenseBuilder = new StringBuilder();
+            collectInfo(info, description, licenseBuilder);
+            Set<ModuleDependencyInfo> dependencies = new HashSet<>();
+            Set<ModuleVersionArtifact> artifactTypes = new HashSet<>();
+            Set<String> authors = new HashSet<>();
+            for(MavenArtifactInfo dep : info.getDependencies()){
+                MavenCoordinate depCo = dep.getCoordinate();
+                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(depCo.getGroupId()+":"+depCo.getArtifactId(), depCo.getVersion(), dep.isOptional(), false);
+                dependencies.add(moduleDependencyInfo);
+            }
+            ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(groupId+":"+artifactId, version, 
+                    description.length() > 0 ? description.toString() : null,
+                            licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
+                                    authors, dependencies, artifactTypes , true, repositoryDisplayString);
+            result.addVersion(moduleVersionDetails);
+        }
+    }
+
+    private void collectInfo(MavenResolvedArtifact info, StringBuilder description, StringBuilder licenseBuilder) {
+        File jarFile = info.asFile();
+        if(jarFile != null && jarFile.getName().endsWith(".jar")){
+            File pomFile = new File(jarFile.getParentFile(), jarFile.getName().substring(0, jarFile.getName().length()-4)+".pom");
+            if(pomFile.exists()){
+                try(InputStream is = new FileInputStream(pomFile)) {
+                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                    Document doc = dBuilder.parse(is);
+                    doc.getDocumentElement().normalize();
+                    Element root = doc.getDocumentElement();
+                    collectText(root, description, "name", "description", "url");
+                    Element licenses = getFirstElement(root, "licenses");
+                    if(licenses != null){
+                        Element license = getFirstElement(licenses, "license");
+                        if(license != null){
+                            collectText(license, licenseBuilder, "name", "url");
+                        }
+                    }
+                } catch (IOException e) {
+                    // ignore, no info
+                    e.printStackTrace();
+                } catch (ParserConfigurationException e) {
+                    // ignore, no info
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    // ignore, no info
+                    e.printStackTrace();
+                }
+            };
+        }
+    }
+
+    private String getText(Element element, String childName){
+        NodeList elems = element.getElementsByTagName(childName);
+        if(elems != null && elems.getLength() > 0){
+            return elems.item(0).getTextContent();
+        }
+        return null;
+    }
+
+    private Element getFirstElement(Element element, String childName){
+        NodeList elems = element.getElementsByTagName(childName);
+        if(elems != null && elems.getLength() > 0 && elems.item(0) instanceof Element){
+            return (Element) elems.item(0);
+        }
+        return null;
+    }
+
+    private void collectText(Element element, StringBuilder builder, String... tags){
+        for(String tag : tags){
+            String desc = getText(element, tag);
+            if(desc != null){
+                if(builder.length() > 0)
+                    builder.append("\n");
+                builder.append(desc);
+            }
+        }
+    }
+    
     private ArtifactContext getArtifactContext(MavenCoordinate mc){
         String packaging;
         if(mc.getPackaging() == PackagingType.JAR)
