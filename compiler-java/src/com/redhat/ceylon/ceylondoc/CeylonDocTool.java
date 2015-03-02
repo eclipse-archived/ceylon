@@ -22,6 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.join;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -153,6 +154,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private boolean ignoreMissingDoc;
     private boolean ignoreMissingThrows;
     private boolean ignoreBrokenLink;
+    private boolean browse;
     private boolean haltOnError = true;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
@@ -346,7 +348,13 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     public void setOffline(boolean offline) {
         this.offline = offline;
     }
-    
+
+    @Option(longName="browse")
+    @Description("Open module documentation in browser.")
+    public void setBrowse(boolean browse) {
+        this.browse = browse;
+    }
+
     public List<String> getCompiledClasses() {
         return compiledClasses;
     }
@@ -587,6 +595,24 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         }
         if (!documentedOne) {
             log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
+        }
+
+        if (browse) {
+            for(Module module : modules) {
+                if (isEmpty(module)) {
+                    continue;
+                }
+                ArtifactContext docArtifact = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                File docFolder = outputRepositoryManager.getArtifact(docArtifact);
+                File docIndex = new File(docFolder, "api/index.html");
+                if (docIndex.isFile()) {
+                    try {
+                        Desktop.getDesktop().browse(docIndex.toURI());
+                    } catch (Exception e) {
+                        log.error(CeylondMessages.msg("error.unableBrowseModuleDoc", docIndex.toURI()));
+                    }
+                }
+            }
         }
     }
 
