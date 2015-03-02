@@ -467,6 +467,15 @@ public class GenerateJsVisitor extends Visitor
                 super.visit(that);
             }
         }
+        public void visit(Tree.ParameterList plist) {
+            for (Tree.Parameter param : plist.getParameters()) {
+                if (param.getParameterModel().isDefaulted()) {
+                    refs = true;
+                    return;
+                }
+            }
+            super.visit(plist);
+        }
         boolean needsThisReference() {
             return refs;
         }
