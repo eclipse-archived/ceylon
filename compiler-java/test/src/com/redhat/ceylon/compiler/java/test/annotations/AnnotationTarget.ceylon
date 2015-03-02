@@ -88,6 +88,9 @@ interface AnnotationTargetInterface {
     String attribute => "";
     
     annotationTarget
+    shared String sharedAttribute => "";
+    
+    annotationTarget
     String getter {
         return "";
     }

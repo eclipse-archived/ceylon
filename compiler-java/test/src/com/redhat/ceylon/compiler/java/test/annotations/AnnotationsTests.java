@@ -175,9 +175,8 @@ public class AnnotationsTests extends CompilerTests {
         compile("AnnotationConstructorUse.ceylon");
     }
     
-    @Ignore("M6: Until it is implemented")
     @Test
-    public void testAnnotationTarget_fail(){
+    public void testAnnotationTarget(){
         compareWithJavaSource("AnnotationTarget");
     }
     

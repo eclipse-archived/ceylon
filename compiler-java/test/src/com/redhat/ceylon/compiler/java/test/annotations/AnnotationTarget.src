@@ -32,11 +32,6 @@ final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor$;
@@ -54,11 +49,6 @@ final class annotationTarget_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget annotationTarget() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget_.annotationTarget();
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -93,11 +83,6 @@ final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtim
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor$;
@@ -115,11 +100,6 @@ final class annotationTarget2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2 annotationTarget2() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget2_.annotationTarget2();
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
@@ -188,7 +168,6 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     private final void method$priv$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     final .java.lang.String parameter) {
-        MISSING
         if (true) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "true"));
@@ -261,11 +240,6 @@ class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.
         }
     }
     
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetOuter();
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetOuter.$TypeDescriptor$;
@@ -296,6 +270,10 @@ interface AnnotationTargetInterface {
     @.ceylon.language.SharedAnnotation$annotation$
     public void sharedMethod(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     final .java.lang.String parameter);
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public .java.lang.String getSharedAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.class);
 }
 final class AnnotationTargetInterface$impl {
@@ -321,6 +299,10 @@ final class AnnotationTargetInterface$impl {
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     private final .java.lang.String getAttribute$priv$() {
+        return "";
+    }
+    
+    public final .java.lang.String getSharedAttribute() {
         return "";
     }
     
