@@ -241,3 +241,16 @@ shared class C<out X> {
         shared new Other([Y*] items) {}
     }
 }
+
+shared class Supertype(Integer x) {
+    shared Integer zsub = 0;
+}
+
+shared class Subtype extends Supertype {
+    Integer xsub = 1;
+    shared Integer ysub = 1;
+    
+    @error shared new Subtype() extends Supertype(xsub) {}
+    @error shared new New() extends Supertype(ysub) {}
+    @error shared new Extra() extends Supertype(ysub) {}
+}

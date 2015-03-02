@@ -5357,6 +5357,11 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, notDirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
+            if (inExtendsClause &&
+                    constructorClass!=null &&
+                    member.getContainer().equals(constructorClass)) {
+                that.addError("reference to class member from constructor extends clause");
+            }
             Tree.TypeArguments tal = that.getTypeArguments();
             List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
@@ -7064,6 +7069,8 @@ public class ExpressionVisitor extends Visitor {
         }*/
     }
     
+    private ClassOrInterface constructorClass;
+    
     @Override 
     public void visit(Tree.Constructor that) {
         if (that.getDelegatedConstructor()==null) {
@@ -7077,7 +7084,12 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+        ClassOrInterface occ = constructorClass;
+        constructorClass = 
+                that.getDeclarationModel()
+                        .getExtendedTypeDeclaration();
         super.visit(that);
+        constructorClass = occ;
     }
     
     @Override 
