@@ -946,7 +946,7 @@ public class ProducedType extends ProducedReference {
             if (c.satisfies(getDeclaration())) {
                 return qualifiedByDeclaringType();
             }
-            if ( isWellDefined() ) {
+            if (isWellDefined()) {
                 //now let's call the two most difficult methods
                 //in the whole code base:
                 ProducedType result = getPrincipalInstantiation(c);
@@ -1040,7 +1040,8 @@ public class ProducedType extends ProducedReference {
         
         ProducedType result = null;
         
-        ProducedType extendedType = getInternalExtendedType();
+        ProducedType extendedType = 
+                getInternalExtendedType();
         if (extendedType!=null) {
             ProducedType possibleResult = 
                     extendedType.getSupertype(c);
@@ -1049,11 +1050,14 @@ public class ProducedType extends ProducedReference {
             }
         }
         
-        List<ProducedType> satisfiedTypes = getInternalSatisfiedTypes();
+        List<ProducedType> satisfiedTypes = 
+                getInternalSatisfiedTypes();
         // cheaper iteration
         for (int i=0, l=satisfiedTypes.size(); i<l; i++) {
-            ProducedType dst = satisfiedTypes.get(i);
-            ProducedType possibleResult = dst.getSupertype(c);
+            ProducedType satisfiedType = 
+                    satisfiedTypes.get(i);
+            ProducedType possibleResult = 
+                    satisfiedType.getSupertype(c);
             if (possibleResult!=null) {
                 if (result==null || 
                         possibleResult.isSubtypeOf(result)) {
@@ -1063,8 +1067,10 @@ public class ProducedType extends ProducedReference {
                     //TODO: this is still needed even though we keep intersections 
                     //      in canonical form because you can have stuff like
                     //      empty of Iterable<String>&Sized
-                    TypeDeclaration rd = result.getDeclaration();
-                    TypeDeclaration prd = possibleResult.getDeclaration();
+                    TypeDeclaration rd = 
+                            result.getDeclaration();
+                    TypeDeclaration prd = 
+                            possibleResult.getDeclaration();
                     
                     //Resolve ambiguities in favor of
                     //the most-refined declaration
@@ -1099,13 +1105,16 @@ public class ProducedType extends ProducedReference {
                     
                     Unit unit = getDeclaration().getUnit();
 					if (d!=null) {
-						result = principalInstantiation(d, 
-						        possibleResult, result, unit);
+						result = 
+						        principalInstantiation(d, 
+						                possibleResult, 
+						                result, unit);
                     }
                     else {
                         //ambiguous! we can't decide between the two 
                         //supertypes which both satisfy the criteria
-                        if (c.isMemberLookup() && !satisfiedTypes.isEmpty()) {
+                        if (c.isMemberLookup() && 
+                                !satisfiedTypes.isEmpty()) {
                         	//for the case of a member lookup, try to find
                         	//a common supertype by forming the union of 
                         	//the two possible results (since A|B is always
@@ -1167,28 +1176,34 @@ public class ProducedType extends ProducedReference {
         //now try to construct a common produced
         //type that is a common supertype by taking
         //the type args and unioning them
+        List<TypeParameter> typeParameters = 
+                dec.getTypeParameters();
         List<ProducedType> args = 
-                new ArrayList<ProducedType>(dec.getTypeParameters().size());
-        for (TypeParameter tp: dec.getTypeParameters()) {
+                new ArrayList<ProducedType>(typeParameters.size());
+        Map<TypeParameter,SiteVariance> variances = 
+                new HashMap<TypeParameter,SiteVariance>();
+        for (TypeParameter tp: typeParameters) {
             List<ProducedType> list2 = 
                     new ArrayList<ProducedType>(caseTypes.size());
             ProducedType result;
+            Unit unit = getDeclaration().getUnit();
             if (tp.isContravariant()) { 
                 for (ProducedType pt: caseTypes) {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertypeInternal(dec);
+                    ProducedType st = 
+                            pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
                     addToIntersection(list2, 
                             st.getTypeArguments().get(tp), 
-                            getDeclaration().getUnit(), 
+                            unit, 
                             false);
                 }
                 IntersectionType it = 
-                        new IntersectionType(getDeclaration().getUnit());
+                        new IntersectionType(unit);
                 it.setSatisfiedTypes(list2);
                 result = it.canonicalize(false).getType();
             }
@@ -1197,13 +1212,24 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertypeInternal(dec);
+                    ProducedType st = 
+                            pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
-                    addToUnion(list2, st.getTypeArguments().get(tp));
+                    addToUnion(list2, 
+                            st.getTypeArguments().get(tp));
+                    if (tp.isInvariant()) {
+                        if (st.isCovariant(tp)) {
+                            variances.put(tp, OUT);
+                        }
+                        //TODO: handle contravariance!
+                        //      we need to be forming an
+                        //      intersection in that case
+                    }
                 }
-                UnionType ut = new UnionType(getDeclaration().getUnit());
+                UnionType ut = 
+                        new UnionType(unit);
                 ut.setCaseTypes(list2);
                 result = ut.getType();
             }
@@ -1222,8 +1248,10 @@ public class ProducedType extends ProducedReference {
         }*/
         //recurse to the qualifying type
         ProducedType outerType;
-        if (dec.isMember() && !dec.isStaticallyImportable()) {
-            TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
+        if (dec.isMember() && 
+                !dec.isStaticallyImportable()) {
+            TypeDeclaration outer = 
+                    (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = 
                     new ArrayList<ProducedType>(caseTypes.size());
             for (ProducedType ct: caseTypes) {
@@ -1240,7 +1268,8 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType it: intersectedTypes) {
                     if (it.getDeclaration().isMember()) {
                         ProducedType st = 
-                                it.getQualifyingType().getSupertypeInternal(outer);
+                                it.getQualifyingType()
+                                    .getSupertypeInternal(outer);
                         list.add(st);
                     }
                 }
@@ -1253,6 +1282,7 @@ public class ProducedType extends ProducedReference {
         //make the resulting type
         ProducedType candidateResult = 
                 dec.getProducedType(outerType, args);
+        candidateResult.setVarianceOverrides(variances);
         //check the the resulting type is *really*
         //a subtype (take variance into account)
         for (ProducedType pt: caseTypes) {
