@@ -93,9 +93,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         this.cache = cache;
         if (addCacheAsRoot) {
             roots.add(cache);
-            setupOverrides(cache);
             allRoots = null;
         }
+        setupOverrides(cache);
     }
 
     private void setupOverrides(Repository repo) {
