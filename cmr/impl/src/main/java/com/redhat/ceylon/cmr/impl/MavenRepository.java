@@ -45,7 +45,8 @@ public class MavenRepository extends AbstractRepository {
     @Override
     public String[] getArtifactNames(ArtifactContext context) {
         String name = context.getName();
-        final int p = name.lastIndexOf(".");
+        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
+
         return getArtifactNames(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffixes());
     }
 
@@ -97,4 +98,26 @@ public class MavenRepository extends AbstractRepository {
     public boolean isMaven() {
         return true;
     }
+
+    @Override
+    protected List<String> getDefaultParentPathInternal(ArtifactContext context) {
+        return getParentPath(context);
+    }
+    
+    public static List<String> getParentPath(ArtifactContext context) {
+        final String name = context.getName();
+        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
+        final List<String> tokens = new ArrayList<String>();
+        if (p == -1) {
+            tokens.addAll(Arrays.asList(name.split("\\.")));
+        } else {
+            tokens.addAll(Arrays.asList(name.substring(0, p).split("\\.")));
+            tokens.add(name.substring(p + 1));
+        }
+        final String version = context.getVersion();
+        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
+            tokens.add(version); // add version
+        return tokens;
+    }
+
 }
