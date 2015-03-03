@@ -2,24 +2,25 @@ package com.redhat.ceylon.tools.info;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -406,9 +407,64 @@ public class CeylonInfoTool extends RepoUsingTool {
             outputAuthors(version.getAuthors());
         }
         if (!version.getDependencies().isEmpty()) {
-            msg("module.dependencies", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
-            Map<String, SortedSet<String>> names = new HashMap<>();
+            msg("module.dependencies.tree", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
+            SortedMap<String, SortedSet<String>> names = new TreeMap<>();
             recurseDependencies(version, names, 0);
+
+            newline();
+            msg("module.dependencies.flat", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
+            listDependencies(names);
+
+            listDependencyConflictsIfAny(names);
+        }
+    }
+
+    private void listDependencyConflictsIfAny(SortedMap<String, SortedSet<String>> names) throws IOException {
+        boolean header = true;
+        for(Map.Entry<String,SortedSet<String>> entry : names.entrySet()){
+            if(entry.getValue().size() > 1){
+                if(header){
+                    header = false;
+                    newline();
+                    msg("module.dependencies.conflicts", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
+                }
+                append("  ");
+                append(entry.getKey());
+                if(entry.getValue().size() > 1){
+                    append(": ");
+                    boolean first = true;
+                    for(String v : entry.getValue()){
+                        if(first)
+                            first = false;
+                        else
+                            append(", ");
+                        append(v);
+                    }
+                }
+                newline();
+            }
+        }
+    }
+
+    private void listDependencies(SortedMap<String, SortedSet<String>> names) throws IOException {
+        for(Map.Entry<String,SortedSet<String>> entry : names.entrySet()){
+            append("  ");
+            append(entry.getKey());
+            if(entry.getValue().size() > 1){
+                append(": ");
+                boolean first = true;
+                for(String v : entry.getValue()){
+                    if(first)
+                        first = false;
+                    else
+                        append(", ");
+                    append(v);
+                }
+            }else{
+                append("/");
+                append(entry.getValue().first());
+            }
+            newline();
         }
     }
 
