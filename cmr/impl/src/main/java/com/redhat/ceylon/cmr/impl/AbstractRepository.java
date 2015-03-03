@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -458,7 +459,7 @@ public abstract class AbstractRepository implements Repository {
                         ModuleInfoReader reader = getModuleInfoReader(suffix);
                         if (reader != null) {
                             ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file, memberName != null);
-                            SortedSet<String> matchingMembers = null;
+                            Set<String> matchingMembers = null;
                             if (memberName != null) {
                                 matchingMembers = matchMembers(mvd2, lookup);
                                 if (matchingMembers.isEmpty()) {
@@ -642,7 +643,7 @@ public abstract class AbstractRepository implements Repository {
                     if (reader != null) {
                         mvd = reader.readModuleInfo(moduleName, file, memberName != null);
                         if (memberName != null) {
-                            SortedSet<String> matchingMembers = matchMembers(mvd, query);
+                            Set<String> matchingMembers = matchMembers(mvd, query);
                             if (matchingMembers.isEmpty()) {
                                 // We haven't found a matching member in the module so we
                                 // just continue to the next suffix/artifact if any
@@ -677,28 +678,32 @@ public abstract class AbstractRepository implements Repository {
         result.addResult(moduleName, mvd);
     }
 
-    private SortedSet<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
+    private Set<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
+        return matchNames(mvd.getMembers(), query, false);
+    }
+
+    public static Set<String> matchNames(Set<String> names, ModuleQuery query, boolean namesArePackages) {
         // We're actually looking for a module containing a specific member
         SortedSet<String> found = new TreeSet<String>();
-        String name = JVMModuleUtil.quoteJavaKeywords(query.getMemberName());
-        boolean matchPackage = query.isMemberSearchPackageOnly();
+        String member = JVMModuleUtil.quoteJavaKeywords(query.getMemberName());
+        boolean matchPackagePart = !namesArePackages && query.isMemberSearchPackageOnly();
         if (query.isMemberSearchExact()) {
-            for (String member : mvd.getMembers()) {
-                if (matchPackage) {
-                    member = packageName(member);
+            for (String name : names) {
+                if (matchPackagePart) {
+                    name = packageName(name);
                 }
-                if (member.equals(name)) {
-                    found.add(member);
+                if (name.equals(member)) {
+                    found.add(name);
                 }
             }
         } else {
-            name = name.toLowerCase();
-            for (String member : mvd.getMembers()) {
-                if (matchPackage) {
-                    member = packageName(member);
+            member = member.toLowerCase();
+            for (String name : names) {
+                if (matchPackagePart) {
+                    name = packageName(name);
                 }
-                if (member.toLowerCase().contains(name)) {
-                    found.add(member);
+                if (name.toLowerCase().contains(member)) {
+                    found.add(name);
                 }
             }
         }
@@ -707,7 +712,7 @@ public abstract class AbstractRepository implements Repository {
 
     // Given a fully qualified member name return it's package
     // (or an empty string if it's not part of any package)
-    private String packageName(String memberName) {
+    private static String packageName(String memberName) {
         int p = memberName.lastIndexOf('.');
         if (p >= 0) {
             return memberName.substring(0, p);
