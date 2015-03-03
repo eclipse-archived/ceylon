@@ -25,8 +25,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,6 +36,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -42,6 +45,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -332,7 +336,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void completeModules(final ModuleQuery query, final ModuleSearchResult result) {
+    public void completeModules(final ModuleQuery query, final ModuleSearchResult result, Overrides overrides) {
         if(connectionAllowed() && isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
@@ -415,7 +419,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void completeVersions(ModuleVersionQuery query, final ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery query, final ModuleVersionResult result, final Overrides overrides) {
         if(connectionAllowed() && isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
@@ -438,7 +442,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 WS.getXML(herdCompleteVersionsURL, params, new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
-                        parseCompleteVersionsResponse(p, result);
+                        parseCompleteVersionsResponse(p, result, overrides);
                     }
                 });
             }catch(Exception x){
@@ -447,9 +451,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
     }
 
-    protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result) {
+    protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result, Overrides overrides) {
         List<String> authors = new LinkedList<String>();
-        List<ModuleDependencyInfo> dependencies = new LinkedList<ModuleDependencyInfo>();
+        Set<ModuleDependencyInfo> dependencies = new HashSet<ModuleDependencyInfo>();
         List<ModuleVersionArtifact> types = new LinkedList<ModuleVersionArtifact>();
         p.moveToOpenTag("results");
         
@@ -489,6 +493,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     newVersion.setLicense(license);
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
+                if(overrides != null)
+                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(null, dependencies)).getDependencies();
                 if(!dependencies.isEmpty())
                     newVersion.getDependencies().addAll(dependencies);
                 if(!types.isEmpty())
@@ -559,7 +565,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void searchModules(final ModuleQuery query, final ModuleSearchResult result) {
+    public void searchModules(final ModuleQuery query, final ModuleSearchResult result, Overrides overrides) {
         if(connectionAllowed() && isHerd() && herdSearchModulesURL != null){
             // let's try Herd
             try{

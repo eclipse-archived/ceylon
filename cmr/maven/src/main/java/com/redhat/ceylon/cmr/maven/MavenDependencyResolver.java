@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
@@ -41,7 +42,8 @@ import com.redhat.ceylon.common.log.Logger;
 public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static final Logger logger = new CMRJULLogger();
 
-    public ModuleInfo resolve(DependencyContext context) {
+    @Override
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
             String name = result.name();
@@ -59,7 +61,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             InputStream inputStream = IOUtils.findDescriptor(result, descriptorPath);
             if (inputStream != null) {
                 try {
-                    return resolveFromInputStream(inputStream);
+                    return resolveFromInputStream(inputStream, name, result.version(), overrides);
                 } finally {
                     IOUtils.safeClose(inputStream);
                 }
@@ -68,36 +70,40 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    public ModuleInfo resolveFromFile(File file) {
+    @Override
+    public ModuleInfo resolveFromFile(File file, String name, String version, Overrides overrides) {
         if (file.exists() == false) {
             return null;
         }
 
         AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
         MavenArtifactInfo[] dependencies = utils.getDependencies(file);
-        return toModuleInfo(dependencies);
+        return toModuleInfo(dependencies, name, version, overrides);
     }
 
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         if (stream == null) {
             return null;
         }
 
         AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
         MavenArtifactInfo[] dependencies = utils.getDependencies(stream);
-        return toModuleInfo(dependencies);
+        return toModuleInfo(dependencies, name, version, overrides);
     }
 
     public Node descriptor(Node artifact) {
         return NodeUtils.firstParent(artifact).getChild("pom.xml");
     }
 
-    protected static ModuleInfo toModuleInfo(MavenArtifactInfo[] dependencies) {
+    protected static ModuleInfo toModuleInfo(MavenArtifactInfo[] dependencies, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
         for (MavenArtifactInfo dep : dependencies) {
             MavenCoordinate co = dep.getCoordinate();
             infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(co.getGroupId(), co.getArtifactId()), co.getVersion(), AetherUtils.isOptional(dep), false));
         }
-        return new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(null, infos);
+        if(overrides != null)
+            ret = overrides.applyOverrides(name, version, ret);
+        return ret;
     }
 }

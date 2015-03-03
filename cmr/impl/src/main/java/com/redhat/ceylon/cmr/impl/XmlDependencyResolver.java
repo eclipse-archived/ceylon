@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
 
 /**
@@ -49,14 +50,18 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
         super(ArtifactContext.MODULE_XML);
     }
 
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    @Override
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         try {
             final Module module = parse(stream);
             final Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleDependencyInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
             }
-            return new ModuleInfo(module.getFilter(), infos);
+            ModuleInfo ret = new ModuleInfo(module.getFilter(), infos);
+            if(overrides != null)
+                ret = overrides.applyOverrides(name, version, ret);
+            return ret;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

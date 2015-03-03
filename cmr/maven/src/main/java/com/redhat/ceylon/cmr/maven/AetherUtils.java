@@ -280,14 +280,14 @@ public class AetherUtils {
         }
     }
 
-    public void search(String groupId, String artifactId, String version, ModuleVersionResult result, String repositoryDisplayString){
+    public void search(String groupId, String artifactId, String version, ModuleVersionResult result, Overrides overrides, String repositoryDisplayString){
         MavenResolverSystem resolver = getResolver();
         if(version == null || version.isEmpty()){
             MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":(,)");
             List<MavenCoordinate> versions = resolveVersionRange.getVersions();
             for(MavenCoordinate co : versions){
                 if(co.getVersion() != null && !co.getVersion().isEmpty())
-                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, repositoryDisplayString);
+                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
             }
         }else{
             MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":["+version+",]");
@@ -295,12 +295,32 @@ public class AetherUtils {
             for(MavenCoordinate co : versions){
                 // make sure the version matches because with maven if we ask for [1,] we also get 2.x
                 if(co.getVersion() != null && co.getVersion().startsWith(version))
-                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, repositoryDisplayString);
+                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
             }
         }
     }
 
-    private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, String repositoryDisplayString) {
+    private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, Overrides overrides, String repositoryDisplayString) {
+        ArtifactOverrides artifactOverrides = null;
+        if(overrides != null){
+            ArtifactContext ctx = new ArtifactContext(groupId+":"+artifactId, version);
+            // see if this artifact is replaced
+            ArtifactContext replaceContext = overrides.replace(ctx);
+            if(replaceContext != null){
+                String[] groupArtifactIds = nameToGroupArtifactIds(replaceContext.getName());
+                if(groupArtifactIds == null)
+                    return; // abort
+                groupId = groupArtifactIds[0];
+                artifactId = groupArtifactIds[1];
+                version = replaceContext.getVersion();
+                ctx = replaceContext;
+            }else if(overrides.isVersionOverridden(ctx)){
+                // perhaps its version is overridden?
+                version = overrides.getVersionOverride(ctx);
+                ctx.setVersion(version);
+            }
+            artifactOverrides = overrides.getArtifactOverrides(ctx);
+        }
         MavenResolverSystem resolver = getResolver();
         final MavenStrategyStage mss = resolver.resolve(groupId+":"+artifactId+":"+version);
         final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
@@ -311,16 +331,41 @@ public class AetherUtils {
             collectInfo(info, description, licenseBuilder);
             Set<ModuleDependencyInfo> dependencies = new HashSet<>();
             Set<ModuleVersionArtifact> artifactTypes = new HashSet<>();
+            artifactTypes.add(new ModuleVersionArtifact(".jar", null, null));
             Set<String> authors = new HashSet<>();
             for(MavenArtifactInfo dep : info.getDependencies()){
                 MavenCoordinate depCo = dep.getCoordinate();
-                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(depCo.getGroupId()+":"+depCo.getArtifactId(), depCo.getVersion(), dep.isOptional(), false);
+                String depName = depCo.getGroupId()+":"+depCo.getArtifactId();
+                String depVersion = depCo.getVersion();
+                if(overrides != null){
+                    ArtifactContext depCtx = new ArtifactContext(depName, depCo.getVersion());
+                    if(overrides.isRemoved(depCtx)
+                            || (artifactOverrides != null 
+                                && (artifactOverrides.isRemoved(depCtx)
+                                        || artifactOverrides.isAddedOrUpdated(depCtx))))
+                        continue;
+                    ArtifactContext replaceCtx = overrides.replace(depCtx);
+                    if(replaceCtx != null){
+                        depCtx = replaceCtx;
+                        depName = replaceCtx.getName();
+                    }
+                    if(overrides.isVersionOverridden(depCtx))
+                        depVersion = overrides.getVersionOverride(depCtx);
+                }
+                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(depName, depVersion, dep.isOptional(), false);
                 dependencies.add(moduleDependencyInfo);
+            }
+            if(artifactOverrides != null){
+                for(DependencyOverride add : artifactOverrides.getAdd()){
+                    ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(add.getArtifactContext().getName(), 
+                            add.getArtifactContext().getVersion(), add.isOptional(), add.isShared());
+                    dependencies.add(moduleDependencyInfo);
+                }
             }
             ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(groupId+":"+artifactId, version, 
                     description.length() > 0 ? description.toString() : null,
-                            licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
-                                    authors, dependencies, artifactTypes , true, repositoryDisplayString);
+                    licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
+                    authors, dependencies, artifactTypes , true, repositoryDisplayString);
             result.addVersion(moduleVersionDetails);
         }
     }

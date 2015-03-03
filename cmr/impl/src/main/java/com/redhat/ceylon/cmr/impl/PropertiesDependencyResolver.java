@@ -25,6 +25,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 
 /**
  * Read module info from properties.
@@ -38,7 +39,8 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
         super(ArtifactContext.MODULE_PROPERTIES);
     }
 
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    @Override
+    public ModuleInfo resolveFromInputStream(InputStream stream, String moduleName, String moduleVersion, Overrides overrides) {
         try {
             final Properties properties = new Properties();
             properties.load(stream);
@@ -58,7 +60,10 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                 }
                 infos.add(new ModuleDependencyInfo(name, version, optional, shared));
             }
-            return new ModuleInfo(null, infos);
+            ModuleInfo ret = new ModuleInfo(null, infos);
+            if(overrides != null)
+                ret = overrides.applyOverrides(moduleName, moduleVersion, ret);
+            return ret;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

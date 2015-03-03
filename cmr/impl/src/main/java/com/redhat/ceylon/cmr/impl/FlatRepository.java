@@ -24,6 +24,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -78,6 +79,7 @@ public class FlatRepository extends DefaultRepository {
 
         private ModuleInfo getExternalDescriptor(Repository repo, ModulesDependencyResolver resolver) {
             String moduleXml = resolver.getQualifiedToplevelDescriptorName(name(), version());
+            Overrides overrides = repo.getRoot().getService(Overrides.class);
             Node moduleXmlNode = repo.getRoot().getChild(moduleXml);
             if(moduleXmlNode != null){
                 File f = null;
@@ -88,7 +90,7 @@ public class FlatRepository extends DefaultRepository {
                     e.printStackTrace();
                 }
                 if(f != null)
-                    return resolver.resolveFromFile(f);
+                    return resolver.resolveFromFile(f, name(), version(), overrides);
             }
             return null;
         }

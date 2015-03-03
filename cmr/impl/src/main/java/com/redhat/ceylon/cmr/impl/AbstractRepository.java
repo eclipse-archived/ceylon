@@ -29,7 +29,7 @@ import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -156,9 +157,9 @@ public abstract class AbstractRepository implements Repository {
     @Override
     public void completeModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
-        ContentFinder delegate = root.getService(ContentFinder.class);
+        ContentFinderDelegate delegate = root.getService(ContentFinderDelegate.class);
         if (delegate != null) {
-            delegate.completeModules(query, result);
+            delegate.completeModules(query, result, getOverrides());
             return;
         }
         // we NEED the -1 limit here to get empty tokens
@@ -263,7 +264,7 @@ public abstract class AbstractRepository implements Repository {
         for (String suffix : lookup.getType().getSuffixes()) {
             if (getArtifactName(module, version, suffix).equals(name)) {
                 if (suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS)) {
-                    return checkBinaryVersion(module, node, lookup);
+                    return checkBinaryVersion(module, version, node, lookup);
                 }
                 return true;
             }
@@ -271,7 +272,7 @@ public abstract class AbstractRepository implements Repository {
         return false;
     }
 
-    private boolean checkBinaryVersion(String module, Node node, ModuleQuery lookup) {
+    private boolean checkBinaryVersion(String module, String version, Node node, ModuleQuery lookup) {
         if (lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
             return true;
         try {
@@ -282,7 +283,7 @@ public abstract class AbstractRepository implements Repository {
             String suffix = ArtifactContext.getSuffixFromNode(node);
             ModuleInfoReader reader = getModuleInfoReader(suffix);
             if (reader != null) {
-                int[] versions = reader.getBinaryVersions(module, file);
+                int[] versions = reader.getBinaryVersions(module, version, file);
                 if (versions == null)
                     return false; // can't verify
                 if (lookup.getBinaryMajor() != null
@@ -360,16 +361,16 @@ public abstract class AbstractRepository implements Repository {
             return true;
         // now search on the metadata
         Node infoArtifact = getBestInfoArtifact(versionNode);
-        return matchFromCar(infoArtifact, moduleName, query.getName());
+        return matchFromCar(infoArtifact, moduleName, versionNode.getLabel(), query.getName());
     }
 
-    private boolean matchFromCar(Node artifact, String moduleName, String query) {
+    private boolean matchFromCar(Node artifact, String moduleName, String version, String query) {
         try {
             File file = artifact.getContent(File.class);
             if (file != null) {
                 ModuleInfoReader reader = getModuleInfoReader(artifact);
                 if (reader != null) {
-                    return reader.matchesModuleInfo(moduleName, file, query);
+                    return reader.matchesModuleInfo(moduleName, version, file, query, getOverrides());
                 }
             }
         } catch (Exception e) {
@@ -396,9 +397,9 @@ public abstract class AbstractRepository implements Repository {
     @Override
     public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
         // check for delegate
-        ContentFinder delegate = root.getService(ContentFinder.class);
+        ContentFinderDelegate delegate = root.getService(ContentFinderDelegate.class);
         if (delegate != null) {
-            delegate.completeVersions(lookup, result);
+            delegate.completeVersions(lookup, result, getOverrides());
             return;
         }
         // FIXME: handle default module
@@ -442,7 +443,7 @@ public abstract class AbstractRepository implements Repository {
                         || (suffix.equals(ArtifactContext.CAR)
                                 || suffix.equals(ArtifactContext.JS_MODEL) 
                                 || suffix.equals(ArtifactContext.JS))
-                                && !checkBinaryVersion(name, artifact, lookup)) {
+                                && !checkBinaryVersion(name, version, artifact, lookup)) {
                     if (lookup.getRetrieval() == Retrieval.ALL) {
                         break;
                     } else {
@@ -460,7 +461,7 @@ public abstract class AbstractRepository implements Repository {
                     if (file != null) {
                         ModuleInfoReader reader = getModuleInfoReader(suffix);
                         if (reader != null) {
-                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file, memberName != null);
+                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, version, file, memberName != null, getOverrides());
                             Set<String> matchingMembers = null;
                             if (memberName != null) {
                                 matchingMembers = matchMembers(mvd2, lookup);
@@ -517,7 +518,7 @@ public abstract class AbstractRepository implements Repository {
     @Override
     public boolean isSearchable() {
         // check for delegate
-        ContentFinder delegate = root.getService(ContentFinder.class);
+        ContentFinderDelegate delegate = root.getService(ContentFinderDelegate.class);
         if (delegate != null) {
             return delegate.isSearchable();
         }
@@ -527,9 +528,9 @@ public abstract class AbstractRepository implements Repository {
     @Override
     public void searchModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
-        ContentFinder delegate = root.getService(ContentFinder.class);
+        ContentFinderDelegate delegate = root.getService(ContentFinderDelegate.class);
         if (delegate != null) {
-            delegate.searchModules(query, result);
+            delegate.searchModules(query, result, getOverrides());
             return;
         }
         // do the searching the hard way
@@ -646,7 +647,7 @@ public abstract class AbstractRepository implements Repository {
                 if (file != null) {
                     ModuleInfoReader reader = getModuleInfoReader(artifact);
                     if (reader != null) {
-                        mvd = reader.readModuleInfo(moduleName, file, memberName != null);
+                        mvd = reader.readModuleInfo(moduleName, latestVersion, file, memberName != null, getOverrides());
                         if (memberName != null) {
                             Set<String> matchingMembers = matchMembers(mvd, query);
                             if (matchingMembers.isEmpty()) {
@@ -757,5 +758,9 @@ public abstract class AbstractRepository implements Repository {
         } else {
             return null;
         }
+    }
+    
+    protected Overrides getOverrides(){
+        return getRoot().getService(Overrides.class);
     }
 }

@@ -22,7 +22,7 @@ import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -77,11 +78,11 @@ public class JDKRepository extends AbstractRepository {
         return null;
     }
 
-    public static class JDKRoot extends DefaultNode implements ContentFinder {
+    public static class JDKRoot extends DefaultNode implements ContentFinderDelegate {
 
 
         public JDKRoot() {
-            addService(ContentFinder.class, this);
+            addService(ContentFinderDelegate.class, this);
         }
 
         @Override
@@ -95,7 +96,7 @@ public class JDKRepository extends AbstractRepository {
         }
 
         @Override
-        public void completeModules(ModuleQuery query, ModuleSearchResult result) {
+        public void completeModules(ModuleQuery query, ModuleSearchResult result, Overrides overrides) {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;
@@ -121,7 +122,7 @@ public class JDKRepository extends AbstractRepository {
         }
 
         @Override
-        public void completeVersions(ModuleVersionQuery query, ModuleVersionResult result) {
+        public void completeVersions(ModuleVersionQuery query, ModuleVersionResult result, Overrides overrides) {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;
@@ -148,7 +149,7 @@ public class JDKRepository extends AbstractRepository {
         }
 
         @Override
-        public void searchModules(ModuleQuery query, ModuleSearchResult result) {
+        public void searchModules(ModuleQuery query, ModuleSearchResult result, Overrides overrides) {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;

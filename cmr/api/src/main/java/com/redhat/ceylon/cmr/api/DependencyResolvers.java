@@ -41,9 +41,9 @@ public class DependencyResolvers {
         resolvers.remove(resolver);
     }
 
-    public ModuleInfo resolve(ArtifactResult result) {
+    public ModuleInfo resolve(ArtifactResult result, Overrides overrides) {
         for (DependencyResolver dr : resolvers) {
-            ModuleInfo info = dr.resolve(result);
+            ModuleInfo info = dr.resolve(result, overrides);
             if (info != null) {
                 return info;
             }

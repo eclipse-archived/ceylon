@@ -16,8 +16,6 @@
 
 package com.redhat.ceylon.cmr.maven;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -121,11 +119,13 @@ public class AetherRepository extends MavenRepository {
             if(!ok)
                 return;
         }
-        String[] groupArtifactIds = utils.nameToGroupArtifactIds(lookup.getName());
         // this means only for explicitly Maven modules that have a ":"
+        if(lookup.getName().indexOf(':') == -1)
+            return;
+        String[] groupArtifactIds = utils.nameToGroupArtifactIds(lookup.getName());
         if(groupArtifactIds == null)
             return;
         // FIXME: does not respect paging or count
-        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), result, getDisplayString());
+        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), result, getOverrides(), getDisplayString());
     }
 }

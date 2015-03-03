@@ -85,7 +85,7 @@ public class Overrides {
         ArtifactContext ao = replaced.get(mc);
         if(ao == null){
             // fall-back to overrides with no version specified
-            return replacedNoVersion.get(mc.getName());
+            ao = replacedNoVersion.get(mc.getName());
         }
         return ao;
     }
@@ -138,6 +138,43 @@ public class Overrides {
     
     public boolean isVersionOverridden(ArtifactContext context){
         return setVersions.containsKey(context.getName());
+    }
+
+    public ModuleInfo applyOverrides(String module, String version, ModuleInfo source) {
+        ArtifactOverrides artifactOverrides = getArtifactOverrides(new ArtifactContext(module, version));
+        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>();
+        for (ModuleDependencyInfo dep : source.getDependencies()) {
+            String depName = dep.getName();
+            String depVersion = dep.getVersion();
+            ArtifactContext ctx = new ArtifactContext(depName, depVersion);
+            if((artifactOverrides != null && artifactOverrides.isRemoved(ctx))
+                    || isRemoved(ctx))
+                continue;
+            if(artifactOverrides != null && artifactOverrides.isAddedOrUpdated(ctx))
+                continue;
+            ArtifactContext replacement = replace(ctx);
+            if(replacement != null){
+                depName = replacement.getName();
+                depVersion = replacement.getVersion();
+            }
+            if(isVersionOverridden(ctx))
+                depVersion = getVersionOverride(ctx);
+
+            result.add(new ModuleDependencyInfo(depName, depVersion,
+                    dep.isOptional(),
+                    dep.isExport()));
+        }
+        String filter = source.getFilter();
+        if(artifactOverrides != null){
+            if(artifactOverrides.getFilter() != null)
+                filter = artifactOverrides.getFilter();
+            for(DependencyOverride add : artifactOverrides.getAdd()){
+                result.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                        add.isOptional(),
+                        add.isShared()));
+            }
+        }
+        return new ModuleInfo(filter, result);
     }
 
     static Overrides parse(InputStream is) throws Exception {

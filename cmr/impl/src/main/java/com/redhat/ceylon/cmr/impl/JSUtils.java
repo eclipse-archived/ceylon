@@ -29,6 +29,8 @@ import java.util.Set;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
+import net.minidev.json.JSONValue;
+
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -37,10 +39,9 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
-
-import net.minidev.json.JSONValue;
 
 /**
  * Utility functions to retrieve module meta information from compiled JS modules
@@ -53,7 +54,8 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     private JSUtils() {
     }
 
-    public ModuleInfo resolve(DependencyContext context) {
+    @Override
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner()) {
             return null;
         }
@@ -62,19 +64,19 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         File mod = result.artifact();
         if (mod != null && (mod.getName().toLowerCase().endsWith(ArtifactContext.JS_MODEL)
                 || mod.getName().toLowerCase().endsWith(ArtifactContext.JS))) {
-            return readModuleInformation(result.name(), mod);
+            return readModuleInformation(result.name(), mod, overrides);
         } else {
             return null;
         }
     }
     
     @Override
-    public ModuleInfo resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file, String name, String version, Overrides overrides) {
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
     @Override
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
@@ -89,15 +91,17 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
      * @param jarFile    the module JS file
      * @return module info list
      */
-    public static ModuleInfo readModuleInformation(final String moduleName, final File jarFile) {
+    public static ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
         Map<String, Object> model = loadJsonModel(jarFile);
-        return getDependencies(model);
+        String version = asString(metaModelProperty(model, "$mod-version"));
+        return getModuleInfo(model, moduleName, version, overrides);
     }
-
-    public int[] getBinaryVersions(String moduleName, File moduleArchive) {
+    
+    @Override
+    public int[] getBinaryVersions(String moduleName, String version, File moduleArchive) {
         int major = 0;
         int minor = 0;
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive, false);
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, version, moduleArchive, false, null);
         ModuleVersionArtifact mva = mvd.getArtifactTypes().first();
         if (mva.getMajorBinaryVersion() != null) {
             major = mva.getMajorBinaryVersion();
@@ -123,16 +127,16 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
     }
 
-    private static ModuleInfo getDependencies(Map<String,Object> model) {
+    private static ModuleInfo getModuleInfo(Map<String,Object> model, String module, String version, Overrides overrides) {
         try {
-            return asModInfos(metaModelProperty(model, "$mod-deps"));
+            return getModuleInfo(metaModelProperty(model, "$mod-deps"), module, version, overrides);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
     }
     
     @Override
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
+    public ModuleVersionDetails readModuleInfo(String moduleName, String moduleVersion, File moduleArchive, boolean includeMembers, Overrides overrides) {
         Map<String, Object> model = loadJsonModel(moduleArchive);
 
         String name = asString(metaModelProperty(model, "$mod-name"));
@@ -140,7 +144,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             throw new RuntimeException("Incorrect module");
         }
         String version = asString(metaModelProperty(model, "$mod-version"));
-        ModuleInfo info = getDependencies(model);
+        Set<ModuleDependencyInfo> dependencies = getModuleInfo(model, moduleName, version, overrides).getDependencies();
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
@@ -157,7 +161,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
         ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
-        mvd.getDependencies().addAll(info.getDependencies());
+        mvd.getDependencies().addAll(dependencies);
         
         if (includeMembers) {
             mvd.setMembers(getMembers(moduleName, moduleArchive));
@@ -183,7 +187,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
     }
 
-    private static ModuleInfo asModInfos(Object obj) {
+    private static ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
         if (obj == null) {
             return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
         }
@@ -192,7 +196,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
         @SuppressWarnings("unchecked")
         Iterable<Object> array = (Iterable<Object>)obj;
-        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>();
+        Set<ModuleDependencyInfo> deps = new HashSet<ModuleDependencyInfo>();
         for (Object o : array) {
             String module;
             boolean optional = false;
@@ -208,14 +212,18 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             }
             String name = ModuleUtil.moduleName(module);
             if (!"ceylon.language".equals(name)) {
-                result.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
+                deps.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
             }
         }
-        return new ModuleInfo(null, result);
+        ModuleInfo result = new ModuleInfo(null, deps);
+        if(overrides != null)
+            result = overrides.applyOverrides(moduleName, version, result);
+        return result;
     }
 
-    public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive, false);
+    @Override
+    public boolean matchesModuleInfo(String moduleName, String moduleVersion, File moduleArchive, String query, Overrides overrides) {
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleVersion, moduleArchive, false, overrides);
         if (mvd.getDoc() != null && matches(mvd.getDoc(), query))
             return true;
         if (mvd.getLicense() != null && matches(mvd.getLicense(), query))

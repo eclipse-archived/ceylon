@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 
 /**
@@ -42,12 +43,13 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
     private static final Logger log = Logger.getLogger(OSGiDependencyResolver.class.getName());
     public static final DependencyResolver INSTANCE = new OSGiDependencyResolver();
 
-    public ModuleInfo resolve(DependencyContext context) {
+    @Override
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner() == false) {
             InputStream stream = IOUtils.findDescriptor(context.result(), JarFile.MANIFEST_NAME);
             if (stream != null) {
                 try {
-                    return resolveFromInputStream(stream);
+                    return resolveFromInputStream(stream, context.result().name(), context.result().version(), overrides);
                 } finally {
                     IOUtils.safeClose(stream);
                 }
@@ -56,12 +58,13 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    public ModuleInfo resolveFromFile(File file) {
+    @Override
+    public ModuleInfo resolveFromFile(File file, String name, String version, Overrides overrides) {
         return null;
     }
 
     @Override
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         if (stream == null) {
             return null;
         }
@@ -80,7 +83,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                 // a manifest with no OSGi in there
                 return null;
             } else {
-                return parseRequireBundle(requireBundle);
+                return parseRequireBundle(requireBundle, name, version, overrides);
             }
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -93,13 +96,16 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    private ModuleInfo parseRequireBundle(String requireBundle) {
+    private ModuleInfo parseRequireBundle(String requireBundle, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
         String[] bundles = requireBundle.split(",");
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
         }
-        return new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(null, infos);
+        if(overrides != null)
+            ret = overrides.applyOverrides(name, version, ret);
+        return ret;
     }
 
     // very simplistic osgi parsing ...

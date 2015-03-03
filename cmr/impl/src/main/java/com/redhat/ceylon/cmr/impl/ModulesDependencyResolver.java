@@ -25,6 +25,7 @@ import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 
 /**
@@ -39,7 +40,8 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
         this.descriptorName = descriptorName;
     }
 
-    public ModuleInfo resolve(DependencyContext context) {
+    @Override
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         final ArtifactResult result = context.result();
 
         if (context.ignoreInner() == false) {
@@ -47,7 +49,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
             final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
             if (descriptor != null) {
                 try {
-                    return resolveFromInputStream(descriptor);
+                    return resolveFromInputStream(descriptor, result.name(), result.version(), overrides);
                 } finally {
                     IOUtils.safeClose(descriptor);
                 }
@@ -63,7 +65,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
                 String qualifiedDescriptorName = getQualifiedToplevelDescriptorName(result.name(), result.version());
                 mp = new File(artifact.getParent(), qualifiedDescriptorName);
             }
-            return resolveFromFile(mp);
+            return resolveFromFile(mp, result.name(), result.version(), overrides);
         }
 
         return null;
@@ -77,14 +79,15 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
         return String.format("%s-%s-" + descriptorName, module, version);
     }
     
-    public ModuleInfo resolveFromFile(File mp) {
+    @Override
+    public ModuleInfo resolveFromFile(File mp, String name, String version, Overrides overrides) {
         if (mp.exists() == false) {
             return null;
         }
 
         try {
             try (InputStream is = new FileInputStream(mp)) {
-                return resolveFromInputStream(is);
+                return resolveFromInputStream(is, name, version, overrides);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -60,47 +60,11 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
     protected ModuleInfo resolve(){
         if(!resolved){
-            ModuleInfo infos = Configuration.getResolvers(manager).resolve(this);
-            this.infos = applyOverrides(infos);
+            Overrides overrides = repository().getRoot().getService(Overrides.class);
+            this.infos = Configuration.getResolvers(manager).resolve(this, overrides);
             resolved = true;
         }
         return infos;
-    }
-    
-    private ModuleInfo applyOverrides(ModuleInfo infos) {
-        Overrides overrides = repository().getRoot().getService(Overrides.class);
-        System.err.println("overrides for "+infos+" -> "+overrides);
-        if(overrides == null)
-            return infos;
-        ArtifactOverrides artifactOverrides = overrides.getArtifactOverrides(new ArtifactContext(name(), version()));
-        Set<ModuleDependencyInfo> newDependencies = new HashSet<ModuleDependencyInfo>();
-        for(ModuleDependencyInfo dep : infos.getDependencies()){
-            ArtifactContext depCtx = new ArtifactContext(dep.getName(), dep.getVersion());
-            ArtifactContext replacedCtx = overrides.replace(depCtx);
-            if(replacedCtx != null)
-                depCtx = replacedCtx;
-            if(overrides.isRemoved(depCtx) 
-                    || (artifactOverrides != null 
-                        && (artifactOverrides.isRemoved(depCtx) 
-                            || artifactOverrides.isAddedOrUpdated(depCtx))))
-                continue;
-            if(replacedCtx != null){
-                dep = new ModuleDependencyInfo(replacedCtx.getName(), replacedCtx.getVersion(), dep.isOptional(), dep.isExport());
-            }
-            if(overrides.isVersionOverridden(depCtx)){
-                dep = new ModuleDependencyInfo(dep.getName(), overrides.getVersionOverride(depCtx), dep.isOptional(), dep.isExport());
-            }
-            newDependencies.add(dep);
-        }
-        // add the extras if any
-        if(artifactOverrides != null){
-            for(DependencyOverride add : artifactOverrides.getAdd()){
-                String version = overrides.getVersionOverride(add.getArtifactContext());
-                newDependencies.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), version,
-                                                             add.isOptional(), add.isShared()));
-            }
-        }
-        return new ModuleInfo(infos.getFilter(), newDependencies);
     }
 
     protected RepositoryManager getManager(){

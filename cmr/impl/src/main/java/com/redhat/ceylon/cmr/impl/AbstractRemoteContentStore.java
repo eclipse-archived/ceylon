@@ -16,22 +16,23 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ContentFinder;
-import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Abstract remote content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractRemoteContentStore extends AbstractContentStore implements ContentFinder {
+public abstract class AbstractRemoteContentStore extends AbstractContentStore implements ContentFinderDelegate {
 
     protected AbstractRemoteContentStore(Logger log, boolean offline, int timeout) {
         super(log, offline, timeout);
@@ -41,7 +42,7 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         final RemoteNode node = new RemoteRootNode();
         node.addService(ContentStore.class, this);
         node.addService(StructureBuilder.class, this);
-        node.addService(ContentFinder.class, this);
+        node.addService(ContentFinderDelegate.class, this);
         node.setHandle(DefaultNode.HANDLE_MARKER);
         return node;
     }
@@ -58,17 +59,17 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
     }
 
     @Override
-    public void completeModules(ModuleQuery lookup, ModuleSearchResult result) {
+    public void completeModules(ModuleQuery lookup, ModuleSearchResult result, Overrides overrides) {
         // remote content stores do not participate in completion for speed reasons
     }
 
     @Override
-    public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result, Overrides overrides) {
         // remote content stores do not participate in completion for speed reasons
     }
 
     @Override
-    public void searchModules(ModuleQuery query, ModuleSearchResult result) {
+    public void searchModules(ModuleQuery query, ModuleSearchResult result, Overrides overrides) {
         // remote content stores do not participate in search for speed reasons
     }
     

@@ -1,6 +1,7 @@
 /*
  * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,14 +19,16 @@ package com.redhat.ceylon.cmr.api;
 
 
 /**
- * Abstract dependency resolver.
+ * Content finder but for when we're not a repo and have no access to one.
  *
- * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Stef Epardaud
  */
-public abstract class AbstractDependencyResolver implements DependencyResolver {
-    @Override
-    public ModuleInfo resolve(ArtifactResult result, Overrides overrides) {
-        return resolve(new DependencyContextImpl(result, false, false), overrides);
-    }
-}
+public interface ContentFinderDelegate {
+    boolean isSearchable();
+    
+    void completeModules(ModuleQuery query, ModuleSearchResult result, Overrides overrides);
 
+    void completeVersions(ModuleVersionQuery query, ModuleVersionResult result, Overrides overrides);
+    
+    void searchModules(ModuleQuery query, ModuleSearchResult result, Overrides overrides);
+}

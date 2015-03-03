@@ -33,8 +33,8 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.common.ModuleUtil;
 
 /**
  * Utility functions to retrieve module meta information from legacy JAR files
@@ -49,26 +49,26 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     }
 
     @Override
-    public ModuleInfo resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreExternal()) {
             return null;
         }
         ArtifactResult result = context.result();
         File mod = result.artifact();
         if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
-            return getDependencies(result.artifact());
+            return getDependencies(result.artifact(), result.name(), result.version(), overrides);
         } else {
             return null;
         }
     }
     
     @Override
-    public ModuleInfo resolveFromFile(File file) {
-        return getDependenciesFromFile(file);
+    public ModuleInfo resolveFromFile(File file, String name, String version, Overrides overrides) {
+        return getDependenciesFromFile(file, name, version, overrides);
     }
 
     @Override
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         throw new UnsupportedOperationException("Cannot resolve from stream");
     }
 
@@ -83,10 +83,10 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     }
 
     @Override
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
+    public ModuleVersionDetails readModuleInfo(String moduleName, String version, File moduleArchive, boolean includeMembers, Overrides overrides) {
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
-        ModuleInfo info = getDependencies(moduleArchive);
+        ModuleInfo info = getDependencies(moduleArchive, moduleName, version, overrides);
         if (info != null) {
             mvd.getDependencies().addAll(info.getDependencies());
         }
@@ -104,43 +104,35 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
         }
     }
 
-    private static ModuleInfo getDependencies(File moduleArchive) {
+    private static ModuleInfo getDependencies(File moduleArchive, String name, String version, Overrides overrides) {
+        // FIXME: also look inside the dependencies for descriptors
         File xml = new File(moduleArchive.getParentFile(), "module.xml");
-        ModuleInfo result = getDependenciesFromFile(xml);
+        ModuleInfo result = getDependenciesFromFile(xml, name, version, overrides);
         if (result != null) {
             return result;
         }
 
         File props = new File(moduleArchive.getParentFile(), "module.properties");
-        return getDependenciesFromFile(props);
+        return getDependenciesFromFile(props, name, version, overrides);
     }
     
-    private static ModuleInfo getDependenciesFromFile(File descriptorFile) {
+    private static ModuleInfo getDependenciesFromFile(File descriptorFile, String name, String version, Overrides overrides) {
         if (descriptorFile.isFile() == false) {
             return null;
         }
 
         if (descriptorFile.getName().equalsIgnoreCase("module.xml")) {
-            return XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+            return XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, name, version, overrides);
         } else if (descriptorFile.getName().equalsIgnoreCase("module.properties")) {
-            return PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+            return PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, name, version, overrides);
         } else {
             return null;
         }
     }
     
-    private static String getVersionFromFilename(String moduleName, String name) {
-        if (!ModuleUtil.isDefaultModule(moduleName)) {
-            String type = ArtifactContext.getSuffixFromFilename(name);
-            return name.substring(moduleName.length() + 1, name.length() - type.length());
-        } else {
-            return "";
-        }
-    }
-
     @Override
-    public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        ModuleInfo deps = getDependencies(moduleArchive);
+    public boolean matchesModuleInfo(String moduleName, String version, File moduleArchive, String query, Overrides overrides) {
+        ModuleInfo deps = getDependencies(moduleArchive, moduleName, version, overrides);
         if (deps != null) {
             for (ModuleDependencyInfo dep : deps.getDependencies()) {
                 if (matches(dep.getModuleName(), query))
@@ -155,7 +147,7 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     }
 
     @Override
-    public int[] getBinaryVersions(String moduleName, File moduleArchive) {
+    public int[] getBinaryVersions(String moduleName, String version, File moduleArchive) {
         return null;
     }
 

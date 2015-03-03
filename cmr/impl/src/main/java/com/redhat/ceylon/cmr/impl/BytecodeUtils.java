@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -45,6 +44,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -66,23 +66,27 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     private static final DotName IGNORE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ignore");
     private static final DotName LOCAL_CONTAINER_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.LocalContainer");
 
-    public ModuleInfo resolve(DependencyContext context) {
+    @Override
+    public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner()) {
             return null;
         }
 
         final ArtifactResult result = context.result();
-        return readModuleInformation(result.name(), result.artifact());
+        return readModuleInformation(result.name(), result.artifact(), overrides);
     }
 
-    public ModuleInfo resolveFromFile(File file) {
+    @Override
+    public ModuleInfo resolveFromFile(File file, String name, String version, Overrides overrides) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
-    public ModuleInfo resolveFromInputStream(InputStream stream) {
+    @Override
+    public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
+    @Override
     public Node descriptor(Node artifact) {
         return null; // artifact is a descriptor
     }
@@ -94,30 +98,37 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
      * @param jarFile    the module jar file
      * @return module info list
      */
-    private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile) {
+    private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
         Index index = readModuleIndex(jarFile, false);
         final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
+        final AnnotationValue version = ai.value("version");
+        if(version == null)
+            return null;
+        
         final AnnotationValue dependencies = ai.value("dependencies");
         if (dependencies == null)
             return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
 
-        final AnnotationInstance[] imports = dependencies.asNestedArray();
-        if (imports == null || imports.length == 0)
-            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
-
         final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
-        for (AnnotationInstance im : imports) {
-            final String name = asString(im, "name");
-            final ModuleDependencyInfo mi = new ModuleDependencyInfo(
-                    name,
-                    asString(im, "version"),
-                    asBoolean(im, "optional"),
-                    asBoolean(im, "export"));
-            infos.add(mi);
+
+        final AnnotationInstance[] imports = dependencies.asNestedArray();
+        if (imports != null){
+            for (AnnotationInstance im : imports) {
+                final String name = asString(im, "name");
+                final ModuleDependencyInfo mi = new ModuleDependencyInfo(
+                        name,
+                        asString(im, "version"),
+                        asBoolean(im, "optional"),
+                        asBoolean(im, "export"));
+                infos.add(mi);
+            }
         }
-        return new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(null, infos);
+        if(overrides != null)
+            ret = overrides.applyOverrides(moduleName, version.asString(), ret);
+        return ret;
     }
 
     private static Index readModuleIndex(final File jarFile, boolean everything) {
@@ -156,7 +167,8 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return ret;
     }
 
-    public int[] getBinaryVersions(String moduleName, File moduleArchive) {
+    @Override
+    public int[] getBinaryVersions(String moduleName, String moduleVersion, File moduleArchive) {
         Index index = readModuleIndex(moduleArchive, false);
         final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
@@ -170,7 +182,8 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return new int[]{major, minor};
     }
 
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
+    @Override
+    public ModuleVersionDetails readModuleInfo(String moduleName, String moduleVersion, File moduleArchive, boolean includeMembers, Overrides overrides) {
         Index index = readModuleIndex(moduleArchive, true);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
@@ -195,7 +208,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         if (by != null) {
             mvd.getAuthors().addAll(Arrays.asList(by.asStringArray()));
         }
-        mvd.getDependencies().addAll(asModInfos(dependencies));
+        mvd.getDependencies().addAll(getDependencies(dependencies, moduleName, mvd.getVersion(), overrides));
         ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : null, minorVer != null ? minorVer.asInt() : null);
         mvd.getArtifactTypes().add(mva);
         
@@ -293,26 +306,31 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
     }
 
-    private static List<ModuleDependencyInfo> asModInfos(AnnotationValue dependencies) {
+    private static Set<ModuleDependencyInfo> getDependencies(AnnotationValue dependencies, String module, String version, Overrides overrides) {
         AnnotationInstance[] deps = dependencies.asNestedArray();
-        List<ModuleDependencyInfo> result = new ArrayList<ModuleDependencyInfo>(deps.length);
+        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(deps.length);
         for (AnnotationInstance dep : deps) {
-            AnnotationValue name = dep.value("name");
-            AnnotationValue version = dep.value("version");
+            AnnotationValue depName = dep.value("name");
+            AnnotationValue depVersion = dep.value("version");
             AnnotationValue export = dep.value("export");
             AnnotationValue optional = dep.value("optional");
             
-            result.add(new ModuleDependencyInfo(name.asString(), version.asString(),
-                    (export != null) && export.asBoolean(),
-                    (optional != null) && optional.asBoolean()));
+            result.add(new ModuleDependencyInfo(depName.asString(), depVersion.asString(),
+                    (optional!= null) && optional.asBoolean(),
+                    (export != null) && export.asBoolean()));
         }
+        if(overrides != null)
+            return overrides.applyOverrides(module, version, new ModuleInfo(null, result)).getDependencies();
         return result;
     }
     
-    public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
+    public boolean matchesModuleInfo(String moduleName, String moduleVersion, File moduleArchive, String query, Overrides overrides) {
         Index index = readModuleIndex(moduleArchive, false);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
+            return false;
+        AnnotationValue version = moduleAnnotation.value("version");
+        if (version == null)
             return false;
         AnnotationValue doc = moduleAnnotation.value("doc");
         if (doc != null && matches(doc.asString(), query))
@@ -329,7 +347,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
         AnnotationValue dependencies = moduleAnnotation.value("dependencies");
         if (dependencies != null) {
-            for (ModuleDependencyInfo dep : asModInfos(dependencies)) {
+            for (ModuleDependencyInfo dep : getDependencies(dependencies, moduleName, version.asString(), overrides)) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }
