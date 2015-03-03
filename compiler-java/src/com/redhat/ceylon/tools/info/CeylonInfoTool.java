@@ -284,10 +284,12 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     private void outputModules(ModuleSpec query, Collection<ModuleDetails> modules) throws IOException {
         if (formatting == Formatting.fancy) {
-            if (findMember == null) {
-                msg("module.query", query.getName()).newline();
+            if (findMember != null) {
+                msg("module.query.member", query.getName(), findMember).newline();
+            } else if (findPackage != null) {
+                msg("module.query.package", query.getName(), findPackage).newline();
             } else {
-                msg("module.query.find", query.getName(), findMember).newline();
+                msg("module.query", query.getName()).newline();
             }
         }
         outputModules(modules);
@@ -313,10 +315,12 @@ public class CeylonInfoTool extends RepoUsingTool {
 
     private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
         if (formatting == Formatting.fancy) {
-            if (findMember == null) {
-                msg("version.query", module.getName()).newline();
+            if (findMember != null) {
+                msg("version.query.member", module.getName(), findMember).newline();
+            } else if (findPackage != null) {
+                msg("version.query.package", module.getName(), findPackage).newline();
             } else {
-                msg("version.query.find", module.getName(), findMember).newline();
+                msg("version.query", module.getName()).newline();
             }
         }
         outputVersions(module.getName(), versions, "    ");
