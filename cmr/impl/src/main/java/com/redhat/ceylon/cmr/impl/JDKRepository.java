@@ -122,7 +122,7 @@ public class JDKRepository extends AbstractRepository {
                 return;
             if (query.getName() == null || !JDK_MODULES.contains(query.getName()))
                 return;
-            if (query.getVersion() != null && !query.getVersion().equals(JDK_VERSION))
+            if (query.getVersion() != null && !query.getVersion().isEmpty() && !query.getVersion().equals(JDK_VERSION))
                 return;
             final ModuleVersionDetails newVersion = result.addVersion(query.getName(), JDK_VERSION);
             newVersion.setDoc(doc(query.getName()));
