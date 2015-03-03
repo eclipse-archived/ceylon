@@ -292,7 +292,7 @@ public class SmokeTestCase extends AbstractTest {
         Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
-        ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
+        ArtifactContext ac = new ArtifactContext("org.jboss:jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
         File file = null;
         try {
             file = manager.getArtifact(ac);
