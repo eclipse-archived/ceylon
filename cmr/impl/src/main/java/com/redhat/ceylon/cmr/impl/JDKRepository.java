@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -106,7 +107,10 @@ public class JDKRepository extends AbstractRepository {
                 name = "";
             for (String module : JDK_MODULES) {
                 if (module.startsWith(name)) {
-                    addResult(module, query, result);
+                    ModuleVersionDetails mvd = getResult(module, query);
+                    if (mvd != null) {
+                        result.addResult(module, mvd);
+                    }
                 }
             }
         }
@@ -158,22 +162,25 @@ public class JDKRepository extends AbstractRepository {
                         result.setHasMoreResults(true);
                         return;
                     }
-                    if (query.getStart() == null || found++ >= query.getStart()) {
-                        addResult(module, query, result);
-                        // stop if we're done searching
-                        if (query.getStart() != null
-                                && query.getCount() != null
-                                && found >= query.getStart() + query.getCount()) {
-                            // we're done, but we want to see if there's at least one more result
-                            // to be found so we can tell clients there's a next page
-                            stopSearching = true;
+                    ModuleVersionDetails mvd = getResult(module, query);
+                    if (mvd != null) {
+                        if (query.getStart() == null || found++ >= query.getStart()) {
+                            result.addResult(module, mvd);
+                            // stop if we're done searching
+                            if (query.getStart() != null
+                                    && query.getCount() != null
+                                    && found >= query.getStart() + query.getCount()) {
+                                // we're done, but we want to see if there's at least one more result
+                                // to be found so we can tell clients there's a next page
+                                stopSearching = true;
+                            }
                         }
                     }
                 }
             }
         }
         
-        private boolean addResult(String module, ModuleQuery query, ModuleSearchResult result) {
+        private ModuleVersionDetails getResult(String module, ModuleQuery query) {
             ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
             mvd.setDoc(doc(module));
             mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
@@ -185,18 +192,17 @@ public class JDKRepository extends AbstractRepository {
                     jdkMembers = JDKUtils.getOracleJDKPackagesByModule(module);
                     if (jdkMembers == null) {
                         // Should not happen, but just in case
-                        return false;
+                        return null;
                     }
                 }
                 Set<String> matchedMembers = matchNames(jdkMembers, query, true);
                 if (matchedMembers.isEmpty()) {
                     // No matching members were found
-                    return false;
+                    return null;
                 }
                 mvd.setMembers(matchedMembers);
             }
-            result.addResult(module, mvd);
-            return true;
+            return mvd;
         }
     }
 

@@ -193,7 +193,10 @@ public abstract class AbstractRepository implements Repository {
                 if (ret.foundRightType) {
                     // collect them
                     String moduleName = toModuleName(node);
-                    addSearchResult(result, moduleName, node, lookup);
+                    ModuleVersionDetails mvd = getSearchResult(moduleName, node, lookup);
+                    if (mvd != null) {
+                        result.addResult(moduleName, mvd);
+                    }
                 }
             } else {
                 // collect in the children
@@ -563,17 +566,20 @@ public abstract class AbstractRepository implements Repository {
                             result.setHasMoreResults(true);
                             throw new GetOut();
                         }
-                        if (query.getStart() == null || ret.found++ >= query.getStart()) {
-                            // are we interested in this result or did we need to skip it?
-                            String moduleName = toModuleName(child);
-                            addSearchResult(result, moduleName, child, query);
-                            // stop if we're done searching
-                            if (query.getStart() != null
-                                    && query.getCount() != null
-                                    && ret.found >= query.getStart() + query.getCount()) {
-                                // we're done, but we want to see if there's at least one more result
-                                // to be found so we can tell clients there's a next page
-                                ret.stopSearching = true;
+                        // are we interested in this result or did we need to skip it?
+                        String moduleName = toModuleName(child);
+                        ModuleVersionDetails mvd = getSearchResult(moduleName, child, query);
+                        if (mvd != null) {
+                            if (query.getStart() == null || ret.found++ >= query.getStart()) {
+                                result.addResult(moduleName, mvd);
+                                // stop if we're done searching
+                                if (query.getStart() != null
+                                        && query.getCount() != null
+                                        && ret.found >= query.getStart() + query.getCount()) {
+                                    // we're done, but we want to see if there's at least one more result
+                                    // to be found so we can tell clients there's a next page
+                                    ret.stopSearching = true;
+                                }
                             }
                         }
                     }
@@ -585,7 +591,7 @@ public abstract class AbstractRepository implements Repository {
         }
     }
 
-    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, ModuleQuery query) {
+    private ModuleVersionDetails getSearchResult(String moduleName, Node namePart, ModuleQuery query) {
         SortedSet<String> versions = new TreeSet<String>();
         String[] suffixes = query.getType().getSuffixes();
         for (Node child : namePart.getChildren()) {
@@ -623,7 +629,7 @@ public abstract class AbstractRepository implements Repository {
         // sanity check
         if (versions.isEmpty()) {
             // We didn't  find any versions so we silently skip this result
-            return;
+            return null;
         }
         // find the latest version
         String latestVersion = versions.last();
@@ -647,7 +653,7 @@ public abstract class AbstractRepository implements Repository {
                             if (matchingMembers.isEmpty()) {
                                 // We haven't found a matching member in the module so we
                                 // just continue to the next suffix/artifact if any
-                                return;
+                                return null;
                             }
                             mvd.setMembers(matchingMembers);
                         }
@@ -658,14 +664,14 @@ public abstract class AbstractRepository implements Repository {
                 if (memberName != null) {
                     // We couldn't check the artifact for its members so we
                     // just exit without adding anything to the search result
-                    return;
+                    return null;
                 }
             }
         } else {
             if (memberName != null) {
                 // We haven't found an artifact to check for members so we
                 // just exit without adding anything to the search result
-                return;
+                return null;
             }
         }
         if (mvd == null) {
@@ -675,7 +681,7 @@ public abstract class AbstractRepository implements Repository {
         mvd.setRemote(root.isRemote());
         mvd.setOrigin(getDisplayString());
 
-        result.addResult(moduleName, mvd);
+        return mvd;
     }
 
     private Set<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
