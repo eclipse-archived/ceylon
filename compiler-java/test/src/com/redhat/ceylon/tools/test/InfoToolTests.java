@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
@@ -60,8 +60,59 @@ public class InfoToolTests extends AbstractToolTests {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
+        tool.run();
     }
-    
+
+    @Test
+    public void testJdkModule() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("java.base/"+JDK.JDK7.version));
+        tool.run();
+    }
+
+    @Test
+    public void testAetherModule() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core/2.1"));
+        tool.run();
+    }
+
+    @Test
+    public void testAetherModuleVersions() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core"));
+        tool.run();
+    }
+
+    @Test
+    public void testAetherModuleVersionSearch() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core/1"));
+        tool.run();
+    }
+
+    @Test
+    public void testRecursiveDependencies() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList("--dependency-depth=-1", "--show-incompatible", "io.cayla.web/0.3.0"));
+        tool.run();
+    }
+
+    @Test
+    public void testRecursiveDependenciesOverride() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList("--dependency-depth=-1", "--maven-overrides", getPackagePath()+"/overrides.xml", "--show-incompatible", "io.cayla.web/0.3.0"));
+        tool.run();
+    }
+
     @Test
     public void testOffline() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
