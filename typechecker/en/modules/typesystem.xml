@@ -1803,6 +1803,11 @@ interface NumberLiteral
                     position.</para>
                 </listitem>
                 <listitem>
+                    <para>Any constructor parameter type of the class is an invariant 
+                    position of the immediately containing type, but a contravariant 
+                    position of any outer containing type.</para>
+                </listitem>
+                <listitem>
                     <para>Any upper bound of a type parameter of the class is a contravariant 
                     position.</para>
                 </listitem>
