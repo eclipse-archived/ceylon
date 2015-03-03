@@ -46,4 +46,9 @@ public class SourcePositionsTests extends CompilerTests {
     public void testDoerLines(){
         compareWithJavaSourceWithLines("lines/doer");
     }
+    
+    @Test
+    public void testDefaultParameterLines(){
+        compareWithJavaSourceWithLines("lines/DefaultParameter");
+    }
 }

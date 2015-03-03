@@ -1,4 +1,6 @@
-Integer defaultedParameters(String s = "", Integer i = 0) {
+Integer defaultedParameters(
+    String s = "", 
+    Integer i = 0) {
     return i+s.size;
 }
 shared void defaultedParametersMain() {
