@@ -690,7 +690,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected1 = new ModuleDetails[]{
                 com_acme_helloworld,
         };
-        testSearchResultsMember("", Type.JVM, "com.acme.helloworld.hello_", true, false, expected1);
+        testSearchResultsMember("", Type.JVM, "com.acme.helloworld.hello", true, false, expected1);
         
         ModuleDetails[] expected2 = new ModuleDetails[]{
         };

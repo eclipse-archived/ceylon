@@ -347,7 +347,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", quoteMemberName(query)));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
@@ -431,7 +431,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", quoteMemberName(query)));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
@@ -576,7 +576,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", quoteMemberName(query)));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
@@ -671,5 +671,23 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         long realStart = start != null ? start : 0;
         long resultsAfterThisPage = realStart + resultCount;
         result.setHasMoreResults(resultsAfterThisPage < totalResults);
+    }
+
+    private String quoteMemberName(ModuleQuery query) {
+        String member = query.getMemberName();
+        if (!query.isMemberSearchPackageOnly() && Character.isLowerCase(memberName(member).charAt(0))) {
+            member += "_";
+        }
+        return JVMModuleUtil.quoteJavaKeywords(member);
+    }
+    
+    // Given a fully qualified member name returns the last part of the name
+    private static String memberName(String memberName) {
+        int p = memberName.lastIndexOf('.');
+        if (p >= 0) {
+            return memberName.substring(p + 1);
+        } else {
+            return memberName;
+        }
     }
 }
