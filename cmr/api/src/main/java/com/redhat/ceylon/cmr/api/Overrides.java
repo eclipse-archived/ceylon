@@ -146,6 +146,8 @@ public class Overrides {
         for (ModuleDependencyInfo dep : source.getDependencies()) {
             String depName = dep.getName();
             String depVersion = dep.getVersion();
+            boolean optional = dep.isOptional();
+            boolean export = dep.isExport();
             ArtifactContext ctx = new ArtifactContext(depName, depVersion);
             if((artifactOverrides != null && artifactOverrides.isRemoved(ctx))
                     || isRemoved(ctx))
@@ -156,13 +158,18 @@ public class Overrides {
             if(replacement != null){
                 depName = replacement.getName();
                 depVersion = replacement.getVersion();
+                ctx = replacement;
             }
             if(isVersionOverridden(ctx))
                 depVersion = getVersionOverride(ctx);
+            if(artifactOverrides != null){
+                if(artifactOverrides.isShareOverridden(ctx))
+                    export = artifactOverrides.isShared(ctx);
+                if(artifactOverrides.isOptionalOverridden(ctx))
+                    optional = artifactOverrides.isOptional(ctx);
+            }
 
-            result.add(new ModuleDependencyInfo(depName, depVersion,
-                    dep.isOptional(),
-                    dep.isExport()));
+            result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
         }
         String filter = source.getFilter();
         if(artifactOverrides != null){
@@ -202,6 +209,26 @@ public class Overrides {
                 if (filterNode != null && filterNode.getLength() > 0) {
                     Node node = filterNode.item(0);
                     ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
+                }
+                List<Element> shareArtifacts = getChildren(document.getDocumentElement(), "share");
+                for (Element share : shareArtifacts) {
+                    ArtifactContext context = getArtifactContext(share, true, interpolation);
+                    ao.addShareOverride(context, true);
+                }
+                List<Element> unshareArtifacts = getChildren(document.getDocumentElement(), "unshare");
+                for (Element unshare : unshareArtifacts) {
+                    ArtifactContext context = getArtifactContext(unshare, true, interpolation);
+                    ao.addShareOverride(context, false);
+                }
+                List<Element> optionalArtifacts = getChildren(document.getDocumentElement(), "optional");
+                for (Element optional : optionalArtifacts) {
+                    ArtifactContext context = getArtifactContext(optional, true, interpolation);
+                    ao.addOptionalOverride(context, true);
+                }
+                List<Element> requireArtifacts = getChildren(document.getDocumentElement(), "require");
+                for (Element require : requireArtifacts) {
+                    ArtifactContext context = getArtifactContext(require, true, interpolation);
+                    ao.addOptionalOverride(context, false);
                 }
             }
             List<Element> removedArtifacts = getChildren(document.getDocumentElement(), "remove");

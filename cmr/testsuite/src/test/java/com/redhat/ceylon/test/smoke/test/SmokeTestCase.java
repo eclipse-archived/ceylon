@@ -406,6 +406,30 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testOverridesShareImport() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesShareImport.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals("hello", dep.name());
+        Assert.assertEquals("1.0.0", dep.version());
+        Assert.assertEquals(ImportType.EXPORT, dep.importType());
+    }
+
+    @Test
+    public void testOverridesOptionalImport() throws Exception {
+        RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesOptionalImport.xml");
+        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals("hello", dep.name());
+        Assert.assertEquals("1.0.0", dep.version());
+        Assert.assertEquals(ImportType.OPTIONAL, dep.importType());
+    }
+
+    @Test
     public void testOverridesSet() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");

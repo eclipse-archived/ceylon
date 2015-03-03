@@ -16,7 +16,9 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -29,11 +31,39 @@ public class ArtifactOverrides {
     private ArtifactContext owner;
     private Set<DependencyOverride> add = new HashSet<>();
     private Set<DependencyOverride> remove = new HashSet<>();
+    private Map<String, Boolean> share = new HashMap<>();
+    private Map<String, Boolean> optional = new HashMap<>();
     private DependencyOverride replace;
     private String filter;
 
     public ArtifactOverrides(ArtifactContext owner) {
         this.owner = owner;
+    }
+
+    public void addShareOverride(ArtifactContext context, boolean share){
+        this.share.put(context.getName(), share);
+    }
+
+    public void addOptionalOverride(ArtifactContext context, boolean optional){
+        this.optional.put(context.getName(), optional);
+    }
+    
+    public boolean isShareOverridden(ArtifactContext context){
+        return share.containsKey(context.getName());
+    }
+    
+    public boolean isShared(ArtifactContext context){
+        Boolean ret = share.get(context.getName());
+        return ret != null && ret.booleanValue();
+    }
+
+    public boolean isOptionalOverridden(ArtifactContext context){
+        return optional.containsKey(context.getName());
+    }
+
+    public boolean isOptional(ArtifactContext context){
+        Boolean ret = optional.get(context.getName());
+        return ret != null && ret.booleanValue();
     }
 
     public void addOverride(DependencyOverride override) {
