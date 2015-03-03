@@ -613,7 +613,8 @@ public class Main {
                                         Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream);
+                // FIXME: support overrides
+                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, null);
                 if (moduleDependencies != null) {
                     Module module = new Module(name, version, moduleType, file);
                     for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
