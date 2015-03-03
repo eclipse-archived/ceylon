@@ -1,5 +1,7 @@
 package com.redhat.ceylon.cmr.api;
 
+import java.util.Arrays;
+
 public class ModuleQuery {
     protected String name;
     protected Type type;
@@ -31,6 +33,10 @@ public class ModuleQuery {
 
         public String[] getSuffixes() {
             return suffixes;
+        }
+        
+        public boolean includes(String... suffs) {
+            return Arrays.asList(suffixes).containsAll(Arrays.asList(suffs));
         }
     }
     

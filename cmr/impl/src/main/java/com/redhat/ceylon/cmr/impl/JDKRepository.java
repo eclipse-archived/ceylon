@@ -95,7 +95,7 @@ public class JDKRepository extends AbstractRepository {
         @Override
         public void completeModules(ModuleQuery query, ModuleSearchResult result) {
             // abort if not JVM
-            if (query.getType() != ModuleQuery.Type.JVM)
+            if (!query.getType().includes(ArtifactContext.JAR))
                 return;
             String name = query.getName();
             if (name == null)
@@ -119,7 +119,7 @@ public class JDKRepository extends AbstractRepository {
         @Override
         public void completeVersions(ModuleVersionQuery query, ModuleVersionResult result) {
             // abort if not JVM
-            if (query.getType() != ModuleQuery.Type.JVM)
+            if (!query.getType().includes(ArtifactContext.JAR))
                 return;
             if (query.getName() == null || !JDK_MODULES.contains(query.getName()))
                 return;
@@ -136,7 +136,7 @@ public class JDKRepository extends AbstractRepository {
         @Override
         public void searchModules(ModuleQuery query, ModuleSearchResult result) {
             // abort if not JVM
-            if (query.getType() != ModuleQuery.Type.JVM)
+            if (!query.getType().includes(ArtifactContext.JAR))
                 return;
             String name = query.getName();
             if (name == null)
