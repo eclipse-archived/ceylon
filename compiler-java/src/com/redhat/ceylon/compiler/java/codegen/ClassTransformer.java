@@ -948,7 +948,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if (!Decl.withinInterface(cls)
                 || !cls.isFormal()) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? daoThis : daoAbstract, cls, ctor);
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoThis() : daoAbstract, cls, ctor);
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
                     null,
@@ -1173,7 +1173,7 @@ public class ClassTransformer extends AbstractTransformer {
                         instantiatorDeclCb.method(instBuilder);
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(daoThis, cls, constructor).makeOverload(
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoThis(), cls, constructor).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 cls.getTypeParameters());
@@ -1189,9 +1189,9 @@ public class ClassTransformer extends AbstractTransformer {
                     MethodDefinitionBuilder overloadBuilder;
                     DefaultedArgumentConstructor dac;
                     if (constructor != null) {
-                        dac = new DefaultedArgumentConstructor(daoThis, classBuilder.addConstructor(), constructor);
+                        dac = new DefaultedArgumentConstructor(new DaoThis(), classBuilder.addConstructor(), constructor);
                     } else {
-                        dac = new DefaultedArgumentConstructor(daoThis, classBuilder.addConstructor(), cls);
+                        dac = new DefaultedArgumentConstructor(new DaoThis(), classBuilder.addConstructor(), cls);
                     }
                     overloadBuilder = dac.makeOverload(
                             paramList.getModel(),
@@ -1629,7 +1629,7 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.methods(transformMethod(method, null, methodDecl.getParameterLists(),
                     methodDecl,
                     true, method.isActual(), true, 
-                    List.of(body), daoThis, false));
+                    List.of(body), new DaoThis(), false));
         }
     }
     
@@ -2072,7 +2072,7 @@ public class ClassTransformer extends AbstractTransformer {
                             if (Strategy.hasDefaultParameterOverload(param)) {
                                 if ((method.isDefault() || method.isShared() && !method.isFormal())
                                         && Decl.equal(method, subMethod)) {
-                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(daoThis, MethodDefinitionBuilder.method(this, subMethod), typedMember)
+                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoThis(), MethodDefinitionBuilder.method(this, subMethod), typedMember)
                                         .makeOverload(
                                             subMethod.getParameterLists().get(0),
                                             param,
@@ -3239,7 +3239,7 @@ public class ClassTransformer extends AbstractTransformer {
                     true,
                     transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? daoSuper : daoThis,
+                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(),
                     !Strategy.defaultParameterMethodOnSelf(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
@@ -3255,7 +3255,7 @@ public class ClassTransformer extends AbstractTransformer {
                             true,
                             true,
                             null,
-                            daoCompanion,
+                            new DaoCompanion(),
                             false);   
                 } else {
                     companionDefs = transformMethod(def,
@@ -3263,7 +3263,7 @@ public class ClassTransformer extends AbstractTransformer {
                             false,
                             !model.isShared(),
                             transformMplBodyUnlessSpecifier(def, model, body),
-                            daoCompanion,
+                            new DaoCompanion(),
                             false);
                 }
             } else if (def instanceof Tree.MethodDefinition) {
@@ -3272,7 +3272,7 @@ public class ClassTransformer extends AbstractTransformer {
                         false,
                         !model.isShared(),
                         transformMplBodyUnlessSpecifier(def, model, body),
-                        daoCompanion,
+                        new DaoCompanion(),
                         false);
             } else {
                 throw BugException.unhandledNodeCase(def);
@@ -3373,7 +3373,7 @@ public class ClassTransformer extends AbstractTransformer {
                         || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
                     
                     if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
-                        DaoBody daoTrans = (body == null) ? daoAbstract : daoThis;
+                        DaoBody daoTrans = (body == null) ? daoAbstract : new DaoThis();
                         
                         MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, MethodDefinitionBuilder.method(this, methodModel), methodModel)
                             .makeOverload(
@@ -3425,7 +3425,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (createCanonical) {
                 // Creates method that redirects to the "canonical" method containing the actual body
-                MethodDefinitionBuilder overloadedMethod = new CanonicalMethod(daoThis, methodBuilder, methodModel)
+                MethodDefinitionBuilder overloadedMethod = new CanonicalMethod(new DaoThis(), methodBuilder, methodModel)
                     .makeOverload(
                         parameterList.getModel(),
                         null,
@@ -3740,6 +3740,7 @@ public class ClassTransformer extends AbstractTransformer {
      * to substitute defaulted arguments
      */
     private class DaoThis extends DaoBody {
+        @Override
         public void makeBody(DefaultedArgumentOverload overloaded,
                 MethodDefinitionBuilder overloadBuilder,
                 ParameterList parameterList,
@@ -3814,7 +3815,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-    final DaoThis daoThis = new DaoThis();
     
     /**
      * specialises {@link DaoThis} for transforming declarations for companion classes
@@ -3825,7 +3825,6 @@ public class ClassTransformer extends AbstractTransformer {
             return List.<JCExpression>nil();
         }
     }
-    final DaoCompanion daoCompanion = new DaoCompanion();
     
     /**
      * a transformation for an overloaded 
@@ -3862,7 +3861,6 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
         }
     }
-    final DaoSuper daoSuper = new DaoSuper();
     
     /**
      * A base class for transformations used for Ceylon declarations
@@ -3943,7 +3941,7 @@ public class ClassTransformer extends AbstractTransformer {
         protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
             final JCExpression methName = makeMethodName();
             return make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());            
+                    methName, args.toList());
         }
 
         /** Returns the qualiifier to use when invoking the default parameter value method */
