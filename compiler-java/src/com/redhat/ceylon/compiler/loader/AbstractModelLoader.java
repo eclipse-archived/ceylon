@@ -4542,8 +4542,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(Decl.isToplevel(decl)){
                     if(Decl.isValue(decl)){
                         firstCache = valueDeclarationsByName;
-                        if(((Value)decl).getTypeDeclaration().isAnonymous())
+                        TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
+                        if (typeDeclaration != null) {
+                            if(typeDeclaration.isAnonymous()) {
+                                secondCache = typeDeclarationsByName;
+                            }
+                        } else {
+                            // The value declaration has probably not been fully loaded yet.
+                            // => still try to clean the second cache also, just in case it is an anonymous object
                             secondCache = typeDeclarationsByName;
+                        }
                     }else if(Decl.isMethod(decl))
                         firstCache = valueDeclarationsByName;
                 }
