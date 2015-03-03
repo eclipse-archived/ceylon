@@ -2942,7 +2942,7 @@ public class ExpressionVisitor extends Visitor {
                                 tp.getName() + "' could not be inferred");
                     }
                     else {
-                        it = constrainInferredType(fun, tp, it);
+                        it = constrainInferredType(tp, it);
                     }
                     typeArgs.add(it);
                 }
@@ -2954,8 +2954,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedType constrainInferredType(Functional dec,
-            TypeParameter tp, ProducedType ta) {
+    private ProducedType constrainInferredType(TypeParameter tp, 
+            ProducedType ta) {
         //Note: according to the language spec we should only 
         //      do this for contravariant  parameters, but in
         //      fact it also helps for special cases like
