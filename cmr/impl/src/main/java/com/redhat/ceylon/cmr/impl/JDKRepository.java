@@ -97,17 +97,16 @@ public class JDKRepository extends AbstractRepository {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;
+            if (query.getMemberName() != null && !query.isMemberSearchPackageOnly()) {
+                // We don't support member searches, only package
+                return;
+            }
             String name = query.getName();
             if (name == null)
                 name = "";
             for (String module : JDK_MODULES) {
                 if (module.startsWith(name)) {
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
-                    mvd.setDoc(doc(module));
-                    mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
-                    mvd.setRemote(false);
-                    mvd.setOrigin(JAVA_ORIGIN);
-                    result.addResult(module, mvd);
+                    addResult(module, query, result);
                 }
             }
         }
@@ -138,6 +137,10 @@ public class JDKRepository extends AbstractRepository {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;
+            if (query.getMemberName() != null && !query.isMemberSearchPackageOnly()) {
+                // We don't support member searches, only package
+                return;
+            }
             String name = query.getName();
             if (name == null)
                 name = "";
@@ -156,13 +159,7 @@ public class JDKRepository extends AbstractRepository {
                         return;
                     }
                     if (query.getStart() == null || found++ >= query.getStart()) {
-                        // are we interested in this result or did we need to skip it?
-                        ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
-                        mvd.setDoc(doc(module));
-                        mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
-                        mvd.setRemote(false);
-                        mvd.setOrigin(JAVA_ORIGIN);
-                        result.addResult(module, mvd);
+                        addResult(module, query, result);
                         // stop if we're done searching
                         if (query.getStart() != null
                                 && query.getCount() != null
@@ -174,6 +171,32 @@ public class JDKRepository extends AbstractRepository {
                     }
                 }
             }
+        }
+        
+        private boolean addResult(String module, ModuleQuery query, ModuleSearchResult result) {
+            ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
+            mvd.setDoc(doc(module));
+            mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
+            mvd.setRemote(false);
+            mvd.setOrigin(JAVA_ORIGIN);
+            if (query.getMemberName() != null) {
+                Set<String> jdkMembers = JDKUtils.getJDKPackagesByModule(module);
+                if (jdkMembers == null) {
+                    jdkMembers = JDKUtils.getOracleJDKPackagesByModule(module);
+                    if (jdkMembers == null) {
+                        // Should not happen, but just in case
+                        return false;
+                    }
+                }
+                Set<String> matchedMembers = matchNames(jdkMembers, query, true);
+                if (matchedMembers.isEmpty()) {
+                    // No matching members were found
+                    return false;
+                }
+                mvd.setMembers(matchedMembers);
+            }
+            result.addResult(module, mvd);
+            return true;
         }
     }
 
