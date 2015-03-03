@@ -1578,7 +1578,7 @@ else {
             may or may not definitely initialize a value. Specify this!</para></comment>
             
             <para>If a function or value declaration is referenceable at a certain statement or 
-            declaration, it may additionally considered <emphasis>definitely initialized</emphasis> 
+            declaration, it may additionally be considered <emphasis>definitely initialized</emphasis> 
             at that statement or declaration.</para>
             
             <para>If a function declaration is definitely initialized at a certain statement or 
@@ -1596,6 +1596,9 @@ else {
                     statements from its declaration to the given statement or declaration.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>As an exception, a member of a class is not considered definitely initialized
+            within the <literal>extends</literal> clause of the class or of any of its constructors.</para>
             
             <para>If a value declaration is definitely initialized at a certain statement or 
             declaration if it is referenceable at that statement or declaration and:</para>
