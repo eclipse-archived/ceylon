@@ -724,6 +724,21 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlDependenciesNoOverride() throws IOException{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
+                "modules/overrides/module.ceylon", "modules/overrides/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+    }
+
+    @Test
+    public void testMdlDependenciesOverrideRemoveDep() throws IOException{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
+                "-maven-overrides", getPackagePath()+"/modules/overrides/overridesRemoveJavaBase.xml"/*, "-verbose:cmr"*/), 
+                "modules/overrides/module.ceylon", "modules/overrides/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+    }
+
+    @Test
     public void testMdlAetherMissingDependencies2() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
