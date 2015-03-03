@@ -306,7 +306,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         LegacyImporter importer = createImporter().moduleDescriptor(applyCwd(descriptor));
         if (!force || updateDescriptor) {
             try {
-                importer.loadModuleDescriptor();
+                importer.loadModuleDescriptor(module.getName(), module.getVersion());
             } catch (ImportJarException x) {
                 throw x;
             } catch (Exception x) {
