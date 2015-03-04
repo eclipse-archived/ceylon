@@ -2845,7 +2845,7 @@ public class ExpressionVisitor extends Visitor {
         if (term instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
-            visitInstantiationExpression(that, mte);
+            visitInvocationPrimary(that, mte);
             
         }
         if (primary instanceof Tree.ExtendedTypeExpression) {
@@ -2853,7 +2853,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void visitInstantiationExpression(Tree.InvocationExpression that,
+    private void visitInvocationPrimary(Tree.InvocationExpression that,
             Tree.StaticMemberOrTypeExpression mte) {
         
         if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
@@ -2863,7 +2863,7 @@ public class ExpressionVisitor extends Visitor {
             if (term instanceof Tree.StaticMemberOrTypeExpression) {
                 Tree.StaticMemberOrTypeExpression pmte = 
                         (Tree.StaticMemberOrTypeExpression) term;
-                visitInstantiationExpression(that, pmte);
+                visitInvocationPrimary(that, pmte);
             }
         }
         
