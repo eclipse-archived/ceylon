@@ -1628,7 +1628,7 @@ shared void checkObjectMemberReferences(){
     assert(`value obj.attribute`.container == `class obj`);
     
     assert(`obj.attribute`.declaration == `value obj.attribute`);
-    assert(`obj.attribute`.get() == 2);
+    assert(`obj.attribute`(obj).get() == 2);
     assert(is Class<Basic,Nothing> objectClass = `obj`.type);
     assert(is Class<Basic,Nothing> objectContainer = `obj.attribute`.container);
     assert(objectClass == objectContainer);
@@ -1637,7 +1637,7 @@ shared void checkObjectMemberReferences(){
     assert(`function obj.method`.container == `class obj`);
     
     assert(`obj.method<Integer>`.declaration == `function obj.method`);
-    assert(`obj.method<Integer>`(3) == 3);
+    assert(`obj.method<Integer>`(obj)(3) == 3);
     assert(is Class<Basic,Nothing> objectContainer2 = `obj.method<Integer>`.container);
     assert(objectClass == objectContainer2);
 
@@ -2046,6 +2046,7 @@ shared void run() {
     sandbox(bugC1210);
     sandbox(bugC1244);
     sandbox(bugC1523);
+    sandbox(bugC1998);
     sandbox(langbug539);
     sandbox(bugJ505);
     // ATTENTION!
