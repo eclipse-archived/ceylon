@@ -203,10 +203,10 @@ void literals<T>(){
     Type<Anything> tptype = `T`;
     
     ValueDeclaration objectAttribute = `value obj.attribute`;
-    Value<Integer> objectValue = `obj.attribute`;
+    Attribute<\Iobj,Integer> objectValue = `obj.attribute`;
 
     FunctionDeclaration objectMethod = `function obj.method`;
-    Function<Integer,[Integer]> objectFunction = `obj.method<Integer>`;
+    Method<\Iobj,Integer,[Integer]> objectFunction = `obj.method<Integer>`;
 }
 
 shared object obj {

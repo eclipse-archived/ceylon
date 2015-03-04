@@ -1103,4 +1103,10 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         assertErrors("bug19xx/Bug1997",
                 new CompilerError(21, "missing class body or aliased class reference"));
     }
+    
+    @Test
+    public void testBug1998() {
+        //compareWithJavaSource("bug19xx/Bug1998");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug19xx.run", "bug19xx/Bug1998.ceylon");
+    }
 }
