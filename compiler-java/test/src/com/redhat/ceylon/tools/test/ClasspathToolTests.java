@@ -36,7 +36,7 @@ import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
-public class ClassPathToolTests extends AbstractToolTests {
+public class ClasspathToolTests extends AbstractToolTests {
 
     @Test
     public void testNoArgs() throws Exception {
