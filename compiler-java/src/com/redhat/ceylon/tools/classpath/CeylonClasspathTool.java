@@ -26,9 +26,12 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
     public void run() throws Exception {
         setSystemProperties();
 
-        loadModule(ModuleUtil.moduleName(moduleNameOptVersion),
-        		moduleVersion(moduleNameOptVersion));
+        String module = ModuleUtil.moduleName(moduleNameOptVersion);
+        String version = ModuleUtil.moduleVersion(moduleNameOptVersion);
+        loadModule(module, version);
 
+        errorOnConflictingModule(module, version);
+        
         boolean once = true;
         for(ArtifactResult entry : this.loadedModules.values()){
             // since we even add missing modules there to avoid seeing them twice, let's skip them now

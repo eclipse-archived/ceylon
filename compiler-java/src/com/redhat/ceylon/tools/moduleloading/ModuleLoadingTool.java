@@ -3,6 +3,8 @@ package com.redhat.ceylon.tools.moduleloading;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -10,12 +12,18 @@ import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
+
+    protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
+    protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
 
 	public ModuleLoadingTool() {
 		super(ModuleLoadingMessages.RESOURCE_BUNDLE);
@@ -66,6 +74,14 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             loadedModules.put(key, null);
             return true;
         }
+        // remember which version we loaded
+        SortedSet<String> loadedVersions = loadedModuleVersions.get(name);
+        if(loadedVersions == null){
+            loadedVersions = new TreeSet<>(VersionComparator.INSTANCE);
+            loadedModuleVersions.put(name, loadedVersions);
+        }
+        loadedVersions.add(version);
+        
         RepositoryManager repositoryManager = getRepositoryManager();
         ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
@@ -87,5 +103,28 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         return true;
     }
 	
-	protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
+	protected void errorOnConflictingModule(String module, String version) throws IOException{
+	    boolean duplicate = false;
+	    for(Map.Entry<String, SortedSet<String>> entry : loadedModuleVersions.entrySet()){
+	        if(entry.getValue().size() > 1){
+	            duplicate = true;
+	            printDuplicateModuleErrorMessage(entry.getKey(), entry.getValue());
+	        }
+	    }
+	    if(duplicate)
+	        throw new ToolUsageError(Messages.msg(bundle, "module.conflict.error", module, version));
+	}
+
+    private void printDuplicateModuleErrorMessage(String name, SortedSet<String> versions) throws IOException {
+        StringBuilder err = new StringBuilder();
+        boolean first = true;
+        for(String version : versions){
+            if(first)
+                first = false;
+            else
+                err.append(", ");
+            err.append(version);
+        }
+        errorMsg("module.duplicate.error", name, err);
+    }
 }
