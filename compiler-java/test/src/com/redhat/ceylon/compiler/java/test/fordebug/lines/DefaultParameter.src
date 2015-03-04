@@ -8,14 +8,14 @@ public final class foo_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void foo() { // line 2
-        (
+    public static void foo() { // line 4
+        ( // line 1
             let
             {
                 long $ceylontmp$integer$0 = .com.redhat.ceylon.compiler.java.test.fordebug.lines.foo_.foo$integer(); // line 2
-                foo($ceylontmp$integer$0); // line 4
+                foo($ceylontmp$integer$0); // line 3
             }
-            returning null;
+            returning null; // line 1
         );
     }
     
