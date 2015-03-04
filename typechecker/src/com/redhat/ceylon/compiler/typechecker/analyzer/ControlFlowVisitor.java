@@ -283,6 +283,13 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        boolean e = beginStatementScope(true);
+        super.visit(that);
+        endStatementScope(e);
+    }
+    
+    @Override
     public void visit(Tree.Block that) {
         super.visit(that);
         that.setDefinitelyReturns(definitelyReturns);
