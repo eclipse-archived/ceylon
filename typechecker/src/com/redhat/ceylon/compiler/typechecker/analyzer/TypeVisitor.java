@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.checkForOuterTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
@@ -836,9 +835,7 @@ public class TypeVisitor extends Visitor {
         else {
             ProducedType outerType = 
                     scope.getDeclaringType(type);
-            if (checkForOuterTypeArguments(outerType, type, that)) {
-                visitSimpleType(that, outerType, type);
-            }
+            visitSimpleType(that, outerType, type);
         }
     }
     

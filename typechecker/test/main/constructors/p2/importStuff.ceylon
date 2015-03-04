@@ -17,5 +17,7 @@ void testImported() {
     @type:"Foo" value newfoo = New();
     @type:"Generic<String>" value gen = Generic<String>.Broken("");
     @type:"Generic<String>" value gen1 = Generic.Broken("");
-    @error @type:"unknown" value gen2 = Broken("");
+    @type:"Generic<String>" value gen2 = Broken("");
+    @error Broken gen3;
+    @error Generic gen4;
 }
