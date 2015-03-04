@@ -2956,14 +2956,20 @@ public class ExpressionVisitor extends Visitor {
         if (primary instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression pmte = 
                     (Tree.StaticMemberOrTypeExpression) primary;
-            if (mte.getStaticMethodReferencePrimary() && 
-                    !(pmte.getDeclaration() instanceof Constructor)) {
-                return getInferredTypeArgsForStaticReference(that, generic, 
-                        mte.getDeclaration());
+            Declaration declaration = pmte.getDeclaration();
+            if (mte.getStaticMethodReferencePrimary() &&
+                //Note: for a real static method reference
+                //      the declaration has not yet been 
+                //      resolved at this point (for a 
+                //      Constructor it always has been)
+                !(declaration instanceof Constructor ||
+                  declaration!=null && declaration.isStaticallyImportable())) {
+                return getInferredTypeArgsForStaticReference(that, 
+                        generic, mte.getDeclaration());
             }
             else {
-                return getInferredTypeArgsForReference(that, generic, 
-                        pmte.getDeclaration());
+                return getInferredTypeArgsForReference(that, 
+                        generic, declaration);
             }
         }
         return emptyList();

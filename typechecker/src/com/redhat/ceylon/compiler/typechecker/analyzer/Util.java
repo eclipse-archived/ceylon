@@ -740,7 +740,8 @@ public class Util {
                 return true;
             }
             if (that.getStaticMethodReference()) {
-                if (d.isStaticallyImportable() || (d instanceof Constructor)) {
+                if (d.isStaticallyImportable() || 
+                        d instanceof Constructor) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) that;
                     return isIndirectInvocation(qmte.getPrimary());

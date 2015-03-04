@@ -141,10 +141,11 @@ public class TypeVisitor extends Visitor {
     private void importAllMembers(TypeDeclaration importedType, 
             Set<String> ignoredMembers, ImportList til) {
         for (Declaration dec: importedType.getMembers()) {
-            if (dec.isShared() && dec.isStaticallyImportable() && 
+            if (dec.isShared() && 
+                    (dec.isStaticallyImportable() || dec instanceof Constructor) && 
                     !dec.isAnonymous() && 
                     !ignoredMembers.contains(dec.getName())) {
-                addWildcardImport(til, dec);
+                addWildcardImport(til, dec, importedType);
             }
         }
     }
@@ -155,6 +156,17 @@ public class TypeVisitor extends Visitor {
             i.setAlias(dec.getName());
             i.setDeclaration(dec);
             i.setWildcardImport(true);
+            addWildcardImport(il, dec, i);
+        }
+    }
+    
+    private void addWildcardImport(ImportList il, Declaration dec, TypeDeclaration td) {
+        if (!hidesToplevel(dec)) {
+            Import i = new Import();
+            i.setAlias(dec.getName());
+            i.setDeclaration(dec);
+            i.setWildcardImport(true);
+            i.setTypeDeclaration(td);
             addWildcardImport(il, dec, i);
         }
     }
