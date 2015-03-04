@@ -69,7 +69,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private Appendable out = System.out;
     private Appendable error = System.err;
     
-    private ResourceBundle bundle;
+    protected ResourceBundle bundle;
     
     private static final List<String> EMPTY_STRINGS = new ArrayList<String>(0);
     private static final List<URI> EMPTY_URIS = new ArrayList<URI>(0);
