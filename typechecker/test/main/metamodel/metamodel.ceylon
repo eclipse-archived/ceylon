@@ -336,6 +336,12 @@ void meta() {
     @error
     value cd8 = `Foo<Object>.Bar<List>`;
     
+    @type:"Attribute<String|Integer,String,Nothing>" 
+    value ctm1 = `<String|Integer>.string`;
+    
+    @type:"Attribute<Sequential<String>,Integer,Nothing>" 
+    value ctm2 = `String[].size`;
+    
     @type:"Value<Basic,Nothing>" value p = `process`; 
     
     @error value tparam = `given Map.Item`;
@@ -390,5 +396,24 @@ void testImplicitRefs() {
     } 
     @error value int = `interface`; 
     @error value clazz = `class`; 
+}
+
+object foo {
+    shared object bar {
+        shared class Bar() {
+            shared String name = "Gavin";
+            shared class Baz<T>(T t) {}
+        }
+    }
+}
+
+shared void testObjectMetamodelRefs() {
+    ClassDeclaration cd = `class foo.bar.Bar`;
+    ValueDeclaration vd = `value foo.bar.Bar.name`;
+    Value<Basic,Nothing> vbn = `foo.bar`;
+    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `foo.bar.Bar.name`;
+    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,Empty> it1 = `foo.bar.Bar`;
+    MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
+            = `foo.bar.Bar.Baz<String>`;
 }
 

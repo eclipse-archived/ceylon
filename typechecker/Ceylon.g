@@ -80,7 +80,7 @@ compilationUnit returns [CompilationUnit compilationUnit]
     @init { $compilationUnit = new CompilationUnit(null);
             ImportList importList = new ImportList(null); 
             $compilationUnit.setImportList(importList); }
-    : ( 
+    : (
         ca=compilerAnnotations
         SEMICOLON
         { $compilationUnit.getCompilerAnnotations().addAll($ca.annotations); }
@@ -3942,6 +3942,79 @@ impliedVariable returns [Variable variable]
         $variable = v; }
     ;
 
+metaType returns [StaticType type]
+    :
+    ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
+      (
+        tna1=typeNameWithArguments 
+        { BaseType bt = new BaseType(null);
+          bt.setIdentifier($tna1.identifier);
+          bt.setTypeArgumentList($tna1.typeArgumentList);
+          $type = bt; }
+      | 
+        mn1=memberName 
+        { BaseType obt = new BaseType(null);
+          obt.setIdentifier($mn1.identifier);
+          $type = obt; }
+      )
+      (
+        mo1=MEMBER_OP mn2=memberName
+        { QualifiedType oqt = new QualifiedType($mo1);
+          oqt.setIdentifier($mn2.identifier);
+          oqt.setOuterType($type);
+          $type = oqt; }
+      |
+        mo2=MEMBER_OP tna2=typeNameWithArguments
+        { QualifiedType qt = new QualifiedType($mo2);
+          qt.setIdentifier($tna2.identifier);
+          qt.setTypeArgumentList($tna2.typeArgumentList);
+          qt.setOuterType($type);
+          $type = qt; }
+      )*
+    |
+      t=type
+      { $type=$t.type; }
+    )
+    ; 
+
+metaTypeQualifier returns [StaticType type]
+    :
+    ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
+      (
+        tna1=typeNameWithArguments 
+        { BaseType bt = new BaseType(null);
+          bt.setIdentifier($tna1.identifier);
+          bt.setTypeArgumentList($tna1.typeArgumentList);
+          $type = bt; }
+      | 
+        mn1=memberName 
+        { BaseType obt = new BaseType(null);
+          obt.setIdentifier($mn1.identifier);
+          $type = obt; }
+      )
+      mo1=MEMBER_OP
+      (
+        mn2=memberName
+        { QualifiedType oqt = new QualifiedType(null);
+          oqt.setIdentifier($mn2.identifier);
+          oqt.setOuterType($type);
+          $type = oqt; }
+        mo2=MEMBER_OP
+      |
+        tna2=typeNameWithArguments
+        { QualifiedType qt = new QualifiedType(null);
+          qt.setIdentifier($tna2.identifier);
+          qt.setTypeArgumentList($tna2.typeArgumentList);
+          qt.setOuterType($type);
+          $type = qt; }
+        mo3=MEMBER_OP
+      )*
+    |
+      t=type
+      { $type=$t.type; }
+      MEMBER_OP
+    )
+    ; 
 
 metaLiteral returns [MetaLiteral meta]
     @init { TypeLiteral tl=null; 
@@ -3958,215 +4031,175 @@ metaLiteral returns [MetaLiteral meta]
     : d1=BACKTICK
       { tl = new TypeLiteral($d1);
         $meta = tl; }
-    (
-      MODULE
-      { m = new ModuleLiteral($d1);
-        m.setEndToken($MODULE); 
-        $meta=m; }
-      (
-        p1=packagePath
-        { m.setImportPath($p1.importPath); 
-          m.setEndToken(null); }
-      )?
-    |
-      PACKAGE
-      { p = new PackageLiteral($d1);
-        p.setEndToken($PACKAGE); 
-        $meta=p; }
-      (
-        p2=packagePath
-        { p.setImportPath($p2.importPath); 
-          p.setEndToken(null); }
-      )?
-    |
-      CLASS_DEFINITION
-      { c = new ClassLiteral($d1);
-        c.setEndToken($CLASS_DEFINITION); 
-        $meta=c; }
-      (
-        ct=type
-        { c.setType($ct.type); 
-          c.setEndToken(null); }
-      |
-        ot=memberName
-        { BaseMemberExpression bme = new BaseMemberExpression(null);
-          bme.setIdentifier($ot.identifier);
-          bme.setTypeArguments(new InferredTypeArguments(null));
-          c.setObjectExpression(bme); }
-      )?
-    |
-      NEW
-      { n = new NewLiteral($d1);
-        n.setEndToken($NEW); 
-        $meta=n; }
-      (
-        nt=type
-        { n.setType($nt.type); 
-          n.setEndToken(null); }
-      )?
-    |
-      INTERFACE_DEFINITION
-      { i = new InterfaceLiteral($d1);
-        i.setEndToken($INTERFACE_DEFINITION); 
-        $meta=i; }
-      (
-        it=type
-        { i.setType($it.type); 
-          i.setEndToken(null); }
-      )?
-    |
-      ALIAS
-      { a = new AliasLiteral($d1);
-        a.setEndToken($ALIAS); 
-        $meta=a; }
-      (
-        at=type
-        { a.setType($at.type); 
-          a.setEndToken(null); }
-      )?
-    |
-      TYPE_CONSTRAINT
-      { tp = new TypeParameterLiteral($d1);
-        tp.setEndToken($TYPE_CONSTRAINT); 
-        $meta=tp; }
-      (
-        tt=type
-        { tp.setType($tt.type); 
-        tp.setEndToken(null); }
-      )?
-    |
-      (
-        VALUE_MODIFIER
-        { v = new ValueLiteral($d1);
-          v.setEndToken($VALUE_MODIFIER); 
-          $meta=v; }
-      |
-        OBJECT_DEFINITION
-        { v = new ValueLiteral($d1);
-          v.setEndToken($OBJECT_DEFINITION);
-          v.setBroken(true); 
-          $meta=v; }
-      )
-      (
-        (
-          vt=type
-          { v.setType($vt.type); 
-            v.setEndToken(null); }
-        |
-          vom=memberName
-          { BaseMemberExpression bme = new BaseMemberExpression(null);
-            bme.setIdentifier($vom.identifier);
-            bme.setTypeArguments(new InferredTypeArguments(null));
-            v.setObjectExpression(bme);
-            v.setEndToken(null); }
-        )
-        vo=MEMBER_OP
-        { v.setEndToken($vo); }
-      )?
-      (
-        vm=memberName
-        { v.setIdentifier($vm.identifier); 
-          v.setEndToken(null); }
-        (
-          //recognize type argument list here even though illegal 
-          ta6=typeArguments
-          { v.setTypeArgumentList($ta6.typeArgumentList); }
-        )?
-      )?
-    |
-      FUNCTION_MODIFIER
-      { f = new FunctionLiteral($d1);
-        f.setEndToken($FUNCTION_MODIFIER); 
-        $meta=f; }
-      (
-        (
-          ft=type
-          { f.setType($ft.type); 
-            f.setEndToken(null); }
-        |
-          fom=memberName
-          { BaseMemberExpression bme = new BaseMemberExpression(null);
-            bme.setIdentifier($fom.identifier);
-            bme.setTypeArguments(new InferredTypeArguments(null));
-            f.setObjectExpression(bme);
-            f.setEndToken(null); }
-        )
-        fo=MEMBER_OP
-        { f.setEndToken($fo); }
-      )?
-      (
-        fm=memberName
-        { f.setIdentifier($fm.identifier); 
-          f.setEndToken(null); }
-        (
-          //recognize type argument list here even though illegal 
-          ta5=typeArguments
-          { f.setTypeArgumentList($ta5.typeArgumentList); }
-        )?
-      )?
-    |
-      (abbreviatedType MEMBER_OP) =>
-      { ml = new MemberLiteral($d1);
-        $meta = ml; }
-      at=abbreviatedType
-      { ml.setType($at.type); }
-      o1=MEMBER_OP
-      { ml.setEndToken($o1); }
-      m1=memberName
-      { ml.setIdentifier($m1.identifier); 
-        ml.setEndToken(null); }
-      (
-        ta1=typeArguments
-        { ml.setTypeArgumentList($ta1.typeArgumentList); }
-      )?
-    | 
-      (groupedType MEMBER_OP) =>
-      { ml = new MemberLiteral($d1);
-        $meta = ml; }
-      gt=groupedType
-      { ml.setType($gt.type); }
-      o2=MEMBER_OP
-      { ml.setEndToken($o2); }
-      m2=memberName
-      { ml.setIdentifier($m2.identifier); 
-        ml.setEndToken(null); }
-      (
-        ta2=typeArguments
-        { ml.setTypeArgumentList($ta2.typeArgumentList); }
-      )?
-    |
-      (memberName MEMBER_OP) =>
-      { ml = new MemberLiteral($d1);
-        $meta = ml; }
-      mn=memberName
-      { BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setIdentifier($mn.identifier);
-        bme.setTypeArguments(new InferredTypeArguments(null));
-        ml.setObjectExpression(bme); }
-      o1=MEMBER_OP
-      { ml.setEndToken($o1); }
-      m4=memberName
-      { ml.setIdentifier($m4.identifier); 
-        ml.setEndToken(null); }
-      (
-        ta1=typeArguments
-        { ml.setTypeArgumentList($ta1.typeArgumentList); }
-      )?
-    | 
-      t=type
-      { tl = new TypeLiteral($d1);
-        $meta = tl;
-        tl.setType($t.type); }
-    | 
-      m3=memberName
-      { ml = new MemberLiteral($d1);
-        $meta = ml;
-        ml.setIdentifier($m3.identifier); }
-      (
-        ta3=typeArguments
-        { ml.setTypeArgumentList($ta3.typeArgumentList); }
-      )?
-    )
+	    (
+	      MODULE
+	      { m = new ModuleLiteral($d1);
+	        m.setEndToken($MODULE); 
+	        $meta=m; }
+	      (
+	        p1=packagePath
+	        { m.setImportPath($p1.importPath); 
+	          m.setEndToken(null); }
+	      )?
+	    |
+	      PACKAGE
+	      { p = new PackageLiteral($d1);
+	        p.setEndToken($PACKAGE); 
+	        $meta=p; }
+	      (
+	        p2=packagePath
+	        { p.setImportPath($p2.importPath); 
+	          p.setEndToken(null); }
+	      )?
+	    |
+	      CLASS_DEFINITION
+	      { c = new ClassLiteral($d1);
+	        c.setEndToken($CLASS_DEFINITION); 
+	        $meta=c; }
+	      (
+	        ct=metaType
+	        { c.setType($ct.type); 
+	          c.setEndToken(null); }
+	      )?
+	    |
+	      NEW
+	      { n = new NewLiteral($d1);
+	        n.setEndToken($NEW); 
+	        $meta=n; }
+	      (
+	        nt=metaType
+	        { n.setType($nt.type); 
+	          n.setEndToken(null); }
+	      )?
+	    |
+	      INTERFACE_DEFINITION
+	      { i = new InterfaceLiteral($d1);
+	        i.setEndToken($INTERFACE_DEFINITION); 
+	        $meta=i; }
+	      (
+	        it=metaType
+	        { i.setType($it.type); 
+	          i.setEndToken(null); }
+	      )?
+	    |
+	      ALIAS
+	      { a = new AliasLiteral($d1);
+	        a.setEndToken($ALIAS); 
+	        $meta=a; }
+	      (
+	        at=metaType
+	        { a.setType($at.type); 
+	          a.setEndToken(null); }
+	      )?
+	    |
+	      TYPE_CONSTRAINT
+	      { tp = new TypeParameterLiteral($d1);
+	        tp.setEndToken($TYPE_CONSTRAINT); 
+	        $meta=tp; }
+	      (
+	        tt=metaType
+	        { tp.setType($tt.type); 
+	        tp.setEndToken(null); }
+	      )?
+	    |
+	      (
+	        VALUE_MODIFIER
+	        { v = new ValueLiteral($d1);
+	          v.setEndToken($VALUE_MODIFIER); 
+	          $meta=v; }
+	      |
+	        OBJECT_DEFINITION
+	        { v = new ValueLiteral($d1);
+	          v.setEndToken($OBJECT_DEFINITION);
+	          v.setBroken(true); 
+	          $meta=v; }
+	      )
+	      (
+	        vt=metaTypeQualifier
+	        { v.setType($vt.type); 
+	          v.setEndToken(null); }
+	      )?
+	      (
+	        vm=memberName
+	        { v.setIdentifier($vm.identifier); 
+	          v.setEndToken(null); }
+	        (
+	          //recognize type argument list here even though illegal 
+	          ta6=typeArguments
+	          { v.setTypeArgumentList($ta6.typeArgumentList); }
+	        )?
+	      )?
+	    |
+	      FUNCTION_MODIFIER
+	      { f = new FunctionLiteral($d1);
+	        f.setEndToken($FUNCTION_MODIFIER); 
+	        $meta=f; }
+	      (
+	        ft=metaTypeQualifier
+	        { f.setType($ft.type); 
+	          f.setEndToken(null); }
+	      )?
+	      (
+	        fm=memberName
+	        { f.setIdentifier($fm.identifier); 
+	          f.setEndToken(null); }
+	        (
+	          //recognize type argument list here even though illegal 
+	          ta5=typeArguments
+	          { f.setTypeArgumentList($ta5.typeArgumentList); }
+	        )?
+	      )?
+	    |
+	      (abbreviatedType MEMBER_OP) =>
+	      { ml = new MemberLiteral($d1);
+	        $meta = ml; }
+	      at=abbreviatedType
+	      { ml.setType($at.type); }
+	      o1=MEMBER_OP
+	      { ml.setEndToken($o1); }
+	      m1=memberName
+	      { ml.setIdentifier($m1.identifier); 
+	        ml.setEndToken(null); }
+	      (
+	        ta1=typeArguments
+	        { ml.setTypeArgumentList($ta1.typeArgumentList); }
+	      )?
+	    | 
+	      (groupedType MEMBER_OP) =>
+	      { ml = new MemberLiteral($d1);
+	        $meta = ml; }
+	      gt=groupedType
+	      { ml.setType($gt.type); }
+	      o2=MEMBER_OP
+	      { ml.setEndToken($o2); }
+	      m2=memberName
+	      { ml.setIdentifier($m2.identifier); 
+	        ml.setEndToken(null); }
+	      (
+	        ta2=typeArguments
+	        { ml.setTypeArgumentList($ta2.typeArgumentList); }
+	      )?
+	    |
+	      (metaTypeQualifier? memberName) =>
+	      { ml = new MemberLiteral($d1);
+	        $meta = ml; }
+	      (
+	        mtq=metaTypeQualifier
+	        { ml.setType($mtq.type); }
+	      )?
+	      m4=memberName
+	      { ml.setIdentifier($m4.identifier); 
+	        ml.setEndToken(null); }
+	      (
+	        ta1=typeArguments
+	        { ml.setTypeArgumentList($ta1.typeArgumentList); }
+	      )?
+	    | 
+	      { tl = new TypeLiteral($d1);
+	        $meta = tl; }
+	      mtq=metaType
+	      { tl.setType($mtq.type); }
+	    )
       d2=BACKTICK
       { $meta.setEndToken($d2); }
     ;
