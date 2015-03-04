@@ -214,6 +214,23 @@ public abstract class AbstractTransformer implements Transformation {
         return make();
     }
     
+    public Factory at(Node node, Token token) {
+        if (token == null) {
+            make.at(Position.NOPOS);
+            
+        }
+        else {
+            if (token != null) {
+                int tokenStartPosition = getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine();
+                make().at(tokenStartPosition);
+                if (javaPositionsRetriever != null) {
+                    javaPositionsRetriever.addCeylonNode(tokenStartPosition, node);
+                }
+            }
+        }
+        return make();
+    }
+    
     /**
      * An AutoCloseable for restoring a captured source position
      */

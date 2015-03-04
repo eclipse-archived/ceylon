@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.antlr.runtime.Token;
+
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -3745,24 +3747,12 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private class DaoThis extends DaoBody {
         private final Tree.Declaration declTree;
-        private final Node firstExecutable;
+        private final Token firstExecutable;
         private final Tree.ParameterList pl;
 
         public DaoThis(Tree.Declaration invocation, Tree.ParameterList pl) {
             this.declTree = invocation;
-            if (invocation instanceof Tree.MethodDefinition) {
-                this.firstExecutable = ((Tree.MethodDefinition)invocation).getBlock();
-            } else if (invocation instanceof Tree.MethodDeclaration) {
-                this.firstExecutable = ((Tree.MethodDeclaration)invocation).getSpecifierExpression();
-            } else  if (invocation instanceof Tree.ClassDefinition) {
-                this.firstExecutable = ((Tree.ClassDefinition)invocation).getClassBody();
-            } else if (invocation instanceof Tree.ClassDeclaration) {
-                this.firstExecutable = ((Tree.ClassDeclaration)invocation).getClassSpecifier();
-            } else if (invocation instanceof Tree.Constructor) {
-                this.firstExecutable = ((Tree.Constructor)invocation).getBlock();
-            } else {
-                this.firstExecutable = null;
-            }
+            this.firstExecutable = pl != null ? pl.getEndToken() : null;
             this.pl = pl;
         }
         @Override
@@ -3832,7 +3822,7 @@ public class ClassTransformer extends AbstractTransformer {
                 MethodDefinitionBuilder overloadBuilder, 
                 ListBuffer<JCExpression> args, 
                 ListBuffer<JCStatement> vars) {
-            at(firstExecutable);
+            at(pl, firstExecutable);
             JCExpression invocation = overloaded.makeInvocation(args);
             Declaration model = overloaded.getModel();// TODO Yuk
             if (!isVoid(model)
@@ -3846,7 +3836,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 overloadBuilder.body(make().Return(invocation));
             } else {
-                vars.append(at(firstExecutable).Exec(invocation));
+                vars.append(at(pl, firstExecutable).Exec(invocation));
                 invocation = at(declTree).LetExpr(vars.toList(), makeNull());
                 overloadBuilder.body(make().Exec(invocation));
             }
