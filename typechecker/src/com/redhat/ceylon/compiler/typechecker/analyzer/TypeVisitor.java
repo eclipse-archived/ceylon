@@ -1784,10 +1784,13 @@ public class TypeVisitor extends Visitor {
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) p;
-            if (p instanceof Tree.BaseTypeExpression || 
-                p instanceof Tree.QualifiedTypeExpression) {
+            if (mte instanceof Tree.BaseTypeExpression || 
+                mte instanceof Tree.QualifiedTypeExpression) {
                 that.setStaticMethodReference(true);
                 mte.setStaticMethodReferencePrimary(true);
+                if (that.getDirectlyInvoked()) {
+                    mte.setDirectlyInvoked(true);
+                }
             }
         }
         if (p instanceof Tree.Package) {
@@ -1797,13 +1800,13 @@ public class TypeVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.InvocationExpression that) {
-        super.visit(that);
         Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) p;
             mte.setDirectlyInvoked(true);
         }
+        super.visit(that);
     }
 
     private static Tree.SpecifierOrInitializerExpression getSpecifier(

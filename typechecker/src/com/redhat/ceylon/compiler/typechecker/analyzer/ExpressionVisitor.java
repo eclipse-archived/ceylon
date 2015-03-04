@@ -2845,69 +2845,7 @@ public class ExpressionVisitor extends Visitor {
         if (term instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
-            Tree.TypeArguments tas = mte.getTypeArguments();
-            
-            if (term instanceof Tree.BaseTypeExpression) {
-                Tree.BaseTypeExpression bte = 
-                        (Tree.BaseTypeExpression) term;
-                TypeDeclaration type = 
-                        resolveBaseTypeExpression(bte, true);
-                if (type!=null) {
-                    List<ProducedType> typeArgs = 
-                            inferTypeArguments(that, type, tas, null);
-                    visitBaseTypeExpression(bte, type, typeArgs, tas);
-                }
-            }
-            
-            else if (term instanceof Tree.QualifiedTypeExpression) {
-                Tree.QualifiedTypeExpression qte = 
-                        (Tree.QualifiedTypeExpression) term;
-                TypeDeclaration type = 
-                        resolveQualifiedTypeExpression(qte, true);
-                if (type!=null) {
-                    ProducedType qt = 
-                            qte.getPrimary().getTypeModel().resolveAliases();
-                    List<ProducedType> typeArgs = 
-                            inferTypeArguments(that, type, tas, qt);
-                    if (qte.getPrimary() instanceof Tree.Package) {
-                        visitBaseTypeExpression(qte, type, typeArgs, tas);
-                    }
-                    else {
-                        visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
-                    }
-                }
-            }
-            
-            else if (term instanceof Tree.BaseMemberExpression) {
-                Tree.BaseMemberExpression bme = 
-                        (Tree.BaseMemberExpression) term;
-                TypedDeclaration base = 
-                        resolveBaseMemberExpression(bme, true);
-                if (base!=null) {
-                    List<ProducedType> typeArgs = 
-                            inferTypeArguments(that, base, tas, null);
-                    visitBaseMemberExpression(bme, base, typeArgs, tas);
-                }
-            }
-            
-            else if (term instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qme = 
-                        (Tree.QualifiedMemberExpression) term;
-                TypedDeclaration member = 
-                        resolveQualifiedMemberExpression(qme, true);
-                if (member!=null) {
-                    ProducedType qt = 
-                            qme.getPrimary().getTypeModel().resolveAliases();
-                    List<ProducedType> typeArgs = 
-                            inferTypeArguments(that, member, tas, qt);
-                    if (qme.getPrimary() instanceof Tree.Package) {
-                        visitBaseMemberExpression(qme, member, typeArgs, tas);
-                    }
-                    else {
-                        visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
-                    }
-                }
-            }
+            visitInstantiationExpression(that, mte);
             
         }
         if (primary instanceof Tree.ExtendedTypeExpression) {
@@ -2915,29 +2853,138 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private List<ProducedType> inferTypeArguments(
+    private void visitInstantiationExpression(Tree.InvocationExpression that,
+            Tree.StaticMemberOrTypeExpression mte) {
+        
+        if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) mte;
+            Tree.Term term = unwrapExpressionUntilTerm(qmte.getPrimary());
+            if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression pmte = 
+                        (Tree.StaticMemberOrTypeExpression) term;
+                visitInstantiationExpression(that, pmte);
+            }
+        }
+        
+        Tree.TypeArguments tas = mte.getTypeArguments();
+        if (mte instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression bte = 
+                    (Tree.BaseTypeExpression) mte;
+            TypeDeclaration type = 
+                    resolveBaseTypeExpression(bte, true);
+            if (type!=null) {
+                List<ProducedType> typeArgs = 
+                        getOrInferTypeArguments(that, type, mte, null);
+                visitBaseTypeExpression(bte, type, typeArgs, tas);
+            }
+        }
+        
+        else if (mte instanceof Tree.QualifiedTypeExpression) {
+            Tree.QualifiedTypeExpression qte = 
+                    (Tree.QualifiedTypeExpression) mte;
+            TypeDeclaration type = 
+                    resolveQualifiedTypeExpression(qte, true);
+            if (type!=null) {
+                ProducedType qt = 
+                        qte.getPrimary().getTypeModel().resolveAliases();
+                List<ProducedType> typeArgs = 
+                        getOrInferTypeArguments(that, type, mte, qt);
+                if (qte.getPrimary() instanceof Tree.Package) {
+                    visitBaseTypeExpression(qte, type, typeArgs, tas);
+                }
+                else {
+                    visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
+                }
+            }
+        }
+        
+        else if (mte instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = 
+                    (Tree.BaseMemberExpression) mte;
+            TypedDeclaration base = 
+                    resolveBaseMemberExpression(bme, true);
+            if (base!=null) {
+                List<ProducedType> typeArgs = 
+                        getOrInferTypeArguments(that, base, mte, null);
+                visitBaseMemberExpression(bme, base, typeArgs, tas);
+            }
+        }
+        
+        else if (mte instanceof Tree.QualifiedMemberExpression) {
+            Tree.QualifiedMemberExpression qme = 
+                    (Tree.QualifiedMemberExpression) mte;
+            TypedDeclaration member = 
+                    resolveQualifiedMemberExpression(qme, true);
+            if (member!=null) {
+                ProducedType qt = 
+                        qme.getPrimary().getTypeModel().resolveAliases();
+                List<ProducedType> typeArgs = 
+                        getOrInferTypeArguments(that, member, mte, qt);
+                if (qme.getPrimary() instanceof Tree.Package) {
+                    visitBaseMemberExpression(qme, member, typeArgs, tas);
+                }
+                else {
+                    visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
+                }
+            }
+        }
+    }
+
+    private List<ProducedType> getOrInferTypeArguments(
             Tree.InvocationExpression that, Declaration dec,
-            Tree.TypeArguments tas, ProducedType qt) {
-        List<ProducedType> typeArgs = 
-                tas instanceof Tree.InferredTypeArguments ?
-                        getInferedTypeArguments(that, dec) :
-                        getTypeArguments(tas, getTypeParameters(dec), qt);
-        tas.setTypeModels(typeArgs);
-        return typeArgs;
+            Tree.StaticMemberOrTypeExpression term, ProducedType qt) {
+        if (dec instanceof Generic) {
+            Generic generic = (Generic) dec;
+            Tree.TypeArguments tas = term.getTypeArguments();
+            List<ProducedType> typeArgs = 
+                    tas instanceof Tree.InferredTypeArguments ?
+                            getInferredTypeArguments(that, generic, term) :
+                            getTypeArguments(tas, 
+                                    getTypeParameters(dec), qt);
+            tas.setTypeModels(typeArgs);
+            return typeArgs;
+        }
+        else {
+            return emptyList();
+        }
     }
     
-    private List<ProducedType> getInferedTypeArguments(Tree.InvocationExpression that, 
-            Declaration dec) {
-        if (dec instanceof Functional) {
-            Functional fun = (Functional) dec;
-            List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-            if (!fun.getParameterLists().isEmpty()) {
-                ParameterList parameters = fun.getParameterLists().get(0);
-                for (TypeParameter tp: fun.getTypeParameters()) {
+    private List<ProducedType> getInferredTypeArguments(Tree.InvocationExpression that, 
+            Generic generic, Tree.StaticMemberOrTypeExpression mte) {
+        Tree.Term primary = unwrapExpressionUntilTerm(that.getPrimary());
+        if (primary instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression pmte = 
+                    (Tree.StaticMemberOrTypeExpression) primary;
+            if (mte.getStaticMethodReferencePrimary() && 
+                    !(pmte.getDeclaration() instanceof Constructor)) {
+                return getInferredTypeArgsForStaticReference(that, generic, 
+                        mte.getDeclaration());
+            }
+            else {
+                return getInferredTypeArgsForReference(that, generic, 
+                        pmte.getDeclaration());
+            }
+        }
+        return emptyList();
+    }
+
+    private List<ProducedType> getInferredTypeArgsForReference(
+            Tree.InvocationExpression that, Generic generic,
+            Declaration declaration) {
+        if (declaration instanceof Functional) {
+            Functional functional = 
+                    (Functional) declaration;
+            List<ParameterList> parameters = 
+                    functional.getParameterLists();
+            if (!parameters.isEmpty()) {
+                List<ProducedType> typeArgs = 
+                        new ArrayList<ProducedType>();
+                for (TypeParameter tp: generic.getTypeParameters()) {
                     ProducedType it = inferTypeArgument(that, 
                             that.getPrimary().getTypeModel(),
-                            tp, parameters);
-                    if (it.containsUnknowns()) {
+                            tp, parameters.get(0));
+                    if (it==null || it.containsUnknowns()) {
                         that.addError("could not infer type argument from given arguments: type parameter '" + 
                                 tp.getName() + "' could not be inferred");
                     }
@@ -2946,12 +2993,45 @@ public class ExpressionVisitor extends Visitor {
                     }
                     typeArgs.add(it);
                 }
+                return typeArgs;
             }
-            return typeArgs;
         }
-        else {
-            return emptyList();
+        return emptyList();
+    }
+
+    private List<ProducedType> getInferredTypeArgsForStaticReference(
+            Tree.InvocationExpression that, Generic generic,
+            Declaration type) {
+        if (type instanceof TypeDeclaration) {
+            Tree.PositionalArgumentList pal = 
+                    that.getPositionalArgumentList();
+            if (pal!=null && !pal.getPositionalArguments().isEmpty()) {
+                Tree.PositionalArgument arg = 
+                        pal.getPositionalArguments().get(0);
+                if (arg!=null) {
+                    List<ProducedType> typeArgs = 
+                            new ArrayList<ProducedType>();
+                    for (TypeParameter tp: generic.getTypeParameters()) {
+                        ProducedType it = inferTypeArg(tp, 
+                                ((TypeDeclaration) type).getType(), 
+                                arg.getTypeModel(), 
+                                true, false, 
+                                new ArrayList<TypeParameter>(), 
+                                arg);
+                        if (it==null || it.containsUnknowns()) {
+                            that.addError("could not infer type argument from given arguments: type parameter '" + 
+                                    tp.getName() + "' could not be inferred");
+                        }
+                        else {
+                            it = constrainInferredType(tp, it);
+                        }
+                        typeArgs.add(it);
+                    }
+                    return typeArgs;
+                }
+            }
         }
+        return emptyList();
     }
 
     private ProducedType constrainInferredType(TypeParameter tp, 
