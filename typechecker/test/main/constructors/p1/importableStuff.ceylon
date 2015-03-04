@@ -2,6 +2,10 @@ shared class Foo {
     shared new New() {}
 }
 
+shared class Generic<T> {
+    shared new Broken(T t) {}
+}
+
 shared object foo {
     shared String bar = "Hello";
 }

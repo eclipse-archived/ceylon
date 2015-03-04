@@ -5792,22 +5792,24 @@ public class ExpressionVisitor extends Visitor {
         if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
             ProducedType outerType = 
                     that.getScope().getDeclaringType(member);
-            ProducedTypedReference pr = 
-                    member.getProducedTypedReference(outerType, typeArgs, 
-                            that.getAssigned());
-            that.setTarget(pr);
-            ProducedType fullType = pr.getFullType();
-            if (!dynamic && !isAbstraction(member) && 
-                    isTypeUnknown(fullType)) {
-                that.addError("could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'");
+            if (checkForOuterTypeArguments(outerType, member, that)) {
+                ProducedTypedReference pr = 
+                        member.getProducedTypedReference(outerType, typeArgs, 
+                                that.getAssigned());
+                that.setTarget(pr);
+                ProducedType fullType = pr.getFullType();
+                if (!dynamic && !isAbstraction(member) && 
+                        isTypeUnknown(fullType)) {
+                    that.addError("could not determine type of function or value reference: '" +
+                            member.getName(unit) + "'");
+                }
+                if (dynamic && isTypeUnknown(fullType)) {
+                    //deliberately throw away the partial
+                    //type information we have
+                    return;
+                }
+                that.setTypeModel(fullType);
             }
-            if (dynamic && isTypeUnknown(fullType)) {
-                //deliberately throw away the partial
-                //type information we have
-                return;
-            }
-            that.setTypeModel(fullType);
         }
     }
 
@@ -6226,6 +6228,30 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(accountForStaticReferenceType(that, memberType, fullType));
         }
     }
+    
+    static boolean checkForOuterTypeArguments(ProducedType outerType, 
+            Declaration dec, Node that) {
+        //Note: all this really just identifies unqualified 
+        //      references to constructors, since they are the
+        //      only thing that can be "base" imported and that
+        //      need the outer type parameters!
+        if (outerType==null && 
+                //could be just "dec instanceof Constructor"
+                dec.isClassOrInterfaceMember() && 
+                !dec.isStaticallyImportable() &&
+                !(dec instanceof TypeParameter)) {
+            ClassOrInterface ci = 
+                    (ClassOrInterface) dec.getContainer();
+            if (!ci.getTypeParameters().isEmpty()) {
+                Unit unit = that.getUnit();
+                that.addError("reference to member of generic type must be qualified: '" + 
+                        dec.getName(unit) + "' belongs to the generic type '" + 
+                        ci.getName(unit) + "'");
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void visitBaseTypeExpression(Tree.StaticMemberOrTypeExpression that, 
             TypeDeclaration baseType, List<ProducedType> typeArgs, 
@@ -6233,11 +6259,13 @@ public class ExpressionVisitor extends Visitor {
         if (acceptsTypeArguments(baseType, typeArgs, tal, that, false)) {
             ProducedType outerType = 
                     that.getScope().getDeclaringType(baseType);
-            ProducedType type = 
-                    baseType.getProducedType(outerType, typeArgs);
-            ProducedType fullType = type.getFullType();
-            that.setTypeModel(fullType);
-            that.setTarget(type);
+            if (checkForOuterTypeArguments(outerType, baseType, that)) {
+                ProducedType type = 
+                        baseType.getProducedType(outerType, typeArgs);
+                ProducedType fullType = type.getFullType();
+                that.setTypeModel(fullType);
+                that.setTarget(type);
+            }
         }
     }
 
