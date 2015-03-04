@@ -125,6 +125,6 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
                 err.append(", ");
             err.append(version);
         }
-        errorMsg("module.duplicate.error", name, err);
+        errorMsg("module.duplicate.error", name, err, versions.last());
     }
 }

@@ -59,7 +59,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         try{
             tool.run();
         }catch(ToolError err){
-            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --suggest-override io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\"", err.getMessage());
+            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --suggest-override io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\" or try with \"ceylon classpath --force io.cayla.web/0.3.0\" to select the latest versions", err.getMessage());
         }
     }
 
@@ -69,6 +69,25 @@ public class ClasspathToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList("--maven-overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("org.jboss.logging-3.1.3.GA.jar"));
+        Assert.assertFalse(cp.contains("org.jboss.logging-3.1.2.GA.jar"));
+    }
+
+    @Test
+    public void testRecursiveDependenciesForce() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList("--force", "io.cayla.web/0.3.0"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("org.jboss.logging-3.1.3.GA.jar"));
+        Assert.assertFalse(cp.contains("org.jboss.logging-3.1.2.GA.jar"));
     }
 }

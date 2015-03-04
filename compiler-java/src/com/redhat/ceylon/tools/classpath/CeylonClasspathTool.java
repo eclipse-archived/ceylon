@@ -1,11 +1,13 @@
 package com.redhat.ceylon.tools.classpath;
 
 import java.io.File;
+import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
@@ -16,10 +18,17 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 public class CeylonClasspathTool extends ModuleLoadingTool {
 
     private String moduleNameOptVersion;
+    private boolean force;
 
     @Argument(argumentName="module", multiplicity = "1")
     public void setModule(String module) {
         this.moduleNameOptVersion = module;
+    }
+
+    @Option(longName="force")
+    @Description("Force generation of classpath with multiple versions of the same module.")
+    public void setForce(boolean force) {
+        this.force = force;
     }
 
     @Override
@@ -30,7 +39,8 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
         String version = ModuleUtil.moduleVersion(moduleNameOptVersion);
         loadModule(module, version);
 
-        errorOnConflictingModule(module, version);
+        if(!force)
+            errorOnConflictingModule(module, version);
         
         boolean once = true;
         for(ArtifactResult entry : this.loadedModules.values()){
@@ -39,6 +49,10 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
                 continue;
             File file = entry.artifact();
             if(file == null)
+                continue;
+            // on duplicate, let's only keep the last version
+            SortedSet<String> versions = loadedModuleVersions.get(entry.name());
+            if(version != null && !versions.isEmpty() && !entry.version().equals(versions.last()))
                 continue;
             if(once)
                 once = false;
