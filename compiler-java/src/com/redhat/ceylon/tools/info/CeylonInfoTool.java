@@ -67,6 +67,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     private boolean showNames;
     private boolean exactMatch;
     private boolean requireAll;
+    private boolean printOverrides;
     private Formatting formatting;
     
     private Integer binaryMajor = null;
@@ -96,7 +97,13 @@ public class CeylonInfoTool extends RepoUsingTool {
     public void setShowVersions(boolean showVersions) {
         this.showVersions = showVersions;
     }
-    
+
+    @Option(longName="print-overrides")
+    @Description("Print a usable module overrides file when there are duplicate versions, selecting the latest versions")
+    public void setPrintOverrides(boolean printOverrides) {
+        this.printOverrides = printOverrides;
+    }
+
     @Option(longName="show-dependencies")
     @Description("Show the dependencies whenever versions are shown")
     public void setShowDependencies(boolean showDependencies) {
@@ -420,11 +427,16 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     private void listDependencyConflictsIfAny(SortedMap<String, SortedSet<String>> names) throws IOException {
-        boolean header = true;
+        boolean hasNoDuplicate = true;
+        StringBuilder overridesFile = null;
+        if(printOverrides){
+            overridesFile = new StringBuilder();
+            overridesFile.append("<overrides>\n");
+        }
         for(Map.Entry<String,SortedSet<String>> entry : names.entrySet()){
             if(entry.getValue().size() > 1){
-                if(header){
-                    header = false;
+                if(hasNoDuplicate){
+                    hasNoDuplicate = false;
                     newline();
                     msg("module.dependencies.conflicts", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
                 }
@@ -440,9 +452,29 @@ public class CeylonInfoTool extends RepoUsingTool {
                             append(", ");
                         append(v);
                     }
+                    if(printOverrides){
+                        overridesFile.append(" <set");
+                        String name = entry.getKey();
+                        if(name.contains(":")){
+                            int p = name.indexOf(':');
+                            String groupId = name.substring(0, p);
+                            String artifactId = name.substring(p+1);
+                            overridesFile.append(" groupId=\"").append(groupId).append("\" artifactId=\"").append(artifactId).append("\"");
+                        }else{
+                            overridesFile.append(" module=\"").append(name).append("\"");
+                        }
+                        overridesFile.append(" version=\"").append(entry.getValue().last()).append("\"/>\n");
+                    }
                 }
                 newline();
             }
+        }
+        if(printOverrides && !hasNoDuplicate){
+            overridesFile.append("</overrides>\n");
+            newline();
+            msg("module.dependencies.overrides").newline();
+            newline();
+            append(overridesFile.toString());
         }
     }
 
