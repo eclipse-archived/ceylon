@@ -195,13 +195,11 @@ public class MetamodelHelper {
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
             gen.out(gen.getClAlias(), d.isMember()&&anonClass==null?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
-            if (ltype == null) {
-                if (anonClass != null) {
-                    gen.qualify(that, anonClass);
-                    gen.out(gen.getNames().objectName(anonClass), ".");
-                } else {
-                    gen.qualify(that, d);
-                }
+            if (anonClass != null) {
+                gen.qualify(that, anonClass);
+                gen.out(gen.getNames().objectName(anonClass), ".");
+            } else if (ltype == null) {
+                gen.qualify(that, d);
             } else {
                 if (ltype.getDeclaration().isMember()) {
                     outputPathToDeclaration(that, ltype.getDeclaration(), gen);
