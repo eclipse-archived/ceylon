@@ -1332,7 +1332,7 @@ public class GenerateJsVisitor extends Visitor
                     shareGetter(d);
                 }
             }
-            else {
+            else if (!(d.isParameter() && d.getContainer() instanceof Method)) {
                 if (addGetter) {
                     AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
                             names.name(param), this, directAccess);
