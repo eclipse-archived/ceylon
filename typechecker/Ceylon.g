@@ -4240,8 +4240,28 @@ metaLiteral returns [MetaLiteral meta]
 	        ta2=typeArguments
 	        { ml.setTypeArgumentList($ta2.typeArgumentList); }
 	      )?
+      |
+        ((type MEMBER_OP)?
+         LIDENTIFIER typeArguments? BACKTICK) =>
+        { ml = new MemberLiteral($d1);
+          $meta = ml; }
+        (
+          mtq=metaTypeQualifier
+          { ml.setType($mtq.type); }
+        | PACKAGE
+          { ml.setPackageQualified(true); } 
+          MEMBER_OP
+        )?
+        m4=memberName
+        { ml.setIdentifier($m4.identifier); 
+          ml.setEndToken(null); }
+        (
+          ta1=typeArguments
+          { ml.setTypeArgumentList($ta1.typeArgumentList); }
+        )?
 	    |
-	      ((PACKAGE MEMBER_OP | metaTypeQualifier)? LIDENTIFIER) =>
+	      (((PACKAGE| LIDENTIFIER | UIDENTIFIER typeArguments?) MEMBER_OP)+
+	       LIDENTIFIER typeArguments? BACKTICK) =>
 	      { ml = new MemberLiteral($d1);
 	        $meta = ml; }
 	      (
