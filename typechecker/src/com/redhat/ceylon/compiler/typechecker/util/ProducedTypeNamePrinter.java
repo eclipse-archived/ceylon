@@ -272,12 +272,15 @@ public class ProducedTypeNamePrinter {
 
     public static boolean abbreviateEntry(ProducedType pt) {
         Unit unit = pt.getDeclaration().getUnit();
+        Class ed = unit.getEntryDeclaration();
         if (pt.getDeclaration() instanceof Class &&
-                pt.getDeclaration().equals(unit.getEntryDeclaration()) &&
+                pt.getDeclaration().equals(ed) &&
                 pt.getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(pt);
             ProducedType vt = unit.getValueType(pt);
-            return kt!=null && vt!=null; /*&&
+            return kt!=null && vt!=null && 
+                    !kt.getDeclaration().equals(ed) &&
+                    !vt.getDeclaration().equals(ed); /*&&
                     kt.isPrimitiveAbbreviatedType() && 
                     vt.isPrimitiveAbbreviatedType();*/
         }
