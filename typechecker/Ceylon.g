@@ -4095,9 +4095,9 @@ metaLiteral returns [MetaLiteral meta]
 	      )?
 	    |
 	      (PACKAGE (LIDENTIFIER|BACKTICK)) =>
-	      PACKAGE
+	      p0=PACKAGE
 	      { p = new PackageLiteral($d1);
-	        p.setEndToken($PACKAGE); 
+	        p.setEndToken($p0); 
 	        $meta=p; }
 	      (
 	        p2=packagePath
@@ -4171,6 +4171,10 @@ metaLiteral returns [MetaLiteral meta]
 	        vt=metaTypeQualifier
 	        { v.setType($vt.type); 
 	          v.setEndToken(null); }
+	      | 
+	        PACKAGE
+	        { v.setPackageQualified(true); } 
+	        MEMBER_OP
 	      )?
 	      (
 	        vm=memberName
@@ -4191,6 +4195,10 @@ metaLiteral returns [MetaLiteral meta]
 	        ft=metaTypeQualifier
 	        { f.setType($ft.type); 
 	          f.setEndToken(null); }
+	      | 
+	        PACKAGE 
+	        { f.setPackageQualified(true); } 
+	        MEMBER_OP
 	      )?
 	      (
 	        fm=memberName
@@ -4233,12 +4241,15 @@ metaLiteral returns [MetaLiteral meta]
 	        { ml.setTypeArgumentList($ta2.typeArgumentList); }
 	      )?
 	    |
-	      (metaTypeQualifier? memberName) =>
+	      ((PACKAGE MEMBER_OP |metaTypeQualifier)? memberName) =>
 	      { ml = new MemberLiteral($d1);
 	        $meta = ml; }
 	      (
 	        mtq=metaTypeQualifier
 	        { ml.setType($mtq.type); }
+	      | PACKAGE
+	        { ml.setPackageQualified(true); } 
+	        MEMBER_OP
 	      )?
 	      m4=memberName
 	      { ml.setIdentifier($m4.identifier); 

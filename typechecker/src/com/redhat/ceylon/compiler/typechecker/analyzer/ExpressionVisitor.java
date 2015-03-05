@@ -8005,9 +8005,12 @@ public class ExpressionVisitor extends Visitor {
             	}
             }
             else {
+                Scope scope = 
+                        that.getPackageQualified() ?
+                                unit.getPackage() :
+                                that.getScope();
                 TypedDeclaration result = 
-                        getTypedDeclaration(that.getScope(), 
-                                name, null, false, unit);
+                        getTypedDeclaration(scope, name, null, false, unit);
                 if (result!=null) {
                     checkBaseVisibility(that, result, name);
                     setMemberMetatype(that, result);
