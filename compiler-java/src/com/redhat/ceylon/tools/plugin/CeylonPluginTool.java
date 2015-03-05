@@ -80,6 +80,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private boolean force;
     private boolean system;
+    private boolean local;
     private Mode mode;
 
     public CeylonPluginTool() {
@@ -110,6 +111,12 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     @Description("Install to or uninstall from the system folder")
     public void setSystem(boolean system) {
         this.system = system;
+    }
+
+    @Option
+    @Description("Install to or uninstall from a local folder")
+    public void setLocal(boolean local) {
+        this.local = local;
     }
 
     @OptionArgument(shortName='s', longName="src", argumentName="dirs")
@@ -191,10 +198,13 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         ArrayList<String> scripts = new ArrayList<String>();
         // Look in /etc/ceylon/bin/ and /etc/ceylon/bin/{moduleName}
         File systemDir = new File(FileUtil.getSystemConfigDir(), Constants.CEYLON_BIN_DIR);
-        listScripts(systemDir, scripts);
+        listScripts(systemDir, "system", scripts);
         // They are in ~/.ceylon/bin/ and ~/.ceylon/bin/{moduleName}
         File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
-        listScripts(defUserDir, scripts);
+        listScripts(defUserDir, "user", scripts);
+        // They are in ./.ceylon/bin/ and ./.ceylon/bin/{moduleName}
+        File localDir = applyCwd(new File(Constants.CEYLON_CONFIG_DIR, Constants.CEYLON_BIN_DIR));
+        listScripts(localDir, "local", scripts);
         Collections.sort(scripts);
         for (String script : scripts) {
             append(script);
@@ -202,19 +212,19 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
     }
 
-    private void listScripts(File dir, List<String> scripts) throws IOException {
+    private void listScripts(File dir, String location, List<String> scripts) throws IOException {
         File[] children = dir.listFiles();
         if (children != null) {
             for (File child : children) {
                 if (child.isDirectory()) {
                     File[] modfiles = child.listFiles();
                     for (File f : modfiles) {
-                        if (isScript(f)) {
-                            scripts.add(f.getName() + " (" + child.getName() + ")");
+                        if (isScript(f) || isPlugin(f)) {
+                            scripts.add(scriptName(f) + " (from " + location + " module '" + child.getName() + "')");
                         }
                     }
-                } else if (isScript(child)) {
-                    scripts.add(child.getName());
+                } else if (isScript(child) || isPlugin(child)) {
+                    scripts.add(scriptName(child));
                 }
             }
         }
@@ -227,6 +237,20 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             return isWinScript || isUnixScript;
         }
         return false;
+    }
+    
+    private boolean isPlugin(File f) {
+        return (f.isFile() && f.getName().startsWith("ceylon-") && f.getName().endsWith(".plugin"));
+    }
+    
+    private String scriptName(File f) {
+        String name = f.getName().substring(7);
+        if (name.toLowerCase().endsWith(".bat")) {
+            name = name.substring(0, name.length() - 4);
+        } else if (name.toLowerCase().endsWith(".plugin")) {
+            name = name.substring(0, name.length() - 7);
+        }
+        return name;
     }
     
     private boolean installScripts(RepositoryManager repositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
@@ -303,6 +327,9 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         if (system) {
             // Put them in /etc/ceylon/bin/{moduleName} (or equivalent on Windows / MacOS)
             installDir = FileUtil.getSystemConfigDir();
+        } if (local) {
+            // Put them in ./.ceylon/bin/{moduleName}
+            installDir = new File(Constants.CEYLON_CONFIG_DIR);
         } else {
             // Put them in ~/.ceylon/bin/{moduleName}
             installDir = FileUtil.getDefaultUserDir();
@@ -416,5 +443,8 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
+        if (system && local) {
+            throw new IllegalArgumentException("Can't specify both --system and --local");
+        }
     }
 }
