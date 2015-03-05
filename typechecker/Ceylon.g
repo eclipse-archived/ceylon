@@ -4241,7 +4241,7 @@ metaLiteral returns [MetaLiteral meta]
 	        { ml.setTypeArgumentList($ta2.typeArgumentList); }
 	      )?
 	    |
-	      ((PACKAGE MEMBER_OP |metaTypeQualifier)? memberName) =>
+	      ((PACKAGE MEMBER_OP | metaTypeQualifier)? LIDENTIFIER) =>
 	      { ml = new MemberLiteral($d1);
 	        $meta = ml; }
 	      (
