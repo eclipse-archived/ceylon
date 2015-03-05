@@ -1361,7 +1361,7 @@ declarationStart
     | DYNAMIC (LIDENTIFIER|UIDENTIFIER)
     ;
     
-// recognize some common pattarns that are unambiguously
+// recognize some common patterns that are unambiguously
 // type abbreviations - these are not necessary, but 
 // help the IDE
 unambiguousType
@@ -1588,7 +1588,8 @@ base returns [Primary primary]
         $primary=be; }
     ;
 
-baseReference returns [Identifier identifier, TypeArgumentList typeArgumentList, 
+baseReference returns [Identifier identifier, 
+                       TypeArgumentList typeArgumentList, 
                        boolean isMember]
     : 
     (
@@ -3239,23 +3240,34 @@ abbreviatedType returns [StaticType type]
     ;
 
 baseType returns [StaticType type]
+    @init { BaseType pt = null; }
     : 
-      ot=typeNameWithArguments
+      tna1=typeNameWithArguments
       { BaseType bt = new BaseType(null);
-        bt.setIdentifier($ot.identifier);
-        if ($ot.typeArgumentList!=null)
-            bt.setTypeArgumentList($ot.typeArgumentList);
+        bt.setIdentifier($tna1.identifier);
+        if ($tna1.typeArgumentList!=null)
+            bt.setTypeArgumentList($tna1.typeArgumentList);
         $type=bt; }
     |
       groupedType
       { $type=$groupedType.type; }
+    | PACKAGE
+      { pt = new BaseType($PACKAGE); 
+        $type=pt; }
+      MEMBER_OP
+      { pt.setEndToken($MEMBER_OP); }
+      tna2=typeNameWithArguments
+      { pt.setEndToken(null);
+        pt.setIdentifier($tna2.identifier);
+        if ($tna2.typeArgumentList!=null)
+            pt.setTypeArgumentList($tna2.typeArgumentList); }
     ;
 
 qualifiedType returns [StaticType type]
     : baseType
       { $type=$baseType.type; }
       (
-        MEMBER_OP 
+        MEMBER_OP
         it=typeNameWithArguments
         { QualifiedType qt = new QualifiedType($MEMBER_OP);
           qt.setIdentifier($it.identifier);
@@ -3943,6 +3955,7 @@ impliedVariable returns [Variable variable]
     ;
 
 metaType returns [StaticType type]
+    @init { BaseType pt = null; }
     :
     ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
       (
@@ -3956,18 +3969,37 @@ metaType returns [StaticType type]
         { BaseType obt = new BaseType(null);
           obt.setIdentifier($mn1.identifier);
           $type = obt; }
+      | 
+        PACKAGE
+	      { pt = new BaseType($PACKAGE); 
+	        $type=pt; }
+	      mo3=MEMBER_OP
+	      { pt.setEndToken($mo3); }
+	      (
+		      tna2=typeNameWithArguments
+		      { pt.setEndToken(null);
+		        pt.setIdentifier($tna2.identifier);
+		        if ($tna2.typeArgumentList!=null)
+		            pt.setTypeArgumentList($tna2.typeArgumentList); }
+	      | 
+	        mn2=memberName
+	        { pt.setEndToken(null);
+	          pt.setIdentifier($mn2.identifier);}
+	      )
       )
       (
-        mo1=MEMBER_OP mn2=memberName
+        mo1=MEMBER_OP 
+        mn3=memberName
         { QualifiedType oqt = new QualifiedType($mo1);
-          oqt.setIdentifier($mn2.identifier);
+          oqt.setIdentifier($mn3.identifier);
           oqt.setOuterType($type);
           $type = oqt; }
       |
-        mo2=MEMBER_OP tna2=typeNameWithArguments
+        mo2=MEMBER_OP 
+        tna3=typeNameWithArguments
         { QualifiedType qt = new QualifiedType($mo2);
-          qt.setIdentifier($tna2.identifier);
-          qt.setTypeArgumentList($tna2.typeArgumentList);
+          qt.setIdentifier($tna3.identifier);
+          qt.setTypeArgumentList($tna3.typeArgumentList);
           qt.setOuterType($type);
           $type = qt; }
       )*
@@ -3978,6 +4010,7 @@ metaType returns [StaticType type]
     ; 
 
 metaTypeQualifier returns [StaticType type]
+    @init { BaseType pt = null; Token mo = null; }
     :
     ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
       (
@@ -3991,23 +4024,42 @@ metaTypeQualifier returns [StaticType type]
         { BaseType obt = new BaseType(null);
           obt.setIdentifier($mn1.identifier);
           $type = obt; }
+      | PACKAGE
+        { pt = new BaseType($PACKAGE); 
+          $type=pt; }
+        mo3=MEMBER_OP
+        { pt.setEndToken($mo3); }
+        (
+          tna2=typeNameWithArguments
+          { pt.setEndToken(null);
+            pt.setIdentifier($tna2.identifier);
+            if ($tna2.typeArgumentList!=null)
+                pt.setTypeArgumentList($tna2.typeArgumentList); }
+        | 
+          mn2=memberName
+          { pt.setEndToken(null);
+            pt.setIdentifier($mn2.identifier);}
+        )
       )
       mo1=MEMBER_OP
+      { mo = $mo1; }
       (
-        mn2=memberName
-        { QualifiedType oqt = new QualifiedType(null);
-          oqt.setIdentifier($mn2.identifier);
+        mn3=memberName
+        { QualifiedType oqt = new QualifiedType(mo);
+          oqt.setIdentifier($mn3.identifier);
           oqt.setOuterType($type);
           $type = oqt; }
         mo2=MEMBER_OP
+        { mo = $mo2; }
       |
-        tna2=typeNameWithArguments
-        { QualifiedType qt = new QualifiedType(null);
-          qt.setIdentifier($tna2.identifier);
-          qt.setTypeArgumentList($tna2.typeArgumentList);
+        tna3=typeNameWithArguments
+        { QualifiedType qt = new QualifiedType(mo);
+          qt.setIdentifier($tna3.identifier);
+          qt.setTypeArgumentList($tna3.typeArgumentList);
           qt.setOuterType($type);
           $type = qt; }
-        mo3=MEMBER_OP
+        mo4=MEMBER_OP
+        { mo = $mo4; }
       )*
     |
       t=type
@@ -4042,6 +4094,7 @@ metaLiteral returns [MetaLiteral meta]
 	          m.setEndToken(null); }
 	      )?
 	    |
+	      (PACKAGE (LIDENTIFIER|BACKTICK)) =>
 	      PACKAGE
 	      { p = new PackageLiteral($d1);
 	        p.setEndToken($PACKAGE); 
