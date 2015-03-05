@@ -407,13 +407,33 @@ object foo {
     }
 }
 
+object x { 
+    shared object y {}
+    shared class Y() {}
+    shared interface I {}
+    shared String name = ""; 
+    shared void do() {}
+}
+
+
 shared void testObjectMetamodelRefs() {
     ClassDeclaration cd = `class foo.bar.Bar`;
     ValueDeclaration vd = `value foo.bar.Bar.name`;
     Value<Basic,Nothing> vbn = `foo.bar`;
     Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `foo.bar.Bar.name`;
-    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,Empty> it1 = `foo.bar.Bar`;
+    Class<\Ifoo.\Ibar.Bar,[]> it1 = `foo.bar.Bar`;
     MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
             = `foo.bar.Bar.Baz<String>`;
+    @type:"Value<Basic,Nothing>"
+    value xy = `x.y`;
+    @type:"Class<x.Y,Empty>"
+    value xY = `x.Y`;
+    @type:"Interface<x.I>"
+    value xI = `x.I`;
+    @type:"Value<String,Nothing>"
+    value xName = `x.name`;
+    @type:"Function<Anything,Empty>"
+    value xDo = `x.do`;
+    
 }
 

@@ -1452,17 +1452,24 @@ public class Unit {
         ParameterList parameterList = c.getParameterList();
         ProducedType parameterTuple;
         if (c.isClassOrInterfaceMember() || c.isToplevel()) {
-        	parameterTuple = getParameterTypesAsTupleType(parameterList != null ? 
-        			    parameterList.getParameters() : 
-        			    Collections.<Parameter>emptyList(), 
-        		    literalType);
+        	parameterTuple = 
+        	        getParameterTypesAsTupleType(parameterList != null ? 
+        	                    parameterList.getParameters() : 
+        	                    Collections.<Parameter>emptyList(), 
+        	                literalType);
         }
         else {
         	parameterTuple = new NothingType(this).getType();
         }
-        if (literalType.getDeclaration().isMember()) {
+        ProducedType qualifyingType = 
+                literalType.getQualifyingType();
+        while (qualifyingType!=null && 
+                qualifyingType.getDeclaration().isAnonymous()) {
+            qualifyingType = qualifyingType.getQualifyingType();
+        }
+        if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("MemberClass"),
-                    literalType.getQualifyingType(), literalType, parameterTuple);
+                    qualifyingType, literalType, parameterTuple);
         }
         else {
             return producedType(getLanguageModuleModelTypeDeclaration("Class"),
@@ -1471,9 +1478,15 @@ public class Unit {
     }
     
     public ProducedType getInterfaceMetatype(ProducedType literalType) {
-        if (literalType.getDeclaration().isMember()) {
+        ProducedType qualifyingType = 
+                literalType.getQualifyingType();
+        while (qualifyingType!=null && 
+                qualifyingType.getDeclaration().isAnonymous()) {
+            qualifyingType = qualifyingType.getQualifyingType();
+        }
+        if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("MemberInterface"),
-                    literalType.getQualifyingType(), literalType);
+                    qualifyingType, literalType);
         }
         else {
             return producedType(getLanguageModuleModelTypeDeclaration("Interface"), literalType);
