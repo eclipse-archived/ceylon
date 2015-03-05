@@ -3957,7 +3957,7 @@ impliedVariable returns [Variable variable]
 metaType returns [StaticType type]
     @init { BaseType pt = null; }
     :
-    ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
+    ( ((PACKAGE MEMBER_OP)? (typeNameWithArguments MEMBER_OP)* memberName) =>
       (
         tna1=typeNameWithArguments 
         { BaseType bt = new BaseType(null);
@@ -3985,7 +3985,7 @@ metaType returns [StaticType type]
 	        mn2=memberName
 	        { pt.setEndToken(null);
 	          pt.setIdentifier($mn2.identifier);}
-	      )
+	      )?
       )
       (
         mo1=MEMBER_OP 
@@ -4012,7 +4012,7 @@ metaType returns [StaticType type]
 metaTypeQualifier returns [StaticType type]
     @init { BaseType pt = null; Token mo = null; }
     :
-    ( ((typeNameWithArguments MEMBER_OP)* memberName) =>
+    ( ((PACKAGE MEMBER_OP)? (typeNameWithArguments MEMBER_OP)* memberName) =>
       (
         tna1=typeNameWithArguments 
         { BaseType bt = new BaseType(null);
@@ -4039,7 +4039,7 @@ metaTypeQualifier returns [StaticType type]
           mn2=memberName
           { pt.setEndToken(null);
             pt.setIdentifier($mn2.identifier);}
-        )
+        )?
       )
       mo1=MEMBER_OP
       { mo = $mo1; }
