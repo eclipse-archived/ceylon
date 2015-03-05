@@ -68,15 +68,47 @@ public class InfoToolTests extends AbstractToolTests {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("java.base/"+JDK.JDK7.version));
+
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        
+        Assert.assertTrue(b.toString().contains(
+        "Name:        java.base\n"+
+        "Version:     7\n"+
+        "Artifacts:   JVM (legacy)\n"+
+        "Available:   On local system\n"+
+        "Origin:      Java Runtime\n"+
+        "Description: JDK module java.base\n"
+        ));
     }
 
     @Test
     public void testAetherModule() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core/2.1"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList("--dependency-depth=-1",
+                "com.sparkjava:spark-core/2.1"
+                ));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        
+        Assert.assertTrue(b.toString().contains(
+        "Dependencies (up to depth ∞):\n"+
+        "  org.eclipse.jetty.orbit:javax.servlet/3.0.0.v201112011016\n"+
+        "  org.eclipse.jetty:jetty-http/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-io/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-security/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-server/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-servlet/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-util/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-webapp/9.0.2.v20130417\n"+
+        "  org.eclipse.jetty:jetty-xml/9.0.2.v20130417\n"+
+        "  org.slf4j:slf4j-api/1.7.7\n"+
+        "  org.slf4j:slf4j-simple/1.7.7\n"
+        ));
+
     }
 
     @Test
@@ -84,7 +116,19 @@ public class InfoToolTests extends AbstractToolTests {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core"));
+        
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        
+        Assert.assertTrue(b.toString().contains(
+            "    com.sparkjava:spark-core/1.0\n"+
+            "    com.sparkjava:spark-core/1.1\n"+
+            "    com.sparkjava:spark-core/1.1.1\n"+
+            "    com.sparkjava:spark-core/2.0.0\n"+
+            "    com.sparkjava:spark-core/2.1\n"
+            ));
+
     }
 
     @Test
@@ -92,7 +136,16 @@ public class InfoToolTests extends AbstractToolTests {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core/1"));
+
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        
+        Assert.assertTrue(b.toString().contains(
+                "    com.sparkjava:spark-core/1.0\n"+
+                "    com.sparkjava:spark-core/1.1\n"+
+                "    com.sparkjava:spark-core/1.1.1\n"
+                ));
     }
 
     @Test
@@ -101,7 +154,11 @@ public class InfoToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList("--dependency-depth=-1", "--show-incompatible", "io.cayla.web/0.3.0"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        Assert.assertTrue(b.toString().contains("Dependencies version conflicts (up to depth ∞):\n"
+                +"  org.jboss.logging: 3.1.2.GA, 3.1.3.GA\n"));
     }
 
     @Test
@@ -110,7 +167,24 @@ public class InfoToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList("--dependency-depth=-1", "--maven-overrides", getPackagePath()+"/overrides.xml", "--show-incompatible", "io.cayla.web/0.3.0"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
         tool.run();
+        Assert.assertFalse(b.toString().contains("Dependencies version conflicts"));
+    }
+
+    @Test
+    public void testSuggestOverride() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList("--dependency-depth=-1", "--show-incompatible", "--print-overrides", "io.cayla.web/0.3.0"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        Assert.assertTrue(b.toString().contains("<overrides>\n"
+                +" <set module=\"org.jboss.logging\" version=\"3.1.3.GA\"/>\n"
+                +"</overrides>\n"));
     }
 
     @Test
