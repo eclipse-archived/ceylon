@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.Resolvers;
+import org.jboss.shrinkwrap.resolver.api.VersionResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
@@ -310,12 +311,17 @@ public class AetherUtils {
                     addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
             }
         }else{
-            MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":["+version+",]");
-            List<MavenCoordinate> versions = resolveVersionRange.getVersions();
-            for(MavenCoordinate co : versions){
-                // make sure the version matches because with maven if we ask for [1,] we also get 2.x
-                if(co.getVersion() != null && co.getVersion().startsWith(version))
-                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
+            try{
+                MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":["+version+",]");
+                List<MavenCoordinate> versions = resolveVersionRange.getVersions();
+                for(MavenCoordinate co : versions){
+                    // make sure the version matches because with maven if we ask for [1,] we also get 2.x
+                    if(co.getVersion() != null && co.getVersion().startsWith(version))
+                        addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
+                }
+            }catch(VersionResolutionException x){
+                // if we got a checksum error (like for jetty) we retry with a fixed version query
+                addSearchResult(groupId, artifactId, version, result, overrides, repositoryDisplayString);
             }
         }
     }
@@ -563,7 +569,6 @@ public class AetherUtils {
             classLoader = ClassLoader.getSystemClassLoader();
 
         ConfigurableMavenResolverSystem factory = Resolvers.use(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
-
         if (settingsXml.startsWith("classpath:")) {
             return factory.fromClassloaderResource(settingsXml.substring(10), classLoader);
         } else {
