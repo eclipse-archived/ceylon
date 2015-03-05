@@ -279,8 +279,10 @@ public class ProducedTypeNamePrinter {
             ProducedType kt = unit.getKeyType(pt);
             ProducedType vt = unit.getValueType(pt);
             return kt!=null && vt!=null && 
-                    !kt.getDeclaration().equals(ed) &&
-                    !vt.getDeclaration().equals(ed); /*&&
+                    (!(kt.getDeclaration() instanceof Class) ||
+                            !kt.getDeclaration().equals(ed)) &&
+                    (!(vt.getDeclaration() instanceof Class) ||
+                            !vt.getDeclaration().equals(ed)); /*&&
                     kt.isPrimitiveAbbreviatedType() && 
                     vt.isPrimitiveAbbreviatedType();*/
         }
