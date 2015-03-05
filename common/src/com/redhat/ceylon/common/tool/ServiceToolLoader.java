@@ -98,18 +98,26 @@ public abstract class ServiceToolLoader extends ToolLoader {
 
     private void findPathPlugins() {
         Set<String> names = new HashSet<String>();
-        // First the ones from CEYLON_HOME/bin
-        File ceylonHome = FileUtil.getInstallDir();
-        if (ceylonHome != null) {
-            findPathPlugins(new File(ceylonHome, Constants.CEYLON_BIN_DIR), names);
+        // First in the project dir hierarchy, that is ./.ceylon/bin and  ./.ceylon/bin/{moduleName}/
+        // and then going up into the parent folder until we reach the root
+        File projectDir = (new File("")).getAbsoluteFile();
+        while (projectDir != null) {
+            File configBin = new File(new File(projectDir, Constants.CEYLON_CONFIG_DIR), Constants.CEYLON_BIN_DIR);
+            findPathPlugins(configBin, names);
+            projectDir = projectDir.getParentFile();
         }
+        // Then look in ~/.ceylon/bin and ~/.ceylon/bin/{moduleName}/
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
+        findPathPlugins(defUserDir, names);
         // Then look in /etc/ceylon/bin and /etc/ceylon/bin/{moduleName}/
         // (or their equivalents on Windows and MacOS)
         File systemDir = new File(FileUtil.getSystemConfigDir(), Constants.CEYLON_BIN_DIR);
         findPathPlugins(systemDir, names);
-        // Then look in ~/.ceylon/bin and ~/.ceylon/bin/{moduleName}/
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
-        findPathPlugins(defUserDir, names);
+        // Then the ones from CEYLON_HOME/bin and CEYLON_HOME/bin/{moduleName}/
+        File ceylonHome = FileUtil.getInstallDir();
+        if (ceylonHome != null) {
+            findPathPlugins(new File(ceylonHome, Constants.CEYLON_BIN_DIR), names);
+        }
         // And finally in the user's PATH
         File[] paths = FileUtil.getExecPath();
         for (File part : paths) {
