@@ -62,7 +62,8 @@ public class BmeGenerator {
     }
 
     static boolean hasTypeParameters(final Tree.StaticMemberOrTypeExpression expr) {
-        return expr.getTypeArguments() != null && !expr.getTypeArguments().getTypeModels().isEmpty();
+        return expr.getTypeArguments() != null && expr.getTypeArguments().getTypeModels() != null
+                && !expr.getTypeArguments().getTypeModels().isEmpty();
     }
 
     /** Create a map with type arguments from the type parameter list in the expression's declaration and the
