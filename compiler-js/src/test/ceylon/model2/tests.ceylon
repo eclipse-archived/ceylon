@@ -24,6 +24,10 @@ void literals<T>() {
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.take`;
     FunctionDeclaration fdecl = `function Iterable.take`;
+    value objectMethod1 = `process.writeLine`;
+    Object detypedObjectMethod1 = objectMethod1;
+    check(detypedObjectMethod1 is Method<Object,Anything,[String]>, "`process.writeline` should be Method<Object,Anything,[String]>");
+    objectMethod1("Testing object method OK");
     /*value taking1 = fdecl.bindAndApply({1,2,3,4,5});
     check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
     check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
