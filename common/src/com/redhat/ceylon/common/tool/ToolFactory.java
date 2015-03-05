@@ -28,26 +28,31 @@ public class ToolFactory {
     private static final String LONG_PREFIX = "--";
     
     public <T extends Tool> T newInstance(ToolModel<T> toolModel) {
-        // Since non-Subtools can't be inner classes, it's OK to pass a null
-        // outer.
-        return toolModel.getToolLoader().instance(toolModel.getName(), null);
+        // Since non-Subtools can't be inner classes, it's OK to pass a null outer.
+        T result = toolModel.getToolLoader().instance(toolModel, null);
+        if (result == null) {
+            throw new ToolException("Couldn't create new instance for tool '" + toolModel.getName() + "'");
+        }
+        return result;
     }
 
-    private <T extends Tool> void setToolLoaderAndModel(ToolModel<T> toolModel,
-            T tool) {
-        try {
-            toolModel.getToolClass().getMethod("setToolLoader", ToolLoader.class).invoke(tool, toolModel.getToolLoader());
-        } catch (NoSuchMethodException e) {
-            // Ignore
-        } catch (ReflectiveOperationException e) {
-            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
-        }
-        try {
-            toolModel.getToolClass().getMethod("setToolModel", ToolModel.class).invoke(tool, toolModel);
-        } catch (NoSuchMethodException e) {
-            // Ignore
-        } catch (ReflectiveOperationException e) {
-            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
+    private <T extends Tool> void setToolLoaderAndModel(ToolModel<T> toolModel, T tool) {
+        if (toolModel instanceof AnnotatedToolModel) {
+            AnnotatedToolModel<T> amodel = (AnnotatedToolModel<T>) toolModel;
+            try {
+                amodel.getToolClass().getMethod("setToolLoader", ToolLoader.class).invoke(tool, toolModel.getToolLoader());
+            } catch (NoSuchMethodException e) {
+                // Ignore
+            } catch (ReflectiveOperationException e) {
+                throw new ToolException("Could not instantitate tool " + amodel.getToolClass(), e);
+            }
+            try {
+                amodel.getToolClass().getMethod("setToolModel", ToolModel.class).invoke(tool, toolModel);
+            } catch (NoSuchMethodException e) {
+                // Ignore
+            } catch (ReflectiveOperationException e) {
+                throw new ToolException("Could not instantitate tool " + amodel.getToolClass(), e);
+            }
         }
     }
     
@@ -409,7 +414,7 @@ public class ToolFactory {
     }
     
     /**
-     * Parses the given arguments binding them to an existing instanceo of the 
+     * Parses the given arguments binding them to an existing instance of the 
      * the tool model.
      * You should probably be using {@link #bindArguments(ToolModel, Iterable)}, 
      * there are few tools which need to call this method directly.

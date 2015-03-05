@@ -145,23 +145,40 @@ public abstract class ServiceToolLoader extends ToolLoader {
             DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
                 public boolean accept(Path f) throws IOException {
                     String fileName = f.getFileName().toString();
-                    if(fileName.toLowerCase().startsWith("ceylon-") && Files.isRegularFile(f) && Files.isExecutable(f)){
+                    if(fileName.toLowerCase().startsWith("ceylon-") && Files.isRegularFile(f)){
                         String name = fileName.substring(7);
-                        if(OSUtil.isWindows()){
-                            // script must end with ".bat"
-                            if(!name.toLowerCase().endsWith(".bat"))
-                                return false;
-                            // strip it
-                            name = name.substring(0, name.length()-4);
+                        // Is it a plugin file?
+                        if(name.toLowerCase().endsWith(".plugin")){
+                            name = name.substring(0, name.length()-7);
+                            // we're good if it's unique
+                            if (names.add(name)) {
+                                pathPlugins.add(PLUGIN_PREFIX+f.toAbsolutePath().toString());
+                                return true;
+                            }
                         }
-                        // refuse any name with dots in there (like ceylon-completion.bash)
-                        if(name.indexOf('.') != -1)
-                            return false;
-                        // also refuse ceylon-sh-setup
-                        if(name.equalsIgnoreCase("sh-setup"))
-                            return false;
-                        // we're good if it's unique
-                        return names.add(name);
+                        // Is is a shell/batch script?
+                        if(Files.isExecutable(f)){
+                            if(OSUtil.isWindows()){
+                                // script must end with ".bat"
+                                if(!name.toLowerCase().endsWith(".bat"))
+                                    return false;
+                                // strip it
+                                name = name.substring(0, name.length()-4);
+                            }
+                            // refuse any name with dots in there (like ceylon-completion.bash)
+                            if(name.indexOf('.') != -1)
+                                return false;
+                            // also refuse ceylon-sh-setup
+                            if(name.equalsIgnoreCase("sh-setup"))
+                                return false;
+                            // we're good if it's unique
+                            if (names.add(name)) {
+                                pathPlugins.add(SCRIPT_PREFIX+f.toAbsolutePath().toString());
+                                return true;
+                            }
+                        }
+                    } else {
+                        
                     }
                     return false;
                 }
@@ -169,8 +186,7 @@ public abstract class ServiceToolLoader extends ToolLoader {
             
             try (DirectoryStream<Path>  stream = Files.newDirectoryStream(dir.toPath(), filter)){
                 for(Path sub : stream){
-                    String name = SCRIPT_PREFIX+sub.toAbsolutePath().toString();
-                    pathPlugins.add(name);
+                    // Nothing to do, just iterating
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -28,6 +28,7 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 public abstract class ToolLoader {
 
     protected static final String SCRIPT_PREFIX = "SCRIPT:";
+    protected static final String PLUGIN_PREFIX = "PLUGIN:";
 
     protected final ClassLoader loader;
 
@@ -91,6 +92,8 @@ public abstract class ToolLoader {
         String className = getToolClassName(toolName);
         if(className != null && className.startsWith(SCRIPT_PREFIX)){
             return loadScriptTool(className, toolName);
+        }else if(className != null && className.startsWith(PLUGIN_PREFIX)){
+            return loadPluginTool(className, toolName);
         }else{
             Class<T> toolClass = loadToolClass(toolName);
             if (toolClass != null) {
@@ -110,19 +113,40 @@ public abstract class ToolLoader {
     }
     
     private <T extends Tool> ToolModel<T> loadScriptTool(String className, String toolName) {
-        ToolModel<T> model = new ToolModel<T>();
-        model.setScript(true);
-        model.setScriptName(className.substring(7));
-        model.setName(toolName);
+        ScriptToolModel<T> model = new ScriptToolModel<T>(toolName, className.substring(7));
         model.setToolLoader(this);
         return model;
     }
 
+    private <T extends Tool> ToolModel<T> loadPluginTool(String className, String toolName) {
+        PluginToolModel<T> model = new PluginToolModel<T>(toolName, className.substring(7));
+        model.setToolLoader(this);
+        return model;
+    }
+
+    public ClassLoader loadModule(String name, String version) {
+        try {
+            // Ok, now for something really crappy to force loading of the required module
+            Class<?> joptsClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions");
+            Object opts = joptsClass.newInstance();
+            Method setter = joptsClass.getMethod("setDelegateClassLoader", ClassLoader.class);
+            setter.invoke(opts, loader);
+            Class<?> runnerClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl");
+            Class<?> optsClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions");
+            Constructor<?> runnerConstr = runnerClass.getConstructor(optsClass, String.class, String.class);
+            Object runner = runnerConstr.newInstance(opts, name, version);
+            Method getter = runnerClass.getMethod("getModuleClassLoader");
+            ClassLoader mcl = (ClassLoader) getter.invoke(runner);
+            return mcl;
+        } catch (ReflectiveOperationException e) {
+            throw new ToolException("Could not load module '" + name + "/" + version + "'", e);
+        }
+    }
+    
     private <T extends Tool> ToolModel<T> loadModel(Class<T> cls, String toolName) {
         checkClass(cls);
-        ToolModel<T> model = new ToolModel<T>();
+        AnnotatedToolModel<T> model = new AnnotatedToolModel<T>(toolName);
         model.setToolClass(cls);
-        model.setName(toolName);
         
         // We use this Map because Java doesn't define the order that the 
         // declared methods will be returned in, but the order matters 
@@ -279,6 +303,13 @@ public abstract class ToolLoader {
                 name = name.substring(lastSep+1);
             if(OSUtil.isWindows()) // strip the .bat
                 name = name.substring(0, name.length()-4);
+            return name;
+        } else if(className.startsWith(PLUGIN_PREFIX)){
+            String name = className.substring(7);
+            int lastSep = className.lastIndexOf(File.separatorChar);
+            if(lastSep != -1)
+                name = name.substring(lastSep+1);
+            name = name.substring(0, name.length()-7);
             return name;
         }
         return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
@@ -580,6 +611,22 @@ public abstract class ToolLoader {
         }
         try {
             Class<T> toolClass = (Class<T>)Class.forName(toolClassName, false, loader);
+            return instance(toolClass, outer);
+        } catch (ReflectiveOperationException e) {
+            throw new ToolException("Could not instantiate tool class " + toolClassName + " for tool " + toolName, e);
+        }
+    }
+
+    public <T extends Tool> T instance(ToolModel<T> toolModel, Tool outer) {
+        if (!(toolModel instanceof AnnotatedToolModel)) {
+            return null;
+        }
+        AnnotatedToolModel<T> amodel = (AnnotatedToolModel<T>)toolModel;
+        return instance(amodel.getToolClass(), outer);
+    }
+
+    private <T extends Tool> T instance(Class<T> toolClass, Tool outer) {
+        try {
             if (toolClass.getEnclosingClass() != null
                     && !Modifier.isStatic(toolClass.getModifiers())) {
                 if (outer == null) {
@@ -591,9 +638,9 @@ public abstract class ToolLoader {
                 return toolClass.newInstance();
             }
         } catch (RuntimeException e) {
-            throw new ToolException("Could not instantitate tool class " + toolClassName + " for tool " + toolName, e);
+            throw new ToolException("Could not instantiate tool class " + toolClass.getName(), e);
         } catch (ReflectiveOperationException e) {
-            throw new ToolException("Could not instantitate tool class " + toolClassName + " for tool " + toolName, e);
+            throw new ToolException("Could not instantiate tool class " + toolClass.getName(), e);
         }
     }
     

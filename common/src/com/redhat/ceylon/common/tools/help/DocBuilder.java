@@ -39,15 +39,25 @@ import org.tautua.markdownpapers.ast.Document;
 
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.AnnotatedToolModel;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Multiplicity;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
+import com.redhat.ceylon.common.tool.PluginToolModel;
+import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.ScriptToolModel;
+import com.redhat.ceylon.common.tool.SubtoolModel;
+import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.help.Markdown.Section;
 import com.redhat.ceylon.common.tools.help.model.DescribedSection;
+import com.redhat.ceylon.common.tools.help.model.DescribedSection.Role;
 import com.redhat.ceylon.common.tools.help.model.Doc;
 import com.redhat.ceylon.common.tools.help.model.Option;
 import com.redhat.ceylon.common.tools.help.model.OptionsSection;
@@ -55,13 +65,6 @@ import com.redhat.ceylon.common.tools.help.model.SubtoolVisitor;
 import com.redhat.ceylon.common.tools.help.model.SummarySection;
 import com.redhat.ceylon.common.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.common.tools.help.model.Synopsis;
-import com.redhat.ceylon.common.tools.help.model.DescribedSection.Role;
-import com.redhat.ceylon.common.tool.RemainingSections;
-import com.redhat.ceylon.common.tool.SubtoolModel;
-import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.ToolLoader;
-import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tool.Tools;
 
 public class DocBuilder {
 
@@ -83,7 +86,7 @@ public class DocBuilder {
 
     public Doc buildDoc(ToolModel<?> model, boolean specialRoot) {
         checkModel(model);
-        boolean rootHack = specialRoot && CeylonTool.class.isAssignableFrom(model.getToolClass());
+        boolean rootHack = specialRoot && (model instanceof AnnotatedToolModel) && CeylonTool.class.isAssignableFrom(((AnnotatedToolModel<?>)model).getToolClass());
         Doc doc = new Doc();
         doc.setVersion(Versions.CEYLON_VERSION);
         doc.setToolModel(model);
@@ -105,10 +108,10 @@ public class DocBuilder {
             protected void visit(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
                 if (model != root) {
                     if (getSummary(model) != null) {
-                        System.err.println("@Summary not supported on subtools: " + model.getToolClass());
+                        System.err.println("@Summary not supported on subtools: " + model.getName());
                     }
                     if (!getSections(model).isEmpty()) {
-                        System.err.println("@RemainingSections not supported on subtools: " + model.getToolClass());
+                        System.err.println("@RemainingSections not supported on subtools: " + model.getName());
                     }
                 }
             }
@@ -232,7 +235,7 @@ public class DocBuilder {
     }
 
     private OptionsSection buildOptions(ToolModel<?> model) {
-        if(model.isScript())
+        if(!(model instanceof AnnotatedToolModel))
             return null;
         final HashMap<ToolModel<?>, OptionsSection> map = new HashMap<>();
         new SubtoolVisitor(model) {
@@ -455,8 +458,11 @@ public class DocBuilder {
     }
     
     private String getSummaryValue(ToolModel<?> model) {
-        if(model.isScript()){
-            return invokeScript(model, "--_print-summary");
+        if(model instanceof ScriptToolModel){
+            return invokeScript((ScriptToolModel<?>) model, "--_print-summary");
+        }
+        if(model instanceof PluginToolModel){
+            return ((PluginToolModel<?>) model).getToolSummary();
         }
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "summary");
@@ -469,7 +475,7 @@ public class DocBuilder {
         return msg;
     }
 
-    private String invokeScript(ToolModel<?> model, String arg) {
+    private String invokeScript(ScriptToolModel<?> model, String arg) {
         ProcessBuilder processBuilder;
         if (OSUtil.isWindows()) {
             processBuilder = new ProcessBuilder("cmd.exe", "/C", model.getScriptName(), arg);
@@ -503,11 +509,12 @@ public class DocBuilder {
     }
 
     private ResourceBundle getToolBundle(ToolModel<?> model) {
-        if(model.isScript())
+        if(!(model instanceof AnnotatedToolModel))
             return null;
+        AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
         ResourceBundle toolBundle;
         try {
-            toolBundle = ResourceBundle.getBundle(model.getToolClass().getName());
+            toolBundle = ResourceBundle.getBundle(amodel.getToolClass().getName());
         } catch (MissingResourceException e) {
             toolBundle = null;
         }
@@ -516,19 +523,21 @@ public class DocBuilder {
 
     
     private Summary getSummary(ToolModel<?> model) {
-        if(model.isScript())
+        if(!(model instanceof AnnotatedToolModel))
             return null;
-        return model.getToolClass().getAnnotation(Summary.class);
+        AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
+        return amodel.getToolClass().getAnnotation(Summary.class);
     }
 
     private String getDescription(ToolModel<?> model) {
-        if(model.isScript()){
-            return invokeScript(model, "--_print-description");
+        if(model instanceof ScriptToolModel){
+            return invokeScript((ScriptToolModel<?>) model, "--_print-description");
         }
+        AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "description");
         if (msg.isEmpty()) {
-            Description description = model.getToolClass().getAnnotation(Description.class);
+            Description description = amodel.getToolClass().getAnnotation(Description.class);
             if (description != null) {
                 msg = description.value();
             }
@@ -537,12 +546,13 @@ public class DocBuilder {
     }
 
     private String getSections(ToolModel<?> model) {
-        if(model.isScript())
+        if(!(model instanceof AnnotatedToolModel))
             return null;
+        AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "sections.remaining");
         if (msg.isEmpty()) {
-            RemainingSections sections = model.getToolClass().getAnnotation(RemainingSections.class);
+            RemainingSections sections = amodel.getToolClass().getAnnotation(RemainingSections.class);
             if (sections != null) {
                 msg = sections.value();
             }
@@ -568,8 +578,9 @@ public class DocBuilder {
 
     private String getCeylonInvocationForSynopsis(ToolModel<?> model) {
         String ret = getCeylonInvocation(model);
-        if(model.isScript())
-            return ret + " " + invokeScript(model, "--_print-usage");
+        if(model instanceof ScriptToolModel){
+            return ret + " " + invokeScript((ScriptToolModel<?>) model, "--_print-usage");
+        }
         return ret;
     }
 

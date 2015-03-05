@@ -36,6 +36,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.tool.AnnotatedToolModel;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.ScriptToolModel;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolError;
@@ -402,8 +404,8 @@ public class CeylonTool implements Tool {
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
         } else {
-            if(model.isScript()){
-                runScript(model);
+            if(model instanceof ScriptToolModel){
+                runScript((ScriptToolModel<Tool>)model);
             }else{
                 // Run the tool
                 tool.run();
@@ -411,7 +413,7 @@ public class CeylonTool implements Tool {
         }
     }
 
-    private void runScript(ToolModel<?> model) {
+    private void runScript(ScriptToolModel<?> model) {
         List<String> args = new ArrayList<String>(3+toolArgs.size());
         if (OSUtil.isWindows()) {
             args.add("cmd.exe");
@@ -489,7 +491,7 @@ public class CeylonTool implements Tool {
             throw new NoSuchToolException(argumentModel,
                     getToolName());
         }
-        if(model.isScript())
+        if(!(model instanceof AnnotatedToolModel))
             return null;
         boolean useCache = false;
         if(toolName != null && toolName.equals(model.getName()))
