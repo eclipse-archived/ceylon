@@ -314,12 +314,10 @@
     Declaration declaration;)
 
 ^(TYPE_LITERAL:META_LITERAL
-    STATIC_TYPE? type
-    BASE_MEMBER_EXPRESSION? objectExpression)
+    STATIC_TYPE? type)
 
 ^(MEMBER_LITERAL:META_LITERAL
     STATIC_TYPE? type
-    BASE_MEMBER_EXPRESSION? objectExpression
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
     ProducedReference target;)
