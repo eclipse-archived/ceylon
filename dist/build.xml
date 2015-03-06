@@ -103,6 +103,32 @@ Some more basic ant tasks:
         </ant>
     </target>
 
+    <target name="copy-herd">
+        <fail message="Please specify a target Herd upload repo url with -Dherd.repo=..." unless="herd.repo"/>
+        <fail message="Please specify a target Herd user name with -Dherd.user=..." unless="herd.user"/>
+        <fail message="Please specify a target Herd password with -Dherd.pass=..." unless="herd.pass"/>
+        <path id="ant-tasks">
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/lib/ceylon-ant.jar"/>
+        </path>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+        <ceylon-copy nodefaultrepositories="true" out="${herd.repo}" user="${herd.user}" pass="${herd.pass}" withdependencies="true">
+            <reposet>
+                <repo url="${basedir}/dist/repo"/>
+            </reposet>
+            <moduleset>
+                <module name="com.redhat.ceylon.common" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
+                <module name="ceylon.runtime" version="${ceylon.version}"/>
+                <module name="ceylon.language" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.maven-support" version="2.0"/>
+            </moduleset>
+        </ceylon-copy>
+    </target>
+
     <target name="ide" depends="siblings, install-all">
         <property name="buildtarget" value="ide-internal" />
         <antcall target="ide-quick"/>
