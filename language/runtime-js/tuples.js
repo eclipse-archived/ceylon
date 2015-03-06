@@ -99,6 +99,7 @@ function tpl$(elems,types,spread){
   }
   that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
   that.spanFrom=function(x){
+    if (x===0)return that;
     if (spread) {
       if (x>=elems.length) {
         return spread.spanFrom(x-elems.length);
@@ -108,7 +109,7 @@ function tpl$(elems,types,spread){
       return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence}).sequence();
     }
     var r=elems.spanFrom(x);
-    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?empty():tpl$(r,(types.t==='T'?types.l:types).slice(x));
   }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
   that.measure=function(a,b){//from,length
