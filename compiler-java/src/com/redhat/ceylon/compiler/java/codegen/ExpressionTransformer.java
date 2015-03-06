@@ -1195,13 +1195,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else{
                 return makeErroneous(expr, "Unsupported member type: "+declaration);
             }
-            if(objectMember){
-                // now get the instance and bind it
-                // I don't think we need any expected type since objects can't be erased
-                JCExpression object = transformExpression(expr.getObjectExpression());
-                // reset the location after we transformed the expression
-                memberCall = at(expr).Apply(null, makeSelect(memberCall, "bind"), List.of(object));
-            }
+//            if(objectMember){
+//                // now get the instance and bind it
+//                // I don't think we need any expected type since objects can't be erased
+//                JCExpression object = transformExpression(expr.getObjectExpression());
+//                // reset the location after we transformed the expression
+//                memberCall = at(expr).Apply(null, makeSelect(memberCall, "bind"), List.of(object));
+//            }
             // cast the member call because we invoke it with no Java generics
             memberCall = make().TypeCast(makeJavaType(expr.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES), memberCall);
             memberCall = make().TypeCast(makeJavaType(expr.getTypeModel(), JT_NO_PRIMITIVES), memberCall);
