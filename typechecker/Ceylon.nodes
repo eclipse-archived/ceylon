@@ -320,6 +320,7 @@
     STATIC_TYPE? type
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
+    boolean packageQualified;
     ProducedReference target;)
 
 ^(CLASS_LITERAL:TYPE_LITERAL)
