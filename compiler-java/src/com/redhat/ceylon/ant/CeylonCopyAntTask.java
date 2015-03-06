@@ -25,22 +25,15 @@
  */
 package com.redhat.ceylon.ant;
 
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
-
-import com.redhat.ceylon.common.Constants;
 
 public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Copy failed; see the error output for details.";
     
     private final ModuleSet moduleSet = new ModuleSet();
-    private String out;
-    private String user;
-    private String pass;
     private boolean withDependencies;
     private Boolean js;
     private Boolean jvm;
@@ -67,36 +60,6 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
-    }
-
-    /**
-     * Set the destination repository into which the Java source files should be
-     * compiled.
-     * @param out the destination repository
-     */
-    public void setOut(String out) {
-        this.out = out;
-    }
-
-    public String getOut() {
-        if (this.out == null) {
-            return new File(getProject().getBaseDir(), Constants.DEFAULT_MODULE_DIR).getPath();
-        }
-        return this.out;
-    }
-
-    /**
-     * Sets the user name for the output module repository (HTTP only)
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * Sets the password for the output module repository (HTTP only)
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 
     /**

@@ -33,9 +33,9 @@ import com.redhat.ceylon.common.Constants;
  */
 abstract class OutputRepoUsingCeylonAntTask extends RepoUsingCeylonAntTask {
 
-    private String out;
-    private String user;
-    private String pass;
+    protected String out;
+    protected String user;
+    protected String pass;
     
     protected OutputRepoUsingCeylonAntTask(String toolName) {
         super(toolName);
