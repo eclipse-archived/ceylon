@@ -268,6 +268,10 @@ public class ExpressionTests extends CompilerTests {
     public void testSlfSuperClass(){
         compareWithJavaSource("selfref/SuperClass");
     }
+    @Test
+    public void testSlfPackageQualifiedTypes(){
+        compareWithJavaSource("selfref/PackageQualifiedTypes");
+    }
     
     // Instantiation
     
