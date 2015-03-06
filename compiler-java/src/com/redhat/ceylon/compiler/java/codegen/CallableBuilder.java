@@ -185,6 +185,7 @@ public class CallableBuilder {
         Naming.SyntheticName instanceFieldName;
         boolean instanceFieldIsBoxed = false;
         if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
+                && !ExpressionTransformer.isPackageQualified((Tree.QualifiedMemberOrTypeExpression)forwardCallTo)
                 && !(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SpreadOp)) {
             Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);

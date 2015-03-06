@@ -2357,7 +2357,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
             boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
-            boolean isPackage = Util.unwrapExpressionUntilTerm(qualified.getPrimary()) instanceof Tree.Package;
+            boolean isPackage = isPackageQualified(qualified);
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(expr);
@@ -3910,7 +3910,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return null;
                 }
             }
-            if(primary instanceof Tree.Package)
+            if(isPackage(primary))
                 return null;
             
             ProducedType type = expr.getTarget().getQualifyingType();
@@ -4016,6 +4016,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private static boolean isThis(Tree.Primary primary) {
         return Util.eliminateParensAndWidening(primary) instanceof Tree.This;
+    }
+    
+    static boolean isPackage(Tree.Primary primary) {
+        return eliminateParens(primary) instanceof Tree.Package;
+    }
+    
+    static boolean isPackageQualified(Tree.QualifiedMemberOrTypeExpression qmte) {
+        return isPackage(qmte.getPrimary());
     }
     
     /** 
@@ -4788,7 +4796,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
-            if (qualified.getPrimary() instanceof Tree.Package) {
+            if (isPackageQualified(qualified)) {
                 expr = null;
             } else if (isSuper(qualified.getPrimary())) {
                 expr = transformSuper(qualified);
