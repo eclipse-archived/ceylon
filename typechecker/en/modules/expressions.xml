@@ -3154,7 +3154,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <xref linkend="type"/>, or a base expression referring to an anonymous 
         class declaration.</para>
         
-        <synopsis>MetaQualifier: QualifiedType | GroupedType | MemberName</synopsis>
+        <synopsis>MetaQualifier: PrimaryType | GroupedType | MemberName</synopsis>
         
         <para>A member metamodel expression is a reference to an attribute or 
         method of the type identified by the qualifier. The member is resolved 
