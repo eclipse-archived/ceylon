@@ -675,13 +675,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     private String quoteMemberName(ModuleQuery query) {
         String member = query.getMemberName();
-        if (member != null) {
-            if (!query.isMemberSearchPackageOnly() && Character.isLowerCase(memberName(member).charAt(0))) {
-                member += "_";
-            }
-            member = JVMModuleUtil.quoteJavaKeywords(member);
+        if (!query.isMemberSearchPackageOnly() && Character.isLowerCase(memberName(member).charAt(0))) {
+            member += "_";
         }
-        return member;
+        return JVMModuleUtil.quoteJavaKeywords(member);
     }
     
     // Given a fully qualified member name returns the last part of the name
