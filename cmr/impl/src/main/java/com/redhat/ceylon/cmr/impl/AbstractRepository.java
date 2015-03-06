@@ -691,11 +691,7 @@ public abstract class AbstractRepository implements Repository {
     public static Set<String> matchNames(Set<String> names, ModuleQuery query, boolean namesArePackages) {
         // We're actually looking for a module containing a specific member
         SortedSet<String> found = new TreeSet<String>();
-        String member = query.getMemberName();
-        if (!query.isMemberSearchPackageOnly() && Character.isLowerCase(memberName(member).charAt(0))) {
-            member += "_";
-        }
-        member = JVMModuleUtil.quoteJavaKeywords(member);
+        String member = JVMModuleUtil.quoteJavaKeywords(query.getMemberName());
         boolean matchPackagePart = !namesArePackages && query.isMemberSearchPackageOnly();
         if (query.isMemberSearchExact()) {
             for (String name : names) {
@@ -728,16 +724,6 @@ public abstract class AbstractRepository implements Repository {
             return memberName.substring(0, p);
         } else {
             return "";
-        }
-    }
-    
-    // Given a fully qualified member name returns the last part of the name
-    private static String memberName(String memberName) {
-        int p = memberName.lastIndexOf('.');
-        if (p >= 0) {
-            return memberName.substring(p + 1);
-        } else {
-            return memberName;
         }
     }
     
