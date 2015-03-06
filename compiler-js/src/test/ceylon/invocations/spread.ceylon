@@ -104,3 +104,47 @@ void testSpread() {
   value l433=[Spread433(1),Spread433(2)];
   check(l433*.simple(2)==[4,6], "#433 simple spread");
 }
+
+void spreadIssues() {
+  void exec1(String(String, String) op, [String, String] args) {
+    check(op(*args)=="Ceylon", "#486.1");
+  }
+
+  void exec2<Args>(String(*Args) op, Args args)
+        given Args satisfies Anything[] {
+    check(op(*args)=="Ceylon", "#486.2");
+  }
+
+  void exec3<Args>(String(*Args) op, Args args)
+        given Args satisfies [Anything, Anything] {
+    check(op(*args)=="Ceylon", "#486.3");
+  }
+
+  void exec4<Args>(String(*Args) op, Args args)
+        given Args satisfies [String, String] {
+    check(op(*args)=="Ceylon", "#486.4");
+  }
+
+  void exec5<Args, RawArgs>(
+        String(*Args) op,
+        Args(RawArgs) transform,
+        RawArgs args)
+        given Args satisfies Anything[] {
+    value [*xs] = transform(args);
+    check(op(*xs)=="Ceylon", "#508.1");
+    value xs2 = transform(args);
+    check(op(*xs)=="Ceylon", "#508.2");
+  }
+
+  //486
+  value args = ["Cey", "lon"];
+  exec2((String x, String y) => x.plus(y), args); // ok
+  exec2(plus<String>, args); // ok
+  exec1(uncurry(String.plus), args); // ok
+  exec2(uncurry(String.plus), args); // error
+  exec3(uncurry(String.plus), args); // error
+  exec4(uncurry(String.plus), args); // error
+  //508
+  exec5((String x, String y) => x.plus(y), identity<[String, String]>, args);
+  exec5(uncurry(String.plus), identity<[String, String]>, args);
+}

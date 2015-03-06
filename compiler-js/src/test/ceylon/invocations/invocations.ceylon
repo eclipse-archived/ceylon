@@ -31,6 +31,7 @@ shared void test() {
     check(mixseqs{'H','I'}=="C:H #?");
     check(staticJoinTest("**")({"a","b","c"})=="a**b**c", "static String.join test");
     testSpread();
+    spreadIssues();
     testIssues();
     testConstructors();
     results();
