@@ -7838,20 +7838,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType t;
         TypeDeclaration d;
         Tree.StaticType type = that.getType();
-        Tree.BaseMemberExpression oe = that.getObjectExpression();
         Node errorNode;
 		if (type != null) {
         	t = type.getTypeModel();
         	d = t.getDeclaration();
         	errorNode = type;
-        }
-		else if (oe != null ) {
-        	t = oe.getTypeModel();
-        	d = t.getDeclaration();
-        	if (!d.isAnonymous()) {
-        		oe.addError("must be a reference to an anonymous class");
-        	}
-        	errorNode = oe;
         }
 		else {
 		    errorNode = that;
@@ -7967,17 +7958,9 @@ public class ExpressionVisitor extends Visitor {
             ProducedType qt = null;
             TypeDeclaration qtd = null;
             Tree.StaticType type = that.getType();
-            Tree.BaseMemberExpression oe = that.getObjectExpression();
 			if (type != null) {
             	qt = type.getTypeModel();
             	qtd = qt.getDeclaration();
-            }
-			else if (oe != null) {
-            	qt = oe.getTypeModel();
-            	qtd = qt.getDeclaration();
-            	if (!qtd.isAnonymous()) {
-            		oe.addError("must be a reference to an anonymous class");
-            	}
             }
             if (qt != null) {
             	qt = qt.resolveAliases();
