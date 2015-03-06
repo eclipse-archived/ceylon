@@ -966,10 +966,36 @@ classSpecifier returns [ClassSpecifier classSpecifier]
     ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
-    @init { Primary p=null; }
+    @init { Primary p=null; BaseType bt = null;  QualifiedType qt = null; }
     : (
+        PACKAGE 
+        { bt = new BaseType($PACKAGE);
+          bt.setPackageQualified(true); }
+        MEMBER_OP
         t1=typeNameWithArguments
-        { BaseType bt = new BaseType(null);
+        { bt.setIdentifier($t1.identifier);
+          if ($t1.typeArgumentList!=null)
+              bt.setTypeArgumentList($t1.typeArgumentList);
+          $type=bt; 
+          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
+          ete.setExtendedType($type); 
+          p = ete; }
+        (
+          MEMBER_OP
+          t3=typeNameWithArguments
+          { qt = new QualifiedType(null);
+          qt.setOuterType($type);
+          qt.setIdentifier($t3.identifier);
+          if ($t3.typeArgumentList!=null)
+              qt.setTypeArgumentList($t3.typeArgumentList);
+          $type=qt;
+          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
+          ete.setExtendedType($type); 
+          p = ete; }
+        )?
+      | 
+        t1=typeNameWithArguments
+        { bt = new BaseType(null);
           bt.setIdentifier($t1.identifier);
           if ($t1.typeArgumentList!=null)
               bt.setTypeArgumentList($t1.typeArgumentList);
@@ -980,7 +1006,7 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
         (
           MEMBER_OP
           t3=typeNameWithArguments
-          { QualifiedType qt=new QualifiedType(null);
+          { qt=new QualifiedType(null);
           qt.setOuterType($type);
           qt.setIdentifier($t3.identifier);
           if ($t3.typeArgumentList!=null)
@@ -990,9 +1016,10 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           ete.setExtendedType($type); 
           p = ete; }
         )?
-      | SUPER MEMBER_OP 
+      | 
+        SUPER MEMBER_OP 
         t2=typeNameWithArguments 
-        { QualifiedType qt=new QualifiedType(null);
+        { qt=new QualifiedType(null);
           SuperType st = new SuperType($SUPER);
           qt.setOuterType(st);
           qt.setIdentifier($t2.identifier);
