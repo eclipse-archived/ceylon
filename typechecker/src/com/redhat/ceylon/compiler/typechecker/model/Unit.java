@@ -1376,10 +1376,6 @@ public class Unit {
         ProducedType setType = variable ? pr.getType() : 
                 new NothingType(this).getType();
         ProducedType qualifyingType = pr.getQualifyingType();
-        while (qualifyingType!=null && 
-                qualifyingType.getDeclaration().isAnonymous()) {
-            qualifyingType = qualifyingType.getQualifyingType();
-        }
         if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("Attribute"),
                     qualifyingType, getType, setType);
@@ -1405,10 +1401,6 @@ public class Unit {
         }
         else {
             ProducedType qualifyingType = pr.getQualifyingType();
-            while (qualifyingType!=null && 
-                    qualifyingType.getDeclaration().isAnonymous()) {
-                qualifyingType = qualifyingType.getQualifyingType();
-            }
             if (qualifyingType!=null) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
                         qualifyingType, returnType, parameterTuple);
@@ -1463,10 +1455,6 @@ public class Unit {
         }
         ProducedType qualifyingType = 
                 literalType.getQualifyingType();
-        while (qualifyingType!=null && 
-                qualifyingType.getDeclaration().isAnonymous()) {
-            qualifyingType = qualifyingType.getQualifyingType();
-        }
         if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("MemberClass"),
                     qualifyingType, literalType, parameterTuple);
@@ -1480,10 +1468,6 @@ public class Unit {
     public ProducedType getInterfaceMetatype(ProducedType literalType) {
         ProducedType qualifyingType = 
                 literalType.getQualifyingType();
-        while (qualifyingType!=null && 
-                qualifyingType.getDeclaration().isAnonymous()) {
-            qualifyingType = qualifyingType.getQualifyingType();
-        }
         if (qualifyingType!=null) {
             return producedType(getLanguageModuleModelTypeDeclaration("MemberInterface"),
                     qualifyingType, literalType);

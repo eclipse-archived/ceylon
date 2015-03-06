@@ -377,8 +377,8 @@ void objectMemberRefs() {
     FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
     ValueDeclaration processArgumentsDec = `value process.arguments`;
     Value<Basic,Nothing> obj = `process`;
-    Function<Anything,[]|[String]> fun = `process.writeLine`;
-    Value<String[],Nothing> att = `process.arguments`;
+    Method<\Iprocess,Anything,[]|[String]> fun = `process.writeLine`;
+    Attribute<\Iprocess,String[],Nothing> att = `process.arguments`;
 }
 
 void testImplicitRefs() {
@@ -419,21 +419,42 @@ object x {
 shared void testObjectMetamodelRefs() {
     ClassDeclaration cd = `class foo.bar.Bar`;
     ValueDeclaration vd = `value foo.bar.Bar.name`;
-    Value<Basic,Nothing> vbn = `foo.bar`;
+    Attribute<\Ifoo,Basic,Nothing> vbn = `foo.bar`;
     Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `foo.bar.Bar.name`;
-    Class<\Ifoo.\Ibar.Bar,[]> it1 = `foo.bar.Bar`;
+    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = `foo.bar.Bar`;
     MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
             = `foo.bar.Bar.Baz<String>`;
-    @type:"Value<Basic,Nothing>"
+    @type:"Attribute<x,Basic,Nothing>"
     value xy = `x.y`;
-    @type:"Class<x.Y,Empty>"
+    @type:"MemberClass<x,x.Y,Empty>"
     value xY = `x.Y`;
-    @type:"Interface<x.I>"
+    @type:"MemberInterface<x,x.I>"
     value xI = `x.I`;
-    @type:"Value<String,Nothing>"
+    @type:"Attribute<x,String,Nothing>"
     value xName = `x.name`;
-    @type:"Function<Anything,Empty>"
+    @type:"Method<x,Anything,Empty>"
     value xDo = `x.do`;
     
 }
 
+String packageFun() => "hello";
+String packageValue => "hello";
+class PackageClass() {
+    shared String val => "hello";
+}
+interface PackageInterface {
+    shared String val => "hello";
+}
+
+shared void packageQualifiedMetamodel() {
+    void packageFun() {}
+    Integer packageValue => 0;
+    class PackageClass(Integer i) {}
+    interface PackageInterface {}
+    Function<String,[]> pf = `package.packageFun`;
+    Value<String> pv = `package.packageValue`;
+    Class<package.PackageClass,[]> pc = `package.PackageClass`;
+    Interface<package.PackageInterface> pi = `package.PackageInterface`;
+    Attribute<package.PackageClass,String> pca = `package.PackageClass.val`;
+    Attribute<package.PackageInterface,String> pci = `package.PackageInterface.val`;
+}
