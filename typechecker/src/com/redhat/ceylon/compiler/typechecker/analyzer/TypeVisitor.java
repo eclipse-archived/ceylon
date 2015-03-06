@@ -824,14 +824,10 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.BaseType that) {
         super.visit(that);
         String name = name(that.getIdentifier());
-        Scope scope;
-        if (that.getMainToken()!=null && 
-                that.getMainToken().getType()==CeylonLexer.PACKAGE) {
-            scope = unit.getPackage();
-        }
-        else {
-            scope = that.getScope();
-        }
+        Scope scope = 
+                that.getPackageQualified() ? 
+                        unit.getPackage() : 
+                        that.getScope();
         TypeDeclaration type = 
                 getTypeDeclaration(scope, name, null, false, unit);
         if (type==null) {

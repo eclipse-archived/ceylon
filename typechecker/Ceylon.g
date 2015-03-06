@@ -3253,6 +3253,7 @@ baseType returns [StaticType type]
       { $type=$groupedType.type; }
     | PACKAGE
       { pt = new BaseType($PACKAGE); 
+        pt.setPackageQualified(true);
         $type=pt; }
       MEMBER_OP
       { pt.setEndToken($MEMBER_OP); }
@@ -3974,7 +3975,9 @@ metaType returns [SimpleType type, boolean endsWithMember]
         )?
       | 
         PACKAGE
-	      { $type = new BaseType($PACKAGE); }
+	      { BaseType pt = new BaseType($PACKAGE);
+	        pt.setPackageQualified(true);
+	        $type = pt; }
 	      mo2=MEMBER_OP
 	      { $type.setEndToken($mo2); }
 	      (
@@ -4203,6 +4206,7 @@ metaLiteral returns [MetaLiteral meta]
 	            ml.setIdentifier(st.getIdentifier());
 	            ml.setTypeArgumentList(st.getTypeArgumentList());
 	            ml.setEndToken(null);
+	            ml.setPackageQualified(((BaseType)st).getPackageQualified());
 	          }
 	          $meta = ml;
 	        }

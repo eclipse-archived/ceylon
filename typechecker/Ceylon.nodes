@@ -274,7 +274,8 @@
     TYPE_ARGUMENT_LIST?
     TypeDeclaration declarationModel;)
 
-^(BASE_TYPE: SIMPLE_TYPE)
+^(BASE_TYPE: SIMPLE_TYPE
+    boolean packageQualified;)
 
 ^(QUALIFIED_TYPE: SIMPLE_TYPE
     STATIC_TYPE outerType)
