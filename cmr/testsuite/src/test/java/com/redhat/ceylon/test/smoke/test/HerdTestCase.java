@@ -849,6 +849,26 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     //@Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByExactMemberKeyword() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                cmathDetails,
+        };
+
+        testSearchResultsMember("", Type.JVM, "ceylon.math.float::pi", true, false, expected);
+    }
+
+    @Test
+    //@Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByMemberKeyword() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                cmathDetails,
+        };
+
+        testSearchResultsMember("", Type.JVM, "ceylon.math.fl", false, false, expected);
+    }
+
+    @Test
+    //@Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByPackage() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
