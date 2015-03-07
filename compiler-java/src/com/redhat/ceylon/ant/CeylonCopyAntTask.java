@@ -135,13 +135,6 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        if (out != null) {
-            appendOptionArgument(cmd, "--out", out);
-        }
-
-        appendUserOption(cmd, user);
-        appendPassOption(cmd, pass);
-        
         if (withDependencies) {
             appendOption(cmd, "--with-dependencies");
         }
