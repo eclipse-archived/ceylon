@@ -458,3 +458,11 @@ shared void packageQualifiedMetamodel() {
     Attribute<package.PackageClass,String> pca = `package.PackageClass.val`;
     Attribute<package.PackageInterface,String> pci = `package.PackageInterface.val`;
 }
+
+class Bug() { shared object foo { shared object baz {} } }
+
+void bug() {
+    value bug1 = `Bug.foo.baz`;
+    value bug2 = `Bug[][].size`;
+    value bug3 = `<Bug[]|{Bug*}>.size`;
+}

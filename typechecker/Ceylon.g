@@ -4213,36 +4213,6 @@ metaLiteral returns [MetaLiteral meta]
           }
         }
 	    |
-	      (abbreviatedType MEMBER_OP) =>
-	      { ml = new MemberLiteral($d1);
-	        $meta = ml; }
-	      at=abbreviatedType
-	      { ml.setType($at.type); }
-	      o1=MEMBER_OP
-	      { ml.setEndToken($o1); }
-	      m1=memberName
-	      { ml.setIdentifier($m1.identifier); 
-	        ml.setEndToken(null); }
-	      (
-	        ta1=typeArguments
-	        { ml.setTypeArgumentList($ta1.typeArgumentList); }
-	      )?
-	    | 
-	      (groupedType MEMBER_OP) =>
-	      { ml = new MemberLiteral($d1);
-	        $meta = ml; }
-	      gt=groupedType
-	      { ml.setType($gt.type); }
-	      o2=MEMBER_OP
-	      { ml.setEndToken($o2); }
-	      m2=memberName
-	      { ml.setIdentifier($m2.identifier);
-	        ml.setEndToken(null); }
-	      (
-	        ta2=typeArguments
-	        { ml.setTypeArgumentList($ta2.typeArgumentList); }
-	      )?
-      |
         ((PACKAGE MEMBER_OP)? (typeNameWithArguments MEMBER_OP)* memberName) =>
 	      mtq=metaType
         { if (!$mtq.endsWithMember) {
@@ -4268,6 +4238,36 @@ metaLiteral returns [MetaLiteral meta]
 	          $meta = ml;
 	        }
         }
+      |
+        (abbreviatedType MEMBER_OP) =>
+        { ml = new MemberLiteral($d1);
+          $meta = ml; }
+        at=abbreviatedType
+        { ml.setType($at.type); }
+        o1=MEMBER_OP
+        { ml.setEndToken($o1); }
+        m1=memberName
+        { ml.setIdentifier($m1.identifier); 
+          ml.setEndToken(null); }
+        (
+          ta1=typeArguments
+          { ml.setTypeArgumentList($ta1.typeArgumentList); }
+        )?
+      | 
+        (groupedType MEMBER_OP) =>
+        { ml = new MemberLiteral($d1);
+          $meta = ml; }
+        gt=groupedType
+        { ml.setType($gt.type); }
+        o2=MEMBER_OP
+        { ml.setEndToken($o2); }
+        m2=memberName
+        { ml.setIdentifier($m2.identifier);
+          ml.setEndToken(null); }
+        (
+          ta2=typeArguments
+          { ml.setTypeArgumentList($ta2.typeArgumentList); }
+        )?
       |
         t=type
         { tl = new TypeLiteral($d1);
