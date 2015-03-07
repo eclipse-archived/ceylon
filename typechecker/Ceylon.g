@@ -1,3 +1,4 @@
+
 grammar Ceylon;
 
 options {
@@ -4278,7 +4279,8 @@ metaLiteral returns [MetaLiteral meta]
     : d1=BACKTICK
       { $meta = new TypeLiteral($d1); }
 	    ( moduleLiteral
-	      { $meta=$moduleLiteral.literal; }
+	      { $meta=$moduleLiteral.literal; 
+	        $meta.setToken($d1); }
 	    | (PACKAGE (LIDENTIFIER|BACKTICK)) =>
 	      packageLiteral
 	      { $meta=$packageLiteral.literal; 
