@@ -182,6 +182,10 @@ public abstract class Node {
     	return getLastChildToken();
 	}
     
+    public void setToken(Token token) {
+        this.token = token;
+    }
+    
     public void setEndToken(Token endToken) {
         //the tokens ANTLR inserts to represent missing tokens
         //don't come with useful offset information

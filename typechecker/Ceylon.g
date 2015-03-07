@@ -4080,199 +4080,239 @@ metaType returns [SimpleType type, boolean endsWithMember]
       )*
     ; 
 
+moduleLiteral returns [ModuleLiteral literal]
+ : MODULE
+   { $literal = new ModuleLiteral(null);
+     $literal.setEndToken($MODULE); }
+   (
+     p1=packagePath
+     { $literal.setImportPath($p1.importPath); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+packageLiteral returns [PackageLiteral literal]
+ : PACKAGE
+   { $literal = new PackageLiteral(null);
+     $literal.setEndToken($PACKAGE); }
+   (
+     p2=packagePath
+     { $literal.setImportPath($p2.importPath); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+classLiteral returns [ClassLiteral literal]
+ : CLASS_DEFINITION
+   { $literal = new ClassLiteral(null);
+     $literal.setEndToken($CLASS_DEFINITION); }
+   (
+     ct=metaType
+     { $literal.setType($ct.type); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+interfaceLiteral returns [InterfaceLiteral literal]
+ : INTERFACE_DEFINITION
+   { $literal = new InterfaceLiteral(null);
+     $literal.setEndToken($INTERFACE_DEFINITION); }
+   (
+     it=metaType
+     { $literal.setType($it.type); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+newLiteral returns [NewLiteral literal]
+ : NEW
+   { $literal = new NewLiteral(null);
+     $literal.setEndToken($NEW); }
+   (
+     nt=metaType
+     { $literal.setType($nt.type); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+aliasLiteral returns [AliasLiteral literal]
+ : ALIAS
+   { $literal = new AliasLiteral(null);
+     $literal.setEndToken($ALIAS); }
+   (
+     at=metaType
+     { $literal.setType($at.type); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+typeParameterLiteral returns [TypeParameterLiteral literal]
+ : TYPE_CONSTRAINT
+   { $literal = new TypeParameterLiteral(null);
+     $literal.setEndToken($TYPE_CONSTRAINT); }
+   (
+     tt=metaType
+     { $literal.setType($tt.type); 
+       $literal.setEndToken(null); }
+   )?
+ ;
+
+valueLiteral returns [ValueLiteral literal]
+  : (
+      VALUE_MODIFIER
+      { $literal = new ValueLiteral(null);
+        $literal.setEndToken($VALUE_MODIFIER); }
+    |
+      OBJECT_DEFINITION
+      { $literal = new ValueLiteral(null);
+        $literal.setEndToken($OBJECT_DEFINITION);
+        $literal.setBroken(true); }
+    )
+    vt=metaType
+    {
+      if ($vt.type instanceof QualifiedType) {
+        $literal.setType(((QualifiedType)$vt.type).getOuterType());
+        $literal.setIdentifier($vt.type.getIdentifier());
+        $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
+        $literal.setEndToken(null);
+      }
+      else if ($vt.type instanceof BaseType) {
+        $literal.setIdentifier($vt.type.getIdentifier());
+        $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
+        $literal.setEndToken(null);
+      }
+    }
+  ;
+
+functionLiteral returns [FunctionLiteral literal]
+  : FUNCTION_MODIFIER
+    { $literal = new FunctionLiteral(null);
+      $literal.setEndToken($FUNCTION_MODIFIER); }
+    ft=metaType
+    {
+      if ($ft.type instanceof QualifiedType) {
+        $literal.setType(((QualifiedType)$ft.type).getOuterType());
+        $literal.setIdentifier($ft.type.getIdentifier());
+        $literal.setTypeArgumentList($ft.type.getTypeArgumentList());
+        $literal.setEndToken(null);
+      }
+      else if ($ft.type instanceof BaseType) {
+        $literal.setIdentifier($ft.type.getIdentifier());
+        $literal.setTypeArgumentList($ft.type.getTypeArgumentList());
+        $literal.setEndToken(null);
+      }
+    }
+  ;
+
+pathMetamodel returns [MetaLiteral meta]
+  @init { TypeLiteral tl=null; 
+          MemberLiteral ml=null; } 
+  : mtq=metaType
+    {
+      if (!$mtq.endsWithMember) {
+        tl = new TypeLiteral(null);
+        tl.setType($mtq.type);
+        $meta = tl;
+      }
+      else {
+        ml = new MemberLiteral(null);
+        SimpleType st = $mtq.type;
+        if (st instanceof QualifiedType) {
+          ml.setType(((QualifiedType)st).getOuterType());
+          ml.setIdentifier(st.getIdentifier());
+          ml.setTypeArgumentList(st.getTypeArgumentList());
+          ml.setEndToken(null);
+        }
+        else if (st instanceof BaseType) {
+          ml.setIdentifier(st.getIdentifier());
+          ml.setTypeArgumentList(st.getTypeArgumentList());
+          ml.setEndToken(null);
+          ml.setPackageQualified(((BaseType)st).getPackageQualified());
+        }
+        $meta = ml;
+      }
+    }
+  ;
+
+typeMetamodel returns [MetaLiteral meta]
+  @init { TypeLiteral tl=null; 
+          MemberLiteral ml=null; } 
+  :
+    (abbreviatedType MEMBER_OP) =>
+    { ml = new MemberLiteral(null);
+      $meta = ml; }
+    at=abbreviatedType
+    { ml.setType($at.type); }
+    o1=MEMBER_OP
+    { ml.setEndToken($o1); }
+    m1=memberName
+    { ml.setIdentifier($m1.identifier); 
+      ml.setEndToken(null); }
+    (
+      ta1=typeArguments
+      { ml.setTypeArgumentList($ta1.typeArgumentList); }
+    )?
+  | 
+    (groupedType MEMBER_OP) =>
+    { ml = new MemberLiteral(null);
+      $meta = ml; }
+    gt=groupedType
+    { ml.setType($gt.type); }
+    o2=MEMBER_OP
+    { ml.setEndToken($o2); }
+    m2=memberName
+    { ml.setIdentifier($m2.identifier);
+      ml.setEndToken(null); }
+    (
+      ta2=typeArguments
+      { ml.setTypeArgumentList($ta2.typeArgumentList); }
+    )?
+  |
+    t=type
+    { tl = new TypeLiteral(null);
+      tl.setType($t.type);
+      $meta = tl; }
+  ;
+
 metaLiteral returns [MetaLiteral meta]
-    @init { TypeLiteral tl=null; 
-            MemberLiteral ml=null; 
-            PackageLiteral p=null;
-            ModuleLiteral m=null; 
-            ClassLiteral c=null;
-            InterfaceLiteral i=null;
-            NewLiteral n=null;
-            AliasLiteral a=null;
-            TypeParameterLiteral tp=null;
-            ValueLiteral v=null;
-            FunctionLiteral f=null; }
     : d1=BACKTICK
-      { tl = new TypeLiteral($d1);
-        $meta = tl; }
-	    (
-	      MODULE
-	      { m = new ModuleLiteral($d1);
-	        m.setEndToken($MODULE); 
-	        $meta=m; }
-	      (
-	        p1=packagePath
-	        { m.setImportPath($p1.importPath); 
-	          m.setEndToken(null); }
-	      )?
-	    |
-	      (PACKAGE (LIDENTIFIER|BACKTICK)) =>
-	      PACKAGE
-	      { p = new PackageLiteral($d1);
-	        p.setEndToken($PACKAGE); 
-	        $meta=p; }
-	      (
-	        p2=packagePath
-	        { p.setImportPath($p2.importPath); 
-	          p.setEndToken(null); }
-	      )?
-	    |
-	      CLASS_DEFINITION
-	      { c = new ClassLiteral($d1);
-	        c.setEndToken($CLASS_DEFINITION); 
-	        $meta=c; }
-	      (
-	        ct=metaType
-	        { c.setType($ct.type); 
-	          c.setEndToken(null); }
-	      )?
-	    |
-	      NEW
-	      { n = new NewLiteral($d1);
-	        n.setEndToken($NEW); 
-	        $meta=n; }
-	      (
-	        nt=metaType
-	        { n.setType($nt.type); 
-	          n.setEndToken(null); }
-	      )?
-	    |
-	      INTERFACE_DEFINITION
-	      { i = new InterfaceLiteral($d1);
-	        i.setEndToken($INTERFACE_DEFINITION); 
-	        $meta=i; }
-	      (
-	        it=metaType
-	        { i.setType($it.type); 
-	          i.setEndToken(null); }
-	      )?
-	    |
-	      ALIAS
-	      { a = new AliasLiteral($d1);
-	        a.setEndToken($ALIAS); 
-	        $meta=a; }
-	      (
-	        att=metaType
-	        { a.setType($att.type); 
-	          a.setEndToken(null); }
-	      )?
-	    |
-	      TYPE_CONSTRAINT
-	      { tp = new TypeParameterLiteral($d1);
-	        tp.setEndToken($TYPE_CONSTRAINT); 
-	        $meta=tp; }
-	      (
-	        tt=metaType
-	        { tp.setType($tt.type); 
-	        tp.setEndToken(null); }
-	      )?
-	    |
-	      (
-	        VALUE_MODIFIER
-	        { v = new ValueLiteral($d1);
-	          v.setEndToken($VALUE_MODIFIER); 
-	          $meta=v; }
-	      |
-	        OBJECT_DEFINITION
-	        { v = new ValueLiteral($d1);
-	          v.setEndToken($OBJECT_DEFINITION);
-	          v.setBroken(true); 
-	          $meta=v; }
-	      )
-        vt=metaType
-        {
-          if ($vt.type instanceof QualifiedType) {
-            v.setType(((QualifiedType)$vt.type).getOuterType());
-            v.setIdentifier($vt.type.getIdentifier());
-            v.setTypeArgumentList($vt.type.getTypeArgumentList());
-            v.setEndToken(null);
-          }
-          else if ($vt.type instanceof BaseType) {
-            v.setIdentifier($vt.type.getIdentifier());
-            v.setTypeArgumentList($vt.type.getTypeArgumentList());
-            v.setEndToken(null);
-          }
-        }
-	    |
-	      FUNCTION_MODIFIER
-	      { f = new FunctionLiteral($d1);
-	        f.setEndToken($FUNCTION_MODIFIER); 
-	        $meta=f; }
-        ft=metaType
-        {
-          if ($ft.type instanceof QualifiedType) {
-            f.setType(((QualifiedType)$ft.type).getOuterType());
-            f.setIdentifier($ft.type.getIdentifier());
-            f.setTypeArgumentList($ft.type.getTypeArgumentList());
-            f.setEndToken(null);
-          }
-          else if ($ft.type instanceof BaseType) {
-            f.setIdentifier($ft.type.getIdentifier());
-            f.setTypeArgumentList($ft.type.getTypeArgumentList());
-            f.setEndToken(null);
-          }
-        }
-	    |
-        ((PACKAGE MEMBER_OP)? (typeNameWithArguments MEMBER_OP)* memberName) =>
-	      mtq=metaType
-        { if (!$mtq.endsWithMember) {
-	          tl = new TypeLiteral($d1);
-	          tl.setType($mtq.type);
-	          $meta = tl;
-	        }
-	        else {
-	          ml = new MemberLiteral($d1);
-	          SimpleType st = $mtq.type;
-	          if (st instanceof QualifiedType) {
-	            ml.setType(((QualifiedType)st).getOuterType());
-	            ml.setIdentifier(st.getIdentifier());
-	            ml.setTypeArgumentList(st.getTypeArgumentList());
-	            ml.setEndToken(null);
-	          }
-	          else if (st instanceof BaseType) {
-	            ml.setIdentifier(st.getIdentifier());
-	            ml.setTypeArgumentList(st.getTypeArgumentList());
-	            ml.setEndToken(null);
-	            ml.setPackageQualified(((BaseType)st).getPackageQualified());
-	          }
-	          $meta = ml;
-	        }
-        }
-      |
-        (abbreviatedType MEMBER_OP) =>
-        { ml = new MemberLiteral($d1);
-          $meta = ml; }
-        at=abbreviatedType
-        { ml.setType($at.type); }
-        o1=MEMBER_OP
-        { ml.setEndToken($o1); }
-        m1=memberName
-        { ml.setIdentifier($m1.identifier); 
-          ml.setEndToken(null); }
-        (
-          ta1=typeArguments
-          { ml.setTypeArgumentList($ta1.typeArgumentList); }
-        )?
-      | 
-        (groupedType MEMBER_OP) =>
-        { ml = new MemberLiteral($d1);
-          $meta = ml; }
-        gt=groupedType
-        { ml.setType($gt.type); }
-        o2=MEMBER_OP
-        { ml.setEndToken($o2); }
-        m2=memberName
-        { ml.setIdentifier($m2.identifier);
-          ml.setEndToken(null); }
-        (
-          ta2=typeArguments
-          { ml.setTypeArgumentList($ta2.typeArgumentList); }
-        )?
-      |
-        t=type
-        { tl = new TypeLiteral($d1);
-          tl.setType($t.type);
-          $meta = tl; }
+      { $meta = new TypeLiteral($d1); }
+	    ( moduleLiteral
+	      { $meta=$moduleLiteral.literal; }
+	    | (PACKAGE (LIDENTIFIER|BACKTICK)) =>
+	      packageLiteral
+	      { $meta=$packageLiteral.literal; 
+	        $meta.setToken($d1); }
+	    | classLiteral
+	      { $meta=$classLiteral.literal; 
+          $meta.setToken($d1); }
+	    | newLiteral
+	      { $meta=$newLiteral.literal; 
+          $meta.setToken($d1); }
+	    | interfaceLiteral
+	      { $meta=$interfaceLiteral.literal; 
+          $meta.setToken($d1); }
+	    | aliasLiteral
+	      { $meta=$aliasLiteral.literal; 
+          $meta.setToken($d1); }
+	    | typeParameterLiteral
+	      { $meta=$typeParameterLiteral.literal; 
+          $meta.setToken($d1); }
+	    | valueLiteral
+	      { $meta=$valueLiteral.literal; 
+          $meta.setToken($d1); }
+	    | functionLiteral
+	      { $meta=$functionLiteral.literal; 
+          $meta.setToken($d1); }
+	    | ((PACKAGE MEMBER_OP)? 
+	       (typeNameWithArguments MEMBER_OP)* 
+	       memberName) =>
+	      pathMetamodel
+	      { $meta=$pathMetamodel.meta; 
+	        $meta.setToken($d1); }
+      | typeMetamodel
+        { $meta=$typeMetamodel.meta; 
+          $meta.setToken($d1); }      
 	    )
       d2=BACKTICK
       { $meta.setEndToken($d2); }
