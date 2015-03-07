@@ -50,7 +50,6 @@ import com.redhat.ceylon.cmr.util.WS.Link;
 import com.redhat.ceylon.cmr.util.WS.Parser;
 import com.redhat.ceylon.cmr.util.WS.XMLHandler;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -347,7 +346,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
@@ -431,7 +430,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
@@ -576,7 +575,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return;
                 }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("memberName", JVMModuleUtil.quoteJavaKeywords(query.getMemberName())));
+                    params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
