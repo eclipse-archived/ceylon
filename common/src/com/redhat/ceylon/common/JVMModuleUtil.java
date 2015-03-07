@@ -8,6 +8,14 @@ public class JVMModuleUtil {
         return "$"+name;
     }
 
+    /** Removes dollar ($) prefix from the given name if it exists */
+    public static String unquote(String name) {
+        if (!name.isEmpty() && name.charAt(0) == '$') {
+            return name.substring(1);
+        }
+        return name;
+    }
+    
     private static final HashSet<String> tokens;
     private static final String[] tokensArray =         new String[]{
         "abstract",
@@ -140,6 +148,43 @@ public class JVMModuleUtil {
             nextDot = qualifiedName.indexOf('.', start);
         }
         return isJavaKeyword(qualifiedName, start, qualifiedName.length());
+    }
+
+    /** Removes dollar ($) prefix from the given name if it was a quoted Java keyword */
+    public static String unquoteIfJavaKeyword(String name){
+        String unquoted = unquote(name);
+        if(isJavaKeyword(unquoted))
+            return unquoted;
+        return name;
+    }
+
+    /**
+     * Returns a copy of the given qualified name, but with any
+     * keyword components in the name 
+     * {@link #unquoteIfJavaKeyword(String) unquoted} if necessary 
+     * @param qualifiedName
+     * @return
+     */
+    public static String unquoteJavaKeywords(String qualifiedName){
+        if(qualifiedName != null)
+            return join(".", unquoteJavaKeywords(qualifiedName.split("\\.")));
+        else
+            return qualifiedName;
+    }
+    
+    /**
+     * Returns a copy of the given array of identifiers, 
+     * {@link #unquoteIfJavaKeyword(String) unquoting} keyword identifiers as 
+     * necessary 
+     * @param name The parts of a qualified name
+     * @return The parts of the qualified name, unquoted if necessary
+     */
+    public static String[] unquoteJavaKeywords(String[] name){
+        String[] result = new String[name.length];
+        for (int ii = 0; ii < name.length; ii++) {
+            result[ii] = unquoteIfJavaKeyword(name[ii]);
+        }
+        return result;
     }
 
     /**
