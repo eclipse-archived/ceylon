@@ -715,10 +715,10 @@ public abstract class AbstractRepository implements Repository {
         return found;
     }
 
-    // Given a fully qualified member name return it's package
+    // Given a fully qualified member name return its package
     // (or an empty string if it's not part of any package)
     private static String packageName(String memberName) {
-        int p = memberName.lastIndexOf('.');
+        int p = memberName.lastIndexOf("::");
         if (p >= 0) {
             return memberName.substring(0, p);
         } else {
