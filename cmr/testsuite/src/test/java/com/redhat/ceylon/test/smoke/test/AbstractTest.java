@@ -70,6 +70,8 @@ public class AbstractTest {
 
     private Path temp;
 
+    protected static final ModuleDependencyInfo IGNORE_DEPS = new ModuleDependencyInfo("$", "$", false, false);
+    
     @Before
     public void setUp() throws Exception {
         temp = Files.createTempDirectory("ceylon-cmrtest-");
@@ -280,7 +282,9 @@ public class AbstractTest {
             Assert.assertEquals(expectedResult.getLicense(), result.getLicense());
             Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
-            Assert.assertEquals(expectedResult.getDependencies(), result.getDependencies());
+            if (!expectedResult.getDependencies().contains(IGNORE_DEPS)) {
+                Assert.assertEquals(expectedResult.getDependencies(), result.getDependencies());
+            }
             Assert.assertEquals(expectedResult.getArtifactTypes(), result.getArtifactTypes());
         }
     }
