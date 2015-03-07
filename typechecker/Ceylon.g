@@ -965,104 +965,115 @@ classSpecifier returns [ClassSpecifier classSpecifier]
       )?
     ;
 
-classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
-    @init { Primary p=null; BaseType bt = null;  QualifiedType qt = null; }
-    : (
-        PACKAGE
-        { bt = new BaseType($PACKAGE);
-          bt.setPackageQualified(true);
-          $type=bt; }
-        (
-	        m1=MEMBER_OP
-	        { bt.setEndToken($m1); }
-	        t1=typeNameWithArguments
-	        { if ($t1.identifier!=null) {
-	            bt.setEndToken(null);
-	            bt.setIdentifier($t1.identifier);
-	          }
-	          if ($t1.typeArgumentList!=null)
-	              bt.setTypeArgumentList($t1.typeArgumentList);
-	          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-	          ete.setExtendedType($type); 
-	          p = ete; }
-	        (
-	          m2=MEMBER_OP
-	          { qt = new QualifiedType(null);
-              qt.setOuterType($type);
-	            qt.setEndToken($m2); 
-	            $type=qt; }
-	          t2=typeNameWithArguments
-            { if ($t2.identifier!=null) {
-                qt.setEndToken(null);
-                qt.setIdentifier($t2.identifier);
-              }
-	            if ($t2.typeArgumentList!=null)
-	              qt.setTypeArgumentList($t2.typeArgumentList);
-	            ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-	            ete.setExtendedType($type); 
-	            p = ete; }
-	        )?
-        )?
-      | 
-        t0=typeNameWithArguments
-        { bt = new BaseType(null);
-          bt.setIdentifier($t0.identifier);
-          if ($t0.typeArgumentList!=null)
-              bt.setTypeArgumentList($t0.typeArgumentList);
-          $type=bt; 
-          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-          ete.setExtendedType($type); 
-          p = ete; }
-        (
-          m3=MEMBER_OP
+packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
+    @init { BaseType bt = null;
+            QualifiedType qt = null; }
+    : PACKAGE
+      { bt = new BaseType($PACKAGE);
+        bt.setPackageQualified(true);
+        $type=bt; }
+      (
+        m1=MEMBER_OP
+        { bt.setEndToken($m1); }
+        t1=typeNameWithArguments
+        { if ($t1.identifier!=null) {
+            bt.setEndToken(null);
+            bt.setIdentifier($t1.identifier);
+          }
+          if ($t1.typeArgumentList!=null)
+              bt.setTypeArgumentList($t1.typeArgumentList);
+          $expression = new ExtendedTypeExpression(null);
+          $expression.setExtendedType($type); }
+        ( //constructor
+          m2=MEMBER_OP
           { qt = new QualifiedType(null);
             qt.setOuterType($type);
-            qt.setEndToken($m3); 
+            qt.setEndToken($m2); 
             $type=qt; }
-          t3=typeNameWithArguments
-          { if ($t3.identifier!=null) {
+          t2=typeNameWithArguments
+          { if ($t2.identifier!=null) {
               qt.setEndToken(null);
-              qt.setIdentifier($t3.identifier);
+              qt.setIdentifier($t2.identifier);
             }
-	          if ($t3.typeArgumentList!=null)
-	              qt.setTypeArgumentList($t3.typeArgumentList);
-	          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-	          ete.setExtendedType($type); 
-	          p = ete; }
+            if ($t2.typeArgumentList!=null)
+              qt.setTypeArgumentList($t2.typeArgumentList);
+            $expression = new ExtendedTypeExpression(null);
+            $expression.setExtendedType($type); }
         )?
-      | 
-        SUPER 
-        { SuperType st = new SuperType($SUPER); 
-          qt = new QualifiedType(null); 
-          qt.setOuterType(st); 
+      )?
+   ;
+
+unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
+    @init { BaseType bt = null;
+            QualifiedType qt = null; }
+    : t0=typeNameWithArguments
+      { bt = new BaseType(null);
+        bt.setIdentifier($t0.identifier);
+        if ($t0.typeArgumentList!=null)
+            bt.setTypeArgumentList($t0.typeArgumentList);
+        $type=bt; 
+        $expression = new ExtendedTypeExpression(null);
+        $expression.setExtendedType($type); }
+      ( //constructor:
+        m3=MEMBER_OP
+        { qt = new QualifiedType(null);
+          qt.setOuterType($type);
+          qt.setEndToken($m3); 
           $type=qt; }
-        m4=MEMBER_OP
-        { qt.setEndToken($m4); }
-        t4=typeNameWithArguments 
-        { if ($t4.identifier!=null) {
+        t3=typeNameWithArguments
+        { if ($t3.identifier!=null) {
             qt.setEndToken(null);
-            qt.setIdentifier($t4.identifier);
+            qt.setIdentifier($t3.identifier);
           }
-          if ($t4.typeArgumentList!=null)
-            qt.setTypeArgumentList($t4.typeArgumentList);
-          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-          ete.setExtendedType($type); 
-          p = ete; }
-      )
+          if ($t3.typeArgumentList!=null)
+              qt.setTypeArgumentList($t3.typeArgumentList);
+          $expression = new ExtendedTypeExpression(null);
+          $expression.setExtendedType($type); }
+      )?
+    ;
+
+superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
+    @init { QualifiedType qt = null; }
+    : SUPER 
+      { SuperType st = new SuperType($SUPER); 
+        qt = new QualifiedType(null); 
+        qt.setOuterType(st); 
+        $type=qt; }
+      m4=MEMBER_OP
+      { qt.setEndToken($m4); }
+      t4=typeNameWithArguments 
+      { if ($t4.identifier!=null) {
+          qt.setEndToken(null);
+          qt.setIdentifier($t4.identifier);
+        }
+        if ($t4.typeArgumentList!=null)
+          qt.setTypeArgumentList($t4.typeArgumentList);
+        $expression = new ExtendedTypeExpression(null);
+        $expression.setExtendedType($type); }
+	  ;
+
+classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
+    @init { ExtendedTypeExpression ete = null; }
+    : (
+	      pq=packageQualifiedClass
+	      { $type=$pq.type; ete=$pq.expression; }
+	    | 
+	      uq=unqualifiedClass
+	      { $type=$uq.type; ete=$uq.expression; }
+	    | 
+	      sq=superQualifiedClass
+	      { $type=$sq.type; ete=$sq.expression; }
+	    )
       (
-        positionalArguments
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary(p);
-          ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
-          $invocationExpression=ie; 
-          p = ie; }
+        pa=positionalArguments
+        { $invocationExpression = new InvocationExpression(null);
+          $invocationExpression.setPrimary(ete);
+          $invocationExpression.setPositionalArgumentList($pa.positionalArgumentList); }
         /*|
-        namedArguments
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary(p);
-          ie.setNamedArgumentList($namedArguments.namedArgumentList);
-          $invocationExpression=ie; 
-          p = ie; }*/
+        na=namedArguments
+        { $invocationExpression = new InvocationExpression(null);
+          $invocationExpression.setPrimary(ete);
+          $invocationExpression.setNamedArgumentList($na.namedArgumentList); }*/
       )?
     ;
 
