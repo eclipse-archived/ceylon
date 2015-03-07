@@ -61,7 +61,10 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
 
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
+    private static final DotName PACKAGE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Package");
     private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
+    private static final DotName IGNORE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ignore");
+    private static final DotName LOCAL_CONTAINER_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.LocalContainer");
 
     public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreInner()) {
@@ -206,11 +209,81 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     private Set<String> getMembers(Index index) {
         HashSet<String> members = new HashSet<>(); 
         for (ClassInfo cls : index.getKnownClasses()) {
-            members.add(cls.name().toString());
+            if (shouldAddMember(cls)) {
+                members.add(classNameToDeclName(cls.name().toString()));
+            }
         }
         return members;
     }
 
+    private boolean shouldAddMember(ClassInfo cls) {
+        // ignore what we must ignore
+        if (getClassAnnotation(cls, IGNORE_ANNOTATION) != null) {
+            return false;
+        }
+        // ignore module and package descriptors
+        if (getClassAnnotation(cls, MODULE_ANNOTATION) != null || getClassAnnotation(cls, PACKAGE_ANNOTATION) != null) {
+            return false;
+        }
+        // ignore local types
+        if (getClassAnnotation(cls, LOCAL_CONTAINER_ANNOTATION) != null) {
+            return false;
+        }
+        return true;
+    }
+    
+    private AnnotationInstance getClassAnnotation(ClassInfo cls, DotName annoName) {
+        List<AnnotationInstance> annos = cls.annotations().get(annoName);
+        if (annos != null) {
+            // Just return the first one we can find on the class itself
+            for (AnnotationInstance anno : annos) {
+                if (anno.target() == cls) {
+                    return anno;
+                }
+            }
+        }
+        return null;
+    }
+    
+    // Returns a fully qualified declaration name making sure that
+    // package name and member name are separated by "::"
+    private static String classNameToDeclName(String clsName) {
+        int lastDot = clsName.lastIndexOf('.');
+        String packageName = lastDot != -1 ? clsName.substring(0, lastDot) : "";
+        String simpleName = lastDot != -1 ? clsName.substring(lastDot+1) : clsName;
+        // ceylon names have mangling for interface members that we pull to toplevel
+        simpleName = simpleName.replace("$impl$", ".");
+        // turn any dollar sep into a dot
+        simpleName = simpleName.replace('$', '.');
+        // remove any dollar prefixes and trailing underscores
+        return unquotedDeclName(packageName, simpleName);
+    }
+    
+    // Given a fully qualified package and member name returns the full and
+    // unquoted declaration name stripped of all special symbols like '$' and '_'
+    private static String unquotedDeclName(String pkg, String member) {
+        if (pkg != null && !pkg.isEmpty()) {
+            return unquoteName(pkg, false) + "::" + unquoteName(member, true);
+        } else {
+            return unquoteName(member, true);
+        }
+    }
+    
+    // Given a name consisting of parts separated by dots returns the unquoted
+    // version stripped of all special symbols like '$' and '_'
+    private static String unquoteName(String s, boolean stripTrailingUnderscore) {
+        if (s != null) {
+            String[] parts = JVMModuleUtil.unquoteJavaKeywords(s.split("\\."));
+            String name = parts[parts.length - 1];
+            if (stripTrailingUnderscore && !name.isEmpty() && Character.isLowerCase(name.charAt(0)) && name.charAt(name.length()-1) == '_') {
+                name = name.substring(0, name.length()-1);
+            }
+            parts[parts.length - 1] = name;
+            s = JVMModuleUtil.join(".", parts);
+        }
+        return s;
+    }
+    
     private static String getVersionFromFilename(String moduleName, String name) {
         if (!ModuleUtil.isDefaultModule(moduleName)) {
             String type = ArtifactContext.getSuffixFromFilename(name);

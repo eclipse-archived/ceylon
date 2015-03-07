@@ -98,7 +98,7 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
 
     private Set<String> getMembers(File moduleArchive) {
         try {
-            return gatherClassnamesFromJar(moduleArchive);
+            return gatherCeylonNamesFromJar(moduleArchive);
         } catch (IOException e) {
             throw new RuntimeException("Failed to retrieve members for module " + moduleArchive.getPath(), e);
         }
@@ -159,7 +159,24 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
         return null;
     }
 
-    // Return the set of fully qualified names for all the classes
+    // Return the set of fully qualified names in Ceylon format for all the classes
+    // in the JAR pointed to by the given file
+    private static Set<String> gatherCeylonNamesFromJar(File jar) throws IOException {
+        HashSet<String> ceylonNames = new HashSet<>();
+        Set<String> classNames = gatherClassnamesFromJar(jar);
+        for (String clsName : classNames) {
+            int p = clsName.lastIndexOf('.');
+            if (p >= 0) {
+                String pkg = clsName.substring(0, p);
+                String member = clsName.substring(p + 1).replace('$', '.');
+                clsName = pkg + "::" + member;
+            }
+            ceylonNames.add(clsName);
+        }
+        return ceylonNames;
+    }
+
+    // Return the set of fully qualified names in their original format for all the classes
     // in the JAR pointed to by the given file
     public static Set<String> gatherClassnamesFromJar(File jar) throws IOException {
         HashSet<String> names = new HashSet<>();
