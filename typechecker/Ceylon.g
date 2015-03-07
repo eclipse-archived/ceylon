@@ -4015,14 +4015,7 @@ impliedVariable returns [Variable variable]
 
 metaType returns [SimpleType type, boolean endsWithMember]
     : (
-        tna1=typeNameWithArguments 
-        { BaseType bt = new BaseType(null);
-          bt.setIdentifier($tna1.identifier);
-          bt.setTypeArgumentList($tna1.typeArgumentList);
-          $type = bt; 
-          $endsWithMember = false; }
-      | 
-        mn1=memberName 
+        mn1=memberName
         { BaseType obt = new BaseType(null);
           obt.setIdentifier($mn1.identifier);
           $type = obt;
@@ -4032,48 +4025,73 @@ metaType returns [SimpleType type, boolean endsWithMember]
           { $type.setTypeArgumentList($ta1.typeArgumentList); }
         )?
       | 
+        (PACKAGE MEMBER_OP LIDENTIFIER) =>
         PACKAGE
 	      { BaseType pt = new BaseType($PACKAGE);
 	        pt.setPackageQualified(true);
 	        $type = pt; }
-	      mo2=MEMBER_OP
-	      { $type.setEndToken($mo2); }
-	      (
-		      tna2=typeNameWithArguments
-		      { $type.setEndToken(null);
-		        $type.setIdentifier($tna2.identifier);
-		        $endsWithMember = false;
-		        if ($tna2.typeArgumentList!=null)
-		            $type.setTypeArgumentList($tna2.typeArgumentList); }
-	      | 
-	        mn2=memberName
-	        { $type.setEndToken(null);
-	          $type.setIdentifier($mn2.identifier);
-	          $endsWithMember = true; }
-	        (
-	          ta2=typeArguments
-	          { $type.setTypeArgumentList($ta2.typeArgumentList); }
-	        )?
-	      )?
-      )
-      (
-        mo3=MEMBER_OP
+        mo2=MEMBER_OP
+        { $type.setEndToken($mo2); }
         (
+          mn2=memberName
+          { $type.setEndToken(null);
+            $type.setIdentifier($mn2.identifier);
+            $endsWithMember = true; }
+          (
+            ta2=typeArguments
+            { $type.setTypeArgumentList($ta2.typeArgumentList); }
+          )?
+        )
+	    | 
+        (groupedType MEMBER_OP LIDENTIFIER) =>
+	      groupedType
+	      { $type=$groupedType.type; }
+	      mo3=MEMBER_OP
+	      { $type.setEndToken($mo3); }
+	      (
 	        mn3=memberName
-	        { QualifiedType oqt = new QualifiedType($mo3);
-	          oqt.setIdentifier($mn3.identifier);
-	          oqt.setOuterType($type);
-	          $type = oqt; 
+	        { $type.setEndToken(null);
+	          $type.setIdentifier($mn3.identifier);
 	          $endsWithMember = true; }
 	        (
 	          ta3=typeArguments
 	          { $type.setTypeArgumentList($ta3.typeArgumentList); }
 	        )?
+	      )
+      |
+        (abbreviatedType MEMBER_OP LIDENTIFIER) =>
+        { $type=$abbreviatedType.type; }
+        mo4=MEMBER_OP
+        { $type.setEndToken($mo4); }
+        (
+          mn4=memberName
+          { $type.setEndToken(null);
+            $type.setIdentifier($mn4.identifier);
+            $endsWithMember = true; }
+          (
+            ta4=typeArguments
+            { $type.setTypeArgumentList($ta4.typeArgumentList); }
+          )?
+        )
+      )
+      (
+        mo5=MEMBER_OP
+        (
+	        mn5=memberName
+	        { QualifiedType oqt = new QualifiedType($mo5);
+	          oqt.setIdentifier($mn5.identifier);
+	          oqt.setOuterType($type);
+	          $type = oqt; 
+	          $endsWithMember = true; }
+	        (
+	          ta5=typeArguments
+	          { $type.setTypeArgumentList($ta5.typeArgumentList); }
+	        )?
 	      |
-	        tna3=typeNameWithArguments
-	        { QualifiedType qt = new QualifiedType($mo3);
-	          qt.setIdentifier($tna3.identifier);
-	          qt.setTypeArgumentList($tna3.typeArgumentList);
+	        tna6=typeNameWithArguments
+	        { QualifiedType qt = new QualifiedType($mo5);
+	          qt.setIdentifier($tna6.identifier);
+	          qt.setTypeArgumentList($tna6.typeArgumentList);
 	          qt.setOuterType($type);
 	          $type = qt; 
 	          $endsWithMember = false; }
@@ -4238,38 +4256,7 @@ pathMetamodel returns [MetaLiteral meta]
 typeMetamodel returns [MetaLiteral meta]
   @init { TypeLiteral tl=null; 
           MemberLiteral ml=null; } 
-  :
-    (abbreviatedType MEMBER_OP) =>
-    { ml = new MemberLiteral(null);
-      $meta = ml; }
-    at=abbreviatedType
-    { ml.setType($at.type); }
-    o1=MEMBER_OP
-    { ml.setEndToken($o1); }
-    m1=memberName
-    { ml.setIdentifier($m1.identifier); 
-      ml.setEndToken(null); }
-    (
-      ta1=typeArguments
-      { ml.setTypeArgumentList($ta1.typeArgumentList); }
-    )?
-  | 
-    (groupedType MEMBER_OP) =>
-    { ml = new MemberLiteral(null);
-      $meta = ml; }
-    gt=groupedType
-    { ml.setType($gt.type); }
-    o2=MEMBER_OP
-    { ml.setEndToken($o2); }
-    m2=memberName
-    { ml.setIdentifier($m2.identifier);
-      ml.setEndToken(null); }
-    (
-      ta2=typeArguments
-      { ml.setTypeArgumentList($ta2.typeArgumentList); }
-    )?
-  |
-    t=type
+  : t=type
     { tl = new TypeLiteral(null);
       tl.setType($t.type);
       $meta = tl; }
@@ -4306,12 +4293,18 @@ metaLiteral returns [MetaLiteral meta]
 	    | functionLiteral
 	      { $meta=$functionLiteral.literal; 
           $meta.setToken($d1); }
-	    | ((PACKAGE MEMBER_OP)? 
-	       (typeNameWithArguments MEMBER_OP)* 
-	       memberName) =>
-	      pathMetamodel
-	      { $meta=$pathMetamodel.meta; 
+	    | (((LIDENTIFIER | PACKAGE | typeNameWithArguments) MEMBER_OP)* LIDENTIFIER) =>
+	      p0=pathMetamodel
+	      { $meta=$p0.meta; 
 	        $meta.setToken($d1); }
+      | (abbreviatedType MEMBER_OP LIDENTIFIER) =>
+        p1=pathMetamodel
+        { $meta=$p1.meta; 
+          $meta.setToken($d1); }
+      | (groupedType MEMBER_OP LIDENTIFIER) =>
+        p2=pathMetamodel
+        { $meta=$p2.meta; 
+          $meta.setToken($d1); }
       | typeMetamodel
         { $meta=$typeMetamodel.meta; 
           $meta.setToken($d1); }      
