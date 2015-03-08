@@ -46,14 +46,30 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class TypeParserTests {
+    
+    private static final Unit mockUnit = new Unit();
+    private static final Module mockModule = new Module(){
+        private Package mockPackage = new Package(){
+            public Module getModule() {
+                mockModule.setName(Arrays.asList(""));
+                return mockModule;
+            }
+        };
+        public Package getPackage(String name) {
+            mockPackage.setName(Arrays.asList(""));
+            return mockPackage;
+        }
+        
+    };
+    
     static class MockLoader implements ModelLoader {
 
         static final ModelLoader instance = new MockLoader();
 
         private Map<String, Class> classes = new HashMap<String,Class>();
-        private Module mod = new Module();
-        private Package pkg = new Package();
-        private Unit unit = new Unit();
+        private Module mod = mockModule;
+        private Package pkg = mockModule.getPackage("");
+        private Unit unit = mockUnit;
         
         private MockLoader(){
             mod.setName(Arrays.asList(""));
@@ -141,21 +157,6 @@ public class TypeParserTests {
         }
         
     }
-    
-    private Unit mockUnit = new Unit();
-    private Module mockModule = new Module(){
-        private Package mockPackage = new Package(){
-            public Module getModule() {
-                mockModule.setName(Arrays.asList(""));
-                return mockModule;
-            }
-        };
-        public Package getPackage(String name) {
-            mockPackage.setName(Arrays.asList(""));
-            return mockPackage;
-        }
-        
-    };
     
     @Test
     public void testUnion(){
