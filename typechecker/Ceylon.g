@@ -3824,25 +3824,25 @@ forIterator returns [ForIterator iterator]
     @init { ValueIterator vi = null;
             PatternIterator pi = null; }
     : LPAREN
-    { vi = new ValueIterator($LPAREN); 
-      pi = new PatternIterator($LPAREN); 
-      $iterator = vi; }
-    ( 
-      (
-        (patternStart) => pattern
-        { pi.setPattern($pattern.pattern);
-          $iterator = pi; }
-      |
-        variable
-        { vi.setVariable($variable.variable); }
-      )
-      (
-        containment
-        { $iterator.setSpecifierExpression($containment.specifierExpression); }
-      )?
-    )?
-    RPAREN
-    { $iterator.setEndToken($RPAREN); }
+	    { vi = new ValueIterator($LPAREN); 
+	      pi = new PatternIterator($LPAREN); 
+	      $iterator = vi; }
+	    ( 
+	      (
+	        (patternStart) => pattern
+	        { pi.setPattern($pattern.pattern);
+	          $iterator = pi; }
+	      |
+	        variable
+	        { vi.setVariable($variable.variable); }
+	      )
+	      (
+	        containment
+	        { $iterator.setSpecifierExpression($containment.specifierExpression); }
+	      )?
+	    )?
+	    RPAREN
+	    { $iterator.setEndToken($RPAREN); }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
@@ -3925,30 +3925,31 @@ finallyBlock returns [FinallyClause clause]
 
 resources returns [ResourceList resources]
     : LPAREN 
-    { $resources = new ResourceList($LPAREN); }
-    (
-      r1=resource
-      { $resources.addResource($r1.resource); }
-      (
-        c=COMMA 
-        { $resources.setEndToken($c); }
-        r2=resource
-        { $resources.addResource($r2.resource);
-          $resources.setEndToken(null); }
-      )*
-    )?
-    RPAREN
-    { $resources.setEndToken($RPAREN); }
+	    { $resources = new ResourceList($LPAREN); }
+	    (
+	      r1=resource
+	      { $resources.addResource($r1.resource); }
+	      (
+	        c=COMMA 
+	        { $resources.setEndToken($c); }
+	        r2=resource
+	        { $resources.addResource($r2.resource);
+	          $resources.setEndToken(null); }
+	      )*
+	    )?
+	    RPAREN
+	    { $resources.setEndToken($RPAREN); }
     ;
 
 resource returns [Resource resource]
     @init { $resource = new Resource(null); }
-    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
-        => specifiedVariable
-        { $resource.setVariable($specifiedVariable.variable); }
-      | expression
-        { $resource.setExpression($expression.expression); }
-      )
+    : 
+      (COMPILER_ANNOTATION|declarationStart|specificationStart) => 
+      specifiedVariable
+      { $resource.setVariable($specifiedVariable.variable); }
+    | 
+      expression
+      { $resource.setExpression($expression.expression); }
     ;
 
 specifiedVariable returns [Variable variable]
@@ -3968,15 +3969,19 @@ variable returns [Variable variable]
     ;
     
 var returns [Variable variable]
-    : { $variable = new Variable(null); }
-    (
-      ( type 
+    @init { $variable = new Variable(null); }
+    : 
+      ( 
+        type 
         { $variable.setType($type.type); }
-      | VOID_MODIFIER
+      | 
+        VOID_MODIFIER
         { $variable.setType(new VoidModifier($VOID_MODIFIER)); }
-      | FUNCTION_MODIFIER
+      | 
+        FUNCTION_MODIFIER
         { $variable.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
-      | VALUE_MODIFIER
+      | 
+        VALUE_MODIFIER
         { $variable.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
       mn1=memberName 
@@ -3994,7 +3999,6 @@ var returns [Variable variable]
         { $variable.setType( new FunctionModifier(null) );
           $variable.addParameterList($p2.parameterList); }
       )*
-    )
     ;
 
 impliedVariable returns [Variable variable]
@@ -4013,71 +4017,123 @@ impliedVariable returns [Variable variable]
         $variable = v; }
     ;
 
-metaType returns [SimpleType type, boolean endsWithMember]
+referencePathElement returns [Identifier identifier]
+    : typeName 
+      { $identifier=$typeName.identifier; }
+    | memberName
+      { $identifier=$memberName.identifier; }
+    ;
+    
+referencePath returns [SimpleType type]
+    @init { BaseType bt = null; QualifiedType qt = null; }
     : (
-        tna1=typeNameWithArguments 
-        { BaseType bt = new BaseType(null);
-          bt.setIdentifier($tna1.identifier);
-          bt.setTypeArgumentList($tna1.typeArgumentList);
-          $type = bt; 
-          $endsWithMember = false; }
-      | 
-        mn1=memberName 
-        { BaseType obt = new BaseType(null);
-          obt.setIdentifier($mn1.identifier);
-          $type = obt;
-          $endsWithMember = true; }
-        (
-          ta1=typeArguments
-          { $type.setTypeArgumentList($ta1.typeArgumentList); }
-        )?
+        e1=referencePathElement 
+        { bt = new BaseType(null);
+          bt.setIdentifier($e1.identifier);
+          $type = bt; }
       | 
         PACKAGE
-	      { BaseType pt = new BaseType($PACKAGE);
-	        pt.setPackageQualified(true);
-	        $type = pt; }
-	      mo2=MEMBER_OP
-	      { $type.setEndToken($mo2); }
-	      (
-		      tna2=typeNameWithArguments
-		      { $type.setEndToken(null);
-		        $type.setIdentifier($tna2.identifier);
-		        $endsWithMember = false;
-		        if ($tna2.typeArgumentList!=null)
-		            $type.setTypeArgumentList($tna2.typeArgumentList); }
-	      | 
-	        mn2=memberName
-	        { $type.setEndToken(null);
-	          $type.setIdentifier($mn2.identifier);
-	          $endsWithMember = true; }
-	        (
-	          ta2=typeArguments
-	          { $type.setTypeArgumentList($ta2.typeArgumentList); }
-	        )?
-	      )?
+	      { bt = new BaseType($PACKAGE);
+	        bt.setPackageQualified(true);
+	        $type = bt; }
+	      o1=MEMBER_OP
+	      { $type.setEndToken($o1); }
+	      e2=referencePathElement
+	      { bt.setIdentifier($e2.identifier); }
       )
       (
-        mo3=MEMBER_OP
-        (
-	        mn3=memberName
-	        { QualifiedType oqt = new QualifiedType($mo3);
-	          oqt.setIdentifier($mn3.identifier);
-	          oqt.setOuterType($type);
-	          $type = oqt; 
-	          $endsWithMember = true; }
-	        (
-	          ta3=typeArguments
-	          { $type.setTypeArgumentList($ta3.typeArgumentList); }
-	        )?
-	      |
-	        tna3=typeNameWithArguments
-	        { QualifiedType qt = new QualifiedType($mo3);
-	          qt.setIdentifier($tna3.identifier);
-	          qt.setTypeArgumentList($tna3.typeArgumentList);
-	          qt.setOuterType($type);
-	          $type = qt; 
-	          $endsWithMember = false; }
-	      )
+        o2=MEMBER_OP
+        e3=referencePathElement
+        { qt = new QualifiedType($o2);
+          qt.setIdentifier($e3.identifier);
+          qt.setOuterType($type);
+          $type = qt; }
+      )*
+    ; 
+
+modelPathElement returns [Identifier identifier, 
+                          TypeArgumentList typeArgumentList,
+                          boolean member]
+    : (
+	      typeName 
+	      { $identifier=$typeName.identifier; 
+	        $member = false; }
+	    | memberName
+	      { $identifier=$memberName.identifier; 
+	        $member = true;}
+	    )
+	    (
+	      typeArguments
+	      { $typeArgumentList=$typeArguments.typeArgumentList; }
+	    )?
+    ;
+    
+memberPathElement returns [Identifier identifier, 
+                          TypeArgumentList typeArgumentList,
+                          boolean member]
+    : memberName
+      { $identifier=$memberName.identifier; 
+        $member = true;}
+      (
+        typeArguments
+        { $typeArgumentList=$typeArguments.typeArgumentList; }
+      )?
+    ;
+    
+
+modelPath returns [SimpleType type, boolean member]
+    @init { BaseType bt=null; QualifiedType qt=null; StaticType st=null; }
+    : 
+      (
+        e1=memberPathElement 
+        { bt = new BaseType(null);
+          bt.setIdentifier($e1.identifier);
+          bt.setTypeArgumentList($e1.typeArgumentList);
+          $member = $e1.member;
+          $type = bt; }
+      |
+        PACKAGE
+        { bt = new BaseType($PACKAGE);
+          bt.setPackageQualified(true);
+          $type = bt; }
+        o1=MEMBER_OP
+        { $type.setEndToken($o1); }
+        e2=memberPathElement
+        { bt.setIdentifier($e2.identifier); 
+          bt.setTypeArgumentList($e2.typeArgumentList); 
+          $member = $e2.member; }
+      )
+      (
+        o2=MEMBER_OP
+        e3=modelPathElement
+        { qt = new QualifiedType($o2);
+          qt.setIdentifier($e3.identifier);
+          qt.setTypeArgumentList($e3.typeArgumentList);
+          qt.setOuterType($type);
+          $member = $e3.member;
+          $type = qt; }
+      )*
+    | 
+      at=abbreviatedType
+      { st = $at.type; 
+        $member = false; }
+      o3=MEMBER_OP
+      { qt = new QualifiedType($o3); 
+        qt.setOuterType(st); 
+        $type = qt; }
+      e4=memberPathElement
+      { qt.setIdentifier($e4.identifier);
+        qt.setTypeArgumentList($e4.typeArgumentList);
+        $member = $e4.member; }
+      (
+        o4=MEMBER_OP
+        e5=modelPathElement
+        { qt = new QualifiedType($o4);
+          qt.setIdentifier($e5.identifier);
+          qt.setTypeArgumentList($e5.typeArgumentList);
+          qt.setOuterType($type);
+          $member = $e5.member;
+          $type = qt; }
       )*
     ; 
 
@@ -4108,7 +4164,7 @@ classLiteral returns [ClassLiteral literal]
    { $literal = new ClassLiteral(null);
      $literal.setEndToken($CLASS_DEFINITION); }
    (
-     ct=metaType
+     ct=referencePath
      { $literal.setType($ct.type); 
        $literal.setEndToken(null); }
    )?
@@ -4119,7 +4175,7 @@ interfaceLiteral returns [InterfaceLiteral literal]
    { $literal = new InterfaceLiteral(null);
      $literal.setEndToken($INTERFACE_DEFINITION); }
    (
-     it=metaType
+     it=referencePath
      { $literal.setType($it.type); 
        $literal.setEndToken(null); }
    )?
@@ -4130,7 +4186,7 @@ newLiteral returns [NewLiteral literal]
    { $literal = new NewLiteral(null);
      $literal.setEndToken($NEW); }
    (
-     nt=metaType
+     nt=referencePath
      { $literal.setType($nt.type); 
        $literal.setEndToken(null); }
    )?
@@ -4141,7 +4197,7 @@ aliasLiteral returns [AliasLiteral literal]
    { $literal = new AliasLiteral(null);
      $literal.setEndToken($ALIAS); }
    (
-     at=metaType
+     at=referencePath
      { $literal.setType($at.type); 
        $literal.setEndToken(null); }
    )?
@@ -4152,7 +4208,7 @@ typeParameterLiteral returns [TypeParameterLiteral literal]
    { $literal = new TypeParameterLiteral(null);
      $literal.setEndToken($TYPE_CONSTRAINT); }
    (
-     tt=metaType
+     tt=referencePath
      { $literal.setType($tt.type); 
        $literal.setEndToken(null); }
    )?
@@ -4169,7 +4225,7 @@ valueLiteral returns [ValueLiteral literal]
         $literal.setEndToken($OBJECT_DEFINITION);
         $literal.setBroken(true); }
     )
-    vt=metaType
+    vt=referencePath
     {
       if ($vt.type instanceof QualifiedType) {
         $literal.setType(((QualifiedType)$vt.type).getOuterType());
@@ -4189,7 +4245,7 @@ functionLiteral returns [FunctionLiteral literal]
   : FUNCTION_MODIFIER
     { $literal = new FunctionLiteral(null);
       $literal.setEndToken($FUNCTION_MODIFIER); }
-    ft=metaType
+    ft=referencePath
     {
       if ($ft.type instanceof QualifiedType) {
         $literal.setType(((QualifiedType)$ft.type).getOuterType());
@@ -4205,21 +4261,23 @@ functionLiteral returns [FunctionLiteral literal]
     }
   ;
 
-pathMetamodel returns [MetaLiteral meta]
+modelExpression returns [MetaLiteral meta]
   @init { TypeLiteral tl=null; 
           MemberLiteral ml=null; } 
-  : mtq=metaType
+  :
+    (((abbreviatedType | PACKAGE) MEMBER_OP)? LIDENTIFIER) =>
+    modelPath
     {
-      if (!$mtq.endsWithMember) {
+      if (!$modelPath.member) {
         tl = new TypeLiteral(null);
-        tl.setType($mtq.type);
+        tl.setType($modelPath.type);
         $meta = tl;
       }
       else {
         ml = new MemberLiteral(null);
-        SimpleType st = $mtq.type;
+        SimpleType st = $modelPath.type;
         if (st instanceof QualifiedType) {
-          ml.setType(((QualifiedType)st).getOuterType());
+          ml.setType(((QualifiedType) st).getOuterType());
           ml.setIdentifier(st.getIdentifier());
           ml.setTypeArgumentList(st.getTypeArgumentList());
           ml.setEndToken(null);
@@ -4228,50 +4286,15 @@ pathMetamodel returns [MetaLiteral meta]
           ml.setIdentifier(st.getIdentifier());
           ml.setTypeArgumentList(st.getTypeArgumentList());
           ml.setEndToken(null);
-          ml.setPackageQualified(((BaseType)st).getPackageQualified());
+          ml.setPackageQualified(((BaseType) st).getPackageQualified());
         }
         $meta = ml;
       }
     }
-  ;
-
-typeMetamodel returns [MetaLiteral meta]
-  @init { TypeLiteral tl=null; 
-          MemberLiteral ml=null; } 
-  :
-    (abbreviatedType MEMBER_OP) =>
-    { ml = new MemberLiteral(null);
-      $meta = ml; }
-    at=abbreviatedType
-    { ml.setType($at.type); }
-    o1=MEMBER_OP
-    { ml.setEndToken($o1); }
-    m1=memberName
-    { ml.setIdentifier($m1.identifier); 
-      ml.setEndToken(null); }
-    (
-      ta1=typeArguments
-      { ml.setTypeArgumentList($ta1.typeArgumentList); }
-    )?
   | 
-    (groupedType MEMBER_OP) =>
-    { ml = new MemberLiteral(null);
-      $meta = ml; }
-    gt=groupedType
-    { ml.setType($gt.type); }
-    o2=MEMBER_OP
-    { ml.setEndToken($o2); }
-    m2=memberName
-    { ml.setIdentifier($m2.identifier);
-      ml.setEndToken(null); }
-    (
-      ta2=typeArguments
-      { ml.setTypeArgumentList($ta2.typeArgumentList); }
-    )?
-  |
-    t=type
+    type
     { tl = new TypeLiteral(null);
-      tl.setType($t.type);
+      tl.setType($type.type);
       $meta = tl; }
   ;
 
@@ -4306,15 +4329,9 @@ metaLiteral returns [MetaLiteral meta]
 	    | functionLiteral
 	      { $meta=$functionLiteral.literal; 
           $meta.setToken($d1); }
-	    | ((PACKAGE MEMBER_OP)? 
-	       (typeNameWithArguments MEMBER_OP)* 
-	       memberName) =>
-	      pathMetamodel
-	      { $meta=$pathMetamodel.meta; 
-	        $meta.setToken($d1); }
-      | typeMetamodel
-        { $meta=$typeMetamodel.meta; 
-          $meta.setToken($d1); }      
+	    | modelExpression
+	      { $meta=$modelExpression.meta; 
+	        $meta.setToken($d1); }     
 	    )
       d2=BACKTICK
       { $meta.setEndToken($d2); }

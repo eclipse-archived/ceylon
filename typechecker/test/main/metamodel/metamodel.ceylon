@@ -287,8 +287,8 @@ class Bar {
 void meta() {
     @type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
     value fd1 = `singletonList<String>`;
-    @type:"FunctionDeclaration" @error
-    value fd3 = `function singletonList<String>`;
+    //@type:"FunctionDeclaration" @error
+    //value fd3 = `function singletonList<String>`;
     @type:"FunctionDeclaration" 
     value fd2 = `function singletonList`;
     @error value ut1 = `List|String`; 
@@ -307,8 +307,8 @@ void meta() {
     value md1 = `function List.defines`;
     @type:"Method<List<Integer>,Boolean,Tuple<Integer,Integer,Empty>>" 
     value md2 = `List<Integer>.defines`; 
-    @type:"FunctionDeclaration" @error 
-    value md8 = `function List<Integer>.defines`; 
+    //@type:"FunctionDeclaration" @error 
+    //value md8 = `function List<Integer>.defines`; 
     @type:"ClassDeclaration"
     value cd1 = `class Foo.Bar`;
     @type:"FunctionDeclaration"
@@ -321,8 +321,8 @@ void meta() {
     value md6 = `Foo<Object>.Bar.x<Integer>`;
     @error
     value md7 = `Foo<Object>.Bar<String>.x<List>`;
-    @type:"ClassDeclaration" @error
-    value cd2 = `class Foo<List<String>>.Bar`;
+    //@type:"ClassDeclaration" @error
+    //value cd2 = `class Foo<List<String>>.Bar`;
     @type:"ClassDeclaration"
     value cd3 = `class Foo`;
     @type:"Class<Foo<Object>,Empty>"
