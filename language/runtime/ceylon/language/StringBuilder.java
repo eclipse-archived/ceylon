@@ -4,8 +4,6 @@ import ceylon.language.impl.BaseCharacterList;
 import ceylon.language.impl.BaseIterator;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;

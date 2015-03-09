@@ -10,16 +10,14 @@ import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.meta.type_;
-import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.Deconstructor;
-import ceylon.language.serialization.SerializationContext;
 import ceylon.language.serialization.SerializableReference;
+import ceylon.language.serialization.SerializationContext;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 

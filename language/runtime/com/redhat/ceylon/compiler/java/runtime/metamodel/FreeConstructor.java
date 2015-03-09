@@ -1,16 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-
-import ceylon.language.Annotation;
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ConstructorDeclaration;
@@ -18,6 +7,16 @@ import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
+
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

@@ -5,7 +5,6 @@ import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.SerializableReference;
 
-import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;

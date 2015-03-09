@@ -8,10 +8,7 @@ import ceylon.language.Null;
 import ceylon.language.emptyIterator_;
 import ceylon.language.impl.BaseIterable;
 
-import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**

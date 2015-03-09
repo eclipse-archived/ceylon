@@ -6,16 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Anything;
-import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -31,7 +28,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 

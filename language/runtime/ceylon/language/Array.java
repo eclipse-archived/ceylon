@@ -16,7 +16,6 @@ import ceylon.language.impl.BaseIterator;
 import ceylon.language.impl.BaseList;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.GenericDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;

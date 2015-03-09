@@ -1,26 +1,20 @@
 package ceylon.language.meta;
 
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getReflectedAnnotationClass;
-import ceylon.language.Annotated;
 import ceylon.language.Annotation;
 import ceylon.language.AssertionError;
-import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.OptionalAnnotation;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.meta.model.Class;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
-import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Method

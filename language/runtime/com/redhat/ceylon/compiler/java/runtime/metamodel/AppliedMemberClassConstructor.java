@@ -1,18 +1,16 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.Declaration;
-import ceylon.language.meta.model.Class;
 import ceylon.language.meta.model.Constructor;
 import ceylon.language.meta.model.MemberClass;
 import ceylon.language.meta.model.MemberClassConstructor;
+
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberClassConstructor<Container,Type, Arguments extends Sequential<? extends Object>> 
         implements MemberClassConstructor<Container, Type, Arguments> {

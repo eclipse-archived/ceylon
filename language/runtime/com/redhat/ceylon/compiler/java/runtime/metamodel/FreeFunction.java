@@ -8,7 +8,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.FunctionDeclaration$impl;
-import ceylon.language.meta.declaration.FunctionalDeclaration;
 import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -24,8 +23,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
