@@ -11,6 +11,7 @@ public class Options {
     private String verboseCategory;
     private boolean noDefaultRepositories;
     private String run;
+    private String overrides;
     
     public String getSystemRepository() {
         return systemRepository;
@@ -75,5 +76,12 @@ public class Options {
     }
     public void setRun(String run) {
         this.run = run;
+    }
+
+    public String getOverrides() {
+        return overrides;
+    }
+    public void setOverrides(String overrides) {
+        this.overrides = overrides;
     }
 }

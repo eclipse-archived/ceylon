@@ -132,6 +132,10 @@ public class JavaCompilerImpl implements Compiler {
             translatedOptions.add("-sysrep");
             translatedOptions.add(options.getSystemRepository());
         }
+        if(options.getOverrides() != null){
+            translatedOptions.add("-maven-overrides");
+            translatedOptions.add(options.getOverrides());
+        }
         return translatedOptions;
     }
 

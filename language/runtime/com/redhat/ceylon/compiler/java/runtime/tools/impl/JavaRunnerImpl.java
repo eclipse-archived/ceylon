@@ -17,6 +17,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -40,6 +41,7 @@ public class JavaRunnerImpl implements JavaRunner {
     private String module;
     private Map<String, String> extraModules;
     private String className;
+    private Overrides overrides;
     
     public JavaRunnerImpl(RunnerOptions options, String module, String version){
         repositoryManager = CeylonUtils.repoManager()
@@ -47,7 +49,9 @@ public class JavaRunnerImpl implements JavaRunner {
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
                 .noDefaultRepos(options.isNoDefaultRepositories())
+                .mavenOverrides(options.getOverrides())
                 .buildManager();
+        this.overrides = repositoryManager.getOverrides();
         if(options instanceof JavaRunnerOptions){
             delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();
         }
@@ -187,6 +191,19 @@ public class JavaRunnerImpl implements JavaRunner {
     }
 
     private void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
+        ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+        if(overrides != null){
+            ArtifactContext replacement = overrides.replace(artifactContext);
+            if(replacement != null){
+                artifactContext = replacement;
+                name = replacement.getName();
+                version = replacement.getVersion();
+            }
+            if(overrides.isVersionOverridden(artifactContext)){
+                version = overrides.getVersionOverride(artifactContext);
+                artifactContext.setVersion(version);
+            }
+        }
         // skip JDK modules
         if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))
             return;
@@ -208,7 +225,6 @@ public class JavaRunnerImpl implements JavaRunner {
             // already resolved and same version, we're good
             return;
         }
-        ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
         if(!optional
                 && (result == null || result.artifact() == null || !result.artifact().exists())){
