@@ -114,7 +114,7 @@ public class JsIdentifierNames {
                 name = "$" + Long.toString(getUID(decl), 36);
             }
         }
-        return name;
+        return sanitize(name);
     }
 
     /**
@@ -133,7 +133,8 @@ public class JsIdentifierNames {
             //TODO remove this shit when we break bincompat again
             final int binMajor = decl.getUnit().getPackage().getModule().getMajor();
             if (binMajor > 0 && binMajor < Versions.JS_BINARY_MAJOR_VERSION) {
-                return String.format("get%c%s()", Character.toUpperCase(name.charAt(0)), name.substring(1));
+                return String.format("get%c%s()",
+                        Character.toUpperCase(name.charAt(0)), name.substring(1));
             }
             return String.format("%s()", name);
         }
@@ -193,7 +194,7 @@ public class JsIdentifierNames {
      * Determine the identifier to be used for the self variable of the given type.
      */
     public String self(TypeDeclaration decl) {
-        String name = decl.getName();
+        String name = sanitize(decl.getName());
         if (decl.isShared() || decl.isToplevel()) {
             name += nestingSuffix(decl, true);
         } else {
@@ -258,7 +259,7 @@ public class JsIdentifierNames {
             name="anon$" + name.substring(10);
         }
         if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
-            return decl.getName();
+            return sanitize(decl.getName());
         }
         boolean nonLocal = !priv;
         if (nonLocal) {
@@ -310,7 +311,7 @@ public class JsIdentifierNames {
         if (decl instanceof TypeAlias) {
             name+="()";
         }
-        return name;
+        return sanitize(name);
     }
     
     private Declaration originalDeclaration(Declaration decl) {
@@ -339,6 +340,26 @@ public class JsIdentifierNames {
             moduleUIDs.put(pkg, id);
         }
         return id;
+    }
+
+    /** Replace any characters considered invalid in JS with some regular
+     * mark specifying the Unicode codepoint. */
+    public static String sanitize(String name) {
+        for (int i=0; i < name.length(); i++) {
+            if (Character.isLowSurrogate(name.charAt(i)) || Character.isHighSurrogate(name.charAt(i))) {
+                StringBuilder sb = new StringBuilder(name.substring(0,i));
+                for (int j = i; j < name.length(); j++) {
+                    char c = name.charAt(j);
+                    if (Character.isLowSurrogate(c) || Character.isHighSurrogate(c)) {
+                        sb.append("$u").append((long)c);
+                    } else {
+                        sb.append(c);
+                    }
+                }
+                return sb.toString();
+            }
+        }
+        return name;
     }
 
 }
