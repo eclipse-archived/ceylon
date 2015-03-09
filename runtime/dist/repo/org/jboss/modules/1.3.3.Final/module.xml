@@ -37,6 +37,7 @@
                 <path name="org/jboss/modules/management"/>
                 <path name="org/jboss/modules/security"/>
                 <path name="org/jboss/modules/xml"/>
+                <path name="javax/management"/>
             </paths>
         </system>
     </dependencies>
