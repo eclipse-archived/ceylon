@@ -111,6 +111,10 @@ class Test451() {
   check(this.x+y==1, "#451.1");
 }
 
+class Test509(shared Integer a) {
+  shared class Inner(Integer b) extends Test509(b) {}
+}
+
 shared void test() {
     value c = Counter(0);
     check(c.count==0,"counter 1");
@@ -135,5 +139,6 @@ shared void test() {
     Test451();
     objectTest();
     TestConstructor().test();
+    check(2==Test509(1).Inner(2).a, "#509");
     results();
 }
