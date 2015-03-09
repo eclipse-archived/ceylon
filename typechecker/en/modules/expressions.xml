@@ -3148,14 +3148,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         followed by a member name, with an optional list of type arguments, 
         surrounded by backticks.</para>
         
-        <synopsis>MemberMeta: "`" MetaQualifier "." MemberName TypeArguments? "`"</synopsis>
+        <synopsis>MemberMeta: "`" PrimaryType "." MemberName TypeArguments? "`"</synopsis>
         
-        <para>The member metamodel expression qualifier is a type, as defined by 
-        <xref linkend="type"/>, or a base expression referring to an anonymous 
-        class declaration.</para>
-        
-        <synopsis>MetaQualifier: PrimaryType | GroupedType | MemberName</synopsis>
-        
+        <para>The member metamodel expression is qualified by a type, as defined 
+        by <xref linkend="type"/>.</para>
+                
         <para>A member metamodel expression is a reference to an attribute or 
         method of the type identified by the qualifier. The member is resolved 
         as a member of the type according to 
@@ -3170,7 +3167,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         followed by a constructor name, with an optional list of type arguments, 
         surrounded by backticks.</para>
         
-        <synopsis>ConstructorMeta: "`" MetaQualifier "." TypeName TypeArguments? "`"</synopsis>
+        <synopsis>ConstructorMeta: "`" PrimaryType "." TypeName TypeArguments? "`"</synopsis>
         
         <para>The constructor metamodel expression qualifier is a type that is an
         instantiation of a class.</para>
@@ -3318,7 +3315,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of identifiers identifying a class or interface declaration or 
             an anonymous class declaration:</para>
             
-            <synopsis>MemberDecQualifier: (TypeName ".")+ | MemberName "."</synopsis>
+            <synopsis>MemberDecQualifier: ( (TypeName | MemberName) "." )+</synopsis>
             
             <para>Each identifier in the member declaration qualifier is 
             the name of a class, interface, or anonymous class.</para>
