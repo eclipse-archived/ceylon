@@ -1,33 +1,25 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
-import org.junit.Test;
 import org.junit.Assert;
-
-
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import org.junit.Test;
 
 import ceylon.language.AssertionError;
-import ceylon.language.Boolean;
-import ceylon.language.Callable;
 import ceylon.language.Category$impl;
-import ceylon.language.Comparison;
-import ceylon.language.Entry;
-import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.Sequence;
-import ceylon.language.Sequential;
 import ceylon.language.Singleton;
 import ceylon.language.Tuple;
 import ceylon.language.impl.BaseIterable;
-import ceylon.language.meta.declaration.TypeParameter;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.Type;
 import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.Reference;
+
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 class GuineaPig<T> implements Serializable {
     private final String s;
