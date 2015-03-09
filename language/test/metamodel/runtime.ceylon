@@ -1627,18 +1627,18 @@ shared void checkObjectMemberReferences(){
     assert(`value obj.attribute`.name == "attribute");
     assert(`value obj.attribute`.container == `class obj`);
     
-    assert(`obj.attribute`.declaration == `value obj.attribute`);
-    assert(`obj.attribute`(obj).get() == 2);
+    assert(`\Iobj.attribute`.declaration == `value obj.attribute`);
+    assert(`\Iobj.attribute`(obj).get() == 2);
     assert(is Class<Basic,Nothing> objectClass = `obj`.type);
-    assert(is Class<Basic,Nothing> objectContainer = `obj.attribute`.container);
+    assert(is Class<Basic,Nothing> objectContainer = `\Iobj.attribute`.container);
     assert(objectClass == objectContainer);
     
     assert(`function obj.method`.name == "method");
     assert(`function obj.method`.container == `class obj`);
     
-    assert(`obj.method<Integer>`.declaration == `function obj.method`);
-    assert(`obj.method<Integer>`(obj)(3) == 3);
-    assert(is Class<Basic,Nothing> objectContainer2 = `obj.method<Integer>`.container);
+    assert(`\Iobj.method<Integer>`.declaration == `function obj.method`);
+    assert(`\Iobj.method<Integer>`(obj)(3) == 3);
+    assert(is Class<Basic,Nothing> objectContainer2 = `\Iobj.method<Integer>`.container);
     assert(objectClass == objectContainer2);
 
     MemberObjectContainer<Integer>().test();
