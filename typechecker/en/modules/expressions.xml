@@ -218,12 +218,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="selfreferences">
-        <title>Self references and the current package reference</title>
+        <title>Self references</title>
         
         <para>The type of the following expressions depends upon the context in which 
         they appear.</para>
         
-        <synopsis>SelfReference: "this" | "super" | "outer" | "package"</synopsis>
+        <synopsis>SelfReference: "this" | "super" | "outer"</synopsis>
         
         <para>A self reference expression may not occur outside of a class or 
         interface body.</para>
@@ -239,6 +239,16 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         class or interface. An <literal>outer</literal> self reference must have
         an immediately containing class or interface for its immediately containing 
         class or interface.</para>
+        
+        <comment>
+        <para>Note: the keyword <literal>package</literal> is not an expression, and 
+        thus does not have a well-defined type. However, it may be used to qualify 
+        and disambiguate a value reference or callable reference. A value reference or 
+        callable reference qualified by the keyword <literal>package</literal> always 
+        refers to a toplevel member of the containing package, never to an imported 
+        declaration or nested declaration, as defined by 
+        <xref linkend="unqualifiedreferenceresolution"/>.</para>
+        </comment>
         
         <section id="this">
             <title><literal>this</literal></title>
@@ -287,20 +297,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             that is refined by the class or any intermediate supertype of the class.</para> 
             
         </section>
-        
-        <section id="thispackage">
-            <title><literal>package</literal></title>
             
-            <para>The keyword <literal>package</literal> is not an expression, and
-            does not have a well-defined type. However, it may be used to qualify 
-            and disambiguate a value reference or callable reference. A value
-            reference or callable reference qualified by the keyword 
-            <literal>package</literal> always refers to a toplevel member of the
-            containing package, never to an imported declaration or nested 
-            declaration.</para>
-            
-        </section>
-    
     </section>
     
     <section id="anonymousfunctions">
@@ -495,10 +492,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="baseexpressions">
             <title>Base expressions</title>
             
-            <para>A <emphasis>base expression</emphasis> is an unqualified 
-            identifier, with an optional list of type arguments:</para>
+            <para>A <emphasis>base expression</emphasis> is an identifier,
+            optionally qualified by the keyword <literal>package</literal>, 
+            with an optional list of type arguments:</para>
             
-            <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments?</synopsis>
+            <synopsis>BaseExpression: PackageQualifier? (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A base expression is either:</para>
             
@@ -707,10 +705,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="staticexpressions">
             <title>Static expressions</title>
             
-            <para>A <emphasis>static expression</emphasis> is a type, followed by an identifier, 
-            with an optional list of type arguments.</para>
+            <para>A <emphasis>static expression</emphasis> is a type, optionally qualifier by 
+            the keyword <literal>package</literal>, followed by an identifier, with an optional 
+            list of type arguments.</para>
             
-            <synopsis>StaticExpression: (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
+            <synopsis>StaticExpression: PackageQualifier? (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A static expression is a reference to a member of a type: an attribute, method, 
             or member class.</para>
@@ -3138,7 +3137,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A <emphasis>base metamodel expression</emphasis> is a member name, 
         with an optional list of type arguments, surrounded by backticks.</para>
         
-        <synopsis>BaseMeta: "`" MemberName TypeArguments? "`"</synopsis>
+        <synopsis>BaseMeta: "`" PackageQualifier? MemberName TypeArguments? "`"</synopsis>
         
         <para>A base metamodel expression is a reference to a value or function. 
         The referenced declaration is determined according to
@@ -3332,7 +3331,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
             
-            <synopsis>TypeDec: "`" TypeKeyword ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
+            <synopsis>TypeDec: "`" TypeKeyword PackageQualifier? ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
             
             <para>For a class or interface reference expression, the name of 
             the class or interface is optional. In this case, the class or
@@ -3356,7 +3355,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>MemberKeyword: "value" | "function"</synopsis>
             
-            <synopsis>MemberDec: "`" MemberKeyword MemberDecQualifier? MemberName "`"</synopsis>
+            <synopsis>MemberDec: "`" MemberKeyword PackageQualifier? MemberDecQualifier? MemberName "`"</synopsis>
             
             <para>A <emphasis>constructor reference expression</emphasis> is a 
             member declaration qualifier, followed by the name of a constructor,
@@ -3364,7 +3363,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>ConstructorKeyword: "new"</synopsis>
             
-            <synopsis>ConstructorDec: "`" ConstructorKeyword MemberDecQualifier TypeName "`"</synopsis>
+            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier TypeName "`"</synopsis>
             
             <para>A reference expression is a reference to a declaration. The 
             referenced declaration is determined according to

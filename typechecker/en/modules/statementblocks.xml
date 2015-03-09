@@ -517,7 +517,8 @@ class Complex(Float x, Float y=0.0)
             
             <para>When a toplevel declaration of a package is hidden by another declaration, 
             the toplevel declaration may be accessed via the containing package reference 
-            <literal>package</literal>, defined in <xref linkend="thispackage"/>.</para>
+            <literal>package</literal>, as defined in 
+            <xref linkend="unqualifiedreferenceresolution"/>.</para>
             
             <programlisting>Integer n => 0;
 Integer f(Integer n) => n+package.n;</programlisting>
@@ -731,6 +732,11 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     such declaration which is not hidden by any other declaration.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>As an exception to this, if the expression or type expression begins
+            with the qualifier keyword <literal>package</literal>, then there must be a
+            toplevel declaration with the given name defined in the package to which the
+            compilation unit belongs.</para> 
             
             <para>Then the reference is to this unique unhidden declaration, and:</para>
             
