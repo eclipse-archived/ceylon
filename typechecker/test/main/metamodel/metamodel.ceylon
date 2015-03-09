@@ -377,8 +377,8 @@ void objectMemberRefs() {
     FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
     ValueDeclaration processArgumentsDec = `value process.arguments`;
     Value<Basic,Nothing> obj = `process`;
-    Method<\Iprocess,Anything,[]|[String]> fun = `process.writeLine`;
-    Attribute<\Iprocess,String[],Nothing> att = `process.arguments`;
+    Method<\Iprocess,Anything,[]|[String]> fun = `\Iprocess.writeLine`;
+    Attribute<\Iprocess,String[],Nothing> att = `\Iprocess.arguments`;
 }
 
 void testImplicitRefs() {
@@ -419,21 +419,21 @@ object x {
 shared void testObjectMetamodelRefs() {
     ClassDeclaration cd = `class foo.bar.Bar`;
     ValueDeclaration vd = `value foo.bar.Bar.name`;
-    Attribute<\Ifoo,Basic,Nothing> vbn = `foo.bar`;
-    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `foo.bar.Bar.name`;
-    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = `foo.bar.Bar`;
+    Attribute<\Ifoo,Basic,Nothing> vbn = `\Ifoo.bar`;
+    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `\Ifoo.\Ibar.Bar.name`;
+    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = `\Ifoo.\Ibar.Bar`;
     MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
-            = `foo.bar.Bar.Baz<String>`;
+            = `\Ifoo.\Ibar.Bar.Baz<String>`;
     @type:"Attribute<x,Basic,Nothing>"
-    value xy = `x.y`;
+    value xy = `\Ix.y`;
     @type:"MemberClass<x,x.Y,Empty>"
-    value xY = `x.Y`;
+    value xY = `\Ix.Y`;
     @type:"MemberInterface<x,x.I>"
-    value xI = `x.I`;
+    value xI = `\Ix.I`;
     @type:"Attribute<x,String,Nothing>"
-    value xName = `x.name`;
+    value xName = `\Ix.name`;
     @type:"Method<x,Anything,Empty>"
-    value xDo = `x.do`;
+    value xDo = `\Ix.do`;
     
 }
 
@@ -462,7 +462,8 @@ shared void packageQualifiedMetamodel() {
 class Bug() { shared object foo { shared object baz {} } }
 
 void bug() {
-    value bug1 = `Bug.foo.baz`;
+    value bugo = `Bug.\Ifoo.baz`;
+    value bug1 = `Bug.\Ifoo.\Ibaz`;
     value bug2 = `Bug[][].size`;
     value bug3 = `<Bug[]|{Bug*}>.size`;
 }

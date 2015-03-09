@@ -4025,114 +4025,28 @@ referencePathElement returns [Identifier identifier]
     ;
     
 referencePath returns [SimpleType type]
-    @init { BaseType bt = null; QualifiedType qt = null; }
     : (
         e1=referencePathElement 
-        { bt = new BaseType(null);
+        { BaseType bt = new BaseType(null);
           bt.setIdentifier($e1.identifier);
           $type = bt; }
       | 
         PACKAGE
-	      { bt = new BaseType($PACKAGE);
-	        bt.setPackageQualified(true);
-	        $type = bt; }
+	      { BaseType pbt = new BaseType($PACKAGE);
+	        pbt.setPackageQualified(true);
+	        $type = pbt; }
 	      o1=MEMBER_OP
 	      { $type.setEndToken($o1); }
 	      e2=referencePathElement
-	      { bt.setIdentifier($e2.identifier); }
+	      { $type.setEndToken(null);
+	        $type.setIdentifier($e2.identifier); }
       )
       (
         o2=MEMBER_OP
         e3=referencePathElement
-        { qt = new QualifiedType($o2);
+        { QualifiedType qt = new QualifiedType($o2);
           qt.setIdentifier($e3.identifier);
           qt.setOuterType($type);
-          $type = qt; }
-      )*
-    ; 
-
-modelPathElement returns [Identifier identifier, 
-                          TypeArgumentList typeArgumentList,
-                          boolean member]
-    : (
-	      typeName 
-	      { $identifier=$typeName.identifier; 
-	        $member = false; }
-	    | memberName
-	      { $identifier=$memberName.identifier; 
-	        $member = true;}
-	    )
-	    (
-	      typeArguments
-	      { $typeArgumentList=$typeArguments.typeArgumentList; }
-	    )?
-    ;
-    
-memberPathElement returns [Identifier identifier, 
-                          TypeArgumentList typeArgumentList,
-                          boolean member]
-    : memberName
-      { $identifier=$memberName.identifier; 
-        $member = true;}
-      (
-        typeArguments
-        { $typeArgumentList=$typeArguments.typeArgumentList; }
-      )?
-    ;
-    
-
-modelPath returns [SimpleType type, boolean member]
-    @init { BaseType bt=null; QualifiedType qt=null; StaticType st=null; }
-    : 
-      (
-        e1=memberPathElement 
-        { bt = new BaseType(null);
-          bt.setIdentifier($e1.identifier);
-          bt.setTypeArgumentList($e1.typeArgumentList);
-          $member = $e1.member;
-          $type = bt; }
-      |
-        PACKAGE
-        { bt = new BaseType($PACKAGE);
-          bt.setPackageQualified(true);
-          $type = bt; }
-        o1=MEMBER_OP
-        { $type.setEndToken($o1); }
-        e2=memberPathElement
-        { bt.setIdentifier($e2.identifier); 
-          bt.setTypeArgumentList($e2.typeArgumentList); 
-          $member = $e2.member; }
-      )
-      (
-        o2=MEMBER_OP
-        e3=modelPathElement
-        { qt = new QualifiedType($o2);
-          qt.setIdentifier($e3.identifier);
-          qt.setTypeArgumentList($e3.typeArgumentList);
-          qt.setOuterType($type);
-          $member = $e3.member;
-          $type = qt; }
-      )*
-    | 
-      at=abbreviatedType
-      { st = $at.type; 
-        $member = false; }
-      o3=MEMBER_OP
-      { qt = new QualifiedType($o3); 
-        qt.setOuterType(st); 
-        $type = qt; }
-      e4=memberPathElement
-      { qt.setIdentifier($e4.identifier);
-        qt.setTypeArgumentList($e4.typeArgumentList);
-        $member = $e4.member; }
-      (
-        o4=MEMBER_OP
-        e5=modelPathElement
-        { qt = new QualifiedType($o4);
-          qt.setIdentifier($e5.identifier);
-          qt.setTypeArgumentList($e5.typeArgumentList);
-          qt.setOuterType($type);
-          $member = $e5.member;
           $type = qt; }
       )*
     ; 
@@ -4261,41 +4175,58 @@ functionLiteral returns [FunctionLiteral literal]
     }
   ;
 
+memberPathElement returns [Identifier identifier, 
+                          TypeArgumentList typeArgumentList]
+    : memberName
+      { $identifier=$memberName.identifier; }
+      (
+        typeArguments
+        { $typeArgumentList=$typeArguments.typeArgumentList; }
+      )?
+    ;
+    
+
+memberModelExpression returns [MemberLiteral literal]
+    @init { $literal = new MemberLiteral(null); }
+    : 
+      e1=memberPathElement 
+      { $literal.setIdentifier($e1.identifier);
+        $literal.setTypeArgumentList($e1.typeArgumentList); }
+    |
+      PACKAGE
+      { $literal.setToken($PACKAGE);
+        $literal.setPackageQualified(true);  }
+      o2=MEMBER_OP
+      { $literal.setEndToken($o2); }
+      e2=memberPathElement
+      { $literal.setEndToken(null);
+        $literal.setIdentifier($e2.identifier); 
+        $literal.setTypeArgumentList($e2.typeArgumentList); }
+    | 
+      at=abbreviatedType
+      { $literal.setType($at.type); }
+      o3=MEMBER_OP
+      { $literal.setEndToken($o3); }
+      e3=memberPathElement
+      { $literal.setEndToken(null);
+        $literal.setIdentifier($e3.identifier);
+        $literal.setTypeArgumentList($e3.typeArgumentList); }
+    ; 
+
+typeModelExpression returns [TypeLiteral literal]
+    @init { $literal = new TypeLiteral(null); }
+    : type
+      { $literal.setType($type.type); }
+    ;
+
 modelExpression returns [MetaLiteral meta]
-  @init { TypeLiteral tl=null; 
-          MemberLiteral ml=null; } 
   :
-    (((abbreviatedType | PACKAGE) MEMBER_OP)? LIDENTIFIER) =>
-    modelPath
-    {
-      if (!$modelPath.member) {
-        tl = new TypeLiteral(null);
-        tl.setType($modelPath.type);
-        $meta = tl;
-      }
-      else {
-        ml = new MemberLiteral(null);
-        SimpleType st = $modelPath.type;
-        if (st instanceof QualifiedType) {
-          ml.setType(((QualifiedType) st).getOuterType());
-          ml.setIdentifier(st.getIdentifier());
-          ml.setTypeArgumentList(st.getTypeArgumentList());
-          ml.setEndToken(null);
-        }
-        else if (st instanceof BaseType) {
-          ml.setIdentifier(st.getIdentifier());
-          ml.setTypeArgumentList(st.getTypeArgumentList());
-          ml.setEndToken(null);
-          ml.setPackageQualified(((BaseType) st).getPackageQualified());
-        }
-        $meta = ml;
-      }
-    }
+    (((PACKAGE|abbreviatedType) MEMBER_OP)? LIDENTIFIER) =>
+    memberModelExpression
+    { $meta=$memberModelExpression.literal; }
   | 
-    type
-    { tl = new TypeLiteral(null);
-      tl.setType($type.type);
-      $meta = tl; }
+    typeModelExpression
+    { $meta = $typeModelExpression.literal; }
   ;
 
 metaLiteral returns [MetaLiteral meta]
