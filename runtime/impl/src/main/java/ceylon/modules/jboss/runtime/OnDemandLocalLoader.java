@@ -57,7 +57,7 @@ class OnDemandLocalLoader implements LocalLoader {
                 if (i != null) {
                     current.remove(); // remove, so we don't loop; should not happen though
 
-                    DependencySpec mds = loader.createModuleDependency(i);
+                    DependencySpec mds = loader.createModuleDependency(i, false);
                     try {
                         Module owner = loader.preloadModule(target);
                         loader.updateModule(owner, mds); // update / add lazy dep

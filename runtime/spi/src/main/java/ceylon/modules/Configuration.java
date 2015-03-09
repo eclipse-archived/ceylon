@@ -86,6 +86,11 @@ public class Configuration {
      * Verbose debug output
      */
     public String verbose;
+    
+    /**
+     * Auto export maven dependencies
+     */
+    public boolean autoExportMavenDependencies;
 
     /**
      * Offline mode
@@ -154,6 +159,9 @@ public class Configuration {
                 break;
             case VERBOSE:
                 verbose = values[arg];
+                break;
+            case AUTO_EXPORT_MAVEN_DEPENDENCIES:
+                autoExportMavenDependencies = true;
                 break;
             case OFFLINE:
                 offline = true;

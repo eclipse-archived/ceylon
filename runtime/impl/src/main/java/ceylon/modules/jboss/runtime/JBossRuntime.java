@@ -29,6 +29,6 @@ import org.jboss.modules.ModuleLoader;
 public class JBossRuntime extends AbstractJBossRuntime {
     protected ModuleLoader createModuleLoader(Configuration conf) throws Exception {
         RepositoryManager repository = createRepository(conf);
-        return new CeylonModuleLoader(repository);
+        return new CeylonModuleLoader(repository, conf.autoExportMavenDependencies);
     }
 }

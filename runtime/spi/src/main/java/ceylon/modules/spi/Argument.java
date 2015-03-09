@@ -34,6 +34,7 @@ public enum Argument {
     SOURCE("src", ArgumentType.CEYLON, 1),
     VERBOSE("verbose", ArgumentType.CEYLON, 1),
     OFFLINE("offline", ArgumentType.CEYLON, 0),
+    AUTO_EXPORT_MAVEN_DEPENDENCIES("auto-export-maven-dependencies", ArgumentType.CEYLON, 0),
     HELP("help", ArgumentType.CEYLON, 0, "h", "-help"),
     VERSION("version", ArgumentType.CEYLON, 0, "v", "-version");
 

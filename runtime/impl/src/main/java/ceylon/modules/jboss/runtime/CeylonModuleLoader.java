@@ -141,11 +141,13 @@ public class CeylonModuleLoader extends ModuleLoader {
     private RepositoryManager repository;
     private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<>();
     private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<>();
+    private boolean exportMavenImports = false;
 
-    public CeylonModuleLoader(RepositoryManager repository) throws Exception {
+    public CeylonModuleLoader(RepositoryManager repository, boolean autoExportMavenDependencies) throws Exception {
         if (repository == null)
             throw new IllegalArgumentException("Null repository adapter");
         this.repository = repository;
+        this.exportMavenImports = autoExportMavenDependencies;
         // initialise runtime modules
         init();
     }
@@ -258,6 +260,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             final File moduleFile = artifact.artifact();
             final boolean isDefault = RepositoryManager.DEFAULT_MODULE.equals(moduleIdentifier.getName());
+            boolean isMaven = artifact.type() == ArtifactResultType.MAVEN;
 
             final List<DependencySpec> deps = new ArrayList<>();
 
@@ -294,6 +297,8 @@ public class CeylonModuleLoader extends ModuleLoader {
                         continue;
                     }
 
+                    boolean isDepMaven = name.contains(":");
+
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;
                         String[] tokens = name.split("\\.");
@@ -305,14 +310,14 @@ public class CeylonModuleLoader extends ModuleLoader {
                         }
                         current.setValue(i);
                     } else {
-                        DependencySpec mds = createModuleDependency(i);
+                        DependencySpec mds = createModuleDependency(i, exportMavenImports && isMaven && isDepMaven);
                         builder.addDependency(mds);
                         deps.add(mds);
                     }
 
                     ModuleIdentifier mi = createModuleIdentifier(i);
                     Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    Graph.Edge.create(i.importType() == ImportType.EXPORT, vertex, dv);
+                    Graph.Edge.create(i.importType() == ImportType.EXPORT || (exportMavenImports && isMaven && isDepMaven), vertex, dv);
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
@@ -390,13 +395,13 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @param i the import
      * @return new module dependency
      */
-    DependencySpec createModuleDependency(ArtifactResult i) {
+    DependencySpec createModuleDependency(ArtifactResult i, boolean forceExport) {
         // this should never happen
         if (JDK_MODULE_NAMES.contains(i.name()))
             return JDK_DEPENDENCY;
 
         final ModuleIdentifier mi = createModuleIdentifier(i);
-        final boolean export = (i.importType() == ImportType.EXPORT);
+        final boolean export = forceExport || (i.importType() == ImportType.EXPORT);
         return DependencySpec.createModuleDependencySpec(
             PathFilters.getMetaInfSubdirectoriesWithoutMetaInfFilter(), // import everything?
             (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),

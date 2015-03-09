@@ -76,6 +76,8 @@ public class CeylonRunTool extends RepoUsingTool {
     private String compileFlags;
     private List<String> args = Collections.emptyList();
 
+    private boolean autoExportMavenDependencies;
+
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
     }
@@ -88,6 +90,13 @@ public class CeylonRunTool extends RepoUsingTool {
     @Rest
     public void setArgs(List<String> args) {
         this.args = args;
+    }
+
+    @Option(longName="auto-export-maven-dependencies")
+    @Description("When using JBoss Modules (the default), treats all module dependencies between"+
+                 "Maven modules as shared.")
+    public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
+        this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
@@ -171,7 +180,11 @@ public class CeylonRunTool extends RepoUsingTool {
         if (noDefRepos) {
             argList.add("-nodefreps");
         }
-        
+
+        if (autoExportMavenDependencies) {
+            argList.add("-auto-export-maven-dependencies");
+        }
+
         if (repo != null) {
             for (URI repo : this.repo) {
                 argList.add("-rep");
