@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -196,41 +197,14 @@ public class Overrides {
                 String value = getRequiredAttribute(define, "value", null);
                 interpolation.put(name, value);
             }
+            
+            // old name
             List<Element> artifacts = getChildren(document.getDocumentElement(), "artifact");
-            for (Element artifact : artifacts) {
-                ArtifactContext mc = getArtifactContext(artifact, true, interpolation); // version is optional
-                ArtifactOverrides ao = new ArtifactOverrides(mc);
-                result.addArtifactOverride(ao);
-                addOverrides(ao, artifact, DependencyOverride.Type.ADD, interpolation);
-                addOverrides(ao, artifact, DependencyOverride.Type.REMOVE, interpolation);
-                addOverrides(ao, artifact, DependencyOverride.Type.REPLACE, interpolation);
-                // filter
-                NodeList filterNode = artifact.getElementsByTagName("filter");
-                if (filterNode != null && filterNode.getLength() > 0) {
-                    Node node = filterNode.item(0);
-                    ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
-                }
-                List<Element> shareArtifacts = getChildren(document.getDocumentElement(), "share");
-                for (Element share : shareArtifacts) {
-                    ArtifactContext context = getArtifactContext(share, true, interpolation);
-                    ao.addShareOverride(context, true);
-                }
-                List<Element> unshareArtifacts = getChildren(document.getDocumentElement(), "unshare");
-                for (Element unshare : unshareArtifacts) {
-                    ArtifactContext context = getArtifactContext(unshare, true, interpolation);
-                    ao.addShareOverride(context, false);
-                }
-                List<Element> optionalArtifacts = getChildren(document.getDocumentElement(), "optional");
-                for (Element optional : optionalArtifacts) {
-                    ArtifactContext context = getArtifactContext(optional, true, interpolation);
-                    ao.addOptionalOverride(context, true);
-                }
-                List<Element> requireArtifacts = getChildren(document.getDocumentElement(), "require");
-                for (Element require : requireArtifacts) {
-                    ArtifactContext context = getArtifactContext(require, true, interpolation);
-                    ao.addOptionalOverride(context, false);
-                }
-            }
+            parseArtifacts(artifacts, result, interpolation);
+            // new name
+            List<Element> modules = getChildren(document.getDocumentElement(), "module");
+            parseArtifacts(modules, result, interpolation);
+
             List<Element> removedArtifacts = getChildren(document.getDocumentElement(), "remove");
             for (Element artifact : removedArtifacts) {
                 ArtifactContext context = getArtifactContext(artifact, true, interpolation);
@@ -256,6 +230,43 @@ public class Overrides {
             try {
                 is.close();
             } catch (IOException ignored) {
+            }
+        }
+    }
+
+    private static void parseArtifacts(List<Element> artifacts, Overrides result, Map<String, String> interpolation) throws TransformerException {
+        for (Element artifact : artifacts) {
+            ArtifactContext mc = getArtifactContext(artifact, true, interpolation); // version is optional
+            ArtifactOverrides ao = new ArtifactOverrides(mc);
+            result.addArtifactOverride(ao);
+            addOverrides(ao, artifact, DependencyOverride.Type.ADD, interpolation);
+            addOverrides(ao, artifact, DependencyOverride.Type.REMOVE, interpolation);
+            addOverrides(ao, artifact, DependencyOverride.Type.REPLACE, interpolation);
+            // filter
+            NodeList filterNode = artifact.getElementsByTagName("filter");
+            if (filterNode != null && filterNode.getLength() > 0) {
+                Node node = filterNode.item(0);
+                ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
+            }
+            List<Element> shareArtifacts = getChildren(artifact, "share");
+            for (Element share : shareArtifacts) {
+                ArtifactContext context = getArtifactContext(share, true, interpolation);
+                ao.addShareOverride(context, true);
+            }
+            List<Element> unshareArtifacts = getChildren(artifact, "unshare");
+            for (Element unshare : unshareArtifacts) {
+                ArtifactContext context = getArtifactContext(unshare, true, interpolation);
+                ao.addShareOverride(context, false);
+            }
+            List<Element> optionalArtifacts = getChildren(artifact, "optional");
+            for (Element optional : optionalArtifacts) {
+                ArtifactContext context = getArtifactContext(optional, true, interpolation);
+                ao.addOptionalOverride(context, true);
+            }
+            List<Element> requireArtifacts = getChildren(artifact, "require");
+            for (Element require : requireArtifacts) {
+                ArtifactContext context = getArtifactContext(require, true, interpolation);
+                ao.addOptionalOverride(context, false);
             }
         }
     }
