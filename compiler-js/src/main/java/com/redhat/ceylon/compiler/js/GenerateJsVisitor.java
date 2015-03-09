@@ -747,13 +747,20 @@ public class GenerateJsVisitor extends Visitor
             out("(function(", names.self(d), ")");
             beginBlock();
             if (enter) {
-                for (Statement s: statements) {
-                    addToPrototype(d, s, plist);
-                }
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
                     for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
                         generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                    }
+                }
+                for (Statement s: statements) {
+                    if (s instanceof Tree.ClassOrInterface == false) {
+                        addToPrototype(d, s, plist);
+                    }
+                }
+                for (Statement s: statements) {
+                    if (s instanceof Tree.ClassOrInterface) {
+                        addToPrototype(d, s, plist);
                     }
                 }
                 if (d.isMember()) {
