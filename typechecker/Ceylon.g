@@ -1082,7 +1082,7 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
     : SATISFIES 
       { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
       ( 
-        t1=abbreviatedType 
+        t1=primaryType 
         { if ($t1.type!=null) $satisfiedTypes.addType($t1.type); }
       )
       (
@@ -1095,7 +1095,7 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
               new MismatchedTokenException(INTERSECTION_OP, input)); }
         )
         (
-          t2=abbreviatedType
+          t2=primaryType
           { if ($t2.type!=null) {
                 $satisfiedTypes.addType($t2.type); 
                 $satisfiedTypes.setEndToken(null); } }
@@ -1128,7 +1128,7 @@ caseTypes returns [CaseTypes caseTypes]
     ;
 
 caseType returns [StaticType type, BaseMemberExpression instance]
-    : t=abbreviatedType 
+    : t=primaryType 
       { $type=$t.type;}
     | memberName
       { $instance = new BaseMemberExpression(null);
@@ -1141,8 +1141,8 @@ caseType returns [StaticType type, BaseMemberExpression instance]
 abstractedType returns [AbstractedType abstractedType]
     : ABSTRACTED_TYPE
       { $abstractedType = new AbstractedType($ABSTRACTED_TYPE); }
-      abbreviatedType
-      { $abstractedType.setType($abbreviatedType.type); }
+      primaryType
+      { $abstractedType.setType($primaryType.type); }
     ;
 
 parameters returns [ParameterList parameterList]
@@ -3213,7 +3213,7 @@ unionType returns [StaticType type]
 
 intersectionType returns [StaticType type]
     @init { IntersectionType it=null; }
-    : at1=abbreviatedType
+    : at1=primaryType
       { $type = $at1.type;
         it = new IntersectionType(null);
         it.addStaticType($type); }
@@ -3222,7 +3222,7 @@ intersectionType returns [StaticType type]
           i=INTERSECTION_OP
           { it.setEndToken($i); }
           (
-            at2=abbreviatedType
+            at2=primaryType
             { if ($at2.type!=null) {
                   it.addStaticType($at2.type);
                   it.setEndToken(null); 
@@ -3235,7 +3235,7 @@ intersectionType returns [StaticType type]
       )?
     ;
 
-qualifiedOrTupleType returns [StaticType type]
+atomicType returns [StaticType type]
     : qualifiedType 
       { $type=$qualifiedType.type; }
     | tupleType 
@@ -3250,10 +3250,10 @@ qualifiedOrTupleType returns [StaticType type]
     | LPAREN tupleElementType? (COMMA|RPAREN)
     ;*/
 
-abbreviatedType returns [StaticType type]
+primaryType returns [StaticType type]
     @init { FunctionType bt=null; SequenceType st=null; }
-    : qualifiedOrTupleType
-      { $type=$qualifiedOrTupleType.type; }
+    : atomicType
+      { $type=$atomicType.type; }
       (
         OPTIONAL 
         { OptionalType ot = new OptionalType(null);
@@ -4203,7 +4203,7 @@ memberModelExpression returns [MemberLiteral literal]
         $literal.setIdentifier($e2.identifier); 
         $literal.setTypeArgumentList($e2.typeArgumentList); }
     | 
-      at=abbreviatedType
+      at=primaryType
       { $literal.setType($at.type); }
       o3=MEMBER_OP
       { $literal.setEndToken($o3); }
@@ -4221,7 +4221,7 @@ typeModelExpression returns [TypeLiteral literal]
 
 modelExpression returns [MetaLiteral meta]
   :
-    (((PACKAGE|abbreviatedType) MEMBER_OP)? LIDENTIFIER) =>
+    (((PACKAGE|primaryType) MEMBER_OP)? LIDENTIFIER) =>
     memberModelExpression
     { $meta=$memberModelExpression.literal; }
   | 
