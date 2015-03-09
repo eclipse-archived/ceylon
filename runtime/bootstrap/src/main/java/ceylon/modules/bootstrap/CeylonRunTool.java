@@ -277,6 +277,7 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
         options.setRun(run);
+        options.setOverrides(mavenOverrides);
         Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
         runner.run(args.toArray(new String[args.size()]));
     }
