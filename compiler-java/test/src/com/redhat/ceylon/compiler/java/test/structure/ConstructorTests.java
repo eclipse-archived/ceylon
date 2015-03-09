@@ -127,4 +127,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorAliasBoxing(){
         compareWithJavaSource("constructor/CtorAliasBoxing");
     }
+    
+    @Test
+    public void testCtorMemberClassOfNestedAnonymousClass(){
+        compareWithJavaSource("constructor/CtorMemberClassOfNestedAnonymousClass");
+    }
 }

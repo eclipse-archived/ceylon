@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CtorMemberClassOfNestedAnonymousClass() {
+        this.memberObject = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ memberObject;
+    
+    public final class memberObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private memberObject_() {
+        }
+        
+        public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor Ctor$new$() {
+            return new Ctor();
+        }
+        
+        public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor Ctor$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other $name$) {
+            return new Ctor($name$);
+        }
+        
+        class Ctor$Other {
+            
+            private Ctor$Other() {
+            }
+        }
+        
+        public class Ctor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            public Ctor() {
+            }
+            
+            public Ctor(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other $name$) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.class));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ getMemberObject() {
+        return memberObject;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.class);
+}
+final class ctorMemberClassOfNestedAnonymousClass_ {
+    
+    private ctorMemberClassOfNestedAnonymousClass_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other)null);
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor get_() {
+        if (ctorMemberClassOfNestedAnonymousClass_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'ctorMemberClassOfNestedAnonymousClass\' before it was set");
+        }
+    }
+}
