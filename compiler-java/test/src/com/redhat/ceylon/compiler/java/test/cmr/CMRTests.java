@@ -23,8 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,10 +55,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.tools.Diagnostic;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaCompiler;
-import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
@@ -778,7 +778,46 @@ public class CMRTests extends CompilerTests {
                 new CompilerError(Kind.WARNING, null, 20, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
                 new CompilerError(Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
-}
+    }
+    
+    @Test(expected = AssertionError.class)
+    public void testMdlDependenciesFromMavenFail() throws Throwable{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
+                "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+        
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1");
+    }
+
+    @Test
+    public void testMdlDependenciesFromMavenAutoExport() throws Throwable{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
+                "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+        
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
+                Arrays.asList("--auto-export-maven-dependencies"));
+    }
+
+    @Test
+    public void testMdlDependenciesFromMavenFlatClasspath() throws Throwable{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
+                "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+        
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
+                Arrays.asList("--flat-classpath", "--maven-overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
+    }
+
+    @Test
+    public void testMdlDependenciesFromMavenWithOverrides() throws Throwable{
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
+                "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+        
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
+                Arrays.asList("--maven-overrides", getPackagePath()+"/modules/sparkframework/overrides-fix.xml"));
+    }
 
     @Test
     public void testMdlSourceArchive() throws IOException{

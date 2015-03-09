@@ -858,6 +858,10 @@ public abstract class CompilerTests {
     }
 
     protected void runInJBossModules(String runner, String module) throws Throwable {
+        runInJBossModules(runner, module, Collections.<String>emptyList());
+    }
+    
+    protected void runInJBossModules(String runner, String module, List<String> runnerArgs) throws Throwable {
         // JBoss modules fucks up just about everything. We force loading the Module class, which fucks up the JAXP
         // system properties
         org.jboss.modules.Module.getStartTime();
@@ -866,7 +870,14 @@ public abstract class CompilerTests {
 
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
         // make sure the class loader is cleaned up
-        int exit = Launcher.run(true, runner, "--rep", getOutPath(), module);
+        String[] args = new String[4 + runnerArgs.size()];
+        args[0] = runner;
+        args[1] = "--rep";
+        args[2] = getOutPath();
+        for(int i=0;i<runnerArgs.size();i++)
+            args[3+i] = runnerArgs.get(i);
+        args[args.length-1] = module;
+        int exit = Launcher.run(true, args);
         Assert.assertEquals(0, exit);
 
         // Now the TCCL is fucked up, so restore it too
