@@ -1105,9 +1105,10 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             superclass constructor, followed by an optional positional argument list, as
             defined in <xref linkend="positionalarguments"/>.</para>
             
-            <synopsis>ExtendedType: "extends" SuperclassOrConstructor PositionalArguments?</synopsis>
+            <synopsis>ExtendedType: "extends" (Extension | SuperclassExtension) PositionalArguments?</synopsis>
             
-            <synopsis>SuperclassOrConstructor: (("super" | TypeNameWithArguments) ".")? TypeNameWithArguments</synopsis>
+            <synopsis>Extension: PackageQualifier? TypeNameWithArguments? TypeNameWithArguments</synopsis>
+            <synopsis>SuperclassExtension: "super" "." TypeNameWithArguments</synopsis>
             
             <para>The specification of the superclass or superclass constructor is treated 
             as a value expression, not as a type expression:</para>

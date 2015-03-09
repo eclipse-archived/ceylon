@@ -1763,7 +1763,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             a reference to a class or constructor of a class, followed by a positional 
             argument list, as defined in <xref linkend="positionalarguments"/>.</para>
             
-            <synopsis>ClassSpecifier: "=>" SuperclassOrConstructor PositionalArguments</synopsis>
+            <synopsis>ClassSpecifier: "=>" (Extension | SuperclassExtension) PositionalArguments</synopsis>
             
             <para>The specification of the class or class constructor is treated as a value 
             expression, as in <xref linkend="extendedclass"/>. The type of this value 
