@@ -1095,11 +1095,11 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
         <section id="extendedclass">
             <title>Extension</title>
         
-            <para>A class may extend another class, in which case the first class is a subtype
-            of the second class and inherits its members. A class which extends another class
-            may have a constructor, as defined in <xref linkend="constructors"/>, which 
-            delegates to a constructor of the second class. Extension and constructor delegation
-            is specified using the <literal>extends</literal> clause.</para>
+            <para>A class may extend another class, in which case the first class is a 
+            subtype of the second class and inherits its members. A class which extends 
+            another class may have a constructor, as defined in <xref linkend="constructors"/>, 
+            which delegates to a constructor of the second class. Extension and constructor 
+            delegation is specified using the <literal>extends</literal> clause.</para>
             
             <para>An <literal>extends</literal> clause has a reference to a superclass or
             superclass constructor, followed by an optional positional argument list, as
@@ -1111,22 +1111,23 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <synopsis>SuperclassExtension: "super" "." TypeNameWithArguments</synopsis>
             
             <para>The specification of the superclass or superclass constructor is treated 
-            as a value expression, not as a type expression:</para>
+            as a value expression, not as a type expression.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the qualifier <literal>super</literal> occurs, the specification
+                    <para>If the qualifier <literal>super</literal> occurs, the specification
                     is treated as a member expression, as defined by 
-                    <xref linkend="memberexpressions"/>,</para>
+                    <xref linkend="memberexpressions"/>, where the qualifier 
+                    <literal>super</literal> is treated according to <xref linkend="super"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>if a qualifying type occurs, the specification is treated as a 
+                    <para>Ff a qualifying type occurs, the specification is treated as a 
                     constructor expression, as defined by 
-                    <xref linkend="constructorexpressions"/>, or, otherwise</para>
+                    <xref linkend="constructorexpressions"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>if no qualifier occurs, the specification is treated as a 
-                    base expression, as defined by <xref linkend="baseexpressions"/>.</para>
+                    <para>Otherwise, if no qualifier occurs, the specification is treated as 
+                    a base expression, as defined by <xref linkend="baseexpressions"/>.</para>
                 </listitem>
             </itemizedlist>
             

@@ -280,11 +280,20 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of the immediately containing class or interface. Its type is the 
             intersection of the principal instantiation of the immediate superclass 
             for the immediately containing class or interface, as defined in
-            <xref linkend="principalinstantiationofasupertype"/>, and all principal 
+            <xref linkend="principalinstantiationofasupertype"/>, with all principal 
             instantiations of immediate superinterfaces of the immediately containing 
             class or interface. A member reference such as <literal>super.x</literal> 
             may not resolve to a <literal>formal</literal> declaration, nor to any 
             member inherited from more than one supertype of the intersection type.</para>
+            
+            <para>As an exception to this, when the keyword <literal>super</literal> 
+            occurs in an <literal>extends</literal> clause, as specified in 
+            <xref linkend="extendedclass"/>, it refers to the current instance of
+            the class or interface which immediately contains the declaration to which
+            the <literal>extends</literal> clause belongs. Its type is the 
+            intersection of the principal instantiation of the immediate superclass 
+            of this containing class or interface, with all principal instantiations 
+            of immediate superinterfaces of this containing class or interface.</para>
             
             <para>The keyword <literal>super</literal> may occur as the first operand
             of an <literal>of</literal> operator, in which case the second operand is
