@@ -2279,7 +2279,8 @@ public class Naming implements LocalId {
     
     public JCExpression makeNamedConstructorName(Constructor constructor) {
         Class cls = (Class)constructor.getContainer();
-        if (cls.isToplevel() || cls.isMember()) {
+        if (cls.isToplevel() || 
+                (cls.isMember() && ((TypeDeclaration)cls.getContainer()).isToplevel())) {
             return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
         } else {
             return maker.TypeCast(
