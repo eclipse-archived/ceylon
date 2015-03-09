@@ -10,6 +10,17 @@ import org.jboss.modules.ModuleClassLoaderFactory;
  */
 public class CeylonModuleClassLoader extends ModuleClassLoader implements com.redhat.ceylon.common.runtime.CeylonModuleClassLoader {
 
+    static {
+        boolean parallelOk = true;
+        try {
+            parallelOk = ClassLoader.registerAsParallelCapable();
+        } catch (Throwable ignored) {
+        }
+        if (! parallelOk) {
+            throw new Error("Failed to register " + CeylonModuleClassLoader.class.getName() + " as parallel-capable");
+        }
+    }
+
     private UtilRegistryTransformer transformer;
     private volatile int registerThreadCount = 0;
     private final Object registerThreadLock = new Object();
