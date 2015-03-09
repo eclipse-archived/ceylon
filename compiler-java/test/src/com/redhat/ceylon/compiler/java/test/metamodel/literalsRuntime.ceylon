@@ -72,10 +72,10 @@ void literalsRuntime2<T>(){
     assert(`T` == `Integer`);
     
     assert(`value obj.attribute`.name == "attribute");
-    assert(`obj.attribute`.declaration == `value obj.attribute`);
+    assert(`\Iobj.attribute`.declaration == `value obj.attribute`);
 
     assert(`function obj.method`.name == "method");
-    assert(`obj.method<Integer>`.declaration == `function obj.method`);
+    assert(`\Iobj.method<Integer>`.declaration == `function obj.method`);
 
     // ConstructorDeclarations
     
