@@ -83,5 +83,11 @@ public class MetamodelTests extends CompilerTests {
     public void testBug1926() {
         compareWithJavaSource("bug1926");
     }
+    
+    @Test
+    public void testBugCL634() {
+        compareWithJavaSource("bugCL634");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bugCL634");
+    }
 }
 
