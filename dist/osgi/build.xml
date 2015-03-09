@@ -29,6 +29,7 @@
     <property name="build" location="build" />
     <property name="build.classes" location="${build}/classes" />
     <property name="build.repo" location="${build}/tempForRepo" />
+    <property name="build.configuration" location="${build}/configuration" />
     <property name="build.dist" location="${build}/dist" />
       <tstamp>
           <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
@@ -229,6 +230,8 @@
         <makeurl property="destinationRepository" file="${build.dist}"/>
         <makeurl property="categoryDefinition" file="${p2}/category.xml"/>
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
+            <arg value="-configuration"/>
+            <arg value="${build.configuration}"/>
             <arg value="-noSplash"/>
             <arg value="-console"/>
             <arg value="-consolelog"/>
@@ -249,6 +252,8 @@
             <arg value="-append"/>
         </exec>
         <exec dir="${basedir}" executable="eclipse">
+            <arg value="-configuration"/>
+            <arg value="${build.configuration}"/>
             <arg value="-noSplash"/>
             <arg value="-console"/>
             <arg value="-consolelog"/>
