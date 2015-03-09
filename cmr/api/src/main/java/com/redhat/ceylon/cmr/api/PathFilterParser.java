@@ -56,6 +56,11 @@ public final class PathFilterParser {
     }
 
     public static PathFilter parse(String filter) throws IOException {
+        if(filter.startsWith("<exports>") || filter.startsWith("<filter>")){
+            // JBoss modules wants a namespace for validation
+            int end = filter.indexOf('>');
+            filter = filter.substring(0, end) + " xmlns=\"urn:jboss:module:1.0\"" + filter.substring(end);
+        }
         return parse(new ByteArrayInputStream(filter.getBytes()));
     }
 
