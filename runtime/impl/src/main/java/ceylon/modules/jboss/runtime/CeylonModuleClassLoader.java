@@ -30,6 +30,42 @@ public class CeylonModuleClassLoader extends ModuleClassLoader implements com.re
         this.transformer = transformer;
     }
     
+    // Stef: Enable back when we update jboss modules
+//    @Override
+//    protected String getClassNotFoundExceptionMessage(String className, Module fromModule){
+//        StringBuilder b = new StringBuilder(className);
+//        b.append(" from module '").append(fromModule.getIdentifier()+"' whose dependencies are: [");
+//        DependencySpec[] dependencies = fromModule.getDependencies();
+//        boolean first = true;
+//        for(DependencySpec dep : dependencies){
+//            if(dep instanceof ModuleDependencySpec){
+//                ModuleDependencySpec modDep = ((ModuleDependencySpec)dep);
+//                if(first)
+//                    first = false;
+//                else
+//                    b.append(", ");
+//                b.append(modDep.getIdentifier());
+//            }
+//        }
+//        b.append("]");
+//        ModuleLoader moduleLoader = fromModule.getModuleLoader();
+//        if(moduleLoader instanceof CeylonModuleLoader){
+//            List<ModuleIdentifier> modules = ((CeylonModuleLoader) moduleLoader).findModuleForClass(className);
+//            if(!modules.isEmpty()){
+//                b.append(". That class can be found in the following modules: ");
+//                first = true;
+//                for(ModuleIdentifier module : modules){
+//                    if(first)
+//                        first = false;
+//                    else
+//                        b.append(", ");
+//                    b.append(module);
+//                }
+//            }
+//        }
+//        return b.toString();
+//    }
+    
     @Override
     public void registerInMetaModel(){
         transformer.register(this);

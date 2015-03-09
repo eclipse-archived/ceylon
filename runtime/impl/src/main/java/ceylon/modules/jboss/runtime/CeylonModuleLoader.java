@@ -48,6 +48,7 @@ import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -142,6 +143,9 @@ public class CeylonModuleLoader extends ModuleLoader {
     private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<>();
     private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<>();
     private boolean exportMavenImports = false;
+    // Stef: enable back when we upgrade jboss modules
+//    private Map<String,Object> classNamesToModules = new ConcurrentHashMap<>();
+    
 
     public CeylonModuleLoader(RepositoryManager repository, boolean autoExportMavenDependencies) throws Exception {
         if (repository == null)
@@ -345,6 +349,8 @@ public class CeylonModuleLoader extends ModuleLoader {
             Graph.Edge.create(false, vertex, sdsv);
 
             dependencies.put(moduleIdentifier, deps);
+            // Stef: enable back when we upgrade jboss modules
+//            index(artifact.artifact(), moduleIdentifier);
 
             UtilRegistryTransformer transformer = new UtilRegistryTransformer(moduleIdentifier, artifact);
             builder.setClassFileTransformer(transformer);
@@ -358,6 +364,57 @@ public class CeylonModuleLoader extends ModuleLoader {
             throw new ModuleLoadException(e);
         }
     }
+
+    // Stef: enable back when we upgrade jboss modules
+//    @SuppressWarnings("unchecked")
+//    public List<ModuleIdentifier> findModuleForClass(String className){
+//        Object value = classNamesToModules.get(className);
+//        if(value == null)
+//            return Collections.emptyList();
+//        if(value instanceof ModuleIdentifier)
+//            return Arrays.asList((ModuleIdentifier)value);
+//        if(value instanceof List)
+//            return (List<ModuleIdentifier>) value;
+//        // WTF?
+//        return Collections.emptyList();
+//    }
+//    
+//    private void index(File artifact, ModuleIdentifier moduleIdentifier) {
+//        if(artifact != null && artifact.exists() && artifact.canRead()){
+//            // only index jars since we can't have CNFE with Ceylon modules
+//            if(artifact.getName().toLowerCase().endsWith(".jar")){
+//                System.err.println("Indexing "+artifact);
+//                try (ZipFile zipFile = new ZipFile(artifact)) {
+//                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+//                    while(entries.hasMoreElements()){
+//                        ZipEntry entry = entries.nextElement();
+//                        if(entry.isDirectory())
+//                            continue;
+//                        String name = entry.getName();
+//                        if(!name.toLowerCase().endsWith(".class"))
+//                            continue;
+//                        String className = name.replace('/', '.').substring(0, name.length()-6);
+//                        Object value = classNamesToModules.get(className);
+//                        if(value == null)
+//                            classNamesToModules.put(className, moduleIdentifier);
+//                        else if(value instanceof ModuleIdentifier){
+//                            List<ModuleIdentifier> list = new ArrayList<ModuleIdentifier>(2);
+//                            list.add((ModuleIdentifier) value);
+//                            list.add(moduleIdentifier);
+//                            classNamesToModules.put(className, list);
+//                        }else if(value instanceof List){
+//                            @SuppressWarnings("unchecked")
+//                            List<ModuleIdentifier> list = (List<ModuleIdentifier>) value;
+//                            list.add(moduleIdentifier);
+//                        }
+//                    }
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     private void addLoggingModules(Builder builder, List<DependencySpec> deps, List<ModuleDependencyInfo> replacements) {
         for (ModuleDependencyInfo mi : replacements) {
