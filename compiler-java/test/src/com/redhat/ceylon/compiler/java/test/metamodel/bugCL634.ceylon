@@ -12,8 +12,8 @@ class BugCL634() {
 }
 @noanno
 shared void bugCL634() {
-    assert (`class BugCL634`.declaredMemberDeclarations<NestableDeclaration>().size == 2);
-    assert (`BugCL634`.getDeclaredAttributes<BugCL634>().size == 2);
+    assert (`class BugCL634`.declaredMemberDeclarations<NestableDeclaration>().size == 3);
+    assert (`BugCL634`.getDeclaredAttributes<BugCL634>().size == 3);
     assert (`BugCL634`.getDeclaredMethods<BugCL634>() == []);
     assert ((`BugCL634.good` of Anything) exists);
     assert ((`BugCL634.𝒷𝒶𝒹` of Anything) exists);
