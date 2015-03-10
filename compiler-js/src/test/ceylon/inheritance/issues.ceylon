@@ -20,6 +20,16 @@ interface Root409Mutator<in T>
 class Issue409_1<T>(T t) satisfies MutableRoot409_1<T> {}
 class Issue409_2<T>(T t) satisfies MutableRoot409_2<T> {}
 
+shared interface I511 {
+  shared default String foo => "1";
+  shared default String bar() => "1";
+}
+shared class C511() satisfies I511 {
+  shared actual default String foo => "2";
+  shared actual default String bar() => "2";
+}
+shared class D511() extends C511() satisfies I511 {}
+
 void testIssues() {
     check(C150((Integer i) => "i=``i``").f()=="i=100", "issue 150");
     check(Issue231_1("Hola").string == "Hola", "Issue 231 [1]");
@@ -54,6 +64,8 @@ void testIssues() {
     check(i409_2 is Root409<String>, "Issue 409.2");
     check(Outer459(1).get(Outer459("x").create()) == 1, "#459.1 Outer459<String>.Inner IS NOT Outer459<Integer>.Inner");
     check(func459(1.0)[1](func459("x")[0]()) == 1, "#459.2 func<String>.Inner IS NOT func<Integer>.Inner");
+    check(D511().foo=="2", "#511.1 expected 2 got ``D511().foo``");
+    check(D511().bar()=="2", "#511.2 expected 2 got ``D511().bar()``");
 }
 
 class Issue231_1(shared actual String string) {}
