@@ -36,7 +36,7 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public final void bug1923Usesite() {
-        final .java.lang.Object x = this;
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 x = this;
         final .ceylon.language.Callable<? extends .java.lang.Object> fRef = (
             let
             {
@@ -50,7 +50,7 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
                 }
             };
         );
-        final .java.lang.Object y = <.java.lang.Object>optional$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 y = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)(.java.lang.Object)<.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923>optional$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
         final .ceylon.language.Callable<? extends .java.lang.Object> fRefY = (
             let
             {
@@ -70,7 +70,7 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
                 }
             };
         );
-        final .ceylon.language.Sequential zs = <.java.lang.Object>plural$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923> zs = <.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923>plural$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> fRefZ = (
             let
             {

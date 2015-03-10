@@ -582,7 +582,7 @@ final class destructureInForComprehensions_ {
                                     if (tup$exhausted$) {
                                         return false;
                                     } else {
-                                        tup = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$ceylontmp$item$52;
+                                        tup = (.ceylon.language.Sequence)$ceylontmp$item$52;
                                         return true;
                                     }
                                 }
@@ -725,7 +725,7 @@ final class destructureInForComprehensions_ {
                                     if (tup$exhausted$) {
                                         return false;
                                     } else {
-                                        tup = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$ceylontmp$item$65;
+                                        tup = (.ceylon.language.Sequence)$ceylontmp$item$65;
                                         return true;
                                     }
                                 }
