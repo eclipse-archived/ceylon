@@ -698,6 +698,14 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact.getObjectDeclaration().getType().isExactly(type);
     }
     
+    private boolean isBasic(ProducedType type) {
+        return typeFact.getBasicDeclaration().getType().isExactly(type);
+    }
+    
+    private boolean isIdentifiable(ProducedType type) {
+        return typeFact.getIdentifiableDeclaration().getType().isExactly(type);
+    }
+    
     public boolean isAlias(ProducedType type) {
         return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
     }
@@ -729,8 +737,10 @@ public abstract class AbstractTransformer implements Transformation {
                 type = satisfiedTypes.get(0);
             } else if (satisfiedTypes.size() == 2) {
                 // special case for T? simplified as T&Object
-                if (isTypeParameter(satisfiedTypes.get(0)) && isObject(satisfiedTypes.get(1))) {
+                if (isObject(satisfiedTypes.get(1)) || isBasic(satisfiedTypes.get(1)) || isIdentifiable(satisfiedTypes.get(0))) {
                     type = satisfiedTypes.get(0);
+                } else if (isObject(satisfiedTypes.get(0)) || isBasic(satisfiedTypes.get(0)) || isIdentifiable(satisfiedTypes.get(0))) {
+                    type = satisfiedTypes.get(1);
                 }
             }
         }

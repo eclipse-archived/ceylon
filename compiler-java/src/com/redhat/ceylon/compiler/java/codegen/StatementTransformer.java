@@ -4129,7 +4129,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         private ProducedType model() {
-            return gen.typeFact().denotableType(var.getType().getTypeModel());
+            return var.getType().getTypeModel();
         }
         
         private SyntheticName name() {
@@ -4290,14 +4290,19 @@ public class StatementTransformer extends AbstractTransformer {
 
     VarDefBuilder transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-        JCExpression expr = 
-                (initExpr != null) ? 
-                        expressionGen().applyErasureAndBoxing(
-                                initExpr, exprType, false, exprBoxed,
-                                boxingStrategy, typeFact().denotableType(var.getType().getTypeModel()),
-                                ExpressionTransformer.EXPR_DOWN_CAST)
-                    :
-                        null;
+        JCExpression expr = initExpr;
+        if (expr != null) {
+            ProducedType type;
+            if (var.getType().getTypeModel().getDeclaration().isAnonymous()) {
+                type = var.getType().getTypeModel();
+            } else {
+                type = simplifyType(typeFact().denotableType(var.getType().getTypeModel()));
+            }
+            expr = expressionGen().applyErasureAndBoxing(
+                    expr, exprType, false, exprBoxed,
+                    boxingStrategy, type,
+                    ExpressionTransformer.EXPR_DOWN_CAST);
+        }
         return new VarDefBuilder(expressionGen(), var, expr);
     }
     
