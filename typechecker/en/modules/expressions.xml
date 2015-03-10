@@ -656,6 +656,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>be immediately followed by an argument list, allowing the 
                     compiler to infer the type arguments, as defined in
+                    <xref linkend="typeargumentinference"/>, or,</para>
+                </listitem>
+                <listitem>
+                    <para>be the immediate child of a constructor expression that is 
+                    immediately followed by an argument list, allowing the compiler to 
+                    infer the type arguments, as defined in
                     <xref linkend="typeargumentinference"/>, or</para>
                 </listitem>
                 <listitem>

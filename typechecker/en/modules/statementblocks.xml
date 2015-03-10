@@ -648,30 +648,30 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>A value declared using the keyword <literal>value</literal> or a
             function declared using the keyword <literal>function</literal> may be 
             in scope at a program element, but its type may not be 
-            <emphasis>inferrable</emphasis>, as defined by 
+            <emphasis>inferable</emphasis>, as defined by 
             <xref linkend="typeinference"/>, from the point of view of that program 
             element.</para>
             
             <para>The type of a value or function declared using the keyword 
-            <literal>value</literal> or <literal>function</literal> is inferrable 
+            <literal>value</literal> or <literal>function</literal> is inferable 
             to a program element if the declaration is in scope at the program 
             element and the program element occurs within the lexical scope of the 
             declaration.</para>
             
             <comment><para>Note: the type of a value or function declared using
             the keyword <literal>value</literal> or <literal>function</literal> is
-            not inferrable within the body of the value or function 
+            not inferable within the body of the value or function 
             itself.</para></comment>
             
             <para>For any other declaration, including any declaration which 
-            explicitly specifies its type, the type is considered inferrable to a 
+            explicitly specifies its type, the type is considered inferable to a 
             program element if the declaration is in scope at the program 
             element.</para>
             
             <para>The following code is not legal:</para>
             
             <programlisting>interface Point {
-    value x => y;  //error: type of y is not inferrable
+    value x => y;  //error: type of y is not inferable
     value y => x;
 }</programlisting>
             
@@ -745,7 +745,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     <para>the declaration must be referenceable at the program element,</para>
                 </listitem>
                 <listitem>
-                    <para>the type of the declaration must be inferrable to the program 
+                    <para>the type of the declaration must be inferable to the program 
                     element, and</para>
                 </listitem>
                 <listitem>
@@ -879,7 +879,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     element,</para>
                 </listitem>
                 <listitem>
-                    <para>the type of the member must be inferrable to the program 
+                    <para>the type of the member must be inferable to the program 
                     element, and</para>
                 </listitem>
                 <listitem>

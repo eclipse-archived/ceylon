@@ -2391,10 +2391,23 @@ interface NumberLiteral
             <title>Type argument inference</title>
         
             <para>When a direct invocation expression, as defined by 
-            <xref linkend="invocationexpressions"/>, for a generic function or a direct 
-            instantiation expression for a generic class does not explicitly specify type 
-            arguments, the type arguments are inferred from the argument expression types. 
-            The types of the argument expressions and the declared types of the corresponding 
+            <xref linkend="invocationexpressions"/>, does not explicitly specify type 
+            arguments, the type arguments are inferred from the argument expression types.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>In the case of a direct invocation of a function or class, type 
+                    arguments are inferred for the type parameters of the function or 
+                    class.</para>
+                </listitem>
+                <listitem>
+                    <para>In the case of a direct invocation of a constructor, type 
+                    arguments are inferred for the type parameters of the class to which
+                    the constructor belongs.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The types of the argument expressions and the declared types of the corresponding 
             parameters determine an <emphasis>inferred lower bound</emphasis> or 
             <emphasis>inferred upper bound</emphasis> for each type parameter.</para>
             
