@@ -358,7 +358,7 @@ public class Naming implements LocalId {
     }
 
     public static String capitalize(String str){
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
+        return new StringBuilder().appendCodePoint(Character.toUpperCase(str.codePointAt(0))).append(str.substring(Character.isSurrogate(str.charAt(0)) ? 2 : 1)).toString();
     }
     
     /** 
