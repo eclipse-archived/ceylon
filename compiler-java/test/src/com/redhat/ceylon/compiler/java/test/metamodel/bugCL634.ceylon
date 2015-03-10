@@ -1,16 +1,11 @@
 import ceylon.language.meta.declaration {
     NestableDeclaration
 }
-@noanno
 class BugCL634() {
-    @noanno
     shared Null good = null; // regular ASCII
-    @noanno
     shared Null 𝒷𝒶𝒹 = null; // Mathematical Alphanumerical Symbols – non-BMP, but no uppercase mapping
-    @noanno
     shared Null 𐐨 = null; // Deseret – non-BMP and has uppercase variant
 }
-@noanno
 shared void bugCL634() {
     assert (`class BugCL634`.declaredMemberDeclarations<NestableDeclaration>().size == 3);
     assert (`BugCL634`.getDeclaredAttributes<BugCL634>().size == 3);
