@@ -1,0 +1,137 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+interface Bug2082 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$impl();
+    
+    public boolean isNeat(final .java.lang.String val);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082.class);
+}
+final class Bug2082$impl {
+    
+    Bug2082$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 $this;
+    
+    public boolean isNeat(final .java.lang.String val) {
+        return false;
+    }
+}
+final class eBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 {
+    
+    private eBug2082_() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl(this);
+    }
+    
+    public final boolean isValid(final .java.lang.String val) {
+        return false;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean isNeat(final .java.lang.String val) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$.isNeat(val);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ get_() {
+        if (eBug2082_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'eBug2082\' before it was set");
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.class);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$TypeDescriptor$;
+    }
+}
+final class fBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 {
+    
+    private fBug2082_() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean isNeat(final .java.lang.String val) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$.isNeat(val);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ get_() {
+        if (fBug2082_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'fBug2082\' before it was set");
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.class);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$TypeDescriptor$;
+    }
+}
+final class isValid_ {
+    
+    private isValid_() {
+    }
+    
+    static boolean isValid(final .java.lang.String val, final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 type, final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082 type2) {
+        .java.lang.Object type$1;
+        if ((type$1 = type) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ type$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_)type$1;
+            type$2.isNeat(val);
+            return type$2.isValid(val);
+        }
+        .java.lang.Object type2$4;
+        if ((type2$4 = type2) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ type2$5 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_)type2$4;
+            type2$5.isNeat(val);
+            return type2$5.isValid(val);
+        }
+        return true;
+    }
+}
