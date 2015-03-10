@@ -1903,21 +1903,35 @@ public abstract class AbstractTransformer implements Transformation {
                 // this is only valid for interfaces, not for their companion which stay where they are
                 && (flags & JT_COMPANION) == 0;
         
-        java.util.List<ProducedType> qualifyingTypes = null;
-        ProducedType qType = simpleType;
+        java.util.List<ProducedReference> qualifyingTypes = null;
+        ProducedReference qType = simpleType;
         boolean hasTypeParameters = false;
         while (qType != null) {
             hasTypeParameters |= !qType.getTypeArguments().isEmpty();
             if(qualifyingTypes != null)
                 qualifyingTypes.add(qType);
-            TypeDeclaration typeDeclaration = qType.getDeclaration();
+            Declaration typeDeclaration = qType.getDeclaration();
             // local interfaces that are pulled to the toplevel need to cross containing methods to find
             // all the containing type parameters that it captures
             if((Decl.isLocal(typeDeclaration) || !typeDeclaration.isNamed()) // local or anonymous
                     && needsQualifyingTypeArgumentsFromLocalContainers
                     && typeDeclaration instanceof ClassOrInterface){
-                ClassOrInterface container = Decl.getClassOrInterfaceContainer(typeDeclaration, false);
-                qType = container == null ? null : container.getType();
+                Declaration container = Decl.getDeclarationScope(typeDeclaration.getContainer());
+                while (container instanceof Method) {
+                    qType = ((Method)container).getReference();
+                    if (qualifyingTypes == null) { 
+                        qualifyingTypes = new java.util.ArrayList<ProducedReference>();
+                        qualifyingTypes.add(simpleType);
+                    }
+                    hasTypeParameters = true;
+                    qualifyingTypes.add(qType);
+                    container = Decl.getDeclarationScope(container.getContainer());
+                }
+                if (container instanceof TypeDeclaration) {
+                    qType = ((TypeDeclaration)container).getType();
+                }else {
+                    qType = null;
+                }
             }else if(typeDeclaration.isNamed()){ // avoid anonymous types which may pretend that they have a qualifying type
                 qType = qType.getQualifyingType();
                 if(qType != null && qType.getDeclaration() instanceof ClassOrInterface == false){
@@ -1925,7 +1939,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // we can't make anything of them, since some members may be unrelated to
                     // the qualified declaration. This happens with "extends super.Foo()"
                     // for example. See https://github.com/ceylon/ceylon-compiler/issues/1478
-                    qType = qType.getSupertype((TypeDeclaration) typeDeclaration.getContainer());
+                    qType = ((ProducedType)qType).getSupertype((TypeDeclaration) typeDeclaration.getContainer());
                 }
             }else{
                 // skip local declaration containers
@@ -1933,16 +1947,16 @@ public abstract class AbstractTransformer implements Transformation {
             }
             // delayed allocation if we have a qualifying type
             if(qualifyingTypes == null && qType != null){
-                qualifyingTypes = new java.util.ArrayList<ProducedType>();
+                qualifyingTypes = new java.util.ArrayList<ProducedReference>();
                 qualifyingTypes.add(simpleType);
             }
         }
         int firstQualifyingTypeWithTypeParameters = qualifyingTypes != null ? qualifyingTypes.size() - 1 : 0;
         // find the first static one, from the right to the left
         if(qualifyingTypes != null){
-            for(ProducedType pt : qualifyingTypes){
-                TypeDeclaration declaration = pt.getDeclaration();
-                if(Decl.isStatic(declaration)){
+            for(ProducedReference pt : qualifyingTypes){
+                Declaration declaration = pt.getDeclaration();
+                if(declaration instanceof TypeDeclaration && Decl.isStatic((TypeDeclaration)declaration)){
                     break;
                 }
                 firstQualifyingTypeWithTypeParameters--;
@@ -1987,8 +2001,8 @@ public abstract class AbstractTransformer implements Transformation {
             }else if((flags & JT_NON_QUALIFIED) == 0){
                 int index = 0;
                 if(qualifyingTypes != null){
-                    for (ProducedType qualifyingType : qualifyingTypes) {
-                        jt = makeParameterisedType(qualifyingType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
+                    for (ProducedReference qualifyingType : qualifyingTypes) {
+                        jt = makeParameterisedType(qualifyingType.getType(), type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
                         index++;
                     }
                 }else{
@@ -2022,15 +2036,15 @@ public abstract class AbstractTransformer implements Transformation {
      */
     private void collectQualifyingTypeArguments(java.util.List<TypeParameter> qualifyingTypeParameters, 
             Map<TypeParameter, ProducedType> qualifyingTypeArguments, 
-            java.util.List<ProducedType> qualifyingTypes) {
+            java.util.List<ProducedReference> qualifyingTypes) {
         // make sure we only add type parameters with the same name once, as duplicates are erased from the target interface
         // since they cannot be accessed
         Set<String> names = new HashSet<String>();
         // walk the qualifying types backwards to make sure we only add a TP with the same name once and the outer one wins
         for (int i = qualifyingTypes.size()-1 ; i >= 0 ; i--) {
-            ProducedType qualifiedType = qualifyingTypes.get(i);
+            ProducedReference qualifiedType = qualifyingTypes.get(i);
             Map<TypeParameter, ProducedType> tas = qualifiedType.getTypeArguments();
-            java.util.List<TypeParameter> tps = qualifiedType.getDeclaration().getTypeParameters();
+            java.util.List<TypeParameter> tps = ((Generic)qualifiedType.getDeclaration()).getTypeParameters();
             // add any type params for this type
             if (tps != null) {
                 int index = 0;
@@ -2046,7 +2060,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             // add any container method TP
-            TypeDeclaration declaration = qualifiedType.getDeclaration();
+            Declaration declaration = qualifiedType.getDeclaration();
             if(Decl.isLocal(declaration)){
                 Scope scope = declaration.getContainer();
                 // collect every container method until the next type or package
@@ -2174,7 +2188,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
-            JCExpression qualifyingExpression, java.util.List<ProducedType> qualifyingTypes, 
+            JCExpression qualifyingExpression, java.util.List<ProducedReference> qualifyingTypes, 
             int firstQualifyingTypeWithTypeParameters, int index) {
         JCExpression baseType;
         TypeDeclaration tdecl = type.getDeclaration();
