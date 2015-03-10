@@ -112,12 +112,16 @@ public class TypeGenerator {
             final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
             gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
-                    : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size());
+                    : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
             if (extendedType != null) {
-                String fname = gen.typeFunctionName(extendedType.getType(),
-                        !extendedType.getType().getDeclarationModel().isMember());
-                gen.out(",", fname);
+                if (satisfiedTypes == null) {
+                    String fname = gen.typeFunctionName(extendedType.getType(),
+                            !extendedType.getType().getDeclarationModel().isMember());
+                    gen.out(",", fname);
+                } else {
+                    supers.add(extendedType.getType());
+                }
             } else if (!isInterface) {
                 gen.out(",", gen.getClAlias(), "Basic");
             }
@@ -180,8 +184,8 @@ public class TypeGenerator {
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
-        callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
-                d, that, superDecs, gen);
+        final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
+        callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
                     ",$$targs$$,", gen.getNames().name(d), ")");
@@ -248,6 +252,7 @@ public class TypeGenerator {
         final Tree.ParameterList plist = that.getParameterList();
         final List<Tree.Constructor> constructors;
         final List<Tree.Statement> classBody;
+        final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         //Find the constructors, if any
         Tree.Constructor defconstr = null;
         if (d.hasConstructors()) {
@@ -304,8 +309,8 @@ public class TypeGenerator {
             gen.endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
-            if (that.getSatisfiedTypes() != null) {
-                for(Tree.StaticType sat : that.getSatisfiedTypes().getTypes()) {
+            if (sats != null) {
+                for(Tree.StaticType sat : sats.getTypes()) {
                     boolean first = true;
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
@@ -321,7 +326,8 @@ public class TypeGenerator {
                 }
             }
         }
-        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
+        if (!d.isToplevel() && d.getContainer() instanceof Method
+                && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
             gen.out(gen.getClAlias(), "set_type_args(", me, ",$$$mptypes)");
             gen.endLine(true);
         }
@@ -333,12 +339,10 @@ public class TypeGenerator {
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        if (that.getExtendedType() != null) {
-            callSuperclass(that.getExtendedType().getType(), that.getExtendedType().getInvocationExpression(),
-                    d, d.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
-        }
-        callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
-                d, that, superDecs, gen);
+        final Tree.ExtendedType extendedType = that.getExtendedType();
+        callSupertypes(sats == null ? null : sats.getTypes(), extendedType == null ? null : extendedType.getType(),
+                d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
+                extendedType == null ? null : d.getExtendedTypeDeclaration().getParameterList(), gen);
 
         if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
@@ -441,25 +445,38 @@ public class TypeGenerator {
         copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
-    static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Node that,
-            final List<Declaration> superDecs, final GenerateJsVisitor gen) {
-        if (satisfiedTypes!=null) {
+    static void callSupertypes(final List<Tree.StaticType> sats, final Tree.SimpleType supertype,
+            final ClassOrInterface d, final Node that, final List<Declaration> superDecs,
+            final Tree.InvocationExpression invoke, final ParameterList plist, final GenerateJsVisitor gen) {
+        if (sats != null) {
+            final ArrayList<Tree.StaticType> supers = new ArrayList<>(sats.size()+1);
+            supers.addAll(sats);
+            if (supertype != null) {
+                supers.add(supertype);
+            }
+            Collections.sort(supers, new StaticTypeComparator());
             HashSet<String> myTypeArgs = new HashSet<>();
             for (TypeParameter tp : d.getTypeParameters()) {
                 myTypeArgs.add(tp.getName());
             }
-            for (Tree.StaticType st: satisfiedTypes) {
-                TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
-                gen.qualify(that, typeDecl);
-                gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
-                if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), gen, d.isToplevel(), null);
-                    gen.out(",");
+            for (Tree.StaticType st: supers) {
+                if (st == supertype) {
+                    callSuperclass(supertype, invoke, (Class)d, plist, that, superDecs, gen);
+                } else {
+                    TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
+                    gen.qualify(that, typeDecl);
+                    gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
+                    if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
+                        TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), gen, d.isToplevel(), null);
+                        gen.out(",");
+                    }
+                    gen.out(gen.getNames().self(d), ")");
+                    gen.endLine(true);
+                    copySuperMembers(typeDecl, superDecs, d, gen);
                 }
-                gen.out(gen.getNames().self(d), ")");
-                gen.endLine(true);
-                copySuperMembers(typeDecl, superDecs, d, gen);
             }
+        } else if (supertype != null) {
+            callSuperclass(supertype, invoke, (Class)d, plist, that, superDecs, gen);
         }
     }
 
@@ -596,11 +613,10 @@ public class TypeGenerator {
             gen.out(selfName, ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
-        if (superType != null) {
-            TypeGenerator.callSuperclass(superType.getType(), superType.getInvocationExpression(),
-                    c, c.getExtendedTypeDeclaration().getParameterList(), that, superDecs, gen);
-        }
-        TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
+        TypeGenerator.callSupertypes(sats == null ? null : sats.getTypes(),
+                superType == null ? null : superType.getType(), c, that, superDecs,
+                superType == null ? null : superType.getInvocationExpression(),
+                superType == null ? null : c.getExtendedTypeDeclaration().getParameterList(), gen);
         
         body.visit(gen);
         gen.out("return ", selfName, ";");
@@ -712,7 +728,8 @@ public class TypeGenerator {
             final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
             ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
                 ((Constructor)superdec).getParameterLists().get(0);
-            callSuperclass(that.getDelegatedConstructor().getType(), that.getDelegatedConstructor().getInvocationExpression(),
+            callSuperclass(that.getDelegatedConstructor().getType(),
+                    that.getDelegatedConstructor().getInvocationExpression(),
                     container, plist, that, null, gen);
         }
         //Call common initializer
