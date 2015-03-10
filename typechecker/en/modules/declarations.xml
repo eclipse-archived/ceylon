@@ -1055,7 +1055,7 @@ TypeConstraints?
         <literal>abstract</literal> class declaration is not part of the schema of the 
         class type, and is therefore not considered a member of the class.</para>
         
-        <para>A class is not required to have a seperate nested constructor declaration.
+        <para>A class is not required to have a separate nested constructor declaration.
         Instead, the body of the class may itself declare its
         <emphasis>initializer parameters</emphasis>. An initializer parameter may be 
         used anywhere in the class body, including in method and attribute definitions.</para>
@@ -1491,7 +1491,7 @@ TypeConstraints?
             a <literal>sealed</literal> class or interface.</para>
             
             <comment><para>Note: a <literal>formal</literal> member class would be a
-            reasonably syntax for declaring virtual types. We think we don't need 
+            reasonable syntax for declaring virtual types. We think we don't need 
             virtual types because they don't offer much that type parameters don't
             already provide. For example:</para>
             <programlisting>shared formal class Buffer(Character...) 
@@ -2807,8 +2807,15 @@ print(greeting);</programlisting>
         <para>If two constructors belong to the same class, then the constructors 
         must have distinct names.</para>
         
-        <para>A class with an initializer parameter list may not declare 
-        constructors.</para>
+        <para>A class with an initializer parameter list may not declare constructors.</para>
+        
+        <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
+        or <literal>actual</literal> may not declare constructors.</para>
+        
+        <comment><para>Note: in a future release of the language, we might relax this 
+        restriction, and simply require that every <literal>actual</literal> class 
+        provide a constructor with the same signature as the constructor of its 
+        superclass.</para></comment>
         
         <para>The constructors of a class must occur after every other statement,
         declaration, and control structure in the initializer section of the class.</para>
@@ -2816,9 +2823,9 @@ print(greeting);</programlisting>
         <section id="defaultconstructor">
             <title>Default constructor</title>
             
-            <para>If a constructor has the same name as the class it belongs to,
-            then the constructor is called the <emphasis>default constructor</emphasis>
-            for the class.</para>
+            <para>If a constructor has the same name as the class it belongs to, then 
+            the constructor is called the <emphasis>default constructor</emphasis> for 
+            the class.</para>
             
             <para>Every default constructor must be annotated <literal>shared</literal>.</para>
             
