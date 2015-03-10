@@ -954,13 +954,13 @@ public class TypeVisitor extends Visitor {
 //                }
             }
             else {
-                if (dec instanceof Constructor) {
-                    if (dec.isClassMember()) {
-                        Class c = (Class) dec.getContainer();
-                        if (dec.getName().equals(c.getName())) {
-                            dec = c;
-                            ot = ot.getQualifyingType();
-                        }
+                if (dec instanceof Constructor && 
+                        dec.isClassMember() &&
+                        that instanceof Tree.BaseType) {
+                    Class c = (Class) dec.getContainer();
+                    if (dec.getName().equals(c.getName())) {
+                        dec = c;
+                        ot = ot.getQualifyingType();
                     }
                 }
                 if (dec instanceof Constructor) {
