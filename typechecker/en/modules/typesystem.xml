@@ -1040,25 +1040,31 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             </listitem-->
         </itemizedlist>
         
-        <para>If a type declaration extends or satisfies a type, we say it 
-        <emphasis>inherits</emphasis> the type.</para>
+        <para>We say that a type declaration <literal>X</literal> <emphasis>inherits</emphasis> 
+        a type declaration <literal>Y</literal> if <literal>X</literal> extends or satisfies 
+        <literal>Y</literal>, or if a third type declaration <literal>Z</literal> inherits 
+        <literal>Y</literal> and <literal>X</literal> extends or satisfies <literal>Z</literal>.</para>
         
         <para>Inheritance relationships may not produce cycles, since that would violate
         the noncircularity rule for subtyping. Thus, a class, interface, or type parameter
         may not, directly or indirectly, inherit itself.</para>
         
+        <para>When a type declaration extends or satisfies a parameterized type declaration, 
+        it must specify type arguments for the type parameters of the generic declaration. 
+        Thus, whenever a type declaration inherits a parameterized type declaration, it also 
+        inherits an instantiation of the parameterized type declaration.</para>
+        
         <comment>
-        <para>Note: when a type declaration specifies a relationship to other types, 
-        Ceylon visually distinguishes between a list of types which conceptually 
-        represents a combination of (intersection of) the types, and a list of types 
-        which represents a choice between (union of) the types. For example, when a 
-        class <literal>C</literal> satisfies multiple interfaces, they are written as 
-        <literal>X&amp;Y&amp;Z</literal>. On the other hand, the cases of an 
-        enumerated class <literal>E</literal> are written as <literal>X|Y|Z</literal>.
-        This syntax emphasizes that <literal>C</literal> is also a subtype of the 
-        intersection type <literal>X&amp;Y&amp;Z</literal>, and that <literal>E</literal> 
-        may be narrowed to the union type <literal>X|Y|Z</literal> using a 
-        <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
+        <para>Note: when a type declaration specifies a relationship to other types, Ceylon 
+        visually distinguishes between a list of types which conceptually represents a 
+        combination of (intersection of) the types, and a list of types which represents a 
+        choice between (union of) the types. For example, when a class <literal>C</literal> 
+        satisfies multiple interfaces, they are written as <literal>X&amp;Y&amp;Z</literal>.
+        On the other hand, the cases of an enumerated class <literal>E</literal> are written 
+        as <literal>X|Y|Z</literal>. This syntax emphasizes that <literal>C</literal> is also 
+        a subtype of the intersection type <literal>X&amp;Y&amp;Z</literal>, and that 
+        <literal>E</literal> may be narrowed to the union type <literal>X|Y|Z</literal> using 
+        a <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
         </comment>
             
         <section id="inheritanceandsubtyping">
@@ -1069,8 +1075,9 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
-                then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+                <para>If a type declaration <literal>X</literal> with no type parameters 
+                inherits a type <literal>Y</literal>, then <literal>X</literal> is a subtype 
+                of <literal>Y</literal>.</para>
             </listitem>
             <!--listitem>  
                 <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
@@ -1079,8 +1086,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
                 <literal>Y</literal>.</para>
             </listitem-->
             <listitem>
-                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
-                that might involve the type parameters of <literal>X</literal>, then for any 
+                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal>, 
+                which might involve the type parameters of <literal>X</literal>, then for any 
                 instantiation <literal>U</literal> of <literal>X</literal> we can construct 
                 a type <literal>V</literal> by, for every type parameter <literal>T</literal> 
                 of <literal>X</literal>, substituting the corresponding type argument of 
@@ -1100,6 +1107,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             another class may have a constructor, as defined in <xref linkend="constructors"/>, 
             which delegates to a constructor of the second class. Extension and constructor 
             delegation is specified using the <literal>extends</literal> clause.</para>
+            
+            <para>The <literal>extends</literal> clause must specify exactly one class.</para>
             
             <para>An <literal>extends</literal> clause has a reference to a superclass or
             superclass constructor, followed by an optional positional argument list, as
@@ -1140,7 +1149,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If the superclass is a parameterized type, the <literal>extends</literal> 
-                    clause must also explicitly specify type arguments.</para>
+                    clause must also explicitly specify type arguments, and the resulting 
+                    applied type is inherited.</para>
                 </listitem>
                 <listitem>
                     <para>If the <literal>extends</literal> clause belongs to a constructor or 
@@ -1209,15 +1219,17 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             in combination with other upper bounds. This restriction will likely be removed in
             future.</para></comment>
             
+            <para>The <literal>satisfies</literal> clause may specify multiple types.</para>
+            
             <synopsis>SatisfiedTypes: "satisfies" PrimaryType ("&amp;" PrimaryType)*</synopsis>
-        
+            
+            <para>If a satisfied class or interface is a parameterized type, the 
+            <literal>satisfies</literal> clause must explicitly specify type arguments, and 
+            the resulting applied type is inherited.</para>
+            
             <para>A type occurring in the <literal>satisfies</literal> clause may not involve
             variance annotations <literal>in</literal> or <literal>out</literal>, defined below 
             in <xref linkend="typeargumentvariance"/>.</para>
-                               
-            <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
-            satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
-            must specify type arguments.</para>
             
             <programlisting>satisfies Correspondence&lt;Integer,Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
             
