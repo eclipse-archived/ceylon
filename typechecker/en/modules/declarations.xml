@@ -417,17 +417,42 @@ TypeConstraints?
         <emphasis>parameters</emphasis>. A parameter is a value or function belonging to the 
         declaration it parameterizes. Parameters are distinguished from other values or 
         functions because they occur in a <emphasis>parameter list</emphasis>. A value or 
-        function is a parameter of a class or function if it is:</para>
+        function is a parameter of a function, class, or constructor if it is:</para>
         
         <itemizedlist>
             <listitem>
-                <para>declared inline in a parameter list of the class or function, or</para>
+                <para>declared inline in a parameter list of the function, class, or constructor, 
+                or</para>
             </listitem>
             <listitem>
-                <para>declared normally, within the body of the class or function, but named 
-                in a parameter list of the class or function.</para>
+                <para>declared normally, within the body of the class, function, or constructor,
+                but named in a parameter list of the class or function.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A parameter list of a function, class, or constructor may have one or more 
+        elements without explicit type declarations. Each such element is interpreted as the 
+        name of a parameter declaration occurring in the body of the class, function, or 
+        constructor, and there must be a value or function declaration with that name.</para>
+        
+        <para>As a special exception, if a parameter of an anonymous function has no explicit 
+        type declaration, and there is no declaration with the given name occurring in the body 
+        of the anonymous function, then the type of the parameyer must be inferrable, according 
+        to <xref linkend="parametertypeinference"/>.</para>
+        
+        <para>Conversely, every parameter declaration that occurs outside a parameter list must 
+        have the same name as a parameter with no explicit type that occurs in the parameter 
+        list of the function, class, or constructor in whose body the parameter declaration 
+        directly occurs, and its default argument, if any, must be specified in the parameter 
+        list.</para>
+        
+        <para>A parameter declaration may only occur in a parameter list, or directly, as
+        defined by <xref linkend="blockstructure"/>, in the body of a class, function, or
+        constructor. A parameter declaration may not occur directly in the body of a getter 
+        or in a body of a control structure. Nor may a parameter declaration appear as a 
+        toplevel declaration in a compilation unit.</para>
+        
+        <synopsis>ParameterDeclaration: (ValueParameter | CallableParameter | VariadicParameter) ";"</synopsis>
         
         <para>The following class definitions are semantically identical:</para>
         
@@ -438,19 +463,7 @@ TypeConstraints?
     shared variable Integer age;
     Address* addresses;
 }</programlisting>
-        
-        <para>A parameter declaration may only occur in a parameter list, or directly, as
-        defined by <xref linkend="blockstructure"/>, in the body of a class or function. A 
-        parameter declaration may not occur directly in the body of a getter or in a body of 
-        a control structure. Nor may a parameter declaration appear as a toplevel declaration 
-        in a compilation unit.</para>
-        
-        <synopsis>ParameterDeclaration: (ValueParameter | CallableParameter | VariadicParameter) ";"</synopsis>
-        
-        <para>Every parameter declaration that occurs outside a parameter list must be named
-        in the parameter list of the class or function in whose body it directly occurs, and
-        its default argument, if any, must be specified in the parameter list.</para>
-        
+
         <section id="parameterlists">
             <title>Parameter lists</title>
         
