@@ -278,20 +278,6 @@ public class TypeVisitor extends Visitor {
         return null;
     }
     
-//    private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
-//        if (mp.getName().size()==importPath.size()) {
-//            for (int i=0; i<mp.getName().size(); i++) {
-//                if (!mp.getName().get(i).equals(name(importPath.get(i)))) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-//    }
-    
     private static boolean findModuleInTransitiveImports(Module moduleToVisit, 
             Module moduleToFind, Set<Module> visited) {
         if (!visited.add(moduleToVisit))
@@ -928,46 +914,16 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, 
             ProducedType ot, TypeDeclaration dec) {
-        //TODO: the following is inelegant!
-        if (!inTypeLiteral) {
-            if (inExtendsOrClassAlias) {
+        if (dec instanceof Constructor &&
+                //in a metamodel type literal, a constructor
+                //is allowed
+                !inTypeLiteral && 
                 //for an extends clause or aliased class, 
                 //either a class with parameters or a 
-                //constructor is OK
-            }
-            else if (inDelegatedConstructor) {
-                //well, the same here, I guess!
-//                if (dec instanceof Class) {
-//                    if (((Class) dec).hasConstructors()) {
-//                        Declaration defaultConstructor = 
-//                                dec.getDirectMember(dec.getName(), null, false);
-//                        if (defaultConstructor instanceof Constructor) {
-//                            dec = (Constructor) defaultConstructor;
-//                        }
-//                        else {
-//                            that.addError("class has no default constructor: '" + dec.getName(unit) + "'");
-//                        }
-//                    }
-//                }
-//                else if (!(dec instanceof Constructor)) {
-//                    that.addError("not a constructor or class: '" + dec.getName(unit) + "'");
-//                }
-            }
-            else {
-//                if (dec instanceof Constructor && 
-//                        dec.isClassMember() &&
-//                        that instanceof Tree.BaseType) {
-//                    Class c = (Class) dec.getContainer();
-//                    if (dec.getName().equals(c.getName())) {
-//                        dec = c;
-//                        ot = ot.getQualifyingType();
-//                    }
-//                }
-                if (dec instanceof Constructor) {
-                    that.addError("constructor is not a type: '" + 
-                            dec.getName(unit) + "'");
-                }
-            }
+                //constructor is allowed
+                !inExtendsOrClassAlias && !inDelegatedConstructor) {
+            that.addError("constructor is not a type: '" + 
+                    dec.getName(unit) + "'");
         }
         
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
@@ -1454,20 +1410,6 @@ public class TypeVisitor extends Visitor {
 //                that.addError("malformed extended type");
             }
             else {
-                /*if (et instanceof Tree.QualifiedType) {
-                    Tree.QualifiedType st = (Tree.QualifiedType) et;
-                    ProducedType pt = st.getOuterType().getTypeModel();
-                    if (pt!=null) {
-                        TypeDeclaration superclass = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), st.getIdentifier(), context);
-                        if (superclass==null) {
-                            that.addError("member type declaration not found: " + 
-                                    st.getIdentifier().getText());
-                        }
-                        else {
-                            visitExtendedType(st, pt, superclass);
-                        }
-                    }
-                }*/
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
                     TypeDeclaration etd = et.getDeclarationModel();
@@ -1737,14 +1679,6 @@ public class TypeVisitor extends Visitor {
             mov.setInitializerParameter(p);
             p.setModel(mov);
         }
-        /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
-            if (a instanceof Method) {
-                that.addWarning("initializer parameters for inner methods of methods not yet supported");
-            }
-            if (a instanceof Value && ((Value) a).isVariable()) {
-                that.addWarning("initializer parameters for variables of methods not yet supported");
-            }
-        }*/
         if (a instanceof Generic && 
                 !((Generic) a).getTypeParameters().isEmpty()) {
             that.addError("parameter declaration has type parameters: '" + 
@@ -1852,19 +1786,6 @@ public class TypeVisitor extends Visitor {
                             p.getName() + "' of '" + p.getDeclaration().getName() + "'");
                 }
             }
-            /*if (declaration instanceof Method &&
-                !declaration.isToplevel() &&
-                !(declaration.isClassOrInterfaceMember() && 
-                        ((Declaration) declaration.getContainer()).isToplevel())) {
-                se.addWarning("default arguments for parameters of inner methods not yet supported");
-            }
-            if (declaration instanceof Class && 
-                    !declaration.isToplevel()) {
-                se.addWarning("default arguments for parameters of inner classes not yet supported");
-            }*/
-                /*else {
-                se.addWarning("parameter default values are not yet supported");
-            }*/
         }
     }
     
