@@ -31,3 +31,7 @@ ex$.$prop$getTrue=$_true;
 ex$.$prop$getFalse=$_false;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
+function $init$$_true(){return $_true;}
+function $init$$_false(){return $_false;}
+ex$.$init$$_true=$init$$_true;
+ex$.$init$$_false=$init$$_false;
