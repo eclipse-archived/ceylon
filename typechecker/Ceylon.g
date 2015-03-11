@@ -356,8 +356,10 @@ objectDeclaration returns [ObjectDefinition declaration]
     : OBJECT_DEFINITION
       { $declaration = new ObjectDefinition($OBJECT_DEFINITION); 
         $declaration.setType(new ValueModifier(null)); }
-      memberNameDeclaration
-      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       ( 
         extendedType
         { $declaration.setExtendedType($extendedType.extendedType); } 
@@ -410,9 +412,11 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           dec.setType(fm);
           $declaration = dec; }
       )
-      memberNameDeclaration
-      { dec.setIdentifier($memberNameDeclaration.identifier); 
-        def.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration
+        { dec.setIdentifier($memberNameDeclaration.identifier); 
+          def.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       (
         typeParameters
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -449,8 +453,10 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
     : ASSIGN 
       { $declaration = new AttributeSetterDefinition($ASSIGN); 
         $declaration.setType( new VoidModifier(null) ); }
-      memberNameDeclaration 
-      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration 
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       ( 
         block
         { $declaration.setBlock($block.block); }
@@ -626,9 +632,11 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         def.setType(fm);
         dec.setType(fm);
         $declaration = dec; }
-      memberNameDeclaration
-      { dec.setIdentifier($memberNameDeclaration.identifier); 
-        def.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration
+        { dec.setIdentifier($memberNameDeclaration.identifier); 
+          def.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       ( 
         (
           specifier
@@ -737,9 +745,11 @@ interfaceDeclaration returns [AnyInterface declaration]
           def.setDynamic(true);
           $declaration = def; }
       )
-      typeNameDeclaration 
-      { dec.setIdentifier($typeNameDeclaration.identifier); 
-        def.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeNameDeclaration 
+        { dec.setIdentifier($typeNameDeclaration.identifier); 
+          def.setIdentifier($typeNameDeclaration.identifier); }
+      )?
       (
         typeParameters 
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -788,9 +798,11 @@ classDeclaration returns [AnyClass declaration]
       { def = new ClassDefinition($CLASS_DEFINITION); 
         dec = new ClassDeclaration($CLASS_DEFINITION);
         $declaration = dec; }
-      typeNameDeclaration
-      { dec.setIdentifier($typeNameDeclaration.identifier); 
-        def.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeNameDeclaration
+        { dec.setIdentifier($typeNameDeclaration.identifier); 
+          def.setIdentifier($typeNameDeclaration.identifier); }
+      )?
       (
         typeParameters
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -841,8 +853,10 @@ classDeclaration returns [AnyClass declaration]
 constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
-      typeNameDeclaration
-      { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeNameDeclaration
+        { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      )?
       (
         parameters
         { $declaration.setParameterList($parameters.parameterList); }
@@ -868,8 +882,10 @@ delegatedConstructor returns [DelegatedConstructor delegatedConstructor]
 aliasDeclaration returns [TypeAliasDeclaration declaration]
     : ALIAS
       { $declaration = new TypeAliasDeclaration($ALIAS);}
-      typeNameDeclaration 
-      { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeNameDeclaration 
+        { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      )?
       (
         typeParameters 
         { $declaration.setTypeParameterList($typeParameters.typeParameterList); }
@@ -1300,9 +1316,10 @@ typeConstraint returns [TypeConstraint typeConstraint]
       TYPE_CONSTRAINT
       { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); 
         $typeConstraint.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      typeNameDeclaration 
-      { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
-      //(typeParameters)?
+      (
+        typeNameDeclaration 
+        { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
+      )?
       (
         parameters
         { $typeConstraint.setParameterList($parameters.parameterList); }
@@ -2019,8 +2036,10 @@ objectArgument returns [ObjectArgument declaration]
     : OBJECT_DEFINITION 
       { $declaration = new ObjectArgument($OBJECT_DEFINITION); 
         $declaration.setType(new ValueModifier(null)); }
-      memberNameDeclaration
-      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       ( 
         extendedType
         { $declaration.setExtendedType($extendedType.extendedType); } 
@@ -2048,8 +2067,10 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         FUNCTION_MODIFIER
         { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       ) 
-      memberNameDeclaration 
-      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration 
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       (
         parameters
         { $declaration.addParameterList($parameters.parameterList); }
@@ -2073,8 +2094,10 @@ inferredGetterArgument returns [AttributeArgument declaration]
     : { $declaration=new AttributeArgument(null); }
       VALUE_MODIFIER 
       { $declaration.setType(new ValueModifier($VALUE_MODIFIER)); }
-      memberNameDeclaration 
-      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      (
+        memberNameDeclaration 
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+      )?
       (
         block
         { $declaration.setBlock($block.block); }
