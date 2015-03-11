@@ -161,7 +161,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private static boolean setModelName(Node that, Declaration model,
             Tree.Identifier id) {
         if (id==null || id.isMissingToken()) {
-            that.addError("missing declaration name");
+            if (!(model instanceof Constructor)) {
+                that.addError("missing declaration or argument name");
+            }
             return false;
         }
         else {

@@ -63,18 +63,18 @@ public class Class extends ClassOrInterface implements Functional {
 
     public ParameterList getParameterList() {
         if (constructors) {
-            Declaration defaultConstructor = 
-                    getDirectMember(getName(), null, false);
-            if (defaultConstructor instanceof Constructor) {
-                List<ParameterList> parameterLists = 
-                        ((Constructor) defaultConstructor)
-                                .getParameterLists();
-                return parameterLists.isEmpty() ? 
-                        null : parameterLists.get(0);
+            for (Declaration defaultConstructor: 
+                    getMembers()) {
+                if (defaultConstructor instanceof Constructor &&
+                        defaultConstructor.getName()==null) {
+                    List<ParameterList> parameterLists = 
+                            ((Constructor) defaultConstructor)
+                                    .getParameterLists();
+                    return parameterLists.isEmpty() ? 
+                            null : parameterLists.get(0);
+                }
             }
-            else {
-                return null;
-            }
+            return null;
         }
         else {
             return parameterList;
