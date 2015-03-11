@@ -986,7 +986,7 @@ public class SpecificationVisitor extends Visitor {
         if (!withinDeclaration) {
             if (isSharedDeclarationUninitialized()) {
                 that.addError("must be definitely specified by class initializer: '" +
-                        declaration.getName(that.getUnit()) + "'");
+                        declaration.getName(that.getUnit()) + " is shared'");
             }
         }
         exit();
