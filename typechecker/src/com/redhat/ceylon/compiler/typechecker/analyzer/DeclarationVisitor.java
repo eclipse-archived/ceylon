@@ -161,10 +161,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private static boolean setModelName(Node that, Declaration model,
             Tree.Identifier id) {
         if (id==null || id.isMissingToken()) {
-            if (!(model instanceof Constructor)) {
-                that.addError("missing declaration or argument name");
+            if (model instanceof Constructor) {
+                return true;                
             }
-            return false;
+            else {
+                that.addError("missing declaration or argument name");
+                return false;
+            }
         }
         else {
             model.setName(id.getText());
@@ -176,6 +179,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private static void checkForDuplicateDeclaration(Tree.Declaration that, 
             final Declaration model) {
         String name = model.getName();
+        Unit unit = model.getUnit();
         if (name!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
@@ -214,7 +218,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     Declaration member = 
                             s.getDirectMember(name, null, false);
                     if (member!=null) {
-                        Unit unit = model.getUnit();
                         if (member instanceof Method && 
                             model instanceof Method &&
                             s instanceof ClassOrInterface) {
@@ -244,12 +247,25 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             that.addError("duplicate declaration name: '" + 
                                     name + "'");
                         }
-                        unit.getDuplicateDeclarations().add(member);
+                        unit.getDuplicateDeclarations()
+                            .add(member);
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();
                 }
                 while (isControl);
+            }
+        }
+        else if (model instanceof Constructor) {
+            Scope container = model.getContainer();
+            if (container instanceof Class) {
+                Constructor defaultConstructor = 
+                        ((Class) container).getDefaultConstructor();
+                if (defaultConstructor!=null) {
+                    that.addError("duplicate default constructor");
+                    unit.getDuplicateDeclarations()
+                        .add(defaultConstructor);
+                }
             }
         }
     }

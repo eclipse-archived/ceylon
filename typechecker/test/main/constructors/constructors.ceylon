@@ -254,3 +254,8 @@ shared class Subtype extends Supertype {
     @error shared new New() extends Supertype(ysub) {}
     @error shared new Extra() extends Supertype(ysub) {}
 }
+
+class WithDupeDefaultConstructor {
+    new () {}
+    @error new (String string) {}
+}
