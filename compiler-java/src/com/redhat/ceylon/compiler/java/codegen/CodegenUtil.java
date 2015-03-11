@@ -539,9 +539,17 @@ public class CodegenUtil {
     public static String getJavaBeanName(String name) {
         // See https://github.com/ceylon/ceylon-compiler/issues/340
         // make it lowercase until the first non-uppercase
-        char[] newName = name.toCharArray();
+        
+        int[] newName = new int[name.codePointCount(0, name.length())];
+        // fill the code point array; String has no getCodePointArray()
+        for(int charIndex=0,codePointIndex=0;charIndex<name.length();){
+            int c = name.codePointAt(charIndex);
+            newName[codePointIndex++] = c;
+            charIndex += Character.charCount(c);
+        }
+        
         for(int i=0;i<newName.length;i++){
-            char c = newName[i];
+            int c = newName[i];
             if(Character.isLowerCase(c)){
                 // if we had more than one upper-case, we leave the last uppercase: getURLDecoder -> urlDecoder
                 if(i > 1){
@@ -551,7 +559,7 @@ public class CodegenUtil {
             }
             newName[i] = Character.toLowerCase(c);
         }
-        return new String(newName);
+        return new String(newName, 0, newName.length);
     }
 
     /**
