@@ -1811,6 +1811,25 @@ shared void checkLambdasTransparentContainers(){
     f();
 }
 
+@test
+shared void checkTypeArguments() {
+    value classModel = `TypeParams<String>`;
+    assert(1==classModel.typeArguments.size);
+    assert(exists classModelTa = classModel.typeArguments[(`class TypeParams`.typeParameterDeclarations.first else nothing)]);
+    assert(1==classModel.typeArgumentList.size);
+    assert(exists classModelTa2 = classModel.typeArgumentList[0]);
+    assert(classModelTa == classModelTa2);
+    assert(`String` == classModelTa);
+    
+    value functionModel = `typeParams<Integer>`;
+    assert(1==functionModel.typeArguments.size);
+    assert(exists functionModelTa = functionModel.typeArguments[(`function typeParams`.typeParameterDeclarations.first else nothing)]);
+    assert(1==functionModel.typeArgumentList.size);
+    assert(exists functionModelTa2 = functionModel.typeArgumentList[0]);
+    assert(functionModelTa == functionModelTa2);
+    assert(`Integer` == functionModelTa);
+}
+
 Boolean eq(Anything a, Anything b){
     if(exists a){
         if(exists b){
@@ -1979,6 +1998,11 @@ shared void run() {
         checkLambdasTransparentContainers();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed lambdas transparent containers"); e.printStackTrace(); }
+    try {
+        total++;
+        checkTypeArguments();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed apply type constraints"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
