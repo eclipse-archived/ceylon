@@ -71,7 +71,7 @@
 "A declaration."
 ^(abstract DECLARATION:STATEMENT
     ANNOTATION_LIST?
-    IDENTIFIER
+    IDENTIFIER?
     abstract Declaration declarationModel;)
 
 ^(MISSING_DECLARATION:DECLARATION
