@@ -5899,7 +5899,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (type instanceof Constructor) {
-                Scope container = ((Constructor) type).getContainer();
+                Scope container = type.getContainer();
                 if (container instanceof Class) {
                     Class c = (Class) container;
                     if (c.isAbstract()) {
