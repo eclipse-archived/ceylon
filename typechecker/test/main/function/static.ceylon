@@ -95,7 +95,7 @@ class ZZZZ<U>(U u) {
 }
 
 class XXXX<T> {
-    shared new XXXX(T t) {}
+    shared new (T t) {}
     shared new YYYY(T t) {}
 }
 

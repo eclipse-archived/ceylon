@@ -1,6 +1,6 @@
 class CtorGenericClass<T> {
     shared T fun(T t) => t;
-    shared new CtorGenericClass(T t) {}
+    shared new (T t) {}
     shared new Foo(T t) {}
     shared void m(T t) {
         CtorGenericClass<T> ctor = CtorGenericClass(t);
@@ -11,7 +11,7 @@ class CtorGenericClass<T> {
     }
     shared void n() {
         CtorGenericClass<String> ctor = package.CtorGenericClass<String>("");
-        CtorGenericClass<String> ctor2 = package.CtorGenericClass<String>.CtorGenericClass("");
+        @error CtorGenericClass<String> ctor2 = package.CtorGenericClass<String>.CtorGenericClass("");
         CtorGenericClass<String> foo = package.CtorGenericClass<String>.Foo("");
         CtorGenericClass<String>(String) fooFun = package.CtorGenericClass<String>.Foo;
         String(String)(CtorGenericClass<String>) fun 
@@ -21,7 +21,7 @@ class CtorGenericClass<T> {
 
 void testCtorGenericClass() {
     CtorGenericClass<String> ctor = CtorGenericClass<String>("");
-    CtorGenericClass<String> ctor2 = CtorGenericClass<String>.CtorGenericClass("");
+    @error CtorGenericClass<String> ctor2 = CtorGenericClass<String>.CtorGenericClass("");
     CtorGenericClass<String> foo = CtorGenericClass<String>.Foo("");
     String(String)(CtorGenericClass<String>) fun 
             = CtorGenericClass<String>.fun;

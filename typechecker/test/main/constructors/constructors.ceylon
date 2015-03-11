@@ -16,27 +16,27 @@ class WithConst extends Basic {
 }
 
 class WithDefaultConst {
-    shared new WithDefaultConst() {}
+    shared new () {}
 }
 
 class ExtendsWithDefaultConstBroken extends WithDefaultConst {
-    @error shared new ExtendsWithDefaultConstBroken() {}
+    @error shared new () {}
 }
 
 class ExtendsWithDefaultConstOk extends WithDefaultConst {
-    shared new ExtendsWithDefaultConstOk() extends WithDefaultConst() {}
+    shared new () extends WithDefaultConst() {}
 }
 
 class ExtendsWithConstBroken extends WithConst {
-    @error shared new ExtendsWithConstBroken() {}
+    @error shared new () {}
 }
 
 class ExtendsWithConstOk extends WithConst {
-    shared new ExtendsWithConstOk() extends Const() {}
+    shared new () extends Const() {}
 }
 
 class WithConstAndDefaultConst {
-    shared new WithConstAndDefaultConst() {}
+    shared new () {}
     new Const() {}
 }
 
@@ -45,7 +45,7 @@ class WithAttributes {
     Integer init;
     variable Integer count;
     print(name);
-    shared new WithAttributes() {
+    shared new () {
         count = 0;
         init = count;
     }
@@ -66,7 +66,7 @@ class WithSharedAttributes {
     shared Integer init;
     shared variable Integer count;
     print(name);
-    shared new WithSharedAttributes() {
+    shared new () {
         count = 0;
         init = count;
     }
@@ -86,7 +86,7 @@ class BrokenWithAttributes {
     String name;
     variable Integer count;
     Integer init;
-    shared new BrokenWithAttributes() {
+    shared new () {
         init = 0;
     }
     new ConstWithParameter(Integer initial) {
@@ -104,7 +104,7 @@ class BrokenWithSharedAttributes {
     @error shared String name;
     @error shared variable Integer count;
     @error shared Integer init;
-    shared new BrokenWithSharedAttributes() {
+    shared new () {
         init = 0;
     }
     new ConstWithParameter(Integer initial) {
@@ -122,7 +122,7 @@ class WithAttributesAndMisplacedStatement {
     String name = "Trompon";
     Integer init;
     variable Integer count;
-    shared new WithAttributesAndMisplacedStatement() {
+    shared new () {
         count = 0;
         init = count;
     }
@@ -145,7 +145,7 @@ class WithAttributesAndMispacedUsage {
     variable Integer count;
     print(name);
     @error print(init);
-    shared new WithAttributesAndMispacedUsage() {
+    shared new () {
         @error print(count);
         count = 0;
         init = count;
@@ -174,7 +174,7 @@ class Super {
 }
 
 class Broken extends Super {
-    @error shared new Broken() extends Super() {}
+    @error shared new () extends Super() {}
 }
 
 class MoreBroken extends Super {
@@ -195,17 +195,17 @@ class Alias() => Super.New();
 
 class Sub3() extends Alias() {}
 class Sub4 extends Alias {
-    shared new Sub4() extends Alias() {}
+    shared new () extends Alias() {}
 }
 
 class Silly extends Basic {
-    shared new Silly() extends Basic() {}
+    shared new () extends Basic() {}
 }
 
 class Unshared() { }
 
 shared class SharedWithConstructor {
-    shared new SharedWithConstructor(@error Unshared bar) { }
+    shared new (@error Unshared bar) { }
 }
 
 abstract class AbstractWithConstructor {
@@ -235,9 +235,9 @@ void testRefs<T>() {
 }
 
 shared class C<out X> {
-    shared new C({X*} items) {}
+    shared new ({X*} items) {}
     shared class B<out Y> {
-        shared new B(@error [X*] items) {}
+        shared new (@error [X*] items) {}
         shared new Other([Y*] items) {}
     }
 }
