@@ -107,7 +107,7 @@ public class TypeUtils {
             gen.out(gen.getClAlias(), "Anything");
         } else {
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
-            boolean _init = !imported && pt.getDeclaration().isDynamic();
+            boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = Util.getContainingClassOrInterface(node.getScope());
                 if (dynintc == null || dynintc instanceof Scope==false ||
@@ -120,13 +120,13 @@ public class TypeUtils {
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                if (imported && t.isAnonymous()) {
-                    gen.out(gen.getNames().getter(t, true));
+                if (t.isAnonymous()) {
+                    gen.out(gen.getNames().objectName(t));
                 } else {
                     gen.out(gen.getNames().name(t));
                 }
             }
-            if (_init) {
+            if (_init && !(t.isAnonymous() && t.isToplevel())) {
                 gen.out("()");
             }
         }
@@ -154,7 +154,11 @@ public class TypeUtils {
                         sb.append(gen.getNames().self(p)).append('.');
                     }
                 } else {
-                    sb.append(gen.getNames().name(p)).append('.');
+                    sb.append(gen.getNames().name(p));
+                    if (gen.opts.isOptimize()) {
+                        sb.append(".$$.prototype");
+                    }
+                    sb.append('.');
                 }
             }
         }

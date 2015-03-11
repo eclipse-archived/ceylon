@@ -194,7 +194,7 @@ public class MetamodelHelper {
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
-            gen.out(gen.getClAlias(), d.isMember()&&anonClass==null?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
+            gen.out(gen.getClAlias(), d.isMember()?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
             if (anonClass != null) {
                 gen.qualify(that, anonClass);
                 gen.out(gen.getNames().objectName(anonClass), ".");
@@ -214,7 +214,7 @@ public class MetamodelHelper {
             } else {
                 gen.out(gen.getNames().name(d),",");
             }
-            if (d.isMember()&&anonClass==null) {
+            if (d.isMember()) {
                 if (that.getTypeArgumentList()!=null) {
                     gen.out("[");
                     boolean first=true;
@@ -234,16 +234,8 @@ public class MetamodelHelper {
             } else {
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                         that.getTypeModel().getVarianceOverrides());
-                if (anonClass != null) {
-                    gen.out(",");
-                    gen.qualify(that, anonClass);
-                    gen.out(gen.getNames().objectName(anonClass));
-                }
                 if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
-                    if (anonClass == null) {
-                        gen.out(",undefined");
-                    }
-                    gen.out(",");
+                    gen.out(",undefined,");
                     TypeUtils.printTypeArguments(that, ref.getTypeArguments(), gen, false,
                             ref.getType().getVarianceOverrides());
                 }
@@ -251,26 +243,17 @@ public class MetamodelHelper {
             gen.out(")");
         } else if (that instanceof ValueLiteral || d instanceof Value) {
             Value vd = (Value)d;
-            if (vd.isMember() && anonClass==null) {
+            if (vd.isMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedAttribute$meta$model()('");
                 gen.out(d.getName(), "',");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedValue$jsint()(");
-                if (anonClass == null) {
-                    gen.out("undefined");
-                } else {
-                    gen.qualify(that, anonClass);
-                    gen.out(gen.getNames().objectName(anonClass));
-                }
-                gen.out(",");
+                gen.out(gen.getClAlias(), "$init$AppliedValue$jsint()(undefined,");
             }
-            if (ltype == null) {
-                if (anonClass != null) {
-                    gen.qualify(that, anonClass);
-                    gen.out(gen.getNames().objectName(anonClass), ".");
-                } else {
-                    gen.qualify(that, d);
-                }
+            if (anonClass != null) {
+                gen.qualify(that, anonClass);
+                gen.out(gen.getNames().objectName(anonClass), ".");
+            } else if (ltype == null) {
+                gen.qualify(that, d);
             } else {
                 gen.qualify(that, ltype.getDeclaration());
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
