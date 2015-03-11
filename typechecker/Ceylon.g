@@ -1889,7 +1889,7 @@ indexOrIndexRange returns [IndexExpression indexExpression]
           er0.setUpperBound($i.expression);
           $indexExpression.setElementOrRange(er0); 
           $indexExpression.setEndToken(null); }
-      |
+      | (index (ELLIPSIS|RANGE_OP|SEGMENT_OP))=>
         l=index
         { Element e = new Element(null);
           e.setExpression($l.expression); 
@@ -1918,6 +1918,10 @@ indexOrIndexRange returns [IndexExpression indexExpression]
             $indexExpression.setElementOrRange(er3);
             $indexExpression.setEndToken(null); }
         )?
+      | fe=functionOrExpression
+        { Element e = new Element(null);
+          e.setExpression($fe.expression); 
+          $indexExpression.setElementOrRange(e); }
       )
       RBRACKET
       { $indexExpression.setEndToken($RBRACKET); }
