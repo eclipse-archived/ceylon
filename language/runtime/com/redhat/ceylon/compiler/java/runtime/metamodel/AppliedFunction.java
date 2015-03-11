@@ -231,6 +231,11 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         return typeArguments;
     }
+    
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
+        return Metamodel.getTypeArgumentList(this);
+    }
 
     private void checkMethod(){
         if(method == null)

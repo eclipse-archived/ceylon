@@ -23,16 +23,19 @@ import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.Iterator;
+import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.null_;
+import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Generic;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
@@ -1722,5 +1725,12 @@ public class Metamodel {
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public static ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList(Generic generic) {
+        Object sequence = sequence_.sequence(
+                TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), Null.$TypeDescriptor$, 
+                generic.getTypeArguments().getItems());
+        return (Sequential)(sequence != null ? sequence : empty_.get_());
     }
 }

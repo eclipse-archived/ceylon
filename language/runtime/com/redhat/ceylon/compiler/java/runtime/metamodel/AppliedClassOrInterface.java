@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
+import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
@@ -103,6 +106,11 @@ public abstract class AppliedClassOrInterface<Type>
     public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         checkInit();
         return typeArguments;
+    }
+    
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
+        return Metamodel.getTypeArgumentList(this);
     }
 
     @Override

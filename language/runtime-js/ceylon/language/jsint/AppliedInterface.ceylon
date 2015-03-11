@@ -16,6 +16,7 @@ shared native class AppliedInterface<out Type>() satisfies Interface<Type>
   shared actual native Boolean equals(Object other);
 
   shared actual native Map<TypeParameter, ClosedType> typeArguments;
+  shared actual native ClosedType<Anything>[] typeArgumentList;
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;
   shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)

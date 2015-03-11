@@ -16,6 +16,7 @@ shared native class AppliedFunction<out Type, in Arguments>()
   shared actual native ClosedType<Type> type;
   shared actual native ClosedType<Anything>? container;
   shared actual native Map<TypeParameter, ClosedType> typeArguments;
+  shared actual native ClosedType<Anything>[] typeArgumentList;
 
   shared actual native String string;
   shared actual native Integer hash;

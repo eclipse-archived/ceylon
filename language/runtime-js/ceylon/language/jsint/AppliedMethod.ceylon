@@ -21,6 +21,7 @@ shared native class AppliedMethod<in Container, out Type=Anything, in Arguments=
   shared actual native ClassOrInterface<Anything>? container;
 
   shared actual native Map<TypeParameter, ClosedType<Anything>> typeArguments;
+  shared actual native ClosedType<Anything>[] typeArgumentList;
 
   shared actual native String string;
   shared actual native Integer hash;

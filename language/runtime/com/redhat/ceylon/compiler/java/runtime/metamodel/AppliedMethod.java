@@ -67,6 +67,11 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         return typeArguments;
     }
+    
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
+        return Metamodel.getTypeArgumentList(this);
+    }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::FunctionDeclaration")
