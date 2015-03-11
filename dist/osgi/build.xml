@@ -229,10 +229,16 @@
         </ant>
         <makeurl property="destinationRepository" file="${build.dist}"/>
         <makeurl property="categoryDefinition" file="${p2}/category.xml"/>
+        <touch file="${build}/bundles.info"/>
+        <makeurl property="bundlesInfoUrl" file="${build}/bundles.info"/>
+        <loadfile srcfile="${p2}/bundlesToStart" property="bundlesToStart">
+          <filterchain>
+              <striplinebreaks/>
+          </filterchain>
+        </loadfile>
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
-            <arg value="-configuration"/>
-            <arg value="${build.configuration}"/>
             <arg value="-noSplash"/>
+<!--            <arg value="-clean"/> -->
             <arg value="-console"/>
             <arg value="-consolelog"/>
             <arg value="--launcher.suppressErrors"/>
@@ -250,11 +256,13 @@
             <arg file="${build.dist}"/>
             <arg value="-publishArtifacts"/>
             <arg value="-append"/>
+            <arg value="-vmargs"/>
+            <arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
+            <arg value="-Dosgi.bundles=${bundlesToStart}"/>
         </exec>
         <exec dir="${basedir}" executable="eclipse">
-            <arg value="-configuration"/>
-            <arg value="${build.configuration}"/>
             <arg value="-noSplash"/>
+<!--            <arg value="-clean"/> -->
             <arg value="-console"/>
             <arg value="-consolelog"/>
             <arg value="--launcher.suppressErrors"/>
@@ -266,6 +274,9 @@
             <arg value="${categoryDefinition}"/>
             <arg value="-categoryQualifier"/>
             <arg value="com.redhat.ceylon.dist"/>
+            <arg value="-vmargs"/>
+        	<arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
+            <arg value="-Dosgi.bundles=${bundlesToStart}"/>
         </exec>
     </target>
 </project>

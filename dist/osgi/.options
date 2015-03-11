@@ -1,0 +1,2 @@
+# Prints out timing information for bundle activation
+org.eclipse.osgi/debug/bundleTime=true
