@@ -26,7 +26,9 @@ function typeLiteral$meta($$targs$$,targ$2) {
       var mdl = get_model(mm);
       if (mdl.mt==='c' || mdl.mt==='o') {
         //TODO tupleize Arguments
-        var r=AppliedClass$jsint(t,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+        var acargs={t:Sequential,a:{Element$Iterable:{t:Anything}}};
+        var r=mm.$cont?AppliedMemberClass$jsint(t,{Container$AppliedMemberClass:{t:mm.$cont},Type$AppliedMemberClass:$$targs$$.Type$typeLiteral,Arguments$AppliedMemberClass:acargs})
+          : AppliedClass$jsint(t,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:acargs});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['mt'] === 'i') {
