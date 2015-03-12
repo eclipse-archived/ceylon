@@ -251,13 +251,15 @@ public class Util {
     
     private static String message(ProducedType type, String problem, 
             ProducedType otherType, Unit unit) {
+        String unknownTypeError = type.getFirstUnknownTypeError(true);
         String typeName = type.getProducedTypeName(unit);
         String otherTypeName = otherType.getProducedTypeName(unit);
         if (otherTypeName.equals(typeName)) {
             typeName = type.getProducedTypeQualifiedName();
             otherTypeName = otherType.getProducedTypeQualifiedName();
         }
-        return ": '" + typeName + "'" + problem + "'" + otherTypeName + "'";
+        return ": '" + typeName + "'" + problem + "'" + otherTypeName + "'"
+                + (unknownTypeError != null ? ": " + unknownTypeError : "");
     }
     
     private static String message(ProducedType type, String problem, Unit unit) {
@@ -268,7 +270,7 @@ public class Util {
     static boolean checkCallable(ProducedType type, Node node, String message) {
         Unit unit = node.getUnit();
         if (isTypeUnknown(type)) {
-            addTypeUnknownError(node, message);
+            addTypeUnknownError(node, type, message);
             return false;
         }
         else if (!unit.isCallableType(type)) {
@@ -305,7 +307,7 @@ public class Util {
     static ProducedType checkSupertype(ProducedType pt, TypeDeclaration td, 
             Node node, String message) {
         if (isTypeUnknown(pt)) {
-            addTypeUnknownError(node, message);
+            addTypeUnknownError(node, pt, message);
             return null;
         }
         else {
@@ -321,8 +323,11 @@ public class Util {
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-        	addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+        	addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + 
@@ -333,8 +338,11 @@ public class Util {
 
     static void checkAssignableWithWarning(ProducedType type, 
             ProducedType supertype, Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-        	addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addUnsupportedError(message + 
@@ -346,9 +354,14 @@ public class Util {
     static void checkAssignableToOneOf(ProducedType type, 
     		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message, int code) {
-        if (isTypeUnknown(type) || 
-        		isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype1)) {
+            addTypeUnknownError(node, supertype1, message);
+        }
+        else if (isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, supertype2, message);
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
@@ -360,8 +373,11 @@ public class Util {
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message, int code) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + 
@@ -382,8 +398,11 @@ public class Util {
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isExactly(supertype)) {
             node.addError(message + message(type, " is not exactly ", 
@@ -393,8 +412,11 @@ public class Util {
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message, int code) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isExactly(supertype)) {
             node.addError(message + message(type, " is not exactly ", 
@@ -405,9 +427,14 @@ public class Util {
     static void checkIsExactlyOneOf(ProducedType type, 
     		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
-        if (isTypeUnknown(type) || 
-        		isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype1)) {
+            addTypeUnknownError(node, supertype1, message);
+        }
+        else if (isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, supertype2, message);
         }
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
@@ -471,10 +498,18 @@ public class Util {
         }
     }
 
-    private static void addTypeUnknownError(Node node, String message) {
+    private static void addTypeUnknownError(Node node, ProducedType type, String message) {
         if (!hasError(node)) {
-            node.addError(message + ": type cannot be determined");
+            node.addError(message + ": type cannot be determined" +
+                    getTypeUnknownError(type));
         }
+    }
+    
+    public static String getTypeUnknownError(ProducedType type) {
+        if(type == null)
+            return "";
+        String error = type.getFirstUnknownTypeError();
+        return error != null ? ": " + error : "";
     }
 
     public static void buildAnnotations(Tree.AnnotationList al, 

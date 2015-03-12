@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType.ErrorReporter;
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 
@@ -1617,6 +1618,66 @@ public class ProducedType extends ProducedReference {
             }
         }
         return false;
+    }
+    
+    public String getFirstUnknownTypeError() {
+        return getFirstUnknownTypeError(false);
+    }
+
+    public String getFirstUnknownTypeError(boolean includeSuperTypes) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof UnknownType) {
+            ErrorReporter errorReporter = ((UnknownType) d).getErrorReporter();
+            return errorReporter != null ? errorReporter.getMessage() : null;
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: 
+                    getDeclaration().getCaseTypes()) {
+                String ret = ct.getFirstUnknownTypeError(includeSuperTypes);
+                if(ret != null)
+                    return ret;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: 
+                    getDeclaration().getSatisfiedTypes()) {
+                String ret = st.getFirstUnknownTypeError(includeSuperTypes);
+                if(ret != null)
+                    return ret;
+            }
+        }
+        else if (d instanceof NothingType) {
+            return null;
+        }
+        else {
+            if(includeSuperTypes){
+                if(d.getExtendedType() != null){
+                    String ret = d.getExtendedType().getFirstUnknownTypeError(includeSuperTypes);
+                    if(ret != null)
+                        return ret;
+                }
+                for(ProducedType satisfiedTypes : d.getSatisfiedTypes()){
+                    String ret = satisfiedTypes.getFirstUnknownTypeError(includeSuperTypes);
+                    if(ret != null)
+                        return ret;
+                }
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null) {
+                String ret = qt.getFirstUnknownTypeError(includeSuperTypes);
+                if(ret != null)
+                    return ret;
+            }
+            List<ProducedType> tas = getTypeArgumentList();
+            for (ProducedType at: tas) {
+                if (at!=null) {
+                    String ret = at.getFirstUnknownTypeError(false);
+                    if(ret != null)
+                        return ret;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean containsDeclaration(Declaration td) {
