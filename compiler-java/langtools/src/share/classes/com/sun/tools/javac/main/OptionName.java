@@ -84,6 +84,8 @@ public enum OptionName {
     CEYLONOFFLINE("-offline"),
     CEYLONCONTINUE("-continue"),
     CEYLONMAVENOVERRIDES("-maven-overrides"),
+    CEYLONFLATCLASSPATH("-flat-classpath"),
+    CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies"),
     S("-s"),
     IMPLICIT("-implicit:"),
     ENCODING("-encoding"),

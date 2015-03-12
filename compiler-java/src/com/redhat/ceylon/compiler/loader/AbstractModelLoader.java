@@ -38,6 +38,7 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
@@ -575,8 +576,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(isImported(moduleScope, module)){
             return convertToDeclaration(module, typeName, declarationType);
         }else{
-            logVerbose("Declaration is not from an imported module: "+typeName);
-            return null;
+            if(module != null && isFlatClasspath() && isMavenModule(moduleScope))
+                return convertToDeclaration(module, typeName, declarationType);
+            String error = "Declaration '" + typeName + "' could not be found in module '" + moduleScope.getNameAsString() 
+                    + "' or its imported modules";
+            if(module != null && !module.isDefault())
+                error += " but was found in the non-imported module '"+module.getNameAsString()+"'";
+            return logModelResolutionException(null, moduleScope, error).getDeclaration();
         }
     }
     protected Declaration convertToDeclaration(Module module, ClassMirror classMirror, DeclarationType declarationType) {
@@ -4762,17 +4768,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return true;
         if(isImportedSpecialRules(moduleScope, importedModule))
             return true;
+        boolean isMaven = isAutoExportMavenDependencies() && isMavenModule(moduleScope);
+        if(isMaven && isMavenModule(importedModule))
+            return true;
         Set<Module> visited = new HashSet<Module>();
         visited.add(moduleScope);
         for(ModuleImport imp : moduleScope.getImports()){
             if(Decl.equalModules(imp.getModule(), importedModule))
                 return true;
-            if(imp.isExport() && isImportedTransitively(imp.getModule(), importedModule, visited))
+            if((imp.isExport() || isMaven) && isImportedTransitively(imp.getModule(), importedModule, visited))
                 return true;
         }
         return false;
     }
 
+    private boolean isMavenModule(Module moduleScope) {
+        return moduleScope.isJava() && ModuleUtil.isMavenModule(moduleScope.getNameAsString());
+    }
+    
     private boolean isImportedSpecialRules(Module moduleScope, Module importedModule) {
         String importedModuleName = importedModule.getNameAsString();
         // every Java module imports the JDK
@@ -4803,9 +4816,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isImportedTransitively(Module moduleScope, Module importedModule, Set<Module> visited) {
         if(!visited.add(moduleScope))
             return false;
+        boolean isMaven = isAutoExportMavenDependencies() && isMavenModule(moduleScope);
         for(ModuleImport imp : moduleScope.getImports()){
             // only consider exported transitive deps
-            if(!imp.isExport())
+            if(!imp.isExport() && !isMaven)
                 continue;
             if(Decl.equalModules(imp.getModule(), importedModule))
                 return true;
@@ -4831,5 +4845,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_FLOAT_ARRAY, DeclarationType.TYPE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_DOUBLE_ARRAY, DeclarationType.TYPE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_CHAR_ARRAY, DeclarationType.TYPE);
+    }
+    
+    /**
+     * To be overridden by subclasses, defaults to false.
+     */
+    protected boolean isAutoExportMavenDependencies(){
+        return false;
+    }
+
+    /**
+     * To be overridden by subclasses, defaults to false.
+     */
+    protected boolean isFlatClasspath(){
+        return false;
     }
 }

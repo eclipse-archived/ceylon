@@ -711,4 +711,14 @@ public class CeylonModelLoader extends AbstractModelLoader {
         String pkgName = getPackageNameForQualifiedClassName(classMirror);
         return lookupModuleByPackageName(pkgName);
     }
+    
+    @Override
+    protected boolean isFlatClasspath() {
+        return options.isSet(OptionName.CEYLONFLATCLASSPATH);
+    }
+
+    @Override
+    protected boolean isAutoExportMavenDependencies() {
+        return options.isSet(OptionName.CEYLONAUTOEXPORTMAVENDEPENDENCIES);
+    }
 }

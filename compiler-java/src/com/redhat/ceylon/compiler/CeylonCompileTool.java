@@ -172,11 +172,26 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
+    private boolean flatClasspath;
+    private boolean autoExportMavenDependencies;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
     }
-    
+
+    @Option(longName="flat-classpath")
+    @Description("Launches the Ceylon module using a flat classpath.")
+    public void setFlatClasspath(boolean flatClasspath) {
+        this.flatClasspath = flatClasspath;
+    }
+
+    @Option(longName="auto-export-maven-dependencies")
+    @Description("When using JBoss Modules (the default), treats all module dependencies between"+
+                 "Maven modules as shared.")
+    public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
+        this.autoExportMavenDependencies = autoExportMavenDependencies;
+    }
+
     @Option(longName="no-osgi")
     @Description("Indicates that the generated car file should not contain OSGi module declarations.")
     public void setNoOsgi(boolean noOsgi) {
@@ -345,7 +360,15 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (offline) {
             arguments.add("-offline");
         }
-        
+
+        if (flatClasspath) {
+            arguments.add("-flat-classpath");
+        }
+
+        if (autoExportMavenDependencies) {
+            arguments.add("-auto-export-maven-dependencies");
+        }
+
         if (mavenOverrides != null) {
             arguments.add("-maven-overrides");
             if (mavenOverrides.startsWith("classpath:")) {
