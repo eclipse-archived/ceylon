@@ -29,8 +29,7 @@ import java.util.List;
 
 import javax.tools.JavaFileObject;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 

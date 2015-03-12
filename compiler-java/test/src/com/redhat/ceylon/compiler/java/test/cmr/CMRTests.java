@@ -64,11 +64,13 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import junit.framework.Assert;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.Assume;
+import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -696,9 +698,9 @@ public class CMRTests extends CompilerTests {
     public void testMdlAetherMissingDependencies() throws IOException{
         CompilerError[] expectedErrors = new CompilerError[]{
         new CompilerError(5, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
-                +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
-                +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
-        new CompilerError(10, "argument must be assignable to parameter 'arg1' of 'addComponent' in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?'"),
+                +"   Declaration 'org.apache.camel.component.http.HttpComponent' could not be found in module 'org.apache.camel:camel-jetty' or its imported modules"),
+        new CompilerError(10, "argument must be assignable to parameter 'arg1' of 'addComponent' in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?': Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"+
+                "   Declaration 'org.apache.camel.component.http.HttpComponent' could not be found in module 'org.apache.camel:camel-jetty' or its imported modules"),
         };
 
         ErrorCollector collector = new ErrorCollector();
@@ -782,6 +784,7 @@ public class CMRTests extends CompilerTests {
     
     @Test(expected = AssertionError.class)
     public void testMdlDependenciesFromMavenFail() throws Throwable{
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
@@ -791,6 +794,7 @@ public class CMRTests extends CompilerTests {
 
     @Test
     public void testMdlDependenciesFromMavenAutoExport() throws Throwable{
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
@@ -801,6 +805,7 @@ public class CMRTests extends CompilerTests {
 
     @Test
     public void testMdlDependenciesFromMavenFlatClasspath() throws Throwable{
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
@@ -811,6 +816,7 @@ public class CMRTests extends CompilerTests {
 
     @Test
     public void testMdlDependenciesFromMavenWithOverrides() throws Throwable{
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
@@ -1070,8 +1076,10 @@ public class CMRTests extends CompilerTests {
         
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB'"),
-                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method'")
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB': Error while loading the bug1062.javaB/1 module:\n"+
+                        "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'"),
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method': Error while loading the bug1062.javaB/1 module:\n"+
+                        "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'")
                 );
     }
 
@@ -1103,8 +1111,10 @@ public class CMRTests extends CompilerTests {
         // JavaB/1 imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath(), "-cp", getClassPathAsPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB'"),
-                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method'")
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB': Error while loading the bug1062.javaB/1 module:\n"+
+                        "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'"),
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method': Error while loading the bug1062.javaB/1 module:\n"+
+                        "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'")
                 );
     }
 

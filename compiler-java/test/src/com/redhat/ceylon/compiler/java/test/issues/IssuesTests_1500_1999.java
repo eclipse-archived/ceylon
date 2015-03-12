@@ -257,7 +257,8 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 new String[] { "bug15xx/bug1580/Bug1580.ceylon", "bug15xx/bug1580/module.ceylon" },
                 defaultOptions,
                 null,
-                new CompilerError(24, "could not determine type of method or attribute reference: 'instance' of 'NioXnioProvider'"));
+                new CompilerError(21, "Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.XnioProvider' could not be found in module 'org.jboss.xnio.nio' or its imported modules"),
+                new CompilerError(24, "could not determine type of method or attribute reference: 'instance' of 'NioXnioProvider': Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.Xnio' could not be found in module 'org.jboss.xnio.nio' or its imported modules"));
     }
 
     @Test
@@ -266,13 +267,20 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 new String[] { "bug15xx/bug1581/Bug1581Java.java", "bug15xx/bug1581/Bug1581.ceylon", "bug15xx/bug1581/module.ceylon" },
                 defaultOptions,
                 null,
+                new CompilerError(20, "Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n"+
+                        "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n"+
+                        "   Failed to find declaration for Properties"),
                 new CompilerError(22, "package not found in imported modules: java.util (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581)"),
                 new CompilerError(25, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(27, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(29, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(32, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
-                new CompilerError(22, "parameter type could not be determined: 'props' of 'Bug1581Java'"),
-                new CompilerError(23, "could not determine type of method or attribute reference: 'props' of 'Bug1581Java'"));
+                new CompilerError(22, "parameter type could not be determined: 'props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n"+
+                        "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n"+
+                        "   Failed to find declaration for Properties"),
+                new CompilerError(23, "could not determine type of method or attribute reference: 'props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n"+
+                        "   Error while resolving type of getter 'props' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n"+
+                        "   Failed to find declaration for Properties"));
     }
     
     @Test
