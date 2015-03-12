@@ -3186,6 +3186,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private ProducedType getOptionalType(ProducedType type, Module moduleScope) {
+        if(type.isUnknown())
+            return type;
         // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
         // infinite recursion loop
         List<ProducedType> list = new ArrayList<ProducedType>(2);
@@ -4441,6 +4443,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(declaration == null){
                 throw new RuntimeException("Failed to find declaration for "+type);
             }
+            if(declaration instanceof UnknownType)
+                return declaration.getType();
 
             ProducedType ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
             
