@@ -1428,7 +1428,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // FIXME: this may not be the best thing to do. If the class is not there we don't know what type of declaration
                     // to return, but perhaps if we use annotation scanner rather than reflection we can figure it out, at least
                     // in cases where the supertype is missing, which throws in reflection at class load.
-                    return logModelResolutionException(x.getMessage(), null, "Unable to load type "+typeName).getDeclaration();
+                    return logModelResolutionException(x.getMessage(), module, "Unable to load type "+typeName).getDeclaration();
                 }
                 if (classMirror == null) {
                     // special case when bootstrapping because we may need to pull the decl from the typechecked model
@@ -3206,7 +3206,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private ProducedType logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
         final Module module = Decl.getModuleContainer(container);
-        Runnable errorReporter;
+        return logModelResolutionException(exceptionMessage, module, message);
+    }
+    
+    private ProducedType logModelResolutionException(final String exceptionMessage, Module module, final String message) {
+        UnknownType.ErrorReporter errorReporter;
         if(module != null && !module.isDefault()){
             final StringBuilder sb = new StringBuilder();
             sb.append("Error while loading the ").append(module.getNameAsString()).append("/").append(module.getVersion());
@@ -3229,48 +3233,46 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     /**
      * To be overridden by subclasses
      */
-    protected Runnable makeModelErrorReporter(String message) {
+    protected UnknownType.ErrorReporter makeModelErrorReporter(String message) {
         return new LogErrorRunnable(this, message);
     }
     
     /**
      * To be overridden by subclasses
      */
-    protected Runnable makeModelErrorReporter(Module module, String message) {
+    protected UnknownType.ErrorReporter makeModelErrorReporter(Module module, String message) {
         return new ModuleErrorAttacherRunnable(moduleManager, module, message);
     }
 
-    private static class ModuleErrorAttacherRunnable implements Runnable {
+    private static class ModuleErrorAttacherRunnable extends UnknownType.ErrorReporter {
 
         private Module module;
-        private String message;
         private ModuleManager moduleManager;
 
         public ModuleErrorAttacherRunnable(ModuleManager moduleManager, Module module, String message) {
+            super(message);
             this.moduleManager = moduleManager;
             this.module = module;
-            this.message = message;
         }
 
         @Override
-        public void run() {
-            moduleManager.attachErrorToOriginalModuleImport(module, message);
+        public void reportError() {
+            moduleManager.attachErrorToOriginalModuleImport(module, getMessage());
         }
     }
 
-    private static class LogErrorRunnable implements Runnable {
+    private static class LogErrorRunnable extends UnknownType.ErrorReporter {
 
-        private String message;
         private AbstractModelLoader modelLoader;
 
         public LogErrorRunnable(AbstractModelLoader modelLoader, String message) {
+            super(message);
             this.modelLoader = modelLoader;
-            this.message = message;
         }
 
         @Override
-        public void run() {
-            modelLoader.logError(message);
+        public void reportError() {
+            modelLoader.logError(getMessage());
         }
     }
 
