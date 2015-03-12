@@ -140,7 +140,7 @@ public class AetherUtils {
     }
 
     String[] nameToGroupArtifactIds(String name){
-        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
+        final int p = name.lastIndexOf(":");
         if (p == -1) {
             return null;
         }
@@ -236,6 +236,7 @@ public class AetherUtils {
                     String dVersion = dCo.getVersion();
                     boolean export = false;
                     boolean optional = dep.isOptional();
+                    boolean isCeylon = false;
                     ArtifactContext dContext = null;
                     if(overrides != null)
                         dContext = getArtifactContext(dCo);
@@ -254,10 +255,12 @@ public class AetherUtils {
                         if(replace != null){
                             dContext = replace;
                             String[] groupArtifactIds = nameToGroupArtifactIds(replace.getName());
-                            if(groupArtifactIds == null)
-                                continue;
-                            dGroupId = groupArtifactIds[0];
-                            dArtifactId = groupArtifactIds[1];
+                            if(groupArtifactIds == null){
+                                isCeylon = true;
+                            }else{
+                                dGroupId = groupArtifactIds[0];
+                                dArtifactId = groupArtifactIds[1];
+                            }
                             dVersion = replace.getVersion();
                         }
                         if(ao != null){
@@ -273,7 +276,11 @@ public class AetherUtils {
                         dVersion = overrides.getVersionOverride(dContext);
                     }
                     
-                    ArtifactResult dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dVersion, export, optional, repositoryDisplayString);
+                    ArtifactResult dr;
+                    if(isCeylon)
+                        dr = createArtifactResult(manager, dContext.getName(), dVersion, export, optional, repositoryDisplayString);
+                    else
+                        dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dVersion, export, optional, repositoryDisplayString);
                     dependencies.add(dr);
                 }
 
@@ -484,7 +491,8 @@ public class AetherUtils {
             final boolean shared, boolean optional, final String repositoryDisplayString) {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
-            return null;
+            return createArtifactResult(manager, dCo.getName(), version, 
+                    shared, optional, repositoryDisplayString);
         return createArtifactResult(manager, repository, groupArtifactIds[0], groupArtifactIds[1], version, 
                 shared, optional, repositoryDisplayString);
     }
@@ -516,6 +524,12 @@ public class AetherUtils {
                 return getResult().dependencies();
             }
         };
+    }
+
+    protected ArtifactResult createArtifactResult(RepositoryManager manager, final String module, final String dVersion, 
+            final boolean shared, final boolean optional, final String repositoryDisplayString) {
+
+        return new LazyArtifactResult(manager, module, dVersion, shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED));
     }
 
     private ArtifactResult fetchWithClassifier(Repository repository, String groupId, String artifactId, String version, String classifier, String repositoryDisplayString) {
