@@ -117,9 +117,8 @@ public class Gen extends JCTree.Visitor {
             options.isUnset(G_CUSTOM) ||
             options.isSet(G_CUSTOM, "lines");
         varDebugInfo =
-            options.isUnset(G_CUSTOM)
-            ? options.isSet(G)
-            : options.isSet(G_CUSTOM, "vars");
+            options.isUnset(G_CUSTOM) ||
+            options.isSet(G_CUSTOM, "vars");
         genCrt = options.isSet(XJCOV);
         debugCode = options.isSet("debugcode");
         allowInvokedynamic = target.hasInvokedynamic() || options.isSet("invokedynamic");
