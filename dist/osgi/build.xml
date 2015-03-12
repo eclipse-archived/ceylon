@@ -238,7 +238,7 @@
         </loadfile>
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
             <arg value="-noSplash"/>
-<!--            <arg value="-clean"/> -->
+            <arg value="-clean"/>
             <arg value="-console"/>
             <arg value="-consolelog"/>
             <arg value="--launcher.suppressErrors"/>
