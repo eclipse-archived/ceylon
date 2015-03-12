@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType.ErrorReporter;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
 
@@ -191,15 +192,15 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     }
     
     @Override
-    protected Runnable makeModelErrorReporter(Module module, final String message) {
+    protected ErrorReporter makeModelErrorReporter(Module module, final String message) {
         return makeModelErrorReporter(message);
     }
 
     @Override
-    protected Runnable makeModelErrorReporter(final String message) {
-        return new Runnable(){
+    protected ErrorReporter makeModelErrorReporter(final String message) {
+        return new ErrorReporter(message){
             @Override
-            public void run() {
+            public void reportError() {
                 throw new ModelResolutionException(message);
             }
         };
