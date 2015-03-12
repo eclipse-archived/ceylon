@@ -827,6 +827,10 @@ public class RefinementVisitor extends Visitor {
         that.getUnit().addDeclaration(v);
         v.setType(new LazyProducedType(that.getUnit()) {
             @Override
+            public ProducedType initQualifyingType() {
+                return rv.getType().getQualifyingType();
+            }
+            @Override
             public Map<TypeParameter, ProducedType> initTypeArguments() {
                 return rv.getType().getTypeArguments();
             }
@@ -891,6 +895,12 @@ public class RefinementVisitor extends Visitor {
                     l.getParameters().add(vp);
                     v.setType(new LazyProducedType(that.getUnit()) {
                         @Override
+                        public ProducedType initQualifyingType() {
+                            return rm.getTypedParameter(p)
+                                    .getFullType()
+                                    .getQualifyingType();
+                        }
+                        @Override
                         public Map<TypeParameter,ProducedType> 
                         initTypeArguments() {
                             return rm.getTypedParameter(p)
@@ -939,6 +949,10 @@ public class RefinementVisitor extends Visitor {
             ((Specification) that.getScope()).setDeclaration(m);
         }
         m.setType(new LazyProducedType(that.getUnit()) {
+            @Override
+            public ProducedType initQualifyingType() {
+                return rm.getType().getQualifyingType();
+            }
             @Override
             public Map<TypeParameter,ProducedType> 
             initTypeArguments() {
