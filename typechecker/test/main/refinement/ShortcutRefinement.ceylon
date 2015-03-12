@@ -310,3 +310,15 @@ void moreRefinements() {
         foo = ()(String s) => s;
     }
 }
+
+void withQualifiedType() {
+    interface Foo {
+        shared class Bar() {}
+        shared formal Bar bar;
+    }
+    
+    class Baz() satisfies Foo {
+        Foo foo = nothing; 
+        bar => foo.bar;  
+    }
+}
