@@ -92,7 +92,7 @@ public class AetherRepository extends MavenRepository {
     }
 
     public ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
-        return utils.findDependencies(node);
+        return utils.findDependencies(manager, node);
     }
     
     @Override

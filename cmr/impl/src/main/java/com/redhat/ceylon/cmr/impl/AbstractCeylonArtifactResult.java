@@ -16,7 +16,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
@@ -91,63 +89,12 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
         for (ModuleDependencyInfo mi : infos.getDependencies()) {
-            results.add(new LazyArtifactResult(
+            results.add(new LazyArtifactResult(manager,
                     mi.getName(),
                     mi.getVersion(),
                     mi.isOptional() ? ImportType.OPTIONAL : (mi.isExport() ? ImportType.EXPORT : ImportType.UNDEFINED)));
         }
         return results;
-    }
-
-    private class LazyArtifactResult extends AbstractArtifactResult {
-        private ArtifactResult delegate;
-        private final ImportType importType;
-
-        private LazyArtifactResult(String name, String version, ImportType importType) {
-            super(null, name, version);
-            this.importType = importType;
-        }
-
-        private synchronized ArtifactResult getDelegate() {
-            if (delegate == null) {
-                final ArtifactContext context = new ArtifactContext(name(), version());
-                context.setThrowErrorIfMissing(importType() != ImportType.OPTIONAL);
-                delegate = manager.getArtifactResult(context);
-            }
-            return delegate;
-        }
-
-        @Override
-        public Repository repository() {
-            return getDelegate().repository();
-        }
-        
-        @Override
-        public ImportType importType() {
-            return importType;
-        }
-
-        public ArtifactResultType type() {
-            return getDelegate().type();
-        }
-
-        protected File artifactInternal() throws RepositoryException {
-            return getDelegate().artifact();
-        }
-
-        public List<ArtifactResult> dependencies() throws RepositoryException {
-            return getDelegate().dependencies();
-        }
-
-        @Override
-        public String repositoryDisplayString() {
-            return getDelegate().repositoryDisplayString();
-        }
-        
-        @Override
-        public PathFilter filter(){
-            return getDelegate().filter();
-        }
     }
 }
 

@@ -65,9 +65,11 @@ import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.LazyArtifactResult;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
@@ -129,12 +131,12 @@ public class AetherUtils {
     }
 
     File findDependency(Node node) {
-        final ArtifactResult result = findDependencies(node, true);
+        final ArtifactResult result = findDependencies(null, node, true);
         return (result != null) ? result.artifact() : null;
     }
 
-    ArtifactResult findDependencies(Node node) {
-        return findDependencies(node, null);
+    ArtifactResult findDependencies(RepositoryManager manager, Node node) {
+        return findDependencies(manager, node, null);
     }
 
     String[] nameToGroupArtifactIds(String name){
@@ -147,7 +149,7 @@ public class AetherUtils {
         return new String[]{groupId, artifactId};
     }
     
-    private ArtifactResult findDependencies(Node node, Boolean fetchSingleArtifact) {
+    private ArtifactResult findDependencies(RepositoryManager manager, Node node, Boolean fetchSingleArtifact) {
         final ArtifactContext ac = ArtifactContext.fromNode(node);
         if (ac == null)
             return null;
@@ -168,10 +170,10 @@ public class AetherUtils {
             return fetchWithClassifier(repository, groupId, artifactId, version, "sources", repositoryDisplayString);
         }
 
-        return fetchDependencies(repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
+        return fetchDependencies(manager, repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
     }
 
-    private ArtifactResult fetchDependencies(Repository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
+    private ArtifactResult fetchDependencies(RepositoryManager manager, Repository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
         MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
@@ -271,7 +273,7 @@ public class AetherUtils {
                         dVersion = overrides.getVersionOverride(dContext);
                     }
                     
-                    ArtifactResult dr = createArtifactResult(repository, dGroupId, dArtifactId, dVersion, export, optional, repositoryDisplayString);
+                    ArtifactResult dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dVersion, export, optional, repositoryDisplayString);
                     dependencies.add(dr);
                 }
 
@@ -279,7 +281,7 @@ public class AetherUtils {
                     for (DependencyOverride addon : ao.getAdd()) {
                         ArtifactContext dContext = addon.getArtifactContext();
                         String dVersion = overrides.getVersionOverride(dContext);
-                        dependencies.add(createArtifactResult(repository, dContext, dVersion, 
+                        dependencies.add(createArtifactResult(manager, repository, dContext, dVersion, 
                                 addon.isShared(), addon.isOptional(), repositoryDisplayString));
                         log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), mc));
                     }
@@ -478,16 +480,16 @@ public class AetherUtils {
                 packaging, classifier);
     }
 
-    protected ArtifactResult createArtifactResult(Repository repository, final ArtifactContext dCo, String version, 
+    protected ArtifactResult createArtifactResult(RepositoryManager manager, Repository repository, final ArtifactContext dCo, String version, 
             final boolean shared, boolean optional, final String repositoryDisplayString) {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
             return null;
-        return createArtifactResult(repository, groupArtifactIds[0], groupArtifactIds[1], version, 
+        return createArtifactResult(manager, repository, groupArtifactIds[0], groupArtifactIds[1], version, 
                 shared, optional, repositoryDisplayString);
     }
 
-    protected ArtifactResult createArtifactResult(Repository repository, final String groupId, final String artifactId, final String dVersion, 
+    protected ArtifactResult createArtifactResult(final RepositoryManager manager, Repository repository, final String groupId, final String artifactId, final String dVersion, 
             final boolean shared, final boolean optional, final String repositoryDisplayString) {
         final String dName = toCanonicalForm(groupId, artifactId);
 
@@ -501,7 +503,7 @@ public class AetherUtils {
 
             private synchronized ArtifactResult getResult() {
                 if (result == null) {
-                    result = fetchDependencies(repository(), groupId, artifactId, dVersion, false, repositoryDisplayString);
+                    result = fetchDependencies(manager, repository(), groupId, artifactId, dVersion, false, repositoryDisplayString);
                 }
                 return result;
             }
