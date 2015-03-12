@@ -41,6 +41,7 @@ class ModuleDescriptorReader {
     private Method moduleName;
     private Method moduleLicense;
     private Method moduleAuthors;
+    private Method moduleImports;
 
     @SuppressWarnings("serial")
     public static class NoSuchModuleException extends Exception {
@@ -61,6 +62,8 @@ class ModuleDescriptorReader {
             this.moduleLicense.setAccessible(true);
             this.moduleAuthors = mdr.getMethod("getModuleAuthors");
             this.moduleAuthors.setAccessible(true);
+            this.moduleImports = mdr.getMethod("getModuleImports");
+            this.moduleImports.setAccessible(true);
             Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
             constructor.setAccessible(true);
             this.instance = constructor.newInstance(moduleName, srcDir);
@@ -118,6 +121,18 @@ class ModuleDescriptorReader {
     public List<String> getModuleAuthors() {
         try {
             return (List<String>)moduleAuthors.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Gets the module imports. Format is [name, version, optional, shared]
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> getModuleImports() {
+        try {
+            return (List<Object[]>)moduleImports.invoke(instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

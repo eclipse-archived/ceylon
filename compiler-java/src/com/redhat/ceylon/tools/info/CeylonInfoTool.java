@@ -1,6 +1,8 @@
 package com.redhat.ceylon.tools.info;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +25,13 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ParsedBy;
+import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
@@ -69,7 +74,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     private boolean requireAll;
     private boolean printOverrides;
     private Formatting formatting;
-    
+    private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
+
     private Integer binaryMajor = null;
     private Integer binaryMinor = null;
     private ModuleQuery.Type queryType = ModuleQuery.Type.ALL;
@@ -81,6 +87,18 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Override
     protected boolean includeJDK() {
         return true;
+    }
+    
+    @Override
+    protected List<File> getSourceDirs() {
+        return sourceFolders;
+    }
+    
+    @OptionArgument(longName="src", argumentName="dir")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
+    @Description("A directory containing Ceylon and/or Java source code (default: `./source`)")
+    public void setSourceFolders(List<File> sourceFolders) {
+        this.sourceFolders = sourceFolders;
     }
     
     @Argument(argumentName="module", multiplicity="+")
@@ -249,10 +267,17 @@ public class CeylonInfoTool extends RepoUsingTool {
             } else {
                 Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor);
                 if (versions.isEmpty()) {
-                    String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
-                    errorAppend(err);
-                    errorNewline();
-                    continue;
+                    // try from source
+                    ModuleVersionDetails fromSource = getVersionFromSource(name);
+                    if(fromSource != null){
+                        // is it the version we're after?
+                        versions = Arrays.asList(fromSource);
+                    }else{
+                        String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                        errorAppend(err);
+                        errorNewline();
+                        continue;
+                    }
                 }
                 if (module.getVersion() == null || module.getVersion().isEmpty() || versions.size() > 1) {
                     outputVersions(module, versions);

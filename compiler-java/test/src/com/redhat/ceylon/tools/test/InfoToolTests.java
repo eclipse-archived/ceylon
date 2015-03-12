@@ -28,10 +28,7 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class InfoToolTests extends AbstractToolTests {
@@ -61,6 +58,32 @@ public class InfoToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
         tool.run();
+    }
+
+    @Test
+    public void testModuleFromSource() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--src", "test/src", "com.redhat.ceylon.tools.test.info/1"));
+
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+
+        Assert.assertTrue(b.toString().contains(
+                "Name:        com.redhat.ceylon.tools.test.info\n"+
+                "Version:     1\n"+
+                "Available:   On local system\n"+
+                "Origin:      Local source folder\n"+
+                "Dependency Tree (up to depth 1):\n"+
+                "  shared java.base/7\n"+
+                "  optional java.desktop/7\n"+
+                "\n"+
+                "Dependencies (up to depth 1):\n"+
+                "  java.base/7\n"+
+                "  java.desktop/7\n"
+        ));
     }
 
     @Test

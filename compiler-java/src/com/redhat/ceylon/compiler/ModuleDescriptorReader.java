@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 class ModuleDescriptorReader {
     
@@ -82,6 +83,9 @@ class ModuleDescriptorReader {
         }
         for (PhasedUnit pu : pus.getPhasedUnits()) {
             pu.visitSrcModulePhase();
+        }
+        for (PhasedUnit pu : pus.getPhasedUnits()) {
+            pu.visitRemainingModulePhase();
         }
         this.moduleDescriptor = moduleManager.getOrCreateModule(name, null);
     }
@@ -177,5 +181,21 @@ class ModuleDescriptorReader {
             }
         }
         return authors;
+    }
+
+    /**
+     * Gets the module imports. Format is [name, version, optional, shared]
+     */
+    public List<Object[]> getModuleImports(){
+        ArrayList<Object[]> imports = new ArrayList<Object[]>();
+        for(ModuleImport dep : moduleDescriptor.getImports()){
+            imports.add(new Object[]{ 
+                    dep.getModule().getNameAsString(), 
+                    dep.getModule().getVersion(),
+                    dep.isOptional(),
+                    dep.isExport()
+            });
+        }
+        return imports;
     }
 }
