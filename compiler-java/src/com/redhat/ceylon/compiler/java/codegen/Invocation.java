@@ -1010,7 +1010,16 @@ class CallableInvocation extends DirectInvocation {
 
         // note: we don't deal with unboxing here, as that is taken care of already by CallableBuilder by unboxing the
         // Callable arguments into unboxed local vars if required and if it's a value type
-        return tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
+        String paramName;
+        if (tempVars) {
+            paramName = Naming.getCallableTempVarName(param);
+        } else if (getPrimaryDeclaration() instanceof Class &&
+            ((Class)getPrimaryDeclaration()).hasConstructors()) {
+            paramName = Naming.getAliasedParameterName(param);
+        } else {
+            paramName = param.getName();
+        }
+        return gen.makeUnquotedIdent(paramName);
     }
     @Override
     protected Parameter getParameter(int index) {
