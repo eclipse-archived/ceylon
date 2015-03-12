@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Type;
@@ -289,7 +290,12 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isEnum() {
-        return (classSymbol.flags() & Flags.ENUM) != 0;
+        try{
+            return (classSymbol.flags() & Flags.ENUM) != 0;
+        }catch(CompletionFailure x){
+            // make sure we don't throw for this, the error will be reported anyways somewhere else
+            return false;
+        }
     }
 
     @Override
