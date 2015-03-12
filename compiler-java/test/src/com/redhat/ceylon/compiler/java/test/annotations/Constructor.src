@@ -50,7 +50,6 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Constructor")
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s$param$) {

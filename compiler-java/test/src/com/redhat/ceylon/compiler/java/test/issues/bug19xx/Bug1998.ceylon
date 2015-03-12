@@ -23,7 +23,7 @@ class ClassContainer(){
             }
             shared class Klass() {}
             shared class Ctor {
-                shared new Ctor() {}
+                shared new () {}
                 shared new Other() {}
             }
         }
@@ -39,7 +39,7 @@ class ClassContainer(){
             
             MemberClass<\Inested,\Inested.Ctor,[]> ctorClass = `\Inested.Ctor`;
             print(ctorClass(other.nestee.nested)());
-            MemberClassConstructor<\Inested,\Inested.Ctor,[]> ctorCtor = `\Inested.Ctor.Ctor`;
+            MemberClassConstructor<\Inested,\Inested.Ctor,[]> ctorCtor = `\Inested.Ctor`.constructor;
             print(ctorCtor(other.nestee.nested)());
             MemberClassConstructor<\Inested,\Inested.Ctor,[]> ctorOther= `\Inested.Ctor.Other`;
             print(ctorOther(other.nestee.nested)());
@@ -51,7 +51,7 @@ class ClassContainer(){
         shared Integer method() => 2;
         shared class Klass() {}
         shared class Ctor {
-            shared new Ctor() {}
+            shared new () {}
             shared new Other() {}
         }
     }
@@ -69,7 +69,7 @@ class ClassContainer(){
         assert(is MemberClass<ClassContainer.\ImemberObject,\ImemberObject.Klass,[]> xx=typeLiteral<\ImemberObject.Klass>());
         MemberClass<\ImemberObject,\ImemberObject.Ctor,[]> ctorClass = `\ImemberObject.Ctor`;
         print(ctorClass(other.memberObject)());
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor.Ctor`;
+        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.constructor;
         print(ctorCtor(other.memberObject)());
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.Other`;
         print(ctorOther(other.memberObject)());
@@ -82,7 +82,7 @@ object toplevel {
             shared Integer method() => 2;
             shared class Klass() {}
             shared class Ctor {
-                shared new Ctor() {}
+                shared new () {}
                 shared new Other() {}
             }
         }
@@ -95,7 +95,7 @@ object toplevel {
             print(c(other.memberObject)());
             MemberClass<\ImemberObject,\ImemberObject.Ctor,[]> ctorClass = `\ImemberObject.Ctor`;
             print(ctorClass(other.memberObject)());
-            MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor.Ctor`;
+            MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.constructor;
             print(ctorCtor(other.memberObject)());
             MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.Other`;
             print(ctorOther(other.memberObject)());
@@ -111,7 +111,7 @@ object toplevel {
             shared Integer method() => 2;
             shared class Klass() {}
             shared class Ctor {
-                shared new Ctor() {}
+                shared new () {}
                 shared new Other() {}
             }
         }
@@ -124,7 +124,7 @@ object toplevel {
             print(c(y)());
             MemberClass<\Iy,\Iy.Ctor,[]> ctorClass = `\Iy.Ctor`;
             print(ctorClass(y)());
-            MemberClassConstructor<\Iy,\Iy.Ctor,[]> ctorCtor = `\Iy.Ctor.Ctor`;
+            MemberClassConstructor<\Iy,\Iy.Ctor,[]> ctorCtor = `\Iy.Ctor`.constructor;
             print(ctorCtor(y)());
             MemberClassConstructor<\Iy,\Iy.Ctor,[]> ctorOther= `\Iy.Ctor.Other`;
             print(ctorOther(y)());

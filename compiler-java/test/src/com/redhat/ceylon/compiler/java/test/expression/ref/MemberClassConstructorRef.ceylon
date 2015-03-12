@@ -1,7 +1,7 @@
 class MemberClassConstructorRef() {
     shared class Simple {
         shared actual String string;
-        shared new Simple(String s1) {
+        shared new (String s1) {
             string = "Simple.Simple(``s1``)";
         }
         shared new Nullary() {
@@ -24,9 +24,9 @@ class MemberClassConstructorRef() {
     shared void simple() {
         variable Simple(String)(MemberClassConstructorRef) defRef = MemberClassConstructorRef.Simple;
         assert(defRef(this)("s1").string == "Simple.Simple(s1)");
-        defRef = MemberClassConstructorRef.Simple.Simple;
+        defRef = MemberClassConstructorRef.Simple;
         assert(defRef(this)("s1").string == "Simple.Simple(s1)");
-        Simple(String) defRef2 = Simple.Simple;
+        Simple(String) defRef2 = Simple;
         assert(defRef2("s1").string == "Simple.Simple(s1)");
         Simple()(MemberClassConstructorRef) nullaryRef = MemberClassConstructorRef.Simple.Nullary;
         assert(nullaryRef(this)().string == "Simple.Nullary()");
@@ -43,7 +43,7 @@ class MemberClassConstructorRef() {
     }
     shared class Defaulted {
         shared actual String string;
-        shared new Defaulted (String s1="s1") {
+        shared new (String s1="s1") {
             string = "Defaulted.Defaulted(``s1``)";
         }
         shared new Nullary() {
@@ -67,10 +67,10 @@ class MemberClassConstructorRef() {
         variable Defaulted(String=)(MemberClassConstructorRef) defRef = MemberClassConstructorRef.Defaulted;
         assert(defRef(this)().string == "Defaulted.Defaulted(s1)");
         assert(defRef(this)("S1").string == "Defaulted.Defaulted(S1)");
-        defRef = MemberClassConstructorRef.Defaulted.Defaulted;
+        defRef = MemberClassConstructorRef.Defaulted;
         assert(defRef(this)().string == "Defaulted.Defaulted(s1)");
         assert(defRef(this)("S1").string == "Defaulted.Defaulted(S1)");
-        Defaulted(String=) defRef2 = Defaulted.Defaulted;
+        Defaulted(String=) defRef2 = Defaulted;
         assert(defRef2().string == "Defaulted.Defaulted(s1)");
         assert(defRef2("S1").string == "Defaulted.Defaulted(S1)");
         Defaulted()(MemberClassConstructorRef) nullaryRef = MemberClassConstructorRef.Defaulted.Nullary;
@@ -89,7 +89,7 @@ class MemberClassConstructorRef() {
     }
     shared class Sequenced {
         shared actual String string;
-        shared new Sequenced (String* s1) {
+        shared new (String* s1) {
             string = "Sequenced.Sequenced(``s1``)";
         }
         shared new Nullary() {
@@ -113,10 +113,10 @@ class MemberClassConstructorRef() {
         variable Sequenced(String*)(MemberClassConstructorRef) defRef = MemberClassConstructorRef.Sequenced;
         assert(defRef(this)("s1").string == "Sequenced.Sequenced([s1])");
         assert(defRef(this)().string == "Sequenced.Sequenced([])");
-        defRef = MemberClassConstructorRef.Sequenced.Sequenced;
+        defRef = MemberClassConstructorRef.Sequenced;
         assert(defRef(this)("s1").string == "Sequenced.Sequenced([s1])");
         assert(defRef(this)().string == "Sequenced.Sequenced([])");
-        Sequenced(String*) defRef2 = Sequenced.Sequenced;
+        Sequenced(String*) defRef2 = Sequenced;
         assert(defRef2("s1").string == "Sequenced.Sequenced([s1])");
         assert(defRef2().string == "Sequenced.Sequenced([])");
         Sequenced()(MemberClassConstructorRef) nullaryRef = MemberClassConstructorRef.Sequenced.Nullary;
@@ -139,7 +139,7 @@ class MemberClassConstructorRef() {
     shared class Parameterized<T> 
             given T satisfies Object {
         shared actual String string;
-        shared new Parameterized (T s1) {
+        shared new (T s1) {
             string = "Parameterized.Parameterized(``s1``)";
         }
         shared new Nullary() {
@@ -162,9 +162,9 @@ class MemberClassConstructorRef() {
     shared void parameterized() {
         variable Parameterized<String>(String)(MemberClassConstructorRef) defRef = MemberClassConstructorRef.Parameterized<String>;
         assert(defRef(this)("s1").string == "Parameterized.Parameterized(s1)");
-        defRef = MemberClassConstructorRef.Parameterized<String>.Parameterized;
+        defRef = MemberClassConstructorRef.Parameterized<String>;
         assert(defRef(this)("s1").string == "Parameterized.Parameterized(s1)");
-        Parameterized<String>(String) defRef2 = Parameterized<String>.Parameterized;
+        Parameterized<String>(String) defRef2 = Parameterized<String>;
         assert(defRef2("s1").string == "Parameterized.Parameterized(s1)");
         Parameterized<String>()(MemberClassConstructorRef) nullaryRef = MemberClassConstructorRef.Parameterized<String>.Nullary;
         assert(nullaryRef(this)().string == "Parameterized.Nullary()");

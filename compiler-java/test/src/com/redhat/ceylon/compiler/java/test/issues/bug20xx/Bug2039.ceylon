@@ -20,7 +20,7 @@
 @noanno
 class Bug2039 {
     shared Object(Object?*) somefunc;
-    shared new Bug2039(Object(Object?*) somefunc) {
+    shared new (Object(Object?*) somefunc) {
         this.somefunc = somefunc;
     }
     shared new Test2(Object ret) {

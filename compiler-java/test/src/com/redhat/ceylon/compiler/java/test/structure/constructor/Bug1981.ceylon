@@ -19,7 +19,7 @@
  */
 @noanno
 class Bug1981 {
-    shared new Bug1981(
+    shared new (
         String name, 
         String qname = name) {
     }

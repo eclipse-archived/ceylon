@@ -10,7 +10,7 @@ annotation ConstructorAnnotation constructorAnnotation() => ConstructorAnnotatio
 
 class Constructor {
     "docannotation"
-    constructorAnnotation shared new Constructor(s) {
+    constructorAnnotation shared new (s) {
          "ctor param doc"
          String s;
     }

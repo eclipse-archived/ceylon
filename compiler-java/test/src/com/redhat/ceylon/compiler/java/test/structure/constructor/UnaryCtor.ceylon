@@ -19,7 +19,7 @@
  */
 class UnaryCtor {
     shared String s;
-    shared new UnaryCtor(String s1) {
+    shared new (String s1) {
         s = s1;
     }
     new FromInteger(Integer i) {
@@ -30,7 +30,6 @@ class UnaryCtor {
     }
     void use() {
         value o1 = UnaryCtor{s1="";};
-        value o2 = UnaryCtor.UnaryCtor{s1="";};
         value o3 = FromInteger{i=0;};
         value o4 = UnaryCtor.FromInteger{i=0;};
     }

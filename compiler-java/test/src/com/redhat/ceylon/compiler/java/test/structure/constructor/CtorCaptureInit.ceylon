@@ -42,7 +42,7 @@ class CtorCaptureInit {
         capturedByCtor = "WithAttributes";
         print(capturedByCtor);
     }
-    shared new CtorCaptureInit(Integer initial) {
+    shared new (Integer initial) {
         count = initial;
         sharedCount = initial;
         init = initial;

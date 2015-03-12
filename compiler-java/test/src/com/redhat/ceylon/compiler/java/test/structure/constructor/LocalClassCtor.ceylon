@@ -2,7 +2,7 @@
 void localClassCtor(Integer i) {
     abstract class LocalClassCtor {
         Integer sum;
-        shared new LocalClassCtor(Integer j) {
+        shared new (Integer j) {
             sum = i+j;
         }
         shared new Other(Integer j) {
@@ -10,7 +10,7 @@ void localClassCtor(Integer i) {
         }
     }
     class LocalClassCtorSub extends LocalClassCtor {
-        shared new LocalClassCtorSub(Integer j) extends LocalClassCtor(j) {
+        shared new (Integer j) extends LocalClassCtor(j) {
             
         }
         shared new Other(Integer j) extends super.Other(j){
@@ -18,6 +18,6 @@ void localClassCtor(Integer i) {
         }
     }
     LocalClassCtorSub(0);
-    LocalClassCtorSub.LocalClassCtorSub(0);
+    LocalClassCtorSub(0);
     LocalClassCtorSub.Other(0);
 }

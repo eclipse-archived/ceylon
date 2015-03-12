@@ -25,7 +25,7 @@ class Shadowing {
         String name = "0";
         print(name);
     }
-    shared new Shadowing(String name, Integer i) {
+    shared new (String name, Integer i) {
         print(name);
         print(this.i);
         print(i);

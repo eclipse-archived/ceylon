@@ -14,5 +14,5 @@ class ClassAliasCtorQualDefaultSub(Integer j) extends ClassAliasCtorQualDefault(
 class ClassAliasCtorOtherSub(Integer j) extends ClassAliasCtorOther(j) {}
 class ClassAliasCtorAliasSub(Integer j) extends ClassAliasCtorAlias(j){}
 class ClassAliasCtorAliasSub2 extends ClassAliasCtorAlias{
-    shared new ClassAliasCtorAliasSub2(Integer j) extends ClassAliasCtorAlias(j) {}
+    shared new (Integer j) extends ClassAliasCtorAlias(j) {}
 } 

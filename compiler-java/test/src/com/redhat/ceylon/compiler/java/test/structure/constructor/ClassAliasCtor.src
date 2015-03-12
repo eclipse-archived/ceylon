@@ -5,7 +5,6 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("ClassAliasCtor")
     public ClassAliasCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i$param$) {

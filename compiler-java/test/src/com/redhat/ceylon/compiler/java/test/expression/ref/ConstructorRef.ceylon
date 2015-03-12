@@ -2,7 +2,7 @@
 @noanno
 class ConstructorRef {
     shared actual String string;
-    shared new ConstructorRef(String s) {
+    shared new (String s) {
         string="default(``s``)";
     }
     shared new Unary(String s) {
@@ -35,7 +35,7 @@ class ConstructorRefTp<T>
         given T satisfies Object {
     shared actual String string;
     //type param
-    shared new ConstructorRefTp(T s) {
+    shared new (T s) {
         string="defaultTp(``s``)";
     }
     shared new UnaryTp(T s) {
@@ -53,7 +53,7 @@ class ConstructorRefTp<T>
 }
 @noanno
 void constructorRef() {
-    ConstructorRef(String) default = package.ConstructorRef.ConstructorRef;
+    ConstructorRef(String) default = package.ConstructorRef;
     assert("default(s1)"==default("s1").string);
     ConstructorRef(String) default2 = ConstructorRef;
     assert("default(s2)"==default2("s2").string);
@@ -69,7 +69,7 @@ void constructorRef() {
     ConstructorRef(String,String,String,String) nary= ConstructorRef.Nary;
     assert("nary(s2,s3,s4,s5)"==nary("s2", "s3", "s4", "s5").string);
     
-    ConstructorRefTp<String>(String) defaultTp = package.ConstructorRefTp<String>.ConstructorRefTp;
+    ConstructorRefTp<String>(String) defaultTp = package.ConstructorRefTp<String>;
     assert("defaultTp(s1)"==defaultTp("s1").string);
     ConstructorRefTp<String>(String) unaryTp = package.ConstructorRefTp<String>.UnaryTp;
     assert("unaryTp(s2)"==unaryTp("s2").string);

@@ -19,7 +19,7 @@
  */
 @noanno
 shared class CtorContainingObjectDecl{
-    shared new CtorContainingObjectDecl() {
+    shared new () {
         object foo {}
     }
 }

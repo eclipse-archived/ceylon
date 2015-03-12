@@ -19,7 +19,7 @@
  */
 @nomain
 shared class NullaryConstructors {
-    shared new NullaryConstructors() {
+    shared new () {
         
     }
     new Foo() {
@@ -30,7 +30,6 @@ shared class NullaryConstructors {
     }
     shared void use() {
         value o1 = NullaryConstructors();
-        value o2 = NullaryConstructors.NullaryConstructors();
         value o3 = Foo();
         value o4 = NullaryConstructors.Foo();
     }

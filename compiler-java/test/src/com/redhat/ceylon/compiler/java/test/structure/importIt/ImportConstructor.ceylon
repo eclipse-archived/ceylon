@@ -1,6 +1,5 @@
 import com.redhat.ceylon.compiler.java.test.structure.importIt.ctor{
-    Ctor{
-        X=Ctor,
+    X=Ctor{
         Other,
         Y=Third
     }
