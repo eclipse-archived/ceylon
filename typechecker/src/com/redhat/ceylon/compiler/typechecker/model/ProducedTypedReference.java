@@ -41,6 +41,10 @@ public class ProducedTypedReference extends ProducedReference {
         if (type==null) {
             return null;
         }
+        // FIXME: perhaps this should be in type.substitute?
+        else if(type.isUnknown()) {
+            return type;
+        }
         else {
             ProducedType qt = getQualifyingType();
             if (qt!=null) {
