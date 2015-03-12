@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -497,7 +500,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     private long getNewestLastmodified(String name) throws IOException {
         final long[] newest = new long[] { -1L };
-        List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
+        List<File> srcDirs = getSourceDirs();
         for (File srcDir : srcDirs) {
             File moduleDir = ModuleUtil.moduleToPath(srcDir, name);
             if (moduleDir.isDirectory() && moduleDir.canRead()) {
@@ -525,9 +528,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
-    private ModuleVersionDetails getVersionFromSource(String name) {
+    protected ModuleVersionDetails getVersionFromSource(String name) {
         try {
-            List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
+            List<File> srcDirs = getSourceDirs();
             for (File srcDir : srcDirs) {
                 try{
                     ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, applyCwd(srcDir));
@@ -541,6 +544,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     if (by != null) {
                         mvd.getAuthors().addAll(by);
                     }
+                    SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
+                    for(Object[] dep : mdr.getModuleImports()){
+                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (Boolean)dep[2], (Boolean)dep[3]));
+                    }
+                    mvd.setDependencies(dependencies);
                     mvd.setRemote(false);
                     mvd.setOrigin("Local source folder");
                     return mvd;
@@ -552,6 +560,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             // Just continue as if nothing happened
         }
         return null;
+    }
+
+    /**
+     * Override in subclasses that accept source dirs
+     * @return
+     */
+    protected List<File> getSourceDirs() {
+        return DefaultToolOptions.getCompilerSourceDirs();
     }
 
     protected boolean isSourceModule(String name, String version, List<File> srcDirs){
