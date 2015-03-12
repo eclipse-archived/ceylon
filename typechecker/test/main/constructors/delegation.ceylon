@@ -62,3 +62,18 @@ class Oops1 extends Point {
 class Oops2 extends E {
     @error new New() extends Point.Diagonal(0.0) {}
 }
+
+
+class Up0 {
+    shared new () {}
+}
+class Down0 extends Up0 {
+    shared new () extends Up0() {}
+}
+
+class Up1 {
+    new () {}
+}
+class Down1 extends Up1 {
+    shared new () extends Up1() {}
+}
