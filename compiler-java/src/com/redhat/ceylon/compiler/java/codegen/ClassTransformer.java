@@ -4834,7 +4834,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
-        ctorDb.modelAnnotations(makeAtName(ctor.getName()));
+        if (!Decl.isDefaultConstructor(ctor)) {
+            ctorDb.modelAnnotations(makeAtName(ctor.getName()));
+        }
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         
         if (Decl.isDefaultConstructor(ctor)) {

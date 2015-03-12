@@ -923,15 +923,21 @@ public class Decl {
     }
 
     public static Constructor getDefaultConstructor(Class c) {
-        Declaration member = c.getDirectMember(c.getName(), null, false);
-        if (member instanceof Constructor) {
-            return (Constructor)member;
+        for (Declaration d : c.getMembers()) {
+            if (d instanceof Constructor
+                    && d.getName() == null) {
+                return (Constructor)d;
+            }
         }
         return null;
     }
     
     public static boolean isDefaultConstructor(Constructor ctor) {
-        return ctor.getName().equals(((Declaration)ctor.getScope()).getName());
+        if (ctor.getName() == null
+                || ctor.getName().isEmpty()) {
+            return true;
+        }
+        return false;
     }
     
     public static Class getConstructedClass(Declaration classOrCtor) {
