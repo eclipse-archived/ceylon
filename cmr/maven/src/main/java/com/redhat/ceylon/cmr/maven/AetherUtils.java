@@ -177,11 +177,11 @@ public class AetherUtils {
         MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
-        System.err.println("Overrides: "+overrides);
+        log.debug("Overrides: "+overrides);
         ArtifactContext context = getArtifactContext(mc);
         if(overrides != null){
             ao = overrides.getArtifactOverrides(context);
-            System.err.println(" ["+mc+"] => "+ao);
+            log.debug(" ["+mc+"] => "+ao);
         }
         // entire replacement
         ArtifactContext replacementContext = null;
