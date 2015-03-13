@@ -196,7 +196,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             cls.setConstructors(true);
             for (Map.Entry<String, Map<String,Object>> cons : constructors.entrySet()) {
                 Constructor cnst = new Constructor();
-                cnst.setName(cons.getKey());
+                cnst.setName("$def".equals(cons.getKey())?null:cons.getKey());
                 cnst.setContainer(cls);
                 cnst.setScope(cls);
                 cnst.setUnit(cls.getUnit());

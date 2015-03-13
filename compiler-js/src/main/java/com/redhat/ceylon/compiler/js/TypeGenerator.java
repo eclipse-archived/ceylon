@@ -262,7 +262,7 @@ public class TypeGenerator {
                 if (st instanceof Tree.Constructor) {
                     Tree.Constructor constr = (Tree.Constructor)st;
                     constructors.add(constr);
-                    if (constr.getDeclarationModel().getName().equals(d.getName())) {
+                    if (constr.getDeclarationModel().getName() == null) {
                         defconstr = constr;
                     }
                 } else {

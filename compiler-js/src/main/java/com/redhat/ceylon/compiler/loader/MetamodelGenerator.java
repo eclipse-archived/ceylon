@@ -455,7 +455,9 @@ public class MetamodelGenerator {
             return null;
         }
         Map<String,Object> m = new HashMap<>();
-        m.put(KEY_NAME, d.getName());
+        if (d.getName() != null) {
+            m.put(KEY_NAME, d.getName());
+        }
         final ParameterList plist = d.getParameterLists().get(0);
         if (!plist.getParameters().isEmpty()) {
             m.put(KEY_PARAMS, parameterListMap(plist, d));
@@ -466,7 +468,7 @@ public class MetamodelGenerator {
         }
         @SuppressWarnings("unchecked")
         Map<String,Object> consmap = (Map<String,Object>)c.get(KEY_CONSTRUCTORS);
-        consmap.put(d.getName(), m);
+        consmap.put(d.getName() == null ? "$def" : d.getName(), m);
         return null;
     }
 
