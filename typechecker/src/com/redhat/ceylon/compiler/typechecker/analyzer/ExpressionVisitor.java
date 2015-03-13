@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
@@ -23,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -1000,7 +1002,7 @@ public class ExpressionVisitor extends Visitor {
         		        type.addError("value must specify an explicit type or definition", 200);
         		    }
         		    else if (!hasError(sie)) {
-        		        type.addError("value type could not be inferred");
+        		        type.addError("value type could not be inferred" + getTypeUnknownError(t));
         		    }
         		}
         	}
@@ -3761,7 +3763,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!dynamic && isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
-                        sp.getName() + "' of '" + sp.getDeclaration().getName(unit) + "'");
+                        sp.getName() + "' of '" + sp.getDeclaration().getName(unit) + "'" +
+                        getTypeUnknownError(sp.getType()));
             }
             checkSequencedArgument(sa, pr, sp);
         }
@@ -3789,7 +3792,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!dynamic && isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: '" + 
-                        p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'");
+                        p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'" +
+                        getTypeUnknownError(p.getType()));
             }
             checkNamedArgument(a, pr, p);
             //hack in an identifier node just for the backend:
@@ -3939,7 +3943,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument a = args.get(i);
                 if (!dynamic && isTypeUnknown(p.getType())) {
                     a.addError("parameter type could not be determined: '" + 
-                            p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'");
+                            p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'" +
+                            getTypeUnknownError(p.getType()));
                 }
                 if (a instanceof Tree.SpreadArgument) {
                     checkSpreadArgument(pr, p, a, 
@@ -5686,11 +5691,14 @@ public class ExpressionVisitor extends Visitor {
                     ptr.getFullType(wrap(ptr.getType(), receivingType, that));
             if (!dynamic && !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
+                String unknownTypeError = fullType.getFirstUnknownTypeError();
+                
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 that.addError("could not determine type of method or attribute reference: '" +
                         member.getName(unit) + "' of '" + 
-                        receiverType.getDeclaration().getName(unit) + "'");
+                        receiverType.getDeclaration().getName(unit) + "'" +
+                        (unknownTypeError != null ? ": " + unknownTypeError : ""));
             }
             that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
             //}
@@ -5811,7 +5819,7 @@ public class ExpressionVisitor extends Visitor {
             if (!dynamic && !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'");
+                        member.getName(unit) + "'" + getTypeUnknownError(fullType));
             }
             if (dynamic && isTypeUnknown(fullType)) {
                 //deliberately throw away the partial

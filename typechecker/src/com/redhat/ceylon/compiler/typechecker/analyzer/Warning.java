@@ -14,5 +14,6 @@ public enum Warning {
     suppressedAlready, 
     suppressesNothing, 
     unknownWarning, 
-    ambiguousAnnotation;
+    ambiguousAnnotation,
+    similarModule;
 }
