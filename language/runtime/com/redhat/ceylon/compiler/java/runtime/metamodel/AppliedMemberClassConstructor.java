@@ -9,11 +9,12 @@ import ceylon.language.meta.model.MemberClassConstructor;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberClassConstructor<Container,Type, Arguments extends Sequential<? extends Object>> 
-        implements MemberClassConstructor<Container, Type, Arguments> {
+        implements MemberClassConstructor<Container, Type, Arguments>, ReifiedType {
 
     private final FreeConstructor declaration;
     private MemberClass<Object,Type,? extends Object> container;
@@ -23,13 +24,16 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
     private ProducedType producedType;
     private TypeDescriptor reified$Type;
     private TypeDescriptor reified$Arguments;
+    private TypeDescriptor reified$Container;
     
     public AppliedMemberClassConstructor(
+            TypeDescriptor reified$Container,
             TypeDescriptor reified$Type,
             TypeDescriptor reified$Arguments,
             MemberClass<Object,Type,? extends Object> container,
             ProducedType producedType,
             FreeConstructor declaration) {
+        this.reified$Container = reified$Container;
         this.reified$Type = reified$Type;
         this.reified$Arguments = reified$Arguments;
         this.declaration = declaration;
@@ -203,5 +207,10 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
         ceylon.language.meta.model.MemberClassConstructor<?, ?, ?> other = (ceylon.language.meta.model.MemberClassConstructor<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getContainer().equals(other.getContainer());
+    }
+
+    @Override
+    public TypeDescriptor $getType$() {
+        return TypeDescriptor.klass(AppliedMemberClassConstructor.class, reified$Container, reified$Type, reified$Arguments);
     }
 }

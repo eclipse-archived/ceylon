@@ -651,8 +651,9 @@ public class Metamodel {
         Constructor<?>[] ctors = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getDeclaredConstructors();
         for (java.lang.reflect.Constructor<?> ctor : ctors) {
             Name name = ctor.getAnnotation(Name.class);
-            if (name != null 
-                    && declaration.getName().equals(name.value())) {
+            String n1 = name == null ? "" : name.value();
+            String n2 = declaration.getName() == null ? "" : declaration.getName();
+            if (n1.equals(n2)) {
                 return ctor;
             }
         }
@@ -767,7 +768,7 @@ public class Metamodel {
     }
     
     public static boolean isDefaultConstructor(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
-        return declaration.getName().equals(((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getName());
+        return declaration.getName() == null || declaration.getName().isEmpty();
     }
 
     public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {

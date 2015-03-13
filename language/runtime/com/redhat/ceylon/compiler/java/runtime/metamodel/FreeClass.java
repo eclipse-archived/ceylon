@@ -330,7 +330,7 @@ public class FreeClass
     
     @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
     public ConstructorDeclaration getDefaultConstructorDeclaration() {
-        return getConstructorDeclaration(getName());
+        return getConstructorDeclaration("");
     }
     
     @Ignore

@@ -3,7 +3,7 @@ shared sealed interface MemberClassConstructor<Container=Nothing,out Type=Anythi
             & Qualified<Constructor<Type, Arguments>,Container> 
         given Arguments satisfies Anything[] {
     
-    shared actual formal MemberClass<Container,Type,Nothing> container;// actually always a MemberClass
+    shared actual formal MemberClass<Anything,Type,Nothing> container;// actually always a MemberClass
     
     //shared formal Constructor<Type, Arguments> bind(Object container); 
 }
