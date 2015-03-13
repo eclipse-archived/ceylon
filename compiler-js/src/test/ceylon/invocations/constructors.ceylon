@@ -1,7 +1,7 @@
 import check { check }
 class ToplevelBug476 {
   shared Integer x;
-  shared new ToplevelBug476(){
+  shared new(){
     x=1;
     check(x+1==2, "#484.1");
   }
@@ -22,7 +22,7 @@ void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
     shared Integer x;
-    shared new NestedBug476(){
+    shared new(){
       x=1;
     }
     shared new Bar(){
