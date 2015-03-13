@@ -27,12 +27,16 @@ import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.DotName;
 import org.jboss.jandex.Indexer;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.Configuration;
@@ -77,6 +81,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
 public class Main {
     private boolean allowMissingModules;
     private boolean allowMissingSystem;
+    private String overrides;
     
     private ClassPath classPath;
     private Set<ClassPath.Module> visited;
@@ -101,7 +106,17 @@ public class Main {
         this.allowMissingModules = allowMissingModules;
         return this;
     }
-    
+
+    /**
+     * Sets the overrides file to use for module overrides
+     * @param overrides a file path to the module overrides
+     * @return This object for chaining
+     */
+    public Main overrides(String overrides) {
+        this.overrides = overrides;
+        return this;
+    }
+
     /**
      * When enabled no exceptions will be thrown for not encountering
      * proper module dependency information for the system modules or
@@ -293,11 +308,12 @@ public class Main {
 
         private List<File> potentialJars = new LinkedList<File>();
         private Map<String,Module> modules = new HashMap<String,Module>();
+        private Overrides overrides;
         private static DependencyResolver MavenResolver = getResolver(Configuration.MAVEN_RESOLVER_CLASS);
         
         private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
         
-        ClassPath(){
+        ClassPath(Overrides overrides){
             String classPath = System.getProperty("java.class.path");
             String[] classPathEntries = classPath.split(File.pathSeparator);
             for(String classPathEntry : classPathEntries){
@@ -306,6 +322,7 @@ public class Main {
                     potentialJars.add(entry);
                 }
             }
+            this.overrides = overrides;
             initJars();
         }
         
@@ -396,6 +413,18 @@ public class Main {
         // If name and version are both `null` it will try to determine the module
         // information from the jar/car file itself.
         private Module searchJars(String name, String version) {
+            if(overrides != null){
+                ArtifactContext ctx = new ArtifactContext(name, version);
+                ArtifactContext replacement = overrides.replace(ctx);
+                if(replacement != null){
+                    name = replacement.getName();
+                    version = replacement.getVersion();
+                    ctx = replacement;
+                }
+                if(overrides.isVersionOverridden(ctx)){
+                    version = overrides.getVersionOverride(ctx);
+                }
+            }
             Module module;
             Iterator<File> iterator = potentialJars.iterator();
             while(iterator.hasNext()){
@@ -580,6 +609,10 @@ public class Main {
                 
                 Module module = new Module(name, version, Type.CEYLON, file);
                 AnnotationValue moduleDependencies = moduleAnnotation.value("dependencies");
+                ArtifactOverrides ao = null;
+                if(overrides != null){
+                    ao = overrides.getArtifactOverrides(new ArtifactContext(name, version));
+                }
                 if(moduleDependencies != null){
                     for(AnnotationInstance dependency : moduleDependencies.asNestedArray()){
                         AnnotationValue importName = dependency.value("name");
@@ -588,9 +621,42 @@ public class Main {
                         AnnotationValue importExport = dependency.value("export");
                         if(importName == null || importVersion == null)
                             throw new IOException("Invalid module import");
+                        
+                        String depName = importName.asString();
+                        String depVersion = importVersion.asString();
                         boolean export = importExport != null ? importExport.asBoolean() : false;
                         boolean optional = importOptional != null ? importOptional.asBoolean() : false;
-                        module.addDependency(importName.asString(), importVersion.asString(), optional, export);
+                        if(overrides != null){
+                            ArtifactContext depCtx = new ArtifactContext(depName, depVersion);
+                            ArtifactContext replacement = overrides.replace(depCtx);
+                            if(replacement != null){
+                                depCtx = replacement;
+                                depName = replacement.getName();
+                                depVersion = replacement.getVersion();
+                            }
+                            if(overrides.isVersionOverridden(depCtx)){
+                                depVersion = overrides.getVersionOverride(depCtx);
+                                depCtx.setVersion(depVersion);
+                            }
+                            if(overrides.isRemoved(depCtx))
+                                continue;
+                            if(ao != null){ 
+                                if(ao.isAddedOrUpdated(depCtx))
+                                    continue;
+                                if(ao.isOptionalOverridden(depCtx))
+                                    optional = ao.isOptional(depCtx);
+                                if(ao.isShareOverridden(depCtx))
+                                    export = ao.isShared(depCtx);
+                            }
+                        }
+                        
+                        module.addDependency(depName, depVersion, optional, export);
+                    }
+                    if(ao != null){
+                        for(DependencyOverride dep : ao.getAdd()){
+                            module.addDependency(dep.getArtifactContext().getName(), dep.getArtifactContext().getVersion(), 
+                                    dep.isOptional(), dep.isShared());
+                        }
                     }
                 }
                 return module;
@@ -613,8 +679,7 @@ public class Main {
                                         Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                // FIXME: support overrides
-                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, null);
+                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
                 if (moduleDependencies != null) {
                     Module module = new Module(name, version, moduleType, file);
                     for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
@@ -758,17 +823,25 @@ public class Main {
      */
     public void setup(String module, String version){
         if (classPath == null) {
-            classPath = new ClassPath();
+            Overrides parsedOverrides;
+            try {
+                parsedOverrides = overrides != null ? Overrides.parse(overrides) : null;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            classPath = new ClassPath(parsedOverrides);
             visited = new HashSet<ClassPath.Module>();
-            registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
-            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
-            registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
-            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
-            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, allowMissingSystem);
+            registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false);
+            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
+            registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
+            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
+            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
         }
         if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
-        registerInMetamodel(module, version, false, allowMissingModules);
+        registerInMetamodel(module, version, false);
     }
 
     /**
@@ -787,7 +860,7 @@ public class Main {
         Metamodel.resetModuleManager();
     }
     
-    private void registerInMetamodel(String name, String version, boolean optional, boolean allowMissingModules) {
+    private void registerInMetamodel(String name, String version, boolean optional) {
         ClassPath.Module module;
         try {
             module = classPath.loadModule(name, version, allowMissingModules);
@@ -804,7 +877,7 @@ public class Main {
         Metamodel.loadModule(name, version, module, ClassLoader.getSystemClassLoader());
         // also register its dependencies
         for(ClassPath.Dependency dep : module.dependencies)
-            registerInMetamodel(dep.name(), dep.version(), dep.optional, allowMissingModules);
+            registerInMetamodel(dep.name(), dep.version(), dep.optional);
     }
 
     /**
@@ -821,15 +894,25 @@ public class Main {
     public static void main(String[] args) {
         int idx = 0;
         boolean allowMissingModules = false;
-        if (args.length > 0 && args[0].equals("--allow-missing-modules")) {
-            allowMissingModules = true;
+        String overrides = null;
+        for(int i=0;i<args.length;i++){
+            String arg = args[i];
+            if(!arg.startsWith("-"))
+                break;
+            if(arg.equals("--allow-missing-modules")){
+                allowMissingModules = true;
+            }else if(arg.equals("--overrides") || arg.equals("--maven-overrides")){
+                if(i+1 >= args.length){
+                    usage();
+                }
+                overrides = args[++i];
+                idx++;
+            }else
+                usage();
             idx++;
         }
         if(args.length < (2 + idx)){
-            System.err.println("Invalid arguments.");
-            System.err.println("Usage: \n");
-            System.err.println(Main.class.getName()+" [--allow-missing-modules] moduleSpec mainJavaClassName args*");
-            System.exit(1);
+            usage();
         }
         ModuleSpec moduleSpec = ModuleSpec.parse(args[idx], Option.VERSION_REQUIRED);
         String version;
@@ -840,6 +923,14 @@ public class Main {
         String[] moduleArgs = Arrays.copyOfRange(args, 2 + idx, args.length);
         instance()
             .allowMissingModules(allowMissingModules)
+            .overrides(overrides)
             .run(moduleSpec.getName(), version, args[idx + 1], moduleArgs);
+    }
+
+    private static void usage() {
+        System.err.println("Invalid arguments.");
+        System.err.println("Usage: \n");
+        System.err.println(Main.class.getName()+" [--allow-missing-modules] [--overrides overridesFile.xml] moduleSpec mainJavaClassName args*");
+        System.exit(1);
     }
 }
