@@ -49,7 +49,7 @@ public class JavaRunnerImpl implements JavaRunner {
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
                 .noDefaultRepos(options.isNoDefaultRepositories())
-                .mavenOverrides(options.getOverrides())
+                .overrides(options.getOverrides())
                 .buildManager();
         this.overrides = repositoryManager.getOverrides();
         if(options instanceof JavaRunnerOptions){
