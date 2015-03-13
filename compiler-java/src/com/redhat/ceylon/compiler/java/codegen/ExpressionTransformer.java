@@ -914,7 +914,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return null;
         // see if we're inheriting the interface twice with different type parameters
         java.util.List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
-        for(ProducedType superType : exprType.getSupertypes()){
+        for(ProducedType superType : simplifyType(exprType).getSupertypes()){
             if(Decl.equal(superType.getDeclaration(), expectedType.getDeclaration()))
                 satisfiedTypes.add(superType);
         }
