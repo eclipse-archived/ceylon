@@ -19,9 +19,12 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import javax.tools.Diagnostic;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 
@@ -202,5 +205,11 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     @Test
     public void testBug2089() {
         compareWithJavaSource("bug20xx/Bug2089");
+    }
+    
+    @Test
+    public void testBug2090() {
+        assertErrors("bug20xx/Bug2090",
+                new CompilerError(6, "type parameter 'Arguments' of declaration 'getMethods' has argument 'Anything' is not assignable to upper bound 'Anything[]' of 'Arguments'"));
     }
 }
