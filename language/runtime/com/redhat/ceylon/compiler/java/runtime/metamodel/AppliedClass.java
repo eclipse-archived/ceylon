@@ -130,6 +130,11 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
+                        Class<?>[] ptypes = constr.getParameterTypes();
+                        if (ptypes.length > 0 && ptypes[0].equals(com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$.class)) {
+                            // it was a serialization constructor, we're not interested in those.
+                            continue;
+                        }
                         int implicitParameterCount = 0;
                         if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
                             implicitParameterCount += decl.getTypeParameters().size();
