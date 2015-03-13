@@ -24,7 +24,7 @@ shared void test() {
 shared Test468 test468=Test468();
 
 shared class Test468 {
-  shared new Test468() {}
+  shared new() {}
 }
 
 Test469 create469(){
