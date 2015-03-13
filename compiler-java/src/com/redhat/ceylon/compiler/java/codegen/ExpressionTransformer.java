@@ -1385,6 +1385,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             TypeParameter declaration = (TypeParameter)expr.getDeclaration();
             Node node = expr;
             return makeTypeParameterDeclaration(node, declaration);
+        }else if (expr.getDeclaration() instanceof Constructor
+                || expr instanceof Tree.NewLiteral) {
+            Constructor ctor;
+            if (expr.getDeclaration() instanceof Constructor) {
+                ctor = (Constructor)expr.getDeclaration();
+            } else {
+                ctor = Decl.getDefaultConstructor((Class)expr.getDeclaration());
+            }
+            JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass(ctor));
+            metamodelCall = make().TypeCast(
+                    makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
+            return make().Apply(null, 
+                    naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
+                    List.<JCExpression>of(make().Literal(ctor.getName() == null ? "" : ctor.getName())));
         }else if(expr.getDeclaration() instanceof ClassOrInterface
                  || expr.getDeclaration() instanceof TypeAlias){
             // use the generated class to get to the declaration literal
@@ -1396,13 +1410,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return make().TypeCast(type, metamodelCall);
             }
             return metamodelCall;
-        }else if (expr.getDeclaration() instanceof Constructor) {
-            JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass((Constructor)expr.getDeclaration()));
-            metamodelCall = make().TypeCast(
-                    makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
-            return make().Apply(null, 
-                    naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
-                    List.<JCExpression>of(make().Literal(expr.getDeclaration().getName())));
         }else{
             return makeErroneous(expr, "compiler bug: " + expr.getDeclaration() + " is an unsupported declaration type");
         }
