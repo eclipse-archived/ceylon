@@ -172,6 +172,7 @@ public abstract class BoxingVisitor extends Visitor {
         
         if(primaryType != null
                 && isRaw(primaryType)
+                && that.getTarget() != null
                 && that.getTarget().getDeclaration() instanceof TypedDeclaration
                 && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
             CodegenUtil.markTypeErased(that);
