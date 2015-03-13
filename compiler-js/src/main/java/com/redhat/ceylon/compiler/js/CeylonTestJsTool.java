@@ -206,7 +206,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
         ceylonRunJsTool.setRepository(repo);
         ceylonRunJsTool.setSystemRepository(systemRepo);
         ceylonRunJsTool.setCacheRepository(cacheRepo);
-        ceylonRunJsTool.setMavenOverrides(mavenOverrides);
+        ceylonRunJsTool.setOverrides(overrides);
         ceylonRunJsTool.setNoDefRepos(noDefRepos);
         ceylonRunJsTool.setOffline(offline);
         ceylonRunJsTool.setVerbose(verbose);
