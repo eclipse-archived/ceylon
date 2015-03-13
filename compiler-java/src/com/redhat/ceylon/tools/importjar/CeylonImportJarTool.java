@@ -179,7 +179,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
     
     private LegacyImporter createImporter() {
-        LegacyImporter importer = new LegacyImporter(applyCwd(jarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
+        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
             @Override
             public void beforeDependencies() throws IOException {
                 msg("info.checkingDependencies").newline();
@@ -306,7 +306,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         LegacyImporter importer = createImporter().moduleDescriptor(applyCwd(descriptor));
         if (!force || updateDescriptor) {
             try {
-                importer.loadModuleDescriptor(module.getName(), module.getVersion());
+                importer.loadModuleDescriptor();
             } catch (ImportJarException x) {
                 throw x;
             } catch (Exception x) {
@@ -348,7 +348,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             if (!dryRun) {
                 msg("info.noProblems.publishing").newline();
                 try {
-                    importer.publish(module.getName(), module.getVersion());
+                    importer.publish();
                 } catch(CMRException x) {
                     throw new ImportJarException("error.failedWriteArtifact", new Object[]{module, x.getLocalizedMessage()}, x);
                 } catch(Exception x) {
