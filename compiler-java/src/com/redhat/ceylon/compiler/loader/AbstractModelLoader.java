@@ -224,6 +224,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+    private static final TypeMirror CEYLON_SERIALIZABLE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
     private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
     private static final TypeMirror THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
@@ -3847,8 +3848,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass, Decl.getModuleContainer(klass), "satisfied types", klass.getQualifiedNameString()));
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
-                // ignore ReifiedType interfaces
-                if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE))
+                // ignore generated interfaces
+                if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE) 
+                        || sameType(iface, CEYLON_SERIALIZABLE_TYPE))
                     continue;
                 try{
                     klass.getSatisfiedTypes().add(getNonPrimitiveType(Decl.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
