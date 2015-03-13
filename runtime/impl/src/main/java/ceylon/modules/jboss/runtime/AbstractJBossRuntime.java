@@ -114,7 +114,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             .cwd(conf.cwd)
             .systemRepo(conf.systemRepository)
             .cacheRepo(conf.cacheRepository)
-            .mavenOverrides(conf.mavenOverrides)
+            .overrides(conf.overrides)
             .noDefaultRepos(conf.noDefaultRepositories)
             .userRepos(conf.repositories)
             .offline(offline || conf.offline)

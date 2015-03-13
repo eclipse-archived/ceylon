@@ -163,7 +163,7 @@ public class CeylonTestTool extends RepoUsingTool {
         ceylonRunTool.setRepository(repo);
         ceylonRunTool.setSystemRepository(systemRepo);
         ceylonRunTool.setCacheRepository(cacheRepo);
-        ceylonRunTool.setMavenOverrides(mavenOverrides);
+        ceylonRunTool.setOverrides(overrides);
         ceylonRunTool.setNoDefRepos(noDefRepos);
         ceylonRunTool.setOffline(offline);
         ceylonRunTool.setVerbose(verbose);

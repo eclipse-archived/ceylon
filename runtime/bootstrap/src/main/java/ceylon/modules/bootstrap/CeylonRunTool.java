@@ -201,9 +201,9 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add(cacheRepo);
         }
 
-        if (mavenOverrides != null) {
-            argList.add("-maven-overrides");
-            argList.add(mavenOverrides);
+        if (overrides != null) {
+            argList.add("-overrides");
+            argList.add(overrides);
         }
 
         if (noDefRepos) {
@@ -277,7 +277,7 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
         options.setRun(run);
-        options.setOverrides(mavenOverrides);
+        options.setOverrides(overrides);
         Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
         runner.run(args.toArray(new String[args.size()]));
     }

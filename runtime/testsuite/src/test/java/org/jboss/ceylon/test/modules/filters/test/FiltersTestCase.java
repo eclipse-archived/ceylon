@@ -37,7 +37,7 @@ public class FiltersTestCase extends ModulesTest {
         extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString());
         extra.add("aether"); // enable Aether repository
 
-        extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.MAVEN_OVERRIDES.toString());
+        extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.OVERRIDES.toString());
         File overrides = new File(getClass().getClassLoader().getResource("filters/overrides.xml").toURI());
         extra.add(overrides.getAbsolutePath()); // add overrides
 
