@@ -296,7 +296,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(((FreeClass)declaration).getAnonymous())
             throw new InvocationException("Object class cannot be instantiated");
         if (hasConstructors()) {
-            return getConstructor(this.$reifiedArguments, declaration.getName());
+            return getConstructor(this.$reifiedArguments, "");
         } else if(constructor == null)
             throw Metamodel.newModelError("No constructor found for: "+declaration.getName());
         return null;
