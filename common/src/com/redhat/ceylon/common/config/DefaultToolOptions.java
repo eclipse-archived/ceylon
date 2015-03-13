@@ -13,7 +13,9 @@ public class DefaultToolOptions {
     public final static String DEFAULTS_ENCODING = "defaults.encoding";
     public final static String DEFAULTS_OFFLINE = "defaults.offline";
     public final static String DEFAULTS_TIMEOUT = "defaults.timeout";
+    // BACKWARDS-COMPAT
     public final static String DEFAULTS_MAVENOVERRIDES = "defaults.mavenoverrides";
+    public final static String DEFAULTS_OVERRIDES = "defaults.overrides";
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
@@ -55,11 +57,15 @@ public class DefaultToolOptions {
         return config.getNumberOption(DEFAULTS_TIMEOUT, Constants.DEFAULT_TIMEOUT);
     }
     
-    public static String getDefaultMavenOverrides() {
-        return getDefaultMavenOverrides(CeylonConfig.get());
+    public static String getDefaultOverrides() {
+        return getDefaultOverrides(CeylonConfig.get());
     }
     
-    public static String getDefaultMavenOverrides(CeylonConfig config) {
+    public static String getDefaultOverrides(CeylonConfig config) {
+        String ov = config.getOption(DEFAULTS_OVERRIDES);
+        if(ov != null)
+            return ov;
+        // backwards compat
         return config.getOption(DEFAULTS_MAVENOVERRIDES);
     }
     
