@@ -81,6 +81,8 @@ public class Types {
     List<Warner> warnStack = List.nil();
     final Name capturedName;
 
+    private SourceLanguage sourceLanguage;
+
     // <editor-fold defaultstate="collapsed" desc="Instantiating">
     public static Types instance(Context context) {
         Types instance = context.get(typesKey);
@@ -101,6 +103,7 @@ public class Types {
         chk = Check.instance(context);
         capturedName = names.fromString("<captured wildcard>");
         messages = JavacMessages.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
     }
     // </editor-fold>
 
@@ -340,6 +343,12 @@ public class Types {
                 return isSubtypeUnchecked(elemtype(t), elemtype(s), warn);
             }
         } else if (isSubtype(t, s)) {
+            return true;
+        } else if (sourceLanguage.isCeylon()
+                && t instanceof ClassType
+                && s instanceof ClassType
+                && isSubtype(new ClassType(t.getEnclosingType(), List.<Type>nil(), t.tsym), 
+                        new ClassType(s.getEnclosingType(), List.<Type>nil(), s.tsym))) {
             return true;
         }
         else if (t.tag == TYPEVAR) {
