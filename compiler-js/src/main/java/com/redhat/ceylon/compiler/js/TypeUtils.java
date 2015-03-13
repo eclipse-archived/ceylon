@@ -741,10 +741,11 @@ public class TypeUtils {
             Declaration _cont = Util.getContainingDeclaration(d);
             gen.out(",$cont:");
             boolean generateName = true;
-            if (_cont.getName().startsWith("anonymous#")) {
+            if (_cont.getName() != null && _cont.getName().startsWith("anonymous#")) {
                 //Anon functions don't have metamodel so go up until we find a non-anon container
                 Declaration _supercont = Util.getContainingDeclaration(_cont);
-                while (_supercont != null && _supercont.getName().startsWith("anonymous#")) {
+                while (_supercont != null && _supercont.getName() != null
+                        && _supercont.getName().startsWith("anonymous#")) {
                     _supercont = Util.getContainingDeclaration(_supercont);
                 }
                 if (_supercont == null) {
