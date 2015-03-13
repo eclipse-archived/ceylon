@@ -36,7 +36,7 @@ public class CeylonUtils {
         private File cwd;
         private String systemRepo;
         private String cacheRepo;
-        private String mavenOverrides;
+        private String overrides;
         private List<String> userRepos;
         private List<String> extraUserRepos;
         private List<String> remoteRepos;
@@ -122,13 +122,13 @@ public class CeylonUtils {
         }
 
         /**
-         * Sets the path to use for the maven overrides XML file
+         * Sets the path to use for the module overrides XML file
          *
-         * @param mavenOverrides the path to use for the maven overrides XML file
+         * @param overrides the path to use for the module overrides XML file
          * @return This object for chaining method calls
          */
-        public CeylonRepoManagerBuilder mavenOverrides(String mavenOverrides) {
-            this.mavenOverrides = mavenOverrides;
+        public CeylonRepoManagerBuilder overrides(String overrides) {
+            this.overrides = overrides;
             return this;
         }
 
@@ -314,7 +314,7 @@ public class CeylonUtils {
                 root = new File(absolute(resolveRepoUrl(repositories, cacheRepo)));
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getMavenOverrides(config));
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getOverrides(config));
 
             // Now we add all the rest of the repositories in the order that they will be searched
             
@@ -576,8 +576,8 @@ public class CeylonUtils {
             return (timeout >= 0) ? timeout : (int)DefaultToolOptions.getDefaultTimeout(config);
         }
         
-        private String getMavenOverrides(CeylonConfig config) {
-            String path = (mavenOverrides != null) ? mavenOverrides : DefaultToolOptions.getDefaultMavenOverrides(config);
+        private String getOverrides(CeylonConfig config) {
+            String path = (overrides != null) ? overrides : DefaultToolOptions.getDefaultOverrides(config);
             if (path != null) {
                 File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
                 return f.getPath();

@@ -46,10 +46,10 @@ public class RepositoryManagerBuilder {
         this(log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, String mavenOverrides) {
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, String overrides) {
         try {
             Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, String.class);
-            delegate = ctor.newInstance(log, offline, timeout, mavenOverrides);
+            delegate = ctor.newInstance(log, offline, timeout, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {
@@ -68,10 +68,10 @@ public class RepositoryManagerBuilder {
         this(mainRepository, log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, String mavenOverrides) {
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, String overrides) {
         try {
             Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, String.class);
-            delegate = ctor.newInstance(mainRepository, log, offline, timeout, mavenOverrides);
+            delegate = ctor.newInstance(mainRepository, log, offline, timeout, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {

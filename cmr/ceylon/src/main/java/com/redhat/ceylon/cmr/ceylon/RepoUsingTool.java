@@ -61,7 +61,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
     protected String systemRepo;
     protected String cacheRepo;
-    protected String mavenOverrides;
+    protected String overrides;
     protected int timeout = -1;
     protected boolean noDefRepos;
     protected boolean offline;
@@ -127,10 +127,18 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.cacheRepo = cacheRepo;
     }
 
+    // Backwards-compat
     @OptionArgument(longName="maven-overrides", argumentName="url")
-    @Description("Specifies the xml file to use to load Maven artifact overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. Experimental.")
+    @Description("Specifies the xml file to use to load Maven artifact overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. Deprecated: use --overrides.")
+    @Deprecated
     public void setMavenOverrides(String mavenOverrides) {
-        this.mavenOverrides = mavenOverrides;
+        this.overrides = mavenOverrides;
+    }
+
+    @OptionArgument(longName="overrides", argumentName="url")
+    @Description("Specifies the xml file to use to load module overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. Experimental.")
+    public void setOverrides(String overrides) {
+        this.overrides = overrides;
     }
 
     @Option(longName="no-default-repositories")
@@ -171,7 +179,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut() {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
-                .mavenOverrides(mavenOverrides)
+                .overrides(overrides)
                 .noSystemRepo(!needsSystemRepo() && noDefRepos)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
