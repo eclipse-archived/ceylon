@@ -46,6 +46,8 @@ import com.redhat.ceylon.common.log.Logger;
  * @author Tako Schotanus
  */
 public class LegacyImporter {
+    private final String moduleName;
+    private final String moduleVersion;
     private final File jarFile;
     private final RepositoryManager outRepoman;
     private final RepositoryManager lookupRepoman;
@@ -191,37 +193,45 @@ public class LegacyImporter {
     
     /**
      * Set up the object with the given output and lookup repositories
+     * @param moduleName The name for the published module
+     * @param moduleVersion The version for the published module
      * @param outputRepository The destination repository to import the JAR into
      * @param lookupRepoman The repository for looking up dependencies
      */
-    public LegacyImporter(File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository) {
-        this(jarFile, outputRepository, lookupRepository, null);
+    public LegacyImporter(String moduleName, String moduleVersion, File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository) {
+        this(moduleName, moduleVersion, jarFile, outputRepository, lookupRepository, null);
     }
     
     /**
      * Set up the object with the given output and lookup repositories and a callback
      * interface to receive feedback on progress and errors
+     * @param moduleName The name for the published module
+     * @param moduleVersion The version for the published module
      * @param outputRepository The destination repository to import the JAR into
      * @param lookupRepoman The repository for looking up dependencies
      * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
      */
-    public LegacyImporter(File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, ImporterFeedback feedback) {
-        this(jarFile, outputRepository, lookupRepository, new CMRJULLogger(), feedback);
+    public LegacyImporter(String moduleName, String moduleVersion, File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, ImporterFeedback feedback) {
+        this(moduleName, moduleVersion, jarFile, outputRepository, lookupRepository, new CMRJULLogger(), feedback);
     }
     
     /**
      * Set up the object with the given output and lookup repositories and a callback
      * interface to receive feedback on progress and errors
+     * @param moduleName The name for the published module
+     * @param moduleVersion The version for the published module
      * @param outputRepository The destination repository to import the JAR into
      * @param lookupRepoman The repository for looking up dependencies
      * @param log The logger to use
      * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
      */
-    public LegacyImporter(File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, Logger log, ImporterFeedback feedback) {
+    public LegacyImporter(String moduleName, String moduleVersion, File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, Logger log, ImporterFeedback feedback) {
         assert(jarFile != null);
         assert(outputRepository != null);
         assert(lookupRepository != null);
         assert(log != null);
+        this.moduleName = moduleName;
+        this.moduleVersion = moduleVersion;
         this.jarFile = jarFile;
         this.outRepoman = outputRepository;
         this.lookupRepoman = lookupRepository;
@@ -260,14 +270,14 @@ public class LegacyImporter {
      * @param descriptorFile
      * @throws Exception
      */
-    public LegacyImporter loadModuleDescriptor(String module, String version) throws Exception {
+    public LegacyImporter loadModuleDescriptor() throws Exception {
         if (descriptorFile != null && !descriptorLoaded) {
             gatherExternalClasses();
             if (descriptorFile.exists()) {
                 if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
-                    checkModuleXml(module, version, descriptorFile);
+                    checkModuleXml(moduleName, moduleVersion, descriptorFile);
                 } else if(descriptorFile.toString().toLowerCase().endsWith(".properties")) {
-                    checkModuleProperties(module, version, descriptorFile);
+                    checkModuleProperties(moduleName, moduleVersion, descriptorFile);
                 }
                 descriptorLoaded = true;
             }
@@ -375,10 +385,8 @@ public class LegacyImporter {
      * Publishes the JAR and accompanying module descriptor (if defined) to the
      * <code>outputRepository</code> specified in the constructor using the given
      * module name and version.
-     * @param moduleName The name for the published module
-     * @param moduleVersion The version for the published module
      */
-    public LegacyImporter publish(String moduleName, String moduleVersion) {
+    public LegacyImporter publish() {
         ArtifactContext context = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JAR);
         context.setForceOperation(true);
         outRepoman.putArtifact(context, jarFile);
