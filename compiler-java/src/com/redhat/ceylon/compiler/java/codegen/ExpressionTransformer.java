@@ -1463,10 +1463,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.Expression expression = expressions.get(ii);
             at(expression);
             // Here in both cases we don't need a type cast for erasure
-            if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
+            if (isCeylonBasicType(expression.getTypeModel())
+                    && expression.getUnboxed()) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
                 // If erases to a Java primitive just call append, don't box it just to call format. 
                 String method = isCeylonCharacter(expression.getTypeModel()) ? "appendCodePoint" : "append";
-                builder = make().Apply(null, makeSelect(builder, method), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED, null)));
+                builder = make().Apply(null, makeSelect(builder, method), List.<JCExpression>of(
+                        transformExpression(expression, BoxingStrategy.UNBOXED, null)));
             } else {
                 JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "toString"), List.<JCExpression>nil());
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(formatted));
