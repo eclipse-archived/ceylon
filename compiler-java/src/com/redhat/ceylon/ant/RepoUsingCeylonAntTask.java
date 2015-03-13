@@ -34,7 +34,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
     private RepoSet reposet = new RepoSet();
     private String systemRepository;
     private String cacheRepository;
-    private String mavenOverrides;
+    private String overrides;
     private Boolean noDefaultRepositories = false;
     private Boolean offline = false;
     
@@ -85,16 +85,25 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
         cacheRepository = rep;
     }
 
-    protected String getMavenOverrides() {
-        return mavenOverrides;
+    protected String getOverrides() {
+        return overrides;
     }
 
     /**
-     * Sets the path to the maven overrides XML file
-     * @param overrides the path to the maven overrides XML file
+     * Sets the path to the module overrides XML file.
+     * @param overrides the path to the module overrides XML file
+     * @deprecated use {@link #setOverrides(String)}
      */
     public void setMavenOverrides(String overrides) {
-        mavenOverrides = overrides;
+        this.overrides = overrides;
+    }
+
+    /**
+     * Sets the path to the module overrides XML file.
+     * @param overrides the path to the module overrides XML file
+     */
+    public void setOverrides(String overrides) {
+        this.overrides = overrides;
     }
 
     /**
@@ -133,8 +142,8 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
             appendOptionArgument(cmd, "--cacherep", getCacheRepository());
         }
         
-        if (getMavenOverrides() != null) {
-            appendOptionArgument(cmd, "--maven-overrides", getMavenOverrides());
+        if (getOverrides() != null) {
+            appendOptionArgument(cmd, "--overrides", getOverrides());
         }
         
         if (offline) {

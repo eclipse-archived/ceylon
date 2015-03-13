@@ -83,7 +83,9 @@ public enum OptionName {
     CEYLONOUT("-out"),
     CEYLONOFFLINE("-offline"),
     CEYLONCONTINUE("-continue"),
+    // Backwards-compat
     CEYLONMAVENOVERRIDES("-maven-overrides"),
+    CEYLONOVERRIDES("-overrides"),
     CEYLONFLATCLASSPATH("-flat-classpath"),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies"),
     S("-s"),

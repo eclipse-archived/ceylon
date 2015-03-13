@@ -68,7 +68,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--maven-overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
+                Arrays.asList("--overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();

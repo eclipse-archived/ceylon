@@ -171,6 +171,7 @@ public class RecognizedOptions {
         CEYLONFLATCLASSPATH,
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
         CEYLONMAVENOVERRIDES,
+        CEYLONOVERRIDES,
         S,
         IMPLICIT,
         ENCODING,
@@ -242,6 +243,7 @@ public class RecognizedOptions {
         CEYLONFLATCLASSPATH,
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
         CEYLONMAVENOVERRIDES,
+        CEYLONOVERRIDES,
         S,
         ENCODING,
         SOURCE,
@@ -472,7 +474,14 @@ public class RecognizedOptions {
         new COption(CEYLONCONTINUE,     "opt.ceyloncontinue"),
         new COption(CEYLONAUTOEXPORTMAVENDEPENDENCIES,          "opt.ceylonautoexportmavendependencies"),
         new COption(CEYLONFLATCLASSPATH,  "opt.ceylonflatclasspath"),
-        new COption(CEYLONMAVENOVERRIDES, "opt.arg.url",        "opt.ceylonmavenoverrides"),
+        new COption(CEYLONOVERRIDES,      "opt.arg.url",        "opt.ceylonoverrides"),
+        // backwards-compat
+        new COption(CEYLONMAVENOVERRIDES, "opt.arg.url",        "opt.ceylonoverrides"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-overrides", arg);
+            } 
+        },
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),
         new Option(IMPLICIT,                                    "opt.implicit",
                 Option.ChoiceKind.ONEOF, "none", "class"),

@@ -189,7 +189,7 @@ public class InfoToolTests extends AbstractToolTests {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
         CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--dependency-depth=-1", "--maven-overrides", getPackagePath()+"/overrides.xml", "--show-incompatible", "io.cayla.web/0.3.0"));
+                Arrays.asList("--dependency-depth=-1", "--overrides", getPackagePath()+"/overrides.xml", "--show-incompatible", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();

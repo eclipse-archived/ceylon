@@ -369,12 +369,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-auto-export-maven-dependencies");
         }
 
-        if (mavenOverrides != null) {
-            arguments.add("-maven-overrides");
-            if (mavenOverrides.startsWith("classpath:")) {
-                arguments.add(mavenOverrides);
+        if (overrides != null) {
+            arguments.add("-overrides");
+            if (overrides.startsWith("classpath:")) {
+                arguments.add(overrides);
             } else {
-                arguments.add(applyCwd(new File(mavenOverrides)).getPath());
+                arguments.add(applyCwd(new File(overrides)).getPath());
             }
         }
 

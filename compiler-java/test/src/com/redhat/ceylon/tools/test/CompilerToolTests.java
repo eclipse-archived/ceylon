@@ -99,7 +99,7 @@ public class CompilerToolTests extends AbstractToolTests {
                         "--resource=res",
                         "--out=mod",
                         "--rep", "aether",
-                        "--maven-overrides", "overrides.xml",
+                        "--overrides", "overrides.xml",
                         "--javac=-cp=" + getClassPathAsPath(), // Unfortunately --cwd doesn't affect Java options
                         "cwdtest"));
         tool.run();

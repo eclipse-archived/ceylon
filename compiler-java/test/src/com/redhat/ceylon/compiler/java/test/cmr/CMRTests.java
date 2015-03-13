@@ -720,7 +720,7 @@ public class CMRTests extends CompilerTests {
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
                 "-rep", "aether",
-                "-maven-overrides", getPackagePath()+"/modules/bug1100/overrides.xml"/*, "-verbose:cmr"*/), 
+                "-overrides", getPackagePath()+"/modules/bug1100/overrides.xml"/*, "-verbose:cmr"*/), 
                 "modules/bug1100/module.ceylon", "modules/bug1100/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
     }
@@ -735,7 +735,7 @@ public class CMRTests extends CompilerTests {
     @Test
     public void testMdlDependenciesOverrideRemoveDep() throws IOException{
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
-                "-maven-overrides", getPackagePath()+"/modules/overrides/overridesRemoveJavaBase.xml"/*, "-verbose:cmr"*/), 
+                "-overrides", getPackagePath()+"/modules/overrides/overridesRemoveJavaBase.xml"/*, "-verbose:cmr"*/), 
                 "modules/overrides/module.ceylon", "modules/overrides/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
     }
@@ -811,7 +811,7 @@ public class CMRTests extends CompilerTests {
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
         
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
-                Arrays.asList("--flat-classpath", "--maven-overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
+                Arrays.asList("--flat-classpath", "--overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
     }
 
     @Test
@@ -822,7 +822,7 @@ public class CMRTests extends CompilerTests {
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
         
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
-                Arrays.asList("--maven-overrides", getPackagePath()+"/modules/sparkframework/overrides-fix.xml"));
+                Arrays.asList("--overrides", getPackagePath()+"/modules/sparkframework/overrides-fix.xml"));
     }
 
     @Test
