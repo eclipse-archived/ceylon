@@ -710,6 +710,17 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
     }
 
+    /**
+     * Simplifies a Ceylon type, eliminating certain things which Java cannot be represented in a Java type. 
+     * The following simplifications are made:
+     * <table><tbody>
+     * <tr><th>Ceylon Type</th><th>result</th></tr>
+     * <tr><td>T?</td><td>T</td></tr>
+     * <tr><td>T&Object</td><td>T</td></tr>
+     * <tr><td>T&Identifiable</td><td>T</td></tr>
+     * <tr><td>T&Basic</td><td>T</td></tr>
+     * </tbody></table>
+     */
     ProducedType simplifyType(ProducedType orgType) {
         if(orgType == null)
             return null;
