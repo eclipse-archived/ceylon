@@ -1,6 +1,6 @@
 package com.redhat.ceylon.cmr.api;
 
-import com.sun.org.apache.bcel.internal.util.Objects;
+import java.util.Objects;
 
 @SuppressWarnings("serial")
 public class MavenArtifactContext extends ArtifactContext {
