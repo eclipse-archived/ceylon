@@ -260,14 +260,14 @@ public class LegacyImporter {
      * @param descriptorFile
      * @throws Exception
      */
-    public LegacyImporter loadModuleDescriptor() throws Exception {
+    public LegacyImporter loadModuleDescriptor(String module, String version) throws Exception {
         if (descriptorFile != null && !descriptorLoaded) {
             gatherExternalClasses();
             if (descriptorFile.exists()) {
                 if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
-                    checkModuleXml(descriptorFile);
+                    checkModuleXml(module, version, descriptorFile);
                 } else if(descriptorFile.toString().toLowerCase().endsWith(".properties")) {
-                    checkModuleProperties(descriptorFile);
+                    checkModuleProperties(module, version, descriptorFile);
                 }
                 descriptorLoaded = true;
             }
@@ -402,16 +402,16 @@ public class LegacyImporter {
     // Check the properties descriptor file for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkModuleProperties(File descriptorFile) throws Exception {
-        ModuleInfo dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+    private void checkModuleProperties(String module, String version, File descriptorFile) throws Exception {
+        ModuleInfo dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, module, version, lookupRepoman.getOverrides());
         checkDependencies(dependencies);
     }
 
     // Check the XML descriptor file for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkModuleXml(File descriptorFile) throws Exception {
-        ModuleInfo dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+    private void checkModuleXml(String module, String version, File descriptorFile) throws Exception {
+        ModuleInfo dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, module, version, lookupRepoman.getOverrides());
         checkDependencies(dependencies);
     }
 
