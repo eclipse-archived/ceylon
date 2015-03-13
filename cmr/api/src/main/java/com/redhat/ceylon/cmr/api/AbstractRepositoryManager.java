@@ -41,12 +41,10 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     public AbstractRepositoryManager(Logger log, String overridesFileName) {
         this.log = log;
         if(overridesFileName != null){
-            File overridesFile = new File(overridesFileName);
-            if (overridesFile.exists() == false) {
-                throw new IllegalArgumentException("No such overrides file: " + overridesFile);
-            }
             try {
-                this.overrides = Overrides.parse(new FileInputStream(overridesFile));
+                this.overrides = Overrides.parse(overridesFileName);
+            }catch(IllegalArgumentException x ){
+                throw x;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }

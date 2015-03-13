@@ -16,6 +16,9 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -185,6 +188,16 @@ public class Overrides {
         return new ModuleInfo(filter, result);
     }
 
+    public static Overrides parse(String overridesFileName) throws FileNotFoundException, Exception{
+        File overridesFile = new File(overridesFileName);
+        if (overridesFile.exists() == false) {
+            throw new IllegalArgumentException("No such overrides file: " + overridesFile);
+        }
+        try(InputStream is = new FileInputStream(overridesFile)){
+            return Overrides.parse(is);
+        }
+    }
+    
     static Overrides parse(InputStream is) throws Exception {
         try {
             Overrides result = new Overrides();
