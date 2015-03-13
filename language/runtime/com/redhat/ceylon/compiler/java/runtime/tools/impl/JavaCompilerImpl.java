@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
 import com.redhat.ceylon.compiler.java.runtime.tools.Compiler;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilerOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.JavaCompilerOptions;
 import com.redhat.ceylon.compiler.java.tools.CeylonTaskListener;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
@@ -135,6 +136,13 @@ public class JavaCompilerImpl implements Compiler {
         if(options.getOverrides() != null){
             translatedOptions.add("-maven-overrides");
             translatedOptions.add(options.getOverrides());
+        }
+        if(options instanceof JavaCompilerOptions){
+            JavaCompilerOptions javaOptions = (JavaCompilerOptions) options;
+            if(javaOptions.isFlatClasspath())
+                translatedOptions.add("-flat-classpath");
+            if(javaOptions.isAutoExportMavenDependencies())
+                translatedOptions.add("-auto-export-maven-dependencies");
         }
         return translatedOptions;
     }
