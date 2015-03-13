@@ -37,6 +37,7 @@ public class ModuleDescriptorReader {
     private Method moduleName;
     private Method moduleLicense;
     private Method moduleAuthors;
+    private Method moduleImports;
 
     // WARNING: this exception class name is used in com.redhat.ceylon.ant.ModuleDescriptorReader because of FUCKED UP
     // classpath issues in the ant task. If you ever manage to untangle this mess: BE MY GUEST. 
@@ -59,6 +60,8 @@ public class ModuleDescriptorReader {
             this.moduleLicense.setAccessible(true);
             this.moduleAuthors = mdr.getMethod("getModuleAuthors");
             this.moduleAuthors.setAccessible(true);
+            this.moduleImports = mdr.getMethod("getModuleImports");
+            this.moduleImports.setAccessible(true);
             Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
             constructor.setAccessible(true);
             this.instance = constructor.newInstance(moduleName, srcDir);
@@ -119,4 +122,17 @@ public class ModuleDescriptorReader {
             throw new RuntimeException(e);
         }
     }
+    
+    /**
+     * Gets the module imports. Format is [name, version, optional, shared]
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> getModuleImports() {
+        try {
+            return (List<Object[]>)moduleImports.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 }
