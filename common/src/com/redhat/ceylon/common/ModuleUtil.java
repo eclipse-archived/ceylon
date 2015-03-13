@@ -87,4 +87,11 @@ public abstract class ModuleUtil {
         }
         return name.replace(':', '.');
     }
+    
+    /**
+     * Returns true if the module name contains a ':'
+     */
+    public static boolean isMavenModule(String name){
+        return name != null && name.indexOf(':') != -1;
+    }
 }
