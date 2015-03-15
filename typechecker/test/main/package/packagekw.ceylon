@@ -1,7 +1,12 @@
+import ceylon.language { Int=Integer }
+
 String get() => "hello";
 class X() {}
 
 package.X x = package.X();
+
+Int i1 = 1;
+package.Int i2 = package.Int();
 
 class Outer() {
     Integer get() => 0;

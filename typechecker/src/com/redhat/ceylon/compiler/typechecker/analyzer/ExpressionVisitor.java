@@ -8,6 +8,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactl
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
@@ -5579,14 +5581,8 @@ public class ExpressionVisitor extends Visitor {
             if (packageQualified) {
                 Package pack = unit.getPackage();
                 container = "package '" + pack.getNameAsString() + "'";
-                Declaration pm = 
-                        pack.getMember(name, signature, ellipsis);
-                if (pm instanceof TypedDeclaration) {
-                    member = (TypedDeclaration) pm;
-                }
-                else {
-                    member = null;
-                }
+                member = getPackageTypedDeclaration(name, 
+                        signature, ellipsis, unit);
                 ambiguous = false;
             }
             else {
@@ -6097,14 +6093,8 @@ public class ExpressionVisitor extends Visitor {
             if (packageQualified) {
                 Package pack = unit.getPackage();
                 container = "package '" + pack.getNameAsString() + "'";
-                Declaration pm = 
-                        pack.getMember(name, signature, ellipsis);
-                if (pm instanceof TypeDeclaration) {
-                    type = (TypeDeclaration) pm;
-                }
-                else {
-                    type = null;
-                }
+                type = getPackageTypeDeclaration(name, 
+                        signature, ellipsis, unit);
                 ambiguous = false;
             }
             else {

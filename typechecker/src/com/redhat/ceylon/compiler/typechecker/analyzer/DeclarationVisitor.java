@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
@@ -1624,9 +1625,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    //TODO: handle that.getPackageQualified()!!!!
-                    return getTypeDeclaration(scope, 
-                            name, null, false, unit);
+                    return that.getPackageQualified() ?
+                            getPackageTypeDeclaration(name, null, false, unit) :
+                            getTypeDeclaration(scope, name, null, false, unit);
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
