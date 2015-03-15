@@ -1,6 +1,8 @@
 String get() => "hello";
 class X() {}
 
+package.X x = package.X();
+
 class Outer() {
     Integer get() => 0;
     class X() {}
