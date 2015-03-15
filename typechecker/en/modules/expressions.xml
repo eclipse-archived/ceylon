@@ -3346,7 +3346,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
             
-            <synopsis>TypeDec: "`" TypeKeyword PackageQualifier? ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
+            <synopsis>TypeDec: "`" TypeKeyword ( PackageQualifier? MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
             
             <para>For a class or interface reference expression, the name of 
             the class or interface is optional. In this case, the class or
