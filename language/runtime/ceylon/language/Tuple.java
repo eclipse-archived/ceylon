@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
+import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
 import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
 import static java.lang.System.arraycopy;
@@ -110,8 +111,8 @@ public final class Tuple<Element, First extends Element,
         int length = array.length;
         this.$reifiedElement = $reifiedElement;
         if (copy) {
-            this.array = (Element[])Arrays.copyOfRange(array, 
-                  0, Util.toInt(length));
+            this.array = (Element[])
+                    Arrays.copyOfRange(array, 0, Util.toInt(length));
             
         } else {
             this.array = (Element[])array;
@@ -201,7 +202,7 @@ public final class Tuple<Element, First extends Element,
             array = new java.lang.Object[elements.length + other.array.length];
             System.arraycopy(elements, 0, array, 0, elements.length);
             System.arraycopy(other.array, 0, array, elements.length, other.array.length);
-            rest = (Sequential<?>) other.rest;
+            rest = other.rest;
         } else {
             array = elements;
             rest = tail;
@@ -355,19 +356,22 @@ public final class Tuple<Element, First extends Element,
         }
         if (fromIndex+l<array.length) {
             // just chop the array, discarding rest
-            java.lang.Object[] copy = fromIndex+l==array.length ? this.array : Arrays.copyOfRange(this.array, 
-                toInt(fromIndex), toInt(fromIndex+l));
+            java.lang.Object[] copy = fromIndex+l==array.length ? 
+                    this.array : Arrays.copyOfRange(this.array, 
+                            toInt(fromIndex), toInt(fromIndex+l));
             return new Tuple<Element,Element,Sequential<? extends Element>>
                     ($reifiedElement, copy, getEmptyTuple(), false);	
         } else if (fromIndex >= array.length) {
             // chop the rest
-            return (Sequential)rest.measure(Integer.instance(fromIndex-array.length), l);
+            return rest.measure(Integer.instance(fromIndex-array.length), l);
         } else {
             // we need the trailing elements of the array and the 
             // leading elements of rest
             java.lang.Object[] copy = Arrays.copyOfRange(this.array, 
                     toInt(fromIndex), toInt(this.array.length));
-            Sequential<Element> rest = (Sequential)this.rest.measure(Integer.instance(0), l-(this.array.length-toInt(fromIndex)));
+            Sequential<Element> rest =
+                    this.rest.measure(Integer.instance(0), 
+                            l-(this.array.length-toInt(fromIndex)));
             return new Tuple<Element,Element,Sequential<? extends Element>>
                     ($reifiedElement, copy, rest, false);
         }
@@ -411,13 +415,16 @@ public final class Tuple<Element, First extends Element,
                 newArray = Arrays.copyOfRange(this.array, 
                         toInt(fromIndex), toInt(toIndex)+1);
             }
-            return new Tuple<Element, First, Rest>($getReifiedElement$(), newArray, getEmptyTuple(), false);
+            return new Tuple<Element, First, Rest>($getReifiedElement$(), 
+                    newArray, getEmptyTuple(), false);
         } else if (fromIndex >= array.length) {
             // chop the rest
             if (reverse) {
-                return (Sequential)rest.span(Integer.instance(toIndex-array.length), Integer.instance(fromIndex-array.length));
+                return rest.span(Integer.instance(toIndex-array.length), 
+                        Integer.instance(fromIndex-array.length));
             } else {
-                return (Sequential)rest.span(Integer.instance(fromIndex-array.length), Integer.instance(toIndex-array.length));
+                return rest.span(Integer.instance(fromIndex-array.length), 
+                        Integer.instance(toIndex-array.length));
             }
         } else {// fromIndex < array.length <= toIndex
             // we need the trailing elements of the array and the 
@@ -427,7 +434,9 @@ public final class Tuple<Element, First extends Element,
             Sequential<? extends Element> rest = (Sequential)this.rest.span(
                     Integer.instance(0), 
                     Integer.instance(toIndex-array.length));
-            Tuple<Element, First, Rest> result = new Tuple<Element, First, Rest>($getReifiedElement$(), newArray, rest, false);
+            Tuple<Element, First, Rest> result = 
+                    new Tuple<Element, First, Rest>($getReifiedElement$(), 
+                            newArray, rest, false);
             return reverse ? result.getReversed() : result;
         }
     }
@@ -562,7 +571,8 @@ public final class Tuple<Element, First extends Element,
     @Override
     public boolean defines(@Name("key") Integer key) {
         long ind = key.longValue();
-        return ind>=0 && ind<array.length || rest.defines(Integer.instance(ind-this.array.length));
+        return ind>=0 && ind<array.length || 
+                rest.defines(Integer.instance(ind-this.array.length));
     }
 
     @Ignore
@@ -612,7 +622,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @Ignore
     public Sequence<? extends Element> sequence() {
-        return this;//$ceylon$language$Sequence$this.sequence();
+        return this; //$ceylon$language$Sequence$this.sequence();
     }
 
     @Override @Ignore
@@ -629,7 +639,8 @@ public final class Tuple<Element, First extends Element,
         @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
-    public final <Other> Tuple<java.lang.Object, ? extends Other, Tuple<Element,? extends First,? extends Rest>>
+    public final <Other> 
+    Tuple<java.lang.Object, ? extends Other, Tuple<Element,? extends First,? extends Rest>>
     withLeading(@Ignore TypeDescriptor $reifiedOther, 
                 @Name("element") Other e) {
         int length = this.array.length;
@@ -637,7 +648,7 @@ public final class Tuple<Element, First extends Element,
         array[0] = e;
         arraycopy(this.array, 0, array, 1, length);
         return new Tuple<java.lang.Object, Other, Tuple<Element,? extends First,? extends Rest>>
-                (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest, false);
+                (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest);
     }
     
     @Annotations({
@@ -645,7 +656,8 @@ public final class Tuple<Element, First extends Element,
         @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequence<Element|Other>>")
-    public <Other> Tuple<java.lang.Object, First, ? extends Sequential<?>>
+    public <Other> 
+    Tuple<java.lang.Object, First, ? extends Sequential<?>>
     withTrailing(@Ignore TypeDescriptor $reifiedOther,
                  @Name("element") Other e) {
         if (rest.getEmpty()) {
@@ -657,7 +669,8 @@ public final class Tuple<Element, First extends Element,
                     (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
         } else {
             return new Tuple<java.lang.Object, First, Sequential<?>>
-                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest.withTrailing($reifiedOther, e));
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array, 
+                            rest.withTrailing($reifiedOther, e));
         }
     }
     
@@ -711,7 +724,10 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Ignore
-    public Tuple($Serialization$ ignored, TypeDescriptor $reifiedElement,TypeDescriptor $reifiedFirst, TypeDescriptor $reifiedRest) {
+    public Tuple($Serialization$ ignored, 
+            TypeDescriptor $reifiedElement,
+            TypeDescriptor $reifiedFirst, 
+            TypeDescriptor $reifiedRest) {
 //        super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         // hack: put the type descriptors into the array, so they're available
@@ -729,10 +745,14 @@ public final class Tuple<Element, First extends Element,
         TypeDescriptor reifiedFirst = myTd.getTypeArguments()[1];
         TypeDescriptor reifiedRest = myTd.getTypeArguments()[2];
         
-        ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        ValueDeclaration firstAttribute = (ValueDeclaration)
+                ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                    .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
         dtor.putValue(reifiedFirst, firstAttribute, getFirst());
         
-        ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+        ValueDeclaration restAttribute = (ValueDeclaration)
+                ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                    .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
         dtor.putValue(reifiedRest, restAttribute, getRest());
     }
     @Ignore
@@ -745,8 +765,12 @@ public final class Tuple<Element, First extends Element,
             TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
             TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
             
-            ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
-            ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+            ValueDeclaration firstAttribute = (ValueDeclaration)
+                    ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+            ValueDeclaration restAttribute = (ValueDeclaration)
+                    ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
             
             java.lang.Object firstValOrRef = deconstructed.<First>getValue(reifiedFirst, firstAttribute);
             java.lang.Object restValOrRef = deconstructed.<Rest>getValue(reifiedRest, restAttribute);
@@ -777,7 +801,6 @@ public final class Tuple<Element, First extends Element,
         } catch (java.lang.Throwable t) {
             rethrow_.rethrow(t);
         }
-        
         
     }
     
@@ -1305,8 +1328,9 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public <Result, Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> spread(
-            TypeDescriptor $reified$Result, TypeDescriptor $reified$Args,
+    public <Result, Args extends Sequential<? extends java.lang.Object>> 
+    Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> 
+    spread(TypeDescriptor $reified$Result, TypeDescriptor $reified$Args,
             Callable<? extends Callable<? extends Result>> method) {
         return $ceylon$language$Iterable$impl().spread($reified$Result, $reified$Args, method);
     }
