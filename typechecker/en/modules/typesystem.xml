@@ -1580,10 +1580,10 @@ interface NumberLiteral
             <itemizedlist>
                 <listitem>
                     <para><literal>X</literal> is a subtype of some instantiation of
-                    <literal>Sequence</literal>, <literal>Y</literal> is not a subtype
-                    of any instantiation of <literal>Sequence</literal>, and 
+                    <literal>Sequential</literal>, <literal>Y</literal> is not a subtype
+                    of any instantiation of <literal>Sequential</literal>, and 
                     <literal>Y</literal> is not an instantiation of a type that is
-                    inherited by <literal>Sequence</literal>,</para>
+                    inherited by <literal>Sequential</literal>,</para>
                 </listitem>
                 <!--listitem>
                     <para><literal>X</literal> is a subtype of <literal>Empty</literal>, and 
