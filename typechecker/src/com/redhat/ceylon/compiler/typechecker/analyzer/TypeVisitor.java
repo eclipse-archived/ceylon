@@ -17,6 +17,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.notOverloaded;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,10 +55,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -531,16 +528,18 @@ public class TypeVisitor extends Visitor {
         return name;
     }
 
-    private void addImport(Tree.ImportMemberOrType member, ImportList il,
-            Import i) {
+    private void addImport(Tree.ImportMemberOrType member, 
+            ImportList il, Import i) {
         String alias = i.getAlias();
         if (alias!=null) {
             Map<String, String> mods = unit.getModifiers();
-            if (mods.containsKey(alias) && mods.get(alias).equals(alias)) {
+            if (mods.containsKey(alias) && 
+                    mods.get(alias).equals(alias)) {
                 //spec says you can't hide a language modifier
                 //unless the modifier itself has an alias
                 //(this is perhaps a little heavy-handed)
-                member.addError("import hides a language modifier: '" + alias + "'");
+                member.addError("import hides a language modifier: '" + 
+                        alias + "'");
             }
             else {
                 Import o = unit.getImport(alias);
@@ -595,9 +594,10 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.UnionType that) {
         super.visit(that);
+        List<Tree.StaticType> sts = that.getStaticTypes();
         List<ProducedType> types = 
-                new ArrayList<ProducedType>(that.getStaticTypes().size());
-        for (Tree.StaticType st: that.getStaticTypes()) {
+                new ArrayList<ProducedType>(sts.size());
+        for (Tree.StaticType st: sts) {
             //addToUnion( types, st.getTypeModel() );
             ProducedType t = st.getTypeModel();
             if (t!=null) types.add(t);
@@ -611,9 +611,10 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
+        List<Tree.StaticType> sts = that.getStaticTypes();
         List<ProducedType> types = 
-                new ArrayList<ProducedType>(that.getStaticTypes().size());
-        for (Tree.StaticType st: that.getStaticTypes()) {
+                new ArrayList<ProducedType>(sts.size());
+        for (Tree.StaticType st: sts) {
             //addToIntersection(types, st.getTypeModel(), unit);
             ProducedType t = st.getTypeModel();
             if (t!=null) types.add(t);
@@ -638,7 +639,7 @@ public class TypeVisitor extends Visitor {
             else {
                 final int len;
                 try {
-                    len = Integer.parseInt(length.getText());
+                    len = parseInt(length.getText());
                 }
                 catch (NumberFormatException nfe) {
                     length.addError("must be a positive decimal integer");
@@ -673,7 +674,7 @@ public class TypeVisitor extends Visitor {
         }
         else {
             if (elem instanceof Tree.SequencedType) {
-                SequencedType st = (Tree.SequencedType) elem;
+                Tree.SequencedType st = (Tree.SequencedType) elem;
                 ProducedType et = st.getType().getTypeModel();
                 if (et!=null) {
                     if (st.getAtLeastOne()) {
@@ -719,16 +720,20 @@ public class TypeVisitor extends Visitor {
         Tree.StaticType rt = that.getReturnType();
         if (rt!=null) {
             Interface cd = unit.getCallableDeclaration();
-            that.setTypeModel(producedType(cd,
-                    rt.getTypeModel(),
-                    getTupleType(that.getArgumentTypes(), unit)));
+            ProducedType tt = 
+                    getTupleType(that.getArgumentTypes(), unit);
+            ProducedType pt = 
+                    producedType(cd, rt.getTypeModel(), tt);
+            that.setTypeModel(pt);
         }
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        that.setTypeModel(getTupleType(that.getElementTypes(), unit));
+        ProducedType tt = 
+                getTupleType(that.getElementTypes(), unit);
+        that.setTypeModel(tt);
     }
 
     static ProducedType getTupleType(List<Tree.Type> ets, Unit unit) {
@@ -739,7 +744,8 @@ public class TypeVisitor extends Visitor {
         int firstDefaulted = -1;
         for (int i=0; i<ets.size(); i++) {
             Tree.Type st = ets.get(i);
-            ProducedType arg = st==null ? null : st.getTypeModel();
+            ProducedType arg = st==null ? 
+                    null : st.getTypeModel();
             if (arg==null) {
                 arg = new UnknownType(unit).getType();
             }
@@ -761,7 +767,8 @@ public class TypeVisitor extends Visitor {
                 }
                 else {
                     sequenced = true;
-                    Tree.SequencedType sst = (Tree.SequencedType) st;
+                    Tree.SequencedType sst = 
+                            (Tree.SequencedType) st;
                     atleastone = sst.getAtLeastOne();
                     arg = sst.getType().getTypeModel();
                 }
@@ -776,7 +783,8 @@ public class TypeVisitor extends Visitor {
             }
             args.add(arg);
         }
-        return getTupleType(args, sequenced, atleastone, firstDefaulted, unit);
+        return getTupleType(args, sequenced, 
+                atleastone, firstDefaulted, unit);
     }
 
     //TODO: big copy/paste from Unit.getTupleType(), to eliminate
@@ -785,9 +793,10 @@ public class TypeVisitor extends Visitor {
     public static ProducedType getTupleType(List<ProducedType> elemTypes, 
             boolean variadic, boolean atLeastOne, int firstDefaulted,
             Unit unit) {
-        ProducedType result = 
-                unit.getType(unit.getEmptyDeclaration());
-        ProducedType union = 
+        Class td = unit.getTupleDeclaration();
+        Interface ed = unit.getEmptyDeclaration();
+        ProducedType result = unit.getType(ed);
+        ProducedType union =
                 unit.getType(unit.getNothingDeclaration());
         int last = elemTypes.size()-1;
         for (int i=last; i>=0; i--) {
@@ -805,11 +814,11 @@ public class TypeVisitor extends Visitor {
                         unit.getSequentialType(elemType);
             }
             else {
-                result = producedType(unit.getTupleDeclaration(), 
+                result = producedType(td, 
                         union, elemType, result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
                     pair = new ArrayList<ProducedType>();
-                    pair.add(unit.getType(unit.getEmptyDeclaration()));
+                    pair.add(unit.getType(ed));
                     pair.add(result);
                     ut = new UnionType(unit);
                     ut.setCaseTypes(pair);
@@ -823,7 +832,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        String name = name(that.getIdentifier());
+        Tree.Identifier id = that.getIdentifier();
+        String name = name(id);
         Scope scope = 
                 that.getPackageQualified() ? 
                         unit.getPackage() : 
@@ -833,7 +843,7 @@ public class TypeVisitor extends Visitor {
         if (type==null) {
             that.addError("type declaration does not exist: '" + 
                     name + "'", 102);
-            unit.getUnresolvedReferences().add(that.getIdentifier());
+            unit.getUnresolvedReferences().add(id);
         }
         else {
             ProducedType outerType = 
@@ -863,13 +873,15 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override
-    public void visit(MemberLiteral that) {
+    public void visit(Tree.MemberLiteral that) {
         super.visit(that);
         if (that.getType()!=null) {
-            ProducedType pt = that.getType().getTypeModel();
+            ProducedType pt = 
+                    that.getType().getTypeModel();
             if (pt!=null) {
                 if (that.getTypeArgumentList()!=null &&
-                        isTypeUnknown(pt) && !pt.isUnknown()) {
+                        isTypeUnknown(pt) && 
+                        !pt.isUnknown()) {
                     that.getTypeArgumentList()
                             .addError("qualifying type does not fully-specify type arguments");
                 }
@@ -899,7 +911,8 @@ public class TypeVisitor extends Visitor {
                         .addError("qualifying type does not fully-specify type arguments");
             }
             TypeDeclaration d = pt.getDeclaration();
-            String name = name(that.getIdentifier());
+            Tree.Identifier id = that.getIdentifier();
+            String name = name(id);
             TypeDeclaration type = 
                     getTypeMember(d, name, null, false, unit);
             if (type==null) {
@@ -910,7 +923,7 @@ public class TypeVisitor extends Visitor {
                 else {
                     that.addError("member type declaration does not exist: '" + 
                             name + "' in type '" + d.getName() + "'", 100);
-                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                    unit.getUnresolvedReferences().add(id);
                 }
             }
             else {
@@ -983,7 +996,7 @@ public class TypeVisitor extends Visitor {
             for (int i = 0; i<args.size(); i++) {
                 Tree.Type t = args.get(i);
                 if (t instanceof Tree.StaticType) {
-                    TypeVariance variance = 
+                    Tree.TypeVariance variance = 
                             ((Tree.StaticType) t).getTypeVariance();
                     if (variance!=null) {
                         TypeParameter p = params.get(i);
@@ -1612,7 +1625,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration td = 
                 (TypeDeclaration) that.getScope();
-        List<BaseMemberExpression> bmes = 
+        List<Tree.BaseMemberExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
         List<ProducedType> list = 

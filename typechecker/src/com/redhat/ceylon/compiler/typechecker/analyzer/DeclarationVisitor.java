@@ -56,8 +56,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
@@ -442,26 +440,28 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        if (that.getParameterList()==null) {
+        Tree.ParameterList pl = that.getParameterList();
+        if (pl==null) {
 //            that.addError("missing parameter list in class declaration: '" + 
 //                    name(that.getIdentifier()) + "' must have a parameter list", 1000);
         }
         else {
-            that.getParameterList().getModel().setFirst(true);
-            c.addParameterList(that.getParameterList().getModel());
+            pl.getModel().setFirst(true);
+            c.addParameterList(pl.getModel());
         }
         //TODO: is this still necessary??
         if (c.isClassOrInterfaceMember() && 
                 c.getContainer() instanceof TypedDeclaration) {
             that.addUnsupportedError("nested classes of inner classes are not yet supported");
         }
+        Tree.Identifier identifier = that.getIdentifier();
         if (c.isAbstract() && c.isFinal()) {
             that.addError("class may not be both abstract and final: '" + 
-                    name(that.getIdentifier()) + "'");
+                    name(identifier) + "'");
         }
         if (c.isFormal() && c.isFinal()) {
             that.addError("class may not be both formal and final: '" + 
-                    name(that.getIdentifier()) + "'");
+                    name(identifier) + "'");
         }
     }
     
@@ -712,12 +712,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
         that.setDeclarationModel(v);
-        v.setTransient(that.getSpecifierOrInitializerExpression() 
-                instanceof Tree.LazySpecifierExpression);
+        Tree.SpecifierOrInitializerExpression sie = 
+                that.getSpecifierOrInitializerExpression();
+        v.setTransient(sie instanceof Tree.LazySpecifierExpression);
         visitDeclaration(that, v);
         super.visit(that);
         if (v.isInterfaceMember() && !v.isFormal() && !v.isNative()) {
-            if (that.getSpecifierOrInitializerExpression()==null) {
+            if (sie==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
             /*else {
@@ -732,8 +733,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 that.addError("block-local value may not be annotated late");
             }
         }
-        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        if ( v.isFormal() && sie!=null ) {
+        if (v.isFormal() && sie!=null) {
             that.addError("formal attributes may not have a value", 1307);
         }
         Tree.Type type = that.getType();
@@ -755,7 +755,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        Tree.SpecifierExpression sie = that.getSpecifierExpression();
+        Tree.SpecifierExpression sie = 
+                that.getSpecifierExpression();
         if ( that.getDeclarationModel().isFormal() && sie!=null ) {
             that.addError("formal methods may not have a specification", 1307);
         }
@@ -875,7 +876,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = null;
         if (that instanceof Tree.ParameterDeclaration) {
-            Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) that).getTypedDeclaration();
+            Tree.TypedDeclaration td = 
+                    ((Tree.ParameterDeclaration) that).getTypedDeclaration();
             if (td instanceof Tree.AttributeDeclaration) {
                 sie = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
             }
@@ -920,11 +922,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Parameter p = new Parameter();
         p.setDeclaration(declaration);
         p.setDefaulted(getSpecifier(that)!=null);
-        Tree.Type type = that.getTypedDeclaration().getType();
+        Tree.TypedDeclaration td = that.getTypedDeclaration();
+        Tree.Type type = td.getType();
         p.setSequenced(type instanceof Tree.SequencedType);
         that.setParameterModel(p);
         super.visit(that);
-        Value v = (Value) that.getTypedDeclaration().getDeclarationModel();
+        Value v = (Value) td.getDeclarationModel();
         p.setName(v.getName());
         p.setModel(v);
         v.setInitializerParameter(p);
@@ -949,11 +952,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Parameter p = new Parameter();
         p.setDeclaration(declaration);
         p.setDefaulted(getSpecifier(that)!=null);
-        Tree.Type type = that.getTypedDeclaration().getType();
+        Tree.TypedDeclaration td = that.getTypedDeclaration();
+        Tree.Type type = td.getType();
         p.setDeclaredAnything(type instanceof Tree.VoidModifier);
         that.setParameterModel(p);
         super.visit(that);
-        Method m = (Method) that.getTypedDeclaration().getDeclarationModel();
+        Method m = (Method) td.getDeclarationModel();
         p.setModel(m);
         p.setName(m.getName());
         m.setInitializerParameter(p);
@@ -1023,7 +1027,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.ExistsOrNonemptyCondition that) {
         super.visit(that);
-        String op = that instanceof Tree.ExistsCondition ? "exists" : "nonempty";
+        String op = that instanceof Tree.ExistsCondition ? 
+                "exists" : "nonempty";
         if (that.getBrokenExpression()!=null) {
             that.getBrokenExpression()
                 .addError("incorrect syntax: " + op + 
@@ -1049,8 +1054,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         NamedArgumentList nal = new NamedArgumentList();
         nal.setId(id++);
         for (Tree.NamedArgument na: that.getNamedArguments()) {
-            if (na.getIdentifier()!=null) {
-                nal.getArgumentNames().add(na.getIdentifier().getText());
+            Tree.Identifier identifier = na.getIdentifier();
+            if (identifier!=null) {
+                nal.getArgumentNames().add(identifier.getText());
             }
         }
         that.setNamedArgumentList(nal);
@@ -1062,35 +1068,41 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.Variable that) {
-        if (that.getSpecifierExpression()!=null) {
+        Tree.SpecifierExpression se = 
+                that.getSpecifierExpression();
+        if (se!=null) {
             Scope s = scope;
             if (scope instanceof ControlBlock &&
                     !((ControlBlock) scope).isLet()) {
                 scope = scope.getContainer();
             }
-            that.getSpecifierExpression().visit(this);
+            se.visit(this);
             scope = s;
         }
         
+        Tree.Type type = that.getType();
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v, 
-                !(that.getType() instanceof Tree.SyntheticVariable));
+                !(type instanceof Tree.SyntheticVariable));
         setVisibleScope(v);
         
-        if (that.getType()!=null) {
-            that.getType().visit(this);
+        if (type!=null) {
+            type.visit(this);
         }
-        if (that.getIdentifier()!=null) {
-            that.getIdentifier().visit(this);
+        Tree.Identifier identifier = that.getIdentifier();
+        if (identifier!=null) {
+            identifier.visit(this);
         }
         
         //TODO: scope should be the variable, not the 
         //      containing control structure:
-        if (that.getAnnotationList()!=null) {
-            that.getAnnotationList().visit(this);
+        Tree.AnnotationList al = that.getAnnotationList();
+        if (al!=null) {
+            al.visit(this);
         }
-        for (Tree.ParameterList pl: that.getParameterLists()) {
+        List<Tree.ParameterList> pls = that.getParameterLists();
+        for (Tree.ParameterList pl: pls) {
             pl.visit(this);
         }
         
@@ -1108,19 +1120,19 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         endDeclaration(od);
         */
         
-        if (that.getParameterLists().isEmpty()) {
-            if (that.getType() instanceof Tree.FunctionModifier) {
-                that.getType().addError("variables with no parameters may not be declared using the keyword function");
+        if (pls.isEmpty()) {
+            if (type instanceof Tree.FunctionModifier) {
+                type.addError("variables with no parameters may not be declared using the keyword function");
             }
-            if (that.getType() instanceof Tree.VoidModifier) {
-                that.getType().addError("variables with no parameters may not be declared using the keyword void");
+            if (type instanceof Tree.VoidModifier) {
+                type.addError("variables with no parameters may not be declared using the keyword void");
             }
         }
         else {
-            Tree.ParameterList pl = that.getParameterLists().get(0);
+            Tree.ParameterList pl = pls.get(0);
             pl.addUnsupportedError("variables with parameter lists are not yet supported");
-            if (that.getType() instanceof Tree.ValueModifier) {
-                that.getType().addError("variables with parameters may not be declared using the keyword value");
+            if (type instanceof Tree.ValueModifier) {
+                type.addError("variables with parameters may not be declared using the keyword value");
             }
         }
                 
@@ -1132,7 +1144,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         List<TypeParameter> typeParameters = Collections.emptyList();
         if (tpl!=null) {
             boolean foundDefaulted=false;
-            List<TypeParameterDeclaration> tpds = tpl.getTypeParameterDeclarations();
+            List<Tree.TypeParameterDeclaration> tpds = tpl.getTypeParameterDeclarations();
             typeParameters = new ArrayList<TypeParameter>(tpds.size());
             for (Tree.TypeParameterDeclaration tp: tpds) {
                 typeParameters.add(tp.getDeclarationModel());
@@ -1410,7 +1422,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.TypeConstraint that) {
         String name = name(that.getIdentifier());
-        TypeParameter p = (TypeParameter) scope.getDirectMember(name, null, false);
+        TypeParameter p = (TypeParameter) 
+                scope.getDirectMember(name, null, false);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
@@ -1432,16 +1445,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         exitScope(o);
         
-        if ( that.getAbstractedType()!=null ) {
+        if (that.getAbstractedType()!=null) {
             that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
-        /*if ( that.getCaseTypes()!=null ) {
-            that.addWarning("enumerated type constraints are not yet supported");
-        }*/
-        if ( that.getParameterList()!=null ) {
+        Tree.ParameterList pl = that.getParameterList();
+        if (pl!=null) {
             that.addUnsupportedError("parameter bounds are not yet supported");
-            that.getParameterList().getModel().setFirst(true);
-            p.addParameterList(that.getParameterList().getModel());
+            pl.getModel().setFirst(true);
+            p.addParameterList(pl.getModel());
         }
     }
     
@@ -1613,15 +1624,18 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
+                    //TODO: handle that.getPackageQualified()!!!!
                     return getTypeDeclaration(scope, 
                             name, null, false, unit);
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
-                    Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                    Tree.TypeArgumentList tal = 
+                            that.getTypeArgumentList();
+                    List<TypeParameter> tps = 
+                            getDeclaration().getTypeParameters();
                     return getTypeArgumentMap(getDeclaration(), null, 
-                            Util.getTypeArguments(tal,
-                                    getDeclaration().getTypeParameters(), null));
+                            Util.getTypeArguments(tal, tps, null));
                 }
             };
             that.setTypeModel(t);
@@ -1632,7 +1646,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.QualifiedType that) {
         super.visit(that);
         final String name = name(that.getIdentifier());
-        final ProducedType outerType = that.getOuterType().getTypeModel();
+        final ProducedType outerType = 
+                that.getOuterType().getTypeModel();
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
                 @Override
@@ -1647,15 +1662,16 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
-                    Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                    Tree.TypeArgumentList tal = 
+                            that.getTypeArgumentList();
                     if (outerType==null) {
                         return emptyMap();
                     }
                     else {
+                        List<TypeParameter> tps = 
+                                getDeclaration().getTypeParameters();
                         return getTypeArgumentMap(getDeclaration(), outerType, 
-                                Util.getTypeArguments(tal, 
-                                        getDeclaration().getTypeParameters(), 
-                                        outerType));
+                                Util.getTypeArguments(tal, tps, outerType));
                     }
                 }
             };
@@ -1729,7 +1745,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(final Tree.OptionalType that) {
         super.visit(that);
-        final ProducedType definiteType = that.getDefiniteType().getTypeModel();
+        final ProducedType definiteType = 
+                that.getDefiniteType().getTypeModel();
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
                 @Override
@@ -1753,9 +1770,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(final Tree.UnionType that) {
         super.visit(that);
+        List<Tree.StaticType> sts = that.getStaticTypes();
         final List<ProducedType> types = 
-                new ArrayList<ProducedType>(that.getStaticTypes().size());
-        for (Tree.StaticType st: that.getStaticTypes()) {
+                new ArrayList<ProducedType>(sts.size());
+        for (Tree.StaticType st: sts) {
             ProducedType t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
@@ -1781,9 +1799,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.IntersectionType that) {
         super.visit(that);
         if (inExtends) {
+            List<Tree.StaticType> sts = that.getStaticTypes();
             final List<ProducedType> types = 
-                    new ArrayList<ProducedType>(that.getStaticTypes().size());
-            for (Tree.StaticType st: that.getStaticTypes()) {
+                    new ArrayList<ProducedType>(sts.size());
+            for (Tree.StaticType st: sts) {
                 ProducedType t = st.getTypeModel();
                 if (t!=null) types.add(t);
             }
@@ -1808,7 +1827,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (inExtends) {
             final ProducedType elementType = 
                     that.getElementType().getTypeModel();
-            final NaturalLiteral length = that.getLength();
+            final Tree.NaturalLiteral length = that.getLength();
             ProducedType t;
             if (length==null) {
                 t = new LazyProducedType(unit) {
@@ -1876,7 +1895,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.SequencedType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType type = that.getType().getTypeModel();
+            final ProducedType type = 
+                    that.getType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1901,8 +1921,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.EntryType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType keyType = that.getKeyType().getTypeModel();
-            final ProducedType valueType = that.getValueType().getTypeModel();
+            final ProducedType keyType = 
+                    that.getKeyType().getTypeModel();
+            final ProducedType valueType = 
+                    that.getValueType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1998,13 +2020,15 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        TypeDeclaration td = 
+                (TypeDeclaration) that.getScope();
         if (!td.isAlias()) {
-            if (that.getType()==null) {
+            Tree.SimpleType t = that.getType();
+            if (t==null) {
                 that.addError("missing extended type");
             }
             else {
-                ProducedType type = that.getType().getTypeModel();
+                ProducedType type = t.getTypeModel();
                 if (type!=null) {
                     td.setExtendedType(type);
                 }
@@ -2017,7 +2041,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        TypeDeclaration td = 
+                (TypeDeclaration) that.getScope();
         if (td.isAlias()) {
             return;
         }
@@ -2036,15 +2061,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        if (that.getType()==null) {
+        Tree.SimpleType t = that.getType();
+        if (t==null) {
             that.addError("missing aliased type");
         }
         else if (that.getInvocationExpression()==null) {
             that.addError("missing instantiation arguments");
         }
         else {
-            TypeDeclaration td = (TypeDeclaration) that.getScope();
-            ProducedType type = that.getType().getTypeModel();
+            TypeDeclaration td = 
+                    (TypeDeclaration) that.getScope();
+            ProducedType type = t.getTypeModel();
             if (type!=null) {
                 td.setExtendedType(type);
             }
@@ -2059,12 +2086,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        if (that.getType()==null) {
+        Tree.StaticType t = that.getType();
+        if (t==null) {
             that.addError("missing aliased type");
         }
         else if (!(that instanceof Tree.DefaultTypeArgument)) {
-            TypeDeclaration td = (TypeDeclaration) that.getScope();
-            ProducedType type = that.getType().getTypeModel();
+            TypeDeclaration td = 
+                    (TypeDeclaration) that.getScope();
+            ProducedType type = t.getTypeModel();
             if (type!=null) {
                 td.setExtendedType(type);
             }
@@ -2090,7 +2119,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             if (st instanceof Tree.Constructor) {
                 constructor = true;
             }
-            else if (constructor && isExecutableStatement(unit, st)) {
+            else if (constructor && 
+                    isExecutableStatement(unit, st)) {
                 st.addError("executable statement must occur before all constructors of class");
             }
         }
