@@ -122,7 +122,7 @@ annotatedModuleDescriptorStart
     ;
 
 annotatedPackageDescriptorStart
-    : compilerAnnotations annotations PACKAGE
+    : compilerAnnotations annotations PACKAGE ~MEMBER_OP
     ;
 
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
