@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
@@ -13,6 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
@@ -24,7 +24,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -82,9 +81,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.VariablePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -405,7 +401,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferSequencedValueType(ProducedType type, Tree.Variable var) {
         Tree.SequencedType st = (Tree.SequencedType) var.getType();
-        if (st.getType() instanceof ValueModifier) {
+        if (st.getType() instanceof Tree.ValueModifier) {
             if (type!=null) {
                 st.getType().setTypeModel(unit.getSequentialElementType(type));
                 setSequencedValueType(st, type, var);
@@ -430,7 +426,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void destructure(Tree.SpecifierExpression se, ProducedType sequenceType,
             Tree.TuplePattern tuplePattern) {
-        List<Pattern> patterns = tuplePattern.getPatterns();
+        List<Tree.Pattern> patterns = tuplePattern.getPatterns();
         int length = patterns.size();
         if (length==0) {
             tuplePattern.addError("tuple pattern must have at least one variable");
@@ -439,7 +435,7 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; i<length-1; i++) {
                 Tree.Pattern p = patterns.get(i);
                 if (p instanceof Tree.VariablePattern) {
-                    VariablePattern vp = 
+                    Tree.VariablePattern vp = 
                             (Tree.VariablePattern) p;
                     Tree.Type t = 
                             vp.getVariable().getType();
@@ -474,7 +470,7 @@ public class ExpressionVisitor extends Visitor {
         boolean variadic = false;
 //      boolean nonempty = false;
         if (lastPattern instanceof Tree.VariablePattern) {
-            VariablePattern variablePattern = 
+            Tree.VariablePattern variablePattern = 
                     (Tree.VariablePattern) lastPattern;
             Tree.Type type = 
                     variablePattern.getVariable().getType();
@@ -487,7 +483,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void destructureTuple(Tree.SpecifierExpression se,
-            ProducedType sequenceType, List<Pattern> patterns, 
+            ProducedType sequenceType, List<Tree.Pattern> patterns, 
             int length, Tree.Pattern lastPattern) {
         boolean variadic = isVariadicPattern(lastPattern);
         List<ProducedType> types = 
@@ -526,7 +522,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void destructureSequence(Tree.SpecifierExpression se,
-            ProducedType sequenceType, List<Pattern> patterns, 
+            ProducedType sequenceType, List<Tree.Pattern> patterns, 
             int length, Tree.Pattern lastPattern) {
         boolean variadic = isVariadicPattern(lastPattern);
         
@@ -5493,19 +5489,22 @@ public class ExpressionVisitor extends Visitor {
     private TypedDeclaration resolveBaseMemberExpression(
             Tree.BaseMemberExpression that,
             boolean error) {
-        String name = name(that.getIdentifier());
-        TypedDeclaration member = getTypedDeclaration(that.getScope(), 
-                name, that.getSignature(), that.getEllipsis(),
-                that.getUnit());
+        Tree.Identifier id = that.getIdentifier();
+        String name = name(id);
+        TypedDeclaration member = 
+                getTypedDeclaration(that.getScope(), name, 
+                        that.getSignature(), that.getEllipsis(),
+                        that.getUnit());
         if (member==null) {
             if (!dynamic && error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
+                unit.getUnresolvedReferences().add(id);
             }
         }
         else {
-            member = (TypedDeclaration) handleAbstraction(member, that);
+            member = (TypedDeclaration) 
+                    handleAbstraction(member, that);
             that.setDeclaration(member);
             if (error) {
                 checkBaseVisibility(that, member, name);
@@ -5560,25 +5559,28 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        boolean check = packageQualified ||
+        boolean check = 
+                packageQualified ||
                 //that.getStaticMethodReference() ||
                 pt!=null &&
                 //account for dynamic blocks
                 (!pt.getType().isUnknown() || 
                         that.getMemberOperator() instanceof Tree.SpreadOp);
-        boolean nameNonempty = that.getIdentifier()!=null && 
-                        !that.getIdentifier().getText().equals("");
+        Tree.Identifier id = that.getIdentifier();
+        boolean nameNonempty = 
+                id!=null && !id.getText().equals("");
         if (nameNonempty && check) {
-            TypedDeclaration member;
-            String name = name(that.getIdentifier());
-            String container;
-            boolean ambiguous;
+            String name = name(id);
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
+            String container;
+            boolean ambiguous;
+            TypedDeclaration member;
             if (packageQualified) {
-                container = "package '" + unit.getPackage().getNameAsString() + "'";
-                Declaration pm = unit.getPackage()
-                        .getMember(name, signature, ellipsis);
+                Package pack = unit.getPackage();
+                container = "package '" + pack.getNameAsString() + "'";
+                Declaration pm = 
+                        pack.getMember(name, signature, ellipsis);
                 if (pm instanceof TypedDeclaration) {
                     member = (TypedDeclaration) pm;
                 }
@@ -5593,21 +5595,27 @@ public class ExpressionVisitor extends Visitor {
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(that.getScope());
-                if (ci!=null && d.inherits(ci) && !(d instanceof NothingType)) {
+                if (ci!=null && 
+                        d.inherits(ci) && 
+                        !(d instanceof NothingType)) {
                     Declaration direct = 
-                            ci.getDirectMember(name, signature, ellipsis);
+                            ci.getDirectMember(name, 
+                                    signature, ellipsis);
                     if (direct instanceof TypedDeclaration) {
                         member = (TypedDeclaration) direct;
                     }
                     else {
-                        member = getTypedMember(d, name, signature, ellipsis, unit);
+                        member = getTypedMember(d, name, 
+                                signature, ellipsis, unit);
                     }
                 }
                 else {
-                    member = getTypedMember(d, name, signature, ellipsis, unit);
+                    member = getTypedMember(d, name, 
+                            signature, ellipsis, unit);
                 }
                 ambiguous = member==null && 
-                        d.isMemberAmbiguous(name, unit, signature, ellipsis);
+                        d.isMemberAmbiguous(name, 
+                                unit, signature, ellipsis);
             }
             if (member==null) {
                 if (error) {
@@ -5618,12 +5626,13 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         that.addError("method or attribute does not exist: '" +
                                 name + "' in " + container, 100);
-                        unit.getUnresolvedReferences().add(that.getIdentifier());
+                        unit.getUnresolvedReferences().add(id);
                     }
                 }
             }
             else {
-                member = (TypedDeclaration) handleAbstraction(member, that);
+                member = (TypedDeclaration) 
+                        handleAbstraction(member, that);
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = isSelfReference(p);
@@ -5631,8 +5640,8 @@ public class ExpressionVisitor extends Visitor {
                     member.setOtherInstanceAccess(true);
                 }
                 if (error) {
-                    checkQualifiedVisibility(that, member, name, container,
-                            selfReference);
+                    checkQualifiedVisibility(that, member, 
+                            name, container, selfReference);
                     checkSuperMember(that);
                 }
             }
@@ -5859,18 +5868,21 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration resolveBaseTypeExpression(
             Tree.BaseTypeExpression that,
             boolean error) {
-        String name = name(that.getIdentifier());
-        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
-                name, that.getSignature(), that.getEllipsis(), 
-                that.getUnit());
+        Tree.Identifier id = that.getIdentifier();
+        String name = name(id);
+        TypeDeclaration type = 
+                getTypeDeclaration(that.getScope(), name, 
+                        that.getSignature(), that.getEllipsis(), 
+                        that.getUnit());
         if (type==null) {
             if (!dynamic && error) {
                 that.addError("type does not exist: '" + name + "'", 102);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
+                unit.getUnresolvedReferences().add(id);
             }
         }
         else {
-            type = (TypeDeclaration) handleAbstraction(type, that);
+            type = (TypeDeclaration) 
+                    handleAbstraction(type, that);
             that.setDeclaration(type);
             if (error) {
                 if (checkConcreteClass(type, that)) {
@@ -6067,23 +6079,26 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        boolean check = packageQualified || 
+        boolean check = 
+                packageQualified || 
                 that.getStaticMethodReference() || 
                 pt!=null && 
                 //account for dynamic blocks
                 (!pt.isUnknown() || 
                         that.getMemberOperator() instanceof Tree.SpreadOp);
         if (check) {
-            TypeDeclaration type;
-            String name = name(that.getIdentifier());
-            String container;
-            boolean ambiguous;
+            Tree.Identifier id = that.getIdentifier();
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
+            String name = name(id);
+            String container;
+            boolean ambiguous;
+            TypeDeclaration type;
             if (packageQualified) {
-                container = "package '" + unit.getPackage().getNameAsString() + "'";
-                Declaration pm = unit.getPackage()
-                        .getMember(name, signature, ellipsis);
+                Package pack = unit.getPackage();
+                container = "package '" + pack.getNameAsString() + "'";
+                Declaration pm = 
+                        pack.getMember(name, signature, ellipsis);
                 if (pm instanceof TypeDeclaration) {
                     type = (TypeDeclaration) pm;
                 }
@@ -6098,21 +6113,27 @@ public class ExpressionVisitor extends Visitor {
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(that.getScope());
-                if (ci!=null && d.inherits(ci) && !(d instanceof NothingType)) {
+                if (ci!=null && 
+                        d.inherits(ci) && 
+                        !(d instanceof NothingType)) {
                     Declaration direct = 
-                            ci.getDirectMember(name, signature, ellipsis);
+                            ci.getDirectMember(name, 
+                                    signature, ellipsis);
                     if (direct instanceof TypeDeclaration) {
                         type = (TypeDeclaration) direct;
                     }
                     else {
-                        type = getTypeMember(d, name, signature, ellipsis, unit);
+                        type = getTypeMember(d, name, 
+                                signature, ellipsis, unit);
                     }
                 }
                 else {
-                    type = getTypeMember(d, name, signature, ellipsis, unit);
+                    type = getTypeMember(d, name, 
+                            signature, ellipsis, unit);
                 }
-                ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
-                        signature, ellipsis);
+                ambiguous = type==null && 
+                        d.isMemberAmbiguous(name, unit, 
+                                signature, ellipsis);
             }
             if (type==null) {
                 if (error) {
@@ -6123,12 +6144,13 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         that.addError("member type does not exist: '" +
                                 name + "' in " + container, 100);
-                        unit.getUnresolvedReferences().add(that.getIdentifier());
+                        unit.getUnresolvedReferences().add(id);
                     }
                 }
             }
             else {
-                type = (TypeDeclaration) handleAbstraction(type, that);
+                type = (TypeDeclaration) 
+                        handleAbstraction(type, that);
                 that.setDeclaration(type);
                 resetSuperReference(that);
                 if (!isSelfReference(p) && !type.isShared()) {
@@ -6137,7 +6159,8 @@ public class ExpressionVisitor extends Visitor {
                 if (error) {
                     if (checkConcreteClass(type, that)) {
                         if (checkSealedReference(type, that)) {
-                            checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
+                            checkQualifiedTypeAndConstructorVisibility(that, 
+                                    type, name, container);
                         }
                     }
                     if (!inExtendsClause) {
@@ -6155,8 +6178,9 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
-            TypeDeclaration td = (TypeDeclaration) 
-                    ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            Tree.MemberOrTypeExpression primary = 
+                    (Tree.MemberOrTypeExpression) that.getPrimary();
+            TypeDeclaration td = (TypeDeclaration) primary.getDeclaration();
             return td==null ? new UnknownType(unit) : td;
         }
         else {
@@ -6182,7 +6206,8 @@ public class ExpressionVisitor extends Visitor {
                 List<TypeParameter> params = type.getTypeParameters();
                 List<ProducedType> ta = getTypeArguments(tal, 
                         params, pt.getQualifyingType());
-                acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
+                acceptsTypeArguments(type, ta, tal, 
+                        that, that.getMetamodel());
                 //the type has already been set by TypeVisitor
                 if (tal!=null) {
                     List<Tree.Type> args = tal.getTypes();
@@ -6215,8 +6240,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.EntryType that) {
         super.visit(that);
-        checkAssignable(that.getKeyType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
-                that.getKeyType(), "entry key type must not be an optional type");
+        checkAssignable(that.getKeyType().getTypeModel(), 
+                unit.getType(unit.getObjectDeclaration()), 
+                that.getKeyType(), 
+                "entry key type must not be an optional type");
 //        checkAssignable(that.getValueType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
 //                that.getValueType(), "entry item type must not be an optional type");
     }

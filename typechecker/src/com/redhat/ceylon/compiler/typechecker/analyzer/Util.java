@@ -44,7 +44,8 @@ public class Util {
     
     static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
-        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        Declaration member = 
+                d.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
@@ -55,7 +56,8 @@ public class Util {
 
     static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
-        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        Declaration member = 
+                d.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
             return (TypeDeclaration) member;
         }
@@ -70,8 +72,9 @@ public class Util {
     static TypedDeclaration getTypedDeclaration(Scope scope,
             String name, List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
-        Declaration result = scope.getMemberOrParameter(unit, 
-                name, signature, ellipsis);
+        Declaration result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -83,8 +86,9 @@ public class Util {
     static TypeDeclaration getTypeDeclaration(Scope scope,
             String name, List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
-        Declaration result = scope.getMemberOrParameter(unit, 
-                name, signature, ellipsis);
+        Declaration result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -122,7 +126,8 @@ public class Util {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
             if (tal instanceof Tree.TypeArgumentList) {
-                List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
+                List<Tree.Type> types = 
+                        ((Tree.TypeArgumentList) tal).getTypes();
                 for (int i=0; i<types.size(); i++) {
                     ProducedType t = types.get(i).getTypeModel();
                     if (t==null) {
@@ -206,7 +211,8 @@ public class Util {
     static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
         if (s instanceof Tree.SpecifierStatement) {
             //shortcut refinement statements with => aren't really "executable"
-            Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
+            Tree.SpecifierStatement ss = 
+                    (Tree.SpecifierStatement) s;
             return !(ss.getSpecifierExpression() 
                     instanceof Tree.LazySpecifierExpression) || 
                     !ss.getRefinement();
@@ -216,8 +222,10 @@ public class Util {
         }
         else {
             if (s instanceof Tree.AttributeDeclaration) {
+                Tree.AttributeDeclaration ad = 
+                        (Tree.AttributeDeclaration) s;
                 Tree.SpecifierOrInitializerExpression sie = 
-                        ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
+                        ad.getSpecifierOrInitializerExpression();
         		return sie!=null && 
         		        !(sie instanceof Tree.LazySpecifierExpression);
             }
@@ -278,8 +286,9 @@ public class Util {
                 String extra = message(type, 
                         " is not a subtype of 'Callable'", unit);
                 if (node instanceof Tree.StaticMemberOrTypeExpression) {
-                    Declaration d = 
-                            ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
+                    Tree.StaticMemberOrTypeExpression smte = 
+                            (Tree.StaticMemberOrTypeExpression) node;
+                    Declaration d = smte.getDeclaration();
                     if (d instanceof Interface) {
                         extra = ": '" + d.getName() + "' is an interface";
                     }
