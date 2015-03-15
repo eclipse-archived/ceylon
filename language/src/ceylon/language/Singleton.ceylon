@@ -1,6 +1,6 @@
 "A [[Sequence]] with exactly one [[element]], which may be 
  null."
-shared serializable class Singleton<out Element>
+shared final serializable class Singleton<out Element>
         (Element element)
         extends Object()
         satisfies [Element+] {
@@ -41,7 +41,7 @@ shared serializable class Singleton<out Element>
     
     string => "[``stringify(element)``]";
     
-    shared actual default Iterator<Element> iterator()
+    shared actual Iterator<Element> iterator()
             => object 
             satisfies Iterator<Element> {
         variable Boolean done = false;
@@ -144,7 +144,7 @@ shared serializable class Singleton<out Element>
             => if (exists element, selecting(element))
                     then element else null;
     
-    shared actual default 
+    shared actual 
     Element? findLast(Boolean selecting(Element&Object e))
             => find(selecting);
     
