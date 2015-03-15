@@ -461,7 +461,9 @@ public class TypeVisitor extends Visitor {
         }
         else {
             for (Declaration d: m.getContainer().getMembers()) {
-                if (d.getName().equals(name) && 
+                String dn = d.getName();
+                if (dn!=null &&
+                        dn.equals(name) && 
                         !d.sameKind(m) &&
                         !d.isAnonymous()) {
                     //crazy interop cases like isOpen() + open()
