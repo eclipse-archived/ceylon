@@ -1084,6 +1084,11 @@ public class Util {
 //            return true;
 //        }
         Interface st = unit.getSequentialDeclaration();
+        if (pd.inherits(st) && !qd.inherits(st) && !st.inherits(qd) ||
+            qd.inherits(st) && !pd.inherits(st) && !st.inherits(pd)) {
+                return true;
+        }
+        
         Interface nst = unit.getSequenceDeclaration();
         if (pd.inherits(nst) && qd.inherits(st) ||
             qd.inherits(nst) && pd.inherits(st)) {

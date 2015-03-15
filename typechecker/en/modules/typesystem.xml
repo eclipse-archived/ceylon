@@ -1578,6 +1578,13 @@ interface NumberLiteral
             <literal>Y</literal> are disjoint if:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para><literal>X</literal> is a subtype of some instantiation of
+                    <literal>Sequence</literal>, <literal>Y</literal> is not a subtype
+                    of any instantiation of <literal>Sequence</literal>, and 
+                    <literal>Y</literal> is not an instantiation of a type that is
+                    inherited by <literal>Sequence</literal>,</para>
+                </listitem>
                 <!--listitem>
                     <para><literal>X</literal> is a subtype of <literal>Empty</literal>, and 
                     <literal>Y</literal> is a subtype of <literal>Iterable&lt;Anything,Nothing&gt;</literal>,</para>
@@ -1610,8 +1617,8 @@ interface NumberLiteral
             
             <comment><para>Note: the soundness of these rules is guaranteed by the 
             implementations of the <literal>sealed</literal> types <literal>Sequence</literal>, 
-            <literal>Sequential</literal>, and <literal>Tuple</literal> in the module 
-            <literal>ceylon.language</literal>.</para></comment>
+            <literal>Sequential</literal>, <literal>Range</literal>, and <literal>Tuple</literal>
+            in the module <literal>ceylon.language</literal>.</para></comment>
             
         </section>
         

@@ -406,6 +406,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("List");
     }
     
+    public Interface getCollectionDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Collection");
+    }
+    
     public Interface getIteratorDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
@@ -1592,5 +1596,5 @@ public class Unit {
         Module module = getPackage().getModule();
         return module != null ? module.getCache() : null;
     }
-    
+
 }
