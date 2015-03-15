@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
@@ -822,12 +823,16 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.Identifier id = that.getIdentifier();
         String name = name(id);
-        Scope scope = 
-                that.getPackageQualified() ? 
-                        unit.getPackage() : 
-                        that.getScope();
-        TypeDeclaration type = 
-                getTypeDeclaration(scope, name, null, false, unit);
+        Scope scope = that.getScope();
+        TypeDeclaration type; 
+        if (that.getPackageQualified()) {
+            type = getPackageTypeDeclaration(name, 
+                    null, false, unit);
+        }
+        else {
+            type = getTypeDeclaration(scope, name, 
+                    null, false, unit);
+        }
         if (type==null) {
             that.addError("type declaration does not exist: '" + 
                     name + "'", 102);

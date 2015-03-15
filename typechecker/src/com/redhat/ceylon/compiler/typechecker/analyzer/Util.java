@@ -100,6 +100,35 @@ public class Util {
         }
     }
 
+    static TypedDeclaration getPackageTypedDeclaration(String name, 
+            List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = 
+                unit.getPackage().getMember(name, signature, ellipsis);
+        if (result instanceof TypedDeclaration) {
+            return (TypedDeclaration) result;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    static TypeDeclaration getPackageTypeDeclaration(String name, 
+            List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = 
+                unit.getPackage().getMember(name, signature, ellipsis);
+        if (result instanceof TypeDeclaration) {
+            return (TypeDeclaration) result;
+        }
+        else if (result instanceof TypedDeclaration) {
+            return anonymousType(name, result);
+        }
+        else {
+            return null;
+        }
+    }
+
     public static TypeDeclaration anonymousType(String name, Declaration result) {
         ProducedType type = 
                 ((TypedDeclaration) result).getType();
