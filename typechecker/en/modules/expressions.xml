@@ -3175,7 +3175,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Function&lt;Float,[{Float+}]&gt; sumFunction = `sum&lt;Float&gt;`;</programlisting>
         <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
-        <programlisting>Value&lt;Integer&gt; systemMillis = `system.milliseconds`;</programlisting>
+        <programlisting>Attribute&lt;\Isystem,Integer&gt; systemMillis = `\Isystem.milliseconds`;</programlisting>
         
         <para>A <emphasis>constructor metamodel expression</emphasis> is a qualifier, 
         followed by a constructor name, with an optional list of type arguments, 
@@ -3346,7 +3346,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
             
-            <synopsis>TypeDec: "`" TypeKeyword PackageQualifier? ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
+            <synopsis>TypeDec: "`" TypeKeyword ( PackageQualifier? MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
             
             <para>For a class or interface reference expression, the name of 
             the class or interface is optional. In this case, the class or
