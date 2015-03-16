@@ -411,7 +411,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         );
     }
     
-    private final void testSequences$priv$(final .java.lang.Object p1, final .java.lang.Object leftsAndRights, final .java.lang.Object leftsAndRightsEntries, final .java.lang.Object topsOrNull) {
+    private final <T>void testSequences$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object p1, final .java.lang.Object leftsAndRights, final .java.lang.Object leftsAndRightsEntries, final .java.lang.Object topsOrNull) {
         final .java.lang.Object naturals = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .java.lang.Object[]{p1});
         final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.List<? extends .java.lang.Object>)(.ceylon.language.List)naturals).getFromFirst(((.ceylon.language.Integer)p1).longValue());
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.List)leftsAndRights).getFromFirst(((.ceylon.language.Integer)p1).longValue());
