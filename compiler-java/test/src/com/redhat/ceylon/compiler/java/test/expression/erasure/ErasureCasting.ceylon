@@ -45,7 +45,7 @@ interface EC_ParameterisedSelfBound<out T> of T {
 interface EC_DoubleParameters<T1,T2> satisfies EC_Parameterised<T1|T2>{}
 
 @noanno
-void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
+void erasureCasting<T>(EC_A & EC_B & EC_C tripleIntersectionParam,
                     EC_Parameterised<EC_A & EC_B & EC_C> rawParam,
                     EC_Parameterised<EC_Parameterised<EC_A & EC_B>> hasRawParam,
                     EC_DoubleParameters<EC_A,EC_A> hasLostParameter,
@@ -54,7 +54,7 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
                     EC_Parameterised<Nothing> hasErasedParameter,
                     EC_A a,
                     Sequence<String> nonEmptyStringSequence,
-                    Sequence<EC_A&EC_B>&EC_A erasedSequence){
+                    Sequence<EC_A&EC_B>&T erasedSequence){
     // from an erased type to another erased type: no cast
     EC_A & EC_B doubleIntersectionAttr = tripleIntersectionParam;
     

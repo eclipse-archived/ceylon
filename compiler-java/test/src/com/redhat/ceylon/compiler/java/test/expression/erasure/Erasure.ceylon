@@ -236,9 +236,9 @@ class Test(Integer&EmptyInterface n) {
         sync = p1 is Category;
     }
 
-    void testSequences(Integer&EmptyInterface p1,
-                       Sequence<Left&Right>&EmptyInterface leftsAndRights,
-                       Sequence<Entry<Left&Right,Left&Right>>&EmptyInterface leftsAndRightsEntries,
+    void testSequences<T>(Integer&EmptyInterface p1,
+                       Sequence<Left&Right>&T leftsAndRights,
+                       Sequence<Entry<Left&Right,Left&Right>>&T leftsAndRightsEntries,
                        Null|Sequence<Left&Right>&EmptyInterface topsOrNull){
         // sequence operators
         Empty|Sequence<Integer&EmptyInterface> naturals = [p1];
