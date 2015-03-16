@@ -51,4 +51,9 @@ public class SourcePositionsTests extends CompilerTests {
     public void testDefaultParameterLines(){
         compareWithJavaSourceWithLines("lines/DefaultParameter");
     }
+    
+    @Test
+    public void testCtorSuper(){
+        compareWithJavaSourceWithLines("lines/CtorSuper");
+    }
 }
