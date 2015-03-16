@@ -26,6 +26,6 @@ shared sealed interface MemberClass<in Container, out Type=Anything, in Argument
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name"
-    shared actual formal MemberClassConstructor<Anything,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
+    shared actual formal MemberClassConstructor<Container,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
             given Arguments satisfies Anything[];
 }
