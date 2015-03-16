@@ -3080,8 +3080,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setDeclaration((Declaration) decl);
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
-            parameter.getDeclaration().getMembers().add(parameter.getModel());
-            
             parameterIndex++;
         }
         if (decl instanceof Method) {
