@@ -1084,16 +1084,23 @@ public class Util {
 //            return true;
 //        }
         Interface st = unit.getSequentialDeclaration();
-        if (pd.inherits(st) && !qd.inherits(st) && !st.inherits(qd) ||
-            qd.inherits(st) && !pd.inherits(st) && !st.inherits(pd)) {
-                return true;
+        if (qd instanceof ClassOrInterface &&
+                pd.inherits(st) && !qd.inherits(st) && 
+                !st.inherits(qd) ||
+            pd instanceof ClassOrInterface &&
+                qd.inherits(st) && !pd.inherits(st) && 
+                !st.inherits(pd) && 
+                !p.containsTypeParameters()) {
+            return true;
         }
         
         Interface nst = unit.getSequenceDeclaration();
         if (pd.inherits(nst) && qd.inherits(st) ||
             qd.inherits(nst) && pd.inherits(st)) {
-            ProducedType pet = unit.getSequentialElementType(p);
-            ProducedType qet = unit.getSequentialElementType(q);
+            ProducedType pet = 
+                    unit.getSequentialElementType(p);
+            ProducedType qet = 
+                    unit.getSequentialElementType(q);
             if (emptyMeet(pet, qet, unit)) {
                 return true;
             }
@@ -1114,7 +1121,9 @@ public class Util {
             ProducedType qet = unit.getSequentialElementType(q);
             if (pal.size()>=3) {
                 if (emptyMeet(pal.get(1), qet, unit) ||
-                    emptyMeet(pal.get(2), unit.getSequentialType(qet), unit)) {
+                    emptyMeet(pal.get(2), 
+                            unit.getSequentialType(qet), 
+                            unit)) {
                     return true;
                 }
             }
@@ -1124,7 +1133,9 @@ public class Util {
             ProducedType pet = unit.getSequentialElementType(p);
             if (qal.size()>=3) {
                 if (emptyMeet(qal.get(1), pet, unit) ||
-                    emptyMeet(qal.get(2), unit.getSequentialType(pet), unit)) {
+                    emptyMeet(qal.get(2), 
+                            unit.getSequentialType(pet),
+                            unit)) {
                     return true;
                 }
             }
