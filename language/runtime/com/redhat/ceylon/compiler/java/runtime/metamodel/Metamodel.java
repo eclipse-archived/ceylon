@@ -650,6 +650,9 @@ public class Metamodel {
     public static java.lang.reflect.Constructor<?> getJavaConstructor(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
         Constructor<?>[] ctors = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer()).getDeclaredConstructors();
         for (java.lang.reflect.Constructor<?> ctor : ctors) {
+            if (ctor.isAnnotationPresent(Ignore.class)) {
+                continue;
+            }
             Name name = ctor.getAnnotation(Name.class);
             String n1 = name == null ? "" : name.value();
             String n2 = declaration.getName() == null ? "" : declaration.getName();
