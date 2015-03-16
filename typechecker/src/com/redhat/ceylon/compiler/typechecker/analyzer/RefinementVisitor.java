@@ -951,16 +951,19 @@ public class RefinementVisitor extends Visitor {
         m.setType(new LazyProducedType(that.getUnit()) {
             @Override
             public ProducedType initQualifyingType() {
-                return rm.getType().getQualifyingType();
+                ProducedType type = rm.getType();
+                return type==null ? null : type.getQualifyingType();
             }
             @Override
             public Map<TypeParameter,ProducedType> 
             initTypeArguments() {
-                return rm.getType().getTypeArguments();
+                ProducedType type = rm.getType();
+                return type==null ? null : type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                return rm.getType().getDeclaration();
+                ProducedType type = rm.getType();
+                return type==null ? null : type.getDeclaration();
             }
         });
         inheritDefaultedArguments(m);
