@@ -25,20 +25,12 @@ public class ReportingTests extends CompilerTests {
     
     @Test
     public void testAnnoSuppressionUnusedDecl() {
-        assertErrors(new String[]{"UnusedDeclaration.ceylon"},
-                defaultOptions,
-                null,
-                new Kind[]{Kind.WARNING});
+        compilesWithoutWarnings("UnusedDeclaration.ceylon");
     }
     
     @Test
     public void testOptionSuppressionUnusedImport() {
-        defaultOptions.add("-suppress-warnings");
-        defaultOptions.add("unusedImport");
-        assertErrors(new String[]{"UnusedImport.ceylon"},
-                defaultOptions,
-                null,
-                new Kind[]{Kind.WARNING});
+        compilesWithoutWarnings(Arrays.asList("-suppress-warnings", "unusedImport"), "UnusedImport.ceylon");
     }
     
     @Test
@@ -46,8 +38,8 @@ public class ReportingTests extends CompilerTests {
         assertErrors(new String[]{"SuppressesNothing.ceylon"},
                 defaultOptions,
                 null,
-                new Kind[]{Kind.WARNING},
-                new CompilerError(Kind.WARNING, "", 1, "suppresses no warnings"));
+                new CompilerError(Kind.WARNING, "", 1, "suppresses no warnings"),
+                new CompilerError(Kind.NOTE, "", -1, "Created module default"));
     }
     
     @Test
@@ -56,7 +48,6 @@ public class ReportingTests extends CompilerTests {
         assertErrors(new String[]{"AlreadySuppressed.ceylon"},
                 defaultOptions,
                 null,
-                new Kind[]{Kind.WARNING},
                 new CompilerError(Kind.WARNING, "", 3, "warnings already suppressed by annotation"));
     }
     
@@ -68,7 +59,6 @@ public class ReportingTests extends CompilerTests {
         assertErrors(new String[]{"AlreadySuppressed.ceylon"},
                 defaultOptions,
                 null,
-                new Kind[]{Kind.WARNING},
                 new CompilerError(Kind.WARNING, "", 3, "warnings already suppressed by annotation"));
     }
     
@@ -77,7 +67,6 @@ public class ReportingTests extends CompilerTests {
         assertErrors(new String[]{"UnknownWarningInAnno.ceylon"},
                 defaultOptions,
                 null,
-                new Kind[]{Kind.WARNING},
                 new CompilerError(Kind.WARNING, "", 1, "unknown warning: blahblah"));
     }
     

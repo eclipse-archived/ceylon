@@ -845,7 +845,6 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         assertErrors(new String[]{"bug18xx/Bug1852.ceylon"},
                 defaultOptions,
                 null,
-                new Diagnostic.Kind[]{Diagnostic.Kind.WARNING},
                 new CompilerError(Kind.WARNING, "", 21, "declaration is never used: 's'"));
     }
     

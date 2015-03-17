@@ -228,20 +228,12 @@ public abstract class CompilerTests {
     }
     
     protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
-        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, null, expectedErrors);
+        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, expectedErrors);
     }
     
     protected void assertErrors(String[] ceylonFiles, 
             List<String> options, 
             Throwable expectedException, 
-            CompilerError... expectedErrors) {
-        assertErrors(ceylonFiles, options, expectedException, null, expectedErrors);
-    }
-    
-    protected void assertErrors(String[] ceylonFiles, 
-            List<String> options, 
-            Throwable expectedException, 
-            Diagnostic.Kind[] kinds,
             CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
@@ -249,13 +241,9 @@ public abstract class CompilerTests {
         
         CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
 
-        if (kinds == null) {
-            kinds = new Diagnostic.Kind[]{Diagnostic.Kind.ERROR};
-        }
-        
         boolean expectedToFail = false;
-        for (Diagnostic.Kind kind : kinds) {
-            if (kind == Diagnostic.Kind.ERROR) {
+        for (CompilerError expectedError : expectedErrors) {
+            if (expectedError.kind == Diagnostic.Kind.ERROR) {
                 expectedToFail = true;
                 break;
             }
@@ -297,7 +285,7 @@ public abstract class CompilerTests {
             Assert.fail("Expected compiler exception " + expectedException);
         }
         
-        TreeSet<CompilerError> actualErrors = collector.get(kinds);
+        Set<CompilerError> actualErrors = collector.getAll();
         compareErrors(actualErrors, expectedErrors);
     }
     
@@ -558,10 +546,14 @@ public abstract class CompilerTests {
         ErrorCollector c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(c, ceylon).call2());
     }
-    
+
     protected void compilesWithoutWarnings(String... ceylon) {
+        compilesWithoutWarnings(defaultOptions, ceylon);
+    }
+
+    protected void compilesWithoutWarnings(List<String> options, String... ceylon) {
         ErrorCollector dl = new ErrorCollector();
-        ExitState exitState = getCompilerTask(defaultOptions, dl, ceylon).call2();
+        ExitState exitState = getCompilerTask(options, dl, ceylon).call2();
         Assert.assertEquals(exitState.ceylonState, CeylonState.OK);
         Assert.assertEquals("The code compiled with javac warnings", 
                 0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
