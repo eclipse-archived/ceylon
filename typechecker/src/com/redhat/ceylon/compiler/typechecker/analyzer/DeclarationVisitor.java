@@ -2138,8 +2138,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             if (st instanceof Tree.Constructor) {
                 constructor = true;
             }
-            else if (constructor && 
-                    isExecutableStatement(unit, st)) {
+            else if (constructor && isExecutableStatement(st)) {
                 st.addError("executable statement must occur before all constructors of class");
             }
         }
