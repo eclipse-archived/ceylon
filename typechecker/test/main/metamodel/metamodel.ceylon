@@ -280,7 +280,11 @@ class Foo<S>() {
 }
 
 class Bar {
-    shared new Bar() {}
+    shared new () {}
+    shared new Baz(String string) {}
+}
+
+class Baz {
     shared new Baz(String string) {}
 }
 
@@ -348,8 +352,10 @@ void meta() {
     @error see (`given Sequence.Element`);
     @error see (`value Map.key`);
     
-    @type:"ConstructorDeclaration" @error value cd9 = `new Bar`; //TODO: should we allow this
-    @type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
+    @type:"Class<Bar,Empty>" value cd15 = `Bar`;
+    @type:"Class<Baz,Nothing>" value cd16 = `Baz`;
+    @type:"ConstructorDeclaration" value cd9 = `new Bar`;
+    //@type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
     @type:"ConstructorDeclaration" value cd10b = `new Bar.Baz`;
     @error value cd11 = `class Bar.Baz`;
     @error value cd12 = `interface Bar.Baz`;

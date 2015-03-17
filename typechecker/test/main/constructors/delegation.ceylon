@@ -1,7 +1,7 @@
 class Point {
     shared Float x;
     shared Float y;
-    shared new Point(Float xx, Float yy) {
+    shared new (Float xx, Float yy) {
         x = xx;
         y = yy;
     }
@@ -22,7 +22,11 @@ class A extends Point {
 }
 
 class B extends Point {
-    shared new Pt(Float x) extends super.Point(x,0.0) {}
+    shared new Pt(Float x) extends Point(x,0.0) {}
+}
+
+class Bx extends Point {
+    shared new Pt(Float x) extends super.Diagonal(x*2.0) {}
 }
 
 class C0  {
@@ -57,4 +61,19 @@ class Oops1 extends Point {
 
 class Oops2 extends E {
     @error new New() extends Point.Diagonal(0.0) {}
+}
+
+
+class Up0 {
+    shared new () {}
+}
+class Down0 extends Up0 {
+    shared new () extends Up0() {}
+}
+
+class Up1 {
+    new () {}
+}
+class Down1 extends Up1 {
+    shared new () extends Up1() {}
 }

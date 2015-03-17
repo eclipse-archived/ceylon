@@ -1,6 +1,6 @@
 class Outer() {
     shared class Inner {
-        shared new Inner() {}
+        shared new () {}
         shared new New() {}
         shared class Deeper {
             shared new New() {}
@@ -56,6 +56,7 @@ class ClassMemberCtorChainingSubBroken()
 }
 
 class XX {
+    shared new () {}
     shared new XX() {}
     shared class YY() {}
 }

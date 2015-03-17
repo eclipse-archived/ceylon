@@ -60,20 +60,31 @@ public class Class extends ClassOrInterface implements Functional {
     public void setAbstract(boolean isAbstract) {
         this.abstr = isAbstract;
     }
+    
+    public Constructor getDefaultConstructor() {
+        if (constructors) {
+            for (Declaration dec: getMembers()) {
+                if (dec instanceof Constructor &&
+                        dec.getName()==null) {
+                    return (Constructor) dec;
+                }
+            }
+            return null;
+        }
+        else {
+            return null;
+        }
+    }
 
     public ParameterList getParameterList() {
         if (constructors) {
-            Declaration defaultConstructor = 
-                    getDirectMember(getName(), null, false);
-            if (defaultConstructor instanceof Constructor) {
-                List<ParameterList> parameterLists = 
-                        ((Constructor) defaultConstructor)
-                                .getParameterLists();
-                return parameterLists.isEmpty() ? 
-                        null : parameterLists.get(0);
+            Constructor defaultConstructor = getDefaultConstructor();
+            if (defaultConstructor==null || 
+                    defaultConstructor.getParameterLists().isEmpty()) {
+                return null;
             }
             else {
-                return null;
+                return defaultConstructor.getParameterLists().get(0);
             }
         }
         else {

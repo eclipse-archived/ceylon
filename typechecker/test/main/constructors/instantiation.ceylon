@@ -1,7 +1,7 @@
 class Counter {
     Integer init;
     variable Integer count;
-    shared new Counter() {
+    shared new () {
         count = 0;
         init = count;
     }
@@ -29,7 +29,7 @@ void test() {
     @type:"Counter" value counter2 = Counter.WithInitial(1);
     @type:"Counter" value counter3 = Counter.WithInitial { initial=1; };
     @error value counter4 = Counter.Clone(counter1);
-    @type:"Counter" value counter5 = Counter.Counter();
+    @error /*@type:"Counter"*/ value counter5 = Counter.Counter();
     @type:"Counter" value counter6 = counter1.WithInitial(2);
     Counter();
     Counter.WithInitial(2);

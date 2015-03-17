@@ -7903,6 +7903,13 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(unit.getClassDeclarationType());
             }
             else if (that instanceof Tree.NewLiteral) {
+                if (d instanceof Class) {
+                    Constructor defaultConstructor = 
+                            ((Class) d).getDefaultConstructor();
+                    if (defaultConstructor!=null) {
+                        d = defaultConstructor;
+                    }
+                }
                 if (!(d instanceof Constructor)) {
                     if (d != null) {
                         errorNode.addError("referenced declaration is not a constructor" +
