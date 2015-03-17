@@ -12,7 +12,7 @@ shared native class AppliedMemberClass<in Container, out Type=Anything, in Argum
         satisfies MemberClass<Container,Type,Arguments>
         given Arguments satisfies Anything[] {
   shared actual native Class<Type,Arguments> bind(Object container);
-  shared actual native MemberClassConstructor<Nothing,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
+  shared actual native MemberClassConstructor<Anything,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
           given Arguments satisfies Anything[];
   shared actual native ClosedType<Anything> declaringType;
 

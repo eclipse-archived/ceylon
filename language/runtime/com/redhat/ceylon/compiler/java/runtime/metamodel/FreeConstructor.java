@@ -61,12 +61,13 @@ public class FreeConstructor
 
     @Override
     public String getName() {
-        return constructor.getName();
+        return constructor.getName() == null ? "" : constructor.getName();
     }
 
     @Override
     public String getQualifiedName() {
-        return ((Class)constructor.getContainer()).getQualifiedNameString() + "." + constructor.getName();
+        String name = getName();
+        return ((Class)constructor.getContainer()).getQualifiedNameString() + (name.isEmpty() ? "" : "." + getName());
     }
 
     @Override
@@ -96,7 +97,7 @@ public class FreeConstructor
 
     @Override
     public boolean getDefaultConstructor() {
-        return getName().equals(getContainer().getName());
+        return getName().isEmpty();
     }
 
     @Override

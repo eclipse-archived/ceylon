@@ -11,6 +11,7 @@ import ceylon.language.meta.model.MemberClassConstructor;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -216,7 +217,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        return new AppliedMemberClassConstructor(this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
+        return new AppliedMemberClassConstructor($reifiedContainer, this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
     }
     
 }

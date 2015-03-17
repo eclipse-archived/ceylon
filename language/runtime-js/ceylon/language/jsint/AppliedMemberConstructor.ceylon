@@ -10,7 +10,7 @@ shared native class AppliedMemberConstructor<Container=Nothing,out Type=Anything
     (shared Module containingModule, Anything tipo)
     satisfies MemberClassConstructor<Container,Type,Arguments>
     given Arguments satisfies Anything[] {
-  shared actual native MemberClass<Container,Type,Nothing> container;
+  shared actual native MemberClass<Anything,Type,Nothing> container;
   //Declared
   shared actual native Declaration declaration;
   //Qualified
