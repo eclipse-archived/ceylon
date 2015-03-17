@@ -217,4 +217,9 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         assertErrors("bug20xx/Bug2090",
                 new CompilerError(6, "type parameter 'Arguments' of declaration 'getMethods' has argument 'Anything' is not assignable to upper bound 'Anything[]' of 'Arguments'"));
     }
+    
+    @Test
+    public void testBug2092() {
+        compareWithJavaSource("bug20xx/Bug2092");
+    }
 }
