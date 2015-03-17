@@ -75,12 +75,14 @@ public abstract class Declaration
 
     String toStringName() {
         Scope c = getContainer();
+        String name = getName();
+        if (name==null) name = "";
         if (c instanceof Declaration) {
             return ((Declaration)c).toStringName() + 
-                    "." + getName();
+                    "." + name;
         }
         else {
-            return getName();
+            return name;
         }
     }
     
@@ -310,8 +312,9 @@ public abstract class Declaration
             }
             Scope thisContainer = getAbstraction(getContainer());
             Scope thatContainer = getAbstraction(that.getContainer());
-            if (thisName==null || thatName==null || 
-                    !thisName.equals(thatName) ||
+            if (thisName!=thatName && 
+                    (thisName==null || thatName==null || 
+                        !thisName.equals(thatName)) ||
                 that.getDeclarationKind()!=getDeclarationKind() ||
                 thisContainer==null || thatContainer==null ||
                     !thisContainer.equals(thatContainer)) {
