@@ -3085,7 +3085,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
             Parameter declaredParameter = invocation.getMethod().getParameterLists().get(0).getParameters().get(argIndex);
             
-            JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_MEMBER);
+            JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
             
             arg = expressionGen().applyErasureAndBoxing(
                     arg, 
