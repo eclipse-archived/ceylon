@@ -19,7 +19,7 @@
  */
 @noanno
 class DefaultedParameterCtor {
-    shared new DefaultedParameterCtor(String s="") {
+    shared new (String s="") {
     }
     new One(String s="") {
     }

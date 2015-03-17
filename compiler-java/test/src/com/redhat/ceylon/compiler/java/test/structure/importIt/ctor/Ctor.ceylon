@@ -1,5 +1,5 @@
 shared class Ctor {
-    shared new Ctor() {
+    shared new () {
         
     }
     shared new Other() {

@@ -2,7 +2,7 @@
 class CtorMemberClassOfNestedAnonymousClass(){
     shared object memberObject {
         shared class Ctor {
-            shared new Ctor() {}
+            shared new () {}
             shared new Other() {}
         }
     }

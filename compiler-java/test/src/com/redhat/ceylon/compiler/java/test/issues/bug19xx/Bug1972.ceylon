@@ -19,15 +19,15 @@
  */
 @noanno
 class Bug1972 {
-    shared new Bug1972(String? x=null) {}
+    shared new (String? x=null) {}
     new Other() {}
     void m() {
-        Bug1972.Bug1972(null);
+        Bug1972(null);
     }
 }
 @noanno
 class Bug1972Sub extends Bug1972 {
-    shared new Bug1972Sub() extends Bug1972.Bug1972(null){
+    shared new () extends Bug1972(null){
     }
 }
 @noanno

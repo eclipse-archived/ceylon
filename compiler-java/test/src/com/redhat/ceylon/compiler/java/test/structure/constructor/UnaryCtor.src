@@ -13,7 +13,6 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("UnaryCtor")
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s1$param$) {
@@ -66,26 +65,19 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$0$0);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o2 = (
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
             let
             {
-                .java.lang.String arg$1$0 = "";
+                long arg$1$0 = 0L;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$1$0);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$1$0);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
             let
             {
                 long arg$2$0 = 0L;
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$2$0);
-        );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
-            let
-            {
-                long arg$3$0 = 0L;
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$3$0);
         );
     }
     

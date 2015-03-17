@@ -1,6 +1,6 @@
 
 class ClassAliasCtor {
-    shared new ClassAliasCtor(Integer i) {
+    shared new (Integer i) {
         
     }
     shared new Other(Integer i) {
@@ -10,7 +10,7 @@ class ClassAliasCtor {
 
 class ClassAliasCtorDefault(Integer j) => ClassAliasCtor(j);
 
-class ClassAliasCtorQualDefault(Integer j) => ClassAliasCtor.ClassAliasCtor(j);
+class ClassAliasCtorQualDefault(Integer j) => ClassAliasCtor(j);
 
 class ClassAliasCtorOther(Integer j) => ClassAliasCtor.Other(j);
 

@@ -4834,7 +4834,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
-        ctorDb.modelAnnotations(makeAtName(ctor.getName()));
+        if (!Decl.isDefaultConstructor(ctor)) {
+            ctorDb.modelAnnotations(makeAtName(ctor.getName()));
+        }
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         
         if (Decl.isDefaultConstructor(ctor)) {
@@ -4899,6 +4901,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
         
         List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
+        at(that);
         ctorDb.block(make().Block(0, ctorStmts.prependList(initStmts)));
         
         result.add(ctorDb.build());

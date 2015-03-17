@@ -1385,6 +1385,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             TypeParameter declaration = (TypeParameter)expr.getDeclaration();
             Node node = expr;
             return makeTypeParameterDeclaration(node, declaration);
+        }else if (expr.getDeclaration() instanceof Constructor
+                || expr instanceof Tree.NewLiteral) {
+            Constructor ctor;
+            if (expr.getDeclaration() instanceof Constructor) {
+                ctor = (Constructor)expr.getDeclaration();
+            } else {
+                ctor = Decl.getDefaultConstructor((Class)expr.getDeclaration());
+            }
+            JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass(ctor));
+            metamodelCall = make().TypeCast(
+                    makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
+            return make().Apply(null, 
+                    naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
+                    List.<JCExpression>of(make().Literal(ctor.getName() == null ? "" : ctor.getName())));
         }else if(expr.getDeclaration() instanceof ClassOrInterface
                  || expr.getDeclaration() instanceof TypeAlias){
             // use the generated class to get to the declaration literal
@@ -1396,13 +1410,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return make().TypeCast(type, metamodelCall);
             }
             return metamodelCall;
-        }else if (expr.getDeclaration() instanceof Constructor) {
-            JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass((Constructor)expr.getDeclaration()));
-            metamodelCall = make().TypeCast(
-                    makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
-            return make().Apply(null, 
-                    naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
-                    List.<JCExpression>of(make().Literal(expr.getDeclaration().getName())));
         }else{
             return makeErroneous(expr, "compiler bug: " + expr.getDeclaration() + " is an unsupported declaration type");
         }
@@ -3048,14 +3055,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         ExpressionAndType exprAndType;
         JCExpression expr = invocation.getTransformedArgumentExpression(argIndex);
         JCExpression type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        Class ctedClass = Decl.getConstructedClass(invocation.getPrimaryDeclaration());
         if (argIndex == 0
                 && typeFact().isOptionalType(invocation.getParameterType(argIndex))
                 && invocation.getArgumentType(argIndex).isSubtypeOf(typeFact().getNullDeclaration().getType())
-                && ((invocation.getPrimaryDeclaration() instanceof Constructor
-                        && Decl.isDefaultConstructor((Constructor)invocation.getPrimaryDeclaration())) 
-                    || 
-                    (Decl.getConstructedClass(invocation.getPrimaryDeclaration()) != null 
-                            && Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isSerializable()))) {
+                && ctedClass != null && (ctedClass.hasConstructors()|| ctedClass.isSerializable())) {
             // we've invoking the default constructor, whose first parameter has optional type
             // with a null argument: That will be ambiguous wrt any named constructors
             // with otherwise identical signitures, so we need a typecast to
@@ -3081,7 +3085,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
             Parameter declaredParameter = invocation.getMethod().getParameterLists().get(0).getParameters().get(argIndex);
             
-            JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_MEMBER);
+            JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
             
             arg = expressionGen().applyErasureAndBoxing(
                     arg, 

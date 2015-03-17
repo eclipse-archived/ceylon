@@ -85,6 +85,6 @@ class AnnotationInterop() {
 
 class CPAnnoTest2 {
     generated({"by you"})
-    shared new CPAnnoTest2(generated({"by me"}) String x) { }
+    shared new (generated({"by me"}) String x) { }
     shared new Other(generated({"by me"}) String x) { }
 }

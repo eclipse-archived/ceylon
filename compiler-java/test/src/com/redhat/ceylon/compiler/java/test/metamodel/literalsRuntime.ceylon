@@ -79,18 +79,23 @@ void literalsRuntime2<T>(){
 
     // ConstructorDeclarations
     
-    assert(`new LitClassWithConstructors.LitClassWithConstructors`.name == "LitClassWithConstructors");
+    assert(`new LitClassWithConstructors`.name == "");
+    assert(`new LitClassWithConstructors`.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
+    print(`new LitClassWithConstructors`.string == "new com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
     assert(`new LitClassWithConstructors.Other`.name == "Other");
-    assert(`new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors`.name == "LitParameterisedClassWithConstructors"); 
+    assert(`new LitParameterisedClassWithConstructors`.name == ""); 
     assert(`new LitParameterisedClassWithConstructors.Other`.name == "Other");
     
     // Constructor models
-    assert(`new LitClassWithConstructors.LitClassWithConstructors` == `LitClassWithConstructors.LitClassWithConstructors`.declaration);
+    assert(exists c1 = `LitClassWithConstructors`.getConstructor(""));
+    assert(exists c2 = `LitClassWithConstructors.Member`.getConstructor(""));
+    assert(`new LitClassWithConstructors` == c1.declaration);
     assert(`new LitClassWithConstructors.Other` == `LitClassWithConstructors.Other`.declaration);
-    assert(`new LitClassWithConstructors.Member.Member` == `LitClassWithConstructors.Member.Member`.declaration);
+    assert(`new LitClassWithConstructors.Member` == c2.declaration);
     assert(`new LitClassWithConstructors.Member.Other` == `LitClassWithConstructors.Member.Other`.declaration);
     
-    assert(`new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors` == `LitParameterisedClassWithConstructors<String>.LitParameterisedClassWithConstructors`.declaration);
+    assert(exists c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor(""));
+    assert(`new LitParameterisedClassWithConstructors` == c3.declaration);
     assert(`new LitParameterisedClassWithConstructors.Other` == `LitParameterisedClassWithConstructors<String>.Other`.declaration);
 }
 

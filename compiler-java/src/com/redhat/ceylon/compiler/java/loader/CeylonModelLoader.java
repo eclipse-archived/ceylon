@@ -661,7 +661,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
             }
         }
         // in every other case, rethrow as a ModelLoaderExceptions
-        throw new ModelResolutionException("Failed to determine if "+method.name.toString()+" is overriding a super method", x);
+        throw new ModelResolutionException("Failed to determine if "+method.name.toString()+" is overriding a super method" +
+        (x.getLocalizedMessage() != null ? ": " + x.getLocalizedMessage() : ""), x);
     }
 
     /**

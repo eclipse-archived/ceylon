@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 class Bug1961 {
-    shared new Bug1961() {
+    shared new () {
         String s = "";
     }
 }

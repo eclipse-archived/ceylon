@@ -861,7 +861,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof Constructor) {
             Constructor constructor = (Constructor)decl;
             if (Decl.isDefaultConstructor(constructor)) {
-                return compoundName(decl.getName(), param.getName());
+                return compoundName(Decl.getConstructedClass(constructor).getName(), param.getName());
             } else {
                 return compoundName(Decl.getConstructedClass(constructor).getName(), decl.getName(), param.getName());
             }

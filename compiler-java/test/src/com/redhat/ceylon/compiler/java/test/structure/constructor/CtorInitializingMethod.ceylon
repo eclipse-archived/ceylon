@@ -17,43 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.fordebug;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.redhat.ceylon.compiler.java.test.CompilerTests;
-
-public class SourcePositionsTests extends CompilerTests {
-	
-    @Test
-    @Ignore
-    public void testSimplePositions(){
-        compareWithJavaSourceWithPositions("positions/simple");
+@noanno
+class CtorInitializingMethod {
+    String name(Integer int);
+    shared new (String(Integer) name) {
+        this.name = name;
     }
-
-    @Test
-    public void testSimpleLines(){
-        compareWithJavaSourceWithLines("lines/simple");
-    }
-    
-    @Test
-    public void testAnonymousLines(){
-        compareWithJavaSourceWithLines("lines/anonymous");
-    }
-    
-    @Test
-    public void testDoerLines(){
-        compareWithJavaSourceWithLines("lines/doer");
-    }
-    
-    @Test
-    public void testDefaultParameterLines(){
-        compareWithJavaSourceWithLines("lines/DefaultParameter");
-    }
-    
-    @Test
-    public void testCtorSuper(){
-        compareWithJavaSourceWithLines("lines/CtorSuper");
-    }
+}
+@noanno
+class CtorInitializerMethod(String(Integer) nom) {
+    String name(Integer int);
+    name = nom;
 }

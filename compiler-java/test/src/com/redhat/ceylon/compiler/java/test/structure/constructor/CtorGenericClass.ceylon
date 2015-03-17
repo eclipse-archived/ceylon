@@ -1,6 +1,6 @@
 @noanno
 class CtorGenericClass<T> {
-    shared new CtorGenericClass(T? t=null) {
+    shared new (T? t=null) {
         
     }
     new Foo(T? t=null) {
@@ -16,9 +16,9 @@ class CtorGenericClass<T> {
         package.CtorGenericClass<String>("");
         package.CtorGenericClass<String>{t="";};
         package.CtorGenericClass<String>{};
-        package.CtorGenericClass<String>.CtorGenericClass("");
-        package.CtorGenericClass<String>.CtorGenericClass{t="";};
-        package.CtorGenericClass<String>.CtorGenericClass{};
+        package.CtorGenericClass<String>("");
+        package.CtorGenericClass<String>{t="";};
+        package.CtorGenericClass<String>{};
         package.CtorGenericClass<String>.Foo("");
         package.CtorGenericClass<String>.Foo{t="";};
         package.CtorGenericClass<String>.Foo{};
