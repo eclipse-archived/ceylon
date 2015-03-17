@@ -35,6 +35,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -242,12 +243,17 @@ public abstract class CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
 
         boolean expectedToFail = false;
+        Diagnostic.Kind lowestErrorLevel = Diagnostic.Kind.ERROR;
         for (CompilerError expectedError : expectedErrors) {
             if (expectedError.kind == Diagnostic.Kind.ERROR) {
                 expectedToFail = true;
-                break;
             }
+            // if the current lowest (say, ERROR), is smaller than the expected kind (say, WARNING), then
+            // we are interested in WARNING + ERROR kinds
+            if(lowestErrorLevel.compareTo(expectedError.kind) == -1)
+                lowestErrorLevel = expectedError.kind;
         }
+        EnumSet<Diagnostic.Kind> kinds = EnumSet.range(Diagnostic.Kind.ERROR, lowestErrorLevel);
         // now compile it all the way
         Throwable ex = null;
         ExitState exitState = task.call2();
@@ -285,7 +291,7 @@ public abstract class CompilerTests {
             Assert.fail("Expected compiler exception " + expectedException);
         }
         
-        Set<CompilerError> actualErrors = collector.getAll();
+        Set<CompilerError> actualErrors = collector.get(kinds);
         compareErrors(actualErrors, expectedErrors);
     }
     

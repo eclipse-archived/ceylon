@@ -38,8 +38,7 @@ public class ReportingTests extends CompilerTests {
         assertErrors(new String[]{"SuppressesNothing.ceylon"},
                 defaultOptions,
                 null,
-                new CompilerError(Kind.WARNING, "", 1, "suppresses no warnings"),
-                new CompilerError(Kind.NOTE, "", -1, "Created module default"));
+                new CompilerError(Kind.WARNING, "", 1, "suppresses no warnings"));
     }
     
     @Test
