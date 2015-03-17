@@ -132,4 +132,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorMemberClassOfNestedAnonymousClass(){
         compareWithJavaSource("constructor/CtorMemberClassOfNestedAnonymousClass");
     }
+    
+    @Test
+    public void testCtorInitializingMethod() {
+        compareWithJavaSource("constructor/CtorInitializingMethod");
+    }
 }
