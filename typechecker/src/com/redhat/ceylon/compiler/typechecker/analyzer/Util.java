@@ -226,9 +226,10 @@ public class Util {
     
     public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
+        Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (isExecutableStatement(s) || 
+            if (isExecutableStatement(unit, s) || 
                     s instanceof Tree.Constructor) {
                 return s;
             }
@@ -236,15 +237,14 @@ public class Util {
         return null;
     }
 
-    static boolean isExecutableStatement(Tree.Statement s) {
-        Unit unit = s.getUnit();
+    static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
         if (s instanceof Tree.SpecifierStatement) {
             //shortcut refinement statements with => aren't really "executable"
             Tree.SpecifierStatement ss = 
                     (Tree.SpecifierStatement) s;
             return !(ss.getSpecifierExpression() 
-                        instanceof Tree.LazySpecifierExpression && 
-                    !ss.getRefinement());
+                    instanceof Tree.LazySpecifierExpression) || 
+                    !ss.getRefinement();
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
