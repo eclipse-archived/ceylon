@@ -16,6 +16,8 @@ public class DefaultToolOptions {
     // BACKWARDS-COMPAT
     public final static String DEFAULTS_MAVENOVERRIDES = "defaults.mavenoverrides";
     public final static String DEFAULTS_OVERRIDES = "defaults.overrides";
+    public final static String DEFAULTS_FLAT_CLASSPATH = "defaults.flatclasspath";
+    public final static String DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES = "defaults.autoexportmavendependencies";
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
@@ -67,6 +69,22 @@ public class DefaultToolOptions {
             return ov;
         // backwards compat
         return config.getOption(DEFAULTS_MAVENOVERRIDES);
+    }
+
+    public static boolean getDefaultFlatClasspath() {
+        return getDefaultFlatClasspath(CeylonConfig.get());
+    }
+
+    public static boolean getDefaultFlatClasspath(CeylonConfig config) {
+        return config.getBoolOption(DEFAULTS_FLAT_CLASSPATH, false);
+    }
+    
+    public static boolean getDefaultAutoExportMavenDependencies() {
+        return getDefaultAutoExportMavenDependencies(CeylonConfig.get());
+    }
+
+    public static boolean getDefaultAutoExportMavenDependencies(CeylonConfig config) {
+        return config.getBoolOption(DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES, false);
     }
     
     public static List<File> getCompilerSourceDirs() {
