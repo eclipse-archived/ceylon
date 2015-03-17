@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 
@@ -407,7 +406,7 @@ public class AnnotationVisitor extends Visitor {
     private static List<Tree.Statement> getExecutableStatements(Tree.Body block) {
         List<Tree.Statement> list = new ArrayList<Tree.Statement>();
         for (Tree.Statement s: block.getStatements()) {
-            if (isExecutableStatement(s)) {
+            if (Util.isExecutableStatement(block.getUnit(), s)) {
                 list.add(s);
             }
         }
