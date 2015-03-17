@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
 /**
  * ModuleManager which can load artifacts from jars and cars.
@@ -58,12 +59,7 @@ public abstract class LazyModuleManager extends ModuleManager {
         String version = module.getVersion();
         if(version != null
                 && AbstractModelLoader.isJDKModule(nameAsString)){
-            // substitute Java 8 for Java 7 if we're running on Java 8
-            if(JDKUtils.jdk == JDKUtils.JDK.JDK8 && version.equals(JDKUtils.JDK.JDK7.version)){
-                version = JDKUtils.JDK.JDK8.version;
-                module.setVersion(version);
-            }
-            if(version.equals(JDKUtils.jdk.version)){
+            if(JDKUtils.jdk.providesVersion(version)){
                 module.setAvailable(true);
                 module.setJava(true);
             }
@@ -220,11 +216,29 @@ public abstract class LazyModuleManager extends ModuleManager {
         String name = current.getNameAsString();
         if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
             // if we're running JDK8, pretend that it provides JDK7 modules
-            if(JDKUtils.jdk == JDKUtils.JDK.JDK8
-                    && JDKUtils.JDK.JDK7.version.equals(version)
-                    && JDKUtils.JDK.JDK8.version.equals(currentVersion))
+            if(JDKUtils.jdk.providesVersion(version)
+                    && JDKUtils.jdk.providesVersion(currentVersion))
                 return true;
         }
         return currentVersion == null || version == null || currentVersion.equals(version);
+    }
+    
+    @Override
+    public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
+        super.addModuleDependencyDefinition(moduleImport, definition);
+        Module module = moduleImport.getModule();
+        if(module == null)
+            return;
+        String nameAsString = module.getNameAsString();
+        String version = module.getVersion();
+        if(version != null
+                && AbstractModelLoader.isJDKModule(nameAsString)){
+            // Add a warning if we're using a lower JDK than the one we're running on
+            if(JDKUtils.jdk.isLowerVersion(version)){
+                definition.addUsageWarning(Warning.importsOtherJdk, "You import JDK7, which is provided by the JDK8 you are running on, but"+
+                        " we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on"+
+                        " JDK8 classes or methods.");
+            }
+        }
     }
 }
