@@ -35,9 +35,11 @@ import javax.tools.Diagnostic.Kind;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
@@ -868,6 +870,20 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     public void testBug1877() {
         compile("bug18xx/Bug1877Java.java");
         compareWithJavaSource("bug18xx/Bug1877");
+    }
+
+    @Test
+    public void testBug1882_JDK7() {
+        Assume.assumeTrue("Runs on JDK7", JDKUtils.jdk == JDKUtils.JDK.JDK7);
+        compilesWithoutWarnings("bug18xx/bug1882/module.ceylon");
+    }
+
+    @Test
+    public void testBug1882_JDK8() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
+        assertErrors("bug18xx/bug1882/module",
+                new CompilerError(Kind.WARNING, "module.ceylon", 2, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods.")
+                );
     }
 
     @Test
