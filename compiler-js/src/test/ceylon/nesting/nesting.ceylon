@@ -193,17 +193,17 @@ shared object nameTest {
         }
     }
     shared interface IfaceInObject satisfies Destroyable {}
-    shared class ClassInObject<out T>(shared T t) extends Singleton<T>(t)
-            given T satisfies Object {}
+    shared class ClassInObject<out T>(shared T t) satisfies Iterable<T>
+            given T satisfies Object {
+        shared actual Iterator<T> iterator() => nothing;
+    }
     shared String f() { return this.nameTest.f(); }
     shared Object mltest1<T>(T t)
         given T satisfies Object => ClassInObject(t);
-    shared Object mltest2() {
-        object rval satisfies IfaceInObject {
+    shared Object mltest2()
+        => object satisfies IfaceInObject {
             shared actual void destroy(Throwable? e) {}
-        }
-        return rval;
-    }
+        };
 }
 
 shared class C1() {
