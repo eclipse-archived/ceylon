@@ -145,8 +145,13 @@ public abstract class ToolLoader {
     private <T extends Tool> ToolModel<T> loadModel(Class<T> cls, String toolName) {
         checkClass(cls);
         AnnotatedToolModel<T> model = new AnnotatedToolModel<T>(toolName);
+        model.setToolLoader(this);
         model.setToolClass(cls);
-        
+        return model;
+    }
+
+    protected <T extends Tool> void setupModel(AnnotatedToolModel<T> model) {
+        Class<T> cls = model.getToolClass();
         // We use this Map because Java doesn't define the order that the 
         // declared methods will be returned in, but the order matters 
         TreeMap<Integer, ArgumentModel<?>> orderedArgumentModels = new TreeMap<Integer, ArgumentModel<?>>();
@@ -166,11 +171,9 @@ public abstract class ToolLoader {
             }
             model.addArgument(argumentModel);
         }
-        
-        return model;
     }
 
-    protected <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType, boolean isSimpleType) {
+    private <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType, boolean isSimpleType) {
         Subtool subtool = setter.getAnnotation(Subtool.class);
         ParsedBy pf = setter.getAnnotation(ParsedBy.class);
         if (subtool != null) {
@@ -255,7 +258,7 @@ public abstract class ToolLoader {
         return argumentModel;
     }
 
-    private void checkClass(Class<? extends Tool> cls) throws ModelException {
+    protected void checkClass(Class<? extends Tool> cls) throws ModelException {
         final int classModifiers = cls.getModifiers();
         if (Modifier.isAbstract(classModifiers)) {
             throw new ModelException("Tool " + cls + " is not concrete");            
