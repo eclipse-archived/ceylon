@@ -8,14 +8,13 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
@@ -62,10 +61,6 @@ public abstract class ToolLoader {
             if (toolName.equals(getToolName(cls))) {
                 classNames.add(cls);
             }
-        }
-        if (new HashSet<String>(classNames).size() > 1) {
-            // TODO Allow fully qualified tool names to avoid ambiguities?
-            throw new ToolException("Ambiguous tool name " + toolName + ", classes: " + classNames);
         }
         if (classNames.isEmpty()) {
             return null;
@@ -540,21 +535,17 @@ public abstract class ToolLoader {
      * Returns an iterable of all the tools names known to this tool loader.
      */
     public Iterable<String> getToolNames() {
-        List<String> result = new ArrayList<>();
+        TreeSet<String> result = new TreeSet<>();
         for (String className : toolClassNames()) {
             result.add(getToolName(className));
         }
-        Collections.sort(result);
         return result;
     }
+    
     static interface Handler<T> {
         public T handle(String className);
     }
     
-
-
-
-
 
     /**
      * Suggests tool names which are similar to something that was supposed 
