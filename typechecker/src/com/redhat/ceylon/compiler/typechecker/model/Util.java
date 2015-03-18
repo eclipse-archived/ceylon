@@ -268,16 +268,23 @@ public class Util {
         //Ignore optionality for resolving overloads, since
         //all Java parameters are treated as optional
         //Except in the case of primitive parameters
-        ProducedType nt = unit.getNullValueDeclaration().getType();
-        if (nt.isSubtypeOf(argType) && !nt.isSubtypeOf(paramType)) {
+        ProducedType nvt = 
+                unit.getNullValueDeclaration().getType();
+        if (nvt.isSubtypeOf(argType) && 
+                !nvt.isSubtypeOf(paramType)) {
             return false; //only for primitives
         }
-        ProducedType defParamType = unit.getDefiniteType(paramType);
-        ProducedType defArgType = unit.getDefiniteType(argType);
-        if (defArgType.isSubtypeOf(unit.getNullDeclaration().getType())) {
+        ProducedType defParamType = 
+                unit.getDefiniteType(paramType);
+        ProducedType defArgType = 
+                unit.getDefiniteType(argType);
+        ProducedType nt = 
+                unit.getNullDeclaration().getType();
+        if (defArgType.isSubtypeOf(nt)) {
             return true;
         }
-        if (isTypeUnknown(defArgType) || isTypeUnknown(defParamType)) {
+        if (isTypeUnknown(defArgType) || 
+                isTypeUnknown(defParamType)) {
             return false;
         }
         if (!erase(defArgType.getDeclaration())
@@ -304,13 +311,15 @@ public class Util {
                     ((Functional) r).getParameterLists();
             if (dpls!=null && !dpls.isEmpty() && 
                     rpls!=null && !rpls.isEmpty()) {
-                List<Parameter> dpl = dpls.get(0).getParameters();
-                List<Parameter> rpl = rpls.get(0).getParameters();
+                ParameterList dpls0 = dpls.get(0);
+                ParameterList rpls0 = rpls.get(0);
+                List<Parameter> dpl = dpls0.getParameters();
+                List<Parameter> rpl = rpls0.getParameters();
                 int dplSize = dpl.size();
                 int rplSize = rpl.size();
                 //ignore sequenced parameters
-                boolean dhsp = dpls.get(0).hasSequencedParameter();
-                boolean rhsp = rpls.get(0).hasSequencedParameter();
+                boolean dhsp = dpls0.hasSequencedParameter();
+                boolean rhsp = rpls0.hasSequencedParameter();
                 //always prefer a signature without varargs 
                 //over one with a varargs parameter
                 if (!dhsp && rhsp) {
@@ -527,15 +536,18 @@ public class Util {
         if (paramType.isExactly(argumentType)) {
             String aType = argumentType.getUnderlyingType();
             String pType = paramType.getUnderlyingType();
-            if (aType == null && pType == null)
+            if (aType == null && pType == null) {
                 return 0;
+            }
             Unit unit = argumentType.getDeclaration().getUnit();
             TypeDeclaration decl = paramType.getDeclaration();
             if (decl.equals(unit.getIntegerDeclaration())) {
-                if(aType == null)
+                if (aType == null) {
                     aType = "long";
-                if(pType == null)
+                }
+                if (pType == null) {
                     pType = "long";
+                }
                 int aScore = getPrimitiveScore(aType);
                 int bScore = getPrimitiveScore(pType);
                 /*
@@ -553,10 +565,12 @@ public class Util {
                 return aScore - bScore;
             }
             else if (decl.equals(unit.getFloatDeclaration())) {
-                if (aType == null)
+                if (aType == null) {
                     aType = "double";
-                if (pType == null)
+                }
+                if (pType == null) {
                     pType = "double";
+                }
                 int aScore = getPrimitiveScore(aType);
                 int bScore = getPrimitiveScore(pType);
                 /*
@@ -574,14 +588,17 @@ public class Util {
     }
 
     private static int getPrimitiveScore(String underlyingType) {
-        if (underlyingType.equals("long"))
+        if (underlyingType.equals("long")) {
             return 2;
+        }
         if (underlyingType.equals("int") || 
-                underlyingType.equals("double"))
+                underlyingType.equals("double")) {
             return 1;
+        }
         if (underlyingType.equals("short") || 
-                underlyingType.equals("float"))
+                underlyingType.equals("float")) {
             return 0;
+        }
         return 0;
     }
 
@@ -830,7 +847,8 @@ public class Util {
      */
     public static Map<TypeParameter,ProducedType> getTypeArgumentMap(Declaration declaration, 
             ProducedType receivingType, List<ProducedType> typeArguments) {        
-    	List<TypeParameter> typeParameters = getTypeParameters(declaration);
+    	List<TypeParameter> typeParameters = 
+    	        getTypeParameters(declaration);
 		//make sure we collect all type arguments
 		//from the whole qualified type!
         int count = countTypeParameters(receivingType, typeParameters);
@@ -973,13 +991,15 @@ public class Util {
      * subtype.
      */
     public static void addToIntersection(List<ProducedType> list, 
-            ProducedType pt, Unit unit, boolean reduceDisjointTypes) {
+            ProducedType pt, Unit unit, 
+            boolean reduceDisjointTypes) {
         if (pt==null) {
             return;
         }
-        if (pt.getDeclaration() instanceof IntersectionType) {
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd instanceof IntersectionType) {
             List<ProducedType> satisfiedTypes = 
-                    pt.getDeclaration().getSatisfiedTypes();
+                    ptd.getSatisfiedTypes();
             // cheaper c-for than foreach
             for (int i=0,l=satisfiedTypes.size(); i<l; i++) {
                 ProducedType t = satisfiedTypes.get(i);
@@ -997,7 +1017,7 @@ public class Util {
             // cheaper c-for than foreach
             if (!list.isEmpty() && reduceDisjointTypes) {
                 List<TypeDeclaration> supertypes = 
-                        pt.getDeclaration().getSupertypeDeclarations();
+                        ptd.getSupertypeDeclarations();
                 for (int i=0, l=supertypes.size(); i<l; i++) {
                     TypeDeclaration supertype = supertypes.get(i);
                     List<TypeDeclaration> ctds =
@@ -1007,7 +1027,7 @@ public class Util {
                         // cheaper c-for than foreach
                         for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
                             TypeDeclaration ct = ctds.get(cti);
-                            if (pt.getDeclaration().inherits(ct)) {
+                            if (ptd.inherits(ct)) {
                                 ctd = ct;
                                 break;
                             }
@@ -1022,7 +1042,7 @@ public class Util {
                                         ProducedType t = list.get(ti);
                                         if (t.getDeclaration().inherits(ct)) {
                                             list.clear();
-                                            list.add(new NothingType(unit).getType());
+                                            list.add(unit.getNothingDeclaration().getType());
                                             return;
                                         }
                                     }
@@ -1051,14 +1071,14 @@ public class Util {
                         list.add(unit.getNothingDeclaration().getType());
                         return;
                     }
-                    else if (pt.getDeclaration() instanceof ClassOrInterface && 
+                    else if (ptd instanceof ClassOrInterface && 
                             t.getDeclaration() instanceof ClassOrInterface && 
-                            pt.getDeclaration().equals(t.getDeclaration()) &&
+                            ptd.equals(t.getDeclaration()) &&
                             !pt.containsUnknowns() &&
                             !t.containsUnknowns()) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         ProducedType pi = 
-                                principalInstantiation(pt.getDeclaration(), 
+                                principalInstantiation(ptd, 
                                         pt, t, unit);
                         if (!pi.containsUnknowns()) {
                             list.remove(i);
@@ -1094,7 +1114,8 @@ public class Util {
      * of an anonymous class with a type to which it is not
      * assignable is empty.
      */
-    private static boolean emptyMeet(ProducedType p, ProducedType q, Unit unit) {
+    private static boolean emptyMeet(ProducedType p, ProducedType q, 
+            Unit unit) {
         if (p==null || q==null) {
             return false;
         }
@@ -1252,8 +1273,10 @@ public class Util {
             }
         }
         if (pd.inherits(td) && qd.inherits(st)) {
-            List<ProducedType> pal = p.getTypeArgumentList();
-            ProducedType qet = unit.getSequentialElementType(q);
+            List<ProducedType> pal = 
+                    p.getTypeArgumentList();
+            ProducedType qet = 
+                    unit.getSequentialElementType(q);
             if (pal.size()>=3) {
                 if (emptyMeet(pal.get(1), qet, unit) ||
                     emptyMeet(pal.get(2), 
@@ -1264,8 +1287,10 @@ public class Util {
             }
         }
         if (qd.inherits(td) && pd.inherits(st)) {
-            List<ProducedType> qal = q.getTypeArgumentList();
-            ProducedType pet = unit.getSequentialElementType(p);
+            List<ProducedType> qal = 
+                    q.getTypeArgumentList();
+            ProducedType pet = 
+                    unit.getSequentialElementType(p);
             if (qal.size()>=3) {
                 if (emptyMeet(qal.get(1), pet, unit) ||
                     emptyMeet(qal.get(2), 
@@ -1290,7 +1315,8 @@ public class Util {
         ProducedType tqt = t.getQualifyingType();
         if (ptqt!=null && tqt!=null && 
                 td.getContainer() instanceof TypeDeclaration) {
-            TypeDeclaration qtd = (TypeDeclaration) td.getContainer();
+            TypeDeclaration qtd = 
+                    (TypeDeclaration) td.getContainer();
             ProducedType pst = ptqt.getSupertype(qtd);
             ProducedType st = tqt.getSupertype(qtd);
             if (pst!=null && st!=null) {
@@ -1315,7 +1341,8 @@ public class Util {
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
             ProducedType p, ProducedType q) {
 //        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
-            List<TypeDeclaration> stds = p.getDeclaration().getSupertypeDeclarations();
+            List<TypeDeclaration> stds = 
+                    p.getDeclaration().getSupertypeDeclarations();
             stds.retainAll(q.getDeclaration().getSupertypeDeclarations());
             for (TypeDeclaration std: stds) {
                 ProducedType pst = null;
@@ -1370,7 +1397,8 @@ public class Util {
         return formatPath(path, '.');
     }
     
-    static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
+    static boolean addToSupertypes(List<ProducedType> list, 
+            ProducedType st) {
         for (ProducedType et: list) {
             if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
                     st.isExactlyInternal(et)) {
@@ -1381,9 +1409,11 @@ public class Util {
         return true;
     }
 
-    public static ProducedType unionType(ProducedType lhst, ProducedType rhst, 
+    public static ProducedType unionType(
+            ProducedType lhst, ProducedType rhst, 
             Unit unit) {
-        List<ProducedType> list = new ArrayList<ProducedType>(2);
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>(2);
         addToUnion(list, rhst);
         addToUnion(list, lhst);
         UnionType ut = new UnionType(unit);
@@ -1391,7 +1421,8 @@ public class Util {
         return ut.getType();
     }
 
-    public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, 
+    public static ProducedType intersectionType(
+            ProducedType lhst, ProducedType rhst, 
             Unit unit) {
         ProducedType simpleIntersection = 
                 getSimpleIntersection(lhst, rhst);
@@ -1406,7 +1437,8 @@ public class Util {
         return it.canonicalize().getType();
     }
 
-    private static ProducedType getSimpleIntersection(ProducedType a, ProducedType b) {
+    private static ProducedType getSimpleIntersection(
+            ProducedType a, ProducedType b) {
         if (a == null || b == null) {
             return null;
         }
@@ -1536,7 +1568,8 @@ public class Util {
         return null;
     }
 
-    private static ProducedType simpleObjectIntersection(ClassOrInterface objectDecl, ProducedType type) {
+    private static ProducedType simpleObjectIntersection(
+            ClassOrInterface objectDecl, ProducedType type) {
         TypeDeclaration declaration = 
                 type.getDeclaration();
         if (declaration instanceof ClassOrInterface)
@@ -1716,16 +1749,17 @@ public class Util {
     }
     
     public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
-        return involvesTypeParameters(member.getTypeParameters(), pt);
+        return involvesTypeParameters(pt, member.getTypeParameters());
     }
     
-    public static boolean involvesTypeParameters(Collection<TypeParameter> parameters, ProducedType pt) {
+    public static boolean involvesTypeParameters(ProducedType pt, 
+            Collection<TypeParameter> parameters) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: 
                     pt.getDeclaration().getCaseTypes()) {
                 ProducedType args = 
                         ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(parameters, args)) {
+                if (involvesTypeParameters(args, parameters)) {
                     return true;
                 }
             }
@@ -1736,7 +1770,7 @@ public class Util {
                     pt.getDeclaration().getSatisfiedTypes()) {
                 ProducedType args = 
                         ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(parameters, args)) {
+                if (involvesTypeParameters(args, parameters)) {
                     return true;
                 }
             }
@@ -1748,7 +1782,7 @@ public class Util {
             }
             for (ProducedType at: pt.getTypeArgumentList()) {
                 if (at!=null && 
-                        involvesTypeParameters(parameters, at)) {
+                        involvesTypeParameters(at, parameters)) {
                     return true;
                 }
             }
@@ -1756,7 +1790,8 @@ public class Util {
         }
     }
     
-    public static boolean isCompletelyVisible(Declaration member, ProducedType pt) {
+    public static boolean isCompletelyVisible(Declaration member, 
+            ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: 
                     pt.getDeclaration().getCaseTypes()) {

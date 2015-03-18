@@ -2834,7 +2834,7 @@ public class ProducedType extends ProducedReference {
                         return resultArg;
                     }
                     resultArgs.add(resultArg);
-                    if (involvesTypeParameters(overrides.keySet(), arg)) {
+                    if (involvesTypeParameters(arg, overrides.keySet())) {
                         varianceResults.put(param, OUT);
                     }
                 }
