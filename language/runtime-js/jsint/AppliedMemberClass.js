@@ -32,53 +32,53 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.$$=AppliedMemberClass$jsint.$$;
   that.getT$all=function(){return dummy.getT$all();};
   that.getT$name=function(){return dummy.getT$name();};
-  that.equals=AppliedMemberClass$jsint.$$.prototype.equals;
+  var _proto=AppliedMemberClass$jsint.$$.prototype;
 
   that.$targs=myTargs;
   atr$(that,'parameterTypes',function(){
     return clsparamtypes(that);
-  },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
+  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(that,'extendedType',function(){
     return coiexttype$(that);
-  },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getExtendedType.$crtmm$);
+  },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'satisfiedTypes',function(){
     return coisattype$(that);
-  },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getExtendedType.$crtmm$);
+  },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'caseValues',function(){
     return coicase$(that);
-  },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getCaseValues.$crtmm$);
+  },undefined,_proto.$prop$getCaseValues.$crtmm$);
   atr$(that,'declaration',function(){
     return coimoddcl$(that);
-  },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
-  that.$_bind=AppliedMemberClass$jsint.$$.prototype.$_bind;
-  that.equals=AppliedMemberClass$jsint.$$.prototype.equals;
-  that.getAttribute=AppliedMemberClass$jsint.$$.prototype.getAttribute;
-  that.getAttributes=AppliedMemberClass$jsint.$$.prototype.getAttributes;
-  that.getClass=AppliedMemberClass$jsint.$$.prototype.getClass;
-  that.getClassOrInterface=AppliedMemberClass$jsint.$$.prototype.getClassOrInterface;
-  that.getClasses=AppliedMemberClass$jsint.$$.prototype.getClasses;
-  that.getConstructor=AppliedMemberClass$jsint.$$.prototype.getConstructor;
-  that.getDeclaredAttribute=AppliedMemberClass$jsint.$$.prototype.getDeclaredAttribute;
-  that.getDeclaredAttributes=AppliedMemberClass$jsint.$$.prototype.getDeclaredAttributes;
-  that.getDeclaredClass=AppliedMemberClass$jsint.$$.prototype.getDeclaredClass;
-  that.getDeclaredClassOrInterface=AppliedMemberClass$jsint.$$.prototype.getDeclaredClassOrInterface;
-  that.getDeclaredClasses=AppliedMemberClass$jsint.$$.prototype.getDeclaredClasses;
-  that.getDeclaredInterface=AppliedMemberClass$jsint.$$.prototype.getDeclaredInterface;
-  that.getDeclaredInterfaces=AppliedMemberClass$jsint.$$.prototype.getDeclaredInterfaces;
-  that.getDeclaredMethod=AppliedMemberClass$jsint.$$.prototype.getDeclaredMethod;
-  that.getDeclaredMethods=AppliedMemberClass$jsint.$$.prototype.getDeclaredMethods;
-  that.getInterface=AppliedMemberClass$jsint.$$.prototype.getInterface;
-  that.getInterfaces=AppliedMemberClass$jsint.$$.prototype.getInterfaces;
-  that.getMethod=AppliedMemberClass$jsint.$$.prototype.getMethod;
-  that.getMethods=AppliedMemberClass$jsint.$$.prototype.getMethods;
-  that.typeOf=AppliedMemberClass$jsint.$$.prototype.typeOf;
-  that.supertypeOf=AppliedMemberClass$jsint.$$.prototype.supertypeOf;
-  that.union=AppliedMemberClass$jsint.$$.prototype.union;
-  that.intersection=AppliedMemberClass$jsint.$$.prototype.intersection;
-  that.exactly=AppliedMemberClass$jsint.$$.prototype.exactly;
-  atr$(that,'string',function(){return coistr$(that); },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getString.$crtmm$);
-  atr$(that,'hash',function(){return coihash$(that);},undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getHash.$crtmm$);
-  atr$(that,'container',function(){return coicont$(that); },undefined,AppliedMemberClass$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+  },undefined,_proto.$prop$getDeclaration.$crtmm$);
+  that.$_bind=_proto.$_bind;
+  that.equals=_proto.equals;
+  that.getAttribute=_proto.getAttribute;
+  that.getAttributes=_proto.getAttributes;
+  that.getClass=_proto.getClass;
+  that.getClassOrInterface=_proto.getClassOrInterface;
+  that.getClasses=_proto.getClasses;
+  that.getConstructor=_proto.getConstructor;
+  that.getDeclaredAttribute=_proto.getDeclaredAttribute;
+  that.getDeclaredAttributes=_proto.getDeclaredAttributes;
+  that.getDeclaredClass=_proto.getDeclaredClass;
+  that.getDeclaredClassOrInterface=_proto.getDeclaredClassOrInterface;
+  that.getDeclaredClasses=_proto.getDeclaredClasses;
+  that.getDeclaredInterface=_proto.getDeclaredInterface;
+  that.getDeclaredInterfaces=_proto.getDeclaredInterfaces;
+  that.getDeclaredMethod=_proto.getDeclaredMethod;
+  that.getDeclaredMethods=_proto.getDeclaredMethods;
+  that.getInterface=_proto.getInterface;
+  that.getInterfaces=_proto.getInterfaces;
+  that.getMethod=_proto.getMethod;
+  that.getMethods=_proto.getMethods;
+  that.typeOf=_proto.typeOf;
+  that.supertypeOf=_proto.supertypeOf;
+  that.union=_proto.union;
+  that.intersection=_proto.intersection;
+  that.exactly=_proto.exactly;
+  atr$(that,'string',function(){return coistr$(that); },undefined,_proto.$prop$getString.$crtmm$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,_proto.$prop$getHash.$crtmm$);
+  atr$(that,'container',function(){return coicont$(that); },undefined,_proto.$prop$getContainer.$crtmm$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,
                          Type$MemberClass:that.$$targs$$.Type$AppliedMemberClass,
                          Container$MemberClass:that.$$targs$$.Container$AppliedMemberClass},that);
