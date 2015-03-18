@@ -894,16 +894,17 @@ public class Util {
         return bev.foundError;
     }
 
-    static String message(Declaration refined) {
-        String container;
-        if (refined.getContainer() instanceof Declaration) {
-            String name = ((Declaration) refined.getContainer()).getName();
-            container = " in '" + name + "'";
+    static String message(Declaration dec) {
+        String qualifier;
+        Scope container = dec.getContainer();
+        if (container instanceof Declaration) {
+            String name = ((Declaration) container).getName();
+            qualifier = " in '" + name + "'";
         }
         else {
-            container = "";
+            qualifier = "";
         }
-        return "'" + refined.getName() + "'" + container;
+        return "'" + dec.getName() + "'" + qualifier;
     }
     
     public static Node getParameterTypeErrorNode(Tree.Parameter p) {
