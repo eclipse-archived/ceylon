@@ -18,6 +18,9 @@ function typeLiteral$meta($$targs$$,targ$2) {
     } else if (t==='T') {
       //TODO arguments
       var _tt=retpl$($$targs$$.Type$typeLiteral);
+      if (_tt.t===Empty) {
+        return AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:Empty}});
+      }
       return AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
     } else if (t.$crtmm$ === undefined) {
       throw new Error("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
