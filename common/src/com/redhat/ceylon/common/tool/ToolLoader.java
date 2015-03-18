@@ -69,6 +69,29 @@ public abstract class ToolLoader {
         return className;
     }
 
+    public ClassLoader loadModule(String name, String version) {
+        try {
+            // Ok, now for something really crappy to force loading of the required module
+            String loaderClassName;
+            if (loader.getClass().getName().equals("org.jboss.modules.ModuleClassLoader")
+                    || loader.getClass().getName().equals("ceylon.modules.jboss.runtime.CeylonModuleClassLoader")) {
+                // If we run using the Ceylon runtime
+                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.JBossModuleLoader";
+            } else {
+                // If we run in a normal Java environment
+                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.FlatpathModuleLoader";
+            }
+            Class<?> loaderClass = loader.loadClass(loaderClassName);
+            Constructor<?> loaderConstr = loaderClass.getConstructor(ClassLoader.class);
+            Object modLoader = loaderConstr.newInstance(loader);
+            Method loadMth = loaderClass.getMethod("loadModule", String.class, String.class);
+            ClassLoader mcl = (ClassLoader) loadMth.invoke(modLoader, name, version);
+            return mcl;
+        } catch (ReflectiveOperationException e) {
+            throw new ToolException("Could not load module '" + name + "/" + version + "'", e);
+        }
+    }
+    
     /**
      * Returns a ToolModel given the name of the tool, or null if no such tool is 
      * know to this tool loader.
@@ -119,25 +142,6 @@ public abstract class ToolLoader {
         return model;
     }
 
-    public ClassLoader loadModule(String name, String version) {
-        try {
-            // Ok, now for something really crappy to force loading of the required module
-            Class<?> joptsClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions");
-            Object opts = joptsClass.newInstance();
-            Method setter = joptsClass.getMethod("setDelegateClassLoader", ClassLoader.class);
-            setter.invoke(opts, loader);
-            Class<?> runnerClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl");
-            Class<?> optsClass = Class.forName("com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions");
-            Constructor<?> runnerConstr = runnerClass.getConstructor(optsClass, String.class, String.class);
-            Object runner = runnerConstr.newInstance(opts, name, version);
-            Method getter = runnerClass.getMethod("getModuleClassLoader");
-            ClassLoader mcl = (ClassLoader) getter.invoke(runner);
-            return mcl;
-        } catch (ReflectiveOperationException e) {
-            throw new ToolException("Could not load module '" + name + "/" + version + "'", e);
-        }
-    }
-    
     private <T extends Tool> ToolModel<T> loadModel(Class<T> cls, String toolName) {
         checkClass(cls);
         AnnotatedToolModel<T> model = new AnnotatedToolModel<T>(toolName);
