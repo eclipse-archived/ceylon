@@ -233,13 +233,14 @@ public class RefinementVisitor extends Visitor {
                                 message(dec) + " refines " + message(refined));
                     }
                     else if (refined instanceof TypedDeclaration) {
-                        if ( ((TypedDeclaration) refined).isVariable() && 
+                        if (((TypedDeclaration) refined).isVariable() && 
                                 !((TypedDeclaration) dec).isVariable()) {
                             if (dec instanceof Value) {
                                 that.addError("non-variable attribute refines a variable attribute: " + 
                                         message(dec) + " refines " + message(refined), 804);
                             }
                             else {
+                                //TODO: this message seems like it's not quite right
                                 that.addError("non-variable attribute refines a variable attribute: " + 
                                         message(dec) + " refines " + message(refined));
                             }

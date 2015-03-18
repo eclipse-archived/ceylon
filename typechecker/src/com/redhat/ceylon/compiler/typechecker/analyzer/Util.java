@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -104,7 +105,8 @@ public class Util {
             List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
-                unit.getPackage().getMember(name, signature, ellipsis);
+                unit.getPackage().getMember(name, 
+                        signature, ellipsis);
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
@@ -117,7 +119,8 @@ public class Util {
             List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
-                unit.getPackage().getMember(name, signature, ellipsis);
+                unit.getPackage().getMember(name, 
+                        signature, ellipsis);
         if (result instanceof TypeDeclaration) {
             return (TypeDeclaration) result;
         }
@@ -129,7 +132,8 @@ public class Util {
         }
     }
 
-    public static TypeDeclaration anonymousType(String name, Declaration result) {
+    public static TypeDeclaration anonymousType(String name, 
+            Declaration result) {
         ProducedType type = 
                 ((TypedDeclaration) result).getType();
         if (type!=null) {
@@ -144,9 +148,9 @@ public class Util {
         return null;
     }
     
-    static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
+    static List<ProducedType> getTypeArguments(Tree.TypeArguments tas,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        if (tal instanceof Tree.TypeArgumentList) {
+        if (tas instanceof Tree.TypeArgumentList) {
             List<ProducedType> typeArguments = 
                     new ArrayList<ProducedType>(typeParameters.size());
             Map<TypeParameter, ProducedType> typeArgMap = 
@@ -154,9 +158,10 @@ public class Util {
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
-            if (tal instanceof Tree.TypeArgumentList) {
-                List<Tree.Type> types = 
-                        ((Tree.TypeArgumentList) tal).getTypes();
+            if (tas instanceof Tree.TypeArgumentList) {
+                TypeArgumentList tal = 
+                        (Tree.TypeArgumentList) tas;
+                List<Tree.Type> types = tal.getTypes();
                 for (int i=0; i<types.size(); i++) {
                     ProducedType t = types.get(i).getTypeModel();
                     if (t==null) {
@@ -171,8 +176,9 @@ public class Util {
                 }
             }
             else {
-                for (int i=0; i<tal.getTypeModels().size(); i++) {
-                    ProducedType t = tal.getTypeModels().get(i);
+                List<ProducedType> types = tas.getTypeModels();
+                for (int i=0; i<types.size(); i++) {
+                    ProducedType t = types.get(i);
                     if (t==null) {
                         typeArguments.add(null);
                     }
@@ -185,7 +191,8 @@ public class Util {
                 }
             }
             for (int i=typeArguments.size(); 
-            		i<typeParameters.size(); i++) {
+            		i<typeParameters.size(); 
+                    i++) {
                 TypeParameter tp = typeParameters.get(i);
             	ProducedType dta = tp.getDefaultTypeArgument();
             	if (dta==null || 
@@ -312,23 +319,26 @@ public class Util {
         }
         else if (!unit.isCallableType(type)) {
             if (!hasError(node)) {
-                String extra = message(type, 
-                        " is not a subtype of 'Callable'", unit);
+                String extra = 
+                        message(type, 
+                                " is not a subtype of 'Callable'", 
+                                unit);
                 if (node instanceof Tree.StaticMemberOrTypeExpression) {
                     Tree.StaticMemberOrTypeExpression smte = 
                             (Tree.StaticMemberOrTypeExpression) node;
                     Declaration d = smte.getDeclaration();
+                    String name = d.getName();
                     if (d instanceof Interface) {
-                        extra = ": '" + d.getName() + "' is an interface";
+                        extra = ": '" + name + "' is an interface";
                     }
                     else if (d instanceof TypeAlias) {
-                        extra = ": '" + d.getName() + "' is a type alias";
+                        extra = ": '" + name + "' is a type alias";
                     }
                     else if (d instanceof TypeParameter) {
-                        extra = ": '" + d.getName() + "' is a type parameter";
+                        extra = ": '" + name + "' is a type parameter";
                     }
                     else if (d instanceof Value) {
-                        extra = ": value '" + d.getName() + "' has type '" + 
+                        extra = ": value '" + name + "' has type '" + 
                                 type.getProducedTypeName(unit) + 
                                 "' which is not a subtype of 'Callable'";
                     }
@@ -342,25 +352,27 @@ public class Util {
         }
     }
 
-    static ProducedType checkSupertype(ProducedType pt, TypeDeclaration td, 
-            Node node, String message) {
-        if (isTypeUnknown(pt)) {
-            addTypeUnknownError(node, pt, message);
+    static ProducedType checkSupertype(ProducedType type, 
+            TypeDeclaration td, Node node, String message) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
             return null;
         }
         else {
-            ProducedType supertype = pt.getSupertype(td);
+            ProducedType supertype = type.getSupertype(td);
             if (supertype==null) {
                 node.addError(message + 
-                        message(pt, " is not a subtype of '" + td.getName() + "'", 
-                		node.getUnit()));
+                        message(type, 
+                                " is not a subtype of '" + 
+                                        td.getName() + "'", 
+                                node.getUnit()));
             }
             return supertype;
         }
     }
 
-    static void checkAssignable(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
+    static void checkAssignable(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
         	addTypeUnknownError(node, type, message);
         }
@@ -369,8 +381,10 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + 
-        	        message(type, " is not assignable to ", 
-        	                supertype, node.getUnit()));
+        	        message(type, 
+        	                " is not assignable to ", 
+        	                supertype, 
+        	                node.getUnit()));
         }
     }
 
@@ -384,8 +398,10 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addUnsupportedError(message + 
-        	        message(type, " is not assignable to ", 
-        	                supertype, node.getUnit()));
+        	        message(type, 
+        	                " is not assignable to ", 
+        	                supertype, 
+        	                node.getUnit()));
         }
     }
 
@@ -404,13 +420,17 @@ public class Util {
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
             node.addError(message + 
-                    message(type, " is not assignable to ", 
-                            supertype1, node.getUnit()), code);
+                    message(type, 
+                            " is not assignable to ", 
+                            supertype1, 
+                            node.getUnit()), 
+                            code);
         }
     }
 
-    static void checkAssignable(ProducedType type, ProducedType supertype, 
-            Node node, String message, int code) {
+    static void checkAssignable(ProducedType type, 
+            ProducedType supertype, Node node, 
+            String message, int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
@@ -419,8 +439,11 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + 
-                    message(type, " is not assignable to ", 
-                            supertype, node.getUnit()), code);
+                    message(type, 
+                            " is not assignable to ", 
+                            supertype, 
+                            node.getUnit()), 
+                            code);
         }
     }
 
@@ -434,8 +457,8 @@ public class Util {
         }
     }*/
 
-    static void checkIsExactly(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
+    static void checkIsExactly(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
@@ -443,13 +466,15 @@ public class Util {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + message(type, " is not exactly ", 
-            		supertype, node.getUnit()));
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype, node.getUnit()));
         }
     }
 
-    static void checkIsExactly(ProducedType type, ProducedType supertype, 
-            Node node, String message, int code) {
+    static void checkIsExactly(ProducedType type, 
+            ProducedType supertype, Node node, String message, 
+            int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
@@ -457,8 +482,9 @@ public class Util {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + message(type, " is not exactly ", 
-            		supertype, node.getUnit()), code);
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype, node.getUnit()), code);
         }
     }
 
@@ -476,8 +502,9 @@ public class Util {
         }
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
-            node.addError(message + message(type, " is not exactly ", 
-            		supertype1, node.getUnit()));
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype1, node.getUnit()));
         }
     }
     
@@ -536,9 +563,11 @@ public class Util {
         }
     }
 
-    private static void addTypeUnknownError(Node node, ProducedType type, String message) {
+    private static void addTypeUnknownError(Node node, 
+            ProducedType type, String message) {
         if (!hasError(node)) {
-            node.addError(message + ": type cannot be determined" +
+            node.addError(message + 
+                    ": type cannot be determined" +
                     getTypeUnknownError(type));
         }
     }
@@ -553,29 +582,35 @@ public class Util {
     public static void buildAnnotations(Tree.AnnotationList al, 
             List<Annotation> annotations) {
         if (al!=null) {
-            Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
+            Tree.AnonymousAnnotation aa = 
+                    al.getAnonymousAnnotation();
             if (aa!=null) {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
-                ann.addPositionalArgment(aa.getStringLiteral().getText());
+                String text = aa.getStringLiteral().getText();
+                ann.addPositionalArgment(text);
                 annotations.add(ann);
             }
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();
-                String name = ((Tree.BaseMemberExpression) 
-                        a.getPrimary()).getIdentifier().getText();
+                Tree.BaseMemberExpression bma = 
+                        (Tree.BaseMemberExpression) a.getPrimary();
+                String name = bma.getIdentifier().getText();
                 ann.setName(name);
-                if (a.getNamedArgumentList()!=null) {
+                Tree.NamedArgumentList nal = 
+                        a.getNamedArgumentList();
+                if (nal!=null) {
                     for (Tree.NamedArgument na: 
-                            a.getNamedArgumentList().getNamedArguments()) {
+                            nal.getNamedArguments()) {
                         if (na instanceof Tree.SpecifiedArgument) {
+                            Tree.SpecifiedArgument sa = 
+                                    (Tree.SpecifiedArgument) na;
                             Tree.SpecifierExpression sie = 
-                                    ((Tree.SpecifiedArgument) na).getSpecifierExpression();
+                                    sa.getSpecifierExpression();
                             Tree.Expression e = sie.getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
-                                Parameter p = 
-                                        ((Tree.SpecifiedArgument) na).getParameter();
+                                Parameter p = sa.getParameter();
                                 if (p!=null) {
                                     String text = toString(t);
                                     if (text!=null) {
@@ -586,12 +621,15 @@ public class Util {
                         }                    
                     }
                 }
-                if (a.getPositionalArgumentList()!=null) {
+                Tree.PositionalArgumentList pal = 
+                        a.getPositionalArgumentList();
+                if (pal!=null) {
                     for (Tree.PositionalArgument pa: 
-                            a.getPositionalArgumentList().getPositionalArguments()) {
+                            pal.getPositionalArguments()) {
                     	if (pa instanceof Tree.ListedArgument) {
-                    		Tree.Term t = 
-                    		        ((Tree.ListedArgument) pa).getExpression().getTerm();
+                    		Tree.ListedArgument la = 
+                    		        (Tree.ListedArgument) pa;
+                            Tree.Term t = la.getExpression().getTerm();
                     		String text = toString(t);
                     		if (text!=null) {
                     			ann.addPositionalArgment(text);
@@ -609,12 +647,17 @@ public class Util {
     		return ((Tree.Literal) t).getText();
     	}
     	else if (t instanceof Tree.StaticMemberOrTypeExpression) {
-    		Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) t;
+    		Tree.StaticMemberOrTypeExpression mte = 
+    		        (Tree.StaticMemberOrTypeExpression) t;
     		String id = mte.getIdentifier().getText();
     		if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
-    			Tree.Primary p = ((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary();
+    			Tree.QualifiedMemberOrTypeExpression qmte = 
+    			        (Tree.QualifiedMemberOrTypeExpression) mte;
+                Tree.Primary p = qmte.getPrimary();
     			if (p instanceof Tree.StaticMemberOrTypeExpression) {
-    				return toString((Tree.StaticMemberOrTypeExpression) p) + '.' + id;
+    				Tree.StaticMemberOrTypeExpression smte = 
+    				        (Tree.StaticMemberOrTypeExpression) p;
+                    return toString(smte) + '.' + id;
     			}
     			return null;
     		}
@@ -623,20 +666,27 @@ public class Util {
     		}
     	}
     	else if (t instanceof Tree.TypeLiteral) {
-    	    Tree.TypeLiteral tl = (Tree.TypeLiteral) t;
-    	    if(tl.getType() != null)
-    	        return toString(tl.getType());
+    	    Tree.TypeLiteral tl = 
+    	            (Tree.TypeLiteral) t;
+    	    Tree.StaticType type = tl.getType();
+            if (type!=null) {
+    	        return toString(type);
+    	    }
     	    return null;
     	}
         else if (t instanceof Tree.MemberLiteral) {
-            Tree.MemberLiteral ml = (Tree.MemberLiteral) t;
-            if(ml.getType() != null){
-                String qualifier = toString(ml.getType());
-                if(qualifier != null && ml.getIdentifier()!=null)
-                    return qualifier + "." + ml.getIdentifier().getText();
+            Tree.MemberLiteral ml = 
+                    (Tree.MemberLiteral) t;
+            Tree.Identifier id = ml.getIdentifier();
+            Tree.StaticType type = ml.getType();
+            if (type!=null) {
+                String qualifier = toString(type);
+                if (qualifier!=null && id!=null) {
+                    return qualifier + "." + id.getText();
+                }
                 return null;
             }
-            return ml.getIdentifier().getText();
+            return id.getText();
         }
     	else {
     		return null;
@@ -645,30 +695,40 @@ public class Util {
 
     private static String toString(Tree.StaticType type) {
         // FIXME: we're discarding syntactic types and union/intersection types
-        if(type instanceof Tree.BaseType){
-            return ((Tree.BaseType) type).getIdentifier().getText();
-        }else if(type instanceof Tree.QualifiedType){
-            String qualifier = toString(((Tree.QualifiedType) type).getOuterType());
-            if(qualifier != null)
-                return qualifier + "." + ((Tree.SimpleType)type).getIdentifier().getText();
+        if (type instanceof Tree.BaseType){
+            Tree.BaseType bt = (Tree.BaseType) type;
+            return bt.getIdentifier().getText();
+        }
+        else if(type instanceof Tree.QualifiedType) {
+            Tree.QualifiedType qt = 
+                    (Tree.QualifiedType) type;
+            String qualifier = toString(qt.getOuterType());
+            if(qualifier != null) {
+                Tree.SimpleType st = (Tree.SimpleType) type;
+                return qualifier + "." + 
+                        st.getIdentifier().getText();
+            }
             return null;
         }
         return null;
     }
 
     static boolean inLanguageModule(Unit unit) {
-        return unit.getPackage().getQualifiedNameString()
+        return unit.getPackage()
+                .getQualifiedNameString()
                 .startsWith(Module.LANGUAGE_MODULE_NAME);
     }
 
     static String typeDescription(TypeDeclaration td, Unit unit) {
+        String name = td.getName();
         if (td instanceof TypeParameter) {
-            Declaration container = (Declaration) td.getContainer();
-            return "type parameter '" + td.getName() + "' of '" + 
+            Declaration container = 
+                    (Declaration) td.getContainer();
+            return "type parameter '" + name + "' of '" + 
                     container.getName(unit) + "'";
         }
         else {
-            return "type '" + td.getName() + "'";
+            return "type '" + name + "'";
         }
     }
 
@@ -704,13 +764,17 @@ public class Util {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
-                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                Tree.BooleanCondition bc = 
+                        (Tree.BooleanCondition) c;
+                Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
-                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) t;
+                        Declaration d = bme.getDeclaration();
                         if (isBooleanTrue(d)) {
                             continue;
                         }
@@ -736,13 +800,18 @@ public class Util {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
-                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                Tree.BooleanCondition bc = 
+                        (Tree.BooleanCondition) c;
+                Tree.Expression ex = 
+                        bc.getExpression();
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
-                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) t;
+                        Declaration d = bme.getDeclaration();
                         if (isBooleanFalse(d)) {
                             return true;
                         }
@@ -756,14 +825,16 @@ public class Util {
     static boolean isAtLeastOne(Tree.ForClause forClause) {
         Tree.ForIterator fi = forClause.getForIterator();
         if (fi!=null) {
-            Tree.SpecifierExpression se = fi.getSpecifierExpression();
+            Tree.SpecifierExpression se = 
+                    fi.getSpecifierExpression();
             if (se!=null) {
                 Tree.Expression e = se.getExpression();
                 if (e!=null) {
                     Unit unit = forClause.getUnit();
                     ProducedType at = 
                             unit.getAnythingDeclaration().getType();
-                    ProducedType neit = unit.getNonemptyIterableType(at);
+                    ProducedType neit = 
+                            unit.getNonemptyIterableType(at);
                     ProducedType t = e.getTypeModel();
                     return t!=null && t.isSubtypeOf(neit);
                 }
@@ -830,7 +901,8 @@ public class Util {
     public static boolean isInstantiationExpression(Tree.Expression e) {
         Tree.Term term = e.getTerm();
         if (term instanceof Tree.InvocationExpression) {
-            Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+            Tree.InvocationExpression ie = 
+                    (Tree.InvocationExpression) term;
             Tree.Primary p = ie.getPrimary();
             if (p instanceof Tree.BaseTypeExpression || 
                 p instanceof Tree.QualifiedTypeExpression) {
@@ -853,7 +925,8 @@ public class Util {
             @Override
             public void visit(Tree.Body that) {}
         }
-        DeclarationErrorVisitor dev = new DeclarationErrorVisitor();
+        DeclarationErrorVisitor dev = 
+                new DeclarationErrorVisitor();
         d.visit(dev);
         return dev.foundError;
     }
@@ -871,7 +944,8 @@ public class Util {
             @Override
             public void visit(Tree.Body that) {}
         }
-        ArgErrorVisitor dev = new ArgErrorVisitor();
+        ArgErrorVisitor dev = 
+                new ArgErrorVisitor();
         d.visit(dev);
         return dev.foundError;
     }
@@ -889,7 +963,8 @@ public class Util {
             @Override
             public void visit(Tree.Declaration that) {}
         }
-        BodyErrorVisitor bev = new BodyErrorVisitor();
+        BodyErrorVisitor bev = 
+                new BodyErrorVisitor();
         d.visit(bev);
         return bev.foundError;
     }
@@ -909,7 +984,9 @@ public class Util {
     
     public static Node getParameterTypeErrorNode(Tree.Parameter p) {
         if (p instanceof Tree.ParameterDeclaration) {
-            return ((Tree.ParameterDeclaration) p).getTypedDeclaration().getType();
+            Tree.ParameterDeclaration pd = 
+                    (Tree.ParameterDeclaration) p;
+            return pd.getTypedDeclaration().getType();
         }
         else {
             return p;
@@ -918,19 +995,25 @@ public class Util {
     
     public static Node getTypeErrorNode(Node that) {
         if (that instanceof Tree.TypedDeclaration) {
-            Tree.Type type = ((Tree.TypedDeclaration) that).getType();
+            Tree.TypedDeclaration td = 
+                    (Tree.TypedDeclaration) that;
+            Tree.Type type = td.getType();
             if (type!=null) {
                 return type;
             }
         }
         if (that instanceof Tree.TypedArgument) {
-            Tree.Type type = ((Tree.TypedArgument) that).getType();
+            Tree.TypedArgument ta = 
+                    (Tree.TypedArgument) that;
+            Tree.Type type = ta.getType();
             if (type!=null) {
                 return type;
             }
         }
         if (that instanceof Tree.FunctionArgument) {
-            Tree.Type type = ((Tree.FunctionArgument) that).getType();
+            Tree.FunctionArgument fa = 
+                    (Tree.FunctionArgument) that;
+            Tree.Type type = fa.getType();
             if (type!=null && type.getToken()!=null) {
                 return type;
             }
@@ -939,16 +1022,19 @@ public class Util {
     }
 
     static void checkIsExactlyForInterop(Unit unit, boolean isCeylon,  
-            ProducedType parameterType, ProducedType refinedParameterType, Node node, 
-            String message) {
+            ProducedType parameterType, ProducedType refinedParameterType, 
+            Node node, String message) {
         if (isCeylon) {
             // it must be a Ceylon method
-            checkIsExactly(parameterType, refinedParameterType, node, message, 9200);
+            checkIsExactly(parameterType, refinedParameterType, 
+                    node, message, 9200);
         }
         else {
             // we're refining a Java method
-            ProducedType refinedDefiniteType = unit.getDefiniteType(refinedParameterType);
-            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, 
+            ProducedType refinedDefiniteType = 
+                    unit.getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, 
+                    refinedParameterType, refinedDefiniteType, 
             		node, message);
         }
     }
@@ -961,7 +1047,7 @@ public class Util {
             Tree.PositionalArgument a = es.get(i);
             ProducedType t = a.getTypeModel();
             if (t!=null) {
-                ProducedType et = t;//unit.denotableType(t);
+                ProducedType et = t; //unit.denotableType(t);
                 if (a instanceof Tree.SpreadArgument) {
                     /*if (requireSequential) { 
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
@@ -971,8 +1057,9 @@ public class Util {
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
+                    Tree.Comprehension c = (Tree.Comprehension) a;
                     Tree.InitialComprehensionClause icc = 
-                            ((Tree.Comprehension) a).getInitialComprehensionClause();
+                            c.getInitialComprehensionClause();
                     result = icc.getPossiblyEmpty() ? 
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
@@ -1022,9 +1109,11 @@ public class Util {
                 // transform any Iterable into a Sequence without
                 // losing the information that it is nonempty, in
                 // the case that we know that for sure
-                ProducedType st = unit.isNonemptyIterableType(et) ?
-                        unit.getSequenceType(unit.getIteratedType(et)) :
-                        unit.getSequentialType(unit.getIteratedType(et));
+                ProducedType it = unit.getIteratedType(et);
+                ProducedType st = 
+                        unit.isNonemptyIterableType(et) ?
+                                unit.getSequenceType(it) :
+                                unit.getSequentialType(it);
                 // unless this is a tuple constructor, remember
                 // the original Iterable type arguments, to
                 // account for the possibility that the argument
@@ -1047,6 +1136,7 @@ public class Util {
     static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
         return term instanceof Tree.BaseMemberExpression ||
                 term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
+                isSelfReference(((Tree.QualifiedMemberExpression) term)
+                        .getPrimary());
     }
 }
