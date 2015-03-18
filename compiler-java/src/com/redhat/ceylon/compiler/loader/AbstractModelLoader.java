@@ -4661,14 +4661,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public Module findModule(String name, String version){
-        if(name.equals(Module.DEFAULT_MODULE_NAME))
-            return modules.getDefaultModule();
-        for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(name)
-                    && (version == null || module.getVersion() == null || version.equals(module.getVersion())))
-                return module;
-        }
-        return null;
+        return moduleManager.findLoadedModule(name, version);
     }
     
     public Module getJDKBaseModule() {
