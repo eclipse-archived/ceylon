@@ -86,6 +86,7 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
             } catch (ClassNotFoundException e) {
                 throw new ModelException("Could not load plugin class '" + pluginClassName + "'", e);
             }
+            getToolLoader().checkClass(tc);
             setToolClass(tc);
         }
         return tc;
