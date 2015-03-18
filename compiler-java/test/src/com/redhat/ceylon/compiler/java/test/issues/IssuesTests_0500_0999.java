@@ -20,10 +20,15 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.io.IOException;
+import java.util.Arrays;
+
+import javax.tools.Diagnostic.Kind;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
@@ -147,7 +152,11 @@ public class IssuesTests_0500_0999 extends CompilerTests {
 
     @Test
     public void testBug592(){
-        compilesWithoutWarnings("bug05xx/Bug592.ceylon");
+        if(JDKUtils.jdk == JDK.JDK7)
+            compilesWithoutWarnings("bug05xx/Bug592.ceylon");
+        else{
+            compilesWithoutWarnings(Arrays.asList("-suppress-warnings", "importsOtherJdk"), "bug05xx/Bug592.ceylon");
+        }
     }
 
     @Test

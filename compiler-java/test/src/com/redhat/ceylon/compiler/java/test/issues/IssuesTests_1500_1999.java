@@ -845,7 +845,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1852() {
         assertErrors(new String[]{"bug18xx/Bug1852.ceylon"},
-                defaultOptions,
+                Arrays.asList("-suppress-warnings", "importsOtherJdk"),
                 null,
                 new CompilerError(Kind.WARNING, "", 21, "declaration is never used: 's'"));
     }
