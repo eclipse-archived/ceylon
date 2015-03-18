@@ -23,6 +23,8 @@ public class MetamodelHelper {
 
     static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
+        final boolean isConstructor = d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+                || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (JsCompiler.isCompilingLanguageModule()) {
                 gen.out("$init$Open");
@@ -32,10 +34,10 @@ public class MetamodelHelper {
         }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             gen.out("Interface$jsint");
+        } else if (isConstructor) {
+            gen.out("Constructor$jsint");
         } else if (d instanceof Class) {
             gen.out("Class$jsint");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-            gen.out("Constructor$jsint");
         } else if (d instanceof Method) {
             gen.out("Function");
         } else if (d instanceof Value) {
@@ -83,13 +85,22 @@ public class MetamodelHelper {
             gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");
         }
         gen.out("ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
-        if (d.isMember()) {
-            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-                if (((Class)d.getContainer()).isMember()) {
-                    outputPathToDeclaration(that, (Class)d.getContainer(), gen);
+        if (d.isMember() || isConstructor) {
+            if (isConstructor) {
+                final Class actualClass;
+                final String constrName;
+                if (d instanceof Class) {
+                    actualClass = (Class)d;
+                    constrName = JsIdentifierNames.sanitize(d.getName());
+                } else {
+                    actualClass = (Class)d.getContainer();
+                    constrName = gen.getNames().name(d);
                 }
-                gen.out(gen.getNames().name((Class)d.getContainer()),
-                        "_", gen.getNames().name(d), ")");
+                if (actualClass.isMember()) {
+                    outputPathToDeclaration(that, actualClass, gen);
+                }
+                gen.out(gen.getNames().name(actualClass),
+                        "_", constrName, ")");
                 return;
             } else {
                 outputPathToDeclaration(that, d, gen);
@@ -120,6 +131,8 @@ public class MetamodelHelper {
         final ProducedType ltype = that.getType().getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+        final boolean isConstructor = that instanceof Tree.NewLiteral
+                || td instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor;
         if (td instanceof Class) {
             if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
@@ -142,8 +155,8 @@ public class MetamodelHelper {
                         that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
-        } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-            Class _pc = (Class)td.getContainer();
+        } else if (isConstructor) {
+            Class _pc = td instanceof Class ? (Class)td : (Class)td.getContainer();
             if (_pc.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
             } else {

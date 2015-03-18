@@ -1155,7 +1155,7 @@ public class TypeUtils {
     public static String modelName(Declaration d) {
         String dname = d.getName();
         if (dname == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-            dname = ((com.redhat.ceylon.compiler.typechecker.model.Class)d.getContainer()).getName();
+            dname = "$def";
         }
         if (dname.startsWith("anonymous#")) {
             dname = "anon$" + dname.substring(10);
