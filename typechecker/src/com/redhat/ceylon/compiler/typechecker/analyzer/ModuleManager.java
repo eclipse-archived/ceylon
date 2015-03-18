@@ -382,12 +382,17 @@ public class ModuleManager {
         return findLoadedModule(moduleName, searchedVersion, modules);
     }
     
+    /**
+     * @Deprecated This looks fishy: why would we have an extra Modules parameter?
+     */
+    @Deprecated
     public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+        if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
+            return modules.getDefaultModule();
         for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(moduleName)) {
-                if (searchedVersion != null && searchedVersion.equals(module.getVersion())){
-                    return module;
-                }
+            if(module.getNameAsString().equals(moduleName)
+                    && compareVersions(module, searchedVersion, module.getVersion())){
+                return module;
             }
         }
         return null;
