@@ -130,7 +130,7 @@ class Predicates {
      * other predicates.
      */
     @SafeVarargs
-    public static <T> Predicate<T> and(Predicate<T>... others) {
+    static <T> Predicate<T> and(Predicate<T>... others) {
         if (others.length == 1) {
             return others[0];
         }
@@ -175,7 +175,7 @@ class Predicates {
      * other predicates.
      */
     @SafeVarargs
-    public static <T> Predicate<T> or(Predicate<T>... others) {
+    static <T> Predicate<T> or(Predicate<T>... others) {
         if (others.length == 1) {
             return others[0];
         }
@@ -278,7 +278,7 @@ class Predicates {
      * (Class, Interface, Function, Value etc)
      * @param kind A TypeDescriptor for the sought declaration kind.   
      */
-    public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
+    static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
             Class<?> declarationClass = (Class<?>)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
@@ -354,7 +354,7 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    public static <Kind extends ceylon.language.meta.declaration.Declaration, A extends ceylon.language.Annotation>  
+    static <Kind extends ceylon.language.meta.declaration.Declaration, A extends ceylon.language.Annotation>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         Type<?> at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
@@ -397,7 +397,7 @@ class Predicates {
      * @param $reifiedAnnotation
      * @return
      */
-    public static <A extends ceylon.language.Annotation> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
+    static <A extends ceylon.language.Annotation> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
         Type<?> at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         return isAnnotationOfType($reifiedAnnotation, at);
     }
