@@ -15,5 +15,6 @@ public enum Warning {
     suppressesNothing, 
     unknownWarning, 
     ambiguousAnnotation,
-    similarModule;
+    similarModule,
+    importsOtherJdk;
 }
