@@ -24,12 +24,9 @@ public enum AnnotationTarget {
     CONSTRUCTOR,
     LOCAL_VARIABLE,
     ANNOTATION_TYPE,
-    PACKAGE;
-    // Note: Java 8 added TYPE_USE and TYPE_PARAMETER but we 
-    // don't really need to support these
-    // because they're not visible via reflection, but intended only for 
-    // compile time and that's not really a use case we 
-    // need to support, is it?
+    PACKAGE,
+    TYPE_USE,
+    TYPE_PARAMETER;
     
     /**
      * Returns the possible targets of the given annotation proxy class, 
