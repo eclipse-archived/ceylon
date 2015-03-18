@@ -301,7 +301,6 @@ public class ModuleManager {
         Node node = moduleToNode.get(module);
         if (node != null) {
             node.addUsageWarning(warningType, error);
-            node.addError(new UsageWarning(node, error, ""));
         }
         else {
             //might happen if the faulty module is a compiled module
