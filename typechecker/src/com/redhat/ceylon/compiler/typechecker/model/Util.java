@@ -156,9 +156,11 @@ public class Util {
     }
     
     static boolean hasMatchingSignature(List<ProducedType> signature, 
-            boolean spread, Declaration d, boolean excludeAbstractClasses) {
+            boolean spread, Declaration d, 
+            boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
-                d instanceof Class && ((Class) d).isAbstract()) {
+                d instanceof Class && 
+                ((Class) d).isAbstract()) {
             return false;
         }
         if (d instanceof Functional) {
@@ -168,11 +170,15 @@ public class Util {
             }
             else {
                 Unit unit = d.getUnit();
-                List<ParameterList> pls = f.getParameterLists();
+                List<ParameterList> pls = 
+                        f.getParameterLists();
                 if (pls!=null && !pls.isEmpty()) {
-                    List<Parameter> params = pls.get(0).getParameters();
+                    ParameterList pl = pls.get(0);
+                    List<Parameter> params = 
+                            pl.getParameters();
                     int size = params.size();
-                    boolean hasSeqParam = pls.get(0).hasSequencedParameter();
+                    boolean hasSeqParam = 
+                            pl.hasSequencedParameter();
                     int sigSize = signature.size();
                     if (hasSeqParam) {
                         size--;
@@ -184,7 +190,8 @@ public class Util {
                         return false;
                     }
                     for (int i=0; i<size; i++) {
-                        MethodOrValue pm = params.get(i).getModel();
+                        MethodOrValue pm = 
+                                params.get(i).getModel();
                         if (pm==null) return false;
                         ProducedType pdt = pm.getType();
                         if (pdt==null) return false;
@@ -194,17 +201,21 @@ public class Util {
                         }
                     }
                     if (hasSeqParam) {
-                        ProducedType pdt = params.get(size).getModel().getType();
-                        if (pdt==null || pdt.getTypeArgumentList().isEmpty()) {
+                        ProducedType pdt = 
+                                params.get(size).getModel().getType();
+                        if (pdt==null || 
+                                pdt.getTypeArgumentList().isEmpty()) {
                             return false;
                         }
                         //Note: don't use Unit.getIterableType() because this
                         //      gets called from model loader out-of-phase
-                        ProducedType ipdt = pdt.getTypeArgumentList().get(0);  
+                        ProducedType ipdt = 
+                                pdt.getTypeArgumentList().get(0);  
                         for (int i=size; i<sigSize; i++) {
                             if (spread && i==sigSize-1) {
                                 ProducedType sdt = signature.get(i);
-                                ProducedType isdt = unit.getIteratedType(sdt);
+                                ProducedType isdt = 
+                                        unit.getIteratedType(sdt);
                                 if (!matches(isdt, ipdt, d.getUnit())) {
                                     return false;
                                 }
@@ -272,11 +283,15 @@ public class Util {
         return sut==null || put==null || !sut.equals(put);
     }
     
-    static boolean betterMatch(Declaration d, Declaration r, List<ProducedType> signature) {
+    static boolean betterMatch(Declaration d, Declaration r, 
+            List<ProducedType> signature) {
         if (d instanceof Functional && r instanceof Functional) {
-            List<ParameterList> dpls = ((Functional) d).getParameterLists();
-            List<ParameterList> rpls = ((Functional) r).getParameterLists();
-            if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
+            List<ParameterList> dpls = 
+                    ((Functional) d).getParameterLists();
+            List<ParameterList> rpls = 
+                    ((Functional) r).getParameterLists();
+            if (dpls!=null && !dpls.isEmpty() && 
+                    rpls!=null && !rpls.isEmpty()) {
                 List<Parameter> dpl = dpls.get(0).getParameters();
                 List<Parameter> rpl = rpls.get(0).getParameters();
                 int dplSize = dpl.size();
@@ -293,23 +308,30 @@ public class Util {
                     return false;
                 }
                 //ignore sequenced parameters
-                if (dhsp) { dplSize--; }
-                if (rhsp) { rplSize--; }
+                if (dhsp) dplSize--;
+                if (rhsp) rplSize--;
                 if (dplSize==rplSize) {
                     //if all parameters are of more specific
                     //or equal type, prefer it
                     Unit unit = d.getUnit();
                     for (int i=0; i<dplSize; i++) {
-                        ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
-                        ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
-                        ProducedType argumentType = signature != null && signature.size() >= i ? signature.get(i) : null;
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        ProducedType dplt = dpl.get(i).getModel().getType();
+                        ProducedType paramType = unit.getDefiniteType(dplt);
+                        ProducedType rplt = rpl.get(i).getModel().getType();
+                        ProducedType otherType = unit.getDefiniteType(rplt);
+                        ProducedType argumentType = 
+                                signature != null && signature.size() >= i ? 
+                                        signature.get(i) : null;
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
                         if(paramType.isExactly(otherType) 
                                 && supportsCoercion(ptd)
                                 // do we have different scores?
-                                && hasWorseScore(getCoercionScore(argumentType, paramType), getCoercionScore(argumentType, otherType))){
+                                && hasWorseScore(getCoercionScore(argumentType, paramType), 
+                                        getCoercionScore(argumentType, otherType))){
                             return false;
                         }
                         if (!ptd.inherits(otd) &&
@@ -319,19 +341,28 @@ public class Util {
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp){
-                        ProducedType paramType = unit.getDefiniteType(dpl.get(dplSize).getModel().getType());
-                        ProducedType otherType = unit.getDefiniteType(rpl.get(dplSize).getModel().getType());
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        ProducedType dplt = dpl.get(dplSize).getModel().getType();
+                        ProducedType paramType = unit.getDefiniteType(dplt);
+                        ProducedType rplt = rpl.get(dplSize).getModel().getType();
+                        ProducedType otherType = unit.getDefiniteType(rplt);
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         paramType = unit.getIteratedType(paramType);
                         otherType = unit.getIteratedType(otherType);
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
-                        if(paramType.isExactly(otherType) 
+                        if (paramType.isExactly(otherType) 
                                 && supportsCoercion(ptd)){
-                            ProducedType widerArgumentType = getWiderArgumentType(paramType, signature, dplSize);
+                            ProducedType widerArgumentType = 
+                                    getWiderArgumentType(paramType, 
+                                            signature, dplSize);
                             // do we have different scores?
-                            if(hasWorseScore(getCoercionScore(widerArgumentType, paramType), getCoercionScore(widerArgumentType, otherType))){
+                            if (hasWorseScore(getCoercionScore(widerArgumentType, paramType), 
+                                    getCoercionScore(widerArgumentType, otherType))){
                                 return false;
                             }
                         }
@@ -349,28 +380,34 @@ public class Util {
 
     private static boolean supportsCoercion(TypeDeclaration decl) {
         Unit unit = decl.getUnit();
-        return decl.equals(unit.getIntegerDeclaration()) || decl.equals(unit.getFloatDeclaration());
+        return decl.equals(unit.getIntegerDeclaration()) || 
+                decl.equals(unit.getFloatDeclaration());
     }
 
     private static boolean hasWorseScore(int underlyingTypeCoercionScoreA, int underlyingTypeCoercionScoreB) {
         if(underlyingTypeCoercionScoreA != underlyingTypeCoercionScoreB){
-            if(underlyingTypeCoercionScoreA > 0 && underlyingTypeCoercionScoreB > 0){
+            if (underlyingTypeCoercionScoreA > 0 && underlyingTypeCoercionScoreB > 0) {
                 // both truncations, prefer the smaller truncation
                 if (underlyingTypeCoercionScoreA > underlyingTypeCoercionScoreB)
                     return true;
-            }else if(underlyingTypeCoercionScoreA > 0){
+            }
+            else if(underlyingTypeCoercionScoreA > 0) {
                 // A is a truncation, B is a widening, prefer widening
                 return true;
-            }else if(underlyingTypeCoercionScoreA == 0){
+            }
+            else if(underlyingTypeCoercionScoreA == 0) {
                 // A is a perfect match, it's not worse
                 return false;
-            }else if(underlyingTypeCoercionScoreB == 0){
+            }
+            else if(underlyingTypeCoercionScoreB == 0) {
                 // B is a perfect match but A is not, so it's worse
                 return true;
-            }else if(underlyingTypeCoercionScoreB > 0){
+            }
+            else if(underlyingTypeCoercionScoreB > 0) {
                 // A is a widening, B is a truncation, so it's not worse
                 return false;
-            }else{
+            }
+            else {
                 // A is a widening and B is a widening too, A is worse than B
                 // if it widens more than B
                 return underlyingTypeCoercionScoreA < underlyingTypeCoercionScoreB;
@@ -379,43 +416,46 @@ public class Util {
         return false;// same score or we don't know
     }
 
-    private static ProducedType getWiderArgumentType(ProducedType paramType, List<ProducedType> signature, int startAt) {
-        if(startAt >= signature.size())
+    private static ProducedType getWiderArgumentType(ProducedType paramType, 
+            List<ProducedType> signature, int startAt) {
+        if (startAt >= signature.size())
             return null;
         TypeDeclaration decl = paramType.getDeclaration();
-        if(decl.equals(decl.getUnit().getIntegerDeclaration())){
+        Unit unit = decl.getUnit();
+        if (decl.equals(unit.getIntegerDeclaration())) {
             int bestScore = 0;
             ProducedType ret = null;
             for(int i=startAt;i<signature.size();i++){
                 ProducedType argType = signature.get(i);
                 String underlyingType = argType.getUnderlyingType();
                 int score = 0;
-                if(underlyingType == null || underlyingType.equals("long"))
+                if (underlyingType == null || underlyingType.equals("long"))
                     return argType; // found the wider sort
                 else if(underlyingType.equals("int"))
                     score = 2;
                 else if(underlyingType.equals("short"))
                     score = 1;
                 // keep the widest argument type
-                if(score > bestScore){
+                if (score > bestScore) {
                     bestScore = score;
                     ret = argType;
                 }
             }
             return ret;
-        }else if(decl.equals(decl.getUnit().getFloatDeclaration())){
+        }
+        else if(decl.equals(unit.getFloatDeclaration())) {
             int bestScore = 0;
             ProducedType ret = null;
-            for(int i=startAt;i<signature.size();i++){
+            for (int i=startAt;i<signature.size();i++) {
                 ProducedType argType = signature.get(i);
                 String underlyingType = argType.getUnderlyingType();
                 int score = 0;
-                if(underlyingType == null || underlyingType.equals("double"))
+                if (underlyingType == null || underlyingType.equals("double"))
                     return argType; // found the wider sort
-                else if(underlyingType.equals("float"))
+                else if (underlyingType.equals("float"))
                     score = 1;
                 // keep the widest argument type
-                if(score > bestScore){
+                if (score > bestScore){
                     bestScore = score;
                     ret = argType;
                 }
@@ -432,17 +472,17 @@ public class Util {
      * type, the lower for the worse widening.
      */
     private static int getCoercionScore(ProducedType argumentType, ProducedType paramType) {
-        if(argumentType == null)
+        if (argumentType == null)
             return 0;
         // only consider types of Integer of Float
-        if(paramType.isExactly(argumentType)){
+        if (paramType.isExactly(argumentType)) {
             String aType = argumentType.getUnderlyingType();
             String pType = paramType.getUnderlyingType();
-            if(aType == null && pType == null)
+            if (aType == null && pType == null)
                 return 0;
             Unit unit = argumentType.getDeclaration().getUnit();
             TypeDeclaration decl = paramType.getDeclaration();
-            if(decl.equals(unit.getIntegerDeclaration())){
+            if (decl.equals(unit.getIntegerDeclaration())) {
                 if(aType == null)
                     aType = "long";
                 if(pType == null)
@@ -462,10 +502,11 @@ public class Util {
                  * long  2          long  2          0
                  */
                 return aScore - bScore;
-            }else if(decl.equals(unit.getFloatDeclaration())){
-                if(aType == null)
+            }
+            else if (decl.equals(unit.getFloatDeclaration())) {
+                if (aType == null)
                     aType = "double";
-                if(pType == null)
+                if (pType == null)
                     pType = "double";
                 int aScore = getPrimitiveScore(aType);
                 int bScore = getPrimitiveScore(pType);
@@ -484,20 +525,25 @@ public class Util {
     }
 
     private static int getPrimitiveScore(String underlyingType) {
-        if(underlyingType.equals("long"))
+        if (underlyingType.equals("long"))
             return 2;
-        if(underlyingType.equals("int") || underlyingType.equals("double"))
+        if (underlyingType.equals("int") || 
+                underlyingType.equals("double"))
             return 1;
-        if(underlyingType.equals("short") || underlyingType.equals("float"))
+        if (underlyingType.equals("short") || 
+                underlyingType.equals("float"))
             return 0;
         return 0;
     }
 
     static boolean strictlyBetterMatch(Declaration d, Declaration r) {
         if (d instanceof Functional && r instanceof Functional) {
-            List<ParameterList> dpls = ((Functional) d).getParameterLists();
-            List<ParameterList> rpls = ((Functional) r).getParameterLists();
-            if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
+            List<ParameterList> dpls = 
+                    ((Functional) d).getParameterLists();
+            List<ParameterList> rpls = 
+                    ((Functional) r).getParameterLists();
+            if (dpls!=null && !dpls.isEmpty() && 
+                    rpls!=null && !rpls.isEmpty()) {
                 List<Parameter> dpl = dpls.get(0).getParameters();
                 List<Parameter> rpl = rpls.get(0).getParameters();
                 int dplSize = dpl.size();
@@ -522,9 +568,13 @@ public class Util {
                     boolean atLeastOneBetter = false;
                     Unit unit = d.getUnit();
                     for (int i=0; i<dplSize; i++) {
-                        ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
-                        ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        ProducedType dplt = dpl.get(i).getModel().getType();
+                        ProducedType paramType = unit.getDefiniteType(dplt);
+                        ProducedType rplt = rpl.get(i).getModel().getType();
+                        ProducedType otherType = unit.getDefiniteType(rplt);
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
                         if (!ptd.inherits(otd) &&
@@ -539,12 +589,18 @@ public class Util {
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp) {
-                        ProducedType paramType = unit.getDefiniteType(dpl.get(dplSize).getModel().getType());
-                        ProducedType otherType = unit.getDefiniteType(rpl.get(dplSize).getModel().getType());
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        ProducedType dplt = dpl.get(dplSize).getModel().getType();
+                        ProducedType paramType = unit.getDefiniteType(dplt);
+                        ProducedType rplt = rpl.get(dplSize).getModel().getType();
+                        ProducedType otherType = unit.getDefiniteType(rplt);
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         paramType = unit.getIteratedType(paramType);
                         otherType = unit.getIteratedType(otherType);
-                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) {
+                            return false;
+                        }
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
                         if (!ptd.inherits(otd) &&
@@ -1850,11 +1906,16 @@ public class Util {
     
     public static List<Declaration> getInheritedDeclarations(String name,
             TypeDeclaration bottom) {
-        List<Declaration> result = new ArrayList<Declaration>(2);
-        for (TypeDeclaration std: bottom.getSupertypeDeclarations()) {
+        List<Declaration> result = 
+                new ArrayList<Declaration>(2);
+        for (TypeDeclaration std: 
+                bottom.getSupertypeDeclarations()) {
             if (!std.equals(bottom)) {
-                Declaration member = std.getDirectMember(name, null, false);
-                if (member!=null && member.isShared() && !isAbstraction(member)) {
+                Declaration member = 
+                        std.getDirectMember(name, null, false);
+                if (member!=null && 
+                        member.isShared() && 
+                        !isAbstraction(member)) {
                     result.add(member);
                 }
             }

@@ -152,7 +152,8 @@ public class RefinementVisitor extends Visitor {
             dec.setRefinedDeclaration(getter.getRefinedDeclaration());
             return;
         }
-        ClassOrInterface type = (ClassOrInterface) dec.getContainer();
+        ClassOrInterface type = 
+                (ClassOrInterface) dec.getContainer();
         if (dec.isFormal() && type instanceof Class) {
             Class c = (Class) type;
             if (!c.isAbstract() && !c.isFormal()) {
@@ -189,9 +190,11 @@ public class RefinementVisitor extends Visitor {
                             message(dec));
                 }
             }
-            else if (!getInheritedDeclarations(name, type).isEmpty()) {
-                that.addError("duplicate or overloaded member name in type hierarchy: " + 
-                        message(dec));
+            else {
+                if (!getInheritedDeclarations(name, type).isEmpty()) {
+                    that.addError("duplicate or overloaded member name in type hierarchy: " + 
+                            message(dec));
+                }
             }
         }
         else {
