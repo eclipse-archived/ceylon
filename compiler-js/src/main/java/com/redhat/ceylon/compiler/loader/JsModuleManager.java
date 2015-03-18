@@ -114,9 +114,11 @@ public class JsModuleManager extends ModuleManager {
         module.setUnit(u);
         JsonModule dep = (JsonModule)findLoadedModule(Module.LANGUAGE_MODULE_NAME, null);
         //This can only happen during initCoreModules()
-        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) && dep == null) {
+        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME))) {
             //Load the language module if we're not inside initCoreModules()
-            dep = (JsonModule)getContext().getModules().getLanguageModule();
+            if (dep == null) {
+                dep = (JsonModule)getContext().getModules().getLanguageModule();
+            }
             //Add language module as a dependency
             //This will cause the dependency to be loaded later
             ModuleImport imp = new ModuleImport(dep, false, false);
@@ -139,7 +141,7 @@ public class JsModuleManager extends ModuleManager {
             }
         }
         final JsonPackage pkg = new JsonPackage(pkgName);
-        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        List<String> name = pkgName.isEmpty() ? Arrays.asList("") : splitModuleName(pkgName);
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
