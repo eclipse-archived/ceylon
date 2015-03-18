@@ -628,6 +628,19 @@ public class CeylonDocToolTests {
         tool.run();
     }
 
+    @Test
+    public void bug2094() throws Exception{
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug2094";
+        
+        CeylonDocTool tool = 
+                tool(Arrays.asList(new File(pathname)),
+                        Arrays.asList(new File("doc")),
+                        Arrays.asList(moduleName),
+                        true, false);
+        tool.run();
+    }
+
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
