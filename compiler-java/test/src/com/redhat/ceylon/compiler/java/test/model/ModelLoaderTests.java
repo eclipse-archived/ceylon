@@ -707,7 +707,7 @@ public class ModelLoaderTests extends CompilerTests {
                 
                 @Override
                 public void test(ModelLoader loader) {
-                    Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
+                    Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
                     Assert.assertNotNull(mod);
                     Package p = mod.getDirectPackage(packageForJavaModelLoading());
                     Assert.assertNotNull(p);
@@ -1188,7 +1188,7 @@ public class ModelLoaderTests extends CompilerTests {
                         // walk every jdk package
                         for(String moduleName : JDKUtils.getJDKModuleNames()) {
                             // load the module
-                            Module mod = loader.getLoadedModule(moduleName);
+                            Module mod = loader.getLoadedModule(moduleName, JDKUtils.jdk.version);
                             Assert.assertNotNull(mod);
                             for (String pkgName : JDKUtils.getJDKPackagesByModule(moduleName)) {
                                 Package p = mod.getDirectPackage(pkgName);
@@ -1240,7 +1240,7 @@ public class ModelLoaderTests extends CompilerTests {
             public void test(ModelLoader loader) {
                 // walk every jdk package
                 for (String moduleName : JDKUtils.getJDKModuleNames()) {
-                    Module mod = loader.getLoadedModule(moduleName);
+                    Module mod = loader.getLoadedModule(moduleName, JDKUtils.jdk.version);
                     Assert.assertNotNull(mod);
                     for(String pkgName : JDKUtils.getJDKPackagesByModule(moduleName)){
                         Package p = mod.getDirectPackage(pkgName);
@@ -1264,6 +1264,10 @@ public class ModelLoaderTests extends CompilerTests {
         return packageForJavaModelLoading();
     }
     
+    protected String moduleVersionForJavaModelLoading(){
+        return "1";
+    }
+    
     protected String packageForJavaModelLoading() {
         return "com.redhat.ceylon.compiler.java.test.model";
     }
@@ -1274,7 +1278,7 @@ public class ModelLoaderTests extends CompilerTests {
         verifyCompilerClassLoading("Java.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
-                Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
                 Assert.assertNotNull(mod);
                 Package p = mod.getDirectPackage(packageForJavaModelLoading());
                 Assert.assertNotNull(p);
@@ -1331,7 +1335,7 @@ public class ModelLoaderTests extends CompilerTests {
         verifyCompilerClassLoading("JavaDeprecated.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
-                Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
                 Assert.assertNotNull(mod);
                 Package p = mod.getDirectPackage(packageForJavaModelLoading());
                 Assert.assertNotNull(p);
@@ -1635,7 +1639,7 @@ public class ModelLoaderTests extends CompilerTests {
             @Override
             public void test(ModelLoader loader) {
                 OtherModelCompare comparer = new OtherModelCompare();
-                Module binaryLangMod = loader.getLoadedModule(AbstractModelLoader.CEYLON_LANGUAGE);
+                Module binaryLangMod = loader.getLoadedModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER);
                 for (Map.Entry<String, Declaration> entry : nativeFromSource.entrySet()) {
                     System.out.println(entry.getKey());
                     Declaration source = entry.getValue();

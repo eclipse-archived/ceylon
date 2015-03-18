@@ -1691,7 +1691,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             boolean defaultModule = false;
 
             // make sure it isn't loaded
-            Module module = getLoadedModule(moduleName);
+            Module module = getLoadedModule(moduleName, version);
             if(module != null)
                 return module;
 
@@ -4652,13 +4652,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     @Override
-    public Module getLoadedModule(String moduleName) {
-        // FIXME: version?
-        for(Module mod : modules.getListOfModules()){
-            if(mod.getNameAsString().equals(moduleName))
-                return mod;
-        }
-        return null;
+    public Module getLoadedModule(String moduleName, String version) {
+        return findModule(moduleName, version);
     }
 
     public Module getLanguageModule() {
@@ -4684,7 +4679,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         File path = file.getParentFile();
         while (path != null) {
             String name = path.getPath().replaceAll("[\\\\/]", ".");
-            Module m = getLoadedModule(name);
+            // FIXME: this would load any version of this module
+            Module m = getLoadedModule(name, null);
             if (m != null) {
                 return m;
             }

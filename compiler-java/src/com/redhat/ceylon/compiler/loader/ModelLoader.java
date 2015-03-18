@@ -82,8 +82,8 @@ public interface ModelLoader {
     public Declaration getDeclaration(Module module, String pkg, String name, Scope scope);
 
     /**
-     * Returns a loaded module by name
+     * Returns a loaded module by name and version
      * @return null if module is not already loaded
      */
-    public Module getLoadedModule(String moduleName);
+    public Module getLoadedModule(String moduleName, String version);
 }

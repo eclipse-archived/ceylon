@@ -152,7 +152,7 @@ public class TypeParserTests {
 
 
         @Override
-        public Module getLoadedModule(String moduleName) {
+        public Module getLoadedModule(String moduleName, String version) {
             throw new RuntimeException("Not yet implemented");
         }
         
