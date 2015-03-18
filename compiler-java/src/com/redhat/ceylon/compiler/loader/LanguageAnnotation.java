@@ -83,7 +83,7 @@ public enum LanguageAnnotation {
     DEPRECATED("deprecated", 0, AbstractModelLoader.CEYLON_LANGUAGE_DEPRECATED_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            anno.addPositionalArgment((String)mirror.getValue("reason"));
+            anno.addPositionalArgment((String)mirror.getValue("description"));
             return Collections.singletonList(anno);
         }
     },
