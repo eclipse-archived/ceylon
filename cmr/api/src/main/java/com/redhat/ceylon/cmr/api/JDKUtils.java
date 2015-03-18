@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -47,6 +48,31 @@ public class JDKUtils {
             this.packageList = packageList;
             this.packageListOracle = packageListOracle;
             this.version = version;
+        }
+        
+        public boolean providesVersion(String version){
+            if(this.version.equals(version))
+                return true;
+            // also provides every smaller version
+            EnumSet<JDK> smaller = EnumSet.range(JDK7, this);
+            // we want strictly smaller
+            smaller.remove(this);
+            for(JDK smallerJDK : smaller){
+                if(smallerJDK.version.equals(version))
+                    return true;
+            }
+            return false;
+        }
+
+        public boolean isLowerVersion(String version) {
+            EnumSet<JDK> smaller = EnumSet.range(JDK7, this);
+            // we want strictly smaller
+            smaller.remove(this);
+            for(JDK smallerJDK : smaller){
+                if(smallerJDK.version.equals(version))
+                    return true;
+            }
+            return false;
         }
     }
     
