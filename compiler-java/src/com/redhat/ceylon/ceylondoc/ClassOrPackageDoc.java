@@ -151,13 +151,18 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     protected final void doc(Declaration d) throws IOException {
+        String name = d.getName();
+        if( d instanceof Constructor && d.getName() == null ) {
+            name = ((TypeDeclaration)d.getContainer()).getName();
+        }
+        
         // put the id on the td because IE8 doesn't support id attributes on tr (yeah right)
         open("tr");
         
-        open("td id='" + d.getName() + "' nowrap");
+        open("td id='" + name + "' nowrap");
         writeIcon(d);
         if( !(d instanceof Constructor) ) {
-            around("code class='decl-label'", d.getName());
+            around("code class='decl-label'", name);
             close("td");
             open("td");
         }
@@ -185,7 +190,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         write(" ");
         open("span class='identifier'");
-        write(d.getName());
+        write(name);
         close("span");
         if( isConstantValue(d) ) {
             writeConstantValue((Value) d);

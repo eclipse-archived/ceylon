@@ -698,6 +698,8 @@ public class CeylonDocToolTests {
     
     private void assertConstructors(File destDir, boolean includeNonShared) throws Exception {
         assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
+                Pattern.compile("<span class='identifier'>StubClassWithConstructors</span>\\(\\)"));
+        assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
                 Pattern.compile("Ctor1"));
         assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
                 Pattern.compile("Ctor2"));

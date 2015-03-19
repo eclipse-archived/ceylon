@@ -454,7 +454,7 @@ public class Util {
 
         @Override
         public int compare(Referenceable a, Referenceable b) {
-            return a.getNameAsString().compareTo(b.getNameAsString());
+            return nullSafeCompare(a.getNameAsString(), b.getNameAsString());
         }
 
     };
@@ -465,7 +465,7 @@ public class Util {
         
         @Override
         public int compare(ProducedType a, ProducedType b) {
-            return a.getDeclaration().getName().compareTo(b.getDeclaration().getName());
+            return nullSafeCompare(a.getDeclaration().getName(), b.getDeclaration().getName());
         }
     };
     
@@ -475,8 +475,19 @@ public class Util {
 
         @Override
         public int compare(ModuleImport a, ModuleImport b) {
-            return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
+            return nullSafeCompare(a.getModule().getNameAsString(), b.getModule().getNameAsString());
         }
+    }
+  
+    private static int nullSafeCompare(final String s1, final String s2) {
+        if (s1 == s2) {
+            return 0;
+        } else if (s1 == null) {
+            return -1;
+        } else if (s2 == null) {
+            return 1;
+        }
+        return s1.compareTo(s2);
     }
 
     public static boolean isEnumerated(TypeDeclaration klass) {

@@ -19,6 +19,8 @@
  */
 shared class StubClassWithConstructors {
 	
+	shared new () {}
+	
 	"Lorem ipsum dolor sit amet, consectetur..."
 	shared new Ctor1() {}
 	
