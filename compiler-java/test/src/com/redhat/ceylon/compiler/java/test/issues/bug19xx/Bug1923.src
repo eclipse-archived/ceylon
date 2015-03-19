@@ -23,6 +23,7 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
     private bug1923_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl(this);
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.class);
     
     private final void priv$priv$() {
     }
@@ -168,7 +169,6 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1923\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

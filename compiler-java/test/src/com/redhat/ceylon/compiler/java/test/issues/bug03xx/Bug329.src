@@ -10,6 +10,7 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
     private bug329_se_() {
         this.something = .ceylon.language.String.instance("somethingElse");
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
     private final .ceylon.language.String something;
     
     @.java.lang.Override
@@ -39,7 +40,6 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -50,6 +50,7 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private bug329_se2_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
     
     @.java.lang.Override
     public final .ceylon.language.String getSomething() {
@@ -78,7 +79,6 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se2\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

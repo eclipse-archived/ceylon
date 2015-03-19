@@ -16,6 +16,7 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
     private switchMatch_foo_() {
         super();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.class);
     private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -39,7 +40,6 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'switchMatch_foo\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -51,6 +51,7 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
     private switchMatch_bar_() {
         super();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.class);
     private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -74,7 +75,6 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'switchMatch_bar\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

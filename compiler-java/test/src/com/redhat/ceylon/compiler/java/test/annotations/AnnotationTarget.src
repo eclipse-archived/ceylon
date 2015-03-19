@@ -345,6 +345,7 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
     
     private annotationTargetObject_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
     private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -369,7 +370,6 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetObject\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

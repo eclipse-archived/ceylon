@@ -23,6 +23,7 @@ final class eBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.
     private eBug2082_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl(this);
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.class);
     
     public final boolean isValid(final .java.lang.String val) {
         return false;
@@ -61,7 +62,6 @@ final class eBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'eBug2082\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -73,6 +73,7 @@ final class fBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.
     private fBug2082_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl(this);
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.class);
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2082$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$;
     
     @.java.lang.Override
@@ -107,7 +108,6 @@ final class fBug2082_ implements .com.redhat.ceylon.compiler.java.runtime.model.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'fBug2082\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

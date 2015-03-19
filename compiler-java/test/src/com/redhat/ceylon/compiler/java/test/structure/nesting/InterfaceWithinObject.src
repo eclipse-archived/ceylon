@@ -7,6 +7,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     private interfaceWithinObject_() {
         this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class);
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new$() {
         return new ZI();
@@ -61,7 +62,6 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'interfaceWithinObject\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

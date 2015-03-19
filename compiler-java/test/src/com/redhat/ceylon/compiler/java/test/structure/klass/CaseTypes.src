@@ -16,6 +16,7 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
     private foo_() {
         super("foo");
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -39,7 +40,6 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'foo\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -51,6 +51,7 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
     private bar_() {
         super("bar");
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -74,7 +75,6 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bar\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

@@ -87,6 +87,8 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
     private heuristicTarget3_() {
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.class);
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
     private static final .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_ value;
     private static volatile boolean $init$value = false;
@@ -115,8 +117,6 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'heuristicTarget3\' before it was set");
         }
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.class);
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

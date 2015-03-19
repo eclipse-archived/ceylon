@@ -5,6 +5,7 @@ final class random_ extends .java.util.Random implements .com.redhat.ceylon.comp
     private random_() {
         super();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.class);
     
     @.java.lang.Override
     public final boolean nextBoolean() {
@@ -43,7 +44,6 @@ final class random_ extends .java.util.Random implements .com.redhat.ceylon.comp
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'random\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

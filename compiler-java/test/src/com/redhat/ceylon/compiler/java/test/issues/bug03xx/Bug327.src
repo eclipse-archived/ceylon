@@ -16,6 +16,7 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     private bug327_foo_() {
         super();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -39,7 +40,6 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug327_foo\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -51,6 +51,7 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     private bug327_bar_() {
         super();
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -74,7 +75,6 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug327_bar\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

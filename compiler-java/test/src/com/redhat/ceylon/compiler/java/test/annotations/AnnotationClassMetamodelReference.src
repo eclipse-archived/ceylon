@@ -296,6 +296,8 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
         this.attribute = 2L;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.obj_.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -335,8 +337,6 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
         }
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.obj_.class);
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

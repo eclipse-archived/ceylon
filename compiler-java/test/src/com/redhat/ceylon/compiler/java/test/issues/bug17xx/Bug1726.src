@@ -31,6 +31,7 @@ final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.R
             };
         );
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -54,7 +55,6 @@ final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.R
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1726\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

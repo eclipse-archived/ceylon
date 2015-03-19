@@ -138,6 +138,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
             returning null;
         );
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
     private final long hash;
     
     @.java.lang.Override
@@ -181,7 +182,6 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1286_objectDefinition\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

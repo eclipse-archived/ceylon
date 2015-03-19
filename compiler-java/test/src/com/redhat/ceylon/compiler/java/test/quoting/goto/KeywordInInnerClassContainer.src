@@ -4,6 +4,7 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
     
     private transient_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     
     public .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.InnerClass_0 InnerClass_0$new$() {
         return new InnerClass_0();
@@ -73,7 +74,6 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transient\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

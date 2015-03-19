@@ -4,6 +4,7 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
     
     private transient_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -27,7 +28,6 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transient\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -38,6 +38,7 @@ public final class module_ implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private module_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -61,7 +62,6 @@ public final class module_ implements .com.redhat.ceylon.compiler.java.runtime.m
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'module\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -72,6 +72,7 @@ public final class package_ implements .com.redhat.ceylon.compiler.java.runtime.
     
     private package_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_ value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -95,7 +96,6 @@ public final class package_ implements .com.redhat.ceylon.compiler.java.runtime.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'package\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

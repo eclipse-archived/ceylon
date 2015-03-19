@@ -10,6 +10,7 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
         this.varShared = false;
         this.varCaptured = false;
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     private final boolean valShared;
     
     public final boolean getValShared() {
@@ -69,7 +70,6 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithMembers\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

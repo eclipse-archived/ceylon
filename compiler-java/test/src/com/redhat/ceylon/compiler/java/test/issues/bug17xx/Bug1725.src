@@ -71,6 +71,7 @@ public final class bug1725baseExpression_ implements .com.redhat.ceylon.compiler
             }
         };
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_.class);
     private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> fromCeylon$specifier$;
     
     @.java.lang.Override
@@ -106,7 +107,6 @@ public final class bug1725baseExpression_ implements .com.redhat.ceylon.compiler
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1725baseExpression\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

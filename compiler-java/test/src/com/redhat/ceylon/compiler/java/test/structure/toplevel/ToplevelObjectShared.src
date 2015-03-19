@@ -4,6 +4,7 @@ public final class topLevelObjectShared_ implements .com.redhat.ceylon.compiler.
     
     private topLevelObjectShared_() {
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.class);
     
     public final void y() {
     }
@@ -30,7 +31,6 @@ public final class topLevelObjectShared_ implements .com.redhat.ceylon.compiler.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectShared\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

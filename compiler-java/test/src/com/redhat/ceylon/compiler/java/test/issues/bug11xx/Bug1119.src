@@ -23,6 +23,7 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         super();
         this.string = "+";
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.class);
     
     @.java.lang.Override
     public final long evaluate(final long left, final long right) {
@@ -64,7 +65,6 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1119Addition\' before it was set");
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
