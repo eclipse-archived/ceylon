@@ -1944,7 +1944,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         SyntheticName middleName = naming.alias("middle");
         List<JCStatement> vars = List.<JCStatement>of(makeVar(middleName, 
                 makeJavaType(middleType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES), 
-                transformExpression(middle, opt.getBoxingStrategy(), null)));
+                transformExpression(middle, opt.getBoxingStrategy(), middleType)));
         
         JCExpression lower = transformBound(middleName, lowerOp, opt, middle, lowerBound, false);
         JCExpression upper = transformBound(middleName, upperOp, opt, middle, upperBound, true);
