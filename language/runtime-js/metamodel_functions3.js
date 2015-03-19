@@ -167,6 +167,28 @@ function funtypearg$(fun) {
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+//Function.typeArguments
+function funtypeargl$(fun) {
+  var mm = fun.tipo.$crtmm$;
+  if (mm) {
+    if (mm.tp) {
+      if (fun.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+fun.string);
+      var ord=[];
+      for (var tp in mm.tp) {
+        var targ = fun.$targs[tp];
+        if (targ) {
+          targ=typeLiteral$meta({Type$typeLiteral:targ});
+        } else {
+          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
+        }
+        ord.push(targ);
+      }
+      return ArraySequence(ord,{Element$ArraySequence:{t:Type$meta$model,a:{Target$Type:Anything}}});
+    }
+    return empty();
+  }
+  throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
+}
 //ClassOrInterface.container
 function coicont$(coi) {
   if (coi.$parent)return coi.$parent;
@@ -286,6 +308,41 @@ function coitarg$(coi){
   }
   throw new Error("ClassOrInterface.typeArguments: missing metamodel!");
 }
+//ClassOrInterface.typeArgumentList
+function coitargl$(coi){
+  var mm = getrtmm$$(coi.tipo);
+  if (mm) {
+    if (mm.tp) {
+      var typeTargs=coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
+      if (typeTargs) {
+        if (coi.tipo===Tuple && typeTargs.t==='T') {
+          typeTargs=retpl$(typeTargs);
+          coi.$$targs$$.Type$ClassOrInterface=typeTargs;
+        }
+        typeTargs=typeTargs.a;
+      }
+      var ord=[];
+      for (var tp in mm.tp) {
+        var targ;
+        var _targ=typeTargs && typeTargs[tp];
+        if (_targ) {
+          if (typeof(_targ)==='string') {
+            console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
+            _targ={t:Anything};
+          }
+          targ=typeLiteral$meta({Type$typeLiteral:_targ});
+        } else {
+          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
+        }
+        ord.push(targ);
+      }
+      return ArraySequence(ord,{Element$ArraySequence:{t:Type$meta$model,a:{Target$Type:Anything}}});
+    }
+    return empty();
+  }
+  throw new Error("ClassOrInterface.typeArgumentList: missing metamodel!");
+}
+//Resolve Type Argument
 function coirestarg$(root,type) {
   if (type.a) {
     var t2 = {t:type.t, a:{}};

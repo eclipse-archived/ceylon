@@ -39,26 +39,30 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   f.tipo=m;
   f.$targs=ttargs;
   if (o)f.$bound=o;
+  var _proto=AppliedFunction$jsint.$$.prototype;
   atr$(f,'typeArguments',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getTypeArguments.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
-  f.equals=AppliedFunction$jsint.$$.prototype.equals;
+    return funtypearg$(f);
+  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  atr$(f,'typeArgumentList',function(){
+    return funtypeargl$(f);
+  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  f.equals=_proto.equals;
   atr$(f,'string',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getString.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getString.$crtmm$);
+    return _proto.$prop$getString.get.call(f);
+  },undefined,_proto.$prop$getString.$crtmm$);
   atr$(f,'hash',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getHash.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getHash.$crtmm$);
+    return _proto.$prop$getHash.get.call(f);
+  },undefined,_proto.$prop$getHash.$crtmm$);
   atr$(f,'parameterTypes',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getParameterTypes.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
+    return _proto.$prop$getParameterTypes.get.call(f);
+  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(f,'declaration',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getDeclaration.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
+    return _proto.$prop$getDeclaration.get.call(f);
+  },undefined,_proto.$prop$getDeclaration.$crtmm$);
   atr$(f,'container',function(){
-    return AppliedFunction$jsint.$$.prototype.$prop$getContainer.get.call(f);
-  },undefined,AppliedFunction$jsint.$$.prototype.$prop$getContainer.$crtmm$);
-  f.$_apply=AppliedFunction$jsint.$$.prototype.$_apply;
-  f.namedApply=AppliedFunction$jsint.$$.prototype.namedApply;
+    return _proto.$prop$getContainer.get.call(f);
+  },undefined,_proto.$prop$getContainer.$crtmm$);
+  f.$_apply=_proto.$_apply;
+  f.namedApply=_proto.namedApply;
   return f;
 }

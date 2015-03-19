@@ -43,6 +43,8 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   atr$(that,'hash',function(){return coihash$(that);},undefined,_proto.$prop$getHash.$crtmm$);
   atr$(that,'typeArguments',function(){return coitarg$(that);
   },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  atr$(that,'typeArgumentList',function(){return coitargl$(that);
+  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
   atr$(that,'extendedType',function(){return coiexttype$(that);
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'declaration',function(){return coimoddcl$(that);

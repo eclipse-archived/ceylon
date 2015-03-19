@@ -45,31 +45,35 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   set_type_args($$appliedMethod,$$targs$$,AppliedMethod$jsint);
   $$appliedMethod.tipo=tipo;
 
+  var _proto=AppliedMethod$jsint.$$.prototype;
   atr$($$appliedMethod,'declaration',function(){
-    return AppliedMethod$jsint.$$.prototype.$prop$getDeclaration.get.call($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
+    return _proto.$prop$getDeclaration.get.call($$appliedMethod);
+  },undefined,_proto.$prop$getDeclaration.$crtmm$);
   atr$($$appliedMethod,'type',function(){
-    return AppliedMethod$jsint.$$.prototype.$prop$getType.get.call($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getType.$crtmm$);
+    return _proto.$prop$getType.get.call($$appliedMethod);
+  },undefined,_proto.$prop$getType.$crtmm$);
   atr$($$appliedMethod,'typeArguments',function(){
     return funtypearg$($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
+  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  atr$($$appliedMethod,'typeArgumentList',function(){
+    return funtypeargl$($$appliedMethod);
+  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
   atr$($$appliedMethod,'parameterTypes',function(){
     return funparamtypes($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
-  $$appliedMethod.equals=AppliedMethod$jsint.$$.prototype.equals;
-  $$appliedMethod.$_bind=AppliedMethod$jsint.$$.prototype.$_bind;
+  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
+  $$appliedMethod.equals=_proto.equals;
+  $$appliedMethod.$_bind=_proto.$_bind;
   atr$($$appliedMethod,'string',function(){
     return funmodstr$($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getString.$crtmm$);
+  },undefined,_proto.$prop$getString.$crtmm$);
   atr$($$appliedMethod,'hash',function(){
-    return AppliedMethod$jsint.$$.prototype.$prop$getHash.get.call($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getHash.$crtmm$);
+    return _proto.$prop$getHash.get.call($$appliedMethod);
+  },undefined,_proto.$prop$getHash.$crtmm$);
   atr$($$appliedMethod,'declaringType',function(){
-    return AppliedMethod$jsint.$$.prototype.$prop$getDeclaringType.get.call($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getDeclaringType.$crtmm$);
+    return _proto.$prop$getDeclaringType.get.call($$appliedMethod);
+  },undefined,_proto.$prop$getDeclaringType.$crtmm$);
   atr$($$appliedMethod,'container',function(){
-    return AppliedMethod$jsint.$$.prototype.$prop$getContainer.get.call($$appliedMethod);
-  },undefined,AppliedMethod$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+    return _proto.$prop$getContainer.get.call($$appliedMethod);
+  },undefined,_proto.$prop$getContainer.$crtmm$);
   return $$appliedMethod;
 }

@@ -50,6 +50,12 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'declaration',function(){
     return coimoddcl$(that);
   },undefined,_proto.$prop$getDeclaration.$crtmm$);
+  atr$(that,'typeArguments',function(){
+    return coitarg$(that);
+  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  atr$(that,'typeArgumentList',function(){
+    return coitargl$(that);
+  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;

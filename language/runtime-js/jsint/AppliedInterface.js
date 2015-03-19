@@ -41,6 +41,7 @@ function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
       atr$(that,'declaration',function(){return coimoddcl$(that);},undefined,dummy.$prop$getDeclaration.$crtmm$);
       atr$(that,'container',function(){return coicont$(that); },undefined,dummy.$prop$getContainer.$crtmm$);
       atr$(that,'typeArguments',function(){return coitarg$(that);},undefined,dummy.$prop$getTypeArguments.$crtmm$);
+      atr$(that,'typeArgumentList',function(){return coitargl$(that);},undefined,dummy.$prop$getTypeArgumentList.$crtmm$);
       atr$(that,'extendedType',function(){return coiexttype$(that); },undefined,dummy.$prop$getExtendedType.$crtmm$);
       atr$(that,'satisfiedTypes',function(){return coisattype$(that); },undefined,dummy.$prop$getSatisfiedTypes.$crtmm$);
       atr$(that,'caseValues',function(){return coicase$(that); },undefined,dummy.$prop$getCaseValues.$crtmm$);
