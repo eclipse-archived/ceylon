@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2096_ {
+    
+    private bug2096_() {
+    }
+    
+    static void bug2096() {
+        final .ceylon.language.Sequence timer = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("Hi")});
+        if ((
+            let
+            {
+                long middle$1 = ((.ceylon.language.Integer)(.java.lang.Object)timer.getFirst()).longValue();
+            }
+            returning 0L < middle$1 && middle$1 < 10L;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0 < timer.first < 10"));
+        }
+    }
+}
