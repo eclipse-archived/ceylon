@@ -461,20 +461,21 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isBetterRefinement(List<ProducedType> signature,
             boolean ellipsis, Declaration result, Declaration candidate) {
         if (candidate==null ||
-                candidate.isActual() && 
+                candidate.isActual() /*&& 
                 !candidate.getNameAsString()
-                    .equals("ceylon.language::Object") || 
+                    .equals("ceylon.language::Object")*/ || 
                 !candidate.isShared()) {
             return false;
         }
         if (result==null) {
-            return true;
+            return signature!=null == 
+                    candidate instanceof Functional;
         }
         if (!(result instanceof Functional)) {
-            return false;
+            return signature!=null;
         }
         if (!(candidate instanceof Functional)) {
-            return true;
+            return signature==null;
         }
         if (signature==null) {
             throw new RuntimeException("missing signature");
