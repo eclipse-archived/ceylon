@@ -2812,13 +2812,24 @@ print(greeting);</programlisting>
         
         <synopsis>ConstructorDeclaration: Annotations ConstructorHeader Block</synopsis>
         
-        <para>All constructor declarations specify the constructor name, exactly 
-        one parameter list, and, optionally, an <literal>extends</literal> clause.</para>
+        <para>All constructor declarations specify the constructor name, if any, 
+        exactly one parameter list, and, optionally, an <literal>extends</literal> 
+        clause.</para>
         
-        <synopsis>ConstructorHeader: "new" TypeName Parameters ExtendedType?</synopsis>
+        <synopsis>ConstructorHeader: "new" TypeName? Parameters ExtendedType?</synopsis>
         
         <para>If two constructors belong to the same class, then the constructors 
-        must have distinct names.</para>
+        must have distinct names. A class may have at most one constructor with no
+        name.</para>
+        
+        <para>If a constructor has no name, then the constructor is called the 
+        <emphasis>default constructor</emphasis> of the class to which it belongs.</para>
+        
+        <para>Every default constructor must be annotated <literal>shared</literal>.</para>
+        
+        <comment><para>Note: from the point of view of a client, a class with a default
+        constructor and no named constructors is indistinguishable from a class with an
+        initializer parameter list.</para></comment>
         
         <para>A class with an initializer parameter list may not declare constructors.</para>
         
@@ -2833,17 +2844,6 @@ print(greeting);</programlisting>
         <para>The constructors of a class must occur after every other statement,
         declaration, and control structure in the initializer section of the class.</para>
         
-        <section id="defaultconstructor">
-            <title>Default constructor</title>
-            
-            <para>If a constructor has the same name as the class it belongs to, then 
-            the constructor is called the <emphasis>default constructor</emphasis> for 
-            the class.</para>
-            
-            <para>Every default constructor must be annotated <literal>shared</literal>.</para>
-            
-        </section>
-        
         <section id="callabletypeofaconstructor">
             <title>Callable type of a constructor</title>
             
@@ -2855,8 +2855,8 @@ print(greeting);</programlisting>
             list of the constructor.</para>
             
             <para>A constructor of an <literal>abstract</literal> class is not 
-            callable, except from the <literal>extends</literal> clause of a 
-            subclass, or the class specifier of a class alias.</para>
+            callable, except from the <literal>extends</literal> clause of a subclass, 
+            or the class specifier of a class alias.</para>
             
         </section>
         
