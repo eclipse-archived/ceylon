@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -36,7 +38,16 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
         setSystemProperties();
 
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
-        String version = ModuleUtil.moduleVersion(moduleNameOptVersion);
+        String version = checkModuleVersionsOrShowSuggestions(
+                getRepositoryManager(),
+                module,
+                ModuleUtil.moduleVersion(moduleNameOptVersion),
+                ModuleQuery.Type.JVM,
+                Versions.JVM_BINARY_MAJOR_VERSION,
+                Versions.JVM_BINARY_MINOR_VERSION,
+                null);
+        if(version == null)
+            return;
         loadModule(module, version);
 
         if(!force)

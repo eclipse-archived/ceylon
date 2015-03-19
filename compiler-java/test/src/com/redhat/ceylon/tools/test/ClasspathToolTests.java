@@ -25,16 +25,12 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolError;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
-import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class ClasspathToolTests extends AbstractToolTests {
 
@@ -89,5 +85,42 @@ public class ClasspathToolTests extends AbstractToolTests {
         String cp = b.toString();
         Assert.assertTrue(cp.contains("org.jboss.logging-3.1.3.GA.jar"));
         Assert.assertFalse(cp.contains("org.jboss.logging-3.1.2.GA.jar"));
+    }
+
+    @Test
+    public void testMissingModule() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("naskduhqwedmansd"));
+        try{
+            tool.run();
+            Assert.fail();
+        }catch(ToolUsageError x){
+            Assert.assertTrue(x.getMessage().contains("Module naskduhqwedmansd not found"));
+        }
+    }
+
+    @Test
+    public void testModuleNameAlone() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
+    }
+
+    @Test
+    public void testModuleNameWithBadVersion() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language/666"));
+        try{
+            tool.run();
+        }catch(ToolUsageError x){
+            Assert.assertTrue(x.getMessage().contains("Version 666 not found for module ceylon.language"));
+        }
     }
 }
