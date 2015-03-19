@@ -71,6 +71,10 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "toBooleanArray", initialElements.prepend(expr));
     }
 
+    /**
+     * Make a call to 
+     * {@code Util.toJavaStringArray(Iterable<String> tail, java.lang.String... initialElements) }
+     */
     public JCExpression toJavaStringArray(JCExpression expr, List<JCExpression> initialElements) {
         return makeUtilInvocation(null, "toJavaStringArray", initialElements.prepend(expr));
     }
@@ -79,6 +83,10 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "toArray", initialElements.prependList(List.of(expr, klassLiteral)));
     }
     
+    /**
+     * Make a call to 
+     * {@code Util.toArray(List<T> tail, T[] array, T... initialElements) }
+     */
     public JCExpression toArray(JCExpression seq, JCExpression arrayExpr, List<JCExpression> initialElements, JCExpression typeArgs) {
         return makeUtilInvocation(List.of(typeArgs), 
                 "toArray",
@@ -113,6 +121,9 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "checkNull", List.of(expr));
     }
 
+    /**
+     * Makes a call to 
+     * {@code Util.sequentialCopy($reifiedT, Sequential rest, Object... initial)} */
     public JCExpression sequentialInstance(JCExpression typeArgument,
             JCExpression reifiedTypeArgument, 
             JCExpression /*Sequential*/ rest, 
