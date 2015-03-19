@@ -4610,6 +4610,11 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
                 this, name, Decl.isLocal(klass)).forDefinition(klass);
         
+        // Make sure top types satisfy reified type
+        addReifiedTypeInterface(objectClassBuilder, klass);
+        if(supportsReifiedAlias(klass))
+            objectClassBuilder.reifiedAlias(klass.getType());
+        
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
         final boolean prevInInitializer = visitor.inInitializer;
@@ -4655,11 +4660,6 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder.annotations(expressionGen().transformAnnotations(false, OutputElement.TYPE, annotated));
             objectClassBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, OutputElement.CONSTRUCTOR, annotated));
         }
-
-        // Make sure top types satisfy reified type
-        addReifiedTypeInterface(objectClassBuilder, klass);
-        if(supportsReifiedAlias(klass))
-            objectClassBuilder.reifiedAlias(klass.getType());
         
         // make sure we set the container in case we move it out
         addAtContainer(objectClassBuilder, klass);
