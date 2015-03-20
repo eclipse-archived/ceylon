@@ -27,17 +27,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 
@@ -48,6 +54,19 @@ import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
  * @author Stef Epardaud
  */
 public class Overrides {
+    public static class InvalidOverrideException extends IllegalArgumentException {
+        private static final long serialVersionUID = 1L;
+        public int line = -1;
+        public int column = -1;
+        public InvalidOverrideException(String message, Element element) {
+            super(message);
+            Object data = null;
+            data = element.getUserData(LINE_NUMBER_KEY_NAME);
+            this.line = data == null ? -1 : Integer.parseInt((String) data);
+            data = element.getUserData(COLUMN_NUMBER_KEY_NAME);
+            this.column = data == null ? -1 : Integer.parseInt((String) data);
+        }
+    }
     
     private Map<ArtifactContext, ArtifactOverrides> overrides = new HashMap<>();
     private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
@@ -394,15 +413,74 @@ public class Overrides {
     protected static String getRequiredAttribute(Element element, String name, Map<String, String> interpolation) {
         String value = getAttribute(element, name, interpolation);
         if (value == null) {
-            throw new IllegalArgumentException(String.format("Missing '%s' attribute in element %s.", name, element));
+            throw new InvalidOverrideException(String.format("Missing '%s' attribute in element %s.", name, element), element);
         }
         return value;
     }
 
+    final static String LINE_NUMBER_KEY_NAME = "lineNumber";
+    final static String COLUMN_NUMBER_KEY_NAME = "columnNumber";
+
     protected static Document parseXml(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(inputStream);
+        final Document doc;
+        SAXParser parser;
+        final SAXParserFactory factory = SAXParserFactory.newInstance();
+        parser = factory.newSAXParser();
+        final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        doc = docBuilder.newDocument();
+
+        final Stack<Element> elementStack = new Stack<Element>();
+        final StringBuilder textBuffer = new StringBuilder();
+        final DefaultHandler handler = new DefaultHandler() {
+            private Locator locator;
+
+            @Override
+            public void setDocumentLocator(final Locator locator) {
+                this.locator = locator; // Save the locator, so that it can be used later for line tracking when traversing nodes.
+            }
+
+            @Override
+            public void startElement(final String uri, final String localName, final String qName, final Attributes attributes)
+                    throws SAXException {
+                addTextIfNeeded();
+                final Element el = doc.createElement(qName);
+                for (int i = 0; i < attributes.getLength(); i++) {
+                    el.setAttribute(attributes.getQName(i), attributes.getValue(i));
+                }
+                el.setUserData(LINE_NUMBER_KEY_NAME, String.valueOf(this.locator.getLineNumber()), null);
+                el.setUserData(COLUMN_NUMBER_KEY_NAME, String.valueOf(this.locator.getColumnNumber()), null);
+                elementStack.push(el);
+            }
+
+            @Override
+            public void endElement(final String uri, final String localName, final String qName) {
+                addTextIfNeeded();
+                final Element closedEl = elementStack.pop();
+                if (elementStack.isEmpty()) { // Is this the root element?
+                    doc.appendChild(closedEl);
+                } else {
+                    final Element parentEl = elementStack.peek();
+                    parentEl.appendChild(closedEl);
+                }
+            }
+
+            @Override
+            public void characters(final char ch[], final int start, final int length) throws SAXException {
+                textBuffer.append(ch, start, length);
+            }
+
+            // Outputs text accumulated under the current node
+            private void addTextIfNeeded() {
+                if (textBuffer.length() > 0) {
+                    final Element el = elementStack.peek();
+                    final Node textNode = doc.createTextNode(textBuffer.toString());
+                    el.appendChild(textNode);
+                    textBuffer.delete(0, textBuffer.length());
+                }
+            }
+        };
+        parser.parse(inputStream, handler);
         doc.getDocumentElement().normalize();
         return doc;
     }
