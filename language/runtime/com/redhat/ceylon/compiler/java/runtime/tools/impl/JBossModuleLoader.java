@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoadException;
+import org.jboss.modules.ModuleLoader;
+
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 
 public class JBossModuleLoader extends BaseModuleLoaderImpl {
@@ -21,12 +26,20 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
     }
 
     class JBossModuleLoaderContext extends ModuleLoaderContext {
+        ModuleLoader modLoader;
 
         JBossModuleLoaderContext(String module, String version) {
             super(module, version);
         }
 
-        void preloadModules() {
+        @Override
+        void initialise() {
+            preloadModules();
+            initialiseMetamodel();
+            moduleClassLoader = setupClassLoader();
+        }
+        
+        private void preloadModules() {
             try {
                 loadModule(module, modver, false, false);
             } catch (IOException e) {
@@ -34,7 +47,22 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
             }
         }
 
-        void initialiseMetamodel() {
+        private ClassLoader setupClassLoader() {
+            if (delegateClassLoader != null) {
+                modLoader = ModuleLoader.forClassLoader(delegateClassLoader);
+            } else {
+                modLoader = ModuleLoader.forClass(JBossModuleLoader.class);
+            }
+            ModuleIdentifier modid = ModuleIdentifier.create(module, modver);
+            try {
+                Module mod = modLoader.loadModule(modid);
+                return mod.getClassLoader();
+            } catch (ModuleLoadException e) {
+                throw new RuntimeException("Could not load module " + modid, e);
+            }
+        }
+
+        private void initialiseMetamodel() {
             Set<String> registered = new HashSet<String>();
             registerInMetamodel(module, registered);
         }

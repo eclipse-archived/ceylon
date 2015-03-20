@@ -1,11 +1,16 @@
 package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -33,7 +38,14 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
             super(module, version);
         }
 
-        void preloadModules() {
+        @Override
+        void initialise() {
+            preloadModules();
+            moduleClassLoader = setupClassLoader();
+            initialiseMetamodel();
+        }
+
+        private void preloadModules() {
             try {
                 // those come from the delegate class loader
                 loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
@@ -53,7 +65,7 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
             }
         }
 
-        void initialiseMetamodel() {
+        private void initialiseMetamodel() {
             Set<String> registered = new HashSet<String>();
             registerInMetamodel("ceylon.language", registered);
             registerInMetamodel("com.redhat.ceylon.typechecker", registered);
@@ -66,6 +78,37 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
                     registerInMetamodel(extraModule, registered);
                 }
             }
+        }
+        
+        private ClassLoader setupClassLoader() {
+            // make a Class loader for this module if required
+            if(loadedModulesInCurrentClassLoader.contains(module))
+                return delegateClassLoader;
+            else
+                return makeModuleClassLoader();
+        }
+        
+        private ClassLoader makeModuleClassLoader() {
+            // we need to make a class loader for all the modules it requires which are not provided by the current class loader
+            Set<String> modulesNotInCurrentClassLoader = new HashSet<String>();
+            for(Entry<String, ArtifactResult> entry : loadedModules.entrySet()){
+                if(entry.getValue() != null)
+                    modulesNotInCurrentClassLoader.add(entry.getKey());
+            }
+            modulesNotInCurrentClassLoader.removeAll(loadedModulesInCurrentClassLoader);
+            URL[] urls = new URL[modulesNotInCurrentClassLoader.size()];
+            int i=0;
+            for(String module : modulesNotInCurrentClassLoader){
+                ArtifactResult artifact = loadedModules.get(module);
+                try {
+                    @SuppressWarnings("deprecation")
+                    URL url = artifact.artifact().toURL();
+                    urls[i++] = url;
+                } catch (MalformedURLException | RepositoryException e) {
+                    throw new RuntimeException("Failed to get a URL for module file for "+module, e);
+                }
+            }
+            return new URLClassLoader(urls , delegateClassLoader);
         }
     }
 

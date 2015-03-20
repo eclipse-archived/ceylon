@@ -1,13 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,7 +14,6 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
@@ -43,46 +40,11 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         ModuleLoaderContext(String module, String version) {
             this.module = module;
             this.modver = version;
-            preloadModules();
-            setupClassLoader();
-            initialiseMetamodel();
+            initialise();
         }
 
-        abstract void preloadModules();
-
-        abstract void initialiseMetamodel();
-
-        void setupClassLoader() {
-            // make a Class loader for this module if required
-            if(loadedModulesInCurrentClassLoader.contains(module))
-                moduleClassLoader = delegateClassLoader;
-            else
-                moduleClassLoader = makeModuleClassLoader();
-        }
-
-        ClassLoader makeModuleClassLoader() {
-            // we need to make a class loader for all the modules it requires which are not provided by the current class loader
-            Set<String> modulesNotInCurrentClassLoader = new HashSet<String>();
-            for(Entry<String, ArtifactResult> entry : loadedModules.entrySet()){
-                if(entry.getValue() != null)
-                    modulesNotInCurrentClassLoader.add(entry.getKey());
-            }
-            modulesNotInCurrentClassLoader.removeAll(loadedModulesInCurrentClassLoader);
-            URL[] urls = new URL[modulesNotInCurrentClassLoader.size()];
-            int i=0;
-            for(String module : modulesNotInCurrentClassLoader){
-                ArtifactResult artifact = loadedModules.get(module);
-                try {
-                    @SuppressWarnings("deprecation")
-                    URL url = artifact.artifact().toURL();
-                    urls[i++] = url;
-                } catch (MalformedURLException | RepositoryException e) {
-                    throw new RuntimeException("Failed to get a URL for module file for "+module, e);
-                }
-            }
-            return new URLClassLoader(urls , delegateClassLoader);
-        }
-
+        abstract void initialise();
+        
         void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
             ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
