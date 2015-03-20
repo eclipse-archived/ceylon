@@ -17,6 +17,9 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -27,6 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Manifest;
+
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -52,13 +59,7 @@ import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
