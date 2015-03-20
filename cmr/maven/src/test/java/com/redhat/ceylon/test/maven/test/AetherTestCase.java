@@ -25,6 +25,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
@@ -175,7 +176,7 @@ public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testAddRemoveOverrides() throws Throwable {
         Repository repository = createAetherRepository();
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);
         File artifact = result.artifact();
@@ -199,7 +200,7 @@ public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testReplaceOverrides() throws Throwable {
         Repository repository = createAetherRepository();
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");
@@ -221,7 +222,7 @@ public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testFilterOverrides() throws Throwable {
         Repository repository = createAetherRepository();
-        RepositoryManager manager = new SimpleRepositoryManager(repository, log, getOverridesFileName());
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.osgi:org.osgi.core", "4.0.0");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");

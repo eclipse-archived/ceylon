@@ -38,19 +38,9 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     protected final Logger log;
     protected final Overrides overrides;
 
-    public AbstractRepositoryManager(Logger log, String overridesFileName) {
+    public AbstractRepositoryManager(Logger log, Overrides overrides) {
         this.log = log;
-        if(overridesFileName != null){
-            try {
-                this.overrides = Overrides.parse(overridesFileName);
-            }catch(IllegalArgumentException x ){
-                throw x;
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
-            }
-        }else{
-            this.overrides = null;
-        }
+        this.overrides=overrides;
     }
 
     /**

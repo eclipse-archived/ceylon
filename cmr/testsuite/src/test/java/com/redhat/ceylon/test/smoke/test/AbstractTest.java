@@ -125,7 +125,7 @@ public class AbstractTest {
     }
 
     protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout, String overrideFileName) throws Exception {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline, timeout, overrideFileName);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline, timeout, RepositoryManagerBuilder.parseOverrides(overrideFileName));
         builder.addRepository(new DefaultRepository(new FileContentStore(root).createRoot()));
         return builder;
     }

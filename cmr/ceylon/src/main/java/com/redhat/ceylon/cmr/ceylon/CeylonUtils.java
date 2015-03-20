@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -576,13 +577,21 @@ public class CeylonUtils {
             return (timeout >= 0) ? timeout : (int)DefaultToolOptions.getDefaultTimeout(config);
         }
         
-        private String getOverrides(CeylonConfig config) {
+        protected Overrides getOverrides(CeylonConfig config) {
             String path = (overrides != null) ? overrides : DefaultToolOptions.getDefaultOverrides(config);
             if (path != null) {
-                File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
-                return f.getPath();
+                return getOverrides(path);
             }
             return null;
+        }
+
+        protected Overrides getOverrides(String path) {
+            File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
+            return getOverrides(f);
+        }
+
+        protected Overrides getOverrides(File f) {
+            return RepositoryManagerBuilder.parseOverrides(f.getPath());
         }
     }
 

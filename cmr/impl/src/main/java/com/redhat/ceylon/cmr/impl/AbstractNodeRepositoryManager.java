@@ -65,8 +65,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected Repository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
 
-    public AbstractNodeRepositoryManager(Logger log, String overridesFileName) {
-        super(log, overridesFileName);
+    public AbstractNodeRepositoryManager(Logger log, Overrides overrides) {
+        super(log, overrides);
     }
 
     public synchronized void setAddCacheAsRoot(boolean addCacheAsRoot) {

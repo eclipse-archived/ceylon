@@ -52,7 +52,6 @@ import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 import org.junit.Assert;
 import org.junit.Ignore;

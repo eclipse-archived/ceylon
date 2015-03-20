@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.ArtifactCallback;
 import com.redhat.ceylon.cmr.api.ArtifactCallbackStream;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
@@ -50,12 +51,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return new File(rootRepo.getUrl());
     }
 
-    public RootRepositoryManager(Logger log, String overridesFileName) {
-        this(getRootDir(), log, overridesFileName);
+    public RootRepositoryManager(Logger log, Overrides overrides) {
+        this(getRootDir(), log, overrides);
     }
 
-    public RootRepositoryManager(File rootDir, Logger log, String overridesFileName) {
-        super(log, overridesFileName);
+    public RootRepositoryManager(File rootDir, Logger log, Overrides overrides) {
+        super(log, overrides);
         if (!rootDir.exists() && !rootDir.mkdirs()) {
             throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
         }

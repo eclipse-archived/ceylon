@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.List;
 
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -41,7 +42,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     private int timeout;
     private boolean offline;
 
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, String overrides) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Overrides overrides) {
         repository = new RootRepositoryManager(log, overrides);
         this.log = log;
         this.timeout = timeout;
@@ -49,7 +50,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         init();
     }
 
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, String overrides) {
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Overrides overrides) {
         repository = new RootRepositoryManager(mainRepository, log, overrides);
         this.log = log;
         this.timeout = timeout;

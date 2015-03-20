@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
@@ -44,8 +45,8 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
         this(root, log, null);
     }
     
-    public SimpleRepositoryManager(Repository root, Logger log, String overridesFileName) {
-        super(log, overridesFileName);
+    public SimpleRepositoryManager(Repository root, Logger log, Overrides overrides) {
+        super(log, overrides);
         if (root == null)
             throw new IllegalArgumentException("Null root!");
 

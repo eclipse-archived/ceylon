@@ -46,9 +46,9 @@ public class RepositoryManagerBuilder {
         this(log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, String overrides) {
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Overrides overrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, String.class);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Overrides.class);
             delegate = ctor.newInstance(log, offline, timeout, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
@@ -68,9 +68,9 @@ public class RepositoryManagerBuilder {
         this(mainRepository, log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, String overrides) {
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Overrides overrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, String.class);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Overrides.class);
             delegate = ctor.newInstance(mainRepository, log, offline, timeout, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
@@ -145,5 +145,18 @@ public class RepositoryManagerBuilder {
 
     public boolean hasMavenRepository() {
         return getDelegate().hasMavenRepository();
+    }
+
+    public static Overrides parseOverrides(String overridesFileName) {
+        if(overridesFileName != null){
+            try {
+                return Overrides.parse(overridesFileName);
+            }catch(IllegalArgumentException x ){
+                throw x;
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        return null;
     }
 }
