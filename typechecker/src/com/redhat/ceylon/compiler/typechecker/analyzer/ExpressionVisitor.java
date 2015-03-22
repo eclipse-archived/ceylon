@@ -7944,6 +7944,7 @@ public class ExpressionVisitor extends Visitor {
             else if (d != null) {
                 that.setWantsDeclaration(false);
                 t = t.resolveAliases();
+                if (t==null || t.isUnknown()) return;
                 //checkNonlocalType(that.getType(), t.getDeclaration());
                 if (d instanceof Constructor) {
                     if (((Constructor) d).isAbstraction()) {
@@ -7987,19 +7988,26 @@ public class ExpressionVisitor extends Visitor {
         Tree.Identifier id = that.getIdentifier();
         if (id!=null) {
             String name = name(id);
-            ProducedType qt = null;
-            TypeDeclaration qtd = null;
             Tree.StaticType type = that.getType();
-			if (type != null) {
-            	qt = type.getTypeModel();
-            	qtd = qt.getDeclaration();
-            }
-            if (qt != null) {
-            	qt = qt.resolveAliases();
-            	if (qtd instanceof UnknownType) {
-            		// let it go, we already logged an error for the missing type
-            		return;
-            	}
+            if (type == null) {
+                Scope scope = 
+                        that.getPackageQualified() ?
+                                unit.getPackage() :
+                                that.getScope();
+                TypedDeclaration result = 
+                        getTypedDeclaration(scope, name, null, false, unit);
+                if (result!=null) {
+                    checkBaseVisibility(that, result, name);
+                    setMemberMetatype(that, result);
+                }
+                else {
+                    that.addError("function or value does not exist: '" +
+                            name(id) + "'", 100);
+                    unit.getUnresolvedReferences().add(id);
+                }
+            } else {
+                TypeDeclaration qtd = 
+                        type.getTypeModel().getDeclaration();
             	//checkNonlocalType(that.getType(), qtd);
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 
@@ -8018,23 +8026,6 @@ public class ExpressionVisitor extends Visitor {
             		checkQualifiedVisibility(that, member, name, container, false);
             		setMemberMetatype(that, member);
             	}
-            }
-            else {
-                Scope scope = 
-                        that.getPackageQualified() ?
-                                unit.getPackage() :
-                                that.getScope();
-                TypedDeclaration result = 
-                        getTypedDeclaration(scope, name, null, false, unit);
-                if (result!=null) {
-                    checkBaseVisibility(that, result, name);
-                    setMemberMetatype(that, result);
-                }
-                else {
-                    that.addError("function or value does not exist: '" +
-                            name(id) + "'", 100);
-                    unit.getUnresolvedReferences().add(id);
-                }
             }
         }
     }
