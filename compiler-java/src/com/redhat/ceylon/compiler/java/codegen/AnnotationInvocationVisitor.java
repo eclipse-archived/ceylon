@@ -524,7 +524,9 @@ class AnnotationInvocationVisitor extends Visitor {
                         exprGen.makeJavaType(((ClassOrInterface)decl).getType()),
                         "class"));
             } else if (decl instanceof Value) {
-                append(exprGen.transformExpression(term));
+                append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel(),
+                        // target doesn't actually accept null, but we can't put a checkNull() call in there.
+                        exprGen.EXPR_TARGET_ACCEPTS_NULL));
             }
         } else {
             append(exprGen.make().Literal(term.getDeclaration().getQualifiedNameString()));
