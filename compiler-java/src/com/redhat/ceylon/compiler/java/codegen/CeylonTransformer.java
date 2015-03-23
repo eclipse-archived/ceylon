@@ -372,7 +372,14 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
             } else {
                 // For local and toplevel getters
+                boolean prevSyntheticClassBody;
+                if (Decl.isLocal(declarationModel)) {
+                    prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+                } else {
+                    prevSyntheticClassBody = expressionGen().isWithinSyntheticClassBody();
+                }
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
+                prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
                 builder.getterBlock(getterBlock);
                 
                 if (Decl.isLocal(declarationModel)) {
