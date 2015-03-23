@@ -84,40 +84,75 @@ public class Module
     }
     
     /**
-     * Get all packages belonging to this module
-     * and all shared packages belonging to 
-     * modules transitively imported by this
-     * module. 
+     * Get all packages belonging to this module and modules 
+     * transitively imported by this module that are visible
+     * to this module. 
      */
-    public List<Package> getAllPackages() {
-        List<Package> list = new ArrayList<Package>();
-        list.addAll(getPackages());
-        addSharedPackagesOfTransitiveDependencies(list, new HashSet<String>());
+    public List<Package> getAllVisiblePackages() {
+        List<Package> list = 
+                new ArrayList<Package>(getPackages());
+        addVisiblePackagesOfTransitiveDependencies(list, 
+                new HashSet<String>(), true);
         return list;
     }
     
-    private void addSharedPackagesOfTransitiveDependencies(List<Package> list, 
+    private void addVisiblePackagesOfTransitiveDependencies(List<Package> list, 
+            Set<String> alreadyScannedModules, boolean firstLevel) {
+        for (ModuleImport mi: getImports()) {
+            if (firstLevel || mi.isExport()) {
+                Module importedModule = mi.getModule();
+                if (alreadyScannedModules.add(importedModule.getNameAsString())) {
+                    for (Package p: importedModule.getPackages()) {
+                        if (p.isShared()) {
+                            list.add(p);
+                        }
+                    }
+                    importedModule.addVisiblePackagesOfTransitiveDependencies(list, 
+                            alreadyScannedModules, false);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Get all packages belonging to this module and modules 
+     * transitively imported by this module, including 
+     * packages that aren't visible to this module. 
+     */
+    public List<Package> getAllReachablePackages() {
+        List<Package> list = 
+                new ArrayList<Package>();
+        list.addAll(getPackages());
+        addAllPackagesOfTransitiveDependencies(list, 
+                new HashSet<String>());
+        return list;
+    }
+
+    private void addAllPackagesOfTransitiveDependencies(List<Package> list, 
             Set<String> alreadyScannedModules) {
         for (ModuleImport mi: getImports()) {
             Module importedModule = mi.getModule();
             if (alreadyScannedModules.add(importedModule.getNameAsString())) {
                 for (Package p: importedModule.getPackages()) {
-                    if (p.isShared()) {
-                        list.add(p);
-                    }
+                    list.add(p);
                 }
-                importedModule.addSharedPackagesOfTransitiveDependencies(list, 
-                        alreadyScannedModules);
+                importedModule.addVisiblePackagesOfTransitiveDependencies(list, 
+                        alreadyScannedModules, false);
             }
         }
     }
     
-    public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith) {
-    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-    	for (Package p: getAllPackages()) {
-    		String packageName = p.getNameAsString();
-			boolean isLanguageModule = packageName.equals(LANGUAGE_MODULE_NAME);
-			boolean isDefaultPackage = packageName.isEmpty();
+    public Map<String, DeclarationWithProximity> 
+    getAvailableDeclarations(String startingWith) {
+    	Map<String, DeclarationWithProximity> result = 
+    	        new TreeMap<String, DeclarationWithProximity>();
+    	for (Package p: getAllVisiblePackages()) {
+    		String packageName = 
+    		        p.getNameAsString();
+			boolean isLanguageModule = 
+			        packageName.equals(LANGUAGE_MODULE_NAME);
+			boolean isDefaultPackage = 
+			        packageName.isEmpty();
 			if (!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
     				try {
@@ -142,23 +177,15 @@ public class Module
         return false;
     }
 
-    protected boolean isJdkPackage(String moduleName, String packageName) {
+    protected boolean isJdkPackage(String moduleName, 
+            String packageName) {
         // overridden by subclasses
         return false;
     }
 
-    List<Package> getAllKnownPackages() {
-        List<Package> list = new ArrayList<Package>();
-        list.addAll(packages);
-        for (ModuleImport mi: imports) {
-            list.addAll(mi.getModule().getPackages());
-        }
-        return list;
-    }
-
     public Package getDirectPackage(String name) {
         for (Package pkg: packages) {
-            if ( pkg.getQualifiedNameString().equals(name) ) {
+            if (pkg.getQualifiedNameString().equals(name)) {
                 return pkg;
             }
         }
@@ -197,11 +224,13 @@ public class Module
 
     @Override
     public String toString() {
-        return "Module[" + getNameAsString() + ", " + getVersion() + "]";
+        return "Module[" + getNameAsString() + 
+                ", " + getVersion() + "]";
     }
     
     /**
-     * Is this the default module hosting all units outside of an explicit module
+     * Is this the default module hosting all units outside 
+     * of an explicit module
      */
     public boolean isDefault() {
         return isDefault;
@@ -247,16 +276,24 @@ public class Module
 
     @Override
     public int compareTo(Module other) {
-        if(this == other)
+        if (this == other) {
             return 0;
+        }
         // default first
-        if(isDefault())
+        if (isDefault()) {
             return -1;
-        int cmp = this.getNameAsString().compareTo(other.getNameAsString());
-        if(cmp != 0)
+        }
+        String name = this.getNameAsString();
+        String otherName = other.getNameAsString();
+        int cmp = name.compareTo(otherName);
+        if (cmp != 0) {
             return cmp;
-        // we don't care about how versions are compared, we just care that the order is consistent
-        return this.getVersion().compareTo(other.getVersion());
+        }
+        // we don't care about how versions are compared, we 
+        // just care that the order is consistent
+        String version = this.getVersion();
+        String otherVersion = other.getVersion();
+        return version.compareTo(otherVersion);
     }
 
     public ProducedTypeCache getCache(){
@@ -265,7 +302,7 @@ public class Module
 
     public void clearCache(TypeDeclaration declaration) {
         ProducedTypeCache cache = getCache();
-        if(cache != null){
+        if (cache != null){
             cache.clearForDeclaration(declaration);
         }
         // FIXME: propagate to modules that import this module transitively
@@ -273,11 +310,14 @@ public class Module
     }
     
     public String getSignature() {
-        if(signature == null){
-            if(isDefault())
+        if (signature == null) {
+            if (isDefault()) {
                 signature = getNameAsString();
-            else
-                signature = getNameAsString() + "/" + getVersion();
+            }
+            else {
+                signature = getNameAsString() + 
+                        "/" + getVersion();
+            }
         }
         return signature;
     }
@@ -289,8 +329,10 @@ public class Module
     
     @Override
     public boolean equals(Object obj) {
-        if(obj == null || obj instanceof Module == false)
+        if (obj == null || 
+                obj instanceof Module == false) {
             return false;
+        }
         Module b = (Module) obj;
         return getSignature().equals(b.getSignature());
     }
