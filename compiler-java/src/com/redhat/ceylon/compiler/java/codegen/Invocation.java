@@ -1607,7 +1607,8 @@ class NamedArgumentInvocation extends Invocation {
         // we used to use thisType = gen.getThisType(getPrimaryDeclaration());
         final JCExpression thisType;
         ProducedReference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
-        if (getPrimary() instanceof Tree.BaseMemberExpression) {
+        if (getPrimary() instanceof Tree.BaseMemberExpression
+                && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
