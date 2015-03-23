@@ -579,15 +579,15 @@ public class CeylonUtils {
         
         protected Overrides getOverrides(CeylonConfig config) {
             String path = (overrides != null) ? overrides : DefaultToolOptions.getDefaultOverrides(config);
-            if (path != null) {
-                return getOverrides(path);
-            }
-            return null;
+            return getOverrides(path);
         }
 
         protected Overrides getOverrides(String path) {
-            File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
-            return getOverrides(f);
+            if (path != null) {
+                File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
+                return getOverrides(f);
+            }
+            return null;
         }
 
         protected Overrides getOverrides(File f) {
