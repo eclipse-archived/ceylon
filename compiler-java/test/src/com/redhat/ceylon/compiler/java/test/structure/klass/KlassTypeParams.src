@@ -14,7 +14,7 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
             }
             
             public U get_() {
-                return getAttr$priv$();
+                return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParams.this.getAttr$priv$();
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<U> getter$getter$_ = new getter$getter$_();
@@ -25,7 +25,7 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
             }
             
             public V get_() {
-                return getVar$priv$();
+                return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParams.this.getVar$priv$();
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<V> getset$getter$_ = new getset$getter$_();
