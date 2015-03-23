@@ -47,6 +47,7 @@
                 <path name="javax/xml/transform/stream"/>
                 <path name="org/w3c/dom"/>
                 <path name="org/xml/sax"/>
+                <path name="org/xml/sax/helpers"/>
             </paths>
         </system>
     </dependencies>
