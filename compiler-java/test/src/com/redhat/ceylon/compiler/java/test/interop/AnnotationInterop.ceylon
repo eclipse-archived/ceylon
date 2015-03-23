@@ -17,6 +17,9 @@ import java.lang {
         }
     }
 }
+import java.util.jar {
+    JarFile
+}
 
 @nomodel
 generated{
@@ -88,3 +91,6 @@ class CPAnnoTest2 {
     shared new (generated({"by me"}) String x) { }
     shared new Other(generated({"by me"}) String x) { }
 }
+
+generated({JarFile.\iMANIFEST_NAME})
+void bug2103() {}
