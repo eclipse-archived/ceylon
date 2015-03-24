@@ -688,9 +688,30 @@ public class Util {
             }
             return id.getText();
         }
+        else if (t instanceof Tree.ModuleLiteral) {
+            Tree.ModuleLiteral ml = (Tree.ModuleLiteral) t;
+            return "module " + toString(ml.getImportPath());
+        }
+        else if (t instanceof Tree.PackageLiteral) {
+            Tree.PackageLiteral pl = (Tree.PackageLiteral) t;
+            return "package " + toString(pl.getImportPath());
+        }
     	else {
     		return null;
     	}
+    }
+    
+    private static String toString(Tree.ImportPath importPath) {
+        StringBuilder sb = new StringBuilder();
+        if (importPath.getIdentifiers() != null) {
+            for (Tree.Identifier identifier : importPath.getIdentifiers()) {
+                if (sb.length() != 0) {
+                    sb.append(".");
+                }
+                sb.append(identifier.getText());
+            }
+        }
+        return sb.toString();
     }
 
     private static String toString(Tree.StaticType type) {
