@@ -95,6 +95,12 @@ atr$($$openFunction,'annotation',function(){
     atr$($$openFunction,'qualifiedName',function(){
        return qname$(this.tipo);
     },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:OpenFunction,pa:3,d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
+
+$$openFunction.annotated=function($mpt){
+  console.log("TODO! OpenFunction.annotated");
+  return false;
+}
+$$openFunction.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:OpenFunction,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
     })(OpenFunction.$$.prototype);
   }
   return OpenFunction;

@@ -76,6 +76,11 @@ $$valParamDecl.equals=function(o){
   return eq;
 };$$valParamDecl.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{nm:'other',mt:'prm',$t:{t:$_Object}}],$cont:ValParamDecl,pa:3,d:['$','Object','$m','equals']};};
 atr$($$valParamDecl,'string',function(){return 'value '+this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},pa:3,d:['$','Object','$at','string']};});
+$$valParamDecl.annotated=function($mpt){
+  console.log("TODO! ValParamDecl.annotated");
+  return false;
+}
+$$valParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:ValParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','annotated']};};
     })(ValParamDecl.$$.prototype);
   }
   return ValParamDecl;

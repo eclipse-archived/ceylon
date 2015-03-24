@@ -88,6 +88,11 @@ function $init$FunParamDecl(){
           if(typeArguments$13===undefined){typeArguments$13=empty();}
           throw Exception("IMPL FunParamDecl.memberApply");
       };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
+$$funParamDecl.annotated=function($mpt){
+  console.log("TODO! FunParamDecl.annotated");
+  return false;
+}
+$$funParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:OpenFunction,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
     })(FunParamDecl.$$.prototype);
   }
   return FunParamDecl;
