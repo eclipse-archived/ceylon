@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 "The stub top level method"
-see(`class StubClass`, `value stubTopLevelAttribute`)
+see(`class StubClass`, `value stubTopLevelAttribute`, `module`, `package`)
 shared StubClass? stubTopLevelMethod(
 	"Sequenced parameters `numbers`" Integer* numbers) {
     return null;

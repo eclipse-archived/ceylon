@@ -372,12 +372,24 @@ public class LinkRenderer {
     }
 
     private String processAnnotationParam(String text) {
+        if( text.equals("module")) {
+            Module mod = getCurrentModule();
+            if( mod != null) {
+                return processModule(mod);
+            }
+        }
         if (text.startsWith("module ")) {
             String modName = text.substring(7);
             for (Module m : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
                 if (m.getNameAsString().equals(modName)) {
                     return processModule(m);
                 }
+            }
+        }
+        if( text.equals("package")) {
+            Package pkg = getCurrentPackage();
+            if (pkg != null) {
+                return processPackage(pkg);
             }
         }
         if (text.startsWith("package ")) {
@@ -974,6 +986,28 @@ public class LinkRenderer {
             });
         }
         return docLinks[0];
+    }
+    
+    private Module getCurrentModule() {
+        if (scope instanceof Module) {
+            return (Module) scope;
+        } else if (scope instanceof Package) {
+            return ((Package) scope).getModule();
+        } else if (scope instanceof Declaration) {
+            return scope.getUnit().getPackage().getModule();
+        }
+        return null;
+    }
+
+    private Package getCurrentPackage() {
+        if (scope instanceof Module) {
+            return ((Module) scope).getRootPackage();
+        } else if (scope instanceof Package) {
+            return (Package) scope;
+        } else if (scope instanceof Declaration) {
+            return scope.getUnit().getPackage();
+        }
+        return null;
     }
     
 }

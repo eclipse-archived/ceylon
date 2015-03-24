@@ -803,7 +803,11 @@ public class CeylonDocToolTests {
 
     private void assertSee(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><code><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a></code>, <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'><code><span class='identifier'>stubTopLevelMethod\\(\\)</span></code></a></span></div>"));
-        assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><code><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a></code>, <a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'><code><span class='identifier'>stubTopLevelAttribute</span></code></a></span></div>"));
+        assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also </span>"
+                + "<span class='value'><code><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a></code>, "
+                + "<a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'><code><span class='identifier'>stubTopLevelAttribute</span></code></a>, "
+                + "<a class='link' href='index.html' title='Go to module'><code>com.redhat.ceylon.ceylondoc.test.modules.single</code></a>, "
+                + "<a class='link' href='index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'><code>com.redhat.ceylon.ceylondoc.test.modules.single</code></a>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span>"
                 + "<span class='value'><code><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'><span class='type-identifier'>StubInterface</span></a></code>, "
