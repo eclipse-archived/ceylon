@@ -365,17 +365,37 @@ public class LinkRenderer {
         return getUnresolvableLink(docLinkText);
     }
 
-    private String processAnnotationParam(String declLink) {
+    private String processAnnotationParam(String text) {
+        if (text.startsWith("module ")) {
+            String modName = text.substring(7);
+            for (Module m : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
+                if (m.getNameAsString().equals(modName)) {
+                    return processModule(m);
+                }
+            }
+        }
+        if (text.startsWith("package ")) {
+            String pkgName = text.substring(8);
+            for (Module m : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
+                if (pkgName.startsWith(m.getNameAsString() + ".")) {
+                    Package pkg = m.getPackage(pkgName);
+                    if (pkg != null) {
+                        return processPackage(pkg);
+                    }
+                }
+            }
+        }
+        
         String declName;
         Scope currentScope;
         
-        int pkgSeparatorIndex = declLink.indexOf("::");
+        int pkgSeparatorIndex = text.indexOf("::");
         if( pkgSeparatorIndex == -1 ) {
-            declName = declLink;
+            declName = text;
             currentScope = resolveScope(scope);
         } else {
-            String pkgName = declLink.substring(0, pkgSeparatorIndex);
-            declName = declLink.substring(pkgSeparatorIndex+2, declLink.length());
+            String pkgName = text.substring(0, pkgSeparatorIndex);
+            declName = text.substring(pkgSeparatorIndex+2, text.length());
             currentScope = ceylonDocTool.getCurrentModule().getPackage(pkgName);
         }
         
@@ -406,7 +426,7 @@ public class LinkRenderer {
                 return processTypedDeclaration((TypedDeclaration) currentDecl);
             }
         } else {
-            return getUnresolvableLink(declLink);
+            return getUnresolvableLink(text);
         }
     }
 
