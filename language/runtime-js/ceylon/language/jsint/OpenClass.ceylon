@@ -58,6 +58,8 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
     shared native actual TypeParameter? getTypeParameterDeclaration(String name);
     shared native actual Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
+    shared actual native Boolean annotated<Annotation>()
+            given Annotation satisfies AnnotationType;
     shared native actual Kind[] declaredMemberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 

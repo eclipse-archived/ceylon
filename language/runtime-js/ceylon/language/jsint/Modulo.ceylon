@@ -12,5 +12,7 @@ shared native class Modulo(shared Anything meta) satisfies Module {
     shared actual native Resource? resourceByPath(String path);
     shared actual native Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
+    shared actual native Boolean annotated<Annotation>()
+            given Annotation satisfies AnnotationType;
     string = "module " + name + "/" + version;
 }

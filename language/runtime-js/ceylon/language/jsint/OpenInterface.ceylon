@@ -24,6 +24,8 @@ shared native class OpenInterface(shared Package pkg, shared Object meta) satisf
             given Annotation satisfies AnnotationType;
   shared actual native Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
+  shared actual native Boolean annotated<Annotation>()
+          given Annotation satisfies AnnotationType;
   shared actual native Kind? getMemberDeclaration<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
   shared actual native OpenType openType;

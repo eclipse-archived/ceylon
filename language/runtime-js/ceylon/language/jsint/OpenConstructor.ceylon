@@ -21,6 +21,8 @@ shared native class OpenConstructor(containingPackage, shared Anything meta) sat
   //AnnotatedDeclaration
   shared actual native Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
+  shared actual native Boolean annotated<Annotation>()
+          given Annotation satisfies AnnotationType;
   //Declaration
   shared actual native String name;
   shared actual native String qualifiedName;

@@ -16,6 +16,8 @@ shared native class OpenAlias(shared Object _alias) satisfies AliasDeclaration {
   shared actual Package containingPackage { throw Exception("OpenAlias.containingPackage"); }
   shared actual native Annotation[] annotations<out Annotation>()
     given Annotation satisfies MetamodelAnnotation;
+  shared actual native Boolean annotated<Annotation>()
+          given Annotation satisfies MetamodelAnnotation;
   shared actual native TypeParameter[] typeParameterDeclarations;
   shared actual native TypeParameter? getTypeParameterDeclaration(String name);
   shared actual native Boolean equals(Object other);

@@ -22,6 +22,8 @@ native class Paquete(name, container, shared Anything _pkg) satisfies Package {
     shared actual native AliasDeclaration? getAlias(String name);
     shared actual native Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
+    shared actual native Boolean annotated<Annotation>()
+            given Annotation satisfies AnnotationType;
     shared native String suffix;
     string = "package " + name;
 }
