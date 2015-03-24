@@ -690,11 +690,13 @@ public class Util {
         }
         else if (t instanceof Tree.ModuleLiteral) {
             Tree.ModuleLiteral ml = (Tree.ModuleLiteral) t;
-            return "module " + toString(ml.getImportPath());
+            String importPath = toString(ml.getImportPath());
+            return importPath == null ? "module" : "module " + importPath;
         }
         else if (t instanceof Tree.PackageLiteral) {
             Tree.PackageLiteral pl = (Tree.PackageLiteral) t;
-            return "package " + toString(pl.getImportPath());
+            String importPath = toString(pl.getImportPath());
+            return importPath == null ? "package" : "package " + importPath;
         }
     	else {
     		return null;
