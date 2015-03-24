@@ -582,7 +582,7 @@ public abstract class CeylonDoc extends Markup {
         @Override
         public void visit(Tree.MemberOrTypeExpression that) {
             try {
-                linkRenderer().to(that.getDeclaration()).write();
+                linkRenderer().to(that.getDeclaration()).printParenthesisAfterMethodName(false).write();
                 super.visit(that);
             } catch (IOException e) {
                 throw new RuntimeException(e);

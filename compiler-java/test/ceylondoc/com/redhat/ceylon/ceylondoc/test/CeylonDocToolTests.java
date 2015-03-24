@@ -1203,7 +1203,7 @@ public class CeylonDocToolTests {
                 		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'><span class='identifier'>stubAnnotationFoo()</span></a>" +
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'><span class='identifier'>stubAnnotationFoo</span></a>" +
                 		"(" +
                 		"<span class='literal'>&quot;abc&quot;</span>, " +
                 		"<span class='literal'>'a'</span>, " +
@@ -1218,11 +1218,11 @@ public class CeylonDocToolTests {
                 		"{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>}" +
                 		")</li>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar()</span></a>" +
-                		"(<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz()</span></a>(<span class='literal'>&quot;baz&quot;</span>))</li>")));
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar</span></a>" +
+                		"(<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>(<span class='literal'>&quot;baz&quot;</span>))</li>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar()</span></a>" +
-                		"{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz()</span></a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar</span></a>" +
+                		"{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
     }
     
     private void assertAbstractClassModifier(File destDir) throws Exception {

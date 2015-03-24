@@ -86,6 +86,7 @@ public class LinkRenderer {
     private boolean printTypeParameterDetail = false;
     private boolean printWikiStyleLinks = false;
     private boolean printLinkDropdownMenu = true;
+    private boolean printParenthesisAfterMethodName = true;
     
     private final ProducedTypeNamePrinter producedTypeNamePrinter = new ProducedTypeNamePrinter() {
         
@@ -216,6 +217,11 @@ public class LinkRenderer {
     
     public LinkRenderer printLinkDropdownMenu(boolean printLinkDropdownMenu) {
         this.printLinkDropdownMenu = printLinkDropdownMenu;
+        return this;
+    }
+    
+    public LinkRenderer printParenthesisAfterMethodName(boolean printParenthesisAfterMethodName) {
+        this.printParenthesisAfterMethodName = printParenthesisAfterMethodName;
         return this;
     }
 
@@ -563,7 +569,7 @@ public class LinkRenderer {
                 result = "<span class='type-identifier'>" + name + "</span>";
             }
             else {
-                if (decl instanceof Method) {
+                if (decl instanceof Method && printParenthesisAfterMethodName) {
                     name = name + "()";
                 }
                 result = "<span class='identifier'>" + name + "</span>";
