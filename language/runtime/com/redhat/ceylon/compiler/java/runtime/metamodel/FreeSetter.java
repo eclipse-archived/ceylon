@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 import ceylon.language.meta.declaration.OpenType;
@@ -54,9 +55,23 @@ public class FreeSetter
     }
 
     @Override
+    @Ignore
     public Annotation[] $getJavaAnnotations$() {
         checkInit();
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(java.lang.Class annotationType) {
+        checkInit();
+        final AnnotatedElement element = declaredSetter;
+        return element != null ? element.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
     
     @Override

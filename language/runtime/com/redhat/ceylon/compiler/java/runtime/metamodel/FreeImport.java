@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -32,6 +33,18 @@ public class FreeImport
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         final Field field = getField();
         return field != null ? field.getAnnotations() : AnnotationBearing.NONE;
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(Class<? extends Annotation> annotationType) {
+        final Field field = getField();
+        return field != null ? field.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
     private Field getField() {

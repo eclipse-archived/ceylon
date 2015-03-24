@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
@@ -252,5 +253,29 @@ public class FreeValue
                 return new Annotation[0];
             }
         }
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(java.lang.Class annotationType) {
+        if(parameter != null
+                && !parameter.getModel().isShared()){
+            for (java.lang.annotation.Annotation a : $getJavaAnnotations$()) {
+                if (a.annotationType().equals(annotationType)) {
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            Class<?> javaClass = Metamodel.getJavaClass(declaration);
+            // FIXME: pretty sure this doesn't work with interop and fields
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration));
+            return declaredGetter != null ? declaredGetter.isAnnotationPresent(annotationType) : false;
+        }
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 }

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
+
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ConstructorDeclaration;
@@ -109,6 +111,18 @@ public class FreeConstructor
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         return Metamodel.getJavaConstructor(constructor).getAnnotations();
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(java.lang.Class annotationType) {
+        final AnnotatedElement element = Metamodel.getJavaConstructor(constructor);
+        return element != null ? element.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
     @Override

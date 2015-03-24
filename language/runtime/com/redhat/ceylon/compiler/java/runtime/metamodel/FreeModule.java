@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedElement;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,20 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         if(declaration.isDefault() || declaration.isJava())
             return NO_ANNOTATION;
         return Metamodel.getJavaClass(declaration).getAnnotations();
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(java.lang.Class annotationType) {
+        if(declaration.isDefault() || declaration.isJava())
+            return false;
+        final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
+        return element != null ? element.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
     @Override

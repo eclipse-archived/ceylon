@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,18 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
         return javaClass != null ? javaClass.getAnnotations() : AnnotationBearing.NONE;
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(Class<? extends Annotation> annotationType) {
+        final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
+        return element != null ? element.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
     @Override

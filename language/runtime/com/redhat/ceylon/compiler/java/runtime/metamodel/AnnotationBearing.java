@@ -20,4 +20,7 @@ public interface AnnotationBearing extends Annotated {
     @Ignore
     java.lang.annotation.Annotation[] $getJavaAnnotations$();
     
+    @Ignore
+    boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType);
+    
 }

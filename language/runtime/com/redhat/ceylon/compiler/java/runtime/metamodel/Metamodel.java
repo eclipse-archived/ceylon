@@ -18,6 +18,7 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
 import ceylon.language.Annotated;
+import ceylon.language.Annotation;
 import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Callable;
@@ -998,17 +999,7 @@ public class Metamodel {
             }
         } else {
             // Find the annotation class
-            String annotationName = jAnnotationType.getName();
-            if (!annotationName.endsWith("$annotation$")) {
-                throw Metamodel.newModelError("Annotation has invalid name: "+annotationName);
-            }
-            String className = annotationName.substring(0, annotationName.length() - "$annotation$".length());
-            java.lang.Class<A> annotationClass;
-            try {
-                annotationClass = (java.lang.Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw Metamodel.newModelError("Unable to find annotation class " + className + " for annotation type " + annotationName + " on element "+ annotated, e);
-            }
+            java.lang.Class<A> annotationClass = getAnnotationClass(jAnnotationType, annotated);
             
             // Invoke it with the jAnnotation as the only argument
             try {
@@ -1023,6 +1014,42 @@ public class Metamodel {
             } catch (Exception e) {/* aka ReflectiveOperationException */
                 throw Metamodel.newModelError("While reflectively instantiating " + annotationClass + " on element " + annotated, e);
             } 
+        }
+    }
+    /** 
+     * Gets the {@code java.lang.Class} of the Ceylon annotation class, 
+     * given the {@code java.lang.Class} of a Java annotation type
+     */
+    protected static <A extends Annotation> Class<A> getAnnotationClass(
+            Class<? extends java.lang.annotation.Annotation> jAnnotationType,
+            Annotated annotated) {
+        String annotationName = jAnnotationType.getName();
+        if (!annotationName.endsWith("$annotation$")) {
+            throw Metamodel.newModelError("Annotation has invalid name: "+annotationName);
+        }
+        String className = annotationName.substring(0, annotationName.length() - "$annotation$".length());
+        java.lang.Class<A> annotationClass;
+        try {
+            annotationClass = (Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw Metamodel.newModelError("Unable to find annotation class " + className + " for annotation type " + annotationName + " on element "+ annotated, e);
+        }
+        return annotationClass;
+    }
+    
+    protected static <AT extends java.lang.annotation.Annotation> Class<AT> getJavaAnnotationClass(
+            Class<? extends Annotation> ceylonAnnotationClass) {
+        String suffix;
+        if (ceylon.language.SequencedAnnotation.class.isAssignableFrom(ceylonAnnotationClass)) {
+            suffix = "$annotations$";
+        } else {
+            suffix = "$annotation$";
+        }
+        String classname = ceylonAnnotationClass.getName() + suffix;
+        try {
+            return (Class)Class.forName(classname , false, ceylonAnnotationClass.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw Metamodel.newModelError("Unable to find annotation class " + classname + " for annotation type " + ceylonAnnotationClass, e);
         }
     }
     
@@ -1732,5 +1759,10 @@ public class Metamodel {
                 TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), Null.$TypeDescriptor$, 
                 generic.getTypeArguments().getItems());
         return (Sequential)(sequence != null ? sequence : empty_.get_());
+    }
+
+    public static boolean isAnnotated(TypeDescriptor reifed$AnnotationType,
+            AnnotationBearing annotated) {
+        return annotated.$isAnnotated$(getJavaAnnotationClass((Class)((TypeDescriptor.Class)reifed$AnnotationType).getKlass()));
     }
 }

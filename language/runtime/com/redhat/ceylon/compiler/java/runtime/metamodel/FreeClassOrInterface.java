@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -496,5 +497,17 @@ public abstract class FreeClassOrInterface
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         return Metamodel.getJavaClass(declaration).getAnnotations();
+    }
+    
+    @Override
+    @Ignore
+    public boolean $isAnnotated$(java.lang.Class annotationType) {
+        final AnnotatedElement element = Metamodel.getJavaClass(declaration);
+        return element != null ? element.isAnnotationPresent(annotationType) : false;
+    }
+    
+    @Override
+    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+        return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 }
