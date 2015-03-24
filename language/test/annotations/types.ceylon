@@ -263,3 +263,4 @@ class MetamodelRefs(
     shared String parameter) {
 }
 
+class AnotherClass(seq("foo") shared void f(), enumerated(smaller) shared Integer g) {}

@@ -909,6 +909,23 @@ shared void checkAClassAlias() {
     
 }
 
+@test
+shared void checkParameterAnnotations() {
+    value c=`class AnotherClass`;
+    for (d in c.parameterDeclarations) {
+        check(d.annotations<SharedAnnotation>().size == 1, "``d``.annotations()");
+        check(d.annotated<SharedAnnotation>(), "``d``.annotated()");
+    }
+    value g=`value AnotherClass.g`;
+    check(g.parameter, "AnotherClass.g should be a parameter");
+    check(g.annotations<SharedAnnotation>() nonempty, "AnotherClass.g should be shared #1");
+    check(g.annotated<SharedAnnotation>(), "AnotherClass.g should be shared #2");
+    value f=`function AnotherClass.f`;
+    check(g.parameter, "AnotherClass.g should be a parameter");
+    check(g.annotations<SharedAnnotation>() nonempty, "AnotherClass.g should be shared #1");
+    check(g.annotated<SharedAnnotation>(), "AnotherClass.g should be shared #2");
+}
+
 shared void run() {
     checkAToplevelAttributeAnnotations();
     checkAToplevelGetterSetterAnnotations();
@@ -929,6 +946,7 @@ shared void run() {
     testBug378();
     bug409();
     compilerBug1699();
+    checkParameterAnnotations();
         
     print("Annotation tests OK");
     results();
