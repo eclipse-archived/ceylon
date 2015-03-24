@@ -1,4 +1,4 @@
 function($mpt){
-  console.log("TODO implement annotated<" + typeLiteral$meta({Type$typeLiteral:$mpt.Annotation$annotated}).string + ">");
-  return false;
+  var x=AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.call(this,{Annotation$annotations:$mpt.Annotation$annotated});
+  return x&&x.size>0;
 }
