@@ -702,16 +702,19 @@ public class Util {
     }
     
     private static String toString(Tree.ImportPath importPath) {
-        StringBuilder sb = new StringBuilder();
-        if (importPath.getIdentifiers() != null) {
-            for (Tree.Identifier identifier : importPath.getIdentifiers()) {
-                if (sb.length() != 0) {
-                    sb.append(".");
+        if (importPath != null) {
+            StringBuilder sb = new StringBuilder();
+            if (importPath.getIdentifiers() != null) {
+                for (Tree.Identifier identifier : importPath.getIdentifiers()) {
+                    if (sb.length() != 0) {
+                        sb.append(".");
+                    }
+                    sb.append(identifier.getText());
                 }
-                sb.append(identifier.getText());
             }
+            return sb.toString();
         }
-        return sb.toString();
+        return null;
     }
 
     private static String toString(Tree.StaticType type) {
