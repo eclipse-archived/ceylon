@@ -91,12 +91,12 @@ Class<OptionalImportAnnotation,[]> optAnnotation = `OptionalImportAnnotation`;
 @test
 shared void checkAToplevelAttributeAnnotations() {
     //shared
-    check(aToplevelAttributeDecl.annotated<SharedAnnotation>());
+    check(aToplevelAttributeDecl.annotated<SharedAnnotation>(), "Attribute.annotated<Shared>");
     check(annotations(sharedAnnotation, aToplevelAttributeDecl) exists, "toplevel attrib 1");
     check(optionalAnnotation(sharedAnnotation, aToplevelAttributeDecl) exists, "toplevel attrib 2");
     check(aToplevelAttributeDecl.annotations<SharedAnnotation>().size == 1, "toplevel attrib 3");
     // doc
-    check(aToplevelAttributeDecl.annotated<DocAnnotation>());
+    check(aToplevelAttributeDecl.annotated<DocAnnotation>(), "Attribute.annotated<Doc>");
     if (exists doc = annotations(docAnnotation, aToplevelAttributeDecl), 
         doc.description == "aToplevelAttribute"){}else{fail("aToplevelAttributeDecl doc == 'aToplevelAttribute' 1");}
     if (exists doc2 = optionalAnnotation(docAnnotation, aToplevelAttributeDecl), 
@@ -104,7 +104,7 @@ shared void checkAToplevelAttributeAnnotations() {
     if (nonempty doc3 = aToplevelAttributeDecl.annotations<DocAnnotation>(),
         doc3.first.description == "aToplevelAttribute"){}else{fail("aToplevelAttributeDecl doc='aToplevelAttribute' 3");}
     // seq
-    check(aToplevelAttributeDecl.annotated<Seq>());
+    check(aToplevelAttributeDecl.annotated<Seq>(), "Attribute.annotated<Seq>");
     variable value seqs = annotations(seqAnnotation, aToplevelAttributeDecl);
     check(seqs.size == 2, "toplevel attrib 4");
     assert(exists seq = seqs[0], seq.seq == "aToplevelAttribute 1");
@@ -131,7 +131,6 @@ shared void checkAToplevelAttributeAnnotations() {
     assert(nonempty seq7 = aToplevelAttributeDecl.annotations<SequencedAnnotation<Seq, ValueDeclaration>>(),
         is Seq seq7_1 = seq7.first,
         seq7_1.seq == "aToplevelAttribute 1");
-    
     assert(nonempty see = annotations(seeAnnotation, aToplevelAttributeDecl));
     check(see.size == 1, "toplevel attrib 11");
     check(see.first.programElements.size == 3, "toplevel attrib 12");
@@ -139,10 +138,8 @@ shared void checkAToplevelAttributeAnnotations() {
     check(see.first.programElements.contains(`module ceylon.language`), "toplevel attrib 14");
     check(see.first.programElements.contains(`package ceylon.language.meta.declaration`), "toplevel attrib 15");
     
-    
     assert(exists enumed = annotations(enumeratedAnnotation, aToplevelAttributeDecl));
     check(enumed.c == larger, "toplevel attrib 16");
-    
     assert(exists enumedVariadic = annotations(enumeratedVariadicAnnotation, aToplevelAttributeDecl));
     check(enumedVariadic.c.size == 3, "toplevel attrib 17");
     assert(exists ev0 = enumedVariadic.c[0],
@@ -156,12 +153,12 @@ shared void checkAToplevelAttributeAnnotations() {
 @test
 shared void checkAToplevelGetterSetterAnnotations() {
     //shared
-    check(aToplevelGetterSetterDecl.annotated<SharedAnnotation>());
+    check(aToplevelGetterSetterDecl.annotated<SharedAnnotation>(), "Getter.annotated<Shared>");
     check(annotations(sharedAnnotation, aToplevelGetterSetterDecl) exists, "toplevel getter/setter 1");
     check(optionalAnnotation(sharedAnnotation, aToplevelGetterSetterDecl) exists, "toplevel getter/setter 2");
     check(aToplevelGetterSetterDecl.annotations<SharedAnnotation>() nonempty, "toplevel getter/setter 3");
     // doc
-    check(aToplevelGetterSetterDecl.annotated<DocAnnotation>());
+    check(aToplevelGetterSetterDecl.annotated<DocAnnotation>(), "Getter.annotated<Doc>");
     assert(exists doc = annotations(docAnnotation, aToplevelGetterSetterDecl), 
         doc.description == "aToplevelGetter");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelGetterSetterDecl), 
@@ -169,7 +166,7 @@ shared void checkAToplevelGetterSetterAnnotations() {
     assert(nonempty doc3 = aToplevelGetterSetterDecl.annotations<DocAnnotation>(),
         doc3.first.description == "aToplevelGetter");
     // seq
-    check(aToplevelGetterSetterDecl.annotated<Seq>());
+    check(aToplevelGetterSetterDecl.annotated<Seq>(), "Getter.annotated<Seq>");
     variable value seqs = annotations(seqAnnotation, aToplevelGetterSetterDecl);
     check(seqs.size == 1, "toplevel getter/setter 4");
     assert(exists seq = seqs[0], seq.seq == "aToplevelGetter 1");
@@ -190,12 +187,12 @@ shared void checkAToplevelGetterSetterAnnotations() {
 @test
 shared void checkAToplevelFunctionAnnotations() {
     //shared
-    check(aToplevelFunctionDecl.annotated<SharedAnnotation>(), "aToplevelFunctionDecl.isAnnotated<SharedAnnotation>");
+    check(aToplevelFunctionDecl.annotated<SharedAnnotation>(), "aToplevelFunctionDecl.annotated<SharedAnnotation>");
     check(annotations(sharedAnnotation, aToplevelFunctionDecl) exists, "toplevel func 1");
     check(optionalAnnotation(sharedAnnotation, aToplevelFunctionDecl) exists, "toplevel func 2");
     check(aToplevelFunctionDecl.annotations<SharedAnnotation>() nonempty, "toplevel func 3");
     // doc
-    check(aToplevelFunctionDecl.annotated<DocAnnotation>(), "aToplevelFunctionDecl.isAnnotated<DocAnnotation>");
+    check(aToplevelFunctionDecl.annotated<DocAnnotation>(), "aToplevelFunctionDecl.annotated<DocAnnotation>");
     assert(exists doc = annotations(docAnnotation, aToplevelFunctionDecl), 
             doc.description == "aToplevelFunction");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelFunctionDecl), 
@@ -214,7 +211,7 @@ shared void checkAToplevelFunctionAnnotations() {
     
     // parameter
     assert(exists parameter = aToplevelFunctionDecl.parameterDeclarations[0]);
-    check(parameter.annotated<DocAnnotation>(), "parameter.isAnnotated<DocAnnotation>");
+    check(parameter.annotated<DocAnnotation>(), "parameter.annotated<DocAnnotation>");
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "aToplevelFunction.parameter");
@@ -229,13 +226,13 @@ shared void checkAToplevelFunctionAnnotations() {
 shared void checkAToplevelObjectAnnotations() {
     
     //shared
-    check(aToplevelObjectDecl.annotated<SharedAnnotation>());
+    check(aToplevelObjectDecl.annotated<SharedAnnotation>(), "object.annotated<Shared>");
     check(annotations(sharedAnnotation, aToplevelObjectDecl) exists, "toplevel obj 1");
     check(optionalAnnotation(sharedAnnotation, aToplevelObjectDecl) exists, "toplevel obj 2");
     check(aToplevelObjectDecl.annotations<SharedAnnotation>() nonempty, "toplevel obj 3");
     
     // doc
-    check(aToplevelObjectDecl.annotated<DocAnnotation>());
+    check(aToplevelObjectDecl.annotated<DocAnnotation>(), "object.annotated<Doc>");
     assert(exists doc = annotations(docAnnotation, aToplevelObjectDecl), 
         doc.description == "aToplevelObject");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelObjectDecl), 
@@ -243,7 +240,7 @@ shared void checkAToplevelObjectAnnotations() {
     assert(nonempty doc3 = aToplevelObjectDecl.annotations<DocAnnotation>(),
         doc3.first.description == "aToplevelObject");
     // seq
-    check(aToplevelObjectDecl.annotated<Seq>());
+    check(aToplevelObjectDecl.annotated<Seq>(), "object.annotated<Seq>");
     variable value seqs = annotations(seqAnnotation, aToplevelObjectDecl);
     check(seqs.size == 1, "toplevel obj 4");
     assert(exists seq = seqs[0], seq.seq == "aToplevelObject 1");
@@ -255,7 +252,7 @@ shared void checkAToplevelObjectAnnotations() {
 @test
 shared void checkAClass() {
     //shared
-    check(aClassDecl.annotated<SharedAnnotation>());
+    check(aClassDecl.annotated<SharedAnnotation>(), "Class.annotated<Shared>");
     check(annotations(sharedAnnotation, aClassDecl) exists, "class 1");
     check(optionalAnnotation(sharedAnnotation, aClassDecl) exists, "class 2");
     check(aClassDecl.annotations<SharedAnnotation>() nonempty, "class 3");
@@ -264,7 +261,7 @@ shared void checkAClass() {
     check(! optionalAnnotation(abstractAnnotation, aClassDecl) exists, "class 5");
     check(! aClassDecl.annotations<AbstractAnnotation>() nonempty, "class 6");
     // doc
-    check(aClassDecl.annotated<DocAnnotation>());
+    check(aClassDecl.annotated<DocAnnotation>(), "Class.annotated<Doc>");
     assert(exists doc = annotations(docAnnotation, aClassDecl), 
         doc.description == "AClass");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aClassDecl), 
@@ -272,7 +269,7 @@ shared void checkAClass() {
     assert(nonempty doc3 = aClassDecl.annotations<DocAnnotation>(),
         doc3.first.description == "AClass");
     // seq
-    check(aClassDecl.annotated<Seq>());
+    check(aClassDecl.annotated<Seq>(), "Class.annotated<Seq>");
     variable value seqs = annotations(seqAnnotation, aClassDecl);
     check(seqs.size == 2, "class 7");
     assert(exists seq = seqs[0], seq.seq == "AClass 1");
@@ -284,7 +281,7 @@ shared void checkAClass() {
     
     // parameter
     assert(exists parameter = aClassDecl.parameterDeclarations[0]);
-    check(parameter.annotated<DocAnnotation>());
+    check(parameter.annotated<DocAnnotation>(), "param.annotated<Doc>");
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "AClass.parameter");
@@ -296,7 +293,7 @@ shared void checkAClass() {
     assert(exists pseq2 = pseqs[1],
             pseq2.seq== "AClass.parameter 2");
     
-    check(`class AClass.DefaultInnerClassAlias1`.annotated<DocAnnotation>());
+    check(`class AClass.DefaultInnerClassAlias1`.annotated<DocAnnotation>(), "alias.annotated<Doc> 1");
     assert(exists aca1doc = annotations(docAnnotation, `class AClass.DefaultInnerClassAlias1`),
         aca1doc.description == "AClass.DefaultInnerClassAlias1");
     
@@ -304,7 +301,7 @@ shared void checkAClass() {
         exists aca1pDecl = `class AClass.DefaultInnerClassAlias1`.parameterDeclarations[0],
         exists aca1pdoc = annotations(docAnnotation, aca1pDecl),
         aca1pdoc.description == "AClass.DefaultInnerClassAlias1.parameter");
-    check(`class AClass.DefaultInnerClassAlias2`.annotated<DocAnnotation>());
+    check(`class AClass.DefaultInnerClassAlias2`.annotated<DocAnnotation>(), "alias.annotated<Doc> 2");
     assert(exists aca2doc = annotations(docAnnotation, `class AClass.DefaultInnerClassAlias2`),
         aca2doc.description == "AClass.DefaultInnerClassAlias2");
     
@@ -312,8 +309,7 @@ shared void checkAClass() {
         exists aca2pDecl = `class AClass.DefaultInnerClassAlias2`.parameterDeclarations[0],
         exists aca2pdoc = annotations(docAnnotation, aca2pDecl),
         aca2pdoc.description == "AClass.DefaultInnerClassAlias2.parameter");
-    check(aca2pDecl.annotated<DocAnnotation>());
-    
+    check(aca2pDecl.annotated<DocAnnotation>(), "alias.annotated<Doc> 3");
 }
 
 @test
@@ -420,7 +416,7 @@ shared void checkAAbstractClass() {
 
 @test
 shared void checkAInterface() {
-    check(aInterfaceDecl.annotated<SharedAnnotation>());
+    check(aInterfaceDecl.annotated<SharedAnnotation>(), "interface.annotated<Shared>");
     assert(is Interface<AInterface> iface = aInterfaceDecl.apply<AInterface>());
     //shared
     check(annotations(sharedAnnotation, aInterfaceDecl) exists, "iface 1");
@@ -429,13 +425,13 @@ shared void checkAInterface() {
     //assert(! annotations(abstractAnnotation, aInterfaceDecl.declaration) exists);
     //assert(! optionalAnnotation(abstractAnnotation, aInterfaceDecl.declaration) exists);
     // doc
-    check(aInterfaceDecl.annotated<DocAnnotation>());
+    check(aInterfaceDecl.annotated<DocAnnotation>(), "interface.annotated<Doc>");
     assert(exists doc = annotations(docAnnotation, aInterfaceDecl), 
             doc.description == "AInterface");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aInterfaceDecl), 
             doc2.description == "AInterface");
     // seq
-    check(aInterfaceDecl.annotated<Seq>());
+    check(aInterfaceDecl.annotated<Seq>(), "interface.annotated<Seq>");
     variable value seqs = annotations(seqAnnotation, aInterfaceDecl);
     check(seqs.size == 2, "iface 3");
     assert(exists seq = seqs[0], 
@@ -604,7 +600,7 @@ shared void checkAInterface() {
 @test
 shared void checkModuleAndImports() {
     value m = aPackage.container;
-    check(m.annotated<DocAnnotation>());
+    check(m.annotated<DocAnnotation>(), "module.annotated<Doc>");
     assert(exists moddoc = annotations(docAnnotation, m));
     assert(moddoc.description == "Some module doc");
     
@@ -619,7 +615,7 @@ shared void checkModuleAndImports() {
     } else {
       fail("module 4");
     }
-    check(dep.annotated<DocAnnotation>());
+    check(dep.annotated<DocAnnotation>(), "import.annotated<Doc>");
     check(annotations(optAnnotation, dep) exists, "module 5");
     check(annotations(deprecatedAnnotation, dep) exists, "module 6");
     
@@ -628,8 +624,8 @@ shared void checkModuleAndImports() {
 @test
 shared void checkPackage() {
     value p = aPackage;
-    check(!p.annotated<SharedAnnotation>());
-    check(!p.annotated<DocAnnotation>());
+    check(!p.annotated<SharedAnnotation>(), "pkg.annotated<Shared>");
+    check(!p.annotated<DocAnnotation>(), "pkg.annotated<Doc>");
     check(! annotations(sharedAnnotation, p) exists, "pkg 1");
     check(! annotations(docAnnotation, p) exists, "pkg 2");
     
@@ -924,6 +920,7 @@ shared void checkParameterAnnotations() {
     check(g.parameter, "AnotherClass.g should be a parameter");
     check(g.annotations<SharedAnnotation>() nonempty, "AnotherClass.g should be shared #1");
     check(g.annotated<SharedAnnotation>(), "AnotherClass.g should be shared #2");
+    check(`alias Alias`.annotated<SharedAnnotation>(), "Alias.annotated()");
 }
 
 shared void run() {
