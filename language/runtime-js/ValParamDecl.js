@@ -4,7 +4,7 @@ function ValParamDecl(cont,param,$$valParamDecl){
   ValueDeclaration$meta$declaration($$valParamDecl);
   $$valParamDecl.cont=cont;
   $$valParamDecl.param=param;
-  $$valParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an}};
+  $$valParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an,pa:param.pa}};
 
   return $$valParamDecl;
 }
@@ -52,7 +52,7 @@ function $init$ValParamDecl(){
       },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:ValParamDecl,pa:3,d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
       atr$($$valParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,pa:3,d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
       atr$($$valParamDecl,'qualifiedName',function(){
-        return qname$(this.cont.tipo.$crtmm$)+"."+this.param.nm;
+        return qname$(this.tipo.$crtmm$)+"."+this.param.nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:ValParamDecl,pa:3,d:['ceylon.language.meta.declaration','ValueDeclaration','$at','qualifiedName']};});
       atr$($$valParamDecl,'name',function(){
         return this.param.nm;
@@ -77,8 +77,8 @@ $$valParamDecl.equals=function(o){
 };$$valParamDecl.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{nm:'other',mt:'prm',$t:{t:$_Object}}],$cont:ValParamDecl,pa:3,d:['$','Object','$m','equals']};};
 atr$($$valParamDecl,'string',function(){return 'value '+this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},pa:3,d:['$','Object','$at','string']};});
 $$valParamDecl.annotated=function($mpt){
-  console.log("TODO! ValParamDecl.annotated");
-  return false;
+  var x=AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.call(this,{Annotation$annotations:$mpt.Annotation$annotated});
+  return x&&x.size>0;
 }
 $$valParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:ValParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','annotated']};};
     })(ValParamDecl.$$.prototype);

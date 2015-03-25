@@ -4,7 +4,7 @@ function FunParamDecl(cont,param,$$funParamDecl){
   FunctionDeclaration$meta$declaration($$funParamDecl);
   $$funParamDecl.cont=cont;
   $$funParamDecl.param=param;
-  $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,ps:param.ps,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an}};
+  $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,ps:param.ps,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an,pa:param.pa}};
 
   $$funParamDecl.$prop$getParameter={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
   $$funParamDecl.$prop$getParameter.get=function(){return true;};
@@ -58,14 +58,16 @@ function $init$FunParamDecl(){
       },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','openType']};});
       //AttributeDecl annotation at caca.ceylon (15:2-15:40)
       atr$($$funParamDecl,'annotation',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};});
-      atr$($$funParamDecl,'shared',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};});
+      atr$($$funParamDecl,'shared',function(){return (this.param.pa&1)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};});
       atr$($$funParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};});
-      atr$($$funParamDecl,'formal',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};});
-      atr$($$funParamDecl,'$_default',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};});
-      atr$($$funParamDecl,'actual',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};});
+      atr$($$funParamDecl,'formal',function(){return (this.param.pa&4)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};});
+      atr$($$funParamDecl,'$_default',function(){return (this.param.pa&8)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};});
+      atr$($$funParamDecl,'actual',function(){return (this.param.pa&2)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};});
       atr$($$funParamDecl,'qualifiedName',function(){
-        return qname$(cont.tipo.$crtmm$)+"."+this.param.nm;
+        return qname$(this.tipo.$crtmm$)+"."+this.param.nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','qualifiedName']};});
+      atr$($$funParamDecl,'string',function(){return "function " + this.qualifiedName;
+      },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
       atr$($$funParamDecl,'name',function(){
         return this.param.nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','name']};});
@@ -89,8 +91,8 @@ function $init$FunParamDecl(){
           throw Exception("IMPL FunParamDecl.memberApply");
       };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
 $$funParamDecl.annotated=function($mpt){
-  console.log("TODO! FunParamDecl.annotated");
-  return false;
+  var x=AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.call(this,{Annotation$annotations:$mpt.Annotation$annotated});
+  return x&&x.size>0;
 }
 $$funParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:FunParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
     })(FunParamDecl.$$.prototype);

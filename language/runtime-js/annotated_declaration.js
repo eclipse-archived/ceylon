@@ -1,6 +1,6 @@
 //Add-on to AnnotatedDeclaration
 AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mptypes) {
-  var mdl = getrtmm$$(this.tipo);
+  var mdl = getrtmm$$(this.tipo)||this.meta;
   var _ans = allann$(mdl);
   var ans=[];
   for (var i=0; i<_ans.length;i++) {
