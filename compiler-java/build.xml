@@ -18,6 +18,9 @@
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
+    <property name="ceylon.bootstrap.dir" value="ceylon/bootstrap/${module.ceylon.bootstrap.version}" />
+    <property name="ceylon.bootstrap.jar" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar" />
+    <property name="ceylon.bootstrap.lib" location="${ceylon.repo.dir}/${ceylon.bootstrap.jar}" />
 
     <!-- The Java source files for the compiler -->
     <property name="javac.src" location="langtools/src/share/classes" />
@@ -46,7 +49,7 @@
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
     <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
-    <property name="ceylon.bootstrap.lib" location="${build.lib}/ceylon-bootstrap.jar" />
+    <property name="ceylon.launcher.lib" location="${build.lib}/ceylon-bootstrap.jar" />
 
     <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -227,6 +230,7 @@
                 <exclude name="com/redhat/ceylon/ant/**" />
                 <exclude name="com/redhat/ceylon/common/**" />
                 <exclude name="com/redhat/ceylon/launcher/**" />
+                <exclude name="com/redhat/ceylon/bootstrap/**" />
             </fileset>
             <fileset dir="${javac.src}">
                 <include name="com/sun/tools/javac/resources/*.properties" />
@@ -239,19 +243,19 @@
     </target>
 
     <!-- Rule to build ant jar -->
-    <target name="ant.jar" depends="compiler.classes,bootstrap.jar">
+    <target name="ant.jar" depends="compiler.classes,launcher.jar">
         <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-ant.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/ant/**" />
                 <include name="com/redhat/ceylon/common/**" />
             </fileset>
-            <zipfileset src="${ceylon.bootstrap.lib}" />
+            <zipfileset src="${ceylon.launcher.lib}" />
         </jar>
     </target>
 
-    <!-- Rule to build runtime jar -->
-    <target name="bootstrap.jar" depends="compiler.classes">
+    <!-- Rule to build launcher jar -->
+    <target name="launcher.jar" depends="compiler.classes">
         <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
             <fileset dir="${build.classes}">
@@ -261,8 +265,18 @@
         </jar>
     </target>
 
+    <!-- Rule to build bootstrap module -->
+    <target name="bootstrap.module" depends="compiler.classes">
+        <mkdir dir="${build.dist.repo}/${ceylon.bootstrap.dir}" />
+        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
+            <fileset dir="${build.classes}">
+                <include name="com/redhat/ceylon/bootstrap/**" />
+            </fileset>
+        </jar>
+    </target>
+
     <!-- Rule to build compiler jar -->
-    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar">
+    <target name="build" depends="compiler.jar,ant.jar,launcher.jar,bootstrap.module">
         <mkdir dir="${build.dist}" />
         <mkdir dir="${build.bin}" />
         <mkdir dir="${build.ceylon.cars}" />
