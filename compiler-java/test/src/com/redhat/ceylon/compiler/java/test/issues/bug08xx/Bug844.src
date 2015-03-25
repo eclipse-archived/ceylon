@@ -600,7 +600,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
                 );
             }
             returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.String.instance("null");
-        ).toString()).append(", ").append(((.ceylon.language.String)(.java.lang.Object)(.ceylon.language.String)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).toString())).spanFrom(.ceylon.language.Integer.instance(1L))).toString()).toString();
+        ).toString()).append(", ").append(((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).toString())).spanFrom(.ceylon.language.Integer.instance(1L)).toString()).toString();
     }
     
     @.java.lang.Override
