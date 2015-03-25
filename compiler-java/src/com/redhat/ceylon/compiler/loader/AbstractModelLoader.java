@@ -2066,7 +2066,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = isMethodOverloaded(methodMirrors);
             
-            List<Declaration> overloads = (isOverloaded) ? new ArrayList<Declaration>(methodMirrors.size()) : null;
+            List<Declaration> overloads = null;
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
                 // same tests as in isMethodOverloaded()
@@ -2090,7 +2090,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         && !methodMirror.getName().equals("string")){
                     // normal method
                     Method m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
-                    if (isOverloaded) {
+                    if (m.isOverloaded()) {
+                        overloads = overloads == null ? new ArrayList<Declaration>(methodMirrors.size()) :  overloads;
                         overloads.add(m);
                     }
                 }
@@ -2098,7 +2099,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
-                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, false, false);
+                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
                 abstractionMethod.setType(newUnknownType());
