@@ -92,7 +92,7 @@ $$funParamDecl.annotated=function($mpt){
   console.log("TODO! FunParamDecl.annotated");
   return false;
 }
-$$funParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:OpenFunction,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
+$$funParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:FunParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
     })(FunParamDecl.$$.prototype);
   }
   return FunParamDecl;

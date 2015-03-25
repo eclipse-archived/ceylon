@@ -6,7 +6,7 @@ function getMember(name$3,$$$mptypes){
     if ((mt==='a'||mt==='g'||mt==='s')&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})) {
       return mt==='s'?OpenSetter(OpenValue$jsint(this, m)):OpenValue$jsint(this, m);
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
-      return OpenFunction(this, m);
+      return OpenFunction$jsint(this, m);
     } else if (mt==='c'&&(extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration}))){
       return OpenClass$jsint(this, m);
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration})){

@@ -24,7 +24,7 @@ function members($$$mptypes){
         }
       }
       if (mt === 'm') {
-        r.push(OpenFunction(this, m));
+        r.push(OpenFunction$jsint(this, m));
       } else if (mt==='c'||(mt==='o'&&!isValue)) {
         r.push(OpenClass$jsint(this, m));
       } else if (mt==='i') {

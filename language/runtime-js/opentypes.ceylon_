@@ -1,29 +1,8 @@
-import ceylon.language.meta.declaration {
-  FunctionDeclaration, ValueDeclaration,
-  ClassDeclaration, InterfaceDeclaration,
-  Package, Module, FunctionOrValueDeclaration, VariableDeclaration,
-  NestableDeclaration, OpenType, TypeParameter,
-  OpenClassType, OpenInterfaceType,
-  AnnotatedDeclaration, SetterDeclaration
-}
-import ceylon.language {
-    MetamodelAnnotation=Annotation
-}
-import ceylon.language.meta.model {
-    AppliedInterface = Interface,
-    AppliedClass = Class,
-    AppliedFunction = Function,
-    Method, Value,
-    AppliedMember = Member,
-    AppliedClassOrInterface = ClassOrInterface,
-    AppliedType=Type,
-    Attribute, MemberClass, MemberInterface, Variable, VariableAttribute
-}
-
 class OpenFunction(shared actual String name, shared actual Package containingPackage) satisfies FunctionDeclaration {
 
   shared actual AppliedFunction<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
     given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
+  shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("Unimplemented"); }
   shared actual Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
     given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
 
@@ -33,7 +12,6 @@ class OpenFunction(shared actual String name, shared actual Package containingPa
     shared actual Boolean annotation { throw Exception("Unimplemented"); }
 
     shared actual FunctionOrValueDeclaration[] parameterDeclarations { throw Exception("Unimplemented"); }
-    shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("Unimplemented"); }
   shared actual Annotation[] annotations<out Annotation>()
         given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
 

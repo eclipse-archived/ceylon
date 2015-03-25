@@ -8,7 +8,7 @@ function($mpt){
   }
   for (var i=0; i < anns.length; i++) {
     var an = anns[i];
-    if (is$(an, $$$mptypes.Annotation$annotations))return true;
+    if (is$(an, $mpt.Annotation$annotated))return true;
   }
   return false;
 }

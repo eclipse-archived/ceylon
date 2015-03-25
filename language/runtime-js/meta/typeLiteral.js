@@ -62,7 +62,7 @@ function typeLiteral$meta($$targs$$,targ$2) {
     } else if (mdl['mt'] === 'i') {
       return OpenInterface$jsint(_pkg, t);
     } else if (mdl['mt'] === 'm') {
-      return OpenFunction(_pkg, t);
+      return OpenFunction$jsint(_pkg, t);
     } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g') {
       return OpenValue$jsint(_pkg, t);
     } else if (mdl.mt==='s') {

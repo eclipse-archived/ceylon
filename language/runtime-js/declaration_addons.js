@@ -59,7 +59,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
         var mm=getrtmm$$(_d);
         if (mm.$cont!==this.tipo)return null;
       }
-      _m=OpenFunction(this.containingPackage, _d);
+      _m=OpenFunction$jsint(this.containingPackage, _d);
     }
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ClassOrInterfaceDeclaration$meta$declaration})) {

@@ -8,7 +8,7 @@ if (mm && mm.d) {
     var pkg=_mod.findPackage(mm.d[0]);
     if (mdl.mt==='i')return OpenInterface$jsint(pkg,this.cntnr);
     if (mdl.mt==='c')return OpenClass$jsint(pkg,this.cntnr);
-    if (mdl.mt==='m')return OpenFunction(pkg,this.cntnr);
+    if (mdl.mt==='m')return OpenFunction$jsint(pkg,this.cntnr);
   }
 }
 throw new TypeError("Invalid container for " + this.string);
