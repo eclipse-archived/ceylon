@@ -39,7 +39,7 @@ public class MetamodelHelper {
         } else if (d instanceof Class) {
             gen.out("Class$jsint");
         } else if (d instanceof Method) {
-            gen.out("Function");
+            gen.out("Function$jsint");
         } else if (d instanceof Value) {
             gen.out("Value$jsint");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
@@ -106,7 +106,7 @@ public class MetamodelHelper {
                 outputPathToDeclaration(that, d, gen);
             }
         }
-        if (d instanceof Value) {
+        if (d instanceof Value || d.isParameter()) {
             if (!d.isMember()) gen.qualify(that, d);
             gen.out(gen.getNames().getter(d, true), ")");
         } else {
