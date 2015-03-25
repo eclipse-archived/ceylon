@@ -466,10 +466,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // set up the type factory
         Timer nested = timer.nestedTimer();
         nested.startTask("load ceylon.language");
-        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
-        addModuleToClassPath(languageModule, null);
-        Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
-        typeFactory.setPackage(languagePackage);
+        Module languageModule = loadLanguageModuleAndPackage();
         
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
@@ -486,10 +483,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         nested.startTask("load JDK");
         // make sure the jdk modules are loaded
-        for(String jdkModule : JDKUtils.getJDKModuleNames())
-            findOrCreateModule(jdkModule, JDKUtils.jdk.version);
-        for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
-            findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
+        loadJDKModules();
         Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
         nested.endTask();
         
@@ -501,6 +495,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.metadata", false);
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.language", false);
         nested.endTask();
+    }
+    protected Module loadLanguageModuleAndPackage() {
+        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
+        addModuleToClassPath(languageModule, null);
+        Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
+        typeFactory.setPackage(languagePackage);
+        return languageModule;
+    }
+    protected void loadJDKModules() {
+        for(String jdkModule : JDKUtils.getJDKModuleNames())
+            findOrCreateModule(jdkModule, JDKUtils.jdk.version);
+        for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
+            findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
     }
 
     /**
