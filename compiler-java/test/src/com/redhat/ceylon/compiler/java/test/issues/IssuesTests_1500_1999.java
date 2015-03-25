@@ -221,7 +221,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         compareWithJavaSource("bug15xx/Bug1571");
     }
 
-    @Test
+    @Test @Ignore
     public void testBug1572() throws Throwable {
         compile("bug15xx/bug1572/mod/module.ceylon", "bug15xx/bug1572/mod/run.ceylon",
                 "bug15xx/bug1572/test/module.ceylon", "bug15xx/bug1572/test/run.ceylon");
