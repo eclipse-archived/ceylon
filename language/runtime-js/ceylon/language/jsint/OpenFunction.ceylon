@@ -38,4 +38,5 @@ shared native class OpenFunction(pkg, meta) satisfies FunctionDeclaration {
         given Annotation satisfies AnnotationType;
   shared actual native Boolean equals(Object other);
   shared actual String string => "function ``qualifiedName``";
+  shared actual Integer hash => string.hash;
 }

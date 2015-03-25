@@ -19,9 +19,9 @@ shared native class OpenValue(pkg,meta) satisfies ValueDeclaration {
   shared native actual Boolean variable;
   shared native actual Boolean objectValue;
   shared native actual ClassDeclaration? objectClass;
-  shared actual Boolean defaulted => false;
-  shared actual Boolean variadic => false;
-  shared actual Boolean parameter => false;
+  shared actual native Boolean defaulted;
+  shared actual native Boolean variadic;
+  shared actual native Boolean parameter;
   shared native actual Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
   shared actual native Boolean annotated<Annotation>()
