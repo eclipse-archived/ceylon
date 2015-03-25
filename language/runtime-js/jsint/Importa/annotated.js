@@ -1,4 +1,7 @@
 function($mpt){
-  console.log("TODO implement annotated<" + typeLiteral$meta({Type$typeLiteral:$mpt.Annotation$annotated}).string + ">");
+  if (typeof(this._anns)==='function')this._anns_=this._anns();
+  if (this._anns)for (var i=0;i<this._anns.length;i++) {
+    if (is$(this._anns[i],$mpt.Annotation$annotated))return true;
+  }
   return false;
 }

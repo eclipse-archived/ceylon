@@ -1,2 +1,4 @@
-console.log("TODO - can a function declaration be defaulted?");
+if (this.parameter) {
+  return this.param$$.defaulted;
+}
 return false;
