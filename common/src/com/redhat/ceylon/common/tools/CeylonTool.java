@@ -301,33 +301,13 @@ public class CeylonTool implements Tool {
 
     public int setup(String... args) throws Exception {
         int result;
-        Exception error = null;
         try {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(CommandLine.parse(args));
             getPluginFactory().bindArguments(model, this, this, myArgs);
             result = SC_OK;
-        } catch (NoSuchToolException e) {
-            error = e;
-            result = SC_NO_SUCH_TOOL;
-        } catch (ModelException e) {
-            error = e;
-            result = SC_TOOL_CREATION;
-        } catch (OptionArgumentException e) {
-            error = e;
-            result = SC_ARGS;
-        } catch (FatalToolError e) {
-            error = e;
-            result = SC_TOOL_BUG;
-        } catch (ToolError e) {
-            error = e;
-            result = SC_TOOL_ERROR;
         } catch (Exception e) {
-            error = e;
-            result = SC_TOOL_EXCEPTION;
-        }
-        if (error != null) {
-            Usage.handleException(this, getToolName(), error);
+            result = handleException(this, e);
         }
         System.out.flush();
         return result;
@@ -335,45 +315,44 @@ public class CeylonTool implements Tool {
 
     // Warning: this method called by reflection in Launcher
     public int execute() throws Exception {
-        int result = 0;
-        Exception error = null;
+        int result = SC_OK;
         CeylonConfig oldConfig = null;
         try {
             String[] names = (toolName != null) ? getToolNames() : new String[] { null };
-            for(String singleToolName : names){
+            for (String singleToolName : names) {
                 ToolModel<Tool> model = getToolModel(singleToolName);
                 Tool tool = getTool(model);
                 oldConfig = setupConfig(tool);
-                try{
+                try {
                     run(model, tool);
                     result = SC_OK;
                 } finally {
                     CeylonConfig.set(oldConfig);
                 }
             }
-        } catch (NoSuchToolException e) {
-            error = e;
-            result = SC_NO_SUCH_TOOL;
-        } catch (ModelException e) {
-            error = e;
-            result = SC_TOOL_CREATION;
-        } catch (OptionArgumentException e) {
-            error = e;
-            result = SC_ARGS;
-        } catch (FatalToolError e) {
-            error = e;
-            result = SC_TOOL_BUG;
-        } catch (ToolError e) {
-            error = e;
-            result = SC_TOOL_ERROR;
         } catch (Exception e) {
-            error = e;
-            result = SC_TOOL_EXCEPTION;
-        }
-        if (error != null) {
-            Usage.handleException(this, getToolName(), error);
+            result = handleException(this, e);
         }
         System.out.flush();
+        return result;
+    }
+
+    public static int handleException(CeylonTool mainTool, Exception ex) throws Exception {
+        int result;
+        if (ex instanceof NoSuchToolException) {
+            result = SC_NO_SUCH_TOOL;
+        } else if (ex instanceof ModelException) {
+            result = SC_TOOL_CREATION;
+        } else if (ex instanceof OptionArgumentException) {
+            result = SC_ARGS;
+        } else if (ex instanceof FatalToolError) {
+            result = SC_TOOL_BUG;
+        } else if (ex instanceof ToolError) {
+            result = SC_TOOL_ERROR;
+        } else {
+            result = SC_TOOL_EXCEPTION;
+        }
+        Usage.handleException(mainTool, mainTool.getToolName(), ex);
         return result;
     }
 
