@@ -28,6 +28,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
     <property name="ceylon.js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}" />
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
     <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
@@ -108,7 +109,8 @@
 
     <!-- build jscompiler jar -->
     <target name="ceylon.js.jar" depends="compile">
-        <mkdir dir="${ceylon.js.dist}"/>
+        <mkdir dir="${build.dist.repo}/${ceylon.js.dir}"/>
+        <mkdir dir="${build.bin}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>        
@@ -208,6 +210,9 @@
         <copy todir="${build.bin}">
             <fileset dir="${basedir}/bin">
             </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
         </copy>
     </target>
 
@@ -215,6 +220,9 @@
         <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist.repo}"/>
             <fileset dir="${runtime}"/>
+        </copy>
+        <copy todir="${ceylon.bin.dir}" overwrite="true">
+            <fileset dir="${build.bin}"/>
         </copy>
     </target>
 
