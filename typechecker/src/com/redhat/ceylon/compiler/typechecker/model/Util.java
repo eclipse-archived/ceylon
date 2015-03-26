@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
+import static java.lang.Character.charCount;
+import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
@@ -794,7 +796,9 @@ public class Util {
         if (name.regionMatches(true,0,startingWith,0,startingWithLength)) {
             return true;
         }
-        if (startingWith.charAt(0)!=name.charAt(0)) {
+        int c = startingWith.codePointAt(0); 
+        int d = name.codePointAt(0);
+        if (c!=d) {
             return false;
         }
         //camel hump matching, starting from second character:
@@ -804,9 +808,11 @@ public class Util {
                 return false;
             }
             while (i<startingWithLength && 
-                    Character.isLowerCase(startingWith.charAt(i))) {
-                if (name.charAt(j)==startingWith.charAt(i)) {
-                    j++; i++;
+                    isLowerCase(c=startingWith.codePointAt(i))) {
+                d = name.codePointAt(j);
+                if (c==d) {
+                    i+=charCount(c);
+                    j+=charCount(d); 
                     if (i>=startingWithLength) {
                         return true;
                     }
@@ -819,13 +825,17 @@ public class Util {
                 }
             }
             while (j<nameLength && 
-                    Character.isLowerCase(name.charAt(j))) {
-                j++;
+                    isLowerCase(d=name.codePointAt(j))) {
+                j+=charCount(d);
                 if (j>=nameLength) {
                     return false;
                 }
             }
-            if (name.charAt(j++)!=startingWith.charAt(i++)) {
+            c = startingWith.codePointAt(i);
+            d = name.codePointAt(j);
+            i+=charCount(c);
+            j+=charCount(d); 
+            if (d!=c) {
                 return false;
             }
         }
