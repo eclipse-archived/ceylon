@@ -26,8 +26,8 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
  */
 public abstract class ToolLoader {
 
-    protected static final String SCRIPT_PREFIX = "SCRIPT:";
-    protected static final String PLUGIN_PREFIX = "PLUGIN:";
+    public static final String SCRIPT_PREFIX = "SCRIPT:";
+    public static final String PLUGIN_PREFIX = "PLUGIN:";
 
     protected final ClassLoader loader;
 
