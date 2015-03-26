@@ -23,8 +23,8 @@ package com.redhat.ceylon.tools.test;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.tools.TestingToolLoader;
 
 /**
  *
@@ -33,7 +33,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 public class AbstractToolTests extends CompilerTests {
     
     protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+    protected final ToolLoader pluginLoader = new TestingToolLoader(null, true);
 
     protected CeylonTool getMainTool() {
         return pluginLoader.instance("", null);
