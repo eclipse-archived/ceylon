@@ -54,6 +54,7 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.bin" location="${build.dir}/bin"/>
     <property name="build.classes" location="${build.dir}/classes"/>
     <property name="build.dist" location="${build.dir}/dist"/>
     <property name="build.dist.lib" location="${build.dist}/lib"/>
@@ -270,7 +271,13 @@
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="runtime.jar"/>
+    <target name="build" depends="runtime.jar">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+        </copy>
+    </target>
 
     <target name="compile.tests" depends="dist">
         <mkdir dir="${build.test}"/>
