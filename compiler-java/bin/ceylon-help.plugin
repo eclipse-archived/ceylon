@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon help" tool
+summary=Displays help information about other Ceylon tools
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.help.CeylonHelpTool
+

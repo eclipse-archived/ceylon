@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon compile" tool
+summary=Compiles Ceylon and Java source code and directly produces module and source archives in a module repository.
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.compiler.CeylonCompileTool
+
