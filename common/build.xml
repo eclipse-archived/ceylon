@@ -17,6 +17,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
@@ -63,6 +64,7 @@
 
     <target name="ceylon-common.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
+        <mkdir dir="${build.bin.repo}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>    	
@@ -81,6 +83,9 @@
         <copy todir="${build.bin}">
             <fileset dir="${basedir}/bin">
             </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
         </copy>
     </target>
 
@@ -98,7 +103,7 @@
     </target>
 
     <!-- Repository targets -->
-    <target name="init.repo" description="Init local ceylon repository and add ceylon.language">
+    <target name="init.repo" description="Init local ceylon repository and add ceylon.common">
         <mkdir dir="${ceylon.common.repo}" />
     </target>
 
@@ -136,6 +141,9 @@
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist.repo}" />
+        </copy>
+        <copy todir="${ceylon.bin.dir}" overwrite="true">
+            <fileset dir="${build.bin}" />
         </copy>
     </target>
 
