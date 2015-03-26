@@ -5,15 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ProcessBuilder.Redirect;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tool.ToolError;
 
 public class LauncherUtil {
     private LauncherUtil() {}
@@ -79,12 +76,7 @@ public class LauncherUtil {
     
     public static String determineSystemVersion() {
         // Determine the Ceylon system/language/runtime version
-        String ceylonSystemVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
-        if (ceylonSystemVersion == null) {
-            // Second try the constant defined in Versions
-            ceylonSystemVersion = Versions.CEYLON_VERSION_NUMBER;
-        }
-        return ceylonSystemVersion;
+        return System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
     }
     
     public static File determineRuntimeJar() throws URISyntaxException {
