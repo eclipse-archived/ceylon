@@ -11,6 +11,7 @@
     <property name="projects.dir" value="${basedir}/projects"/>
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
+    <property name="ceylon.bin.dir" value="${ceylon.dist.dir}/bin"/>
 
     <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
 
@@ -149,6 +150,8 @@ Some more basic ant tasks:
              dir="${projects.base.dir}/${project.item.name}"
             inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
@@ -258,6 +261,7 @@ Used with another target such as 'package'">
     <target name="osgi-quick">
         <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -273,6 +277,7 @@ Used with another target such as 'package'">
     <target name="osgi-p2-quick">
         <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi-p2" dir="${ceylon-dist-osgi.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -282,9 +287,11 @@ Used with another target such as 'package'">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
                 <exclude name="bin/ceylon*" />
+                <include name="bin/*.plugin" />
             </zipfileset>
             <zipfileset dir="${ceylon.dist.dir}" filemode="755"  prefix="${dist.name}">
                 <include name="bin/ceylon*" />
+                <exclude name="bin/*.plugin" />
             </zipfileset>
         </zip>        
     </target>
@@ -296,7 +303,7 @@ Used with another target such as 'package'">
     <target name="copy-compiler-binaries">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
-            <fileset dir="${ceylon-compiler.dir}/build/bin">
+            <fileset dir="${ceylon-common.dir}/build/bin">
                 <include name="java.bat"/>
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
@@ -370,6 +377,7 @@ Used with another target such as 'package'">
     <target name="install-compiler-nodeps">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -378,6 +386,7 @@ Used with another target such as 'package'">
     <target name="install-js-nodeps">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
             <!-- Special property that will make the build skip the language module -->
             <property name="skip.language.module" value="true"/>
@@ -388,6 +397,7 @@ Used with another target such as 'package'">
     <target name="install-typechecker-nodeps">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -396,6 +406,7 @@ Used with another target such as 'package'">
     <target name="install-language-nodeps">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -404,6 +415,7 @@ Used with another target such as 'package'">
     <target name="install-common-nodeps">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -412,6 +424,7 @@ Used with another target such as 'package'">
     <target name="install-cmr-nodeps">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -419,6 +432,7 @@ Used with another target such as 'package'">
     <target name="install-runtime-libs">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish-libs" dir="${ceylon-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
@@ -427,6 +441,7 @@ Used with another target such as 'package'">
     <target name="install-runtime-nodeps">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
