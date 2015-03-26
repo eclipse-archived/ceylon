@@ -204,6 +204,11 @@
     <target name="publish"
             depends="dist,clean.repo,init.repo,publish-internal"
             description="Publish Ceylon JS compiler module to default repo">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+        </copy>
     </target>
 
     <target name="publish-internal" depends="init.repo">
