@@ -6,6 +6,7 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build" />
+    <property name="build.bin" value="${build.dir}/bin" />
     <property name="build.dist" value="${build.dir}/dist" />
     <property name="build.dist.repo" value="${build.dist}/repo" />
     <property name="build.classes" location="${build.dir}/classes" />
@@ -76,6 +77,11 @@
     </target>
 
     <target name="build" depends="ceylon-common.jar">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
