@@ -76,7 +76,11 @@ public class LauncherUtil {
     
     public static String determineSystemVersion() {
         // Determine the Ceylon system/language/runtime version
-        return System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
+        String ceylonVersion = System.getenv(Constants.ENV_CEYLON_VERSION);
+        if (ceylonVersion == null) {
+            ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
+        }
+        return ceylonVersion;
     }
     
     public static File determineRuntimeJar() throws URISyntaxException {
