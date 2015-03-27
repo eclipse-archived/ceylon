@@ -17,6 +17,7 @@ public abstract class Constants {
     public static final String MODULE_DESCRIPTOR = "module.ceylon";
     
     public static final String ENV_CEYLON_HOME_DIR = "CEYLON_HOME";
+    public static final String ENV_CEYLON_VERSION = "CEYLON_VERSION";
 
     public static final String PROP_CEYLON_SYSTEM_VERSION = "ceylon.system.version";
 
