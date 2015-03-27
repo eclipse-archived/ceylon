@@ -57,12 +57,6 @@ public class Launcher {
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, ceylonSystemRepo);
         }
 
-        // If the --ceylonversion option was set on the command line we set the corresponding system property
-        String ceylonSystemVersion = getArgument(args, "--ceylonversion", false);
-        if (ceylonSystemVersion != null) {
-            System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, ceylonSystemVersion);
-        }
-
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
         try{
             // This is mostly required by CeylonTool.getPluginLoader(), and perhaps by jboss modules
