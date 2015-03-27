@@ -20,6 +20,8 @@
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
+    <property name="ceylon.bootstrap.dir" value="ceylon/bootstrap/${module.ceylon.bootstrap.version}" />
+    <property name="ceylon.bootstrap.jar" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar" />
 
     <!-- The Java source files for the OSGI-specific meta-model bootstrapper -->
     <property name="src" location="src" />
@@ -127,6 +129,7 @@
             <fileset dir="${build.classes}" includes="**"/>
             <fileset dir="${ceylon.dist.dir}">
                 <include name="lib/ceylon-bootstrap.jar" />
+                <include name="repo/${ceylon-bootstrap.jar}" />
             </fileset>
         </jar>
         <ceylon-import-jar 

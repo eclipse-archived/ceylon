@@ -123,6 +123,7 @@ Some more basic ant tasks:
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
+                <module name="ceylon.bootstrap" version="${ceylon.version}"/>
                 <module name="ceylon.runtime" version="${ceylon.version}"/>
                 <module name="ceylon.language" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.maven-support" version="2.0"/>
