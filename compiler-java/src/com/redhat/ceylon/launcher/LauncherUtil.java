@@ -140,4 +140,32 @@ public class LauncherUtil {
     private static boolean checkHome(File ceylonHome) {
         return (new File(ceylonHome, CEYLON_REPO)).isDirectory() && (new File(ceylonHome, CEYLON_LIBS)).isDirectory();
     }
+
+    public static boolean hasArgument(final String[] args, final String test) {
+        for (String arg : args) {
+            if ("--".equals(arg)) {
+                break;
+            }
+            if (arg.equals(test) || arg.startsWith(test + "=")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String getArgument(final String[] args, final String test, boolean optionalArgument) {
+        for (int i=0; i < args.length; i++) {
+            String arg = args[i];
+            if ("--".equals(arg)) {
+                break;
+            }
+            if (!optionalArgument && i < (args.length - 1) && arg.equals(test)) {
+                return args[i + 1];
+            }
+            if (arg.startsWith(test + "=")) {
+                return arg.substring(test.length() + 1);
+            }
+        }
+        return null;
+    }
 }

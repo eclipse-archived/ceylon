@@ -52,7 +52,7 @@ public class Launcher {
         }
         
         // If the --sysrep option was set on the command line we set the corresponding system property
-        String ceylonSystemRepo = getArgument(args, "--sysrep", false);
+        String ceylonSystemRepo = LauncherUtil.getArgument(args, "--sysrep", false);
         if (ceylonSystemRepo != null) {
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, ceylonSystemRepo);
         }
@@ -134,34 +134,6 @@ public class Launcher {
         }catch(FileNotFoundException e){
             throw new ClassLoaderSetupException(e);
         }
-    }
-
-    private static boolean hasArgument(final String[] args, final String test) {
-        for (String arg : args) {
-            if ("--".equals(arg)) {
-                break;
-            }
-            if (arg.equals(test) || arg.startsWith(test + "=")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static String getArgument(final String[] args, final String test, boolean optionalArgument) {
-        for (int i=0; i < args.length; i++) {
-            String arg = args[i];
-            if ("--".equals(arg)) {
-                break;
-            }
-            if (!optionalArgument && i < (args.length - 1) && arg.equals(test)) {
-                return args[i + 1];
-            }
-            if (arg.startsWith(test + "=")) {
-                return arg.substring(test.length() + 1);
-            }
-        }
-        return null;
     }
 
     public static void initGlobalProperties() throws URISyntaxException {
