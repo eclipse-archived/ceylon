@@ -273,6 +273,9 @@
                 <attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
             </manifest>
         </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.runtime.jar}" />
+        </antcall>
     </target>
 
     <!-- Rule to compile and test -->
