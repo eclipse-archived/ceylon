@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.io.File;
 import java.io.Writer;

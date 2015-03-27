@@ -18,8 +18,10 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
-import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.Options;
+import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -211,7 +213,7 @@ public class GenerateJsVisitor extends Visitor
      * when the next line is started.
      * @param semicolon  if <code>true</code> then a semicolon is printed at the end
      *                  of the previous line*/
-    void endLine(boolean semicolon) {
+    public void endLine(boolean semicolon) {
         if (semicolon) {
             out(";");
             if (opts.isMinify())return;
@@ -1562,10 +1564,8 @@ public class GenerateJsVisitor extends Visitor
                 && !defineAsProperty(d);
     }
     
-    //TODO mover a AttributeGenerator
-    public boolean defineAsProperty(Declaration d) {
-        // for now, only define member attributes as properties, not toplevel attributes
-        return d.isMember() && d instanceof MethodOrValue && !(d instanceof Method);
+    private boolean defineAsProperty(Declaration d) {
+        return AttributeGenerator.defineAsProperty(d);
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */

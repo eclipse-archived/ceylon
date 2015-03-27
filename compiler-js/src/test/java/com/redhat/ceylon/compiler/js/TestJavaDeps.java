@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 

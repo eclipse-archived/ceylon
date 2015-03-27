@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.AttributeGenerator;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -759,13 +760,13 @@ public class TypeUtils {
             }
             if (generateName) {
                 if (_cont instanceof Value) {
-                    if (gen.defineAsProperty(_cont)) {
+                    if (AttributeGenerator.defineAsProperty(_cont)) {
                         gen.qualify(that, _cont);
                     }
                     gen.out(gen.getNames().getter(_cont, true));
                 } else if (_cont instanceof Setter) {
                     gen.out("{setter:");
-                    if (gen.defineAsProperty(_cont)) {
+                    if (AttributeGenerator.defineAsProperty(_cont)) {
                         gen.qualify(that, _cont);
                         gen.out(gen.getNames().getter(((Setter) _cont).getGetter(), true), ".set");
                     } else {

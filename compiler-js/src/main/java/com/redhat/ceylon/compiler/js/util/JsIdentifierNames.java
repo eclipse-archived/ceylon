@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;

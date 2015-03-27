@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;

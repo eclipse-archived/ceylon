@@ -1,7 +1,9 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 
 public class RetainedVars {
 

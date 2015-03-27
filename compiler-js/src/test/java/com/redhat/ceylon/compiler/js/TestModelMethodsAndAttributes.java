@@ -11,6 +11,7 @@ import org.junit.Test;
 import util.ModelUtils;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;

@@ -43,7 +43,7 @@ public class AttributeGenerator {
     static void generateAttributeGetter(final Tree.AnyAttribute attributeNode, final MethodOrValue decl,
             final Tree.SpecifierOrInitializerExpression expr, final String param, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess) {
-        final boolean asProp = gen.defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
+        final boolean asProp = defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
         final String varName;
         if (asProp) {
             varName = decl.isShared() ? gen.getNames().name(decl) + "_" : gen.getNames().privateName(decl);
@@ -288,6 +288,11 @@ public class AttributeGenerator {
                 }
             }
         }
+    }
+
+    public static boolean defineAsProperty(Declaration d) {
+        // for now, only define member attributes as properties, not toplevel attributes
+        return d.isMember() && d instanceof MethodOrValue && !(d instanceof Method);
     }
 
 }

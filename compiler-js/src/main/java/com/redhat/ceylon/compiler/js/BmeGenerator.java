@@ -121,7 +121,7 @@ public class BmeGenerator {
         }
         else {
             boolean protoCall = gen.opts.isOptimize() && (gen.getSuperMemberScope(expr) != null);
-            if (gen.accessDirectly(decl) && !(protoCall && gen.defineAsProperty(decl))) {
+            if (gen.accessDirectly(decl) && !(protoCall && AttributeGenerator.defineAsProperty(decl))) {
                 // direct access, without setter
                 gen.out(gen.memberAccessBase(expr, decl, true, lhs), "=");
             }

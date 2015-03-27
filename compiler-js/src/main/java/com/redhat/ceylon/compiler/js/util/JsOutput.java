@@ -15,8 +15,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
-import com.redhat.ceylon.compiler.js.JsIdentifierNames;
-import com.redhat.ceylon.compiler.js.MetamodelVisitor;
+import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;

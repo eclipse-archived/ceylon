@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.compiler.Options;
 
 public class JsLogger implements Logger {
 

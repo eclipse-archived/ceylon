@@ -504,7 +504,7 @@ public class TypeGenerator {
 
     private static void superGetterRef(final Declaration d, final ClassOrInterface sub,
             final String parentSuffix, final GenerateJsVisitor gen) {
-        if (gen.defineAsProperty(d)) {
+        if (AttributeGenerator.defineAsProperty(d)) {
             gen.out(gen.getClAlias(), "copySuperAttr(", gen.getNames().self(sub), ",'",
                     gen.getNames().name(d), "','", parentSuffix, "')");
         }
@@ -517,7 +517,7 @@ public class TypeGenerator {
 
     private static void superSetterRef(final Declaration d, final ClassOrInterface sub,
             final String parentSuffix, final GenerateJsVisitor gen) {
-        if (!gen.defineAsProperty(d)) {
+        if (!AttributeGenerator.defineAsProperty(d)) {
             gen.out(gen.getNames().self(sub), ".", gen.getNames().setter(d), parentSuffix, "=",
                     gen.getNames().self(sub), ".", gen.getNames().setter(d));
             gen.endLine(true);
@@ -631,7 +631,7 @@ public class TypeGenerator {
         if (d != null && !addToPrototype) {
             gen.out("var ", objvar);
             //If it's a property, create the object here
-            if (gen.defineAsProperty(d)) {
+            if (AttributeGenerator.defineAsProperty(d)) {
                 gen.out("=", className, "(");
                 if (!targs.isEmpty()) {
                     TypeUtils.printTypeArguments(that, targs, gen, false, null);
@@ -641,7 +641,7 @@ public class TypeGenerator {
             gen.endLine(true);
         }
 
-        if (d != null && gen.defineAsProperty(d)) {
+        if (d != null && AttributeGenerator.defineAsProperty(d)) {
             gen.out(gen.getClAlias(), "atr$(");
             gen.outerSelf(d);
             gen.out(",'", objectName, "',function(){return ");

@@ -1,8 +1,7 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.loader;
 
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
