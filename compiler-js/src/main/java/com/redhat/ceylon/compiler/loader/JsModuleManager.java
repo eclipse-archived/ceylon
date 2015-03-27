@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.loader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -133,11 +132,9 @@ public class JsModuleManager extends ModuleManager {
     @Override
     protected com.redhat.ceylon.compiler.typechecker.model.Package createPackage(String pkgName, Module module) {
         if (module!=null && module == getContext().getModules().getDefaultModule()) {
-            try {
-                //Fix 280 part 2
-                return module.getPackage(pkgName);
-            } catch (CompilerErrorException ex) {
-                //nothing, package will be created
+            com.redhat.ceylon.compiler.typechecker.model.Package pkg = module.getPackage(pkgName);
+            if (pkg != null) {
+                return pkg;
             }
         }
         final JsonPackage pkg = new JsonPackage(pkgName);

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -90,7 +89,7 @@ public class JsonModule extends Module {
                 }
             }
         }
-        throw new CompilerErrorException("Package " + name + " not available in module " + this);
+        return null;
     }
 
     public List<ModuleImport> getImports() {
