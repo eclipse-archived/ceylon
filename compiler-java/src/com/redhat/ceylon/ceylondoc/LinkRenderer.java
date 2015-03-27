@@ -362,7 +362,7 @@ public class LinkRenderer {
         }
         
         if (docLink != null && scope instanceof Annotated) {
-            Annotation docAnnotation = getAnnotation(((Annotated) scope).getAnnotations(), "doc");
+            Annotation docAnnotation = getAnnotation(scope.getUnit(), ((Annotated) scope).getAnnotations(), "doc");
             if (docAnnotation != null) {
                 ceylonDocTool.warningBrokenLink(docLinkText, docLink, scope);
             }

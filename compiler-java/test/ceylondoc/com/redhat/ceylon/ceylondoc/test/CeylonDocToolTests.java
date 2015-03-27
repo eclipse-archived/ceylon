@@ -640,6 +640,28 @@ public class CeylonDocToolTests {
                         true, false);
         tool.run();
     }
+    
+    @Test
+    public void bug2101() throws Exception {
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug2101";
+        
+        Module module = new Module();
+        module.setName(Arrays.asList(moduleName));
+        module.setVersion("1");
+        
+        CeylonDocTool tool = 
+                tool(Arrays.asList(new File(pathname)),
+                        Arrays.asList(new File("doc")),
+                        Arrays.asList(moduleName),
+                        true, false);
+        tool.run();
+        
+        File destDir = getOutputDir(tool, module);
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<span class='identifier'>bug2101</span>\\(\\)</code><div class='description'><div class='doc section'><p>actual doc</p>"));
+    }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertDirectoryExists(destDir, ".resources");

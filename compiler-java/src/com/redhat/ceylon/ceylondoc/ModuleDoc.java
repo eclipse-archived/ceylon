@@ -93,7 +93,7 @@ public class ModuleDoc extends CeylonDoc {
     }
 
     private void writeLicense(Module module) throws IOException {
-        Annotation annotation = Util.getAnnotation(module.getAnnotations(),"license");
+        Annotation annotation = Util.getAnnotation(module.getUnit(), module.getAnnotations(),"license");
         if (annotation == null)
             return;
 

@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -48,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
@@ -92,15 +94,15 @@ public class Util {
     }
 
     public static String getDoc(Module module, LinkRenderer linkRenderer) {
-        return wikiToHTML(getRawDoc(module.getAnnotations()), linkRenderer.useScope(module));
+        return wikiToHTML(getRawDoc(module.getUnit(), module.getAnnotations()), linkRenderer.useScope(module));
     }
     
     public static String getDoc(ModuleImport moduleImport, LinkRenderer linkRenderer) {
-        return wikiToHTML(getRawDoc(moduleImport.getAnnotations()), linkRenderer);
+        return wikiToHTML(getRawDoc(moduleImport.getModule().getUnit(), moduleImport.getAnnotations()), linkRenderer);
     }
 
     public static String getDoc(Package pkg, LinkRenderer linkRenderer) {
-        return wikiToHTML(getRawDoc(pkg.getAnnotations()), linkRenderer.useScope(pkg));
+        return wikiToHTML(getRawDoc(pkg.getUnit(), pkg.getAnnotations()), linkRenderer.useScope(pkg));
     }
 
     public static String getDocFirstLine(Declaration decl, LinkRenderer linkRenderer) {
@@ -108,16 +110,16 @@ public class Util {
     }
 
     public static String getDocFirstLine(Package pkg, LinkRenderer linkRenderer) {
-        return wikiToHTML(getFirstLine(getRawDoc(pkg.getAnnotations())), linkRenderer.useScope(pkg));
+        return wikiToHTML(getFirstLine(getRawDoc(pkg.getUnit(), pkg.getAnnotations())), linkRenderer.useScope(pkg));
     }
 
     public static String getDocFirstLine(Module module, LinkRenderer linkRenderer) {
-        return wikiToHTML(getFirstLine(getRawDoc(module.getAnnotations())), linkRenderer.useScope(module));
+        return wikiToHTML(getFirstLine(getRawDoc(module.getUnit(), module.getAnnotations())), linkRenderer.useScope(module));
     }
     
     public static List<String> getTags(Declaration decl) {
         List<String> tags = new ArrayList<String>();
-        Annotation tagged = Util.getAnnotation(decl.getAnnotations(), "tagged");
+        Annotation tagged = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "tagged");
         if (tagged != null) {
             tags.addAll(tagged.getPositionalArguments());
         }
@@ -178,24 +180,20 @@ public class Util {
         return "";
     }
     
-    public static String getRawDoc(List<Annotation> anns) {
-        for (Annotation a : anns) {
-            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return a.getPositionalArguments().get(0);
-            }
+    public static String getRawDoc(Unit unit, List<Annotation> anns) {
+        Annotation a = getAnnotation(unit, anns, "doc");
+        if (a != null && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+            return a.getPositionalArguments().get(0);
         }
         return "";
     }
 
     public static Annotation getAnnotation(ModuleImport moduleImport, String name) {
-        for (Annotation a : moduleImport.getAnnotations()) {
-            if (a.getName().equals(name))
-                return a;
-        }
-        return null;
+        return getAnnotation(moduleImport.getModule().getUnit(), moduleImport.getAnnotations(), name);
     }
     
-    public static Annotation getAnnotation(List<Annotation> annotations, String name) {
+    public static Annotation getAnnotation(Unit unit, List<Annotation> annotations, String name) {
+        name = resolveAliasedName(unit, name); 
         if (annotations != null) {
             for (Annotation a : annotations) {
                 if (a.getName().equals(name))
@@ -206,12 +204,23 @@ public class Util {
     }
     
     public static Annotation findAnnotation(Declaration decl, String name) {
-        Annotation a = getAnnotation(decl.getAnnotations(), name);
+        Annotation a = getAnnotation(decl.getUnit(), decl.getAnnotations(), name);
         if (a == null && decl.isActual() && decl.getRefinedDeclaration() != decl) {
             // keep looking up
             a = findAnnotation(decl.getRefinedDeclaration(), name);
         }
         return a;
+    }
+    
+    private static String resolveAliasedName(Unit unit, String name) {
+        if (unit != null) {
+            for (Import i : unit.getImports()) {
+                if (!i.isAmbiguous() && i.getDeclaration().getQualifiedNameString().equals("ceylon.language::" + name)) {
+                    return i.getAlias();
+                }
+            }
+        }
+        return name;
     }
     
     public static String capitalize(String text) {

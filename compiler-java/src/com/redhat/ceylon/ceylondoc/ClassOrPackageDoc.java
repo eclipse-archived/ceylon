@@ -203,7 +203,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         if (d instanceof Value) {
             Setter setter = ((Value) d).getSetter();
-            if (setter != null && Util.getAnnotation(setter.getAnnotations(), "doc") != null) {
+            if (setter != null && Util.getAnnotation(setter.getUnit(), setter.getAnnotations(), "doc") != null) {
                 tool.warningSetterDoc(d.getQualifiedNameString(), d);
             }
         }
@@ -618,7 +618,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             List<Annotation> annotations = new ArrayList<Annotation>();
             com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations(assertion.getAnnotationList(), annotations);
 
-            String doc = Util.getRawDoc(annotations);
+            String doc = Util.getRawDoc(decl.getUnit(), annotations);
             if (!Util.isEmpty(doc)) {
                 open("li");
                 write("<i class='icon-assertion'></i>");
@@ -689,7 +689,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     protected final void writeSee(Declaration decl) throws IOException {
-        Annotation see = Util.getAnnotation(decl.getAnnotations(), "see");
+        Annotation see = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "see");
         if(see == null)
             return;
 
