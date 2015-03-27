@@ -5,6 +5,7 @@ import static com.redhat.ceylon.launcher.CeylonDebugEvaluationThread.startDebugE
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -75,8 +76,13 @@ public class Launcher {
 
             // Set up the arguments for the tool
             Object mainTool = mainClass.newInstance();
+            Integer result;
             Method setupMethod = mainClass.getMethod("setup", args.getClass());
-            Integer result = (Integer)setupMethod.invoke(mainTool, (Object)args);
+            try {
+                result = (Integer)setupMethod.invoke(mainTool, (Object)args);
+            } catch (InvocationTargetException e) {
+                throw e.getCause();
+            }
             if (result == 0 /* SC_OK */) {
                 try {
                     Method toolGetter = mainClass.getMethod("getTools");
@@ -104,7 +110,11 @@ public class Launcher {
 
                     // And finally execute the tool
                     Method execMethod = mainClass.getMethod("execute");
-                    result = (Integer)execMethod.invoke(mainTool);
+                    try {
+                        result = (Integer)execMethod.invoke(mainTool);
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
                 }finally{
                     // make sure we reset it, otherwise it will keep a reference to the CeylonClassLoader
                     LogManager.getLogManager().reset();
