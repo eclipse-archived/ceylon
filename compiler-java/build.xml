@@ -123,9 +123,6 @@
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.compiler.jar}" />
-        </antcall>
         <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
     </target>
 
@@ -244,6 +241,9 @@
                 <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.version}.${qualifier}"/>
             </manifest>
         </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.compiler.jar}" />
+        </antcall>
     </target>
 
     <!-- Rule to build ant jar -->
@@ -280,6 +280,9 @@
                 <exclude name="com/redhat/ceylon/launcher/Start.class" />
             </fileset>
         </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.jar}" />
+        </antcall>
     </target>
 
     <!-- Rule to build compiler jar -->
