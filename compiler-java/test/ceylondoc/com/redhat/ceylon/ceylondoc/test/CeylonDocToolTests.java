@@ -660,7 +660,13 @@ public class CeylonDocToolTests {
         File destDir = getOutputDir(tool, module);
         
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<span class='identifier'>bug2101</span>\\(\\)</code><div class='description'><div class='doc section'><p>actual doc</p>"));
+                Pattern.compile("<span class='identifier'>bug2101</span>\\(\\)</code>"
+                        + "<div class='description'><div class='doc section'><p>actual doc</p>"));
+        
+        assertMatchInFile(destDir, "a/index.html",
+                Pattern.compile("<span class='identifier'>bug2101_wildcard_import</span>\\(\\)</code>"
+                        + "<div class='description'><div class='doc section'></div>"
+                        + "<div class='annotations section'><span class='title'>Annotations: </span><ul><li>doc\\(<span class='literal'>&quot;fake doc&quot;</span>\\)"));
     }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {

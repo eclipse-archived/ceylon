@@ -193,10 +193,19 @@ public class Util {
     }
     
     public static Annotation getAnnotation(Unit unit, List<Annotation> annotations, String name) {
-        name = resolveAliasedName(unit, name); 
+        String aliasedName = resolveAliasedName(unit, name);
+        
+        // check that documentation annotation is not hidden by custom annotation
+        if( name.equals(aliasedName) && unit != null ) {
+            Declaration importedDeclaration = unit.getImportedDeclaration(name, null, false);
+            if( importedDeclaration != null && !importedDeclaration.getNameAsString().startsWith("ceylon.language::") ) {
+                return null;
+            }
+        }
+        
         if (annotations != null) {
             for (Annotation a : annotations) {
-                if (a.getName().equals(name))
+                if (a.getName().equals(aliasedName))
                     return a;
             }
         }
