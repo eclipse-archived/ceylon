@@ -55,7 +55,7 @@ public class JsIdentifierNames {
         reservedWords.addAll(Arrays.asList("hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable"));
         //JS Function
         reservedWords.add("Function");
-        reservedWords.addAll(Arrays.asList("call", "arguments", "caller", "apply", "bind")); //name?
+        reservedWords.addAll(Arrays.asList("call", "arguments", "caller", "apply", "bind", "eval")); //name?
         //JS Number
         reservedWords.addAll(Arrays.asList("toFixed", "valueOf", "toPrecision", "toExponential"));
         //JS String
