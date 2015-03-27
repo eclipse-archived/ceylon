@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;

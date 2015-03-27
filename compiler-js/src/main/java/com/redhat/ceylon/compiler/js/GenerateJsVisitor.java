@@ -19,7 +19,9 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.js.TypeUtils.RuntimeMetamodelAnnotationGenerator;
+import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
+import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -113,19 +115,19 @@ public class GenerateJsVisitor extends Visitor
     
     private Writer out;
     private final Writer originalOut;
-    final Options opts;
+    public final Options opts;
     final PrintWriter verboseOut;
     private CompilationUnit root;
     static final String function="function ";
     private boolean needIndent = true;
     private int indentLevel = 0;
 
-    Package getCurrentPackage() {
+    public Package getCurrentPackage() {
         return root.getUnit().getPackage();
     }
 
     /** Returns the module name for the language module. */
-    String getClAlias() { return jsout.getLanguageModuleAlias(); }
+    public String getClAlias() { return jsout.getLanguageModuleAlias(); }
 
     @Override
     public void handleException(Exception e, Node that) {
@@ -161,10 +163,10 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    InvocationGenerator getInvoker() { return invoker; }
+    public InvocationGenerator getInvoker() { return invoker; }
 
     /** Returns the helper component to handle naming. */
-    JsIdentifierNames getNames() { return names; }
+    public JsIdentifierNames getNames() { return names; }
 
     static interface GenerateCallback {
         public void generateValue();
@@ -174,7 +176,7 @@ public class GenerateJsVisitor extends Visitor
      * Automatically prints indentation first if necessary.
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
-    void out(String code, String... codez) {
+    public void out(String code, String... codez) {
         try {
             if (!opts.isMinify() && opts.isIndent() && needIndent) {
                 for (int i=0;i<indentLevel;i++) {
@@ -260,7 +262,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
-    void location(Node node) {
+    public void location(Node node) {
         out(" at ", node.getUnit().getFilename(), " (", node.getLocation(), ")");
     }
 
@@ -1441,7 +1443,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Escapes a StringLiteral (needs to be quoted). */
-    String escapeStringLiteral(String s) {
+    //TODO mover a utils
+    public String escapeStringLiteral(String s) {
         StringBuilder text = new StringBuilder(s);
         //Escape special chars
         for (int i=0; i < text.length();i++) {
@@ -1559,7 +1562,8 @@ public class GenerateJsVisitor extends Visitor
                 && !defineAsProperty(d);
     }
     
-    boolean defineAsProperty(Declaration d) {
+    //TODO mover a AttributeGenerator
+    public boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
         return d.isMember() && d instanceof MethodOrValue && !(d instanceof Method);
     }
@@ -2236,7 +2240,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Outputs the module name for the specified declaration. Returns true if something was output. */
-    boolean qualify(final Node that, final Declaration d) {
+    public boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
             out(path, d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? "_" : ".");
@@ -2248,7 +2252,7 @@ public class GenerateJsVisitor extends Visitor
         return qualifiedPath(that, d, false);
     }
 
-    String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
+    public String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
         final boolean isMember = d.isClassOrInterfaceMember();
         final boolean imported = isImported(that == null ? null : that.getUnit().getPackage(), d);
         if (!isMember && imported) {
@@ -2343,7 +2347,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Tells whether a declaration is in the specified package. */
-    boolean isImported(final Package p2, final Declaration d) {
+    public boolean isImported(final Package p2, final Declaration d) {
         if (d == null) {
             return false;
         }
@@ -3268,7 +3272,7 @@ public class GenerateJsVisitor extends Visitor
         dynblock--;
     }
 
-    boolean isInDynamicBlock() {
+    public boolean isInDynamicBlock() {
         return dynblock > 0;
     }
 

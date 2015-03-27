@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.compiler.js.TypeUtils;
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;

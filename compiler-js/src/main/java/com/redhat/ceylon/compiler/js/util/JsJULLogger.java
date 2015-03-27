@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import com.redhat.ceylon.common.log.JULLogger;
 

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;

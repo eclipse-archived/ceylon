@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -33,7 +34,7 @@ public class InvocationGenerator {
         retainedVars = rv;
     }
 
-    void generateInvocation(Tree.InvocationExpression that) {
+    public void generateInvocation(Tree.InvocationExpression that) {
         final Tree.Primary typeArgSource = that.getPrimary();
         if (that.getNamedArgumentList()!=null) {
             Tree.NamedArgumentList argList = that.getNamedArgumentList();

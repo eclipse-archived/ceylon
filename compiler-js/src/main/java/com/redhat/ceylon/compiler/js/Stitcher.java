@@ -21,6 +21,8 @@ import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.js.util.JsJULLogger;
+import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -193,7 +195,7 @@ public class Stitcher {
                     } else if (line.startsWith("//#UNSHARED")) {
                         new JsOutput(mod, "UTF-8") {
                             @Override
-                            protected Writer getWriter() throws IOException {
+                            public Writer getWriter() throws IOException {
                                 return writer;
                             }
                         }.publishUnsharedDeclarations(names);

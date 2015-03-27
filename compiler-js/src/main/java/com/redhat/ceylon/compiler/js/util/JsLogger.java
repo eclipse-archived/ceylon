@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.io.PrintWriter;
 import java.io.Writer;

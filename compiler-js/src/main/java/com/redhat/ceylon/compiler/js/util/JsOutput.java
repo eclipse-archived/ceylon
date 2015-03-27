@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.js.CompilerErrorException;
+import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.js.JsIdentifierNames;
+import com.redhat.ceylon.compiler.js.MetamodelVisitor;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -29,35 +33,35 @@ public class JsOutput {
     protected boolean modelDone;
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
-    protected final MetamodelVisitor mmg;
+    public final MetamodelVisitor mmg;
     final String encoding;
 
-    protected JsOutput(Module m, String encoding) throws IOException {
+    public JsOutput(Module m, String encoding) throws IOException {
         this.encoding = encoding == null ? "UTF-8" : encoding;
         module = m;
         mmg = new MetamodelVisitor(m);
     }
-    protected Writer getWriter() throws IOException {
+    public Writer getWriter() throws IOException {
         if (writer == null) {
             outfile = File.createTempFile("ceylon-jsout-", ".tmp");
             writer = new OutputStreamWriter(new FileOutputStream(outfile), encoding);
         }
         return writer;
     }
-    protected File close() throws IOException {
+    public File close() throws IOException {
         if (writer != null) {
             writer.close();
         }
         return outfile;
     }
-    File getModelFile() {
+    public File getModelFile() {
         return modfile;
     }
 
-    void addSource(File src) {
+    public void addSource(File src) {
         s.add(src);
     }
-    Set<File> getSources() { return s; }
+    public Set<File> getSources() { return s; }
 
     /** Writes the model file to a temporary file. */
     protected void writeModelFile() throws IOException {

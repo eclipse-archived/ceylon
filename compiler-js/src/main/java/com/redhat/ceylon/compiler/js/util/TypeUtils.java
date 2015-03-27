@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.js.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -89,7 +90,7 @@ public class TypeUtils {
         gen.out("}");
     }
 
-    static void outputQualifiedTypename(final Node node, final boolean imported, final ProducedType pt,
+    public static void outputQualifiedTypename(final Node node, final boolean imported, final ProducedType pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         final String qname = t.getQualifiedNameString();
@@ -169,7 +170,7 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    static void typeNameOrList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    public static void typeNameOrList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration type = pt.getDeclaration();
         if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
             if (type instanceof TypeParameter) {
@@ -220,7 +221,7 @@ public class TypeUtils {
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    public static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
         int seq=0;
@@ -374,7 +375,7 @@ public class TypeUtils {
     }
 
     /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
-    static ProducedType findSupertype(TypeDeclaration d, ProducedType pt) {
+    public static ProducedType findSupertype(TypeDeclaration d, ProducedType pt) {
         if (pt.getDeclaration().equals(d)) {
             return pt;
         }
@@ -387,7 +388,7 @@ public class TypeUtils {
         return null;
     }
 
-    static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
+    public static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
         if (params != null && targs != null && params.size() == targs.size()) {
             HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
             for (int i = 0; i < targs.size(); i++) {
@@ -398,7 +399,7 @@ public class TypeUtils {
         return null;
     }
 
-    static Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
+    public static Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
         HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
         final TypeDeclaration iterable = pt.getDeclaration().getUnit().getIterableDeclaration();
         r.put(iterable.getTypeParameters().get(0), pt);
@@ -406,11 +407,11 @@ public class TypeUtils {
         return r;
     }
 
-    static boolean isUnknown(Declaration d) {
+    public static boolean isUnknown(Declaration d) {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
     }
 
-    static void spreadArrayCheck(final Tree.Term term, final GenerateJsVisitor gen) {
+    public static void spreadArrayCheck(final Tree.Term term, final GenerateJsVisitor gen) {
         String tmp = gen.getNames().createTempVariable();
         gen.out("(", tmp, "=");
         term.visit(gen);
@@ -420,7 +421,7 @@ public class TypeUtils {
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    static void generateDynamicCheck(final Tree.Term term, ProducedType t,
+    public static void generateDynamicCheck(final Tree.Term term, ProducedType t,
             final GenerateJsVisitor gen, final boolean skipSelfDecl,
             final Map<TypeParameter,ProducedType> typeArguments) {
         if (t.getDeclaration().isDynamic()) {
@@ -457,7 +458,7 @@ public class TypeUtils {
         }
     }
 
-    static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
+    public static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
         boolean first = true;
         gen.out("[");
         for (Parameter p : plist.getParameters()) {
@@ -486,7 +487,7 @@ public class TypeUtils {
     }
 
     /** Turns a Tuple type into a parameter list. */
-    static List<Parameter> convertTupleToParameters(ProducedType _tuple) {
+    public static List<Parameter> convertTupleToParameters(ProducedType _tuple) {
         ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
         TypeDeclaration tdecl = _tuple.getDeclaration();
@@ -594,7 +595,7 @@ public class TypeUtils {
 
     /** This method encodes the Arguments type argument of a Callable the same way
      * as a parameter list for runtime. */
-    static void encodeCallableArgumentsAsParameterListForRuntime(final Node node,
+    public static void encodeCallableArgumentsAsParameterListForRuntime(final Node node,
             ProducedType _callable, GenerateJsVisitor gen) {
         if (_callable.getCaseTypes() != null) {
             for (ProducedType pt : _callable.getCaseTypes()) {
@@ -623,7 +624,7 @@ public class TypeUtils {
         encodeTupleAsParameterListForRuntime(node, targs.get(1), true, gen);
     }
 
-    static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
+    public static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
         if (d.getAnnotations() == null || d.getAnnotations().isEmpty() ||
                 (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAnonymous())) {
             encodeForRuntime(that, d, gen, null);
@@ -633,7 +634,7 @@ public class TypeUtils {
     }
 
     /** Output a metamodel map for runtime use. */
-    static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+    public static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
         encodeForRuntime(annotations, d, gen, new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 outputAnnotationsFunction(annotations, d, gen);
@@ -695,7 +696,7 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
+    public static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$CCMM$");
         List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
@@ -963,7 +964,7 @@ public class TypeUtils {
      * @param annotations The annotations to be output.
      * @param d The declaration to which the annotations belong.
      * @param gen The generator to use for output. */
-    static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
+    public static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
             final GenerateJsVisitor gen) {
         List<Tree.Annotation> anns = annotations == null ? null : annotations.getAnnotations();
         if (d != null) {
@@ -1014,7 +1015,7 @@ public class TypeUtils {
     }
 
     /** Abstraction for a callback that generates the runtime annotations list as part of the metamodel. */
-    static interface RuntimeMetamodelAnnotationGenerator {
+    public static interface RuntimeMetamodelAnnotationGenerator {
         public void generateAnnotations();
     }
 
@@ -1098,7 +1099,7 @@ public class TypeUtils {
      * @param leftTpName The name of the type parameter on the method
      * @return A map with the type parameter of the method as key
      * and the produced type belonging to the type argument of the term on the right. */
-    static Map<TypeParameter, ProducedType> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
+    public static Map<TypeParameter, ProducedType> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
             final String methodName, final String rightTpName, final String leftTpName) {
         Method md = (Method)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
         if (md == null) {

@@ -24,6 +24,8 @@ import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.js.util.JsLogger;
+import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
