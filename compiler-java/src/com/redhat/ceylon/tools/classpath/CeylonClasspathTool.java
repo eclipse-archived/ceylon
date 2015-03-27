@@ -63,7 +63,7 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
                 continue;
             // on duplicate, let's only keep the last version
             SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-            if(version != null && !versions.isEmpty() && !entry.version().equals(versions.last()))
+            if(version != null && !versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
                 continue;
             if(once)
                 once = false;
