@@ -92,12 +92,7 @@ public class CeylonClassLoader extends URLClassLoader {
         File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
 
         // Perform some sanity checks
-        if (!ceylonHome.isDirectory()) {
-            throw new FileNotFoundException("Could not determine the Ceylon home directory (" + ceylonHome + ")");
-        }
-        if (!ceylonRepo.isDirectory()) {
-            throw new FileNotFoundException("The Ceylon system repository could not be found (" + ceylonRepo + ")");
-        }
+        checkFolders(ceylonHome, ceylonRepo);
 
         List<File> archives = new LinkedList<File>();
 
@@ -144,6 +139,34 @@ public class CeylonClassLoader extends URLClassLoader {
 
     private static File getRepoUrl(File repo, String moduleName, String version, String extension) {
         return new File(repo, moduleName.replace('.', '/') + "/" + version + "/" + moduleName + "-" + version + "." + extension);
+    }
+
+    public static File getRepoJar(String moduleName, String version) throws FileNotFoundException, URISyntaxException {
+        return getRepoUrl(moduleName, version, "jar");
+    }
+
+    public static File getRepoCar(String moduleName, String version) throws FileNotFoundException, URISyntaxException {
+        return getRepoUrl(moduleName, version, "car");
+    }
+
+    public static File getRepoUrl(String moduleName, String version, String extension) throws URISyntaxException, FileNotFoundException {
+        // Determine the necessary folders
+        File ceylonHome = LauncherUtil.determineHome();
+        File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
+
+        // Perform some sanity checks
+        checkFolders(ceylonHome, ceylonRepo);
+        
+        return new File(ceylonRepo, moduleName.replace('.', '/') + "/" + version + "/" + moduleName + "-" + version + "." + extension);
+    }
+
+    private static void checkFolders(File ceylonHome, File ceylonRepo) throws FileNotFoundException {
+        if (!ceylonHome.isDirectory()) {
+            throw new FileNotFoundException("Could not determine the Ceylon home directory (" + ceylonHome + ")");
+        }
+        if (!ceylonRepo.isDirectory()) {
+            throw new FileNotFoundException("The Ceylon system repository could not be found (" + ceylonRepo + ")");
+        }
     }
 
     @Override
