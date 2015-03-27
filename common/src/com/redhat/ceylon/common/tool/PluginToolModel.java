@@ -16,6 +16,7 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
     private final String pluginSummary;
     private final ModuleSpec pluginModule;
     private final String pluginClassName;
+    private final boolean pluginHidden;
     
     public PluginToolModel(String name, String pluginPath) {
         super(name);
@@ -34,6 +35,7 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
         }
         pluginModule = ModuleSpec.parse(module, VERSION_REQUIRED);
         pluginClassName = pluginProperties.getProperty("class", getDefaultToolClassName(pluginModule.getName(), name));
+        pluginHidden = "true".equals(pluginProperties.getProperty("hidden", ""));
     }
 
     private static String getDefaultToolClassName(String module, String name) {
@@ -58,6 +60,11 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
         return pluginPath;
     }
     
+    @Override
+    public boolean isHidden() {
+        return pluginHidden || super.isHidden();
+    }
+
     @Override
     public boolean isPlumbing() {
         return false;

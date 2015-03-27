@@ -68,14 +68,18 @@ public class AnnotatedToolModel<T extends Tool> extends ToolModel<T> {
         setup();
         return super.getRest();
     }
+    
+    public boolean isHidden() {
+        return toolClass != null && toolClass.getAnnotation(Hidden.class) != null;
+    }
 
     @Override
     public boolean isPorcelain() {
-        return super.isPorcelain() && (toolClass == null || toolClass.getAnnotation(Hidden.class) == null);
+        return super.isPorcelain() && !isHidden();
     }
 
     @Override
     public boolean isPlumbing() {
-        return super.isPorcelain() && (toolClass == null || toolClass.getAnnotation(Hidden.class) != null);
+        return super.isPlumbing() && (toolClass == null || isHidden());
     }
 }
