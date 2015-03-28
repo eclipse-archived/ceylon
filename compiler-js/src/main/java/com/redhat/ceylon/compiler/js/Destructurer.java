@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
+import com.redhat.ceylon.compiler.js.util.JsWriter;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -17,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class Destructurer extends Visitor {
 
     private final GenerateJsVisitor gen;
+    private final JsWriter jsw;
     private final JsIdentifierNames names;
     private final String expvar;
     private final Set<Declaration> directAccess;
@@ -35,6 +37,7 @@ public class Destructurer extends Visitor {
     public Destructurer(final Tree.Pattern that, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess, final String expvar, boolean first) {
         this.gen = gen;
+        jsw = gen == null ? null : gen.out;
         names = gen == null ? null : gen.getNames();
         this.directAccess = directAccess;
         this.expvar = expvar;
@@ -42,7 +45,8 @@ public class Destructurer extends Visitor {
         that.visit(this);
         if (!attribs.isEmpty()) {
             for (Declaration attr : attribs) {
-                gen.out(";", names.self((TypeDeclaration)attr.getContainer()), ".", names.name(attr), "=", names.name(attr));
+                jsw.write(";", names.self((TypeDeclaration)attr.getContainer()), ".",
+                        names.name(attr), "=", names.name(attr));
             }
         }
     }
@@ -52,13 +56,13 @@ public class Destructurer extends Visitor {
         for (Tree.Pattern p : that.getPatterns()) {
             if (p instanceof Tree.VariablePattern) {
                 p.visit(this);
-                if (gen != null) {
+                if (jsw != null) {
                     if (((Tree.VariablePattern)p).getVariable().getType() instanceof Tree.SequencedType) {
-                        gen.out(".spanFrom(");
+                        jsw.write(".spanFrom(");
                     } else {
-                        gen.out(".$_get(");
+                        jsw.write(".$_get(");
                     }
-                    gen.out(Integer.toString(idx++), ")");
+                    jsw.write(Integer.toString(idx++), ")");
                 }
             } else {
                 added.addAll(new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")",
@@ -70,16 +74,16 @@ public class Destructurer extends Visitor {
     public void visit(final Tree.KeyValuePattern that) {
         if (that.getKey() instanceof Tree.VariablePattern) {
             that.getKey().visit(this);
-            if (gen != null) {
-                gen.out(".key");
+            if (jsw != null) {
+                jsw.write(".key");
             }
         } else {
             added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first).getVariables());
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);
-            if (gen != null) {
-                gen.out(".item");
+            if (jsw != null) {
+                jsw.write(".item");
             }
         } else {
             added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false).getVariables());
@@ -97,11 +101,11 @@ public class Destructurer extends Visitor {
         added.add(v);
         if (first) {
             first=false;
-        } else if (gen != null) {
-            gen.out(",");
+        } else if (jsw != null) {
+            jsw.write(",");
         }
-        if (gen != null) {
-            gen.out(names.name(v.getDeclarationModel()), "=",expvar);
+        if (jsw != null) {
+            jsw.write(names.name(v.getDeclarationModel()), "=",expvar);
         }
     }
 

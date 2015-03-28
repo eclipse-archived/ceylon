@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +19,8 @@ import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.JsUtils;
+import com.redhat.ceylon.compiler.js.util.JsWriter;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
@@ -114,15 +115,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private List<? extends Statement> currentStatements = null;
-    
-    private Writer out;
-    private final Writer originalOut;
+
+    public final JsWriter out;
+    private final PrintWriter verboseOut;
     public final Options opts;
-    final PrintWriter verboseOut;
     private CompilationUnit root;
     static final String function="function ";
-    private boolean needIndent = true;
-    private int indentLevel = 0;
 
     public Package getCurrentPackage() {
         return root.getUnit().getPackage();
@@ -149,20 +147,12 @@ public class GenerateJsVisitor extends Visitor
         } else {
             verboseOut = null;
         }
-        this.out = out.getWriter();
-        originalOut = out.getWriter();
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
         invoker = new InvocationGenerator(this, names, retainedVars);
-    }
-
-    void spitOut(String s) {
-        if (verboseOut == null) {
-            System.out.println(s);
-        } else {
-            verboseOut.println(s);
-        }
+        this.out = new JsWriter(out.getWriter(), verboseOut, opts.isMinify(), opts.isIndent());
+        out.setJsWriter(this.out);
     }
 
     public InvocationGenerator getInvoker() { return invoker; }
@@ -170,7 +160,7 @@ public class GenerateJsVisitor extends Visitor
     /** Returns the helper component to handle naming. */
     public JsIdentifierNames getNames() { return names; }
 
-    static interface GenerateCallback {
+    public static interface GenerateCallback {
         public void generateValue();
     }
     
@@ -179,88 +169,59 @@ public class GenerateJsVisitor extends Visitor
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
     public void out(String code, String... codez) {
-        try {
-            if (!opts.isMinify() && opts.isIndent() && needIndent) {
-                for (int i=0;i<indentLevel;i++) {
-                    out.write("    ");
-                }
-            }
-            needIndent = false;
-            out.write(code);
-            for (String s : codez) {
-                out.write(s);
-            }
-            if (verboseOut != null && out == originalOut) {
-                //Print code to console (when printing to REAL output)
-                verboseOut.print(code);
-                for (String s : codez) {
-                    verboseOut.print(s);
-                }
-                verboseOut.flush();
-            }
-        }
-        catch (IOException ioe) {
-            throw new RuntimeException("Generating JS code", ioe);
-        }
+        out.write(code,  codez);
     }
 
     /** Prints a newline. Indentation will automatically be printed by {@link #out(String, String...)}
      * when the next line is started. */
     void endLine() {
-        endLine(false);
+        out.endLine(false);
     }
     /** Prints a newline. Indentation will automatically be printed by {@link #out(String, String...)}
      * when the next line is started.
      * @param semicolon  if <code>true</code> then a semicolon is printed at the end
      *                  of the previous line*/
     public void endLine(boolean semicolon) {
-        if (semicolon) {
-            out(";");
-            if (opts.isMinify())return;
-        }
-        out("\n");
-        needIndent = opts.isIndent() && !opts.isMinify();
+        out.endLine(semicolon);
     }
     /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     void beginNewLine() {
-        if (!needIndent) { endLine(false); }
+        out.beginNewLine();
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
      * automatically be printed by {@link #out(String, String...)} when the next line is started. */
     void beginBlock() {
-        indentLevel++;
-        out("{");
-        if (!opts.isMinify())endLine(false);
+        out.beginBlock();
     }
 
     /** Decreases indentation level, prints a closing brace in new line (using
      * {@link #beginNewLine()}) and calls {@link #endLine()}. */
     void endBlockNewLine() {
-        endBlock(false, true);
+        out.endBlock(false, true);
     }
     /** Decreases indentation level, prints a closing brace in new line (using
      * {@link #beginNewLine()}) and calls {@link #endLine()}.
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace*/
     void endBlockNewLine(boolean semicolon) {
-        endBlock(semicolon, true);
+        out.endBlock(semicolon, true);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
      * {@link #beginNewLine()}). */
     void endBlock() {
-        endBlock(false, false);
+        out.endBlock(false, false);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
      * {@link #beginNewLine()}).
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace
      * @param newline  if <code>true</code> then additionally calls {@link #endLine()} */
     void endBlock(boolean semicolon, boolean newline) {
-        indentLevel--;
-        if (!opts.isMinify())beginNewLine();
-        out(semicolon ? "};" : "}");
-        if (semicolon&&opts.isMinify())return;
-        if (newline) { endLine(false); }
+        out.endBlock(semicolon, newline);
+    }
+
+    void spitOut(String s) {
+        out.spitOut(s);
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
@@ -269,12 +230,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private String generateToString(final GenerateCallback callback) {
-        final Writer oldWriter = out;
-        out = new StringWriter();
-        callback.generateValue();
-        final String str = out.toString();
-        out = oldWriter;
-        return str;
+        return out.generateToString(callback);
     }
     
     @Override
@@ -1444,31 +1400,9 @@ public class GenerateJsVisitor extends Visitor
         out(",true)");
     }
 
-    /** Escapes a StringLiteral (needs to be quoted). */
-    //TODO mover a utils
-    public String escapeStringLiteral(String s) {
-        StringBuilder text = new StringBuilder(s);
-        //Escape special chars
-        for (int i=0; i < text.length();i++) {
-            switch(text.charAt(i)) {
-            case 8:text.replace(i, i+1, "\\b"); i++; break;
-            case 9:text.replace(i, i+1, "\\t"); i++; break;
-            case 10:text.replace(i, i+1, "\\n"); i++; break;
-            case 12:text.replace(i, i+1, "\\f"); i++; break;
-            case 13:text.replace(i, i+1, "\\r"); i++; break;
-            case 34:text.replace(i, i+1, "\\\""); i++; break;
-            case 39:text.replace(i, i+1, "\\'"); i++; break;
-            case 92:text.replace(i, i+1, "\\\\"); i++; break;
-            case 0x2028:text.replace(i, i+1, "\\u2028"); i++; break;
-            case 0x2029:text.replace(i, i+1, "\\u2029"); i++; break;
-            }
-        }
-        return text.toString();
-    }
-
     @Override
     public void visit(final Tree.StringLiteral that) {
-        out("\"", escapeStringLiteral(that.getText()), "\"");
+        out("\"", JsUtils.escapeStringLiteral(that.getText()), "\"");
     }
 
     @Override
@@ -3246,7 +3180,7 @@ public class GenerateJsVisitor extends Visitor
                 that.getConditionList().getLocation()).append(")");
         conds.specialConditionsAndBlock(that.getConditionList(), null, getClAlias()+"asrt$(");
         //escape
-        out(",\"", escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
+        out(",\"", JsUtils.escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
                 that.getUnit().getFilename(), "');");
         endLine();
     }
@@ -3312,7 +3246,7 @@ public class GenerateJsVisitor extends Visitor
     /** Call internal function "throwexc" with the specified message and source location. */
     void generateThrow(String exceptionClass, String msg, Node node) {
         out(getClAlias(), "throwexc(", exceptionClass==null ? getClAlias() + "Exception":exceptionClass, "(");
-        out("\"", escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
+        out("\"", JsUtils.escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
                 node.getUnit().getFilename(), "')");
     }
 

@@ -34,11 +34,15 @@ public class JsOutput {
     final Map<String,String> requires = new HashMap<String,String>();
     public final MetamodelVisitor mmg;
     final String encoding;
+    private JsWriter jsw;
 
     public JsOutput(Module m, String encoding) throws IOException {
         this.encoding = encoding == null ? "UTF-8" : encoding;
         module = m;
         mmg = new MetamodelVisitor(m);
+    }
+    public void setJsWriter(JsWriter value) {
+        jsw = value;
     }
     public Writer getWriter() throws IOException {
         if (writer == null) {
@@ -87,7 +91,7 @@ public class JsOutput {
             out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=");
             writeModelRetriever();
             out(";return _CTM$;}\n");
-            getWriter().write("ex$.$CCMM$=$CCMM$;\n");
+            out("ex$.$CCMM$=$CCMM$;\n");
             if (!JsCompiler.isCompilingLanguageModule()) {
                 Module clm = module.getLanguageModule();
                 clalias = names.moduleAlias(clm) + ".";
@@ -103,8 +107,7 @@ public class JsOutput {
             while ((line = r.readLine()) != null) {
                 final String c = line.trim();
                 if (!c.isEmpty()) {
-                    getWriter().write(c);
-                    getWriter().write('\n');
+                    out(c, "\n");
                 }
             }
         } catch(IOException ex) {
@@ -131,6 +134,10 @@ public class JsOutput {
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
     public void out(String code, String... codez) {
+        if (jsw != null) {
+            jsw.write(code, codez);
+            return;
+        }
         try {
             getWriter().write(code);
             for (String s : codez) {
@@ -180,4 +187,10 @@ public class JsOutput {
         }
     }
 
+    public void openWrapper() throws IOException {
+        JsCompiler.beginWrapper(getWriter());
+    }
+    public void closeWrapper() throws IOException {
+        JsCompiler.endWrapper(writer);
+    }
 }

@@ -1073,13 +1073,13 @@ public class TypeUtils {
                             if (ref != null && ref.length() < doc.length()) {
                                 gen.out(gen.getClAlias(), "doc$($CCMM$,", ref);
                             } else {
-                                gen.out(gen.getClAlias(), "doc(\"", gen.escapeStringLiteral(doc), "\"");
+                                gen.out(gen.getClAlias(), "doc(\"", JsUtils.escapeStringLiteral(doc), "\"");
                             }
                         } else {
                             boolean farg = true;
                             for (String s : a.getPositionalArguments()) {
                                 if (farg)farg=false; else gen.out(",");
-                                gen.out("\"", gen.escapeStringLiteral(s), "\"");
+                                gen.out("\"", JsUtils.escapeStringLiteral(s), "\"");
                             }
                         }
                     }

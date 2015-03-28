@@ -389,7 +389,7 @@ public class JsCompiler {
             jsout = newJsOutput(mod);
             output.put(mod, jsout);
             if (opts.isModulify()) {
-                beginWrapper(jsout.getWriter());
+                jsout.openWrapper();
             }
         }
         return jsout;
@@ -431,7 +431,7 @@ public class JsCompiler {
                 jsout.publishUnsharedDeclarations(names);
             }
             if (opts.isModulify()) {
-                endWrapper(jsout.getWriter());
+                jsout.closeWrapper();
             }
             String moduleName = entry.getKey().getNameAsString();
             String moduleVersion = entry.getKey().getVersion();
