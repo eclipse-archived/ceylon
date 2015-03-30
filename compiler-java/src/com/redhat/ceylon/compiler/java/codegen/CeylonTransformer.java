@@ -501,9 +501,6 @@ public class CeylonTransformer extends AbstractTransformer {
             } else {
                 throw new BugException(imported, "unhandled module import");
             }
-            if (quotedName.equals("ceylon$language")) {
-                continue;
-            }
             List<JCAnnotation> importAnnotations = expressionGen().transformAnnotations(true, OutputElement.FIELD, imported);
             JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
             Name fieldName = names().fromString(quotedName);
