@@ -606,7 +606,7 @@ shared void checkModuleAndImports() {
     
     // module imports
     value deps = m.dependencies;
-    check(1 == deps.size, "module 1");
+    check(2 == deps.size, "module 1");
     assert(exists dep = deps[0]);
     check("check" == dep.name, "module 2");
     check("0.1" == dep.version, "module 3");

@@ -111,9 +111,6 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             //FreeImport[] imports = new FreeImport[modelImports.size()];
             ArrayList<FreeImport> sb = new ArrayList<FreeImport>(modelImports.size());
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
-                if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
-                    continue;
-                }
                 sb.add(new FreeImport(this, moduleImport));
             }
             FreeImport[] array = sb.toArray(new FreeImport[0]);
