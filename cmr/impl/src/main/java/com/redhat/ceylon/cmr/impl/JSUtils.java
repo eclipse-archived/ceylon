@@ -211,9 +211,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 exported = m.containsKey("exp");
             }
             String name = ModuleUtil.moduleName(module);
-            if (!"ceylon.language".equals(name)) {
-                deps.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
-            }
+            deps.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
         }
         ModuleInfo result = new ModuleInfo(null, deps);
         if(overrides != null)
