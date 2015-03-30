@@ -7,14 +7,13 @@ Eclipse-BundleShape: dir
 Bundle-Vendor: RedHat
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
  ))"
-Bundle-ClassPath: .,
- lib/ceylon-bootstrap.jar
-Export-Package: com.redhat.ceylon.launcher,
- com.redhat.ceylon.dist.osgi
+Bundle-ClassPath: .
+Export-Package: com.redhat.ceylon.dist.osgi
 Bundle-ActivationPolicy: lazy;exclude:="*"
 Import-Package: org.osgi.framework;version="1.6",
  org.osgi.framework.wiring;version="1.0"
-Require-Bundle: ceylon.language;bundle-version="1.1.1",
+Require-Bundle: ceylon.bootstrap;bundle-version="1.1.1",
+ ceylon.language;bundle-version="1.1.1",
  ceylon.runtime;bundle-version="1.1.1",
  com.github.rjeschke.txtmark;bundle-version="0.11",
  com.github.lookfirst.sardine;bundle-version="5.1",
