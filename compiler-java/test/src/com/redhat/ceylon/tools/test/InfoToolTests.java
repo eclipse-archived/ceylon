@@ -78,11 +78,7 @@ public class InfoToolTests extends AbstractToolTests {
                 "Origin:      Local source folder\n"+
                 "Dependency Tree (up to depth 1):\n"+
                 "  shared java.base/7\n"+
-                "  optional java.desktop/7\n"+
-                "\n"+
-                "Dependencies (up to depth 1):\n"+
-                "  java.base/7\n"+
-                "  java.desktop/7\n"
+                "  optional java.desktop/7\n"
         ));
     }
 
