@@ -1,0 +1,5 @@
+<overrides>
+    <module module="a">
+        <share module="c"/>
+    </module>
+</overrides>

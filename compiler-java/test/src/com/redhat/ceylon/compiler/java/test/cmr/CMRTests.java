@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,7 +56,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.tools.Diagnostic;
-import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaCompiler;
@@ -63,7 +63,6 @@ import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assume;
@@ -78,7 +77,16 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.sun.source.util.TaskEvent;
+import com.sun.source.util.TaskListener;
+import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 
 public class CMRTests extends CompilerTests {
     
@@ -777,8 +785,8 @@ public class CMRTests extends CompilerTests {
                 "modules/ceylonAetherConflict/module.ceylon", "modules/ceylonAetherConflict/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
-                new CompilerError(Kind.WARNING, null, 20, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
-                new CompilerError(Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
+                new CompilerError(Diagnostic.Kind.WARNING, null, 20, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
+                new CompilerError(Diagnostic.Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
     }
     
@@ -1417,5 +1425,160 @@ public class CMRTests extends CompilerTests {
                 sb.append(line).append("\n");
             return sb.toString();
         }
+    }
+    
+    private void setupBinaryModulesForOverridesCeylonModuleTests() {
+        Boolean result = null;
+        for (String version : Arrays.asList("v1", "v2")) {
+            // Compile modules and generate archives
+            result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"modules/overridesCeylonModule/" + version),
+                    "modules/overridesCeylonModule/" + version + "/a/module.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/b/module.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/b/hidden/package.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/b/shared/package.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/c/module.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/c/hidden/package.ceylon", 
+                    "modules/overridesCeylonModule/" + version + "/c/shared/package.ceylon").call();
+            Assert.assertEquals(Boolean.TRUE, result);
+        }
+    }
+    
+    private static class ModulesRetriever implements TaskListener {
+        private com.sun.tools.javac.util.Context context = null;
+        HashMap<String, Module> modules = null;
+
+        public ModulesRetriever(com.sun.tools.javac.util.Context context) {
+            this.context = context;
+        }
+        
+        @Override
+        public void started(TaskEvent e) {
+        }
+
+        @Override
+        public void finished(TaskEvent e) {
+            if(e.getKind() == TaskEvent.Kind.ENTER){
+                if(modules == null) {
+                    modules = new HashMap<>();
+                    Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+                    assert(ceylonContext != null);
+                    Modules modules = ceylonContext.getModules();
+                    assert(modules != null);
+                    for (Module m : modules.getListOfModules()) {
+                        String name = m.getNameAsString();
+                        if (name.equals("a") || name.equals("b") ||  name.equals("c")) {
+                            this.modules.put(name, m);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @Test
+    public void testOverridesCeylonModuleInSourceImport(){
+        setupBinaryModulesForOverridesCeylonModuleTests();
+            
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl compilerTask = getCompilerTask(
+                Arrays.asList(
+                        "-src", getPackagePath()+"/modules",
+                        "-overrides", getPackagePath() +"modules/overridesCeylonModule/overrides-a-version.xml"
+                ),
+                collector,
+                "modules/overridesCeylonModule/module.ceylon");
+        ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
+        compilerTask.setTaskListener(modulesRetriever);
+        Boolean result = compilerTask.call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        assert(modulesRetriever.modules != null);
+        Module a = modulesRetriever.modules.get("a");
+        Module b = modulesRetriever.modules.get("b");
+        Module c = modulesRetriever.modules.get("c");
+        assert(a != null);
+        assert(b != null);
+        assert(c != null);
+
+        assertEquals("The version override should not be applied to modules imported in source code", "1", a.getVersion());
+        assertEquals("The version override should not be applied to modules imported in source code", "1", b.getVersion());
+        assertEquals("The version override should not be applied to modules imported in source code", "1", c.getVersion());
+    }
+
+    @Test
+    public void testOverridesCeylonModuleVersionProducesJavaModule(){
+        setupBinaryModulesForOverridesCeylonModuleTests();
+            
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl compilerTask = getCompilerTask(
+                Arrays.asList(
+                        "-src", getPackagePath()+"/modules",
+                        "-overrides", getPackagePath() +"modules/overridesCeylonModule/overrides-b-version.xml"
+                ),
+                collector,
+                "modules/overridesCeylonModule/module.ceylon");
+        ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
+        compilerTask.setTaskListener(modulesRetriever);
+        Boolean result = compilerTask.call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        assert(modulesRetriever.modules != null);
+
+        Module b = modulesRetriever.modules.get("b");
+        assert(b != null);
+        assertEquals("The Ceylon module 'b' is now seen as a Java module when a version override is applied", false, b.isJava());
+    }
+
+    @Test
+    public void testOverridesCeylonModuleVersionAlterdPackageSharing(){
+        setupBinaryModulesForOverridesCeylonModuleTests();
+            
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl compilerTask = getCompilerTask(
+                Arrays.asList(
+                        "-src", getPackagePath()+"/modules",
+                        "-overrides", getPackagePath() +"modules/overridesCeylonModule/overrides-b-version.xml"
+                ),
+                collector,
+                "modules/overridesCeylonModule/module.ceylon", "modules/overridesCeylonModule/testImportHiddenPackage.ceylon");
+        ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
+        compilerTask.setTaskListener(modulesRetriever);
+        Boolean result = compilerTask.call();
+        Assert.assertEquals(Boolean.FALSE, result);
+        
+        compareErrors(collector.get(Diagnostic.Kind.ERROR),
+                new CompilerError(2, "imported package is not shared: 'b.hidden'"));
+    }
+
+    private ModuleImport getModuleImport(Module m, String name) {
+        for (ModuleImport i : m.getImports()) {
+            if (i.getModule().getNameAsString().equals(name)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Test
+    public void testOverridesCeylonModuleShareImport() {
+        setupBinaryModulesForOverridesCeylonModuleTests();
+            
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl compilerTask = getCompilerTask(
+                Arrays.asList(
+                        "-src", getPackagePath()+"/modules",
+                        "-overrides", getPackagePath() +"modules/overridesCeylonModule/overrides-share-c-import.xml"
+                ),
+                collector,
+                "modules/overridesCeylonModule/module.ceylon");
+        ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
+        compilerTask.setTaskListener(modulesRetriever);
+        Boolean result = compilerTask.call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        
+        Module a = modulesRetriever.modules.get("a");
+        assert(a != null);
+        ModuleImport cImport = getModuleImport(a, "c");
+        assert(cImport != null);
+        assertEquals("The 'c' module import should be seen as 'exported' after applying the overrides file", true, cImport.isExport());
     }
 }
