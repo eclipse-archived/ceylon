@@ -55,6 +55,9 @@
        the directory test results get written into -->
     <property name="parser.test.src" location="corpus/tests" />
     <property name="parser.test.dst" location="${build}/test/parser" />
+    <tstamp>
+        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+    </tstamp>
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}" />
@@ -221,9 +224,6 @@
     <target name="compiler.jar" depends="compiler.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
         <mkdir dir="${build.bin.repo}" />
-        <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
-        </tstamp>
         <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
@@ -279,6 +279,10 @@
                 <include name="com/redhat/ceylon/launcher/**" />
                 <exclude name="com/redhat/ceylon/launcher/Start.class" />
             </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
+                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.version}.${qualifier}"/>
+            </manifest>
         </jar>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.jar}" />
@@ -347,17 +351,30 @@
     </target>
 
 	<target name="ide-quick-internal" depends="test.classes">
-        <property name="archivePath" value="${ceylon.compiler.lib}"/>
-        <basename file="${archivePath}" property="archiveFileName"/>
-        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
-        <mkdir dir="${proxy-project}"/>
-        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
-        <copy toDir="${proxy-project}" overwrite="true">
-            <zipfileset src="${archivePath}" includes="META-INF/**"/>
-            <fileset file="${archivePath}"/>
+        <property name="compilerArchivePath" value="${ceylon.compiler.lib}"/>
+        <basename file="${compilerArchivePath}" property="compilerArchiveFileName"/>
+        <property name="compiler-proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${compilerArchiveFileName}"/>
+        <mkdir dir="${compiler-proxy-project}"/>
+        <delete failonerror="false" dir="${compiler-proxy-project}/META-INF"/>
+        <copy toDir="${compiler-proxy-project}" overwrite="true">
+            <zipfileset src="${compilerArchivePath}" includes="META-INF/**"/>
+            <fileset file="${compilerArchivePath}"/>
         </copy>
-        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        <manifest file="${compiler-proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${compilerArchiveFileName}"/>
+        </manifest>
+
+		<property name="bootstrapArchivePath" value="${ceylon.bootstrap.lib}"/>
+        <basename file="${bootstrapArchivePath}" property="bootstrapArchiveFileName"/>
+        <property name="bootstrap-proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${bootstrapArchiveFileName}"/>
+        <mkdir dir="${bootstrap-proxy-project}"/>
+        <delete failonerror="false" dir="${bootstrap-proxy-project}/META-INF"/>
+        <copy toDir="${bootstrap-proxy-project}" overwrite="true">
+            <zipfileset src="${bootstrapArchivePath}" includes="META-INF/**"/>
+            <fileset file="${bootstrapArchivePath}"/>
+        </copy>
+        <manifest file="${bootstrap-proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${bootstrapArchiveFileName}"/>
         </manifest>
 
 	    <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
