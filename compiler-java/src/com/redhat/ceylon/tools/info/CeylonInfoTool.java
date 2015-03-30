@@ -648,7 +648,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         seenVersions.add(dep.getVersion());
         newline();
         
-        if (recurse) {
+        if (recurse && !"ceylon.language".equals(dep.getName())) {
             Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, binaryMajor, binaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);
