@@ -443,10 +443,12 @@ public class CeylonInfoTool extends RepoUsingTool {
             SortedMap<String, SortedSet<String>> names = new TreeMap<>();
             recurseDependencies(version, names, 0);
 
-            newline();
-            msg("module.dependencies.flat", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
-            listDependencies(names);
-
+            if (depth != 1) {
+                newline();
+                msg("module.dependencies.flat", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
+                listDependencies(names);
+            }
+            
             listDependencyConflictsIfAny(names);
         }
     }
