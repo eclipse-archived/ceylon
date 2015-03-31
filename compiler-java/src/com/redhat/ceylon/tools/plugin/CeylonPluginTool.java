@@ -299,9 +299,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         if(zipSource != null)
             extractScripts(zipSource, moduleScriptDir);
         else{
-            for(File root : existingScriptFolders){
-                FileUtil.copyAll(root, moduleScriptDir);
-            }
+            copyScripts(existingScriptFolders, moduleScriptDir);
         }
         msg("success.installed", module.getName(), moduleScriptDir);
         newline();
@@ -365,6 +363,12 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             }
         });
 
+    }
+
+    private void copyScripts(List<File> existingScriptFolders, File moduleScriptDir) throws IOException {
+        for(File root : existingScriptFolders){
+            FileUtil.copyAll(root, moduleScriptDir);
+        }
     }
 
     private boolean addScripts(RepositoryManager outputRepositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
