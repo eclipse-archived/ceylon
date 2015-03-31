@@ -20,6 +20,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -235,7 +238,25 @@ public class AetherUtils {
                     String dArtifactId = dCo.getArtifactId();
                     String dVersion = dCo.getVersion();
                     boolean export = false;
-                    boolean optional = dep.isOptional();
+                    boolean optional = false;
+                    try {
+                        optional = dep.isOptional();
+                    } catch (NoSuchMethodError e) {
+                        e.printStackTrace();
+                        String locationMessage = "";
+                        Class clazz = dep.getClass();
+                        ProtectionDomain d = clazz.getProtectionDomain();
+                        if (d != null) {
+                            CodeSource cs = d.getCodeSource();
+                            if (cs != null) {
+                                URL locationURL = cs.getLocation();
+                                if (locationURL != null) {
+                                    locationMessage = " loaded from : " + locationURL.toString();
+                                }
+                            }
+                        }
+                        System.err.println("MavenArtifactInfo class : " + clazz.getName() + locationMessage);
+                    }
                     boolean isCeylon = false;
                     ArtifactContext dContext = null;
                     if(overrides != null)
