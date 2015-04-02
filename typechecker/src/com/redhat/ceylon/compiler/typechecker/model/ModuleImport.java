@@ -9,10 +9,11 @@ import java.util.List;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleImport implements Annotated {
-    private final boolean optional;
-    private final boolean export;
-    private final Module module;
+    private boolean optional;
+    private boolean export;
+    private Module module;
     private List<Annotation> annotations = new ArrayList<Annotation>();
+    private ModuleImport overridenModuleImport = null;
 
     public ModuleImport(Module module, boolean optional, boolean export) {
         this.module = module;
@@ -35,6 +36,22 @@ public class ModuleImport implements Annotated {
     @Override
     public List<Annotation> getAnnotations() {
         return annotations;
+    }
+
+    public ModuleImport getOverridenModuleImport() {
+        return overridenModuleImport;
+    }
+
+    public boolean override(ModuleImport moduleImportOverride) {
+        if (overridenModuleImport == null
+        		&& moduleImportOverride != null) {
+            this.overridenModuleImport = new ModuleImport(module, optional, export);
+            module = moduleImportOverride.getModule();
+            optional = moduleImportOverride.isOptional();
+            export = moduleImportOverride.isExport();
+            return true;
+        }
+        return false;
     }
 
     @Override

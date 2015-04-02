@@ -34,6 +34,7 @@ public class Module
     private String memoisedName;
     private ProducedTypeCache cache = new ProducedTypeCache();
     private String signature;
+    private List<ModuleImport> overridenImports = null;
 
     /**
      * Whether or not the module is available in the
@@ -320,6 +321,20 @@ public class Module
             }
         }
         return signature;
+    }
+
+    public List<ModuleImport> getOverridenImports() {
+        return overridenImports != null ? Collections.unmodifiableList(overridenImports) : null;
+    }
+
+    public boolean overrideImports(List<ModuleImport> newModuleImports) {
+        if (overridenImports == null 
+                && newModuleImports != null) {
+            overridenImports  = imports;
+            imports = newModuleImports;
+            return true;
+        }
+        return false;
     }
 
     @Override

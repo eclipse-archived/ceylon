@@ -470,4 +470,19 @@ public class ModuleManager {
     public void visitedModule(Module module, boolean forCompiledModule) {
         // to be overridden by subclasses
     }
+
+    protected Module overridesModule(ArtifactResult artifact,
+            Module module, ModuleImport moduleImport) {
+        String realName = artifact.name();
+        String realVersion = artifact.version();
+        if (! realName.equals(module.getNameAsString()) ||
+            ! realVersion.equals(module.getVersion())) {
+            if (module != module.getLanguageModule()) {
+                Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
+                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport()));
+                return realModule;
+            }
+        }
+        return null;
+    }
 }
