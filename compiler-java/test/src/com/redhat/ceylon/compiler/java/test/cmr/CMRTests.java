@@ -79,14 +79,12 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 
 public class CMRTests extends CompilerTests {
     
@@ -1482,6 +1480,7 @@ public class CMRTests extends CompilerTests {
         ErrorCollector collector = new ErrorCollector();
         CeyloncTaskImpl compilerTask = getCompilerTask(
                 Arrays.asList(
+                        "-continue",
                         "-src", getPackagePath()+"/modules",
                         "-overrides", getPackagePath() +"modules/overridesCeylonModule/overrides-a-version.xml"
                 ),
@@ -1490,8 +1489,10 @@ public class CMRTests extends CompilerTests {
         ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
         compilerTask.setTaskListener(modulesRetriever);
         Boolean result = compilerTask.call();
-        Assert.assertEquals(Boolean.TRUE, result);
-
+        Assert.assertEquals(Boolean.FALSE, result);
+        compareErrors(collector.get(Diagnostic.Kind.ERROR),
+                new CompilerError(2, "The module import should not be overriden, since it is explicitely imported by a project source module"));
+        
         assert(modulesRetriever.modules != null);
         Module a = modulesRetriever.modules.get("a");
         Module b = modulesRetriever.modules.get("b");
@@ -1500,9 +1501,9 @@ public class CMRTests extends CompilerTests {
         assert(b != null);
         assert(c != null);
 
-        assertEquals("The version override should not be applied to modules imported in source code", "1", a.getVersion());
-        assertEquals("The version override should not be applied to modules imported in source code", "1", b.getVersion());
-        assertEquals("The version override should not be applied to modules imported in source code", "1", c.getVersion());
+        assertEquals("The version override should not be applied to modules imported in source code", "2", a.getVersion());
+        assertEquals("The version override should not be applied to modules imported in source code", "2", b.getVersion());
+        assertEquals("The version override should not be applied to modules imported in source code", "2", c.getVersion());
     }
 
     @Test
