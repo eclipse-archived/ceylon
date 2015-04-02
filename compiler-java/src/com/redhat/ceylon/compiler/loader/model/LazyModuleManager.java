@@ -20,13 +20,20 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -142,6 +149,27 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(!lazyModule.isJava() && !module.isDefault()){
                 // it must be a Ceylon module
                 // default modules don't have any module descriptors so we can't check them
+                Overrides overrides = getContext().getRepositoryManager().getOverrides();
+                if (overrides != null) {
+                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.name(), artifact.version())) != null) {
+                        Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
+                        for (ModuleImport i : lazyModule.getImports()) {
+                            Module m = i.getModule();
+                            if (m != null) {
+                                existingModuleDependencies.add(new ModuleDependencyInfo(m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
+                            }
+                        }
+                        ModuleInfo sourceModuleInfo = new ModuleInfo(null, existingModuleDependencies);
+                        ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
+                        List<ModuleImport> newModuleImports = new ArrayList<>();
+                        for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
+                            Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
+                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport());
+                            newModuleImports.add(moduleImport);
+                        }
+                        module.overrideImports(newModuleImports);
+                    }
+                }
                 if(!Versions.isJvmBinaryVersionSupported(lazyModule.getMajor(), lazyModule.getMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
                             dependencyTree,
