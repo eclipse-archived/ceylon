@@ -362,10 +362,8 @@ div .type-alias-specifier {
 .hierarchy-arrow-right,
 .hierarchy-arrow-down {
 	width: 0;
-	height: 0; 
-	cursor : pointer;
+	height: 0;
 	display: inline-block;
-	cursor: pointer;
 }
 .hierarchy-arrow-right {
 	border-top: 5px solid transparent;
@@ -378,6 +376,11 @@ div .type-alias-specifier {
 	border-right: 5px solid transparent;
 	border-bottom: 5px solid transparent;
 	border-top: 5px solid rgb(80, 80, 80);
+}
+.hierarchy-arrow-container {
+	cursor: pointer;
+	display: inline-block;
+	width: 16px;
 }
 
 td.shrink {

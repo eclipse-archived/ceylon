@@ -33,10 +33,11 @@ if( window.Rainbow ) {
  */
 $(".hierarchy-arrow-down").each(function() {
 	var hierarchyArrow = $(this);
-	var hierarchyLevel = hierarchyArrow.parent();
+	var hierarchyArrowCont = hierarchyArrow.parent();
+	var hierarchyLevel = hierarchyArrowCont.parent();
 	var subhierarchy = $(".subhierarchy", hierarchyLevel);
 
-	hierarchyArrow.click(function() {
+	hierarchyArrowCont.click(function() {
 		hierarchyArrow.toggleClass("hierarchy-arrow-down");
 		hierarchyArrow.toggleClass("hierarchy-arrow-right");
 		subhierarchy.toggle();    

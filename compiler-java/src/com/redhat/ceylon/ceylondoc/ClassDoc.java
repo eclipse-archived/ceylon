@@ -495,7 +495,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void writeTypeHierarchyLevel(TypeDeclaration type, boolean hasSublevels) throws IOException {
         open("ul class='hierarchy-level'", "li");
         if( hasSublevels ) {
-            write("<span class='hierarchy-arrow-down' title='Click for expand/collapse'></span>");
+            write("<span class='hierarchy-arrow-container' title='Click for expand/collapse'><span class='hierarchy-arrow-down'></span></span>");
         } else {
             write("<span class='hierarchy-arrow-none'></span>");
         }
