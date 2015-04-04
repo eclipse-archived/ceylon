@@ -3039,13 +3039,13 @@ stringExpression returns [Atom atom]
       { st = new StringTemplate(null);
         st.addStringLiteral(new StringLiteral($STRING_START));
         $atom=st; }
-      e1=expression
+      e1=functionOrExpression
       { if ($e1.expression!=null) 
             st.addExpression($e1.expression); }
       (
         STRING_MID
         { st.addStringLiteral(new StringLiteral($STRING_MID)); }
-        e2=expression
+        e2=functionOrExpression
         { if ($e2.expression!=null) 
               st.addExpression($e2.expression); }
       )*
