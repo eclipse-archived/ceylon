@@ -203,7 +203,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A character <emphasis>string template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <synopsis>StringTemplate: StringStart (Expression StringMid)* Expression StringEnd</synopsis>
+        <synopsis>StringTemplate: StringStart Expression (StringMid Expression)* StringEnd</synopsis>
         
         <para>Each interpolated expression contained in the string template must have 
         a type assignable to <literal>Object</literal> defined in 
