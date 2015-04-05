@@ -69,7 +69,7 @@ shared interface Map<out Key,out Item>
             => object
             satisfies Collection<Key> {
         contains(Object key) => outer.defines(key);
-        iterator() => { for (k->v in outer) k }.iterator();
+        iterator() => outer.map(Entry.key).iterator();
         clone() => [*this];
         size => outer.size;
     };
