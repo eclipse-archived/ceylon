@@ -91,7 +91,7 @@ shared interface Map<out Key,out Item>
                 return false;
             }
         }
-        iterator() => { for (k->v in outer) v }.iterator();
+        iterator() => outer.map(Entry.item).iterator();
         clone() => [*this];
         size => outer.size;
     };
