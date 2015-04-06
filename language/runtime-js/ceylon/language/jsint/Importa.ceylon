@@ -9,4 +9,5 @@ native class Importa(name, version, shared Module _cont, shared Anything _anns) 
     shared actual native Module container;
     shared actual native Boolean annotated<Annotation>()
             given Annotation satisfies AnnotationType;
+    shared actual String string => "import ``name``/``version``";
 }
