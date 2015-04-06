@@ -53,7 +53,8 @@ public class TypeArgumentVisitor extends Visitor {
         }
         if (dec.isParameter()) {
         	flip();
-            boolean topLevel = parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
+            boolean topLevel = 
+                    parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
             	parameterizedDeclaration = 
             	        ((MethodOrValue) dec).getInitializerParameter()
