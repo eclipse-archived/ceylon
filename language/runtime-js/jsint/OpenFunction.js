@@ -2,7 +2,7 @@ function OpenFunction$jsint(pkg,meta,that){
     if (meta===undefined)throw Exception("Function reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
     $init$OpenFunction$jsint();
     if (that===undefined)that=new OpenFunction$jsint.$$;
-    that._pkg=pkg;
+    that.pkg_=pkg;
     var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
       //it's a metamodel
