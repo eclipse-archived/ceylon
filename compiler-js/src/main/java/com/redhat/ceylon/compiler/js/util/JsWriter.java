@@ -14,18 +14,14 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 public class JsWriter {
 
     private final boolean minify;
-    private final boolean indent;
-    private boolean needIndent;
-    private int indentLevel;
     private final PrintWriter verboseOut;
     private Writer out;
     private Writer originalOut;
 
-    public JsWriter(Writer output, PrintWriter verboseOut, boolean minify, boolean indent) {
+    public JsWriter(Writer output, PrintWriter verboseOut, boolean minify) {
         out = output;
         this.verboseOut = verboseOut;
         this.minify = minify;
-        this.indent = indent;
         originalOut = out;
     }
 
@@ -35,12 +31,6 @@ public class JsWriter {
      * @param codez Optional additional strings to print after the main code. */
     public void write(String code, String... codez) {
         try {
-            if (!minify && indent && needIndent) {
-                for (int i=0;i<indentLevel;i++) {
-                    out.write("    ");
-                }
-            }
-            needIndent = false;
             out.write(code);
             for (String s : codez) {
                 out.write(s);
@@ -68,18 +58,16 @@ public class JsWriter {
             if (minify)return;
         }
         write("\n");
-        needIndent = indent && !minify;
     }
     /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     public void beginNewLine() {
-        if (!needIndent) { endLine(false); }
+        endLine(false);
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
      * automatically be printed by {@link #out(String, String...)} when the next line is started. */
     public void beginBlock() {
-        indentLevel++;
         write("{");
         if (!minify)endLine(false);
     }
@@ -89,7 +77,6 @@ public class JsWriter {
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace
      * @param newline  if <code>true</code> then additionally calls {@link #endLine()} */
     public void endBlock(boolean semicolon, boolean newline) {
-        indentLevel--;
         if (!minify)beginNewLine();
         write(semicolon ? "};" : "}");
         if (semicolon&&minify)return;

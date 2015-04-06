@@ -30,7 +30,6 @@ public class Options {
     private String outRepo = DefaultToolOptions.getCompilerOutputRepo();
     private boolean optimize = true;
     private boolean modulify = true;
-    private boolean indent = true;
     private boolean comment = true;
     private String verbose;
     private boolean profile;
@@ -229,12 +228,12 @@ public class Options {
         return this;
     }
 
+    @Deprecated
     public boolean isIndent() {
-        return indent;
+        return false;
     }
-    
+    @Deprecated
     public Options indent(boolean indent) {
-        this.indent = indent;
         return this;
     }
 

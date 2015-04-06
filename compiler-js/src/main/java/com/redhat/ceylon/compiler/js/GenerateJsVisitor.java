@@ -151,7 +151,7 @@ public class GenerateJsVisitor extends Visitor
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
         invoker = new InvocationGenerator(this, names, retainedVars);
-        this.out = new JsWriter(out.getWriter(), verboseOut, opts.isMinify(), opts.isIndent());
+        this.out = new JsWriter(out.getWriter(), verboseOut, opts.isMinify());
         out.setJsWriter(this.out);
     }
 

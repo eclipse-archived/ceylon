@@ -327,7 +327,7 @@ public class JsCompiler {
                         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
-                                if (!opts.isIndent() || opts.isMinify()) {
+                                if (opts.isMinify()) {
                                     line = line.trim();
                                     if (!opts.isComment() && line.startsWith("//") && !line.contains("*/")) {
                                         continue;
