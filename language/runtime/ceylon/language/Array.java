@@ -1630,7 +1630,9 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
-    public Integer firstOccurrence(java.lang.Object element) {
+    public Integer firstOccurrence(
+            @TypeInfo("ceylon.language::Anything") 
+            @Name("element") java.lang.Object element) {
         if (element==null) {
             for (int i=0; i<size; i++) {
                 if (unsafeItem(i)==null) {
@@ -1651,7 +1653,9 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
-    public Integer lastOccurrence(java.lang.Object element) {
+    public Integer lastOccurrence(
+            @TypeInfo("ceylon.language::Anything") 
+            @Name("element") java.lang.Object element) {
         if (element==null) {
             for (int i=size-1; i>=0; i++) {
                 if (unsafeItem(i)==null) {
@@ -1671,7 +1675,9 @@ public final class Array<Element>
     }
     
     @Override
-    public boolean occurs(java.lang.Object element) {
+    public boolean occurs(
+            @TypeInfo("ceylon.language::Anything") 
+            @Name("element") java.lang.Object element) {
         if (element==null) {
             for (int i=0; i<size; i++) {
                 if (unsafeItem(i)==null) {
