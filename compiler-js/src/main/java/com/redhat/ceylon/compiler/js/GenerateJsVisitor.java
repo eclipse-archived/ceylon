@@ -721,7 +721,8 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
                 for (Statement s: statements) {
-                    if (s instanceof Tree.ClassOrInterface == false) {
+                    if (s instanceof Tree.ClassOrInterface == false && !(s instanceof Tree.AttributeDeclaration &&
+                            ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
                         addToPrototype(d, s, plist);
                     }
                 }
