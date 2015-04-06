@@ -299,6 +299,7 @@ public class TypeUtils {
                     TypeDeclaration ontoy = Util.getContainingClassOrInterface(node.getScope());
                     while (ontoy.isAnonymous())ontoy=Util.getContainingClassOrInterface(ontoy.getScope());
                     gen.out(gen.getNames().self(ontoy));
+                    if (ontoy == parent)outers--;
                     for (int i = 0; i < outers; i++) {
                         gen.out(".outer$");
                     }

@@ -500,8 +500,15 @@ public class GenerateJsVisitor extends Visitor
         String tname = names.name(d);
         tname = tname.substring(0, tname.length()-2);
         String _tmp=names.createTempVariable();
-        out(names.self(outer), ".", tname, "=function(){var ", _tmp, "=");
-        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, true);
+        out(names.self(outer), ".", tname, "=function(){var ");
+        ProducedType pt = that.getTypeSpecifier().getType().getTypeModel();
+        boolean skip=true;
+        if (pt.containsTypeParameters() && outerSelf(d)) {
+            out("=this,");
+            skip=false;
+        }
+        out(_tmp, "=");
+        TypeUtils.typeNameOrList(that, pt, this, skip);
         out(";", _tmp, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that,d,this);
         out(";return ", _tmp, ";}");
