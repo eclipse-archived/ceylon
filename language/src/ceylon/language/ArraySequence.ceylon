@@ -140,4 +140,7 @@ class ArraySequence<out Element>(array)
     
     lastOccurrence(Anything element) 
             => array.lastOccurrence(element);
+    
+    occurs(Anything element) => array.occurs(element);
+    
 }
