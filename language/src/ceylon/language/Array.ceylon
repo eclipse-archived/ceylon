@@ -100,6 +100,12 @@ shared final native class Array<Element>({Element*} elements)
     Result|Element|Null reduce<Result>
             (Result accumulating(Result|Element partial, Element element));
     
+    shared actual native
+    Integer? firstOccurrence(Anything element);
+    shared actual native
+    Integer? lastOccurrence(Anything element);
+    shared actual native
+    Boolean occurs(Anything element);
     
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 

@@ -1628,6 +1628,68 @@ public final class Array<Element>
         return null;
     }
     
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    public Integer firstOccurrence(java.lang.Object element) {
+        if (element==null) {
+            for (int i=0; i<size; i++) {
+                if (unsafeItem(i)==null) {
+                    return Integer.instance(i);
+                }
+            }
+        }
+        else {
+            for (int i=0; i<size; i++) {
+                Element item = unsafeItem(i);
+                if (item!=null && item.equals(element)) {
+                    return Integer.instance(i);
+                }
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    public Integer lastOccurrence(java.lang.Object element) {
+        if (element==null) {
+            for (int i=size-1; i>=0; i++) {
+                if (unsafeItem(i)==null) {
+                    return Integer.instance(i);
+                }
+            }
+        }
+        else {
+            for (int i=size-1; i>=0; i++) {
+                Element item = unsafeItem(i);
+                if (item!=null && item.equals(element)) {
+                    return Integer.instance(i);
+                }
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean occurs(java.lang.Object element) {
+        if (element==null) {
+            for (int i=0; i<size; i++) {
+                if (unsafeItem(i)==null) {
+                    return true;
+                }
+            }
+        }
+        else {
+            for (int i=0; i<size; i++) {
+                Element item = unsafeItem(i);
+                if (item!=null && item.equals(element)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     public void reverseInPlace() {
         if (array instanceof java.lang.Object[]) {
             for (int index=0; index<size/2; index++) {

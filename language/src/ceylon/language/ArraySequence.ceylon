@@ -134,4 +134,10 @@ class ArraySequence<out Element>(array)
             => to < 0
             then []
             else ArraySequence(array[...to]);
+    
+    firstOccurrence(Anything element) 
+            => array.firstOccurrence(element);
+    
+    lastOccurrence(Anything element) 
+            => array.lastOccurrence(element);
 }
