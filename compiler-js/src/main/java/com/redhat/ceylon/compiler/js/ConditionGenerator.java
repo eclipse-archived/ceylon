@@ -73,15 +73,19 @@ public class ConditionGenerator {
             } else if (destruct != null) {
                 final Destructurer d=new Destructurer(destruct.getPattern(), null, directAccess, "", first);
                 for (Tree.Variable v : d.getVariables()) {
-                    if (first) {
-                        first = false;
-                        gen.out("var ");
-                    } else {
-                        gen.out(",");
+                    if (output) {
+                        final String vname = names.name(v.getDeclarationModel());
+                        if (first) {
+                            first = false;
+                            gen.out("var ", vname);
+                        } else {
+                            gen.out(",", vname);
+                        }
                     }
-                    gen.out(names.name(v.getDeclarationModel()));
                 }
-                vars.add(new VarHolder(destruct, null, null));
+                VarHolder vh = new VarHolder(destruct, null, null);
+                vh.vars = d.getVariables();
+                vars.add(vh);
             }
         }
         if (output && !first) {
@@ -95,13 +99,24 @@ public class ConditionGenerator {
     void outputVariables(List<VarHolder> vars) {
         boolean first=true;
         for (VarHolder vh : vars) {
-            if (first) {
-                gen.out("var ");
-                first=false;
-            } else {
-                gen.out(",");
+            if (vh.name != null) {
+                if (first) {
+                    gen.out("var ", vh.name);
+                    first=false;
+                } else {
+                    gen.out(",", vh.name);
+                }
+            } else if (vh.destr != null && vh.vars != null) {
+                for (Tree.Variable v : vh.vars) {
+                    final String vname = names.name(v.getDeclarationModel());
+                    if (first) {
+                        gen.out("var ", vname);
+                        first=false;
+                    } else {
+                        gen.out(",", vname);
+                    }
+                }
             }
-            gen.out(vh.name);
         }
         if (!first) {
             gen.endLine(true);
