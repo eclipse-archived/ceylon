@@ -62,3 +62,8 @@ void testStaticMethodReferences() {
     check(test11=="..x", "Static method ref 11 expected ..x got ``test11``");
     check(mr.issue410() == "test", "Issue 410");
 }
+
+void test517() {
+    [Integer, R] time<R>(R() f) => [0, f()];
+    time(noop);
+}
