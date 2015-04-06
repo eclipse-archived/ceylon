@@ -176,11 +176,11 @@ public class TypeArgumentVisitor extends Visitor {
                             .contains(tp)) {
                 String var; String loc;
                 if (tp.isContravariant()) {
-                    var = "contravariant (in)";
+                    var = "contravariant ('in')";
                     loc = "covariant or invariant";
                 }
                 else if (tp.isCovariant()) {
-                    var = "covariant (out)";
+                    var = "covariant ('out')";
                     loc = "contravariant or invariant";
                 }
                 else {
