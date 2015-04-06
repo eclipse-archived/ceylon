@@ -33,7 +33,6 @@ shared class Fuera455<A>() {
 }
 
 void test_objects() {
-  print("testing objects");
   value t1 = TestObjects(1,2,3).iterator();
   value t2 = TestObjects(1,2,3).iterator();
   if (is Integer i=t1.next()) {

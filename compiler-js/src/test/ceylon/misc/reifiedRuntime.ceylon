@@ -69,7 +69,6 @@ class Bug341<T>(T t) {
 }
 
 void testReifiedRuntime(){
-    print("Reified generics");
     Object member = Container<String>().Member<Integer>();
     check(member is Container<String>.Member<Integer>, "reified runtime inner 1");
     check(! member is Container<Integer>.Member<Integer>, "reified runtime inner 2");

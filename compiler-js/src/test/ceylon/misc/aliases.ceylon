@@ -70,8 +70,14 @@ shared class Issue412() {
   shared Object? bleh => boom.first;
 }
 
+class Issue519<A,B>(shared A key, shared B item)
+    given A satisfies Object {
+  alias Test => A->B;
+  Object c=key->item;
+  check(c is Test, "#519");
+}
+
 void testAliasing() {
-    print("testing type aliases");
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
     class InnerSubalias() => AliasingSubclass();
     check(InnerSubalias().aliasingSubclass(), "Aliased top-level class");
@@ -89,4 +95,5 @@ void testAliasing() {
     function cualquiera(Boolean* bits) => any(bits);
     check(cualquiera(true,true,true), "seq arg method alias");
     check(Issue412().bleh exists, "Issue 412");
+    Issue519(1, "2");
 }
