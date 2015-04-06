@@ -59,7 +59,8 @@ public class TypeArgumentVisitor extends Visitor {
             	        ((MethodOrValue) dec).getInitializerParameter()
             	                .getDeclaration();
             }
-			check(that.getType(), false, parameterizedDeclaration);
+			check(that.getType(), false, 
+			        parameterizedDeclaration);
 			super.visit(that);
 			if (topLevel) {
 				parameterizedDeclaration = null;
@@ -106,6 +107,32 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType(), false, null);
+        }
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, null);
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.ObjectExpression that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType(), false, null);
+        }
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, null);
+            }
+        }
+    }
+    
     private ClassOrInterface constructorClass;
     
     @Override public void visit(Tree.Constructor that) {
@@ -119,14 +146,15 @@ public class TypeArgumentVisitor extends Visitor {
     
 //    @Override public void visit(Tree.FunctionArgument that) {}
 
-    private void check(Tree.Type that, boolean variable, Declaration d) {
+    private void check(Tree.Type that, boolean variable, 
+            Declaration d) {
         if (that!=null) {
             check(that.getTypeModel(), variable, d, that);
         }
     }
 
-    private void check(ProducedType type, boolean variable, Declaration d, 
-            Node that) {
+    private void check(ProducedType type, boolean variable, 
+            Declaration d, Node that) {
         if (d==null || d.isShared() || 
                 d.getOtherInstanceAccess()) {
             if (type!=null) {
