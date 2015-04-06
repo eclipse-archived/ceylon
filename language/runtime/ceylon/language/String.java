@@ -1588,6 +1588,68 @@ public final class String
         return result;
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>")
+    public Entry<? extends Integer,? extends Character> findIndexed(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return findIndexed(value,f);
+    }
+    
+    @Ignore
+    public static Entry<? extends Integer,? extends Character> 
+    findIndexed(java.lang.String value, 
+            Callable<? extends Boolean> f) {
+        int index = 0;
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            Character ch = Character.instance(codePoint);
+            if(f.$call$(ch).booleanValue()) {
+                return new Entry<Integer,Character>(
+                        Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
+                        Integer.instance(index), ch);
+            }
+            offset += java.lang.Character.charCount(codePoint);
+            index++;
+        }
+        return null;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>")
+    public Entry<? extends Integer,? extends Character> findLastIndexed(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> f) {
+        return findLastIndexed(value,f);
+    }
+    
+    @Ignore
+    public static Entry<? extends Integer,? extends Character> 
+    findLastIndexed(java.lang.String value, 
+            Callable<? extends Boolean> f) {
+        Character result = null;
+        int resultIndex = -1;
+        int index = 0;
+        for (int offset = 0; offset < value.length();) {
+            int codePoint = value.codePointAt(offset);
+            Character ch = Character.instance(codePoint);
+            if (f.$call$(ch).booleanValue()) {
+                result = ch;
+                resultIndex = index;
+            }
+            offset += java.lang.Character.charCount(codePoint);
+            index++;
+        }
+        return result==null ? null : 
+            new Entry<Integer,Character>(
+                Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
+                Integer.instance(resultIndex), result);
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     public static Sequential<? extends Character> 

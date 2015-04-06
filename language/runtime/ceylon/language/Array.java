@@ -1447,6 +1447,43 @@ public final class Array<Element>
     }
     
     @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
+    public Entry<? extends Integer,? extends Element> 
+    findIndexed(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=0; i<size; i++) {
+            Element elem = unsafeItem(i);
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
+                return new Entry<Integer,Element>(
+                        Integer.$TypeDescriptor$, $reifiedElement, 
+                        Integer.instance(i), elem);
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
+    public Entry<? extends Integer,? extends Element> 
+    findLastIndexed(@Name("selecting")
+    @FunctionalParameter("(element)") 
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
+    Callable<? extends Boolean> selecting) {
+        for (int i=size-1; i>=0; i--) {
+            Element elem = unsafeItem(i);
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
+                return new Entry<Integer,Element>(
+                        Integer.$TypeDescriptor$, $reifiedElement, 
+                        Integer.instance(i), elem);
+            }
+        }
+        return null;
+    }
+    @Override
     @TypeInfo("Result|Element|ceylon.language::Null")
     public <Result> java.lang.Object 
     reduce(@Ignore TypeDescriptor $reifiedResult,

@@ -97,6 +97,10 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native
     Element? findLast(Boolean selecting(Element&Object element));
     shared actual native
+    <Integer->Element>? findIndexed(Boolean selecting(Element&Object element));
+    shared actual native
+    <Integer->Element>? findLastIndexed(Boolean selecting(Element&Object element));
+    shared actual native
     Result|Element|Null reduce<Result>
             (Result accumulating(Result|Element partial, Element element));
     

@@ -1419,6 +1419,34 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public Entry<? extends Integer,? extends Element> 
+    findIndexed(Callable<? extends Boolean> f) {
+        for (int i=0; i<array.length; i++) {
+            java.lang.Object object = array[i];
+            if (f.$call$(object).booleanValue()) {
+                return new Entry<Integer,Element>
+                        (Integer.$TypeDescriptor$, $reifiedElement, 
+                        Integer.instance(i), (Element) object);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
+    public Entry<? extends Integer,? extends Element> 
+    findLastIndexed(Callable<? extends Boolean> f) {
+        for (int i=array.length-1; i>=0; i--) {
+            java.lang.Object object = array[i];
+            if (f.$call$(object).booleanValue()) {
+                return new Entry<Integer,Element>(
+                        Integer.$TypeDescriptor$, $reifiedElement, 
+                        Integer.instance(i), (Element) object);
+            }
+        }
+        return null;
+    }
+
+    @Override @Ignore
     public boolean getEmpty() {
         return false;
     }

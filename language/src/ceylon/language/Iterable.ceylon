@@ -588,6 +588,35 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
+    shared default 
+    <Integer->Element>? findIndexed(
+        "The predicate the element must satisfy."
+        Boolean selecting(Element&Object element)) {
+        variable value index = 0;
+        for (elem in this) {
+            if (exists elem, selecting(elem)) {
+                return index->elem;
+            }
+            index++;
+        }
+        return null;
+    }
+    
+    shared default 
+    <Integer->Element>? findLastIndexed(
+        "The predicate the element must satisfy."
+        Boolean selecting(Element&Object element)) {
+        variable <Integer->Element>? last = null;
+        variable value index = 0;
+        for (elem in this) {
+            if (exists elem, selecting(elem)) {
+                last = index->elem;
+            }
+            index++;
+        }
+        return last;
+    }
+    
     "Return the largest value in the stream, as measured by
      the given [[comparator function|comparing]] imposing a 
      partial order upon the elements of the stream, or `null`
