@@ -20,6 +20,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMembe
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
@@ -1743,6 +1744,21 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.ClassBody that) {
+        super.visit(that);
+        boolean constructor = false;
+        for (Tree.Statement st: that.getStatements()) {
+            if (st instanceof Tree.Constructor) {
+                constructor = true;
+            }
+            else if (constructor && 
+                    isExecutableStatement(unit, st)) {
+                st.addError("executable statement must occur before all constructors of class");
+            }
+        }
+    }
+    
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = 
                 beginReturnScope(new Tree.VoidModifier(that.getToken()));

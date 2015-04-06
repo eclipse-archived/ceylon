@@ -322,3 +322,9 @@ void withQualifiedType() {
         bar => foo.bar;  
     }
 }
+
+class WithConstructor 
+        satisfies Category<Boolean> {
+    shared new () {}
+    contains(Boolean element) => true;
+}
