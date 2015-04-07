@@ -118,7 +118,19 @@ public final class Array<Element>
     @Name("element")
     @TypeInfo("Element")
     final Element element) {
-        this($reifiedElement, (int)size, element);
+        this($reifiedElement, toSize(size), element);
+    }
+    
+    private static long maxArraySize = runtime_.get_().getMaxArraySize().value;
+    
+    private static int toSize(long size) {
+        if (size>maxArraySize) {
+            throw new AssertionError("array size must be smaller than " + maxArraySize);
+        }
+        if (size<0) {
+            throw new AssertionError("array size must not be negative");
+        }
+        return (int) size;
     }
     
     @SuppressWarnings("unchecked")
