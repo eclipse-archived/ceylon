@@ -351,6 +351,16 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    }
+    
+    @.java.lang.Override
     public Element max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (Element)$ceylon$language$Iterable$this$.max(comparing);
     }

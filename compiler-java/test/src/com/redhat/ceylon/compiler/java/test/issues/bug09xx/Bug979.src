@@ -120,6 +120,16 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.String max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (.ceylon.language.String)$ceylon$language$Iterable$this$.max(comparing);
     }
@@ -448,6 +458,16 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .ceylon.language.String findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.findLast(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
     }
     
     @.java.lang.Override

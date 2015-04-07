@@ -98,6 +98,16 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Integer max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (.ceylon.language.Integer)$ceylon$language$Iterable$this$.max(comparing);
     }
