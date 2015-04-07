@@ -41,7 +41,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 8)
-@Class(extendsType="ceylon.language::Basic")
+@Class(constructors=true)
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
@@ -49,7 +49,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 })
 public final class Array<Element>
         extends BaseList<Element>
-        implements List<Element>, Serializable {
+        implements Serializable {
     
     private static final Finished FIN = finished_.get_();
     
@@ -99,7 +99,28 @@ public final class Array<Element>
         this($reifiedElement, 
                 createArrayFromIterable($reifiedElement, elements));
     }
-
+    
+    @Ignore
+    public static final Array.OfSize OfSize = null;
+    
+    @Ceylon(major = 8)
+    @Ignore
+    public static final class OfSize {
+        private OfSize() {}
+    }
+    
+    @Name("OfSize")
+    public Array(@Ignore final TypeDescriptor $reifiedElement, 
+    @Ignore Array.OfSize $name$, 
+    @Name("size")
+    @TypeInfo("ceylon.language::Integer")
+    final long size,
+    @Name("element")
+    @TypeInfo("Element")
+    final Element element) {
+        this($reifiedElement, (int)size, element);
+    }
+    
     @SuppressWarnings("unchecked")
     private static <Element> java.lang.Object createArrayFromIterable(
     		final TypeDescriptor $reifiedElement,

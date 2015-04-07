@@ -8,9 +8,12 @@
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
-shared final native class Array<Element>({Element*} elements)
+shared final native class Array<Element>
         satisfies List<Element> &
                   Ranged<Integer,Element,Array<Element>> {
+    
+    shared native new ({Element*} elements) {}
+    shared native new OfSize(Integer size, Element element) {}
     
     //"Get the element at the specified index, or `null` if
     // the index falls outside the bounds of this array."
