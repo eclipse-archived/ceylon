@@ -102,18 +102,18 @@ class Measure<Element>(first, size)
     }
     
     shared actual 
-    Boolean includesRange(Range<Element> sublist) {
-        switch (sublist)
+    Boolean includesRange(Range<Element> range) {
+        switch (range)
         case (is Measure<Element>) {
-            value offset = sublist.first.offset(first);
-            return 0 <= offset <= size - sublist.size;
+            value offset = range.first.offset(first);
+            return 0 <= offset <= size - range.size;
         }
         case (is Span<Element>) {
-            if (sublist.decreasing) {
+            if (range.decreasing) {
                 return false;
             } else {
-                value offset = sublist.first.offset(first);
-                return 0 <= offset <= size - sublist.size;
+                value offset = range.first.offset(first);
+                return 0 <= offset <= size - range.size;
             }
         }
     }

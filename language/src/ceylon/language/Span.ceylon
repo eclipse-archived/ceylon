@@ -209,24 +209,24 @@ class Span<Element>(first, last)
     }
     
     shared actual 
-    Boolean includesRange(Range<Element> sublist) {
-        switch (sublist)
+    Boolean includesRange(Range<Element> range) {
+        switch (range)
         case (is Span<Element>) {
             if (recursive) {
-                return sublist.first.offset(first) < size &&
-                        sublist.last.offset(first) < size;
+                return range.first.offset(first) < size &&
+                        range.last.offset(first) < size;
             } else {
-                return increasing == sublist.increasing &&
-                        !sublist.afterFirst(first) &&
-                        !sublist.beforeLast(last);
+                return increasing == range.increasing &&
+                        !range.afterFirst(first) &&
+                        !range.beforeLast(last);
             }
         }
         case (is Measure<Element>) {
             if (decreasing) {
                 return false;
             } else {
-                value offset = sublist.first.offset(first);
-                return 0 <= offset <= size - sublist.size;
+                value offset = range.first.offset(first);
+                return 0 <= offset <= size - range.size;
             }
         }
     }
