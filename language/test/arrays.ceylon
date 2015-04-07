@@ -183,14 +183,16 @@ shared void testArrays() {
     //native methods 2015-04-07
     value a12 = Array { 1, 2, 3, 2, 1, null, 5, null, 7 };
     if (exists loc0 = a12.locate((e) => e>1)) {
-        check(loc0 is Integer->Integer, "Array.locate 2");
+        Object oc0=loc0;
+        check(oc0 is Integer->Integer?, "Array.locate 2");
         check(loc0 == 1->2, "Array.locate 3");
     } else {
         fail("Array.locate 1");
     }
     check(!a12.locate((e) => e>7) exists, "Array.locate 4");
-    if (exists loc1 = a12.locateLast((e) => e.even);) {
-        check(loc1 is Integer->Integer, "Array.locateLast 2");
+    if (exists loc1 = a12.locateLast((e) => e.even)) {
+        Object oc1=loc1;
+        check(oc1 is Integer->Integer?, "Array.locateLast 2");
         check(loc1 == 3->2, "Array.locateLast 3");
     } else {
         fail("Array.locateLast 1");

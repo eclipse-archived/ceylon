@@ -551,13 +551,15 @@ shared void strings() {
     check("abc".equalsIgnoringCase("aBc"), "String.equalsIgnoringCase");
     check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase");
     if (exists loc0="HelLo".locate((c)=>c.uppercase)) {
-        check(loc0 is Integer->Character, "String.locate 1");
+        Object oc0=loc0;
+        check(oc0 is Integer->Character, "String.locate 1");
         check(loc0 == 0->'H', "String.locate 2");
     } else {
         fail("String.locate 1");
     }
     if (exists loc1="HelLo".locateLast((c)=>c.uppercase)) {
-        check(loc1 is Integer->Character, "String.locateLast 1");
+        Object oc1=loc1;
+        check(oc1 is Integer->Character, "String.locateLast 1");
         check(loc1 == 3->'L', "String.locateLast 2");
     } else {
         fail("String.locateLast 1");
