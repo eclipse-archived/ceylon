@@ -1420,7 +1420,7 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Entry<? extends Integer,? extends Element> 
-    findIndexed(Callable<? extends Boolean> f) {
+    locate(Callable<? extends Boolean> f) {
         for (int i=0; i<array.length; i++) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
@@ -1434,7 +1434,7 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Entry<? extends Integer,? extends Element> 
-    findLastIndexed(Callable<? extends Boolean> f) {
+    locateLast(Callable<? extends Boolean> f) {
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {

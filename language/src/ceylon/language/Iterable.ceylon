@@ -589,7 +589,7 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     shared default 
-    <Integer->Element>? findIndexed(
+    <Integer->Element>? locate(
         "The predicate the element must satisfy."
         Boolean selecting(Element&Object element)) {
         variable value index = 0;
@@ -603,7 +603,7 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     shared default 
-    <Integer->Element>? findLastIndexed(
+    <Integer->Element>? locateLast(
         "The predicate the element must satisfy."
         Boolean selecting(Element&Object element)) {
         variable <Integer->Element>? last = null;

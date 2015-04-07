@@ -447,6 +447,6 @@ shared native final class String(characters)
             (Result accumulating(Result|Character partial, Character element));
     shared actual native Character? find(Boolean selecting(Character element));
     shared actual native Character? findLast(Boolean selecting(Character element));
-    shared actual native <Integer->Character>? findIndexed(Boolean selecting(Character element));
-    shared actual native <Integer->Character>? findLastIndexed(Boolean selecting(Character element));
+    shared actual native <Integer->Character>? locate(Boolean selecting(Character element));
+    shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));
 }

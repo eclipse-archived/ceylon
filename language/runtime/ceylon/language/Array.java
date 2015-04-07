@@ -1449,7 +1449,7 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
     public Entry<? extends Integer,? extends Element> 
-    findIndexed(@Name("selecting")
+    locate(@Name("selecting")
     @FunctionalParameter("(element)") 
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {
@@ -1468,7 +1468,7 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
     public Entry<? extends Integer,? extends Element> 
-    findLastIndexed(@Name("selecting")
+    locateLast(@Name("selecting")
     @FunctionalParameter("(element)") 
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {

@@ -1590,17 +1590,17 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>")
-    public Entry<? extends Integer,? extends Character> findIndexed(
+    public Entry<? extends Integer,? extends Character> locate(
             @Name("selecting")
             @FunctionalParameter("(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends Boolean> f) {
-        return findIndexed(value,f);
+        return locate(value,f);
     }
     
     @Ignore
     public static Entry<? extends Integer,? extends Character> 
-    findIndexed(java.lang.String value, 
+    locate(java.lang.String value, 
             Callable<? extends Boolean> f) {
         int index = 0;
         for (int offset = 0; offset < value.length();) {
@@ -1619,17 +1619,17 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>")
-    public Entry<? extends Integer,? extends Character> findLastIndexed(
+    public Entry<? extends Integer,? extends Character> locateLast(
             @Name("selecting")
             @FunctionalParameter("(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends Boolean> f) {
-        return findLastIndexed(value,f);
+        return locateLast(value,f);
     }
     
     @Ignore
     public static Entry<? extends Integer,? extends Character> 
-    findLastIndexed(java.lang.String value, 
+    locateLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
         Character result = null;
         int resultIndex = -1;
