@@ -9,9 +9,8 @@
  with Java, and for some performance-critical low-level 
  programming tasks."
 shared final native class Array<Element>({Element*} elements)
-        extends Basic()
         satisfies List<Element> &
-                Ranged<Integer,Element,Array<Element>> {
+                  Ranged<Integer,Element,Array<Element>> {
     
     //"Get the element at the specified index, or `null` if
     // the index falls outside the bounds of this array."
