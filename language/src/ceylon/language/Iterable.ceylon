@@ -545,8 +545,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise. For an infinite stream, this method 
-     might not terminate.
+     `null` if there is no such element. For an infinite 
+     stream, this method might not terminate.
      
      For example, the expression
      
@@ -567,8 +567,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The last element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise. For an infinite stream, this method 
-     might not terminate.
+     `null` if there is no such element. For an infinite 
+     stream, this method might not terminate.
      
      For example, the expression
      
@@ -588,6 +588,17 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
+    "The first element of this stream which satisfies the 
+     [[given predicate function|selecting]], if any, 
+     together with its position in the stream, or `null` 
+     if there is no such element. For an infinite stream, 
+     this method might not terminate.
+     
+     For example, the expression
+     
+         (-10..10).locate(Integer.positive)
+     
+     evaluates to `11->1`."
     shared default 
     <Integer->Element>? locate(
         "The predicate the element must satisfy."
@@ -602,6 +613,17 @@ shared interface Iterable<out Element, out Absent=Null>
         return null;
     }
     
+    "The last element of this stream which satisfies the 
+     [[given predicate function|selecting]], if any, 
+     together with its position in the stream, or `null` 
+     if there is no such element. For an infinite stream, 
+     this method might not terminate.
+     
+     For example, the expression
+     
+         (-10..10).locateLast(3.divides)
+     
+     evaluates to `19->9`."
     shared default 
     <Integer->Element>? locateLast(
         "The predicate the element must satisfy."
