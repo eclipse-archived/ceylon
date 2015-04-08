@@ -549,15 +549,15 @@ public class CodegenUtil {
         }
         
         for(int i=0;i<newName.length;i++){
-            int c = newName[i];
-            if(Character.isLowerCase(c)){
+            int codepoint = newName[i];
+            if(Character.isLowerCase(codepoint)){
                 // if we had more than one upper-case, we leave the last uppercase: getURLDecoder -> urlDecoder
                 if(i > 1){
                     newName[i-1] = Character.toUpperCase(newName[i-1]);
                 }
                 break;
             }
-            newName[i] = Character.toLowerCase(c);
+            newName[i] = Character.toLowerCase(codepoint);
         }
         return new String(newName, 0, newName.length);
     }
