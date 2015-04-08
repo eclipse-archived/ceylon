@@ -82,6 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -513,7 +514,7 @@ public class ModelLoaderTests extends CompilerTests {
                 if(!validMember.isShared())
                     continue;
                 Declaration modelMember = lookupMember(modelDeclaration, validMember);
-                Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
+                Assert.assertNotNull(validMember.getClass().getSimpleName() + " " + validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
                 compareDeclarations(modelMember.getQualifiedNameString(), validMember, modelMember);
             }
             // and not more
@@ -559,6 +560,11 @@ public class ModelLoaderTests extends CompilerTests {
         private Declaration lookupMember(ClassOrInterface container, Declaration referenceMember) {
             String name = referenceMember.getName();
             for(Declaration member : container.getMembers()){
+                if (name == null 
+                        && referenceMember instanceof Constructor 
+                        && member.getName() == null) {
+                    return member;
+                }
                 if(member.getName() != null 
                         && member.getName().equals(name)){
                     // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
