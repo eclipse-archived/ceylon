@@ -569,7 +569,7 @@ public class CodegenUtil {
      */
     public static String getReverseJavaBeanName(String name){
         // turns urlDecoder -> URLDecoder
-        for(int i=0;i<name.length();i++){
+        for(int i=0; i<name.length(); i+= Character.isSurrogate(name.charAt(i)) ? 2 : 1){
             if(Character.isUpperCase(name.codePointAt(i))){
                 // make everything before the upper case into upper case
                 return name.substring(0, i).toUpperCase() + name.substring(i);
