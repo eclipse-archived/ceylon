@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.meta.declaration.AliasDeclaration;
+import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
+import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.Module;
@@ -184,6 +186,9 @@ class DeclarationParser {
             result = value(packageOrType);
         }
         if (result == null) {
+            result = constructor(packageOrType);
+        }
+        if (result == null) {
             throw parseError("Expected type or function or value");
         }
         return result;
@@ -216,6 +221,18 @@ class DeclarationParser {
         String fn = ident();
         if (fn != null) {
             return makeValue(packageOrType, fn);
+        } else {
+            throw unexpectedToken();
+        }
+    }
+    
+    private Declaration constructor(Declaration packageOrType) {
+        if (!at('c')) {
+            return null;
+        }
+        String fn = ident();
+        if (fn != null) {
+            return makeConstructor(packageOrType, fn);
         } else {
             throw unexpectedToken();
         }
@@ -384,6 +401,19 @@ class DeclarationParser {
             result = ((Package)packageOrType).getValue(val);
         } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
             result = ((ClassOrInterfaceDeclaration)packageOrType).<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, val);
+        } else {
+            throw metamodelError("Unexpected container " + packageOrType.getClass() + " for value " + val);
+        }
+        if (result == null) {
+            throw metamodelNotFound("Could not find value: " + val + " in " + packageOrType.getName());
+        }
+        return result;
+    }
+    
+    protected ConstructorDeclaration makeConstructor(Declaration packageOrType, String val) {
+        final ConstructorDeclaration result;
+        if (packageOrType instanceof ClassDeclaration) {
+            result = ((ClassDeclaration)packageOrType).getConstructorDeclaration(val);
         } else {
             throw metamodelError("Unexpected container " + packageOrType.getClass() + " for value " + val);
         }
