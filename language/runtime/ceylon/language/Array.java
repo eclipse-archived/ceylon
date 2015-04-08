@@ -41,7 +41,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 8)
-@Class(constructors=true)
+@Class(constructors=true, extendsType="ceylon.language::Basic")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
