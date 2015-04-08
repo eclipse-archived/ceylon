@@ -406,8 +406,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // remove any possibly quoting char
         name = Naming.stripLeadingDollar(name);
         if(!name.isEmpty()){
-            char c = name.charAt(0);
-            return Util.isLowerCase(c);
+            int codepoint = name.codePointAt(0);
+            return Util.isLowerCase(codepoint);
         }
         return false;
     }

@@ -199,11 +199,11 @@ public class Util {
     }
 
     public static boolean isInitialLowerCase(String name) {
-        return !name.isEmpty() && isLowerCase(name.charAt(0));
+        return !name.isEmpty() && isLowerCase(name.codePointAt(0));
     }
 
-    public static boolean isLowerCase(char c) {
-        return Character.isLowerCase(c) || c == '_';
+    public static boolean isLowerCase(int codepoint) {
+        return Character.isLowerCase(codepoint) || codepoint == '_';
     }
 
     /**
