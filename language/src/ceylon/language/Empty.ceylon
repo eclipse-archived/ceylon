@@ -107,7 +107,9 @@ shared interface Empty of e
             => other;
     
     shared actual 
-    [] defaultNullElements<Default>(Default defaultValue) 
+    [] defaultNullElements<Default>
+            (Default defaultValue) 
+            given Default satisfies Object
             => this;
     
     "Returns 0 for any given predicate."

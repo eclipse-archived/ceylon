@@ -1053,6 +1053,7 @@ shared interface Iterable<out Element, out Absent=Null>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
             Default defaultValue)
+            given Default satisfies Object
             => { for (elem in this) elem else defaultValue };
     
     "The non-null elements of this stream, in the order in
