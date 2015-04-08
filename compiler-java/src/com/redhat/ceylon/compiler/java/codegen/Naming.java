@@ -2270,7 +2270,7 @@ public class Naming implements LocalId {
     }
     
     public static boolean isLowerCase(String name){
-        return !name.isEmpty() && Character.isLowerCase(name.charAt(0));
+        return !name.isEmpty() && Character.isLowerCase(name.codePointAt(0));
     }
 
     public static String getInitializationFieldName(String fieldName) {
