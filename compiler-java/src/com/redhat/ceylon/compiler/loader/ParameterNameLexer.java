@@ -55,11 +55,11 @@ class ParameterNameLexer {
         return token;
     }
 
-    private boolean isIdentifierPart(int c) {
-        return Character.isLowerCase(c) 
-                || Character.isUpperCase(c)
-                || Character.isDigit(c)
-                || c == '_';
+    private boolean isIdentifierPart(int codepoint) {
+        return Character.isLowerCase(codepoint) 
+                || Character.isUpperCase(codepoint)
+                || Character.isDigit(codepoint)
+                || codepoint == '_';
     }
     
     public void eat() {
