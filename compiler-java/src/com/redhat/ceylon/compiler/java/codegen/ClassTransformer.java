@@ -2198,7 +2198,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
             Interface iface, Class klass, Constructor ctor, ProducedType currentType, boolean includeBody) {
-        ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
+        ProducedType typeMember = satisfiedType.getTypeMember(klass, klass.getType().getTypeArgumentList());
         if (ctor != null) {
             typeMember = ctor.getProducedType(typeMember, Collections.<ProducedType>emptyList());
         }
