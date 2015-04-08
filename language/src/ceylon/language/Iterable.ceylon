@@ -125,9 +125,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Returns `true` if the iterator for this stream produces
      the given element, or `false` otherwise. In the case of 
-     an infinite stream, this operation never terminates;
-     furthermore, this default implementation iterates all 
-     elements, which might be very expensive."
+     an infinite stream, this operation might never terminate."
     shared actual default Boolean contains(Object element) 
             => any((e) => if (exists e) then e==element else false);
     
