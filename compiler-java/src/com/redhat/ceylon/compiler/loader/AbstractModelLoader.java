@@ -2556,8 +2556,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return result;
     }
     
-    private boolean isStartOfJavaBeanPropertyName(int c){
-        return (c == Character.toUpperCase(c)) || c == '_'; 
+    private boolean isStartOfJavaBeanPropertyName(int codepoint){
+        return (codepoint == Character.toUpperCase(codepoint)) || codepoint == '_'; 
     }
 
     private boolean isNonGenericMethod(MethodMirror methodMirror){
