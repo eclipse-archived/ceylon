@@ -207,7 +207,7 @@ public class IndexDoc extends CeylonDoc {
     
     private String getType(Object obj) {
         if (obj instanceof Class) {
-            return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
+            return !((Class) obj).isAnonymous() ? "class" : "object";
         } else if (obj instanceof Interface) {
             return "interface";
         } else if (obj instanceof TypeAlias) {
