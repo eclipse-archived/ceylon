@@ -115,13 +115,13 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

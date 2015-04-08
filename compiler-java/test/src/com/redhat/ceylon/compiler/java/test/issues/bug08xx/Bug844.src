@@ -413,13 +413,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

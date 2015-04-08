@@ -181,13 +181,13 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -498,13 +498,13 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -792,13 +792,13 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -1109,13 +1109,13 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

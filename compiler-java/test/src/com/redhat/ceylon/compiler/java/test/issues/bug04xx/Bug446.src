@@ -355,13 +355,13 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

@@ -318,13 +318,13 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X> findIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X> findLastIndexed(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLastIndexed(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
