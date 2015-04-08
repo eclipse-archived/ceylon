@@ -943,6 +943,7 @@ shared void run() {
     testBug378();
     bug409();
     compilerBug1699();
+    compilerBug2116();
     checkParameterAnnotations();
         
     print("Annotation tests OK");
