@@ -75,6 +75,15 @@ public class CompilerToolTests extends AbstractToolTests {
     }
 
     @Test
+    public void testIssueGH2117_suppress_warning_BindingRaisingIllegalArgumentEx()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+		pluginFactory.bindArguments(model, getMainTool(), options(
+				"--src=test/src", "com.redhat.ceylon.tools.test.ceylon",
+				"--suppress-warning"));
+    }
+
+    @Test
     public void testCompileKeywordsInModuleName()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
