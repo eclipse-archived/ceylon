@@ -569,7 +569,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "The last element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
      `null` if there is no such element. For an infinite 
-     stream, this method might not terminate.
+     stream, this method will not terminate.
      
      For example, the expression
      
