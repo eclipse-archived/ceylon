@@ -82,7 +82,7 @@ public abstract class AppliedClassOrInterface<Type>
     @SuppressWarnings("unchecked")
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
-        this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
+        this.declaration = getDeclaration$noinit();
         this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
@@ -118,6 +118,11 @@ public abstract class AppliedClassOrInterface<Type>
     public ceylon.language.meta.declaration.ClassOrInterfaceDeclaration getDeclaration() {
         checkInit();
         return declaration;
+    }
+    
+    @Ignore
+    FreeClassOrInterface getDeclaration$noinit() {
+        return Metamodel.getOrCreateMetamodel(producedType.getDeclaration());
     }
 
     @Override

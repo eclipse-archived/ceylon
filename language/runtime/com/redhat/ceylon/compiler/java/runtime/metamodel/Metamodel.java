@@ -962,7 +962,7 @@ public class Metamodel {
             ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType) {
         FreeClassOrInterface freeClass;
         if (annotationType instanceof AppliedClassOrInterface) {
-            freeClass = (FreeClassOrInterface)(annotationType.getDeclaration());
+            freeClass = ((AppliedClassOrInterface)annotationType).getDeclaration$noinit();
         } else {
             freeClass = (FreeClassOrInterface)annotationType;
         }
