@@ -1039,9 +1039,10 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the elements of this 
-     stream, replacing every `null` element with the [[given 
-     default value|defaultValue]]. The resulting stream does 
-     not have the value `null`.
+     stream, in the order in which they occur in this stream, 
+     after replacing every `null` element in the stream with 
+     the [[given default value|defaultValue]]. The value 
+     `null` does not ocur in the resulting stream.
      
      For example, the expression
      
@@ -1049,7 +1050,7 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ 123, 0, 456 }`."
     see (`value coalesced`)
-    shared default 
+    shared default
     Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
@@ -1067,16 +1068,17 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"123\", \"abc\", \"456\"}.map(parseInteger).coalesced
      
      results in the stream `{ 123, 456 }`."
-    shared default 
-    {Element&Object*} coalesced 
+    see (`function defaultNullElements`)
+    shared default
+    {Element&Object*} coalesced
             => { for (e in this) if (exists e) e };
     
-    "A stream containing all [[entries|Entry]] of form 
+    "A stream containing all [[entries|Entry]] of form
      `index->element` where `element` is an element of this
-     stream, and `index` is the position at which `element` 
+     stream, and `index` is the position at which `element`
      occurs in this stream, ordered by increasing `index`.
      
-     For example, the expression 
+     For example, the expression
      
          { \"hello\", null, \"world\" }.indexed
      
