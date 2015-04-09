@@ -2293,10 +2293,6 @@ public class Naming implements LocalId {
     public JCExpression makeNamedConstructorType(Constructor constructor) {
         return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
     }
-    
-    public static String getInteropAnnotationClassName(Interface iface) {
-        return iface.getName()+"__class";
-    }
 }
 
 

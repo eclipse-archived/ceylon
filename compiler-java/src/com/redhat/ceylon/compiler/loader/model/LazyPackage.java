@@ -220,10 +220,10 @@ public class LazyPackage extends Package {
      * For a Java declaration {@code @interface Annotation} we generate 
      * a model corresponding to:
      * <pre>
-     *   annotation class Annotation__class(...) satisfies Annotation {
+     *   annotation class Annotation$Proxy(...) satisfies Annotation {
      *       // a `shared` class parameter for each method of Annotation
      *   }
-     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation__class(...);
+     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
      * </pre>
      * 
      * We also make a {@code *__method}, {@code *__field} etc version for each
@@ -260,7 +260,7 @@ public class LazyPackage extends Package {
         AnnotationProxyClass klass = new AnnotationProxyClass(iface);
         klass.setContainer(this);
         klass.setScope(this);
-        klass.setName(Naming.getInteropAnnotationClassName(iface));
+        klass.setName(iface.getName()+"$Proxy");
         klass.setShared(iface.isShared());
         klass.setAnnotation(true);
         Annotation annotationAnnotation = new Annotation();
