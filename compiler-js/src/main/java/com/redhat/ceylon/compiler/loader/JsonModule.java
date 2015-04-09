@@ -82,7 +82,7 @@ public class JsonModule extends Module {
             }
             for (ModuleImport im2 : mod.getImports()) {
                 if (im2.isExport()) {
-                    p = im2.getModule().getDirectPackage(name);
+                    p = im2.getModule().getPackage(name);
                 }
                 if (p != null) {
                     return p;
