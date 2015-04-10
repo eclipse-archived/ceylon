@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
