@@ -46,7 +46,13 @@ function tpl$(elems,types,spread){
   set_type_args(that,elems.$$targs$$,Tuple);
   that.$$targs$$.Element$Tuple=_t;
   that.$$targs$$.First$Tuple=types.l[0];
-  that.$$targs$$.Rest$Tuple=types.l.length===1?{t:Empty}:{t:Sequence,a:_t};
+  if (spread!==undefined) {
+    that.$$targs$$.Rest$Tuple={t:Sequence,a:_t};
+  } else if (types.l.length===1) {
+    that.$$targs$$.Rest$Tuple={t:Empty};
+  } else {
+    that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.spanFrom(1)};
+  }
   that.first_=elems[0];
   that.getFromFirst=function(i){
     if (spread && i>=elems.length) {
