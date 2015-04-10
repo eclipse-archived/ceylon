@@ -207,6 +207,22 @@ public abstract class TypeDescriptor {
                     return true;
                 }
             }
+            else if (instanceType instanceof Union) {
+                for (TypeDescriptor member: ((Union) instanceType).members) {
+                    if (!is(member)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (instanceType instanceof Intersection) {
+                for (TypeDescriptor member: ((Intersection) instanceType).members) {
+                    if (is(member)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             return super.is(instanceType);
         }
 
@@ -495,6 +511,12 @@ public abstract class TypeDescriptor {
     }
     
     private static class Nothing extends TypeDescriptor {
+        
+        @Override
+        public boolean is(TypeDescriptor instanceType) {
+            return false;
+        }
+        
         @Override
         public boolean equals(Object obj) {
             return obj == this;
