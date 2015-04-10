@@ -90,6 +90,7 @@ public abstract class FreeClassOrInterfaceType
     @Override
     @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.declaration::OpenType>")
     public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends OpenType> getTypeArguments() {
+        checkInit();
         return typeArguments;
     }
 
