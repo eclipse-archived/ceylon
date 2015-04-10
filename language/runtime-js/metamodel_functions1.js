@@ -14,15 +14,17 @@ function get_model(mm) {
 function pushTypes(list, types,targ$2) {
   for (var i=0; i<types.length; i++) {
     var t = types[i];
+    var nt;
     if (t.t === 'u') {
-      list.push(applyUnionType(t, targ$2));
+      nt=applyUnionType(t, targ$2);
     } else if (t.t === 'i') {
-      list.push(applyIntersectionType(t, targ$2));
+      nt=applyIntersectionType(t, targ$2);
     } else if (typeof(t)==='string') {
-      list.push(typeLiteral$meta({Type$typeLiteral:targ$2[t]},targ$2));
+      nt=typeLiteral$meta({Type$typeLiteral:targ$2[t]},targ$2);
     } else {
-      list.push(typeLiteral$meta({Type$typeLiteral:t},targ$2));
+      nt=typeLiteral$meta({Type$typeLiteral:t},targ$2);
     }
+    if (nt && !list.contains(nt))list.push(nt);
   }
   return list;
 }
