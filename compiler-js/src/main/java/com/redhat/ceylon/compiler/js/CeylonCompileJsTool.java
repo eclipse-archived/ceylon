@@ -299,6 +299,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             for (File root : roots) {
                 tcb.addSrcDirectory(root);
             }
+            tcb.setSourceFiles(onlySources);
             if (!resolver.getSourceModules().isEmpty()) {
                 tcb.setModuleFilters(resolver.getSourceModules());
             }
@@ -311,17 +312,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         tcb.usageWarnings(false).encoding(encoding);
 
         typeChecker = tcb.getTypeChecker();
-        if (onlySources != null) {
-            for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
-                File unitFile = new File(pu.getUnitFile().getPath());
-                if (!FileUtil.containsFile(onlySources, unitFile)) {
-                    if (opts.isVerbose()) {
-                        append("Removing phased unit " + pu).newline();
-                    }
-                    typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
-                }
-            }
-        }
         t1=System.nanoTime();
         typeChecker.process(true);
         
