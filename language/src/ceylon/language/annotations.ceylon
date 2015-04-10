@@ -180,7 +180,7 @@ shared annotation AuthorsAnnotation by(
 
 "The annotation class for the [[throws]] annotation."
 shared final annotation class ThrownExceptionAnnotation(
-    "The [[Exception]] type that this thrown."
+    "The [[Exception]] type that is thrown."
     shared Declaration type,
     "A description, in Markdown syntax, of the circumstances 
      that cause this exception to be thrown."
@@ -191,7 +191,7 @@ shared final annotation class ThrownExceptionAnnotation(
 "Annotation to document the exception types thrown by a 
  function, value, class, or constructor."
 shared annotation ThrownExceptionAnnotation throws(
-    "The [[Exception]] type that this thrown."
+    "The [[Exception]] type that is thrown."
     Declaration type,
     "A description, in Markdown syntax, of the circumstances 
      that cause this exception to be thrown."
