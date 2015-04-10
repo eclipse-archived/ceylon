@@ -307,7 +307,7 @@ public class FreeFunction
     
     @Override
     @Ignore
-    public boolean $isAnnotated$(java.lang.Class annotationType) {
+    public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
         final AnnotatedElement element = Metamodel.getJavaMethod((Method) declaration);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }

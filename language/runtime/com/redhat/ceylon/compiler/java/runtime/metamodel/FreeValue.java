@@ -257,7 +257,7 @@ public class FreeValue
     
     @Override
     @Ignore
-    public boolean $isAnnotated$(java.lang.Class annotationType) {
+    public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
         if(parameter != null
                 && !parameter.getModel().isShared()){
             for (java.lang.annotation.Annotation a : $getJavaAnnotations$()) {

@@ -115,7 +115,7 @@ public class FreeConstructor
     
     @Override
     @Ignore
-    public boolean $isAnnotated$(java.lang.Class annotationType) {
+    public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
         final AnnotatedElement element = Metamodel.getJavaConstructor(constructor);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }

@@ -168,7 +168,6 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Class<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);

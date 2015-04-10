@@ -171,7 +171,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     
     @Override
     @Ignore
-    public boolean $isAnnotated$(java.lang.Class annotationType) {
+    public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
         final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }

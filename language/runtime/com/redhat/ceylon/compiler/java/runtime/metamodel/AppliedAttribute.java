@@ -129,7 +129,6 @@ public class AppliedAttribute<Container, Get, Set>
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Value<? extends Get, ? super Set> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Value<? extends Get, ? super Set>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);

@@ -158,7 +158,6 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Function<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Function<? extends Type, ? super Arguments>) Metamodel.bind(this, this.appliedFunction.getQualifyingType(), container);
