@@ -1208,6 +1208,13 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Iterable$impl().filter(selecting);
     }
 
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore
+    public <Type> Iterable 
+    narrow(@Ignore TypeDescriptor $reifiedType) {
+        return  $ceylon$language$Iterable$impl().narrow($reifiedType);
+    }
+
     @Override @Ignore
     public <Result, OtherAbsent> Iterable flatMap(
             TypeDescriptor $reified$Result,

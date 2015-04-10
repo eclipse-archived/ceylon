@@ -396,6 +396,22 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
+    "Produces a stream containing the elements of this 
+     stream that are instances of the given [[type|Type]].
+     
+     For example, the expression
+     
+         { 1, 2, null, 3 }.narrow<Object>()
+     
+     results in the stream `{ 1, 2, 3 }` of type `{Integer*}`.
+     
+     If the type argument `Type` is not explicitly specified,
+     [[Nothing]] is inferred, and the resulting stream is 
+     empty."
+    shared default
+    {Element&Type*} narrow<Type>() 
+            => { for (elem in this) if (is Type elem) elem };
+    
     "Beginning with a given [[initial value|initial]], apply 
      the given [[combining function|accumulating]] to each 
      element of this stream in turn, progressively 

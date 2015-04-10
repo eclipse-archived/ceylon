@@ -1452,6 +1452,13 @@ public final class String
         return instance(value).map($reifiedResult, f);
     }
 
+    @SuppressWarnings("rawtypes")
+    @Ignore
+    public static <Type> Iterable 
+    narrow(@Ignore TypeDescriptor $reifiedType, java.lang.String value) {
+        return instance(value).narrow($reifiedType);
+    }
+
     @Ignore
     public static Sequential<? extends Character> 
     select(java.lang.String value, 
