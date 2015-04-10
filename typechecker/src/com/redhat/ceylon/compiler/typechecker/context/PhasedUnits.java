@@ -134,14 +134,49 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
 	}
 
     private void parseFileOrDirectory(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if (file.isFolder()) {
-            processDirectory(file, srcDir);
-        }
-        else {
-            parseFile(file, srcDir);
+        if (checkModuleFiltersByName(file, srcDir)) {
+            if (file.isFolder()) {
+                processDirectory(file, srcDir);
+            }
+            else {
+                parseFile(file, srcDir);
+            }
         }
     }
 
+    private boolean checkModuleFiltersByName(VirtualFile file, VirtualFile srcDir) {
+        if (moduleFilters == null || moduleFilters.isEmpty()) {
+            return true;
+        }
+        
+        // Get the name of the folder or the file's parent folder
+        String folderName = file.getPath().substring(srcDir.getPath().length() + 1);
+        if (!file.isFolder()) {
+            folderName = folderName.substring(0, folderName.length() - file.getName().length());
+        }
+        
+        // Check if the (file's) folder is found in the module filters 
+        for (String module : moduleFilters) {
+            // If the "default" module is part of the filters we can't
+            // make any guesses if we should skip the current folder
+            // or not until much later, so we just accept it
+            if (module.equals(Module.DEFAULT_MODULE_NAME)){
+                return true;
+            }
+            
+            String modulePathEx = module.replace('.', '/') + "/";
+            String folderNameEx = folderName + "/";
+            if (folderNameEx.startsWith(modulePathEx)
+                    || modulePathEx.startsWith(folderNameEx)) {
+                // We have a match so we accept
+                return true;
+            }
+        }
+        
+        // We can safely skip this file or folder
+        return false;
+    }
+    
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
         moduleManager.push(dir.getName());
         
