@@ -50,7 +50,7 @@ public abstract class AppliedClassOrInterface<Type>
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
-    protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
+    protected final com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.meta.model.InterfaceModel<? extends Object>> interfaces;

@@ -43,7 +43,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private final TypeDescriptor $reifiedArguments;
     
     private ceylon.language.meta.model.Type<? extends Type> type;
-    protected FreeFunction declaration;
+    protected final FreeFunction declaration;
     private MethodHandle method;
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;

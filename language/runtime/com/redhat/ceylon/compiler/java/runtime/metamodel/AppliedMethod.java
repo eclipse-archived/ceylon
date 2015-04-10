@@ -31,7 +31,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     extends AppliedMember<Container, ceylon.language.meta.model.Function<? extends Type, ? super Arguments>> 
     implements ceylon.language.meta.model.Method<Container, Type, Arguments> {
 
-    private FreeFunction declaration;
+    private final FreeFunction declaration;
     private ProducedTypedReference appliedFunction;
     private ceylon.language.meta.model.Type<Type> closedType;
     @Ignore

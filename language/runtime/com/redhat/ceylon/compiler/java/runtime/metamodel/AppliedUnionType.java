@@ -34,11 +34,11 @@ public class AppliedUnionType<Union>
     }
     
     @Ignore
-    protected TypeDescriptor $reifiedUnion;
+    protected final TypeDescriptor $reifiedUnion;
     
-    com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+    final com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
     
-    protected Sequential<? extends ceylon.language.meta.model.Type<? extends Union>> caseTypes;
+    protected final Sequential<? extends ceylon.language.meta.model.Type<? extends Union>> caseTypes;
     
     @Override
     public String toString() {

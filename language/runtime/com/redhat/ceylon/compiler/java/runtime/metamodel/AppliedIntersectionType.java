@@ -34,11 +34,11 @@ public class AppliedIntersectionType<Intersection>
     }
         
     @Ignore
-    protected TypeDescriptor $reifiedIntersection;
+    protected final TypeDescriptor $reifiedIntersection;
 
-    com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+    final com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
 
-    protected Sequential<ceylon.language.meta.model.Type<?>> satisfiedTypes;
+    protected final Sequential<ceylon.language.meta.model.Type<?>> satisfiedTypes;
     
     @Override
     public String toString() {

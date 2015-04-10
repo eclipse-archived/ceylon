@@ -45,7 +45,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private int firstDefaulted = -1;
     private int variadicIndex = -1;
     private MethodHandle[] dispatch;
-    private ceylon.language.meta.model.Type<?> container;
+    private final ceylon.language.meta.model.Type<?> container;
     private List<ProducedType> parameterProducedTypes;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     

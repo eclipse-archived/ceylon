@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public abstract class AppliedMember<Container, Kind extends ceylon.language.meta.model.Model> 
     implements ceylon.language.meta.model.Member<Container, Kind>, ReifiedType {
 
-    private ceylon.language.meta.model.Type<? extends Object> container;
+    private final ceylon.language.meta.model.Type<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
     @Ignore

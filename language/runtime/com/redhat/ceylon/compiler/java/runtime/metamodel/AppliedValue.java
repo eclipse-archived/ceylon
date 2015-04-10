@@ -42,17 +42,17 @@ public class AppliedValue<Get, Set>
 
     private static final Class<?>[] NO_PARAMS = new Class<?>[0];
     
-    private ceylon.language.meta.model.Type<Get> type;
+    private final ceylon.language.meta.model.Type<Get> type;
     @Ignore
-    protected TypeDescriptor $reifiedGet;
+    protected final TypeDescriptor $reifiedGet;
     @Ignore
-    protected TypeDescriptor $reifiedSet;
-    protected FreeValue declaration;
+    protected final TypeDescriptor $reifiedSet;
+    protected final FreeValue declaration;
     private MethodHandle getter;
     private MethodHandle setter;
-    private Object instance;
-    private ceylon.language.meta.model.Type<?> container;
-    protected ProducedType producedType;
+    private final Object instance;
+    private final ceylon.language.meta.model.Type<?> container;
+    protected final ProducedType producedType;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedGet, @Ignore TypeDescriptor $reifiedSet,
             FreeValue value, ProducedTypedReference valueTypedReference, 

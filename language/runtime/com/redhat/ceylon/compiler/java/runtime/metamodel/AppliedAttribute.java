@@ -26,9 +26,9 @@ public class AppliedAttribute<Container, Get, Set>
     extends AppliedMember<Container, ceylon.language.meta.model.Value<? extends Get, ? super Set>>
     implements ceylon.language.meta.model.Attribute<Container, Get, Set> {
 
-    protected FreeValue declaration;
-    protected ProducedTypedReference typedReference;
-    private ceylon.language.meta.model.Type<? extends Get> closedType;
+    protected final FreeValue declaration;
+    protected final ProducedTypedReference typedReference;
+    private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
     @Ignore
