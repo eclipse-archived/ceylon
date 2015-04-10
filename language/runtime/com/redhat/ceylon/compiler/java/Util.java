@@ -61,19 +61,8 @@ public class Util {
         return Metamodel.isReified(o, type);
     }
 
-    /**
-     * Returns true if the given object satisfies ceylon.language.Identifiable
-     */
-    public static boolean isIdentifiable(java.lang.Object o) {
-        if(o == null)
-            return false;
-        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
-        // unless marked as NOT identifiable, every instance is Identifiable
-        return classAnnotation != null ? classAnnotation.identifiable() : true;
-    }
-    
-    private static Class getClassAnnotationForIdentifiableOrBasic(Object o) {
-        java.lang.Class<? extends Object> klass = o.getClass();
+    private static Class getClassAnnotationForIdentifiableOrBasic(
+            java.lang.Class<? extends Object> klass) {
         while(klass != null && klass != java.lang.Object.class) {
             Class classAnnotation = klass.getAnnotation(Class.class);
             if(classAnnotation != null) {
@@ -87,12 +76,31 @@ public class Util {
     }
 
     /**
+     * Returns true if the given object satisfies ceylon.language.Identifiable
+     */
+    public static boolean isIdentifiable(java.lang.Object o) {
+        if(o == null)
+            return false;
+        return isIdentifiable(o.getClass());
+    }
+
+    public static boolean isIdentifiable(java.lang.Class<?> klazz) {
+        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(klazz);
+        // unless marked as NOT identifiable, every instance is Identifiable
+        return classAnnotation != null ? classAnnotation.identifiable() : true;
+    }
+    
+    /**
      * Returns true if the given object extends ceylon.language.Basic
      */
     public static boolean isBasic(java.lang.Object o) {
         if (o == null)
             return false;
-        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
+        return isBasic(o.getClass());
+    }
+
+    public static boolean isBasic(java.lang.Class<?> klazz) {
+        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(klazz);
         // unless marked as NOT identifiable, every instance is Basic
         return classAnnotation != null ? classAnnotation.basic() : true;
     }
@@ -1138,7 +1146,6 @@ public class Util {
      * @param elements the elements at the start of the sequence
      * @return A Sequential
      */
-    @SuppressWarnings({"unchecked"})
     public static <T> Sequential<? extends T> 
     sequentialCopy(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
             Object... elements) {

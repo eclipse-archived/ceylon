@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
+import static com.redhat.ceylon.compiler.java.Util.isBasic;
+import static com.redhat.ceylon.compiler.java.Util.isIdentifiable;
+import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getProducedType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -101,6 +105,10 @@ public abstract class TypeDescriptor {
         public TypeDescriptor[] getTypeArguments() {
             return typeArguments;
         }
+        
+        public boolean isGeneric() {
+            return typeArguments.length>0;
+        }
 
         protected boolean equals(Generic other) {
             return Arrays.equals(typeArguments, other.typeArguments)
@@ -160,6 +168,46 @@ public abstract class TypeDescriptor {
 
         public java.lang.Class<?> getKlass() {
             return klass;
+        }
+        
+        @Override
+        public boolean is(TypeDescriptor instanceType) {
+            if (klass==Anything.class || klass==Object.class) {
+                return true;
+            }
+            if (klass==Null.class || klass==null_.class) {
+                return false;
+            }
+            if (instanceType instanceof Class) {
+                java.lang.Class<?> instanceKlass = ((Class)instanceType).klass;
+                if (klass==Basic.class) {
+                    return isBasic(instanceKlass);
+                }
+                if (klass==Identifiable.class) {
+                    return isIdentifiable(instanceKlass);
+                }
+                java.lang.Class<?> realKlass;
+                if (klass==Exception.class) {
+                    realKlass = java.lang.Exception.class;
+                }
+                else if (klass==Throwable.class) {
+                    realKlass = java.lang.Throwable.class;
+                }
+                else {
+                    realKlass = klass;
+                }
+                boolean isSubclass =
+//                        (klass.getModifiers()&Modifier.FINAL)!=0 ?
+//                                klass==instanceKlass :
+                        realKlass.isAssignableFrom(instanceKlass);  
+                if (!isSubclass) {
+                    return false;
+                }
+                else if (!isGeneric()) {
+                    return true;
+                }
+            }
+            return super.is(instanceType);
         }
 
         @Override
@@ -539,6 +587,26 @@ public abstract class TypeDescriptor {
         public Union(TypeDescriptor[] members) {
             super(members);
         }
+        
+        @Override
+        public boolean is(TypeDescriptor instanceType) {
+            if (instanceType instanceof Union) {
+                for (TypeDescriptor instanceMember: ((Union)instanceType).members) {
+                    if (!is(instanceMember)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {
+                for (TypeDescriptor member: members) {
+                    if (member.is(instanceType)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         @Override
         public boolean equals(Object obj) {
@@ -606,6 +674,16 @@ public abstract class TypeDescriptor {
 
         public Intersection(TypeDescriptor[] members) {
             super(members);
+        }
+
+        @Override
+        public boolean is(TypeDescriptor instanceType) {
+            for (TypeDescriptor member: members) {
+                if (!member.is(instanceType)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
@@ -801,5 +879,10 @@ public abstract class TypeDescriptor {
             }
         }
         return first;
+    }
+
+    public boolean is(TypeDescriptor instanceType) {
+        return this==instanceType ||
+                getProducedType(instanceType).isSubtypeOf(getProducedType(this));
     }
 }

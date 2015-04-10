@@ -296,8 +296,10 @@ public class Metamodel {
         TypeDescriptor instanceType = getTypeDescriptor(o);
         if(instanceType == null)
             return false;
+        if (instanceType==type)
+            return true;
         
-        boolean result = getProducedType(instanceType).isSubtypeOf(getProducedType(type));
+        boolean result = type.is(instanceType);
         
         if (!result
                 && !(o instanceof ReifiedType)// we lack reified types
@@ -669,7 +671,7 @@ public class Metamodel {
     
     public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration, String methodName) {
         com.redhat.ceylon.compiler.typechecker.model.Class cls = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
-        Class<?> javaCls = getJavaClass(cls);
+//        Class<?> javaCls = getJavaClass(cls);
         Class<?> terJavaCls = getJavaClass((Declaration)cls.getContainer());
         java.lang.reflect.Method[] methods = terJavaCls.getDeclaredMethods();
         // the instantiator method is @Ignore'd and not @Name'd
@@ -718,7 +720,7 @@ public class Metamodel {
     public static List<java.lang.reflect.Constructor<?>> getJavaConstructors(
             com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
         Class<?> javaClass = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer());
-        Constructor<?>[] ctors = javaClass.getDeclaredConstructors();
+//        Constructor<?>[] ctors = javaClass.getDeclaredConstructors();
         ArrayList<java.lang.reflect.Constructor<?>> result = new ArrayList<java.lang.reflect.Constructor<?>>();
         // find the appropriate ultimate constructor
         java.lang.reflect.Constructor<?> ultimate = getJavaConstructor(declaration);
@@ -746,9 +748,9 @@ public class Metamodel {
     public static List<java.lang.reflect.Method> getJavaInstantiators(
             com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
         com.redhat.ceylon.compiler.typechecker.model.Class classModel = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
-        Class<?> javaClass = getJavaClass(classModel);
+//        Class<?> javaClass = getJavaClass(classModel);
         Class<?> outerJavaClass = getJavaClass((Declaration)classModel.getContainer()); 
-        java.lang.reflect.Method[] ctors = outerJavaClass.getDeclaredMethods();
+//        java.lang.reflect.Method[] ctors = outerJavaClass.getDeclaredMethods();
         ArrayList<java.lang.reflect.Method> result = new ArrayList<java.lang.reflect.Method>();
         // find the appropriate ultimate constructor
         String methodName = classModel.getName() + "$new$";
@@ -970,7 +972,6 @@ public class Metamodel {
         return refAnnotationClass;
     }
     
-    @SuppressWarnings("unchecked")
     private static <A extends ceylon.language.Annotation> void addAnnotation(
             Annotated annotated, 
             ArrayList<A> ceylonAnnotations,
