@@ -197,13 +197,16 @@ public abstract class TypeDescriptor {
                     realKlass = klass;
                 }
                 boolean isSubclass =
-//                        (klass.getModifiers()&Modifier.FINAL)!=0 ?
-//                                klass==instanceKlass :
+                        //(realKlass.getModifiers()&Modifier.FINAL)!=0 ?
+                        //realKlass==instanceKlass :
                         realKlass.isAssignableFrom(instanceKlass);  
                 if (!isSubclass) {
                     return false;
                 }
                 else if (!isGeneric()) {
+                    return true;
+                }
+                else if (super.equals((Generic)instanceType)) {
                     return true;
                 }
             }
