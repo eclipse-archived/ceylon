@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
@@ -27,6 +29,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private final Context context;
     private final ModuleManager moduleManager;
     private List<String> moduleFilters;
+    private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
 
     public PhasedUnits(Context context) {
@@ -43,6 +46,14 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             this.moduleManager = new ModuleManager(context);
         }
         this.moduleManager.initCoreModules();
+    }
+    
+    public void setSourceFiles(List<VirtualFile> sourceFiles){
+        if (sourceFiles != null) {
+            this.sourceFiles.addAll(sourceFiles);
+        } else {
+            this.sourceFiles.clear();
+        }
     }
     
     public void setModuleFilters(List<String> moduleFilters){
@@ -87,7 +98,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     }
 
     protected void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if (file.getName().endsWith(".ceylon")) {
+        if (file.getName().endsWith(".ceylon") && (sourceFiles.isEmpty() || sourceFiles.contains(file))) {
 
             //System.out.println("Parsing " + file.getName());
             CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), getEncoding()));
