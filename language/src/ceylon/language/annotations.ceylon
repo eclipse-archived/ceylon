@@ -263,7 +263,7 @@ shared final annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
     [String*] warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
-            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
+            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Module|Package|Import> {}
 
 "Annotation to suppress compilation warnings of the 
  [[specified types|warnings]] when typechecking the 
