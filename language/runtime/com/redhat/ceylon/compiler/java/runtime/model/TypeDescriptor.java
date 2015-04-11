@@ -172,7 +172,9 @@ public abstract class TypeDescriptor {
         
         @Override
         public boolean is(TypeDescriptor instanceType) {
-            if (klass==Anything.class || klass==Object.class) {
+            //NOTE: instanceType must be the type descriptor
+            //       for a non-null instance
+            if (klass==Anything.class || klass==ceylon.language.Object.class) {
                 return true;
             }
             if (klass==Null.class || klass==null_.class) {
@@ -206,9 +208,10 @@ public abstract class TypeDescriptor {
                 else if (!isGeneric()) {
                     return true;
                 }
-                else if (super.equals((Generic)instanceType)) {
-                    return true;
-                }
+                //no sure if this optimization is really worth it...
+//                else if (super.equals((Generic)instanceType)) {
+//                    return true;
+//                }
             }
             else if (instanceType instanceof Union) {
                 for (TypeDescriptor member: ((Union) instanceType).members) {
