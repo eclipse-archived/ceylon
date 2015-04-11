@@ -288,25 +288,27 @@ public class Metamodel {
     }
     
     /** Implementation of {@code is} operator */
-    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
-        if (o == null) {
+    public static boolean isReified(java.lang.Object instance, TypeDescriptor type){
+        if (instance == null) {
             return type.containsNull();
         }
         
-        TypeDescriptor instanceType = getTypeDescriptor(o);
-        if(instanceType == null)
+        TypeDescriptor instanceType = getTypeDescriptor(instance);
+        if (instanceType == null) {
             return false;
-        if (instanceType==type)
+        }
+        if (instanceType == type) {
             return true;
+        }
         
         boolean result = type.is(instanceType);
         
         if (!result
-                && !(o instanceof ReifiedType)// we lack reified types
+                && !(instance instanceof ReifiedType)// we lack reified types
                 && type instanceof TypeDescriptor.Class// we're testing for a generic type
-                && ((TypeDescriptor.Class) type).getTypeArguments().length > 0
-                && ((TypeDescriptor.Class)type).getKlass().isInstance(o)// the instance is an instance of the base type
-                && !reifiedByInheritance(o.getClass(), ((TypeDescriptor.Class)type).getKlass())// the type isn't reified by inheritance
+                && ((TypeDescriptor.Class)type).getTypeArguments().length > 0
+                && ((TypeDescriptor.Class)type).getKlass().isInstance(instance)// the instance is an instance of the base type
+                && !reifiedByInheritance(instance.getClass(), ((TypeDescriptor.Class)type).getKlass())// the type isn't reified by inheritance
                 ) {
             // throw when asked if an instance of a Java class is
             // of a generic type and we don't have sufficient information to 
@@ -315,7 +317,7 @@ public class Metamodel {
             // that's so that we don't have to worry about type applications 
             // such as like <out Anything> which is true even in the absence 
             // of reified type arguments
-            throw new ReifiedTypeError("Cannot determine whether " + o.getClass() + " is a " + type);
+            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
         }
         
         return result;
