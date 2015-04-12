@@ -59,7 +59,7 @@ shared final native class Character(Character character)
        evaluates to the character `'S'`, whereas
      - `\"\{LATIN SMALL LETTER SHARP S}\".uppercased`
        evaluates, more correctly, to the string `\"SS\"`."
-    see (`function String.uppercased`)
+    see (`value String.uppercased`)
     shared native Character uppercased;
     
     "The title case representation of this character."
