@@ -39,7 +39,7 @@ shared final native class Character(Character character)
      Conversion of uppercase characters to lowercase is
      performed according to a locale-independent mapping
      that produces incorrect results in certain locales
-     (e.g. `tr_TR`)."
+     (e.g. `tr-TR`)."
     shared native Character lowercased;
     
     "The uppercase representation of this character, in the
@@ -48,7 +48,7 @@ shared final native class Character(Character character)
      Conversion of lowercase characters to uppercase is
      performed according to a locale-independent mapping
      that produces incorrect results in certain locales
-     (e.g. `tr_TR`).
+     (e.g. `tr-TR`).
      
      Furthermore, this conversion always produces a single
      character, which is incorrect for characters whose
@@ -56,7 +56,8 @@ shared final native class Character(Character character)
      for example \{LATIN SMALL LETTER SHARP S}. Thus,
      
      - `'\{LATIN SMALL LETTER SHARP S}'.uppercased`
-       evaluates to the character `'S'`, whereas
+       evaluates to `'\{LATIN SMALL LETTER SHARP S}'`, 
+       whereas
      - `\"\{LATIN SMALL LETTER SHARP S}\".uppercased`
        evaluates, more correctly, to the string `\"SS\"`."
     see (`value String.uppercased`)
