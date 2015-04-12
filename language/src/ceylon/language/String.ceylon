@@ -63,10 +63,20 @@ shared native final class String(characters)
     "The characters that form this string."
     {Character*} characters;
     
-    "This string, with all characters in lowercase."
+    "This string, with all characters in lowercase.
+     
+     Conversion of uppercase characters to lowercase is
+     performed according to a locale-independent mapping
+     that produces incorrect results in certain locales
+     (e.g. `tr_TR`)."
     shared native String lowercased;
     
-    "This string, with all characters in uppercase."
+    "This string, with all characters in uppercase.
+     
+     Conversion of lowercase characters to uppercase is
+     performed according to a locale-independent mapping
+     that produces incorrect results in certain locales
+     (e.g. `tr_TR`)."
     shared native String uppercased;
     
     "Split the string into tokens, using the given 
@@ -353,11 +363,17 @@ shared native final class String(characters)
     
     "Compare this string with the given string 
      lexicographically, according to the Unicode code points
-     of the characters."
+     of the characters.
+     
+     This defines a locale-independent collation that is
+     incorrect in some locales."
     shared actual native Comparison compare(String other);
     
     "Compare this string with the given string 
-     lexicographically, ignoring the case of the characters."
+     lexicographically, ignoring the case of the characters.
+     
+     This defines a locale-independent collation that is
+     incorrect in some locales."
     shared native Comparison compareIgnoringCase(String other);
     
     "Determines if this string is longer than the given
