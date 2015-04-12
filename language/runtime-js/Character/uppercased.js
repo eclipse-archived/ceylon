@@ -1,3 +1,3 @@
 var ucstr = codepointToString(this.value).toUpperCase();
-return Character(codepointFromString(ucstr, 0));
+return countCodepoints(ucstr)==1 ? Character(codepointFromString(ucstr, 0)) : this;
 

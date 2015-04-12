@@ -1,3 +1,2 @@
 var lcstr = codepointToString(this.value).toLowerCase();
-return Character(codepointFromString(lcstr, 0));
-
+return countCodepoints(lcstr)==1 ? Character(codepointFromString(lcstr, 0)) : this;
