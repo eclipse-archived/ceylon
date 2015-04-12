@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.util.Locale;
+
 import ceylon.language.impl.BaseCharacterList;
 import ceylon.language.impl.BaseIterator;
 
@@ -131,76 +133,7 @@ public final class String
 
     @Ignore
     public static java.lang.String getUppercased(java.lang.String value) {
-        int firstLower;
-        final int len = value.length();
-
-        /* Now check if there are any characters that need to be changed. */
-        scan: {
-            for (firstLower = 0 ; firstLower < len; ) {
-                int c = (int)value.charAt(firstLower);
-                int srcCount;
-                if ((c >= java.lang.Character.MIN_HIGH_SURROGATE)
-                        && (c <= java.lang.Character.MAX_HIGH_SURROGATE)) {
-                    c = value.codePointAt(firstLower);
-                    srcCount = java.lang.Character.charCount(c);
-                } else {
-                    srcCount = 1;
-                }
-                int upperCaseChar = java.lang.Character.toUpperCase(c);
-                if ((upperCaseChar == 0xFFFFFFFF)
-                        || (c != upperCaseChar)) {
-                    break scan;
-                }
-                firstLower += srcCount;
-            }
-            return value;
-        }
-
-        /* result may grow, so i+resultOffset is the write location in result */
-        int resultOffset = 0;
-        char[] result = new char[len]; /* may grow */
-
-        /* Just copy the first few upperCase characters. */
-        value.getChars(0, firstLower, result, 0);
-
-        char[] upperCharArray;
-        int upperChar;
-        int srcChar;
-        int srcCount;
-        for (int i = firstLower; i < len; i += srcCount) {
-            srcChar = (int)value.charAt(i);
-            if ((char)srcChar >= java.lang.Character.MIN_HIGH_SURROGATE &&
-                (char)srcChar <= java.lang.Character.MAX_HIGH_SURROGATE) {
-                srcChar = value.codePointAt(i);
-                srcCount = java.lang.Character.charCount(srcChar);
-            } else {
-                srcCount = 1;
-            }
-            upperChar = java.lang.Character.toUpperCase(srcChar);
-            if (upperChar >= java.lang.Character.MIN_SUPPLEMENTARY_CODE_POINT) {
-                if (srcCount == 2) {
-                    resultOffset += java.lang.Character.toChars(upperChar, result, i + resultOffset) - srcCount;
-                    continue;
-                } else {
-                    upperCharArray = java.lang.Character.toChars(upperChar);
-                }
-
-                /* Grow result if needed */
-                int mapLen = upperCharArray.length;
-                if (mapLen > srcCount) {
-                    char[] result2 = new char[result.length + mapLen - srcCount];
-                    System.arraycopy(result, 0, result2, 0, i + resultOffset);
-                    result = result2;
-                }
-                for (int x = 0; x < mapLen; ++x) {
-                    result[i + resultOffset + x] = upperCharArray[x];
-                }
-                resultOffset += (mapLen - srcCount);
-            } else {
-                result[i + resultOffset] = (char)upperChar;
-            }
-        }
-        return new java.lang.String(result, 0, len + resultOffset);
+        return value.toUpperCase(Locale.ROOT);
     }
 
     public java.lang.String getLowercased() {
@@ -209,80 +142,7 @@ public final class String
 
     @Ignore
     public static java.lang.String getLowercased(java.lang.String value) {
-        int firstUpper;
-        final int len = value.length();
-
-        /* Now check if there are any characters that need to be changed. */
-        scan: {
-            for (firstUpper = 0 ; firstUpper < len; ) {
-                char c = value.charAt(firstUpper);
-                if ((c >= java.lang.Character.MIN_HIGH_SURROGATE)
-                        && (c <= java.lang.Character.MAX_HIGH_SURROGATE)) {
-                    int supplChar = value.codePointAt(firstUpper);
-                    if (supplChar != java.lang.Character.toLowerCase(supplChar)) {
-                        break scan;
-                    }
-                    firstUpper += java.lang.Character.charCount(supplChar);
-                } else {
-                    if (c != java.lang.Character.toLowerCase(c)) {
-                        break scan;
-                    }
-                    firstUpper++;
-                }
-            }
-            return value;
-        }
-
-        char[] result = new char[len];
-        int resultOffset = 0;  /* result may grow, so i+resultOffset
-                                * is the write location in result */
-
-        /* Just copy the first few lowerCase characters. */
-        value.getChars(0, firstUpper, result, 0);
-
-        char[] lowerCharArray;
-        int lowerChar;
-        int srcChar;
-        int srcCount;
-        for (int i = firstUpper; i < len; i += srcCount) {
-            srcChar = (int)value.charAt(i);
-            if ((char)srcChar >= java.lang.Character.MIN_HIGH_SURROGATE
-                    && (char)srcChar <= java.lang.Character.MAX_HIGH_SURROGATE) {
-                srcChar = value.codePointAt(i);
-                srcCount = java.lang.Character.charCount(srcChar);
-            } else {
-                srcCount = 1;
-            }
-//            if (srcChar == '\u03A3') { // GREEK CAPITAL LETTER SIGMA
-//                lowerChar = '\u03c3';
-//            } else {
-            lowerChar = java.lang.Character.toLowerCase(srcChar);
-//            }
-            if (lowerChar >= java.lang.Character.MIN_SUPPLEMENTARY_CODE_POINT) {
-                if (srcCount == 2) {
-                    resultOffset += java.lang.Character.toChars(lowerChar, result, i + resultOffset) - srcCount;
-                    continue;
-                } else {
-                    lowerCharArray = java.lang.Character.toChars(lowerChar);
-                }
-
-                /* Grow result if needed */
-                int mapLen = lowerCharArray.length;
-                if (mapLen > srcCount) {
-                    char[] result2 = new char[result.length + mapLen - srcCount];
-                    System.arraycopy(result, 0, result2, 0, i + resultOffset);
-                    result = result2;
-                }
-                for (int x = 0; x < mapLen; ++x) {
-                    result[i + resultOffset + x] = lowerCharArray[x];
-                }
-                resultOffset += (mapLen - srcCount);
-            } else {
-                result[i + resultOffset] = (char)lowerChar;
-            }
-        }
-        return new java.lang.String(result, 0, len + resultOffset);
-
+        return value.toLowerCase(Locale.ROOT);
     }
 
     @Override
