@@ -34,12 +34,32 @@ shared final native class Character(Character character)
     "A string containing just this character."
     shared actual native String string;
     
-    "The lowercase representation of this character, in the
-     [[system]] default locale."
+    "The lowercase representation of this character.
+     
+     Conversion of uppercase characters to lowercase is
+     performed according to a locale-independent mapping
+     that produces incorrect results in certain locales
+     (e.g. `tr_TR`)."
     shared native Character lowercased;
     
     "The uppercase representation of this character, in the
-     [[system]] default locale."
+     [[system]] default locale.
+     
+     Conversion of lowercase characters to uppercase is
+     performed according to a locale-independent mapping
+     that produces incorrect results in certain locales
+     (e.g. `tr_TR`).
+     
+     Furthermore, this conversion always produces a single
+     character, which is incorrect for characters whose
+     uppercase representation comprises multiple characters,
+     for example \{LATIN SMALL LETTER SHARP S}. Thus,
+     
+     - `'\{LATIN SMALL LETTER SHARP S}'.uppercased`
+       evaluates to the character `'S'`, whereas
+     - `\"\{LATIN SMALL LETTER SHARP S}\".uppercased`
+       evaluates, more correctly, to the string `\"SS\"`."
+    see (`function String.uppercased`)
     shared native Character uppercased;
     
     "The title case representation of this character."
