@@ -810,12 +810,6 @@ public final class String
         }
     }
     
-    @Ignore
-    public static Iterable<? extends Character,?> 
-    getCharacters(java.lang.String value) {
-        return instance(value);
-    }
-    
     @Override
     public boolean contains(@Name("element") java.lang.Object element) {
         if (element instanceof String) {
