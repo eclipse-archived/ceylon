@@ -1,3 +1,5 @@
-function(s){
-  return this.uppercased.compare(s.uppercased);
+function(other){
+  return this.equalsIgnoringCase(other) ? 
+      equal() :
+      this.uppercased.compare(other.uppercased);
 }

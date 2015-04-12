@@ -1,3 +1,5 @@
-function(s){
-  return is$(s,{t:$_String}) && s.uppercased.equals(this.uppercased);
+function(other){
+  return is$(other,{t:$_String}) 
+      && other.uppercased.equals(this.uppercased)
+      && other.lowercased.equals(this.lowercased);
 }
