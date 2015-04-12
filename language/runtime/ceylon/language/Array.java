@@ -1638,20 +1638,21 @@ public final class Array<Element>
     }
     
     @Ignore
-    public int copyTo$sourcePosition(Element[] destination){
+    public long copyTo$sourcePosition(Array<Element> destination){
         return 0;
     }
 
     @Ignore
-    public int copyTo$destinationPosition(Element[] destination, 
-            int sourcePosition){
+    public long copyTo$destinationPosition(Array<Element> destination, 
+            long sourcePosition){
         return 0;
     }
 
     @Ignore
-    public int copyTo$length(Element[] destination, 
-            int sourcePosition, int destinationPosition){
-        return java.lang.reflect.Array.getLength(array)-sourcePosition;
+    public long copyTo$length(Array<Element> destination, 
+            long sourcePosition, long destinationPosition){
+        return Math.min(size-sourcePosition,
+                destination.getSize()-destinationPosition);
     }
 
     @Ignore
@@ -1660,23 +1661,25 @@ public final class Array<Element>
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, int sourcePosition){
+    public void copyTo(Array<Element> destination, long sourcePosition){
         copyTo(destination, sourcePosition, 0);
     }
 
     @Ignore
     public void copyTo(Array<Element> destination, 
-            int sourcePosition, int destinationPosition){
+            long sourcePosition, long destinationPosition){
         copyTo(destination, sourcePosition, destinationPosition, 
-                java.lang.reflect.Array.getLength(array)-sourcePosition);
+                copyTo$length(destination, sourcePosition, destinationPosition));
     }
 
     public void copyTo(@Name("destination") Array<Element> destination, 
-                       @Name("sourcePosition") @Defaulted int sourcePosition, 
-                       @Name("destinationPosition") @Defaulted int destinationPosition, 
-                       @Name("length") @Defaulted int length){
-        arraycopy(array, sourcePosition, destination.array, 
-                        destinationPosition, length);
+                       @Name("sourcePosition") @Defaulted long sourcePosition, 
+                       @Name("destinationPosition") @Defaulted long destinationPosition, 
+                       @Name("length") @Defaulted long length){
+        if (length>0) {
+            arraycopy(array, Util.toInt(sourcePosition), destination.array, 
+                    Util.toInt(destinationPosition), Util.toInt(length));
+        }
     }
     
     @Override

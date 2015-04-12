@@ -1,6 +1,6 @@
 function(other,srcpos,dstpos,length){
     if(srcpos===undefined)srcpos=0;
-    if(length===undefined)length=this.size-srcpos;
+    if(length===undefined)length=Math.min(this.size-srcpos,other.size-dstpos);
     if (length===0)return;
     if(dstpos===undefined)dstpos=0;
     var endpos=srcpos+length-1;

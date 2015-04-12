@@ -86,7 +86,9 @@ shared final native class Array<Element>
          first element."
         Integer destinationPosition = 0,
         "The number of elements to copy."
-        Integer length = size - sourcePosition);
+        Integer length 
+                = smallest(size - sourcePosition,
+                    destination.size - destinationPosition));
         
     shared actual native 
     Array<Element> span(Integer from, Integer to);

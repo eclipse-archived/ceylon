@@ -2291,4 +2291,83 @@ public final class String
     	return instance(value).partition(length);
     }
     
+    @Ignore
+    public long copyTo$sourcePosition(Array<Character> destination){
+        return 0;
+    }
+
+    @Ignore
+    public long copyTo$destinationPosition(Array<Character> destination, 
+            long sourcePosition){
+        return 0;
+    }
+
+    @Ignore
+    public long copyTo$length(Array<Character> destination, 
+            long sourcePosition, long destinationPosition){
+        return Math.min(value.length()-sourcePosition,
+                destination.getSize()-destinationPosition);
+    }
+
+    @Ignore
+    public static void copyTo(java.lang.String value, Array<Character> destination){
+        copyTo(value, destination, 0, 0);
+    }
+
+    @Ignore
+    public static void copyTo(java.lang.String value, Array<Character> destination, long sourcePosition){
+        copyTo(value, destination, sourcePosition, 0);
+    }
+
+    @Ignore
+    public static void copyTo(java.lang.String value, Array<Character> destination, 
+            long sourcePosition, long destinationPosition){
+        copyTo(value, destination, 
+                sourcePosition, destinationPosition, 
+                Math.min(value.length()-sourcePosition,
+                        destination.getSize()-destinationPosition));
+    }
+
+    @Ignore
+    public void copyTo(Array<Character> destination){
+        copyTo(value, destination, 0, 0);
+    }
+
+    @Ignore
+    public void copyTo(Array<Character> destination, long sourcePosition){
+        copyTo(value, destination, sourcePosition, 0);
+    }
+
+    @Ignore
+    public void copyTo(Array<Character> destination, 
+            long sourcePosition, long destinationPosition){
+        copyTo(value, destination, 
+                sourcePosition, destinationPosition, 
+                copyTo$length(destination, sourcePosition, destinationPosition));
+    }
+
+    @Ignore
+    public static void copyTo(java.lang.String value,
+            Array<Character> destination, 
+            long sourcePosition, 
+            long destinationPosition, 
+            long length){
+        int count = 0;
+        int dest = Util.toInt(destinationPosition);
+        for (int index = value.offsetByCodePoints(0,Util.toInt(sourcePosition)); 
+                count<length;) {
+            int codePoint = value.codePointAt(index);
+            ((int[])destination.toArray())[count+dest] = codePoint;
+            index += java.lang.Character.charCount(codePoint);
+            count++;
+        }
+    }
+
+    public void copyTo(@Name("destination") Array<Character> destination, 
+                       @Name("sourcePosition") @Defaulted long sourcePosition, 
+                       @Name("destinationPosition") @Defaulted long destinationPosition, 
+                       @Name("length") @Defaulted long length){
+        copyTo(value, destination, sourcePosition, destinationPosition, length);
+    }
+    
 }

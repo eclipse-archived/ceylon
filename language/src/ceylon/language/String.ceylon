@@ -418,6 +418,25 @@ shared native final class String(characters)
         "The padding character"
         Character character=' ');
     
+    "Efficiently copy the characters in the segment
+     `sourcePosition:length` of this string to the segment 
+     `destinationPosition:length` of the given 
+     [[character array|destination]]."
+    shared native 
+    void copyTo(
+        "The array into which to copy the elements."
+        Array<Character> destination,
+        "The index of the first element in this array to 
+         copy."
+        Integer sourcePosition = 0,
+        "The index in the given array into which to copy the 
+         first element."
+        Integer destinationPosition = 0,
+        "The number of elements to copy."
+        Integer length 
+                = smallest(size - sourcePosition,
+                    destination.size - destinationPosition));
+    
     shared actual native Boolean occurs(Anything element);
     shared actual native Boolean occursAt(Integer index, Anything element);
     shared actual native Boolean includes(List<Anything> sublist);
