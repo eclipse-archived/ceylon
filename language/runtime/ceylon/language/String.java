@@ -80,7 +80,7 @@ public final class String
                 java.lang.Object $tmp;
                 for (Iterator<? extends Character> $val$iter$0 = characters.iterator(); 
                         !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-                    sb.append($tmp);
+                    sb.appendCodePoint(((Character)$tmp).codePoint);
                 }
                 value = sb.toString();
             }
