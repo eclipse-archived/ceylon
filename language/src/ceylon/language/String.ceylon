@@ -73,8 +73,8 @@ shared native final class String(characters)
      The resulting string may not have the same number of
      characters as this string, since the uppercase 
      representation of certain characters comprises multiple
-     characters, for example the uppercase representation
-     of \{LATIN CAPITAL LETTER I WITH DOT ABOVE} is two 
+     characters, for example the lowercase representation of 
+     \{LATIN CAPITAL LETTER I WITH DOT ABOVE} is two 
      characters wide."
     shared native String lowercased;
     
@@ -88,8 +88,8 @@ shared native final class String(characters)
      The resulting string may not have the same number of
      characters as this string, since the uppercase 
      representation of certain characters comprises multiple
-     characters, for example the uppercase representation
-     of \{LATIN SMALL LETTER SHARP S} is SS."
+     characters, for example the uppercase representation of 
+     \{LATIN SMALL LETTER SHARP S} is SS."
     shared native String uppercased;
     
     "Split the string into tokens, using the given 
