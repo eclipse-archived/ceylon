@@ -451,7 +451,14 @@ public class GenerateJsVisitor extends Visitor
         if (dname.endsWith("Declaration") || dname.endsWith("Definition")) {
             dname = dname.substring(0, dname.length()-7);
         }
-        out("//", dname, " ", that.getDeclarationModel().getName());
+        if (that instanceof Tree.Constructor) {
+            String cname = ((com.redhat.ceylon.compiler.typechecker.model.Class)((Tree.Constructor)that)
+                    .getDeclarationModel().getContainer()).getName();
+            out("//Constructor ", cname, ".",
+                    that.getDeclarationModel().getName() == null ? cname : that.getDeclarationModel().getName());
+        } else {
+            out("//", dname, " ", that.getDeclarationModel().getName());
+        }
         location(that);
         endLine();
     }
@@ -899,6 +906,10 @@ public class GenerateJsVisitor extends Visitor
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
+        if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            String cname = ((com.redhat.ceylon.compiler.typechecker.model.Constructor)d).getExtendedTypeDeclaration().getName();
+            fqn = fqn.substring(0, fqn.length()-4) + cname;
+        }
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '/').replace("::", "/");
@@ -911,7 +922,11 @@ public class GenerateJsVisitor extends Visitor
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             if (d.isClassOrInterfaceMember()) {
-                if (d instanceof Value)return true;//Native values are defined as attributes
+                if (d instanceof Value || n instanceof Tree.Constructor) {
+                    //Native values are defined as attributes
+                    //Constructor metamodel is done in TypeGenerator.classConstructor
+                    return true;
+                }
                 out(names.self((TypeDeclaration)d.getContainer()), ".");
             }
             out(names.name(d), ".$crtmm$=");
@@ -921,7 +936,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             if (d instanceof ClassOrInterface==false) {
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
+                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d) + ": " + f;
                 spitOut(err);
                 out("/*", err, "*/");
             }

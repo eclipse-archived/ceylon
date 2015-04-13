@@ -276,13 +276,26 @@ public class TypeGenerator {
         }
         gen.comment(that);
         if (gen.shouldStitch(d)) {
+            boolean bye = false;
+            if (d.hasConstructors() && defconstr == null) {
+                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                gen.out("(){");
+                gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
+                gen.out(";}"); gen.endLine();
+            }
             if (gen.stitchNative(d, that)) {
                 if (d.isShared()) {
                     gen.share(d);
                 }
                 initializeType(that, gen);
-                return;
+                bye = true;
             }
+            if (d.hasConstructors()) {
+                for (Tree.Constructor cnstr : constructors) {
+                    classConstructor(cnstr, that.getTypeParameterList(), d, gen);
+                }
+            }
+            if (bye)return;
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
         //If there's a default constructor, create a different function with this code
@@ -715,35 +728,38 @@ public class TypeGenerator {
 
     static void classConstructor(final Tree.Constructor that,
             final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
+        gen.comment(that);
         Constructor d = that.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
-        gen.out("function ", fullName);
-        final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
-        final String me = gen.getNames().self(container);
-        gen.beginBlock();
-        gen.out("$init$", gen.getNames().name(container), "();");
-        gen.endLine();
-        gen.declareSelf(container);
-        gen.referenceOuter(container);
-        if (that.getDelegatedConstructor() != null) {
-            final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
-            ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
-                ((Constructor)superdec).getParameterLists().get(0);
-            callSuperclass(that.getDelegatedConstructor().getType(),
-                    that.getDelegatedConstructor().getInvocationExpression(),
-                    container, plist, that, null, gen);
+        if (!d.isNative() || !gen.stitchNative(d, that)) {
+            gen.out("function ", fullName);
+            final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
+            final String me = gen.getNames().self(container);
+            gen.beginBlock();
+            gen.out("$init$", gen.getNames().name(container), "();");
+            gen.endLine();
+            gen.declareSelf(container);
+            gen.referenceOuter(container);
+            if (that.getDelegatedConstructor() != null) {
+                final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
+                ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
+                    ((Constructor)superdec).getParameterLists().get(0);
+                callSuperclass(that.getDelegatedConstructor().getType(),
+                        that.getDelegatedConstructor().getInvocationExpression(),
+                        container, plist, that, null, gen);
+            }
+            //Call common initializer
+            gen.out(gen.getNames().name(container), "$$c(");
+            if (withTargs) {
+                gen.out("$$targs$$,");
+            }
+            gen.out(me, ");");
+            gen.endLine();
+            gen.initParameters(that.getParameterList(), container, null);
+            gen.visitStatements(that.getBlock().getStatements());
+            gen.out("return ", me, ";");
+            gen.endBlockNewLine(true);
         }
-        //Call common initializer
-        gen.out(gen.getNames().name(container), "$$c(");
-        if (withTargs) {
-            gen.out("$$targs$$,");
-        }
-        gen.out(me, ");");
-        gen.endLine();
-        gen.initParameters(that.getParameterList(), container, null);
-        gen.visitStatements(that.getBlock().getStatements());
-        gen.out("return ", me, ";");
-        gen.endBlockNewLine(true);
         //Add reference to metamodel
         gen.out(fullName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
