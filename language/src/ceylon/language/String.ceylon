@@ -413,7 +413,7 @@ shared native final class String(characters)
             if (thisChar!=thatChar && 
                 thisChar.uppercased!=thatChar.uppercased &&
                 thisChar.lowercased!=thatChar.lowercased) {
-                return thisChar <=> thatChar;
+                return thisChar.lowercased <=> thatChar.lowercased;
             }
         }
         return size <=> other.size;
