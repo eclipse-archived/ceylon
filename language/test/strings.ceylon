@@ -71,14 +71,14 @@ shared void strings() {
     check(hello.measure(1,5)=="ello", "string measure 2");
     check(hello.measure(1,0)=="", "string measure 3");
     check(hello.measure(1,10)=="ello", "string measure 4");
-    check(hello.measure(10,20)=="", "string measure 5");
+    check(hello.measure(10,20)=="", "string measure 5 expected empty string got ``hello.measure(10,20)``");
     
-    check("".span(1,3)=="", "empty string span 1");
+    check("".span(1,3)=="", "empty string span 1 expected empty string got ``"".span(1,3)``");
     check("".spanFrom(0)=="", "empty string spanFrom 0");
     check("".spanFrom(1)=="", "empty string spanFrom 1");
     check("".spanTo(0)=="", "empty string spanTo 0");
     check("".spanTo(1)=="", "empty string spanTo 1");
-    check("".measure(1,3)=="", "empty string measure");
+    check("".measure(1,3)=="", "empty string measure expected empty string got ``"".measure(1,3)``");
         
     check(hello[0] exists, "string first element exists 1");
     if (exists li = hello.lastIndex) {
@@ -549,7 +549,7 @@ shared void strings() {
         }
     })) then trm3==400 else false, "String.reduce");
     check("abc".equalsIgnoringCase("aBc"), "String.equalsIgnoringCase");
-    check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase");
+    check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase expected smaller got ``"abc".compareIgnoringCase("DEF")``");
     if (exists loc0="HelLo".locate((c)=>c.uppercase)) {
         Object oc0=loc0;
         check(oc0 is Integer->Character, "String.locate 1");
@@ -564,4 +564,7 @@ shared void strings() {
     } else {
         fail("String.locateLast 1");
     }
+    value charr=Array.OfSize(3,'x');
+    "abc".copyTo(charr);
+    check(charr==Array{'a','b','c'}, "String.copyTo");
 }

@@ -47,7 +47,7 @@ shared void testArrays() {
     }
     
     a2.copyTo(a3);
-    check(a3==Array{ 10, 2, 3 }, "copyTo()");
+    check(a3==Array{ 10, 2, 3 }, "Array.copyTo() expected 10,2,3 got ``a3``");
     
     for (ii in 0:3) {
         a3.set(ii, 5);
