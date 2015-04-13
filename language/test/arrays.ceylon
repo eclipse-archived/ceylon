@@ -212,4 +212,8 @@ shared void testArrays() {
     check(!a12.lastOccurrence(0) exists, "Array.lastOccurrence 3");
     check(a12.occurs(5), "Array.occurs 1");
     check(!a12.occurs(4), "Array.occurs 2");
+    //constructor
+    value a13=Array.OfSize(5,1);
+    check(a13.size==5, "Array.OfSize 1");
+    check(every { for (i in a13) i==1 }, "Array.OfSize 2");
 }
