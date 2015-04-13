@@ -111,7 +111,12 @@ JSNum$proto.divided = function(other) {
     return toInt(this/other);
 }
 $addnm$('divided');
-JSNum$proto.remainder = function(other) { return this%other; }
+JSNum$proto.remainder = function(other) {
+  if (other == 0) {
+    throw Exception("Division by Zero");
+  }
+  return this%other;
+}
 $addnm$('remainder',Integral.$$.prototype.remainder);
 JSNum$proto.remainder.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};};
 JSNum$proto.divides=function(o){return o%this===0;}
