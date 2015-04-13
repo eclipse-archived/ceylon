@@ -51,11 +51,10 @@ shared final native class Character(Character character)
        evaluates to `'i'`, whereas
      - `\"\{LATIN CAPITAL LETTER I WITH DOT ABOVE}\".uppercased`
        evaluates, more correctly, to the string 
-       `\"i\{COMBINING DOT ABOVE}\"`."
-    deprecated ("Use `char.string.lowercased` which 
-                 correctly handles characters whose 
-                 uppercase representation comprises multiple
-                 characters")
+       `\"i\{COMBINING DOT ABOVE}\"`.
+     
+     Therefore, for most purposes, it is better to use 
+     `char.string.lowercased` instead of `char.lowercased`."
     see (`value String.lowercased`)
     shared native Character lowercased;
     
@@ -76,11 +75,10 @@ shared final native class Character(Character character)
        evaluates to `'\{LATIN SMALL LETTER SHARP S}'`, 
        whereas
      - `\"\{LATIN SMALL LETTER SHARP S}\".uppercased`
-       evaluates, more correctly, to the string `\"SS\"`."
-    deprecated ("Use `char.string.uppercased` which 
-                 correctly handles characters whose 
-                 uppercase representation comprises multiple
-                 characters")
+       evaluates, more correctly, to the string `\"SS\"`.
+     
+     Therefore, for most purposes, it is better to use 
+     `char.string.uppercased` instead of `char.uppercased`."
     see (`value String.uppercased`)
     shared native Character uppercased;
     

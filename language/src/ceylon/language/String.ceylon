@@ -380,14 +380,44 @@ shared native final class String(characters)
      
      This defines a locale-independent collation that is
      incorrect in some locales."
-    shared actual native Comparison compare(String other);
+    shared actual native Comparison compare(String other) {
+        value min = smallest(size, other.size);
+        for (i in 0:min) {
+            assert (exists thisChar = this.getFromFirst(i));
+            assert (exists thatChar = other.getFromFirst(i));
+            if (thisChar!=thatChar) {
+                return thisChar <=> thatChar;
+            }
+        }
+        return size <=> other.size;
+    }
     
     "Compare this string with the given string 
      lexicographically, ignoring the case of the characters.
+     That is, by considering two characters `x` and `y` as
+     equal if:
+     
+     - `x == y`,
+     - `x.uppercased == y.uppercased`, or
+     - `x.lowercased == y.lowercased`.
      
      This defines a locale-independent collation that is
      incorrect in some locales."
-    shared native Comparison compareIgnoringCase(String other);
+    see (`value Character.lowercased`, 
+         `value Character.uppercased`)
+    shared native Comparison compareIgnoringCase(String other) {
+        value min = smallest(size, other.size);
+        for (i in 0:min) {
+            assert (exists thisChar = this.getFromFirst(i));
+            assert (exists thatChar = other.getFromFirst(i));
+            if (thisChar!=thatChar && 
+                thisChar.uppercased!=thatChar.uppercased &&
+                thisChar.lowercased!=thatChar.lowercased) {
+                return thisChar <=> thatChar;
+            }
+        }
+        return size <=> other.size;
+    }
     
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
@@ -405,11 +435,51 @@ shared native final class String(characters)
      so, if this string has the same [[length|size]], and 
      the same [[characters]], in the same order, as the 
      given [[string|that]]."
-    shared actual native Boolean equals(Object that);
+    shared actual native Boolean equals(Object that) {
+        if (is String that) {
+            if (size!=that.size) {
+                return false;
+            }
+            value min = smallest(size, that.size);
+            for (i in 0:min) {
+                assert (exists thisChar = this.getFromFirst(i));
+                assert (exists thatChar = that.getFromFirst(i));
+                if (thisChar!=thatChar) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     
     "Compare this string with the given string, ignoring the 
-     case of the characters."
-    shared native Boolean equalsIgnoringCase(String that);
+     case of the characters. That is, by considering two 
+     characters `x` and `y` as equal if:
+     
+     - `x == y`,
+     - `x.uppercased == y.uppercased`, or
+     - `x.lowercased == y.lowercased`."
+    see (`value Character.lowercased`, 
+         `value Character.uppercased`)
+    shared native Boolean equalsIgnoringCase(String that) {
+        if (size!=that.size) {
+            return false;
+        }
+        value min = smallest(size, that.size);
+        for (i in 0:min) {
+            assert (exists thisChar = this.getFromFirst(i));
+            assert (exists thatChar = that.getFromFirst(i));
+            if (thisChar!=thatChar && 
+                thisChar.uppercased!=thatChar.uppercased &&
+                thisChar.lowercased!=thatChar.lowercased) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     shared actual native Integer hash;
     
