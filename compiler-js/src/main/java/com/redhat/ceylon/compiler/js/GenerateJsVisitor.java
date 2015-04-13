@@ -934,7 +934,7 @@ public class GenerateJsVisitor extends Visitor
             endLine(true);
             return true;
         } else {
-            if (d instanceof ClassOrInterface==false) {
+            if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition)) {
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
                         + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d) + ": " + f;
                 spitOut(err);

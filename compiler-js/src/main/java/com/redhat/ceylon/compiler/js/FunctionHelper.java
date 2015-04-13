@@ -271,6 +271,15 @@ public class FunctionHelper {
 
     static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName) {
         final Method d = that.getDeclarationModel();
+        if (gen.shouldStitch(d)) {
+            if (gen.stitchNative(d, that)) {
+                gen.spitOut("Stitching in native method " + d.getQualifiedNameString() + ", ignoring Ceylon definition");
+                if (d.isShared()) {
+                    gen.share(d);
+                }
+                return;
+            }
+        }
         if (that.getParameterLists().size() == 1) {
             if (needsName) {
                 gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
