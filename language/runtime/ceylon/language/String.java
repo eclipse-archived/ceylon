@@ -142,7 +142,8 @@ public final class String
 
     @Ignore
     public static java.lang.String getLowercased(java.lang.String value) {
-        return value.toLowerCase(Locale.ROOT);
+        return value.replace("\u0130", "i\u0307") //workaround for bug
+                    .toLowerCase(Locale.ROOT);
     }
 
     @Override
