@@ -303,6 +303,12 @@ shared void numbers() {
     } catch (Exception ex) {
         check(true, "ArithmeticException");
     }
+    try {
+        print(1%0);
+        fail("1%0 should throw");
+    } catch (Exception ex) {
+        check(true, "ArithmeticException");
+    }
     checkParseInteger();
     checkFormatInteger();
     checkParseFloat();
