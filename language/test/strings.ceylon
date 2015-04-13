@@ -549,7 +549,8 @@ shared void strings() {
         }
     })) then trm3==400 else false, "String.reduce");
     check("abc".equalsIgnoringCase("aBc"), "String.equalsIgnoringCase");
-    check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase expected smaller got ``"abc".compareIgnoringCase("DEF")``");
+    check("abc".compareIgnoringCase("DEF") == smaller, "String.compareIgnoringCase 1 expected smaller got ``"abc".compareIgnoringCase("DEF")``");
+    check("DEF".compareIgnoringCase("abc") == larger, "String.compareIgnoringCase 2 expected smaller got ``"DEF".compareIgnoringCase("abc")``");
     if (exists loc0="HelLo".locate((c)=>c.uppercase)) {
         Object oc0=loc0;
         check(oc0 is Integer->Character, "String.locate 1");
