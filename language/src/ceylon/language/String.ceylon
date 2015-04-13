@@ -68,7 +68,14 @@ shared native final class String(characters)
      Conversion of uppercase characters to lowercase is
      performed according to a locale-independent mapping
      that produces incorrect results in certain locales
-     (e.g. `tr-TR`)."
+     (e.g. `tr-TR`).
+     
+     The resulting string may not have the same number of
+     characters as this string, since the uppercase 
+     representation of certain characters comprises multiple
+     characters, for example the uppercase representation
+     of \{LATIN CAPITAL LETTER I WITH DOT ABOVE} is two 
+     characters wide."
     shared native String lowercased;
     
     "This string, with all characters in uppercase.

@@ -39,7 +39,24 @@ shared final native class Character(Character character)
      Conversion of uppercase characters to lowercase is
      performed according to a locale-independent mapping
      that produces incorrect results in certain locales
-     (e.g. `tr-TR`)."
+     (e.g. `tr-TR`).
+     
+     Furthermore, this conversion always produces a single
+     character, which is incorrect for characters whose
+     uppercase representation comprises multiple characters,
+     for example \{LATIN CAPITAL LETTER I WITH DOT ABOVE}. 
+     Thus,
+     
+     - `'\{LATIN CAPITAL LETTER I WITH DOT ABOVE}'.uppercased`
+       evaluates to `'i'`, whereas
+     - `\"\{LATIN CAPITAL LETTER I WITH DOT ABOVE}\".uppercased`
+       evaluates, more correctly, to the string 
+       `\"i\{COMBINING DOT ABOVE}\"`."
+    deprecated ("Use `char.string.lowercased` which 
+                 correctly handles characters whose 
+                 uppercase representation comprises multiple
+                 characters")
+    see (`value String.lowercased`)
     shared native Character lowercased;
     
     "The uppercase representation of this character, in the
@@ -60,6 +77,10 @@ shared final native class Character(Character character)
        whereas
      - `\"\{LATIN SMALL LETTER SHARP S}\".uppercased`
        evaluates, more correctly, to the string `\"SS\"`."
+    deprecated ("Use `char.string.uppercased` which 
+                 correctly handles characters whose 
+                 uppercase representation comprises multiple
+                 characters")
     see (`value String.uppercased`)
     shared native Character uppercased;
     
