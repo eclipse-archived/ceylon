@@ -1653,6 +1653,8 @@ public abstract class AbstractTransformer implements Transformation {
      * parameter of an overriding method is of type T<U|V> while the original was T<E>
      */
     static final int JT_NARROWED = __JT_FULL_TYPE;
+    
+    static final int JT_IS = 1 << 15;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -1850,7 +1852,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Type(syms().throwableType);
             }
         } else if (willEraseToSequence(type)) {
-            if ((flags & (JT_CLASS_NEW | JT_EXTENDS)) == 0) {
+            if ((flags & (JT_CLASS_NEW | JT_EXTENDS | JT_IS)) == 0) {
                 ProducedType typeArg = simplifyType(type).getTypeArgumentList().get(0);
                 ProducedType seqType = typeFact.getSequenceType(typeArg);
                 if (typeFact.isOptionalType(type)) {
@@ -4023,7 +4025,7 @@ public abstract class AbstractTransformer implements Transformation {
         @Override
         public JCExpression isInstanceof(JCExpression varExpr,
                 ProducedType testedType) {
-            JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW);
+            JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW | JT_IS);
             return make().TypeTest(varExpr, rawTypeExpr);
         }
 

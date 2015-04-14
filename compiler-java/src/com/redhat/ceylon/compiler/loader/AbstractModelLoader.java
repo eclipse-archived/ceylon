@@ -2533,7 +2533,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markUntrustedType(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
-        klass.getMembers().add(method);
+        klass.addMember(method);
         DeclarationVisitor.setVisibleScope(method);
         
         addLocalDeclarations(method, classMirror, methodMirror);
@@ -2706,7 +2706,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         markUntrustedType(value, fieldMirror, fieldMirror.getType());
         setAnnotations(value, fieldMirror);
-        klass.getMembers().add(value);
+        klass.addMember(value);
         DeclarationVisitor.setVisibleScope(value);
     }
     
@@ -2814,7 +2814,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         markUntrustedType(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
-        klass.getMembers().add(value);
+        klass.addMember(value);
         DeclarationVisitor.setVisibleScope(value);
     }
 
@@ -3035,9 +3035,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             
             MethodOrValue value = null;
+            boolean lookedup = false;
             if (isCeylon && decl instanceof Class){
                 // For a functional parameter to a class, we can just lookup the member
                 value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
+                lookedup = value != null;
             } 
             if (value == null) {
                 // So either decl is not a Class, 
@@ -3089,6 +3091,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setDeclaration((Declaration) decl);
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
+            if (!lookedup) {
+                parameter.getDeclaration().getMembers().add(parameter.getModel());
+            }
+            
             parameterIndex++;
         }
         if (decl instanceof Method) {
@@ -3958,7 +3964,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(scope instanceof LazyContainer)
                 ((LazyContainer)scope).addMember(param);
             else // must be a method
-                scope.getMembers().add(param);
+                scope.addMember(param);
             param.setName((String)typeParamAnnotation.getValue("value"));
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             if(i < typeParameterMirrors.size()){
@@ -4045,7 +4051,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(scope instanceof LazyContainer)
                 ((LazyContainer)scope).addMember(param);
             else // must be a method
-                scope.getMembers().add(param);
+                scope.addMember(param);
             param.setName(typeParam.getName());
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             params.add(param);

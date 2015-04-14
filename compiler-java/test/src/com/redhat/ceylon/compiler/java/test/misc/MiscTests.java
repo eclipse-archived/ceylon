@@ -97,9 +97,9 @@ public class MiscTests extends CompilerTests {
                         "Boolean", "Integer", "Float", "Character", "String", "Byte",
                         "Array", "Tuple", "Exception", "AssertionError", "Callable", 
                         "flatten", "className", "identityHash", "integerRangeByIterable",
-                        "language", "metamodel", "modules", "operatingSystem", 
+                        "language", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 
-                        "StringBuilder", "Throwable",
+                        "StringBuilder", "Throwable", "type", "typeLiteral",
                         "infinity", "arrayOfSize", "unflatten",
                         "serialization", "deserialization"}) {
                     
