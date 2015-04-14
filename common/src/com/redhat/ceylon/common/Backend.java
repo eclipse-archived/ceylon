@@ -2,12 +2,11 @@ package com.redhat.ceylon.common;
 
 public enum Backend {
     Java("jvm"),
-    JavaScript("js"),
-    Documentation("doc");
+    JavaScript("js");
     
-    public final String compilerAnnotation;
+    public final String nativeAnnotation;
     
     Backend(String compilerAnnotation) {
-        this.compilerAnnotation = compilerAnnotation;
+        this.nativeAnnotation = compilerAnnotation;
     }
 }
