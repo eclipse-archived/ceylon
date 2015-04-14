@@ -2533,7 +2533,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markUntrustedType(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
-        klass.getMembers().add(method);
+        klass.addMember(method);
         DeclarationVisitor.setVisibleScope(method);
         
         addLocalDeclarations(method, classMirror, methodMirror);
@@ -2706,7 +2706,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         markUntrustedType(value, fieldMirror, fieldMirror.getType());
         setAnnotations(value, fieldMirror);
-        klass.getMembers().add(value);
+        klass.addMember(value);
         DeclarationVisitor.setVisibleScope(value);
     }
     
@@ -2814,7 +2814,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         markUntrustedType(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
-        klass.getMembers().add(value);
+        klass.addMember(value);
         DeclarationVisitor.setVisibleScope(value);
     }
 
@@ -3964,7 +3964,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(scope instanceof LazyContainer)
                 ((LazyContainer)scope).addMember(param);
             else // must be a method
-                scope.getMembers().add(param);
+                scope.addMember(param);
             param.setName((String)typeParamAnnotation.getValue("value"));
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             if(i < typeParameterMirrors.size()){
@@ -4051,7 +4051,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(scope instanceof LazyContainer)
                 ((LazyContainer)scope).addMember(param);
             else // must be a method
-                scope.getMembers().add(param);
+                scope.addMember(param);
             param.setName(typeParam.getName());
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             params.add(param);
