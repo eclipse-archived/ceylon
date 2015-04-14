@@ -60,7 +60,7 @@ shared interface Enumerable<Other> of Other
      - `x.neighbour(0) == x`,
      - `x.neighbour(i+1) == x.neighbour(i).successor`, and
      - `x.neighbour(i-1) == x.neighbour(i).predecessor`."
-    throws (OverflowException, 
+    throws (`class OverflowException`, 
             "if the neighbour cannot be represented as an 
              instance of the type")
     shared formal Other neighbour(Integer offset);
@@ -72,7 +72,7 @@ shared interface Enumerable<Other> of Other
      
      - `x.offset(x) == 0`, and
      - `x.successor.offset(x) == 1` if `x!=x.successor`."
-    throws (OverflowException, 
+    throws (`class OverflowException`,
             "if the offset cannot be represented as an 
              integer")
     shared formal Integer offset(Other other);
