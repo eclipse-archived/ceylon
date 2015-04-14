@@ -948,7 +948,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             d.setActual(hasAnnotationBit(bits, "actual"));
             d.setFormal(hasAnnotationBit(bits, "formal"));
             d.setDefault(hasAnnotationBit(bits, "default"));
-            d.setNative(hasAnnotationBit(bits, "native"));
+            d.setNative(hasAnnotationBit(bits, "native") ? "js" : null);
             d.setAnnotation(hasAnnotationBit(bits, "annotation"));
             if (hasAnnotationBit(bits, "sealed")) {
                 ((TypeDeclaration)d).setSealed(true);
