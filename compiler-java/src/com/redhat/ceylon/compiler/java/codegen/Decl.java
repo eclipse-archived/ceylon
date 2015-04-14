@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
@@ -373,6 +374,23 @@ public class Decl {
     
     public static boolean isNative(Declaration decl) {
         return decl.isNative();
+    }
+    
+    public static String getNative(Tree.Declaration decl) {
+        return getNative(decl.getDeclarationModel());
+    }
+    
+    public static String getNative(Declaration decl) {
+        return decl.getNative();
+    }
+    
+    public static boolean isForBackend(Tree.Declaration decl) {
+        return isForBackend(decl.getDeclarationModel());
+    }
+    
+    public static boolean isForBackend(Declaration decl) {
+        String backend = getNative(decl);
+        return backend == null || backend.equals(Backend.Java.nativeAnnotation);
     }
     
     public static boolean isDeferred(Tree.Declaration decl) {
