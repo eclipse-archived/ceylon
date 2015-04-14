@@ -34,6 +34,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
@@ -465,7 +466,7 @@ public class CeylonEnter extends Enter {
         }
         
         UnsupportedVisitor uv = new UnsupportedVisitor();
-        MissingNativeVisitor mnv = new MissingNativeVisitor(modelLoader);
+        MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.Java, modelLoader);
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
         DeferredVisitor deferredVisitor = new DeferredVisitor();
