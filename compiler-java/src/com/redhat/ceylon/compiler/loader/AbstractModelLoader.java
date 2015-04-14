@@ -3035,9 +3035,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             
             MethodOrValue value = null;
+            boolean lookedup = false;
             if (isCeylon && decl instanceof Class){
                 // For a functional parameter to a class, we can just lookup the member
                 value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
+                lookedup = value != null;
             } 
             if (value == null) {
                 // So either decl is not a Class, 
@@ -3089,6 +3091,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setDeclaration((Declaration) decl);
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
+            if (!lookedup) {
+                parameter.getDeclaration().getMembers().add(parameter.getModel());
+            }
+            
             parameterIndex++;
         }
         if (decl instanceof Method) {
