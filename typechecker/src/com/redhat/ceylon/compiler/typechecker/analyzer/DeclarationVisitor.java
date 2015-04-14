@@ -4,7 +4,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTup
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
@@ -234,7 +233,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 ((Method) member).setOverloaded(true);
                                 abstraction.setOverloads(new ArrayList<Declaration>());
                                 abstraction.getOverloads().add(member);
-                                s.getMembers().add(abstraction);
+                                s.addMember(abstraction);
                             }
                             else {
                                 abstraction = (Method) member;
