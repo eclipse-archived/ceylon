@@ -121,13 +121,15 @@ shared annotation LateAnnotation late()
         => LateAnnotation();
 
 "The annotation class for the [[native]] annotation."
-shared final annotation class NativeAnnotation()
+shared final annotation class NativeAnnotation(
+    shared String backend)
         satisfies OptionalAnnotation<NativeAnnotation,Annotated> {}
 
 "Annotation to mark a member whose implementation is defined 
  in platform-native code."
-shared annotation NativeAnnotation native()
-        => NativeAnnotation();
+shared annotation NativeAnnotation native(
+    String backend = "")
+        => NativeAnnotation(backend);
 
 /*"The annotation class for [[inherited]]."
 shared final annotation class InheritedAnnotation()
