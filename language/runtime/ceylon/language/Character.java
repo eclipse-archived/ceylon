@@ -233,12 +233,12 @@ public final class Character
 
     @Override
     public Character neighbour(@Name("offset") long offset) {
-        return instance(Util.toInt(codePoint+offset));
+        return instance(codepoint(codePoint+offset));
     }
 
     @Ignore
     public static int neighbour(int codePoint, long offset) {
-        return Util.toInt(codePoint+offset);
+        return codepoint(codePoint+offset);
     }
 
     @Override
@@ -320,18 +320,10 @@ public final class Character
     }
 
     static int codepoint(long value) {
-        if (value>java.lang.Integer.MAX_VALUE ||
-            value<java.lang.Integer.MIN_VALUE) {
+        if (value>0x10FFFF || value<0) {
             throw new OverflowException(value + " is not a 32-bit integer");
         }
-        return codepoint(Util.toInt(value));
-    }
-
-    private static int codepoint(int value) {
-        if (!java.lang.Character.isDefined(value)) {
-            throw new OverflowException(value + " is not a Unicode code point");
-        }
-        return value;
+        return Util.toInt(value);
     }
     
 }

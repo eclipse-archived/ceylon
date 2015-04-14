@@ -47,7 +47,8 @@ shared native final class Integer(Integer integer)
     
     "The UTF-32 character with this UCS code point."
     throws (`class OverflowException`,
-            "if there is no such character")
+            "if this integer is not in the range 
+             `0..#10FFFF` of legal Unicode code points")
     shared native Character character;
     
     shared actual native Boolean divides(Integer other);
@@ -76,6 +77,7 @@ shared native final class Integer(Integer integer)
     shared actual native Boolean equals(Object that);
     
     shared actual native Integer hash;
+    
     shared actual native Comparison compare(Integer other);
     
     "If the `index` is for an addressable bit, the value of 
