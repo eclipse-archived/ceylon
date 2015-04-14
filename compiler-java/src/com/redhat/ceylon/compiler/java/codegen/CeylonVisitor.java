@@ -104,7 +104,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+        if (!Decl.isForBackend(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
@@ -156,7 +156,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+        if (!Decl.isForBackend(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {
@@ -177,7 +177,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
-            if (!Decl.isNative(decl)) {
+            if (Decl.isForBackend(decl)) {
                 topattrBuilder.add(decl);
             }
         } else if ((Decl.isLocal(decl)) 
@@ -209,7 +209,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
-            if (!Decl.isNative(decl)) {
+            if (Decl.isForBackend(decl)) {
                 topattrBuilder.add(decl);
             }
         } else {
@@ -240,7 +240,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
-            if (!Decl.isNative(decl)) {
+            if (Decl.isForBackend(decl)) {
                 topattrBuilder.add(decl);
             }
         } else {
@@ -254,7 +254,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+        if (!Decl.isForBackend(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
