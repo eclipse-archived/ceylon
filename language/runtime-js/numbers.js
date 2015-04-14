@@ -251,16 +251,24 @@ JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
 $addnm$('clear',Binary.$$.prototype.clear);
+function checkintoverflow$(a){
+  if(a>runtime().maxIntegerValue || a<runtime().minIntegerValue)throw OverflowException();
+  return a;
+}
 JSNum$proto.neighbour=function(offset) {
-  return this+offset;
+  return checkintoverflow$(this+offset);
 }
 $addnm$('neighbour',Enumerable.$$.prototype.neighbour);
 JSNum$proto.offset=function(other) {
-  return this-other;
+  return checkintoverflow$(this-other);
 }
 $addnm$('offset',Enumerable.$$.prototype.offset);
 JSNum$proto.offsetSign=function(other) {
-  return this-other;
+  var v = this.valueOf();
+  var o = other.valueOf();
+  if (v>o)return 1;
+  if (v<o)return -1;
+  return 0;
 }
 $addnm$('offsetSign',Enumerable.$$.prototype.offsetSign);
 
