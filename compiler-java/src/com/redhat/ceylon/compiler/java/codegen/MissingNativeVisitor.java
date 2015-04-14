@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
@@ -17,10 +20,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class MissingNativeVisitor extends Visitor {
-    
-    private AbstractModelLoader loader;
+    private final Backend forBackend;
+    private final AbstractModelLoader loader;
 
-    public MissingNativeVisitor(AbstractModelLoader loader) {
+    public MissingNativeVisitor(Backend forBackend, AbstractModelLoader loader) {
+        this.forBackend = forBackend;
         this.loader = loader;
     }
 
@@ -87,6 +91,15 @@ public class MissingNativeVisitor extends Visitor {
         Package pkg = Decl.getPackage(model);
         if(pkg == null)
             return;
+        
+        // FIXME this is just a temporary implementation
+        List<Declaration> members = pkg.getMembers();
+        for (Declaration m : members) {
+            if (m.getName().equals(model.getName()) && forBackend.nativeAnnotation.equals(Decl.getNative(m))) {
+                return;
+            }
+        }
+        
         String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
         String qualifiedName = Naming.toplevelClassName(pkgName, model);
         ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
