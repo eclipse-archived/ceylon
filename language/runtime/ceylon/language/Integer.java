@@ -356,34 +356,48 @@ public final class Integer
 
     // Enumerable
     
-    @Override
-    public Integer neighbour(@Name("offset") long offset) {
-        return instance(value+offset);
-    }
-
     @Ignore
     public static long neighbour(long value, long offset) {
-        return value+offset;
+        long neighbour = value+offset;
+        if (offset>=0 ? neighbour<value : neighbour>value) {
+            throw new OverflowException("neighbour overflow");
+        }
+        return neighbour;
     }
 
     @Override
-    public long offset(@Name("other") Integer other) {
-        return value-other.value;
-    }
-
-    @Ignore
-    public static long offsetSign(long value, long other) {
-        return value-other;
-    }
-
-    @Override
-    public long offsetSign(@Name("other") Integer other) {
-        return value-other.value;
+    public Integer neighbour(@Name("offset") long offset) {
+        return instance(neighbour(value,offset));
     }
 
     @Ignore
     public static long offset(long value, long other) {
-        return value-other;
+        long offset = value-other;
+        if (value<other ? offset>0 : offset<0) {
+            throw new OverflowException("offset overflow");
+        }
+        return offset;
+    }
+
+    @Override
+    public long offset(@Name("other") Integer other) {
+        return offset(value, other.value);
+    }
+
+    @Ignore
+    public static long offsetSign(long value, long other) {
+        if (value>other) {
+            return 1;
+        }
+        if (value<other) {
+            return -1;
+        }
+        return 0;
+    }
+
+    @Override
+    public long offsetSign(@Name("other") Integer other) {
+        return offsetSign(value, other.value);
     }
 
     // Conversions between numeric types
