@@ -135,7 +135,8 @@ shared final native class Character(Character character)
     /*"The directionality of the character."
     shared native CharacterDirectionality directionality;*/
     
-    "The Unicode code point of the character."
+    "The Unicode code point of the character, an [[Integer]]
+     in the range `0..#10FFFF`."
     shared native Integer integer;
     
     "Compare this character with the given string character, 
