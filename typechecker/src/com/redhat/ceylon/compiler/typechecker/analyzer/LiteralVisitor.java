@@ -29,8 +29,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class LiteralVisitor extends Visitor {
 
     private int indent;
-    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
-    private static Pattern CHARACTER_ESCAPE_PATTERN = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
+    static final Pattern DOC_LINK_PATTERN = 
+            Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
+    private static Pattern CHARACTER_ESCAPE_PATTERN = 
+            Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
     
     
     @Override
@@ -53,8 +55,10 @@ public class LiteralVisitor extends Visitor {
                 String group = m.group(1);
                 int start = that.getStartIndex()+m.start(1);
                 int end = that.getStartIndex()+m.end(1);
-                String[] linesUpTo = text.substring(0, m.start(1)).split("\n");
-                CommonToken token = new CommonToken(ASTRING_LITERAL, group);
+                String[] linesUpTo = 
+                        text.substring(0, m.start(1)).split("\n");
+                CommonToken token = 
+                        new CommonToken(ASTRING_LITERAL, group);
                 token.setStartIndex(start);
                 token.setStopIndex(end-1);
                 token.setTokenIndex(that.getToken().getTokenIndex());
@@ -62,8 +66,8 @@ public class LiteralVisitor extends Visitor {
                         that.getToken().getLine() +
                         linesUpTo.length-1;
                 int charInLine = 
-                        linesUpTo.length==0 ? 
-                                0 : linesUpTo[linesUpTo.length-1].length();
+                        linesUpTo.length==0 ? 0 : 
+                            linesUpTo[linesUpTo.length-1].length();
                 token.setLine(line);
                 token.setCharPositionInLine(charInLine);
                 that.addDocLink(new Tree.DocLink(token));
@@ -76,22 +80,28 @@ public class LiteralVisitor extends Visitor {
         }
         if (type==VERBATIM_STRING || 
             type==AVERBATIM_STRING) {
-            text = text.substring(3,text.length()-(text.endsWith("\"\"\"")?3:0));
+            text = text.substring(3,
+                    text.length()-(text.endsWith("\"\"\"")?3:0));
         }
         else if (type==STRING_MID) {
-            text = text.substring(2, text.length()-2);
+            text = text.substring(2, 
+                    text.length()-2);
         }
         else if (type==STRING_END) {
-            text = text.substring(2, text.length()-(text.endsWith("\"")?1:0));
+            text = text.substring(2, 
+                    text.length()-(text.endsWith("\"")?1:0));
         }
         else if (type==STRING_START) {
-            text = text.substring(1, text.length()-2);
+            text = text.substring(1, 
+                    text.length()-2);
         }
         else {
-            text = text.substring(1, text.length()-(text.endsWith("\"")?1:0));
+            text = text.substring(1, 
+                    text.length()-(text.endsWith("\"")?1:0));
         }
         StringBuilder result = new StringBuilder();
-        boolean allTrimmed = stripIndent(text, indent, result);
+        boolean allTrimmed = 
+                stripIndent(text, indent, result);
         if (!allTrimmed) {
             that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
@@ -117,7 +127,8 @@ public class LiteralVisitor extends Visitor {
     @Override
     public void visit(QuotedLiteral that) {
         StringBuilder result = new StringBuilder();
-        stripIndent(that.getText(), getIndentPosition(that), result);
+        stripIndent(that.getText(), 
+                getIndentPosition(that), result);
         //interpolateEscapes(result, that);
         that.setText(result.toString());
     }
@@ -138,7 +149,8 @@ public class LiteralVisitor extends Visitor {
     
     @Override
     public void visit(CharLiteral that) {
-        StringBuilder result = new StringBuilder(that.getText());
+        StringBuilder result = 
+                new StringBuilder(that.getText());
         interpolateEscapes(result, that);
         that.setText(result.toString());
     }
@@ -198,8 +210,8 @@ public class LiteralVisitor extends Visitor {
                 .replace("f", "e-15"));
     }
         
-    private static boolean stripIndent(final String text, final int indentation, 
-            final StringBuilder result) {
+    private static boolean stripIndent(final String text, 
+            final int indentation, final StringBuilder result) {
         boolean correctlyIndented = true;
         int num = 0;
         for (String line: text.split("\n|\r\n?")) {
@@ -226,32 +238,42 @@ public class LiteralVisitor extends Visitor {
         return correctlyIndented;
     }
     
-    private static void interpolateEscapes(final StringBuilder result, Node node) {
-        Matcher m;
+    private static void interpolateEscapes(StringBuilder result, 
+            Node node) {
+        Matcher matcher;
         int start=0;
-        while ((m = CHARACTER_ESCAPE_PATTERN.matcher(result)).find(start)) {
-            String hex = m.group(2);
-            String name = m.group(3);
+        while ((matcher = 
+                CHARACTER_ESCAPE_PATTERN.matcher(result))
+                                        .find(start)) {
+            String hex = matcher.group(2);
+            String name = matcher.group(3);
             if (name!=null) {
                 boolean found=false;
-                for (int codePoint=0; codePoint<=0xE01EF; codePoint++) {
+                for (int codePoint=0; 
+                        codePoint<=0xE01EF; 
+                        codePoint++) {
                     String cn = Character.getName(codePoint);
                     if (cn!=null && cn.equals(name)) {
                         char[] chars = toChars(codePoint);
-                        result.replace(m.start(), m.end(), new String(chars));
+                        result.replace(matcher.start(), 
+                                matcher.end(), 
+                                new String(chars));
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
                     if (name.equals(":-)")) {
-                        result.replace(m.start(), m.end(), "\u263A");
+                        result.replace(matcher.start(), 
+                                matcher.end(), "\u263A");
                     }
                     else if (name.equals(":-(")) {
-                        result.replace(m.start(), m.end(), "\u2639");
+                        result.replace(matcher.start(), 
+                                matcher.end(), "\u2639");
                     }
                     else if (name.equals("<3")) {
-                        result.replace(m.start(), m.end(), "\u2665");
+                        result.replace(matcher.start(), 
+                                matcher.end(), "\u2665");
                     }
                     else {
                         node.addError("illegal unicode escape sequence: " + 
@@ -260,8 +282,11 @@ public class LiteralVisitor extends Visitor {
                 }
             }
             else if (hex!=null) {
-                if (hex.length()!=2 && hex.length()!=4 && hex.length()!=8) {
-                    node.addError("illegal unicode escape sequence: must consist of 2, 4 or 8 digits");
+                if (hex.length()!=2 && 
+                    hex.length()!=4 &&
+                    hex.length()!=6 && 
+                    hex.length()!=8) { //tolerate 8 digits for backward compatibility only!
+                    node.addError("illegal unicode escape sequence: must consist of 2, 4, or 6 digits");
                 }
                 else {
                     int codePoint=0;
@@ -281,11 +306,12 @@ public class LiteralVisitor extends Visitor {
                                 hex + "' is not a valid Unicode code point");
                         chars = toChars(0);
                     }
-                    result.replace(m.start(), m.end(), new String(chars));
+                    result.replace(matcher.start(), matcher.end(), 
+                            new String(chars));
                 }
             }
             else {
-                char escape = m.group(4).charAt(0);
+                char escape = matcher.group(4).charAt(0);
                 char ch;
                 switch (escape) {
                     case 'b': ch = '\b'; break;
@@ -302,9 +328,10 @@ public class LiteralVisitor extends Visitor {
                     	node.addError("illegal escape sequence: \\" + escape);
                     	ch='?';
                 }
-                result.replace(m.start(), m.end(), Character.toString(ch));
+                result.replace(matcher.start(), matcher.end(), 
+                        Character.toString(ch));
             }
-            start = m.start()+1;
+            start = matcher.start()+1;
         }
     }
     

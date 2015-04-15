@@ -358,11 +358,12 @@
                 </listitem>
             </itemizedlist>
             
-            <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
-            or a Unicode character name, surrounded by braces, and means the Unicode character
-            with the specified codepoint or character name.</para>
+            <para>A Unicode codepoint escape is a two-, four-, or six-digit hexadecimal literal 
+            representing an integer in the range 0 to 10FFFF, or a Unicode character name, 
+            surrounded by braces, and means the Unicode character with the specified codepoint or 
+            character name.</para>
             
-            <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharacterName</synopsis>
+            <synopsis>CharacterCode: "#" ( HexDigit{2} | HexDigit{4} | HexDigit{6} ) | UnicodeCharacterName</synopsis>
             
             <para>Legal Unicode character names are defined by the Unicode specification.</para>
                     
