@@ -72,6 +72,7 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -1581,5 +1582,42 @@ public class CMRTests extends CompilerTests {
         ModuleImport cImport = getModuleImport(a, "c");
         assert(cImport != null);
         assertEquals("The 'c' module import should be seen as 'exported' after applying the overrides file", true, cImport.isExport());
+    }
+    
+    @Test
+    public void testCacheFolderCreation() throws IOException{
+        // move our user cache folder
+        File userCacheRepo = Repositories.get().getCacheRepoDir();
+        File tmpCacheRepo = null;
+        boolean moved = false;
+        if(userCacheRepo.exists()){
+            // let's move it
+            System.out.println("Moving user cache repo away");
+            tmpCacheRepo = File.createTempFile("moved-", "-out-for-CMRTests", userCacheRepo.getParentFile());
+            tmpCacheRepo.delete();
+            assert(userCacheRepo.renameTo(tmpCacheRepo));
+            moved = true;
+        }
+        try{
+            String cachePath = getCachePath();
+            File cacheFolder = new File(cachePath);
+            // cleared
+            assert(!cacheFolder.exists());
+            // clear or moved
+            assert(!userCacheRepo.exists());
+            compile("modules/def/A.ceylon");
+            // created
+            assert(cacheFolder.exists());
+            // still not there
+            assert(!userCacheRepo.exists());
+        }finally{
+            if(moved){
+                System.out.println("Moving user cache repo back");
+                Assert.assertTrue("Moving back your cache repo has failed: it is now at "
+                        +tmpCacheRepo+" so if you want to keep it at "
+                        +userCacheRepo+" you need to move it manually. Sorry.", 
+                        tmpCacheRepo.renameTo(userCacheRepo));
+            }
+        }
     }
 }
