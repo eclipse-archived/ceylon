@@ -20,13 +20,16 @@ see (`function process.write`)
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"
         String separator=", ") {
-    if (exists first = values.first) {
-        process.write(stringify(first));
-        for (val in values.rest) {
-            process.write(separator);
-            process.write(stringify(val));
+    variable value first = true;
+    values.each(void (element) {
+        if (first) {
+            first = false;
         }
-    }
+        else {
+            process.write(separator);
+        }
+        process.write(stringify(val));
+    });
     process.write(operatingSystem.newline);
 }
 
