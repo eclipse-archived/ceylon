@@ -216,4 +216,16 @@ shared void testArrays() {
     value a13=Array.OfSize(5,1);
     check(a13.size==5, "Array.OfSize 1");
     check(every { for (i in a13) i==1 }, "Array.OfSize 2");
+    try {
+        Array.OfSize(-1,1);
+        fail("Array.OfSize(-1)");
+    } catch (Throwable ex) {
+        check(ex is AssertionError, "Array.OfSize 3");
+    }
+    try {
+        Array.OfSize(runtime.maxArraySize+1,1);
+        fail("Array.OfSize(runtime.maxArraySize+1)");
+    } catch (Throwable t) {
+        check(t is AssertionError, "Array.OfSize 4");
+    }
 }
