@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.optimisations;
+
+final class inCharacterSpan_ {
+    
+    private inCharacterSpan_() {
+    }
+    
+    static void inCharacterSpan(final int x, final int y, final int z) {
+        boolean b = false;
+        b = (
+            let
+            {
+                int $ceylontmp$x$0 = x;
+                int $ceylontmp$y$1 = 97;
+                int $ceylontmp$z$2 = 122;
+            }
+            returning $ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$z$2 || $ceylontmp$z$2 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$y$1;
+        );
+        b = (
+            let
+            {
+                int $ceylontmp$x$3 = x;
+                int $ceylontmp$y$4 = y;
+                int $ceylontmp$z$5 = z;
+            }
+            returning $ceylontmp$y$4 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$z$5 || $ceylontmp$z$5 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$y$4;
+        );
+    }
+}

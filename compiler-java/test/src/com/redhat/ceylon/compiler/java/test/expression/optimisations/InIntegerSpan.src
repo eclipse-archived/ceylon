@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.optimisations;
+
+final class inIntegerSpan_ {
+    
+    private inIntegerSpan_() {
+    }
+    
+    static void inIntegerSpan(final long x, final long y, final long z) {
+        boolean b = false;
+        b = (
+            let
+            {
+                long $ceylontmp$x$0 = x;
+                long $ceylontmp$y$1 = 0L;
+                long $ceylontmp$z$2 = 10L;
+            }
+            returning $ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$z$2 || $ceylontmp$z$2 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$y$1;
+        );
+        b = (
+            let
+            {
+                long $ceylontmp$x$3 = x;
+                long $ceylontmp$y$4 = y;
+                long $ceylontmp$z$5 = z;
+            }
+            returning $ceylontmp$y$4 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$z$5 || $ceylontmp$z$5 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$y$4;
+        );
+    }
+}

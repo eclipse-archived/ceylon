@@ -542,4 +542,24 @@ public class ExpressionTests extends CompilerTests {
     public void testOptmCharacterAsInteger(){
         compareWithJavaSource("optimisations/CharacterAsInteger");
     }
+    
+    @Test
+    public void testOptmInIntegerSpan(){
+        compareWithJavaSource("optimisations/InIntegerSpan");
+    }
+    
+    @Test
+    public void testOptmInCharacterSpan(){
+        compareWithJavaSource("optimisations/InCharacterSpan");
+    }
+    
+    @Test
+    public void testOptmInIntegerMeasure(){
+        compareWithJavaSource("optimisations/InIntegerMeasure");
+    }
+    
+    @Test
+    public void testOptmInCharacterMeasure(){
+        compareWithJavaSource("optimisations/InCharacterMeasure");
+    }
 }
