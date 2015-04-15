@@ -1872,6 +1872,30 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCTree transform(Tree.InOp op) {
+        if (isCeylonInteger(op.getLeftTerm().getTypeModel())) {
+            if (op.getRightTerm() instanceof Tree.RangeOp
+                && isCeylonInteger(((Tree.RangeOp)op.getRightTerm()).getLeftTerm().getTypeModel())
+                && isCeylonInteger(((Tree.RangeOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
+                return makeOptimizedInIntegerOrCharacterRange(op, syms().longType);
+            } else if (op.getRightTerm() instanceof Tree.SegmentOp
+                    && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getLeftTerm().getTypeModel())
+                    && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
+                // x in y:z with x, y, z all Integer
+                return makeOptimizedInIntegerOrCharacterMeasure(op, syms().ceylonIntegerType, syms().longType);
+            }
+        } else if (isCeylonCharacter(op.getLeftTerm().getTypeModel())) {
+            if (op.getRightTerm() instanceof Tree.RangeOp
+                    && isCeylonCharacter(((Tree.RangeOp)op.getRightTerm()).getLeftTerm().getTypeModel())
+                    && isCeylonCharacter(((Tree.RangeOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
+                // x in y..z with x, y, z all Character
+                return makeOptimizedInIntegerOrCharacterRange(op, syms().intType);
+            } else if (op.getRightTerm() instanceof Tree.SegmentOp
+                    && isCeylonCharacter(((Tree.SegmentOp)op.getRightTerm()).getLeftTerm().getTypeModel())
+                    && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
+                // x in y:z with x, y both Character, z all Integer
+                return makeOptimizedInIntegerOrCharacterMeasure(op, syms().ceylonCharacterType, syms().intType);
+            }
+        }
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getObjectDeclaration().getType());
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getRightTerm().getTypeModel()
         		.getSupertype(typeFact().getCategoryDeclaration()));
@@ -1882,6 +1906,54 @@ public class ExpressionTransformer extends AbstractTransformer {
         return makeLetExpr(varName, null, typeExpr, left, contains);
     }
 
+    protected JCTree makeOptimizedInIntegerOrCharacterMeasure(Tree.InOp op, com.sun.tools.javac.code.Type ceylonType, com.sun.tools.javac.code.Type javaType) {
+        Tree.SegmentOp rangeOp = (Tree.SegmentOp)op.getRightTerm();
+        SyntheticName xName = naming.temp("x");
+        SyntheticName yName = naming.temp("y");
+        SyntheticName zName = naming.temp("z");
+        JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectDeclaration().getType());
+        JCExpression y = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
+        JCExpression z = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
+        JCExpression w = make().Apply(null, 
+                naming.makeSelect(make().QualIdent(ceylonType.tsym), "neighbour"),
+                List.<JCExpression>of(yName.makeIdent(), 
+                        zName.makeIdent()));
+        return make().LetExpr(List.<JCStatement>of(
+                makeVar(xName, make().Type(javaType), x),
+                makeVar(yName, make().Type(javaType), y),
+                makeVar(zName, make().Type(syms().longType), z)),
+                make().Binary(JCTree.AND, 
+                        make().Binary(JCTree.GT, zName.makeIdent(), make().Literal(0L)),
+                        make().Binary(JCTree.AND, 
+                                make().Binary(JCTree.LE, yName.makeIdent(), xName.makeIdent()),
+                                make().Binary(JCTree.LE, xName.makeIdent(), w))
+                        
+                                ));
+    }
+
+    protected JCTree makeOptimizedInIntegerOrCharacterRange(Tree.InOp op, com.sun.tools.javac.code.Type type) {
+        // x in y..z with x, y, z all Integer or all Character
+        Tree.RangeOp rangeOp = (Tree.RangeOp)op.getRightTerm();
+        JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectDeclaration().getType());
+        JCExpression y = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
+        JCExpression z = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
+        SyntheticName xName = naming.temp("x");
+        SyntheticName yName = naming.temp("y");
+        SyntheticName zName = naming.temp("z");
+        return make().LetExpr(List.<JCStatement>of(
+                makeVar(xName, make().Type(type), x),
+                makeVar(yName, make().Type(type), y),
+                makeVar(zName, make().Type(type), z)),
+                make().Binary(JCTree.OR, 
+                        make().Binary(JCTree.AND, 
+                                make().Binary(JCTree.LE, yName.makeIdent(), xName.makeIdent()),
+                                make().Binary(JCTree.LE, xName.makeIdent(), zName.makeIdent())),
+                        make().Binary(JCTree.AND, 
+                                make().Binary(JCTree.LE, zName.makeIdent(), xName.makeIdent()),
+                                make().Binary(JCTree.LE, xName.makeIdent(), yName.makeIdent())
+                                )));
+    }
+    
     // Logical operators
     
     public JCExpression transform(Tree.LogicalOp op) {
