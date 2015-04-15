@@ -19,14 +19,12 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Repository builder.
@@ -101,21 +99,5 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
         return (Repository) createRepository.invoke(null, log, settingsXml, offline, timeout);
-    }
-
-    public boolean isRemote(String token) {
-        // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
-        // (except for "file:" which we don't support)
-        return isHttp(token) || "mvn".equals(token) || token.startsWith("mvn:") || "aether".equals(token) || token.startsWith("aether:") || token.equals("jdk") || token.equals("jdk:");
-    }
-
-    public boolean isHttp(String token) {
-        try {
-            URL url = new URL(token);
-            String protocol = url.getProtocol();
-            return "http".equals(protocol) || "https".equals(protocol);
-        } catch (MalformedURLException e) {
-            return false;
-        }
     }
 }

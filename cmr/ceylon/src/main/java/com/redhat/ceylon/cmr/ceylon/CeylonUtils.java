@@ -2,6 +2,8 @@ package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +52,6 @@ public class CeylonUtils {
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
-        private RepositoryBuilder throwawayRB;
 
         /**
          * Sets the configuration to use for building the repository manager
@@ -467,7 +468,7 @@ public class CeylonUtils {
                 outRepo = temp;
             }
 
-            if (!isHTTP(outRepo)) {
+            if (!isHttp(outRepo)) {
                 File repoFolder = new File(absolute(outRepo));
                 if (repoFolder.exists()) {
                     if (!repoFolder.isDirectory()) {
@@ -550,25 +551,6 @@ public class CeylonUtils {
                 return prefix + path;
         }
 
-        private synchronized RepositoryBuilder getThrowawayRB() {
-            if (throwawayRB == null) {
-                Logger logger = log;
-                if (logger == null) {
-                    logger = new CMRJULLogger();
-                }
-                throwawayRB = new RepositoryManagerBuilder(logger).repositoryBuilder();
-            }
-            return throwawayRB;
-        }
-
-        private boolean isHTTP(String repo) {
-            return getThrowawayRB().isHttp(repo);
-        }
-
-        private boolean isRemote(String repo) {
-            return getThrowawayRB().isRemote(repo);
-        }
-
         private boolean isOffline(CeylonConfig config) {
             return offline || DefaultToolOptions.getDefaultOffline(config);
         }
@@ -638,5 +620,20 @@ public class CeylonUtils {
         return Arrays.asList(array).contains(item);
     }
 
+    public static boolean isRemote(String token) {
+        // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
+        // (except for "file:" which we don't support)
+        return isHttp(token) || "mvn".equals(token) || token.startsWith("mvn:") || "aether".equals(token) || token.startsWith("aether:") || token.equals("jdk") || token.equals("jdk:");
+    }
+
+    public static boolean isHttp(String token) {
+        try {
+            URL url = new URL(token);
+            String protocol = url.getProtocol();
+            return "http".equals(protocol) || "https".equals(protocol);
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
 }
 
