@@ -17,9 +17,10 @@ shared final native class Array<Element>
     
     "Create an array of the specified [[size]], populating 
      every index with the given [[element]]. The specified 
-     `size` must be in the range `0..runtime.maxArraySize`."
+     `size` must be no larger than [[runtime.maxArraySize]].
+     If `size<=0`, the new array will have no elements."
     throws (`class AssertionError`, 
-        "if `size<0` or `size>runtime.maxArraySize`")
+        "if `size>runtime.maxArraySize`")
     see (`value runtime.maxArraySize`)
     shared native new OfSize(
             "The size of the resulting array. If the size is 
@@ -28,7 +29,9 @@ shared final native class Array<Element>
             "The element value with which to populate the array.
              All elements of the resulting array will have the 
              same value."
-            Element element) {}
+            Element element) {
+        assert (size<runtime.maxArraySize);
+    }
     
     //"Get the element at the specified index, or `null` if
     // the index falls outside the bounds of this array."
