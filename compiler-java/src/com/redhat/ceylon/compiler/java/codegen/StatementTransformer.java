@@ -1658,6 +1658,14 @@ public class StatementTransformer extends AbstractTransformer {
                     makeIndexableType(),
                     makeIndexable()));
             
+            // int length = java.lang.reflect.Array.getLength(array);
+            JCExpression lengthExpr = makeLengthExpr();
+            if (lengthExpr != null) {
+                result.add(makeVar(FINAL, lengthName, 
+                        makeIndexType(), 
+                        lengthExpr));
+            }
+            
             // int step = ...
             final SyntheticName stepName;
             if (this.step != null) {
@@ -1678,14 +1686,6 @@ public class StatementTransformer extends AbstractTransformer {
                 
             } else {
                 stepName = null;
-            }
-            
-            // int length = java.lang.reflect.Array.getLength(array);
-            JCExpression lengthExpr = makeLengthExpr();
-            if (lengthExpr != null) {
-                result.add(makeVar(FINAL, lengthName, 
-                        makeIndexType(), 
-                        lengthExpr));
             }
             
             // int i = 0;
