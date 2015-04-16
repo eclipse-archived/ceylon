@@ -161,21 +161,25 @@ public final class Integer
     public static long power(long value, long otherValue) {
         long power = otherValue;
         if (value == -1) {
-            return power % 2 == 0 ? 1 : -1;
-        } else if (value == 1) {
+            return power % 2 == 0 ? 1L : -1L;
+        }
+        else if (value == 1) {
             return 1L;
         }
-        if (power < 0) {
+        else if (power < 0) {
             throw new AssertionError(value + "^" + power + 
                     " cannot be represented as an Integer");
-        } else if (power == 0L) {
+        }
+        else if (power == 0) {
             return 1L;
-        } else if (power == 1L) {
+        }
+        else if (power == 1) {
             return value;
         }
-        if (power >= POWER_BY_SQUARING_BREAKEVEN) {
+        else if (power >= POWER_BY_SQUARING_BREAKEVEN) {
             return powerBySquaring(value, power);
-        } else {
+        }
+        else {
             return powerByMultiplying(value, power);
         }
     }
