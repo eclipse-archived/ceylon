@@ -363,7 +363,8 @@ public final class Integer
     @Ignore
     public static long neighbour(long value, long offset) {
         long neighbour = value+offset;
-        if (offset>=0 ? neighbour<value : neighbour>value) {
+        //Overflow iff both arguments have the opposite sign of the result
+        if (((value^neighbour) & (offset^neighbour)) < 0) {
             throw new OverflowException("neighbour overflow");
         }
         return neighbour;
@@ -377,7 +378,9 @@ public final class Integer
     @Ignore
     public static long offset(long value, long other) {
         long offset = value-other;
-        if (value<other ? offset>0 : offset<0) {
+        //Overflow iff the arguments have different signs and
+        //the sign of the result is different than the sign of x
+        if (((value^other) & (value^offset)) < 0) {
             throw new OverflowException("offset overflow");
         }
         return offset;
