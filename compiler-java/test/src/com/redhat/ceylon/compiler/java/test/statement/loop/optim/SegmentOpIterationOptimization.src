@@ -20,15 +20,15 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void literals$priv$() {
         long sum = 0L;
         final long start$0 = 0L;
-        final long end$1 = start$0 + .java.lang.Math.max(0L, 10L);
-        loop_0: for (long i$2 = start$0; i$2 < end$1; i$2++) {
-            final long i = i$2;
+        final long length$1 = 10L;
+        loop_0: for (long i$2 = 0; i$2 < length$1; i$2++) {
+            final long i = i$2 + start$0;
             sum += i;
         }
         final int start$3 = 97;
-        final int end$4 = (int)(start$3 + .java.lang.Math.max(0L, 26L));
-        loop_1: for (int i$5 = start$3; i$5 < end$4; i$5++) {
-            final int c = i$5;
+        final int length$4 = (int)26L;
+        loop_1: for (int i$5 = 0; i$5 < length$4; i$5++) {
+            final int c = i$5 + start$3;
             sum += .ceylon.language.Character.getInteger(c);
         }
     }
@@ -36,15 +36,15 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void expressions$priv$() {
         long sum = 0L;
         final long start$6 = getStart$priv$();
-        final long end$7 = start$6 + .java.lang.Math.max(0L, getLength$priv$());
-        loop_2: for (long i$8 = start$6; i$8 < end$7; i$8++) {
-            final long i = i$8;
+        final long length$7 = getLength$priv$();
+        loop_2: for (long i$8 = 0; i$8 < length$7; i$8++) {
+            final long i = i$8 + start$6;
             sum += i;
         }
         final long start$9 = getStart$priv$() + 10L;
-        final long end$10 = start$9 + .java.lang.Math.max(0L, getLength$priv$() + 10L);
-        loop_3: for (long i$11 = start$9; i$11 < end$10; i$11++) {
-            final long i = i$11;
+        final long length$10 = getLength$priv$() + 10L;
+        loop_3: for (long i$11 = 0; i$11 < length$10; i$11++) {
+            final long i = i$11 + start$9;
             sum += i;
         }
     }
@@ -52,19 +52,19 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void by$priv$() {
         long sum = 0L;
         final long start$12 = 1L;
+        final long length$13 = 10L;
         final long step$15 = 3L;
         if (step$15 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final long end$13 = start$12 + .java.lang.Math.max(0L, 10L);
-        loop_4: for (long i$14 = start$12; i$14 < end$13; i$14 += step$15) {
-            final long i = i$14;
+        loop_4: for (long i$14 = 0; i$14 < length$13; i$14 = .ceylon.language.Integer.neighbour(i$14, step$15)) {
+            final long i = .ceylon.language.Integer.neighbour(start$12, i$14);
             sum += i;
         }
         final long start$16 = 1L;
+        final long length$17 = 10L;
         final long step$19 = 3L;
         if (step$19 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final long end$17 = start$16 + .java.lang.Math.max(0L, 10L);
-        loop_5: for (long i$18 = start$16; i$18 < end$17; i$18 += step$19) {
-            final long i = i$18;
+        loop_5: for (long i$18 = 0; i$18 < length$17; i$18 = .ceylon.language.Integer.neighbour(i$18, step$19)) {
+            final long i = .ceylon.language.Integer.neighbour(start$16, i$18);
             sum += i;
         }
     }
@@ -88,24 +88,24 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void flow$priv$() {
         long sum = 0L;
         final long start$24 = 1L;
-        final long end$25 = start$24 + .java.lang.Math.max(0L, 10L);
-        loop_8: for (long i$26 = start$24; i$26 < end$25; i$26++) {
-            final long withElse = i$26;
+        final long length$25 = 10L;
+        loop_8: for (long i$26 = 0; i$26 < length$25; i$26++) {
+            final long withElse = i$26 + start$24;
             sum += withElse;
         }
         sum = 0L;
         final long start$27 = 1L;
-        final long end$28 = start$27 + .java.lang.Math.max(0L, 10L);
-        loop_9: for (long i$29 = start$27; i$29 < end$28; i$29++) {
-            final long breaks = i$29;
+        final long length$28 = 10L;
+        loop_9: for (long i$29 = 0; i$29 < length$28; i$29++) {
+            final long breaks = i$29 + start$27;
             sum += breaks;
             break loop_9;
         }
         boolean doforelse$33 = true;
         final long start$30 = 1L;
-        final long end$31 = start$30 + .java.lang.Math.max(0L, 10L);
-        loop_10: for (long i$32 = start$30; i$32 < end$31; i$32++) {
-            final long breaksWithElse = i$32;
+        final long length$31 = 10L;
+        loop_10: for (long i$32 = 0; i$32 < length$31; i$32++) {
+            final long breaksWithElse = i$32 + start$30;
             sum += breaksWithElse;
             doforelse$33 = false;
             break loop_10;
@@ -115,9 +115,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         }
         boolean doforelse$37 = true;
         final long start$34 = 1L;
-        final long end$35 = start$34 + .java.lang.Math.max(0L, 10L);
-        loop_11: for (long i$36 = start$34; i$36 < end$35; i$36++) {
-            final long breaksWithElse = i$36;
+        final long length$35 = 10L;
+        loop_11: for (long i$36 = 0; i$36 < length$35; i$36++) {
+            final long breaksWithElse = i$36 + start$34;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
                 doforelse$37 = false;
@@ -128,17 +128,17 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum = 0L;
         }
         final long start$39 = 1L;
-        final long end$40 = start$39 + .java.lang.Math.max(0L, 10L);
-        loop_12: for (long i$41 = start$39; i$41 < end$40; i$41++) {
-            final long returns = i$41;
+        final long length$40 = 10L;
+        loop_12: for (long i$41 = 0; i$41 < length$40; i$41++) {
+            final long returns = i$41 + start$39;
             sum += returns;
             break loop_12;
         }
         boolean doforelse$45 = true;
         final long start$42 = 1L;
-        final long end$43 = start$42 + .java.lang.Math.max(0L, 10L);
-        loop_13: for (long i$44 = start$42; i$44 < end$43; i$44++) {
-            final long returnsWithElse = i$44;
+        final long length$43 = 10L;
+        loop_13: for (long i$44 = 0; i$44 < length$43; i$44++) {
+            final long returnsWithElse = i$44 + start$42;
             sum += returnsWithElse;
             doforelse$45 = false;
             break loop_13;
@@ -148,9 +148,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         }
         boolean doforelse$49 = true;
         final long start$46 = 1L;
-        final long end$47 = start$46 + .java.lang.Math.max(0L, 10L);
-        loop_14: for (long i$48 = start$46; i$48 < end$47; i$48++) {
-            final long returnsWithElse = i$48;
+        final long length$47 = 10L;
+        loop_14: for (long i$48 = 0; i$48 < length$47; i$48++) {
+            final long returnsWithElse = i$48 + start$46;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
                 doforelse$49 = false;
@@ -161,17 +161,17 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum = 0L;
         }
         final long start$51 = 1L;
-        final long end$52 = start$51 + .java.lang.Math.max(0L, 10L);
-        loop_15: for (long i$53 = start$51; i$53 < end$52; i$53++) {
-            final long $throws = i$53;
+        final long length$52 = 10L;
+        loop_15: for (long i$53 = 0; i$53 < length$52; i$53++) {
+            final long $throws = i$53 + start$51;
             sum += $throws;
             break loop_15;
         }
         boolean doforelse$57 = true;
         final long start$54 = 1L;
-        final long end$55 = start$54 + .java.lang.Math.max(0L, 10L);
-        loop_16: for (long i$56 = start$54; i$56 < end$55; i$56++) {
-            final long throwsWithElse = i$56;
+        final long length$55 = 10L;
+        loop_16: for (long i$56 = 0; i$56 < length$55; i$56++) {
+            final long throwsWithElse = i$56 + start$54;
             sum += throwsWithElse;
             doforelse$57 = false;
             break loop_16;
@@ -181,9 +181,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         }
         boolean doforelse$61 = true;
         final long start$58 = 1L;
-        final long end$59 = start$58 + .java.lang.Math.max(0L, 10L);
-        loop_17: for (long i$60 = start$58; i$60 < end$59; i$60++) {
-            final long throwsWithElse = i$60;
+        final long length$59 = 10L;
+        loop_17: for (long i$60 = 0; i$60 < length$59; i$60++) {
+            final long throwsWithElse = i$60 + start$58;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
                 doforelse$61 = false;
@@ -197,9 +197,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     
     private final void captured$priv$() {
         final long start$63 = 0L;
-        final long end$64 = start$63 + .java.lang.Math.max(0L, 10L);
-        loop_18: for (long i$65 = start$63; i$65 < end$64; i$65++) {
-            final long i = i$65;
+        final long length$64 = 10L;
+        loop_18: for (long i$65 = 0; i$65 < length$64; i$65++) {
+            final long i = i$65 + start$63;
             
             final class x_ {
                 
