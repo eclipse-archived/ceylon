@@ -116,10 +116,16 @@ public final class Float
         else if (otherValue==2.0) {
             return value*value;
         }
+        else if (otherValue==3.0) {
+            return value*value*value;
+        }
         //TODO: other positive integer powers for which
         //      multiplying is faster than pow()
         else if (otherValue==0.5) {
             return Math.sqrt(value);
+        }
+        else if (otherValue==0.25) {
+            return Math.sqrt(Math.sqrt(value));
         }
         else if (otherValue==-1.0) {
             return 1.0/value;
@@ -127,8 +133,14 @@ public final class Float
         else if (otherValue==-2.0) {
             return 1.0/value/value;
         }
+        else if (otherValue==-3.0) {
+            return 1.0/value/value/value;
+        }
         else if (otherValue==-0.5) {
             return 1.0/Math.sqrt(value);
+        }
+        else if (otherValue==-0.25) {
+            return 1.0/Math.sqrt(Math.sqrt(value));
         }
         else {
             //NOTE: this function is _really_ slow!
@@ -484,6 +496,9 @@ public final class Float
         else if (integer == 2) {
             return value*value;
         }
+        else if (integer == 3) {
+            return value*value*value;
+        }
         //TODO: other positive integer powers for which
         //      multiplication is more efficient than pow()
         else if (integer == -1) {
@@ -491,6 +506,9 @@ public final class Float
         }
         else if (integer == -2) {
             return 1/value/value;
+        }
+        else if (integer == -3) {
+            return 1/value/value/value;
         }
         else {
             //NOTE: this function is _really_ slow!
