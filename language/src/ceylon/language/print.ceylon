@@ -28,7 +28,7 @@ shared void printAll({Anything*} values,
         else {
             process.write(separator);
         }
-        process.write(stringify(val));
+        process.write(stringify(element));
     });
     process.write(operatingSystem.newline);
 }
