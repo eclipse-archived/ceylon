@@ -32,6 +32,12 @@ public class OptimizationTests extends CompilerTests {
     }
     
     @Test
+    public void testLopOptimBug2130() {
+        compile("loop/optim/Bug2130.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug2130");
+    }
+    
+    @Test
     public void testLopSegmentOpIterationOptimization(){
         compareWithJavaSource("loop/optim/SegmentOpIterationOptimization");
     }
