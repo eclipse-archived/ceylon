@@ -1,12 +1,15 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.List;
+import java.util.HashMap;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -23,9 +26,12 @@ public class MissingNativeVisitor extends Visitor {
     private final Backend forBackend;
     private final AbstractModelLoader loader;
 
+    private final HashMap<Declaration, Boolean> checked;
+    
     public MissingNativeVisitor(Backend forBackend, AbstractModelLoader loader) {
         this.forBackend = forBackend;
         this.loader = loader;
+        checked = new HashMap<Declaration, Boolean>();
     }
 
     //
@@ -48,6 +54,7 @@ public class MissingNativeVisitor extends Visitor {
     
     public void visit(Tree.ClassOrInterface decl) {
         checkNativeExistence(decl);
+        validateNativeApi(decl);
         super.visit(decl);
     }
 
@@ -73,6 +80,7 @@ public class MissingNativeVisitor extends Visitor {
 
     public void visit(Tree.AnyMethod decl) {
         checkNativeExistence(decl);
+        validateNativeApi(decl);
         super.visit(decl);
     }
 
@@ -83,7 +91,7 @@ public class MissingNativeVisitor extends Visitor {
         checkNativeExistence(decl, model);
     }
     
-    private void checkNativeExistence(Node node, Declaration model){
+    private void checkNativeExistence(Node node, Declaration model) {
         if(model == null)
             return;
         if(!Decl.isToplevel(model) || !Decl.isNative(model))
@@ -92,18 +100,87 @@ public class MissingNativeVisitor extends Visitor {
         if(pkg == null)
             return;
         
-        // FIXME this is just a temporary implementation
-        List<Declaration> members = pkg.getMembers();
-        for (Declaration m : members) {
-            if (m.getName().equals(model.getName()) && forBackend.nativeAnnotation.equals(Decl.getNative(m))) {
-                return;
-            }
+        if (!model.getNative().isEmpty()
+                && !forBackend.nativeAnnotation.equals(model.getNative())) {
+            // We don't care about declarations for other backends
+            return;
         }
         
-        String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
-        String qualifiedName = Naming.toplevelClassName(pkgName, model);
-        ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
-        if(classMirror == null)
+        boolean ok = true;
+        if (checked.containsKey(model)) {
+            ok = checked.get(model);
+        } else {
+            try {
+                if (model instanceof Method || model instanceof Class) {
+                    Declaration m = pkg.getDirectMember(model.getName(), null, false);
+                    if (m != null && m.isNative()) {
+                        // Native declarations are a bit weird, if there are multiple the
+                        // second and any others are added as overloads to the first
+                        if (forBackend.nativeAnnotation.equals(Decl.getNative(m))) {
+                            return;
+                        } else if (m instanceof Functional) {
+                            for (Declaration o : ((Functional)m).getOverloads()) {
+                                if (forBackend.nativeAnnotation.equals(Decl.getNative(o))) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
+                String qualifiedName = Naming.toplevelClassName(pkgName, model);
+                ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
+                ok = (classMirror != null);
+            } finally {
+                checked.put(model, ok);
+            }
+        }
+        if(!ok)
             node.addError("native declaration not found");
+    }
+
+    private void validateNativeApi(Tree.Declaration node) {
+        Declaration model = node.getDeclarationModel();
+        if(model == null)
+            return;
+        if(!Decl.isToplevel(model) || !Decl.isNative(model))
+            return;
+        Package pkg = Decl.getPackage(model);
+        if(pkg == null)
+            return;
+        
+        Functional f = (Functional)model;
+        if (f.getOverloads() !=  null) {
+            Declaration template = null;
+            if ("".equals(model.getNative())) {
+                template = model;
+            } else {
+                for (Declaration d : f.getOverloads()) {
+                    if ("".equals(d.getNative())) {
+                        template = d;
+                        break;
+                    }
+                }
+            }
+            if (template == null) {
+                // Template-less native implementation, check it's not shared
+                if (model.isShared()) {
+                    node.addError("native implementation should have a template or not be shared");
+                }
+            } else {
+                // Native implementation with template, check it's shared
+                if (!model.isShared()) {
+                    if (model == template) {
+                        node.addError("native template should be shared");
+                    } else {
+                        node.addError("native implementation should be shared");
+                    }
+                }
+            }
+        } else {
+            // External implementation, probably hand-written in Java
+            // TODO check anything?
+        }
     }
 }
