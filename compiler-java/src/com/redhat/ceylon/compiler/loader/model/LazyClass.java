@@ -326,6 +326,18 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
+    public String getNative() {
+        load();
+        return super.getNative();
+    }
+    
+    @Override
+    public void setNative(String backend) {
+        load();
+        super.setNative(backend);
+    }
+
+    @Override
     public boolean isVisible(Scope scope) {
         // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isVisible(scope);

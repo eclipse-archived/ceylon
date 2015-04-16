@@ -2395,6 +2395,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 decl.setDeprecated(true);
             }
         }
+        // Set "native" annotation
+        decl.setNative(getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend"));
     }
 
     private Annotation readModelAnnotation(AnnotationMirror annotation) {
