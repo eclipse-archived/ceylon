@@ -2164,7 +2164,7 @@ public class StatementTransformer extends AbstractTransformer {
         private final Tree.Term length;
 
         SegmentOpIteration(Tree.ForStatement stmt, Tree.SegmentOp op, Tree.Term step, Tree.Term start, Tree.Term length) {
-            super(stmt, op, step, typeFact().getIteratedType(op.getTypeModel()), "start", "end", "i");
+            super(stmt, op, step, typeFact().getIteratedType(op.getTypeModel()), "start", "length", "i");
             this.start = start;
             this.length = length;
             // TODO If length if < 0 we need to not loop at all
@@ -2185,12 +2185,19 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected JCExpression makeIndexInit() {
-            return indexableName.makeIdent();
+            return make().Literal(0);
         }
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            return indexName.makeIdent();
+            if (step == null) {
+                return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
+            } else {
+                return make().Apply(null,
+                        naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
+                        List.<JCExpression>of(
+                                indexableName.makeIdent(), indexName.makeIdent()));
+            }
         }
         
         @Override
@@ -2200,14 +2207,8 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         protected JCExpression makeLengthExpr() {
-            JCExpression result = make().Binary(JCTree.PLUS,
-                    indexableName.makeIdent(),
-                    make().Apply(null, 
-                            naming.makeQuotedFQIdent("java.lang.Math.max"), 
-                            List.<JCExpression>of(
-                                    make().Literal(0L), 
-                                    expressionGen().transformExpression(length, 
-                                            BoxingStrategy.UNBOXED, length.getTypeModel()))));
+            JCExpression result = expressionGen().transformExpression(length, 
+                    BoxingStrategy.UNBOXED, length.getTypeModel());
             if (isCeylonCharacter(elementType)) {
                 result = make().TypeCast(syms().intType, result);
             }
@@ -2219,6 +2220,17 @@ public class StatementTransformer extends AbstractTransformer {
                     elementType);
         }
         
+        protected JCExpression makeIncrement(SyntheticName stepName) {
+            if (stepName == null) {
+                return make().Unary(JCTree.POSTINC, indexName.makeIdent());
+            } else {
+                return make().Assign(indexName.makeIdent(),
+                        make().Apply(null,
+                                naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
+                                List.<JCExpression>of(
+                                        indexName.makeIdent(), stepName.makeIdent())));
+            }
+        }
     }
     
     private ForStatementTransformation segmentOpIteration(Tree.ForStatement stmt, 
