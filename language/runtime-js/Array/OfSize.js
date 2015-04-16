@@ -1,10 +1,14 @@
 function $_Array_OfSize(s,e,t$) {
-  asrt$(s>=0 && s<=runtime().maxArraySize,
+  asrt$(s<=runtime().maxArraySize,
         "Invalid array size","0:0","Array.ceylon");
   $init$$_Array();
-  var a=new Array(s);
-  for (var i=0;i<s;i++) {
-    a[i]=e;
+  if (s>0) {
+    var a=new Array(s);
+    for (var i=0;i<s;i++) {
+      a[i]=e;
+    }
+  } else {
+    var a=[];
   }
   return $_Array$$c(a,t$);
 }
