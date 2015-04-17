@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * use-site of these native declarations is also resolved.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
+ * @author Tako Schotanus <tako@ceylon-lang.org>
  */
 public class MissingNativeVisitor extends Visitor {
     private final Backend forBackend;
@@ -100,7 +101,8 @@ public class MissingNativeVisitor extends Visitor {
         if(pkg == null)
             return;
         
-        if (!model.getNative().isEmpty()
+        if ((node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod)
+                && !model.getNative().isEmpty()
                 && !forBackend.nativeAnnotation.equals(model.getNative())) {
             // We don't care about declarations for other backends
             return;
@@ -114,11 +116,12 @@ public class MissingNativeVisitor extends Visitor {
                 if (model instanceof Method || model instanceof Class) {
                     Declaration m = pkg.getDirectMember(model.getName(), null, false);
                     if (m != null && m.isNative()) {
-                        // Native declarations are a bit weird, if there are multiple the
-                        // second and any others are added as overloads to the first
+                        // Native declarations are a bit weird, if there are multiple they
+                        // will all have the same list of overloads containing each of them.
+                        // We here check to see if any of them are for this backend
                         if (forBackend.nativeAnnotation.equals(Decl.getNative(m))) {
                             return;
-                        } else if (m instanceof Functional) {
+                        } else if (m instanceof Functional && ((Functional)m).getOverloads() != null) {
                             for (Declaration o : ((Functional)m).getOverloads()) {
                                 if (forBackend.nativeAnnotation.equals(Decl.getNative(o))) {
                                     return;
