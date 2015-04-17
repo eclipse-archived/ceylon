@@ -77,3 +77,18 @@ function ser$et$(t) {
   return r;
 }
 ex$.ser$et$=ser$et$;
+//Given a type structure that has an object value  as its "type",
+//return a new structure with the object's type
+function value2type$(t){
+  if (t.t.$$ || t.t==='u' || t.t==='i' || t.t==='T')return t;
+  var mm=getrtmm$$(t.t);
+  if (mm) {
+    var mod=get_model(mm);
+    if (mod.mt==='o') {
+      var nt={t:mm.$t.t};
+      if (t.a)nt.a=t.a;
+      return nt;
+    }
+  }
+  return t;
+}
