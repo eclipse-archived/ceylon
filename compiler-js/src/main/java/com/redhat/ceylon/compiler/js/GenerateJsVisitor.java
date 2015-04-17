@@ -17,7 +17,6 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.js.util.JsUtils;
@@ -562,7 +561,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ClassDefinition that) {
-        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) && isForBackend(that)) {
+        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) && TypeUtils.isForBackend(that)) {
             TypeGenerator.classDefinition(that, this);
         }
     }
@@ -982,7 +981,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that) || !isForBackend(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.isForBackend(that))return;
         final Method d = that.getDeclarationModel();
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
@@ -3313,14 +3312,5 @@ public class GenerateJsVisitor extends Visitor
             return true;
         }
         return false;
-    }
-    
-    static boolean isForBackend(Tree.Declaration decl) {
-        return isForBackend(decl.getDeclarationModel());
-    }
-    
-    static boolean isForBackend(Declaration decl) {
-        String backend = decl.getNative();
-        return backend == null || backend.equals(Backend.JavaScript.nativeAnnotation);
     }
 }

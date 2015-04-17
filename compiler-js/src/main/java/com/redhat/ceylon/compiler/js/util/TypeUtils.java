@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.AttributeGenerator;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
@@ -1170,6 +1171,27 @@ public class TypeUtils {
             d = ((Setter)d).getGetter();
         }
         return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
+    }
+    
+    public static boolean isForBackend(Tree.Declaration decl) {
+        return isForBackend(decl.getDeclarationModel());
+    }
+    
+    /**
+     * Checks that the declaration is marked "native" and has an implementation
+     * meant for the JavaScript backend
+     */
+    public static boolean isForBackend(Declaration decl) {
+        String backend = decl.getNative();
+        return backend == null || backend.equals(Backend.JavaScript.nativeAnnotation);
+    }
+    
+    /**
+     * Checks that the declaration is marked "native" but has no implementation
+     */
+    public static boolean isNativeDeclarationOnly(Declaration decl) {
+        String backend = decl.getNative();
+        return backend == null || backend.isEmpty();
     }
 
 }
