@@ -122,14 +122,14 @@ public class MissingNativeVisitor extends Visitor {
                                 }
                             }
                         }
+                        ok = false;
                     }
                 }
                 
                 // TODO If we got here it might be that we're dealing with
                 // a true native implementation in JavaScript. If possible
                 // we should detect if it actually exists
-                //ok = checkNativeImplementationExists(model);
-                ok = false;
+                //ok = ok && checkNativeImplementationExists(model);
             } finally {
                 checked.put(model, ok);
             }
