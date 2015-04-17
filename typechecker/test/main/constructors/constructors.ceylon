@@ -267,3 +267,15 @@ class WithDupeDefaultConstructor {
 class WithUnsharedDefaultConstructor {
     @error new () {}
 }
+
+shared class Thing {
+    String name;
+    
+    sealed shared new(String name) {
+        this.name = name;
+    }
+    
+    sealed shared new Another(String name) {
+        this.name = name;
+    }
+}
