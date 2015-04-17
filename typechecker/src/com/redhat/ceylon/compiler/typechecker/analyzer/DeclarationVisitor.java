@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
@@ -515,12 +514,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             that.getParameterList().getModel().setFirst(true);
             c.addParameterList(that.getParameterList().getModel());
         }
+        if (that.getIdentifier()==null && !c.isShared()) {
+            that.addError("default constructor must be annotated shared", 401);
+        }
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
-            if (!c.isShared() && 
-                    Objects.equals(clazz.getName(), c.getName())) {
-                that.addError("default constructor must be shared", 401);
-            }
             //constructor of sealed class implicitly inherits sealed
             if (clazz.isSealed()) {
                 c.setSealed(true);
