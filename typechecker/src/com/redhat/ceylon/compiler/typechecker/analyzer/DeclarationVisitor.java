@@ -442,6 +442,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 that.addError("class without parameter list may not be annotated sealed", 1800);
             }
         }
+        if (c.isSealed() && c.isFormal() && 
+                c.isClassOrInterfaceMember() && 
+                !((ClassOrInterface) c.getContainer()).isSealed()) {
+            that.addError("sealed formal member class does not belong to a sealed type", 1801);
+        }
     }
     
     @Override
@@ -1395,12 +1400,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //                if (!ci.isAbstract() && !ci.isFormal()) {
 //                    that.addError("formal member belongs to a concrete class", 900);
 //                }
-                if (d instanceof Class) {
-                    if (((Class) d).isSealed() && 
-                            !((ClassOrInterface) container).isSealed()) {
-                        that.addError("sealed formal member class does not belong to a sealed type", 1801);
-                    }
-                }
             } 
             else {
                 that.addError("formal member does not belong to an interface or abstract class", 1100);
