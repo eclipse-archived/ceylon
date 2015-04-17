@@ -438,7 +438,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     (c.isFormal() || c.isDefault() || c.isActual())) {
                 that.addError("member class declared formal, default, or actual must have a parameter list");
             }
-            if (c.isSealed()) {
+            if (hasAnnotation(that.getAnnotationList(), "sealed", unit)) {
                 that.addError("class without parameter list may not be annotated sealed", 1800);
             }
         }
@@ -522,13 +522,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (that.getIdentifier()==null && !c.isShared()) {
             that.addError("default constructor must be annotated shared", 401);
         }
-        if (scope instanceof Class) {
-            Class clazz = (Class) scope;
-            //constructor of sealed class implicitly inherits sealed
-            if (clazz.isSealed()) {
-                c.setSealed(true);
-            }
-        }
+//        if (scope instanceof Class) {
+//            Class clazz = (Class) scope;
+//            //constructor of sealed class implicitly inherits sealed
+//            if (clazz.isSealed()) {
+//                c.setSealed(true);
+//            }
+//        }
     }
 
     @Override
