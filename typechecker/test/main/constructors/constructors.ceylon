@@ -130,13 +130,22 @@ class WithAttributesAndMisplacedStatement {
         count = initial;
         init = initial;
     }
-    @error print(name);
+    print(name);
     void inc() {
-        @error count++; //TODO: remove useless extra error
+        count++;
     }
     void reset() {
-        @error count = init; //TODO: remove useless extra error
+        count = init;
     }
+}
+
+abstract class WithSplitInitializer {
+    shared String name;
+    shared Float x;
+    shared new() { x=0.0; }
+    shared new New() { x=1.0; }
+    name = "Gavin";
+    Integer count = 1;
 }
 
 class WithAttributesAndMispacedUsage {

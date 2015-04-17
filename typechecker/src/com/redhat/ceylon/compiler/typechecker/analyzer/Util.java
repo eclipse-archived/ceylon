@@ -244,6 +244,17 @@ public class Util {
         return null;
     }
 
+    public static Tree.Constructor getLastConstructor(Tree.ClassBody that) {
+        List<Tree.Statement> statements = that.getStatements();
+        for (int i=statements.size()-1; i>=0; i--) {
+            Tree.Statement s = statements.get(i);
+            if (s instanceof Tree.Constructor) {
+                return (Tree.Constructor) s;
+            }
+        }
+        return null;
+    }
+
     static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
         if (s instanceof Tree.SpecifierStatement) {
             //shortcut refinement statements with => aren't really "executable"
