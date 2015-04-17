@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
-import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
@@ -50,7 +47,7 @@ public abstract class AppliedClassOrInterface<Type>
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
-    protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
+    protected final com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.meta.model.InterfaceModel<? extends Object>> interfaces;
@@ -59,6 +56,7 @@ public abstract class AppliedClassOrInterface<Type>
     
     AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
+        this.declaration = Metamodel.getOrCreateMetamodel(producedType.getDeclaration());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
     }
 
@@ -82,7 +80,6 @@ public abstract class AppliedClassOrInterface<Type>
     @SuppressWarnings("unchecked")
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
-        this.declaration = getDeclaration$noinit();
         this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
@@ -116,14 +113,9 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeInfo("ceylon.language.meta.declaration::ClassOrInterfaceDeclaration")
     public ceylon.language.meta.declaration.ClassOrInterfaceDeclaration getDeclaration() {
-        checkInit();
         return declaration;
     }
     
-    @Ignore
-    FreeClassOrInterface getDeclaration$noinit() {
-        return Metamodel.getOrCreateMetamodel(producedType.getDeclaration());
-    }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::InterfaceModel<ceylon.language::Anything>>")

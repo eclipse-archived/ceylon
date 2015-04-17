@@ -70,12 +70,15 @@ class Measure<Element>(first, size)
             variable value count = 0;
             variable value current = first;
             shared actual Element|Finished next() {
-                if (++count > size) {
+                if (count >= size) {
                     return finished;
                 } else {
-                    value result = current;
-                    current = current.neighbour(step);
-                    return result;
+                    if (count++ == 0) {
+                        return current;
+                    } else {
+                        current = current.neighbour(step);
+                        return current;
+                    }
                 }
             }
             string => "``outer``.iterator()";

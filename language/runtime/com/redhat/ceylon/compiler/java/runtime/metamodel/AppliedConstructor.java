@@ -45,7 +45,6 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     private final TypeDescriptor reified$Type;
     private final TypeDescriptor reified$Arguments;
     protected final FreeConstructor declaration;
-    private final ceylon.language.meta.model.Type<Object> type;
     private final List<ProducedType> parameterProducedTypes;
     private final Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     private final Class<Type, ? extends Object> container;
@@ -75,8 +74,6 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         
         com.redhat.ceylon.compiler.typechecker.model.Constructor decl = declaration.constructor;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-        
-        this.type = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
@@ -494,8 +491,8 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         if (this == other) {
             return true;
         } else if (other instanceof AppliedConstructor) {
-            return this.getDeclaration().getName().equals(((AppliedConstructor)other).getDeclaration().getName())
-                    && this.instance.equals(((AppliedConstructor)other).instance);
+            return this.getDeclaration().getName().equals(((AppliedConstructor<?,?>)other).getDeclaration().getName())
+                    && this.instance.equals(((AppliedConstructor<?,?>)other).instance);
                     
         } else {
             return false;

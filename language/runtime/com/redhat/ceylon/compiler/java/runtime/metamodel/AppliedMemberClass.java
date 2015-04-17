@@ -11,7 +11,6 @@ import ceylon.language.meta.model.MemberClassConstructor;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -168,7 +167,6 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Class<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);

@@ -17,14 +17,14 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
         implements MemberClassConstructor<Container, Type, Arguments>, ReifiedType {
 
     private final FreeConstructor declaration;
-    private MemberClass<Object,Type,? extends Object> container;
+    private final MemberClass<Object,Type,? extends Object> container;
+    private final ProducedType producedType;
+    private final TypeDescriptor reified$Type;
+    private final TypeDescriptor reified$Arguments;
+    private final TypeDescriptor reified$Container;
     
     private volatile boolean initialized = false;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
-    private ProducedType producedType;
-    private TypeDescriptor reified$Type;
-    private TypeDescriptor reified$Arguments;
-    private TypeDescriptor reified$Container;
     
     public AppliedMemberClassConstructor(
             TypeDescriptor reified$Container,

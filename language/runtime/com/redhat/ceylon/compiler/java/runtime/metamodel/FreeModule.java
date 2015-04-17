@@ -54,7 +54,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     
     @Override
     @Ignore
-    public boolean $isAnnotated$(java.lang.Class annotationType) {
+    public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
         if(declaration.isDefault() || declaration.isJava())
             return false;
         final AnnotatedElement element = Metamodel.getJavaClass(declaration);;

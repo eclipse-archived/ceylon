@@ -673,7 +673,6 @@ public class Metamodel {
     
     public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.compiler.typechecker.model.Constructor declaration, String methodName) {
         com.redhat.ceylon.compiler.typechecker.model.Class cls = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer();
-//        Class<?> javaCls = getJavaClass(cls);
         Class<?> terJavaCls = getJavaClass((Declaration)cls.getContainer());
         java.lang.reflect.Method[] methods = terJavaCls.getDeclaredMethods();
         // the instantiator method is @Ignore'd and not @Name'd
@@ -722,7 +721,6 @@ public class Metamodel {
     public static List<java.lang.reflect.Constructor<?>> getJavaConstructors(
             com.redhat.ceylon.compiler.typechecker.model.Constructor declaration) {
         Class<?> javaClass = getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration.getContainer());
-//        Constructor<?>[] ctors = javaClass.getDeclaredConstructors();
         ArrayList<java.lang.reflect.Constructor<?>> result = new ArrayList<java.lang.reflect.Constructor<?>>();
         // find the appropriate ultimate constructor
         java.lang.reflect.Constructor<?> ultimate = getJavaConstructor(declaration);
@@ -966,7 +964,7 @@ public class Metamodel {
             ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType) {
         FreeClassOrInterface freeClass;
         if (annotationType instanceof AppliedClassOrInterface) {
-            freeClass = ((AppliedClassOrInterface)annotationType).getDeclaration$noinit();
+            freeClass = (FreeClassOrInterface)((AppliedClassOrInterface<?>)annotationType).getDeclaration();
         } else {
             freeClass = (FreeClassOrInterface)annotationType;
         }

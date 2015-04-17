@@ -418,8 +418,6 @@
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
-                <exclude name="ceylon/language/arrayOfSize.ceylon"/>
-                <include name="ceylon/language/arrayOfSize_.java"/>
                 <exclude name="ceylon/language/generateArray.ceylon"/>
                 <include name="ceylon/language/generateArray_.java"/>
                 <exclude name="ceylon/language/populateArray.ceylon"/>

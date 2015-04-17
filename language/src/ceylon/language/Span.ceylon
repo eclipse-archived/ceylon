@@ -64,7 +64,15 @@ class Span<Element>(first, last)
             then x.offsetSign(first) > 0
             else x.offsetSign(first) < 0;
     
-    size => last.offset(first).magnitude + 1;
+    shared actual Integer size {
+        value lastIndex = last.offset(first).magnitude;
+        if (lastIndex<runtime.maxIntegerValue) {
+            return lastIndex + 1;
+        }
+        else {
+            throw OverflowException("size of range");
+        }
+    }
     
     longerThan(Integer length) 
             => if (length < 1) then true

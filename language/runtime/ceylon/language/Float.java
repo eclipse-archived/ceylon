@@ -102,12 +102,50 @@ public final class Float
     
     @Override
     public Float power(@Name("other") Float other) {
-        return instance(Math.pow(value, other.value));
+        return instance(power(value, other.value));
     }
     
     @Ignore
     public static double power(double value, double otherValue) {
-        return Math.pow(value, otherValue);
+        if (otherValue==0.0) {
+            return 1.0;
+        }
+        else if (otherValue==1.0) {
+            return value;
+        }
+        else if (otherValue==2.0) {
+            return value*value;
+        }
+        else if (otherValue==3.0) {
+            return value*value*value;
+        }
+        //TODO: other positive integer powers for which
+        //      multiplying is faster than pow()
+        else if (otherValue==0.5) {
+            return Math.sqrt(value);
+        }
+        else if (otherValue==0.25) {
+            return Math.sqrt(Math.sqrt(value));
+        }
+        else if (otherValue==-1.0) {
+            return 1.0/value;
+        }
+        else if (otherValue==-2.0) {
+            return 1.0/value/value;
+        }
+        else if (otherValue==-3.0) {
+            return 1.0/value/value/value;
+        }
+        else if (otherValue==-0.5) {
+            return 1.0/Math.sqrt(value);
+        }
+        else if (otherValue==-0.25) {
+            return 1.0/Math.sqrt(Math.sqrt(value));
+        }
+        else {
+            //NOTE: this function is _really_ slow!
+            return Math.pow(value, otherValue);
+        }
     }
     
     @Ignore
@@ -152,12 +190,12 @@ public final class Float
     
     @Ignore
     public Float power(Integer other) {
-        return instance(Math.pow(value, other.value));
+        return instance(powerOfInteger(value, other.value));
     }
     
     @Ignore
     public static double power(double value, long otherValue) {
-        return Math.pow(value, otherValue);
+        return powerOfInteger(value, otherValue);
     }
     
     @Override
@@ -445,11 +483,37 @@ public final class Float
     
     @Override
     public Float powerOfInteger(@Name("integer") long integer) {
-        return instance(Math.pow(value,integer));
+        return instance(powerOfInteger(value,integer));
     }
     
     public static double powerOfInteger(double value, long integer) {
-        return Math.pow(value,integer);
+        if (integer == 0) {
+            return 1.0;
+        }
+        else if (integer == 1) {
+            return value;
+        }
+        else if (integer == 2) {
+            return value*value;
+        }
+        else if (integer == 3) {
+            return value*value*value;
+        }
+        //TODO: other positive integer powers for which
+        //      multiplication is more efficient than pow()
+        else if (integer == -1) {
+            return 1/value;
+        }
+        else if (integer == -2) {
+            return 1/value/value;
+        }
+        else if (integer == -3) {
+            return 1/value/value/value;
+        }
+        else {
+            //NOTE: this function is _really_ slow!
+            return Math.pow(value,integer);
+        }
     }
     
 }

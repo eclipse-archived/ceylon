@@ -279,7 +279,7 @@ shared interface Iterable<out Element, out Absent=Null>
              print(word.uppercased);
          });
      
-     Has the safe effect as the following `for` loop:
+     Has the same effect as the following `for` loop:
      
          for (word in words) {
              print(word.lowercased);

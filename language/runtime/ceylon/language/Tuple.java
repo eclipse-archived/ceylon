@@ -1500,6 +1500,9 @@ public final class Tuple<Element, First extends Element,
             java.lang.Object object = array[i];
             sb.append(object==null ? "<null>" : object.toString());
         }
+        if (!rest.getEmpty()) {
+            sb.append(", *").append(rest.toString());
+        }
         sb.appendCharacter(']');
         return sb.toString();
     }

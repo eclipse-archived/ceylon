@@ -135,7 +135,8 @@ shared final native class Character(Character character)
     /*"The directionality of the character."
     shared native CharacterDirectionality directionality;*/
     
-    "The Unicode code point of the character."
+    "The Unicode code point of the character, an [[Integer]]
+     in the range `0..#10FFFF`."
     shared native Integer integer;
     
     "Compare this character with the given string character, 
@@ -151,14 +152,10 @@ shared final native class Character(Character character)
     
     "The character with the unicode code point that is one
      greater than this character."
-    throws (`class OverflowException`,
-        "if there is no such character")
     shared actual native Character predecessor;
 
     "The character with the unicode code point that is one
      less than this character."
-    throws (`class OverflowException`,
-        "if there is no such character")
     shared actual native Character successor;
     
     shared actual native Character neighbour(Integer offset);

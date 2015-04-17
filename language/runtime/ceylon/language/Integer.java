@@ -161,21 +161,25 @@ public final class Integer
     public static long power(long value, long otherValue) {
         long power = otherValue;
         if (value == -1) {
-            return power % 2 == 0 ? 1 : -1;
-        } else if (value == 1) {
+            return power % 2 == 0 ? 1L : -1L;
+        }
+        else if (value == 1) {
             return 1L;
         }
-        if (power < 0) {
+        else if (power < 0) {
             throw new AssertionError(value + "^" + power + 
                     " cannot be represented as an Integer");
-        } else if (power == 0L) {
+        }
+        else if (power == 0) {
             return 1L;
-        } else if (power == 1L) {
+        }
+        else if (power == 1) {
             return value;
         }
-        if (power >= POWER_BY_SQUARING_BREAKEVEN) {
+        else if (power >= POWER_BY_SQUARING_BREAKEVEN) {
             return powerBySquaring(value, power);
-        } else {
+        }
+        else {
             return powerByMultiplying(value, power);
         }
     }
@@ -356,34 +360,51 @@ public final class Integer
 
     // Enumerable
     
-    @Override
-    public Integer neighbour(@Name("offset") long offset) {
-        return instance(value+offset);
-    }
-
     @Ignore
     public static long neighbour(long value, long offset) {
-        return value+offset;
+        long neighbour = value+offset;
+        //Overflow iff both arguments have the opposite sign of the result
+        if (((value^neighbour) & (offset^neighbour)) < 0) {
+            throw new OverflowException("neighbour overflow");
+        }
+        return neighbour;
     }
 
     @Override
-    public long offset(@Name("other") Integer other) {
-        return value-other.value;
-    }
-
-    @Ignore
-    public static long offsetSign(long value, long other) {
-        return value-other;
-    }
-
-    @Override
-    public long offsetSign(@Name("other") Integer other) {
-        return value-other.value;
+    public Integer neighbour(@Name("offset") long offset) {
+        return instance(neighbour(value,offset));
     }
 
     @Ignore
     public static long offset(long value, long other) {
-        return value-other;
+        long offset = value-other;
+        //Overflow iff the arguments have different signs and
+        //the sign of the result is different than the sign of x
+        if (((value^other) & (value^offset)) < 0) {
+            throw new OverflowException("offset overflow");
+        }
+        return offset;
+    }
+
+    @Override
+    public long offset(@Name("other") Integer other) {
+        return offset(value, other.value);
+    }
+
+    @Ignore
+    public static long offsetSign(long value, long other) {
+        if (value>other) {
+            return 1;
+        }
+        if (value<other) {
+            return -1;
+        }
+        return 0;
+    }
+
+    @Override
+    public long offsetSign(@Name("other") Integer other) {
+        return offsetSign(value, other.value);
     }
 
     // Conversions between numeric types

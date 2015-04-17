@@ -765,4 +765,25 @@ void checkParseFloat() {
     check(0.flip(31).get(31), "logicalShift.get 8");
     check(2.divides(6), "Integer.divides 1");
     check(!5.divides(6), "Integer.divides 2");
+    try {
+        runtime.maxIntegerValue.neighbour(1);
+        fail("Integer.neighbour should throw");
+    } catch (OverflowException ex) {
+        check(true);
+    }
+    try {
+        runtime.maxIntegerValue.offset(-1);
+        fail("Integer.offset should throw");
+    } catch (OverflowException ex) {
+        check(true);
+    }
+    check((1).neighbour(5)==6, "Integer.neighbour 1");
+    check((1).neighbour(0)==1, "Integer.neighbour 2");
+    check((1).neighbour(-5)==-4, "Integer.neighbour 3");
+    check((1).offset(1)==0, "Integer.offset 1");
+    check((1).offset(2)==-1, "Integer.offset 2");
+    check((1).offset(0)==1, "Integer.offset 3");
+    check((5).offsetSign(5)==0, "Integer.offsetSign 1");
+    check((1).offsetSign(5)==-1, "Integer.offsetSign 2");
+    check((5).offsetSign(0)==1, "Integer.offsetSign 3");
 }

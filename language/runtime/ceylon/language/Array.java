@@ -125,12 +125,14 @@ public final class Array<Element>
     
     private static int toSize(long size) {
         if (size>maxArraySize) {
-            throw new AssertionError("array size must be smaller than " + maxArraySize);
+            throw new AssertionError("array size must be no larger than " + maxArraySize);
         }
-        if (size<0) {
-            throw new AssertionError("array size must not be negative");
+        else if (size<0) {
+            return 0;
         }
-        return (int) size;
+        else {
+            return (int) size;
+        }
     }
     
     @SuppressWarnings("unchecked")

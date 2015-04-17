@@ -26,9 +26,9 @@ public class AppliedAttribute<Container, Get, Set>
     extends AppliedMember<Container, ceylon.language.meta.model.Value<? extends Get, ? super Set>>
     implements ceylon.language.meta.model.Attribute<Container, Get, Set> {
 
-    protected FreeValue declaration;
-    protected ProducedTypedReference typedReference;
-    private ceylon.language.meta.model.Type<? extends Get> closedType;
+    protected final FreeValue declaration;
+    protected final ProducedTypedReference typedReference;
+    private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
     @Ignore
@@ -129,7 +129,6 @@ public class AppliedAttribute<Container, Get, Set>
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Value<? extends Get, ? super Set> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Value<? extends Get, ? super Set>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);
