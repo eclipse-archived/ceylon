@@ -21,6 +21,7 @@ import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -297,6 +298,26 @@ public class JsCompiler {
                             File unitFile = getFullPath(pu);
                             if (FileUtil.sameFile(path, unitFile)) {
                                 pu.getCompilationUnit().visit(importVisitor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (srcFiles == null && !phasedUnits.isEmpty()) {
+                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
+                for (PhasedUnit pu: phasedUnits) {
+                    pu.getCompilationUnit().visit(mnv);
+                }
+            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
+                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
+                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
+                for (File path : srcFiles) {
+                    if (!path.getPath().endsWith(ArtifactContext.JS)) {
+                        for (PhasedUnit pu : units) {
+                            File unitFile = getFullPath(pu);
+                            if (FileUtil.sameFile(path, unitFile)) {
+                                pu.getCompilationUnit().visit(mnv);
                             }
                         }
                     }
