@@ -134,9 +134,9 @@ final class test_booleans_ {
         );
         final boolean[][] matrix = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(10L)][];
         final long start$15 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
-        final long end$16 = start$15 + .java.lang.Math.max(0L, matrix.length);
-        loop_1: for (long i$17 = start$15; i$17 < end$16; i$17++) {
-            final long x = i$17;
+        final long length$16 = matrix.length;
+        loop_1: for (long i$17 = 0; i$17 < length$16; i$17++) {
+            final long x = i$17 + start$15;
             matrix[.com.redhat.ceylon.compiler.java.Util.toInt(x)] = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
         }
         final .ceylon.language.Array<boolean[]> boolArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends boolean[]>.getArray(matrix);

@@ -47,7 +47,8 @@ import com.redhat.ceylon.tools.help.PlaintextTests;
     TemplateTests.class,
     InfoToolTests.class,
     SrcToolTests.class,
-    VersionToolTests.class
+    VersionToolTests.class,
+    PluginToolTests.class
 })
 public class CompilerToolsTests {
 
