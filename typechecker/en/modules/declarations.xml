@@ -1681,9 +1681,14 @@ TypeConstraints?
             is annotated <literal>actual</literal>, it refines an attribute of a 
             supertype.</para>
             
+            <para>Annotations applying to an <literal>object</literal> declaration are
+            considered annotations of the <literal>object</literal> value, and are
+            accessible via its <literal>ValueDeclaration</literal>, as defined in
+            <xref linkend="referenceexpressions"/>.</para>
+            
             <para>The following declaration:</para>
             
-            <programlisting>shared object red extends Color('FF0000') {
+            <programlisting>shared my object red extends Color('FF0000') {
      string => "Red";
 }</programlisting>
    
@@ -1693,7 +1698,7 @@ TypeConstraints?
      string => "Red";
 }
 
-shared \Ired red = \Ired();</programlisting>
+shared my \Ired red = \Ired();</programlisting>
             
             <para>Where <literal>\Ired</literal> is the type name assigned by the 
             compiler.</para>
