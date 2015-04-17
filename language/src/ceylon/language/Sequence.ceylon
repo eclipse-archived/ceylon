@@ -331,10 +331,12 @@ class JoinedSequence<Element>
     
     shared actual 
     Element[] measure(Integer from, Integer length) {
-        if (from==0 && length==firstSeq.size) {
+        if (from==0 && 
+                length==firstSeq.size) {
             return firstSeq;
         }
-        else if (from==firstSeq.size && length>=secondSeq.size) {
+        else if (from==firstSeq.size && 
+                length>=secondSeq.size) {
             return secondSeq;
         }
         else {
@@ -344,10 +346,12 @@ class JoinedSequence<Element>
     
     shared actual 
     Element[] span(Integer from, Integer to) {
-        if (from<=0 && to==firstSeq.size-1) {
+        if (from<=0 && 
+                to==firstSeq.size-1) {
             return firstSeq;
         }
-        else if (from==firstSeq.size && to>=size-1) {
+        else if (from==firstSeq.size && 
+                to>=size-1) {
             return secondSeq;
         }
         else {
