@@ -434,10 +434,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         that.setDeclarationModel(c);
         super.visit(that);
-        if (that.getParameterList()==null &&
-                c.isClassOrInterfaceMember() && 
-                (c.isFormal() || c.isDefault() || c.isActual())) {
-            that.addError("member class declared formal, default, or actual must have a parameter list");
+        if (that.getParameterList()==null) {
+            if (c.isClassOrInterfaceMember() && 
+                    (c.isFormal() || c.isDefault() || c.isActual())) {
+                that.addError("member class declared formal, default, or actual must have a parameter list");
+            }
+            if (c.isSealed()) {
+                that.addError("class without parameter list may not be annotated sealed", 1800);
+            }
         }
     }
     

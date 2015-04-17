@@ -75,6 +75,19 @@ public class Class extends ClassOrInterface implements Functional {
             return null;
         }
     }
+    
+    @Override
+    public boolean isSealed() {
+        if (parameterList==null) {
+            Constructor defaultConstructor = 
+                    getDefaultConstructor();
+            return defaultConstructor!=null &&
+                    defaultConstructor.isSealed();
+        }
+        else {
+            return super.isSealed();
+        }
+    }
 
     public ParameterList getParameterList() {
         if (constructors) {
