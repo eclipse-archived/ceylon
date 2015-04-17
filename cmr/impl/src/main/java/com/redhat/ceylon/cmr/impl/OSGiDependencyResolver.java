@@ -98,6 +98,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
 
     private ModuleInfo parseRequireBundle(String requireBundle, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
+        requireBundle = requireBundle.replaceAll(";bundle-version=\"\\[([^,]+),[^,]+(\\]|\\))\"", ";bundle-version=$1");
         String[] bundles = requireBundle.split(",");
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
