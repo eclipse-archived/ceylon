@@ -1483,13 +1483,13 @@ TypeConstraints?
             
             <para>A class annotated <literal>final</literal> must be a concrete class.</para>
             
-            <para>A class annotated <literal>final</literal> may not have <literal>default</literal> 
-            members.</para>
+            <para>A class annotated <literal>final</literal> may not have 
+            <literal>default</literal> members.</para>
             
-            <para>If a concrete class annotated <literal>shared</literal> is a member of a 
-            containing class or interface, then the class may be annotated 
-            <literal>default</literal> and is called a <literal>default</literal> member
-            class.</para>
+            <para>If a concrete class annotated <literal>shared</literal> is a member 
+            of a containing class or interface, then the class may be annotated 
+            <literal>default</literal> and is called a <literal>default</literal> 
+            member class.</para>
             
             <para>A toplevel class may not be annotated <literal>formal</literal> or 
             <literal>default</literal>.</para>
@@ -1497,11 +1497,14 @@ TypeConstraints?
             <para>An un-<literal>shared</literal> class may not be annotated 
             <literal>formal</literal> or <literal>default</literal>.</para>
             
-            <para>A class annotated <literal>sealed</literal> may not be instantiated or
-            extended outside the module in which it is defined.</para>
+            <para>A class annotated <literal>sealed</literal> may not be instantiated 
+            or extended outside the module in which it is defined.</para>
             
-            <para>A member class annotated <literal>sealed formal</literal> must belong to
-            a <literal>sealed</literal> class or interface.</para>
+            <para>A class with no parameter list may not be annotated 
+            <literal>sealed</literal>.</para>
+            
+            <para>A member class annotated <literal>sealed formal</literal> must 
+            belong to a <literal>sealed</literal> class or interface.</para>
             
             <comment><para>Note: a <literal>formal</literal> member class would be a
             reasonable syntax for declaring virtual types. We think we don't need 
@@ -1515,8 +1518,8 @@ TypeConstraints?
         <section id="classrefinement">
             <title>Member class refinement</title>
             
-            <para>Member class refinement is a unique feature of Ceylon, akin to the
-            "factory method" pattern of many other languages.</para>
+            <para>Member class refinement is a unique feature of Ceylon, akin to 
+            the "factory method" pattern of many other languages.</para>
             
             <itemizedlist>
                 <listitem>
@@ -2849,6 +2852,9 @@ print(greeting);</programlisting>
         <para>The constructors of a class must occur after every other statement,
         declaration, and control structure in the initializer section of the class.</para>
         
+        <para>A constructor annotated <literal>sealed</literal> may not be invoked 
+        outside the module in which it is defined.</para>
+            
         <section id="callabletypeofaconstructor">
             <title>Callable type of a constructor</title>
             
