@@ -72,7 +72,7 @@ class Down0 extends Up0 {
 }
 
 class Up1 {
-    new () {}
+    shared new () {}
 }
 class Down1 extends Up1 {
     shared new () extends Up1() {}

@@ -260,6 +260,10 @@ class WithDupeConstructor {
     @error new Dupe(String string) {}
 }
 class WithDupeDefaultConstructor {
-    new () {}
+    shared new () {}
     @error new (String string) {}
+}
+
+class WithUnsharedDefaultConstructor {
+    @error new () {}
 }
