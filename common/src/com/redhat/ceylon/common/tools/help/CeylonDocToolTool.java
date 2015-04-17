@@ -232,7 +232,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     private void generateDoc(List<Doc> docs)
             throws IOException {
         for (Doc doc : docs) {
-            File out = new File(dir, filename(doc));
+            File out = new File(applyCwd(dir), filename(doc));
             try (FileWriter writer = new FileWriter(out)) {
                 Visitor visitor = format.newOutput(this, writer);
                 doc.accept(visitor);
@@ -251,7 +251,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     }
 
     private void generateIndexHtml(List<Doc> docs) throws IOException {
-        File indexFile = new File(dir, "index" + format.extension);
+        File indexFile = new File(applyCwd(dir), "index" + format.extension);
         ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlVisitor htmlOutput = (HtmlVisitor)Format.html.newOutput(this, writer);
@@ -328,10 +328,11 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     }
 
     private void prepareDirectory() {
-        if (!dir.exists()) {
-            dir.mkdirs();
+        File actualDir = applyCwd(dir);
+        if (!actualDir.exists()) {
+            actualDir.mkdirs();
         }
-        if (!dir.isDirectory()) {
+        if (!actualDir.isDirectory()) {
             throw new RuntimeException(dir + " is not a directory");
         }
     }
@@ -340,7 +341,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
         URL[] resources = format.supportingResources();
         if (resources != null) {
             for (URL resource : resources) {
-                copyResource(resource, dir);
+                copyResource(resource, applyCwd(dir));
             }
         }
     }
