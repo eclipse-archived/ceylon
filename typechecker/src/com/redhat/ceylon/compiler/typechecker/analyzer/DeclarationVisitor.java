@@ -209,30 +209,31 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 }
             }
             else {
-                Scope s = model.getContainer();
+                Scope scope = model.getContainer();
                 boolean isControl;
                 do {
                     Declaration member = 
-                            s.getDirectMember(name, null, false);
+                            scope.getDirectMember(name, null, false);
                     if (member!=null) {
                         if (member instanceof Method && 
                             model instanceof Method &&
-                            s instanceof ClassOrInterface) {
+                            scope instanceof ClassOrInterface) {
                             Method abstraction;
-                            if (!((Method) member).isAbstraction()) {
+                            Method method = (Method) member;
+                            if (!method.isAbstraction()) {
+                                method.setOverloaded(true);
                                 abstraction = new Method();
                                 abstraction.setAbstraction(true);
                                 abstraction.setType(new UnknownType(unit).getType());
                                 abstraction.setName(name);
                                 abstraction.setShared(true);
                                 abstraction.setActual(true);
-                                abstraction.setContainer(s);
-                                abstraction.setScope(s);
+                                abstraction.setContainer(scope);
+                                abstraction.setScope(scope);
                                 abstraction.setUnit(unit);
-                                ((Method) member).setOverloaded(true);
                                 abstraction.setOverloads(new ArrayList<Declaration>());
                                 abstraction.getOverloads().add(member);
-                                s.addMember(abstraction);
+                                scope.addMember(abstraction);
                             }
                             else {
                                 abstraction = (Method) member;
@@ -247,8 +248,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         unit.getDuplicateDeclarations()
                             .add(member);
                     }
-                    isControl = s instanceof ControlBlock;
-                    s = s.getContainer();
+                    isControl = scope instanceof ControlBlock;
+                    scope = scope.getContainer();
                 }
                 while (isControl);
             }
