@@ -341,6 +341,7 @@ public final class FloatArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Float>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
     public FloatArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class FloatArray implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class FloatArrayIterable 
     extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
         

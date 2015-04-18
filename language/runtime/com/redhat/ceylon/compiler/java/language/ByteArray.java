@@ -341,6 +341,7 @@ public final class ByteArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Byte>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Byte,ceylon.language::Null>")
     public ByteArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class ByteArray implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class ByteArrayIterable 
     extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
         

@@ -316,7 +316,7 @@ public final class ObjectArray<T> implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static final class ObjectArrayIterable<T> 
     extends AbstractArrayIterable<T, Object[]> {
 

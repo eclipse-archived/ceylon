@@ -341,6 +341,7 @@ public final class @Classname@ implements ReifiedType {
      * A Ceylon {@code Iterable<@BoxedType@>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<@BoxedTypeName@,ceylon.language::Null>")
     public @Classname@Iterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class @Classname@ implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class @Classname@Iterable 
     extends BaseIterable<@BoxedType@, ceylon.language.Null> {
         

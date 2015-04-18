@@ -341,6 +341,7 @@ public final class DoubleArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Float>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
     public DoubleArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class DoubleArray implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class DoubleArrayIterable 
     extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
         

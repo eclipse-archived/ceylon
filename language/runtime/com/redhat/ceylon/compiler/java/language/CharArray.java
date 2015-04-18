@@ -341,6 +341,7 @@ public final class CharArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Character>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     public CharArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class CharArray implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class CharArrayIterable 
     extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
         

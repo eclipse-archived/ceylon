@@ -341,6 +341,7 @@ public final class ShortArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Integer>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
     public ShortArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -351,7 +352,7 @@ public final class ShortArray implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class ShortArrayIterable 
     extends BaseIterable<ceylon.language.Integer, ceylon.language.Null> {
         
