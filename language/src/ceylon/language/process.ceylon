@@ -23,6 +23,10 @@ shared native object process {
      machine, if any."
     shared native String? propertyValue(String name);
 
+    "The value of the given environment variable defined 
+     for the current virtual machine process."
+    shared native String? environmentVariableValue(String name);
+    
     "Print a string to the standard output of the virtual
      machine process."
     shared native void write(String string);
