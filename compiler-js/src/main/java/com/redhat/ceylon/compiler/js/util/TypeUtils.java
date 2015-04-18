@@ -1174,17 +1174,27 @@ public class TypeUtils {
         return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
     }
     
-    public static boolean isForBackend(Tree.Declaration decl) {
-        return isForBackend(decl.getDeclarationModel());
+    public static boolean acceptNative(Tree.Declaration node) {
+        return acceptNative(node.getDeclarationModel());
     }
     
     /**
-     * Checks that the declaration is marked "native" and has an implementation
+     * Returns true if the declaration is:
+     *  - not native or
+     *  - native with a "js" argument
+     *  - native with no argument and all its overloads are also native without arguments
+     */
+    public static boolean acceptNative(Declaration decl) {
+        return !decl.isNative() || isForBackend(decl) || isNativeExternal(decl);
+    }
+    
+    /**
+     * Checks that the declaration is marked "native" and has a Ceylon implementation
      * meant for the JavaScript backend
      */
     public static boolean isForBackend(Declaration decl) {
         String backend = decl.getNative();
-        return backend == null || backend.equals(Backend.JavaScript.nativeAnnotation);
+        return backend != null && backend.equals(Backend.JavaScript.nativeAnnotation);
     }
     
     /**
