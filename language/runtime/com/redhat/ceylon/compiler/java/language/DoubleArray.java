@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
@@ -35,23 +36,23 @@ import ceylon.language.impl.BaseIterable;
  */
 /**
  * A type representing Java primitive arrays of type 
- * <code>double[]</code>.
+ * {@code double[]}.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 /*
  * THIS IS A GENERATED FILE - DO NOT EDIT 
  */
-// This type is never instantiated, it is completely erased to 
-// <code>double[]</code>.
-// 
-// The {@link #get(int)}, {@link #set(int,double)}, 
-// {@link #length size} methods and the constructor are also 
-// completely erased to Java array operators, or 
-// {@link Util#fillArray(double[],double)} 
-// in the case that an initial element is specified.
-// 
-// Only the value type static methods are really invoked.
+//This type is never actually instantiated, it is always
+//replaced by the Java object array type double[].
+//
+//The operations which call 
+//Util.makeJavaArrayWrapperException() are completely 
+//erased to Java array operators, or Util.fillArray() 
+//in the case of the constructor if the initial element is 
+//specified.
+//
+//Only the value type static methods are really invoked.
 @Ceylon(major = 8)
 @Class
 @ValueType
@@ -62,9 +63,18 @@ public final class DoubleArray implements ReifiedType {
     public final static TypeDescriptor $TypeDescriptor$ = 
     TypeDescriptor.klass(DoubleArray.class);
     
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to the given {@code element}.
+     * 
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     * @param element the initial value of the array elements
+     */
     public DoubleArray(
             /**
-             * The size of the array.
+             * The size of the new array.
              */
             @Name("size") int size, 
             /**
@@ -76,10 +86,18 @@ public final class DoubleArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to {@code null}.
+     * 
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     */
     @Ignore
     public DoubleArray(
             /**
-             * The size of the array.
+             * The size of the new array.
              */
             @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
@@ -92,7 +110,13 @@ public final class DoubleArray implements ReifiedType {
     }
 
     /**
-     * Get the element with the given {@link index}.
+     * Get the element with the given {@code index}.
+     * 
+     * @param index the index within this array
+     * @return the element of this array at the given 
+     *         {@code index}
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
      */
     public double get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
@@ -104,11 +128,27 @@ public final class DoubleArray implements ReifiedType {
     }
 
     /**
-     * Set the element with the given {@link index} to the
-     * given {@link element} value.
+     * Set the element with the given {@code index} to the
+     * given {@code element} value.
+     * 
+     * @param index the index within this array
+     * @param element the new element value
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
+     * @throws ArrayStoreException if the given element can
+     *         not be stored in the array. 
      */
-    public void set(@Name("index") int index, 
-            @Name("element") double element) {
+    public void set(
+            /**
+             * The index within the array.
+             */
+            @Name("index") 
+            int index, 
+            /**
+             * The new value of the array element.
+             */
+            @Name("element") 
+            double element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -125,12 +165,12 @@ public final class DoubleArray implements ReifiedType {
     public final int length = 0;
 
     /**
-     * A view of this array as a Ceylon 
-     * <code>Array&lt;java.lang::Double&gt;</code>
-     * where <code>java.lang::Double</code> is the Java 
-     * wrapper type corresponding to the primitive type 
-     * <code>double</code> of elements of this 
-     * Java array.
+     * A view of this array as a Ceylon
+     * {@code Array<java.lang::Double>}, where
+     * {@code java.lang::Double} is the Java wrapper type
+     * corresponding to the primitive type
+     * {@code double} of elements of this Java
+     * array.
      */
     @TypeInfo("ceylon.language::Array<java.lang::Double>")
     public ceylon.language.Array<java.lang.Double> getArray(){
@@ -144,11 +184,11 @@ public final class DoubleArray implements ReifiedType {
     }
 
     /**
-     * A view of this array as a Ceylon 
-     * <code>Array&lt;ceylon.language::Float&gt;</code>
-     * where <code>ceylon.language::Float</code>  
-     * is the Ceylon type corresponding to the 
-     * primitive type <code>double</code> 
+     * A view of this array as a Ceylon
+     * {@code Array<ceylon.language::Float>}
+     * where {@code ceylon.language::Float}
+     * is the Ceylon type corresponding to the
+     * primitive type {@code double}
      * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Float>")
@@ -166,6 +206,14 @@ public final class DoubleArray implements ReifiedType {
     /**
      * Efficiently copy a measure of this Java primitive 
      * array to the given Java primitive array.
+     * 
+     * @param destination the array into which to copy the
+     *        elements of this array
+     * @param sourcePosition the starting position within
+     *        this array
+     * @param destinationPosition the starting position 
+     *        within the {@code destination} array
+     * @param length the number of elements to copy
      */
     public void copyTo(@Name("destination") double[] destination, 
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
@@ -290,7 +338,7 @@ public final class DoubleArray implements ReifiedType {
     }
     
     /**
-     * A Ceylon <code>Iterable<code> containing the
+     * A Ceylon {@code Iterable<ceylon.language.Float>} containing the 
      * elements of this primitive Java array.
      */
     public DoubleArrayIterable getIterable() {

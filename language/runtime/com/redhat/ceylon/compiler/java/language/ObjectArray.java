@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Array;
+import ceylon.language.AssertionError;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,30 +19,43 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
  * A type representing Java object arrays of type 
- * <code>T[]</code>.
+ * {@code T[]}, where {@link T} may not be a union, 
+ * intersection, or bottom type.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-// This type is never instantiated, it is completely erased 
-// to <code>T[]</code>.
+// This type is never actually instantiated, it is always
+// replaced by the Java object array type T[].
 // 
-// The {@link #get(int)}, {@link #set(int,T)}, {@link #length size} 
-// methods and the constructor are also completely erased to 
-// Java array operators, or {@link Util#fillArray(T[],T)} in 
-// the case of the constructor if the initial element is 
+// The operations which call 
+// Util.makeJavaArrayWrapperException() are completely 
+// erased to Java array operators, or Util.fillArray() 
+// in the case of the constructor if the initial element is 
 // specified.
 // 
 // Only the value type static methods are really invoked.
 @Ceylon(major = 8)
 @Class
 @ValueType
-@TypeParameters(@TypeParameter(value="T", variance=Variance.OUT,
+@TypeParameters(@TypeParameter(value="T", 
+                variance=Variance.OUT,
                 satisfies="ceylon.language::Object"))
 public final class ObjectArray<T> implements ReifiedType {
     
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to the given {@code element}.
+     * 
+     * @throws AssertionError if {@link T} is a union, 
+     *         intersection, or bottom type
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     * @param element the initial value of the array elements
+     */
     public ObjectArray(@Ignore TypeDescriptor $reifiedT, 
             /**
-             * The size of the array.
+             * The size of the new array.
              */
     		@Name("size") int size, 
             /**
@@ -53,10 +67,20 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to {@code null}.
+     * 
+     * @throws AssertionError if {@link T} is a union, 
+     *         intersection, or bottom type
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     */
     @Ignore
     public ObjectArray(
             /**
-             * The size of the array.
+             * The size of the new array.
              */
             @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
@@ -69,7 +93,13 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     /**
-     * Get the element with the given {@link index}.
+     * Get the element with the given {@code index}.
+     * 
+     * @param index the index within this array
+     * @return the element of this array at the given 
+     *         {@code index}
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
      */
     @TypeInfo(value = "T", uncheckedNull = true) //for consistency with other Java methods
     public T get(@Name("index") int index) {
@@ -82,14 +112,25 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     /**
-     * Set the element with the given {@link index} to the
-     * given {@link element} value.
+     * Set the element with the given {@code index} to the
+     * given {@code element} value.
+     * 
+     * @param index the index within this array
+     * @param element the new element value
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
      * @throws ArrayStoreException if the given element can
      *         not be stored in the array. 
      */
     public void set(
+            /**
+             * The index within the array.
+             */
             @Name("index")
             int index,
+            /**
+             * The new value of the array element.
+             */
             @Name("element")
             @TypeInfo("ceylon.language::Anything") 
             java.lang.Object element) {
@@ -111,7 +152,7 @@ public final class ObjectArray<T> implements ReifiedType {
     public final int length = 0;
     
     /**
-     * A view of this array as a Ceylon <code>Array&lt;T?&gt;</code>.
+     * A view of this array as a Ceylon {@code Array<T>}.
      */
     @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
     public ceylon.language.Array<T> getArray(){
@@ -126,6 +167,14 @@ public final class ObjectArray<T> implements ReifiedType {
     /**
      * Efficiently copy a measure of this Java object array 
      * to the given Java object array.
+     * 
+     * @param destination the array into which to copy the
+     *        elements of this array
+     * @param sourcePosition the starting position within
+     *        this array
+     * @param destinationPosition the starting position 
+     *        within the {@code destination} array
+     * @param length the number of elements to copy
      * @throws ArrayStoreException if an element of this array
      *         can not be stored in the given array 
      */
@@ -253,8 +302,8 @@ public final class ObjectArray<T> implements ReifiedType {
     }
     
     /**
-     * A Ceylon <code>Iterable&lt;T?&gt;<code> containing 
-     * the elements of this Java object array.
+     * A Ceylon {@code Iterable<T?>} containing the elements 
+     * of this Java object array.
      */
     @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
     public ObjectArrayIterable<T> getIterable() {
