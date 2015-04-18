@@ -109,7 +109,7 @@ public class BmeGenerator {
         String plainName = null;
         if (decl == null && gen.isInDynamicBlock()) {
             plainName = expr.getIdentifier().getText();
-        } else if (GenerateJsVisitor.isNative(decl)) {
+        } else if (GenerateJsVisitor.isNativeJs(decl)) {
             // direct access to a native element
             plainName = decl.getName();
         }

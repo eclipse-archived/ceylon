@@ -1526,15 +1526,15 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
-    static boolean isNative(final Tree.Term t) {
+    static boolean isNativeJs(final Tree.Term t) {
         if (t instanceof MemberOrTypeExpression) {
-            return isNative(((MemberOrTypeExpression)t).getDeclaration());
+            return isNativeJs(((MemberOrTypeExpression)t).getDeclaration());
         }
         return false;
     }
 
     /** Returns true if the declaration is annotated "nativejs" */
-    static boolean isNative(Declaration d) {
+    static boolean isNativeJs(Declaration d) {
         return hasAnnotationByName(getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
     }
 
@@ -1750,7 +1750,7 @@ public class GenerateJsVisitor extends Visitor
         if (decl == null && dynblock > 0) {
             plainName = expr.getIdentifier().getText();
         }
-        else if (isNative(decl)) {
+        else if (isNativeJs(decl)) {
             // direct access to a native element
             plainName = decl.getName();
         }
@@ -1834,17 +1834,17 @@ public class GenerateJsVisitor extends Visitor
 
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, final Tree.Term toTerm) {
-        return boxUnboxStart(fromTerm, isNative(toTerm));
+        return boxUnboxStart(fromTerm, isNativeJs(toTerm));
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
-        return boxUnboxStart(fromTerm, isNative(toDecl));
+        return boxUnboxStart(fromTerm, isNativeJs(toDecl));
     }
 
     int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
         // Box the value
-        final boolean fromNative = isNative(fromTerm);
+        final boolean fromNative = isNativeJs(fromTerm);
         final ProducedType fromType = fromTerm.getTypeModel();
         final String fromTypeName = Util.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
@@ -2477,7 +2477,7 @@ public class GenerateJsVisitor extends Visitor
 
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-            if (isNative(lhsQME)) {
+            if (isNativeJs(lhsQME)) {
                 // ($1.foo = Box($1.foo).operator($2))
                 final String tmp = names.createTempVariable();
                 final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?
