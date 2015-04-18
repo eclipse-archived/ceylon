@@ -1641,13 +1641,13 @@ public final class Array<Element>
     
     @Ignore
     public long copyTo$sourcePosition(Array<Element> destination){
-        return 0;
+        return 0L;
     }
 
     @Ignore
     public long copyTo$destinationPosition(Array<Element> destination, 
             long sourcePosition){
-        return 0;
+        return 0L;
     }
 
     @Ignore
@@ -1659,17 +1659,17 @@ public final class Array<Element>
 
     @Ignore
     public void copyTo(Array<Element> destination){
-        copyTo(destination, 0, 0);
+        copyTo(destination, 0L, 0L);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, long sourcePosition){
-        copyTo(destination, sourcePosition, 0);
+    public void copyTo(Array<Element> destination, long sourcePosition) {
+        copyTo(destination, sourcePosition, 0L);
     }
 
     @Ignore
     public void copyTo(Array<Element> destination, 
-            long sourcePosition, long destinationPosition){
+            long sourcePosition, long destinationPosition) {
         copyTo(destination, sourcePosition, destinationPosition, 
                 copyTo$length(destination, sourcePosition, destinationPosition));
     }
@@ -1677,13 +1677,34 @@ public final class Array<Element>
     public void copyTo(@Name("destination") Array<Element> destination, 
                        @Name("sourcePosition") @Defaulted long sourcePosition, 
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
-                       @Name("length") @Defaulted long length){
+                       @Name("length") @Defaulted long length) {
         if (length>0) {
             arraycopy(array, Util.toInt(sourcePosition), destination.array, 
                     Util.toInt(destinationPosition), Util.toInt(length));
         }
     }
     
+    /** Provided for binary compatibility with Ceylon 1.1 */
+    @Ignore @Deprecated
+    public void copyTo(Array<Element> destination, int sourcePosition) {
+        copyTo(destination, (long)sourcePosition, (long)0);
+    }
+
+    /** Provided for binary compatibility with Ceylon 1.1 */
+    @Ignore @Deprecated
+    public void copyTo(Array<Element> destination, 
+            int sourcePosition, int destinationPosition) {
+        copyTo(destination, (long)sourcePosition, (long)destinationPosition);
+    }
+    
+    /** Provided for binary compatibility with Ceylon 1.1 */
+    @Ignore @Deprecated
+    public void copyTo(Array<Element> destination, 
+            int sourcePosition, int destinationPosition, int length) {
+        copyTo(destination, (long)sourcePosition, (long)destinationPosition, 
+                (long)length);
+    }
+
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
