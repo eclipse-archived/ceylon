@@ -304,25 +304,25 @@ public class JsCompiler {
                 }
             }
 
-            if (srcFiles == null && !phasedUnits.isEmpty()) {
-                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
-                for (PhasedUnit pu: phasedUnits) {
-                    pu.getCompilationUnit().visit(mnv);
-                }
-            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
-                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
-                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
-                for (File path : srcFiles) {
-                    if (!path.getPath().endsWith(ArtifactContext.JS)) {
-                        for (PhasedUnit pu : units) {
-                            File unitFile = getFullPath(pu);
-                            if (FileUtil.sameFile(path, unitFile)) {
-                                pu.getCompilationUnit().visit(mnv);
-                            }
-                        }
-                    }
-                }
-            }
+//            if (srcFiles == null && !phasedUnits.isEmpty()) {
+//                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
+//                for (PhasedUnit pu: phasedUnits) {
+//                    pu.getCompilationUnit().visit(mnv);
+//                }
+//            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
+//                MissingNativeVisitor mnv = new MissingNativeVisitor(Backend.JavaScript);
+//                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
+//                for (File path : srcFiles) {
+//                    if (!path.getPath().endsWith(ArtifactContext.JS)) {
+//                        for (PhasedUnit pu : units) {
+//                            File unitFile = getFullPath(pu);
+//                            if (FileUtil.sameFile(path, unitFile)) {
+//                                pu.getCompilationUnit().visit(mnv);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             //Then generate the JS code
             if (srcFiles == null && !phasedUnits.isEmpty()) {
