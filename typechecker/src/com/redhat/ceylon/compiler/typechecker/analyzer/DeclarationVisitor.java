@@ -124,7 +124,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         visitElement(that, model);
         if (setModelName(that, model, that.getIdentifier())) {
             if (checkDupe) {
-                checkForDuplicateDeclaration(that, model);
+                checkForDuplicateDeclaration(that, model, scope);
             }
         }
         //that.setDeclarationModel(model);
@@ -174,7 +174,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
     
     private static void checkForDuplicateDeclaration(Tree.Declaration that, 
-            final Declaration model) {
+            final Declaration model, Scope scope) {
         String name = model.getName();
         Unit unit = model.getUnit();
         if (name!=null) {
@@ -209,7 +209,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 }
             }
             else {
-                Scope scope = model.getContainer();
+                // this isn't the correct scope for declaration
+                // which follow an assertion, since it misses
+                // condition scopes, so use the argument scope
+//                Scope scope = model.getContainer();
                 boolean isControl;
                 do {
                     Declaration member = 
