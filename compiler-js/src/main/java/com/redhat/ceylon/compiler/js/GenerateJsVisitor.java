@@ -486,6 +486,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ClassDeclaration that) {
+        if (!TypeUtils.acceptNative(that)) return;
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
         classDeclaration(that);
     }
@@ -561,9 +562,9 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ClassDefinition that) {
-        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) && TypeUtils.isForBackend(that)) {
-            TypeGenerator.classDefinition(that, this);
-        }
+        if (!TypeUtils.acceptNative(that)) return;
+        if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
+        TypeGenerator.classDefinition(that, this);
     }
 
     private void interfaceDeclaration(final Tree.InterfaceDeclaration that) {
@@ -896,7 +897,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.MethodDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         FunctionHelper.methodDeclaration(null, that, this);
     }
 
@@ -981,7 +982,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that) || !TypeUtils.isForBackend(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         final Method d = that.getDeclarationModel();
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || TypeUtils.isNativeExternal(d))) {
             comment(that);
