@@ -155,27 +155,27 @@ public class MissingNativeVisitor extends Visitor {
         
         Functional f = (Functional)model;
         if (f.getOverloads() !=  null) {
-            Declaration template = null;
+            Declaration abstraction = null;
             if ("".equals(model.getNative())) {
-                template = model;
+                abstraction = model;
             } else {
                 for (Declaration d : f.getOverloads()) {
                     if ("".equals(d.getNative())) {
-                        template = d;
+                        abstraction = d;
                         break;
                     }
                 }
             }
-            if (template == null) {
-                // Template-less native implementation, check it's not shared
+            if (abstraction == null) {
+                // Abstraction-less native implementation, check it's not shared
                 if (model.isShared()) {
-                    node.addError("native implementation should have a template or not be shared");
+                    node.addError("native implementation should have an abstraction or not be shared");
                 }
             } else {
-                // Native implementation with template, check it's shared
+                // Native implementation with abstraction, check it's shared
                 if (!model.isShared()) {
-                    if (model == template) {
-                        node.addError("native template should be shared");
+                    if (model == abstraction) {
+                        node.addError("native abstraction should be shared");
                     } else {
                         node.addError("native implementation should be shared");
                     }
