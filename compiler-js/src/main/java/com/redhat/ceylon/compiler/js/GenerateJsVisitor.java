@@ -901,7 +901,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     boolean shouldStitch(Declaration d) {
-        return JsCompiler.isCompilingLanguageModule() && d.isNative();
+        return JsCompiler.isCompilingLanguageModule() && TypeUtils.isNativeExternal(d);
     }
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
@@ -983,7 +983,7 @@ public class GenerateJsVisitor extends Visitor
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that) || !TypeUtils.isForBackend(that))return;
         final Method d = that.getDeclarationModel();
-        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || isNative(d))) {
+        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || TypeUtils.isNativeExternal(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
             FunctionHelper.methodDefinition(that, this, true);

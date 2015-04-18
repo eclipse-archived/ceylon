@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -1187,11 +1188,27 @@ public class TypeUtils {
     }
     
     /**
-     * Checks that the declaration is marked "native" but has no implementation
+     * Checks that the given declaration is defined in an external JavaScript file.
+     * It does this by assuming that an external implementation will have a declaration
+     * in Ceylon code with a "native" annotation that has NO arguments. It will
+     * also have no associated "overloads" (there are no other declaration found
+     * in the Ceylon code with the same name)
      */
-    public static boolean isNativeDeclarationOnly(Declaration decl) {
-        String backend = decl.getNative();
-        return backend == null || backend.isEmpty();
+    public static boolean isNativeExternal(Declaration decl) {
+        boolean isNative = decl.isNative() && decl.getNative().isEmpty();
+        if (isNative) {
+            if (decl instanceof Functional) {
+                Functional f = (Functional)decl;
+                if (f.getOverloads() != null) {
+                    for (Declaration d : f.getOverloads()) {
+                        if (!d.getNative().isEmpty()) {
+                            isNative = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return isNative;
     }
-
 }

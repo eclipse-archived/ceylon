@@ -105,7 +105,7 @@ public class TypeGenerator {
         gen.out("if(", typename, ".$$===undefined)");
         gen.beginBlock();
         boolean genIniter = true;
-        if (d.isNative()) {
+        if (TypeUtils.isNativeExternal(d)) {
             //Allow native types to have their own initialization code
             genIniter = !gen.stitchInitializer(d);
         }
@@ -366,11 +366,11 @@ public class TypeGenerator {
                 }
             }
         }
-        if (d.isNative()) {
+        if (TypeUtils.isNativeExternal(d)) {
             gen.stitchConstructorHelper(that, "_cons_before");
         }
         gen.visitStatements(classBody);
-        if (d.isNative()) {
+        if (TypeUtils.isNativeExternal(d)) {
             gen.stitchConstructorHelper(that, "_cons_after");
         }
         if (constructors.isEmpty()) {
@@ -731,7 +731,7 @@ public class TypeGenerator {
         gen.comment(that);
         Constructor d = that.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
-        if (!d.isNative() || !gen.stitchNative(d, that)) {
+        if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
             gen.out("function ", fullName);
             final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
             final String me = gen.getNames().self(container);
