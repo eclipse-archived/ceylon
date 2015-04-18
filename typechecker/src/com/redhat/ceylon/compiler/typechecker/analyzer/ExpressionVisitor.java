@@ -7041,10 +7041,15 @@ public class ExpressionVisitor extends Visitor {
             boolean metamodel) {
         if (dec==null) return false;
         if (isGeneric(dec)) {
-            List<TypeParameter> params = ((Generic) dec).getTypeParameters();
+            List<TypeParameter> params = 
+                    ((Generic) dec).getTypeParameters();
             int min = 0;
             for (TypeParameter tp: params) { 
                 if (!tp.isDefaulted()) min++;
+            }
+            if (receiver==null && 
+                    dec.isClassOrInterfaceMember()) {
+                receiver = parent.getScope().getDeclaringType(dec);
             }
             int max = params.size();
             int args = typeArguments.size();
@@ -7053,13 +7058,15 @@ public class ExpressionVisitor extends Visitor {
                     TypeParameter param = params.get(i);
                     ProducedType argType = typeArguments.get(i);
                     //Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
-                    boolean argTypeMeaningful = argType!=null && 
+                    boolean argTypeMeaningful = 
+                            argType!=null && 
                             !(argType.getDeclaration() instanceof UnknownType);
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         //sts = sts.substitute(self);
                         ProducedType sts = st.getProducedType(receiver, dec, typeArguments);
                         if (argType!=null) {
-                            if (!isCondition && !argType.isSubtypeOf(sts)) {
+                            if (!isCondition && 
+                                    !argType.isSubtypeOf(sts)) {
                                 if (argTypeMeaningful) {
                                     if (tal instanceof Tree.InferredTypeArguments) {
                                         parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
