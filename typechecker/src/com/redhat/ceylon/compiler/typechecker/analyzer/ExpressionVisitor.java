@@ -84,6 +84,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -3711,14 +3712,17 @@ public class ExpressionVisitor extends Visitor {
         }
         else /*if (!dec.isOverloaded())*/ {
             ParameterList pl = pls.get(0);            
-            Tree.PositionalArgumentList args = that.getPositionalArgumentList();
+            Tree.PositionalArgumentList args = 
+                    that.getPositionalArgumentList();
             if (args!=null) {
                 checkPositionalArguments(pl, prf, args, that);
             }
-            Tree.NamedArgumentList namedArgs = that.getNamedArgumentList();
+            Tree.NamedArgumentList namedArgs = 
+                    that.getNamedArgumentList();
             if (namedArgs!=null) {
                 if (pl.isNamedParametersSupported()) {
-                    namedArgs.getNamedArgumentList().setParameterList(pl);
+                    namedArgs.getNamedArgumentList()
+                            .setParameterList(pl);
                     checkNamedArguments(pl, prf, namedArgs);
                 }
             }
@@ -3733,38 +3737,51 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
-    private void checkNamedArguments(ParameterList pl, ProducedReference pr, 
-            Tree.NamedArgumentList nal) {
-        List<Tree.NamedArgument> na = nal.getNamedArguments();        
-        Set<Parameter> foundParameters = new HashSet<Parameter>();
+    private void checkNamedArguments(ParameterList pl, 
+            ProducedReference pr, Tree.NamedArgumentList nal) {
+        Set<Parameter> foundParameters = 
+                new HashSet<Parameter>();
         
+        List<Tree.NamedArgument> na = 
+                nal.getNamedArguments();        
         for (Tree.NamedArgument a: na) {
-            checkNamedArg(a, pl, pr, foundParameters);
+            checkNamedArg(a, pl, pr, 
+                    foundParameters);
         }
         
-        Tree.SequencedArgument sa = nal.getSequencedArgument();
+        Tree.SequencedArgument sa = 
+                nal.getSequencedArgument();
         if (sa!=null) {
-            checkSequencedArg(sa, pl, pr, foundParameters);        
+            checkSequencedArg(sa, pl, pr, 
+                    foundParameters);        
         }
         else {
-            Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
-            if (sp!=null && !unit.isNonemptyIterableType(sp.getType())) {
+            Parameter sp = 
+                    getUnspecifiedParameter(pr, pl, 
+                            foundParameters);
+            if (sp!=null && 
+                    !unit.isNonemptyIterableType(sp.getType())) {
                 foundParameters.add(sp);
             }
         }
             
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
-                    !p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
+                    !p.isDefaulted() && 
+                    (!p.isSequenced() || p.isAtLeastOne())) {
                 nal.addError("missing named argument to parameter '" + 
-                        p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                        p.getName() + "' of '" + 
+                        pr.getDeclaration().getName(unit) + "'");
             }
         }
     }
     
-    private void checkSequencedArg(Tree.SequencedArgument sa, ParameterList pl,
-            ProducedReference pr, Set<Parameter> foundParameters) {
-        Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
+    private void checkSequencedArg(Tree.SequencedArgument sa, 
+            ParameterList pl, ProducedReference pr, 
+            Set<Parameter> foundParameters) {
+        Parameter sp = 
+                getUnspecifiedParameter(pr, pl, 
+                        foundParameters);
         if (sp==null) {
             sa.addError("all iterable parameters specified by named argument list: '" + 
                     pr.getDeclaration().getName(unit) +
@@ -3773,20 +3790,26 @@ public class ExpressionVisitor extends Visitor {
         else {
             if (!foundParameters.add(sp)) {
                 sa.addError("duplicate argument for parameter: '" +
-                        sp.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                        sp.getName() + "' of '" + 
+                        pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && isTypeUnknown(sp.getType())) {
+            else if (!dynamic && 
+                    isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
-                        sp.getName() + "' of '" + sp.getDeclaration().getName(unit) + "'" +
+                        sp.getName() + "' of '" + 
+                        sp.getDeclaration().getName(unit) + "'" +
                         getTypeUnknownError(sp.getType()));
             }
             checkSequencedArgument(sa, pr, sp);
         }
     }
 
-    private void checkNamedArg(Tree.NamedArgument a, ParameterList pl,
-            ProducedReference pr, Set<Parameter> foundParameters) {
-        Parameter p = getMatchingParameter(pl, a, foundParameters);
+    private void checkNamedArg(Tree.NamedArgument a, 
+            ParameterList pl, ProducedReference pr, 
+            Set<Parameter> foundParameters) {
+        Parameter p = 
+                getMatchingParameter(pl, a, 
+                        foundParameters);
         if (p==null) {
             if (a.getIdentifier()==null) {
                 a.addError("all parameters specified by named argument list: '" + 
@@ -3796,24 +3819,29 @@ public class ExpressionVisitor extends Visitor {
             else {
                 a.addError("no matching parameter for named argument '" + 
                         name(a.getIdentifier()) + "' declared by '" + 
-                        pr.getDeclaration().getName(unit) + "'", 101);
+                        pr.getDeclaration().getName(unit) + "'", 
+                        101);
             }
         }
         else {
             if (!foundParameters.add(p)) {
                 a.addError("duplicate argument for parameter: '" +
-                        p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                        p.getName() + "' of '" + 
+                        pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && isTypeUnknown(p.getType())) {
+            else if (!dynamic && 
+                    isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: '" + 
-                        p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'" +
+                        p.getName() + "' of '" + 
+                        p.getDeclaration().getName(unit) + "'" +
                         getTypeUnknownError(p.getType()));
             }
             checkNamedArgument(a, pr, p);
             //hack in an identifier node just for the backend:
             //TODO: get rid of this nasty thing
             if (a.getIdentifier()==null) {
-                Tree.Identifier node = new Tree.Identifier(null);
+                Tree.Identifier node = 
+                        new Tree.Identifier(null);
                 node.setScope(a.getScope());
                 node.setUnit(a.getUnit());
                 node.setText(p.getName());
@@ -3822,50 +3850,64 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
-            Parameter p) {
+    private void checkNamedArgument(Tree.NamedArgument a, 
+            ProducedReference pr, Parameter p) {
         a.setParameter(p);
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
-            Tree.SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
-            Tree.Expression e = sa.getSpecifierExpression().getExpression();
+            Tree.SpecifiedArgument sa = 
+                    (Tree.SpecifiedArgument) a;
+            Tree.Expression e = 
+                    sa.getSpecifierExpression()
+                        .getExpression();
             if (e!=null) {
                 argType = e.getTypeModel();
             }
         }
         else if (a instanceof Tree.TypedArgument) {
-            Tree.TypedArgument ta = (Tree.TypedArgument) a;
+            Tree.TypedArgument ta = 
+                    (Tree.TypedArgument) a;
             argType = ta.getDeclarationModel()
             		.getTypedReference() //argument can't have type parameters
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
-            if (!dynamic && isTypeUnknown(argType)) {
-                a.addError("could not determine type of named argument: '" + p.getName() + "'");
+            if (!dynamic && 
+                    isTypeUnknown(argType)) {
+                a.addError("could not determine type of named argument: '" + 
+                        p.getName() + "'");
             }
         }
-        ProducedType pt = pr.getTypedParameter(p).getFullType();
+        ProducedType pt = 
+                pr.getTypedParameter(p).getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
-        if (!isTypeUnknown(argType) && !isTypeUnknown(pt)) {
+        if (!isTypeUnknown(argType) && 
+                !isTypeUnknown(pt)) {
             Node node;
             if (a instanceof Tree.SpecifiedArgument) {
-                node = ((Tree.SpecifiedArgument) a).getSpecifierExpression();
+                Tree.SpecifiedArgument sa = 
+                        (Tree.SpecifiedArgument) a;
+                node = sa.getSpecifierExpression();
             }
             else {
                 node = a;
             }
             checkAssignable(argType, pt, node,
                     "named argument must be assignable to parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
+                            p.getName() + "' of '" + 
+                            pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
                                 " in '" + pr.getQualifyingType().getProducedTypeName(unit) + "'"), 
                             2100);
         }
     }
 
-    private void checkArgumentToVoidParameter(Parameter p, Tree.TypedArgument ta) {
+    private void checkArgumentToVoidParameter(Parameter p, 
+            Tree.TypedArgument ta) {
         if (ta instanceof Tree.MethodArgument) {
-            Tree.MethodArgument ma = (Tree.MethodArgument) ta;
-            Tree.SpecifierExpression se = ma.getSpecifierExpression();
+            Tree.MethodArgument ma = 
+                    (Tree.MethodArgument) ta;
+            Tree.SpecifierExpression se = 
+                    ma.getSpecifierExpression();
             if (se!=null && se.getExpression()!=null) {
                 Tree.Type t = ta.getType();
                 // if the argument is explicitly declared 
@@ -3885,23 +3927,27 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSequencedArgument(Tree.SequencedArgument sa, ProducedReference pr, 
-            Parameter p) {
+    private void checkSequencedArgument(Tree.SequencedArgument sa, 
+            ProducedReference pr, Parameter p) {
         sa.setParameter(p);
-        List<Tree.PositionalArgument> args = sa.getPositionalArguments();
-        ProducedType paramType = pr.getTypedParameter(p).getFullType();
+        List<Tree.PositionalArgument> args = 
+                sa.getPositionalArguments();
+        ProducedType paramType = 
+                pr.getTypedParameter(p).getFullType();
         ProducedType att = getTupleType(args, unit, false)
                 .getSupertype(unit.getIterableDeclaration());
         if (!isTypeUnknown(att) && !isTypeUnknown(paramType)) {
             checkAssignable(att, paramType, sa, 
                     "iterable arguments must be assignable to iterable parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
+                            p.getName() + "' of '" + 
+                            pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
                                 " in '" + pr.getQualifyingType().getProducedTypeName(unit) + "'"));
         }
     }
     
-    private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na, 
+    private Parameter getMatchingParameter(ParameterList pl, 
+            Tree.NamedArgument na, 
             Set<Parameter> foundParameters) {
         Tree.Identifier id = na.getIdentifier();
         if (id==null) {
@@ -3940,24 +3986,32 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
     
-    private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
-            Tree.PositionalArgumentList pal, Tree.InvocationExpression that) {
-        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+    private void checkPositionalArguments(ParameterList pl, 
+            ProducedReference pr, Tree.PositionalArgumentList pal, 
+            Tree.InvocationExpression that) {
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
-                if (!p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
-                    Node n = that instanceof Tree.Annotation && args.isEmpty() ? that : pal;
+                if (!p.isDefaulted() && 
+                        (!p.isSequenced() || p.isAtLeastOne())) {
+                    Node n = that instanceof Tree.Annotation && 
+                            args.isEmpty() ? 
+                                    that : pal;
                     n.addError("missing argument to required parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                            p.getName() + "' of '" + 
+                            pr.getDeclaration().getName(unit) + "'");
                 }
             } 
             else {
                 Tree.PositionalArgument a = args.get(i);
-                if (!dynamic && isTypeUnknown(p.getType())) {
+                if (!dynamic && 
+                        isTypeUnknown(p.getType())) {
                     a.addError("parameter type could not be determined: '" + 
-                            p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'" +
+                            p.getName() + "' of '" + 
+                            p.getDeclaration().getName(unit) + "'" +
                             getTypeUnknownError(p.getType()));
                 }
                 if (a instanceof Tree.SpreadArgument) {
@@ -3969,11 +4023,13 @@ public class ExpressionVisitor extends Visitor {
                 else if (a instanceof Tree.Comprehension) {
                     if (p.isSequenced()) {
                         checkComprehensionPositionalArgument(p, pr, 
-                                (Tree.Comprehension) a, p.isAtLeastOne());
+                                (Tree.Comprehension) a, 
+                                p.isAtLeastOne());
                     }
                     else {
                         a.addError("not a variadic parameter: parameter '" + 
-                                p.getName() + "' of '" + pr.getDeclaration().getName() + "'");
+                                p.getName() + "' of '" + 
+                                pr.getDeclaration().getName() + "'");
                     }
                     break;
                 }
@@ -3984,7 +4040,8 @@ public class ExpressionVisitor extends Visitor {
                         return; //Note: early return!
                     }
                     else {
-                        checkPositionalArgument(p, pr, (Tree.ListedArgument) a);
+                        checkPositionalArgument(p, pr, 
+                                (Tree.ListedArgument) a);
                     }
                 }
             }
@@ -4005,9 +4062,9 @@ public class ExpressionVisitor extends Visitor {
     
     }
 
-    private void checkSpreadArgument(ProducedReference pr, Parameter p,
-            Tree.PositionalArgument a, Tree.SpreadArgument arg,
-            List<Parameter> psl) {
+    private void checkSpreadArgument(ProducedReference pr, 
+            Parameter p, Tree.PositionalArgument a, 
+            Tree.SpreadArgument arg, List<Parameter> psl) {
         a.setParameter(p);
         ProducedType rat = arg.getTypeModel();
         if (!isTypeUnknown(rat)) {
@@ -4018,10 +4075,13 @@ public class ExpressionVisitor extends Visitor {
                         " is not a subtype of Iterable");*/
             }
             else {
-                ProducedType at = spreadType(rat, unit, true);
+                ProducedType at = 
+                        spreadType(rat, unit, true);
                 //checkSpreadArgumentSequential(arg, at);
-                ProducedType ptt = unit.getParameterTypesAsTupleType(psl, pr);
-                if (!isTypeUnknown(at) && !isTypeUnknown(ptt)) {
+                ProducedType ptt = 
+                        unit.getParameterTypesAsTupleType(psl, pr);
+                if (!isTypeUnknown(at) && 
+                        !isTypeUnknown(ptt)) {
                     checkAssignable(at, ptt, arg, 
                             "spread argument not assignable to parameter types");
                 }
@@ -4033,8 +4093,10 @@ public class ExpressionVisitor extends Visitor {
             ProducedType paramTypesAsTuple, List<ProducedType> paramTypes, 
             boolean sequenced, boolean atLeastOne, int firstDefaulted) {
         
-        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
         
         for (int i=0; i<paramTypes.size(); i++) {
             if (isTypeUnknown(paramTypes.get(i))) {
@@ -4046,7 +4108,8 @@ public class ExpressionVisitor extends Visitor {
         for (int i=0; i<paramTypes.size(); i++) {
             if (i>=args.size()) {
                 if (i<firstDefaulted && 
-                        (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
+                        (!sequenced || atLeastOne || 
+                                i!=paramTypes.size()-1)) {
                     pal.addError("missing argument for required parameter " + i);
                 }
             }
@@ -4054,14 +4117,20 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument arg = args.get(i);
                 ProducedType at = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
-                    checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
-                            getTailType(paramTypesAsTuple, i), at);
+                    Tree.SpreadArgument sa = 
+                            (Tree.SpreadArgument) arg;
+                    ProducedType tt = 
+                            getTailType(paramTypesAsTuple, i);
+                    checkSpreadIndirectArgument(sa, tt, at);
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
                     ProducedType paramType = paramTypes.get(i);
-                    if (sequenced && i==paramTypes.size()-1) {
-                        checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
+                    if (sequenced && 
+                            i==paramTypes.size()-1) {
+                        Tree.Comprehension c = 
+                                (Tree.Comprehension) arg;
+                        checkComprehensionIndirectArgument(c, 
                                 paramType, atLeastOne);
                     }
                     else {
@@ -4072,12 +4141,15 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     ProducedType paramType = paramTypes.get(i);
                     if (sequenced && i==paramTypes.size()-1) {
-                        checkSequencedIndirectArgument(args.subList(i, args.size()), 
+                        List<PositionalArgument> sublist = 
+                                args.subList(i, args.size());
+                        checkSequencedIndirectArgument(sublist, 
                                 paramType);
                         return; //Note: early return!
                     }
                     else if (at!=null && paramType!=null && 
-                            !isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+                            !isTypeUnknown(at) && 
+                            !isTypeUnknown(paramType)) {
                         checkAssignable(at, paramType, arg, 
                                 "argument must be assignable to parameter type");
                     }
@@ -4103,8 +4175,10 @@ public class ExpressionVisitor extends Visitor {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
             if (unit.isIterableType(at)) {
-                ProducedType sat = spreadType(at, unit, true);
-                if (!isTypeUnknown(sat) && !isTypeUnknown(tailType)) {
+                ProducedType sat = 
+                        spreadType(at, unit, true);
+                if (!isTypeUnknown(sat) && 
+                        !isTypeUnknown(tailType)) {
                     checkAssignable(sat, tailType, sa, 
                             "spread argument not assignable to parameter types");
                 }
@@ -4118,14 +4192,16 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args,
+    private void checkSequencedIndirectArgument(
+            List<Tree.PositionalArgument> args,
             ProducedType paramType) {
         ProducedType set = paramType==null ? 
                 null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             ProducedType at = a.getTypeModel();
-            if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+            if (!isTypeUnknown(at) && 
+                    !isTypeUnknown(paramType)) {
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     checkAssignable(at, paramType, a, 
@@ -4138,7 +4214,9 @@ public class ExpressionVisitor extends Visitor {
                                     2101);
                     //if we already have an arg to a nonempty variadic parameter,
                     //we can treat it like a possibly-empty variadic now
-                    paramType = paramType.getSupertype(unit.getSequentialDeclaration());
+                    Interface sd = 
+                            unit.getSequentialDeclaration();
+                    paramType = paramType.getSupertype(sd);
                 }
             }
         }
@@ -4147,33 +4225,38 @@ public class ExpressionVisitor extends Visitor {
     private void checkComprehensionIndirectArgument(Tree.Comprehension c, 
             ProducedType paramType, boolean atLeastOne) {
         Tree.InitialComprehensionClause icc = 
-                ((Tree.Comprehension) c).getInitialComprehensionClause();
+                c.getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
         ProducedType at = c.getTypeModel();
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-        if (!isTypeUnknown(at) && !isTypeUnknown(set)) {
+        ProducedType set = paramType==null ? 
+                null : unit.getIteratedType(paramType);
+        if (!isTypeUnknown(at) && 
+                !isTypeUnknown(set)) {
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter");
         }
     }
     
-    private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
-            List<Tree.PositionalArgument> args) {
-        ProducedType paramType = pr.getTypedParameter(p).getFullType();
+    private void checkSequencedPositionalArgument(Parameter p, 
+            ProducedReference pr, List<Tree.PositionalArgument> args) {
+        ProducedType paramType = 
+                pr.getTypedParameter(p).getFullType();
         ProducedType set = paramType==null ? 
                 null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             ProducedType at = a.getTypeModel();
-            if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+            if (!isTypeUnknown(at) && 
+                    !isTypeUnknown(paramType)) {
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     checkAssignable(at, paramType, a, 
                             "spread argument must be assignable to variadic parameter " + 
-                                    p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                                    p.getName()+ " of " + 
+                                    pr.getDeclaration().getName(unit) + 
                                     (pr.getQualifyingType()==null ? "" : 
                                         " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                                     2101);
@@ -4181,33 +4264,41 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter " + 
-                                    p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                                    p.getName()+ " of " + 
+                                    pr.getDeclaration().getName(unit) + 
                                     (pr.getQualifyingType()==null ? "" : 
                                         " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                                     2101);
                     //if we already have an arg to a nonempty variadic parameter,
                     //we can treat it like a possibly-empty variadic now
-                    paramType = paramType.getSupertype(unit.getSequentialDeclaration());
+                    Interface sd = 
+                            unit.getSequentialDeclaration();
+                    paramType = paramType.getSupertype(sd);
                 }
             }
         }
     }
     
-    private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.Comprehension c, boolean atLeastOne) {
+    private void checkComprehensionPositionalArgument(Parameter p, 
+            ProducedReference pr, Tree.Comprehension c, 
+            boolean atLeastOne) {
         Tree.InitialComprehensionClause icc = 
-                ((Tree.Comprehension) c).getInitialComprehensionClause();
+                c.getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
-        ProducedType paramType = pr.getTypedParameter(p).getFullType();
+        ProducedType paramType = 
+                pr.getTypedParameter(p).getFullType();
         c.setParameter(p);
         ProducedType at = c.getTypeModel();
-        if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
-            ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        if (!isTypeUnknown(at) && 
+                !isTypeUnknown(paramType)) {
+            ProducedType set = paramType==null ? 
+                    null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + 
+                            p.getName() + "' of '" + 
+                            pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "'" : 
                                 "' in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2101);
@@ -4217,23 +4308,27 @@ public class ExpressionVisitor extends Visitor {
     private boolean hasSpreadArgument(List<Tree.PositionalArgument> args) {
         int size = args.size();
         if (size>0) {
-            return args.get(size-1) instanceof Tree.SpreadArgument;
+            return args.get(size-1) 
+                    instanceof Tree.SpreadArgument;
         }
         else {
             return false;
         }
     }
 
-    private void checkPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.ListedArgument a) {
+    private void checkPositionalArgument(Parameter p, 
+            ProducedReference pr, Tree.ListedArgument a) {
         if (p.getModel()==null) return;
-        ProducedType paramType = pr.getTypedParameter(p).getFullType();
+        ProducedType paramType = 
+                pr.getTypedParameter(p).getFullType();
         a.setParameter(p);
         ProducedType at = a.getTypeModel();
-        if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+        if (!isTypeUnknown(at) && 
+                !isTypeUnknown(paramType)) {
             checkAssignable(at, paramType, a, 
                     "argument must be assignable to parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
+                            p.getName() + "' of '" + 
+                            pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
                                 " in '" + pr.getQualifyingType().getProducedTypeName(unit) + "'"), 
                             2100);
@@ -4242,15 +4337,19 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Comprehension that) {
         super.visit(that);
-        that.setTypeModel(that.getInitialComprehensionClause().getTypeModel());
+        Tree.InitialComprehensionClause icc = 
+                that.getInitialComprehensionClause();
+        that.setTypeModel(icc.getTypeModel());
     }
     
     @Override public void visit(Tree.SpreadType that) {
         super.visit(that);
         Tree.Type t = that.getType();
         if (t!=null) {
+            ProducedType at = 
+                    unit.getType(unit.getAnythingDeclaration());
             checkAssignable(that.getTypeModel(), 
-                    unit.getSequentialType(unit.getType(unit.getAnythingDeclaration())), 
+                    unit.getSequentialType(at), 
                     t, "spread type must be a sequence type");
         }
     }
@@ -4282,12 +4381,16 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean involvesUnknownTypes(Tree.ElementOrRange eor) {
         if (eor instanceof Tree.Element) {
-            return isTypeUnknown(((Tree.Element) eor).getExpression().getTypeModel());
+            Tree.Expression expression = 
+                    ((Tree.Element) eor).getExpression();
+            return isTypeUnknown(expression.getTypeModel());
         }
         else {
             Tree.ElementRange er = (Tree.ElementRange) eor;
-            return er.getLowerBound()!=null && isTypeUnknown(er.getLowerBound().getTypeModel()) ||
-                    er.getUpperBound()!=null && isTypeUnknown(er.getUpperBound().getTypeModel());
+            return er.getLowerBound()!=null && 
+                        isTypeUnknown(er.getLowerBound().getTypeModel()) ||
+                    er.getUpperBound()!=null && 
+                        isTypeUnknown(er.getUpperBound().getTypeModel());
         }
     }
     
