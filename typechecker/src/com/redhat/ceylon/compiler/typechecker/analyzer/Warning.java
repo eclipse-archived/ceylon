@@ -16,5 +16,6 @@ public enum Warning {
     unknownWarning, 
     ambiguousAnnotation,
     similarModule,
-    importsOtherJdk;
+    importsOtherJdk,
+    javaAnnotationElement
 }
