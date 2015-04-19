@@ -32,7 +32,7 @@ public class LiteralVisitor extends Visitor {
     static final Pattern DOC_LINK_PATTERN = 
             Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = 
-            Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
+            Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^#]([^}]*))\\}|(.))");
     
     
     @Override
@@ -263,21 +263,137 @@ public class LiteralVisitor extends Visitor {
                     }
                 }
                 if (!found) {
-                    if (name.equals(":-)")) {
-                        result.replace(matcher.start(), 
-                                matcher.end(), "\u263A");
-                    }
-                    else if (name.equals(":-(")) {
-                        result.replace(matcher.start(), 
-                                matcher.end(), "\u2639");
-                    }
-                    else if (name.equals("<3")) {
-                        result.replace(matcher.start(), 
-                                matcher.end(), "\u2665");
-                    }
-                    else {
+                    int emoji = -1; 
+                    switch (name) {
+                    case ":)":
+                    case ":-)":
+                    case "=)":
+                        emoji = 0x1f603; break;
+                    case "O:)":
+                    case "O:-)":
+                    case "O=)":
+                        emoji = 0x1f607; break;
+                    case "}:)":
+                    case "}:-)":
+                    case "}=)":
+                        emoji = 0x1f608; break;
+                    case ":-(":
+                    case ":(":
+                    case "=(":
+                        emoji = 0x1f61e; break;
+                    case ":-|":
+                    case ":|":
+                    case "=|":
+                        emoji = 0x1f610; break;
+                    case ";-)":
+                    case ";)":
+                        emoji = 0x1f609; break;
+                    case "B-)":
+                    case "B)":
+                        emoji = 0x1f60e; break;
+                    case ":-D":
+                    case ":D":
+                        emoji = 0x1f600; break;
+                    case "=D":
+                        emoji = 0x1f604; break;
+                    case "-_-":
+                        emoji = 0x1f611; break;
+                    case "o_o":
+                        emoji = 0x1f613; break;
+                    case "u_u":
+                        emoji = 0x1f614; break;
+                    case ">_<":
+                        emoji = 0x1f623; break;
+                    case "^_^":
+                        emoji = 0x1f601; break;
+                    case "^_^;;":
+                        emoji = 0x1f605; break;
+                    case "<3":
+                        emoji = 0x1f49c; break;
+                    case "<\\3":
+                    case "</3":
+                        emoji = 0x1f494; break;
+                    case "~@~":
+                        emoji = 0x1f4a9; break;
+                    case "(]:{":
+                        emoji = 0x1f473; break;
+                    case "-<@%":
+                        emoji = 0x1f41d; break;
+                    case ":(|)":
+                        emoji = 0x1f435; break;
+                    case ":(:)":
+                        emoji = 0x1f437; break;
+                    case ":*":
+                    case ":-*":
+                        emoji = 0x1f617; break;
+                    case ";*":
+                    case ";-*":
+                        emoji = 0x1f618; break;
+                    case ":\\":
+                    case ":-\\":
+                    case "=\\":
+                    case ":/":
+                    case ":-/":
+                    case "=/":
+                        emoji = 0x1f615; break;
+                    case ":S":
+                    case ":-S":
+                    case ":s":
+                    case ":-s":
+                        emoji = 0x1f616; break;
+                    case ":P":
+                    case ":-P":
+                    case "=P":
+                    case ":p":
+                    case ":-p":
+                    case "=p":
+                        emoji = 0x1f61b; break;
+                    case ";P":
+                    case ";-P":
+                    case ";p":
+                    case ";-p":
+                        emoji = 0x1f61c; break;
+                    case ">.<":
+                    case ">:(":
+                    case ">:-(":
+                    case ">=(":
+                        emoji = 0x1f621; break;
+                    case "T_T":
+                    case ":'(":
+                    case ";_;":
+                    case "='(":
+                        emoji = 0x1f622; break;
+                    case "D:":
+                        emoji = 0x1f626; break;
+                    case "o.o":
+                    case ":o":
+                    case ":-o":
+                    case "=o":
+                        emoji = 0x1f62e; break;
+                    case "O.O":
+                    case ":O":
+                    case ":-O":
+                    case "=O":
+                        emoji = 0x1f632; break;
+                    case "x_x":
+                    case "X-O":
+                    case "x-o":
+                    case "X(":
+                    case "X-(":
+                        emoji = 0x1f635; break;
+                    case ":X)":
+                    case ":3":
+                    case "(=^..^=)":
+                    case "(=^.^=)":
+                    case "=^_^=":
+                        emoji = 0x1f638; break;
+                    default:
                         node.addError("illegal unicode escape sequence: " + 
                                 name + " is not a Unicode character");
+                    }
+                    if (emoji>0) {
+                        result.replace(matcher.start(), matcher.end(), 
+                                new String(Character.toChars(emoji)));
                     }
                 }
             }
@@ -311,7 +427,7 @@ public class LiteralVisitor extends Visitor {
                 }
             }
             else {
-                char escape = matcher.group(4).charAt(0);
+                char escape = matcher.group(5).charAt(0);
                 char ch;
                 switch (escape) {
                     case 'b': ch = '\b'; break;
