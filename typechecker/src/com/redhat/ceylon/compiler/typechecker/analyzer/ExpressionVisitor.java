@@ -3993,6 +3993,7 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
+        Declaration target = pr.getDeclaration();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
@@ -4003,7 +4004,7 @@ public class ExpressionVisitor extends Visitor {
                                     that : pal;
                     n.addError("missing argument to required parameter '" + 
                             p.getName() + "' of '" + 
-                            pr.getDeclaration().getName(unit) + "'");
+                            target.getName(unit) + "'");
                 }
             } 
             else {
@@ -4030,7 +4031,7 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         a.addError("not a variadic parameter: parameter '" + 
                                 p.getName() + "' of '" + 
-                                pr.getDeclaration().getName() + "'");
+                                target.getName() + "'");
                     }
                     break;
                 }
@@ -4056,11 +4057,36 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             arg.addError("no matching parameter declared by '" +
-                    pr.getDeclaration().getName(unit) + "': '" + 
-                    pr.getDeclaration().getName(unit) + "' has " + 
+                    target.getName(unit) + "': '" + 
+                    target.getName(unit) + "' has " + 
                     params.size() + " parameters", 2000);
         }
+        
+        checkJavaAnnotationElements(args, params, target);
     
+    }
+
+    private void checkJavaAnnotationElements(
+            List<Tree.PositionalArgument> args, 
+            List<Parameter> params,
+            Declaration target) {
+        if (target instanceof Method && target.isAnnotation()) {
+            Method method = (Method) target;
+            if (false) {
+                ParameterList parameterList = 
+                        method.getParameterLists().get(0);
+                for (int i=params.size(); i<args.size(); i++) {
+                    Parameter parameter = 
+                            parameterList.getParameters().get(i);
+                    if (!"value".equals(parameter.getName())) {
+                        Tree.PositionalArgument arg = args.get(i);
+                        arg.addUsageWarning(Warning.javaAnnotationElement, 
+                                "positional argument to Java annotation element: '"
+                                + parameter.getName() + "' (use named arguments)");
+                    }
+                }
+            }
+        }
     }
 
     private void checkSpreadArgument(ProducedReference pr, 
