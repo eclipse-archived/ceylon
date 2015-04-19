@@ -328,7 +328,7 @@
             
             <synopsis>EscapeSequence: "\" (SingleCharacterEscape | "{" CharacterCode "}")</synopsis>
             
-            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`"</synopsis>
+            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "e" | "\" | "&quot;" | "'" | "`" | "0"</synopsis>
             
             <para>The single-character escape sequences have their traditional interpretations as
             Unicode characters:</para>
@@ -347,14 +347,19 @@
                     <para><literal>\f</literal> means <literal>FORM FEED (FF)</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>, 
-                    and</para>
+                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\e</literal> means <literal>ESCAPE</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>\\</literal>, <literal>\`</literal>, <literal>\'</literal>, 
                     and <literal>\&quot;</literal> mean <literal>REVERSE SOLIDUS</literal>, 
                     <literal>GRAVE ACCENT</literal>, <literal>APOSTROPHE</literal>, and 
-                    <literal>QUOTATION MARK</literal>, respectively.</para>
+                    <literal>QUOTATION MARK</literal>, respectively, and, finally</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\0</literal> means <literal>NULL</literal>.</para>
                 </listitem>
             </itemizedlist>
             

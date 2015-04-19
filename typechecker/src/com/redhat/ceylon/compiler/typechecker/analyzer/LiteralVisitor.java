@@ -435,6 +435,8 @@ public class LiteralVisitor extends Visitor {
                     case 'n': ch = '\n'; break;
                     case 'f': ch = '\f'; break;
                     case 'r': ch = '\r'; break;
+                    case 'e': ch = 0x1b; break;
+                    case '0': ch = 0; break;
                     case '"':
                     case '\'':
                     case '`':
