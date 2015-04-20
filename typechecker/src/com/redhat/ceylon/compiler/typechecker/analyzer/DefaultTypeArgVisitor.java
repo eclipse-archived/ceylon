@@ -17,8 +17,16 @@ public class DefaultTypeArgVisitor extends Visitor {
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter tpd = that.getDeclarationModel();
         ProducedType dta = tpd.getDefaultTypeArgument();
-        if (dta!=null && dta.containsDeclaration(tpd.getDeclaration())) {
-            tpd.setDefaultTypeArgument(null);
+        if (dta!=null) {
+            try {
+                if (dta.containsDeclaration(tpd.getDeclaration())) {
+                    tpd.setDefaultTypeArgument(null);
+                }
+            }
+            catch (RuntimeException re) {
+                that.getTypeSpecifier().addError("undecidable default type argument");
+                tpd.setDefaultTypeArgument(null);
+            }
         }
         super.visit(that);
     }

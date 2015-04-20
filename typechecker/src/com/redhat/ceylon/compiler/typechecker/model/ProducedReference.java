@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.ProducedType.depth;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static java.util.Collections.emptyMap;
@@ -46,36 +47,50 @@ public abstract class ProducedReference {
     public Map<TypeParameter, ProducedType> getTypeArguments() {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic) {
-            if (typeArgumentsWithDefaults == null || 
+            if (typeArgumentsWithDefaults == null ||
                     !ProducedTypeCache.isEnabled()) {
-                Map<TypeParameter, ProducedType> result = typeArguments;
-                List<TypeParameter> typeParameters = 
-                        ((Generic) declaration).getTypeParameters();
-                for (int i=0, l=typeParameters.size(); i<l; i++) {
-                    TypeParameter pt = typeParameters.get(i);
-                    ProducedType dta = pt.getDefaultTypeArgument();
-                    if (dta!=null) {
-                        if (!typeArguments.containsKey(pt)) {
-                            // only make a copy of typeArguments if required
-                            if (typeArguments == result) {
-                                // make a copy big enough to fit every type parameter
-                                result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
-                                result.putAll(typeArguments);
-                            }
-                            result.put(pt, dta.substitute(result));
-                        }
-                    }
+                if (depth.get()>50) {
+                    throw new RuntimeException("undecidable default type arguments");
                 }
-                typeArgumentsWithDefaults = result;
-                return result;
+                depth.set(depth.get()+1);
+                try {
+                    typeArgumentsWithDefaults = 
+                            fillInDefaultTypeArguments(declaration,
+                                    typeArguments);
+                }
+                finally { 
+                    depth.set(depth.get()-1);
+                }
             }
-            else {
-                return typeArgumentsWithDefaults;
-            }
+            return typeArgumentsWithDefaults;
         }
         else {
             return typeArguments;
         }
+    }
+
+    private static Map<TypeParameter, ProducedType> fillInDefaultTypeArguments(
+            Declaration declaration,
+            Map<TypeParameter, ProducedType> typeArguments) {
+        Map<TypeParameter, ProducedType> result = typeArguments;
+        List<TypeParameter> typeParameters = 
+                ((Generic) declaration).getTypeParameters();
+        for (int i=0, l=typeParameters.size(); i<l; i++) {
+            TypeParameter pt = typeParameters.get(i);
+            ProducedType dta = pt.getDefaultTypeArgument();
+            if (dta!=null) {
+                if (!typeArguments.containsKey(pt)) {
+                    // only make a copy of typeArguments if required
+                    if (typeArguments == result) {
+                        // make a copy big enough to fit every type parameter
+                        result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
+                        result.putAll(typeArguments);
+                    }
+                    result.put(pt, dta.substitute(result));
+                }
+            }
+        }
+        return result;
     }
     
     void setTypeArguments(Map<TypeParameter,ProducedType> typeArguments) {
