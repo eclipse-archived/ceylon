@@ -444,7 +444,8 @@ public class CeylonTool implements Tool {
         env.put("CEYLON_VERSION_MAJOR", Integer.toString(Versions.CEYLON_VERSION_MAJOR));
         env.put("CEYLON_VERSION_MINOR", Integer.toString(Versions.CEYLON_VERSION_MINOR));
         env.put("CEYLON_VERSION_RELEASE", Integer.toString(Versions.CEYLON_VERSION_RELEASE));
-        env.put("CEYLON_VERSION", Versions.CEYLON_VERSION);
+        env.put("CEYLON_VERSION", Versions.CEYLON_VERSION_NUMBER);
+        env.put("CEYLON_VERSION_FULL", Versions.CEYLON_VERSION);
         env.put("CEYLON_VERSION_NAME", Versions.CEYLON_VERSION_NAME);
         env.put("SCRIPT", script);
         env.put("SCRIPT_DIR", (new File(script)).getParent());
