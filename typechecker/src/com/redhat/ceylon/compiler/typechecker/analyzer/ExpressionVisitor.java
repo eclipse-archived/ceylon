@@ -5677,27 +5677,18 @@ public class ExpressionVisitor extends Visitor {
     private TypedDeclaration resolveQualifiedMemberExpression(
             Tree.QualifiedMemberExpression that, 
             boolean error) {
-        Tree.Primary p = that.getPrimary();
-        ProducedType pt = p.getTypeModel();
-        boolean packageQualified = p instanceof Tree.Package;
-        boolean check = 
-                packageQualified ||
-                //that.getStaticMethodReference() ||
-                pt!=null &&
-                //account for dynamic blocks
-                (!pt.getType().isUnknown() || 
-                        that.getMemberOperator() instanceof Tree.SpreadOp);
         Tree.Identifier id = that.getIdentifier();
         boolean nameNonempty = 
                 id!=null && !id.getText().equals("");
-        if (nameNonempty && check) {
+        if (nameNonempty && checkMember(that)) {
+            Tree.Primary p = that.getPrimary();
             String name = name(id);
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
             String container;
             boolean ambiguous;
             TypedDeclaration member;
-            if (packageQualified) {
+            if (p instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + pack.getNameAsString() + "'";
                 member = getPackageTypedDeclaration(name, 
@@ -5705,7 +5696,7 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = false;
             }
             else {
-                pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                ProducedType pt = p.getTypeModel().resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
@@ -6191,17 +6182,8 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration resolveQualifiedTypeExpression(
             Tree.QualifiedTypeExpression that,
             boolean error) {
-        Tree.Primary p = that.getPrimary();
-        ProducedType pt = p.getTypeModel();
-        boolean packageQualified = p instanceof Tree.Package;
-        boolean check = 
-                packageQualified || 
-                that.getStaticMethodReference() || 
-                pt!=null && 
-                //account for dynamic blocks
-                (!pt.isUnknown() || 
-                        that.getMemberOperator() instanceof Tree.SpreadOp);
-        if (check) {
+        if (checkMember(that)) {
+            Tree.Primary p = that.getPrimary();
             Tree.Identifier id = that.getIdentifier();
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
@@ -6209,7 +6191,7 @@ public class ExpressionVisitor extends Visitor {
             String container;
             boolean ambiguous;
             TypeDeclaration type;
-            if (packageQualified) {
+            if (p instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + pack.getNameAsString() + "'";
                 type = getPackageTypeDeclaration(name, 
@@ -6217,7 +6199,7 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = false;
             }
             else {
-                pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                ProducedType pt = p.getTypeModel().resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
@@ -6282,6 +6264,20 @@ public class ExpressionVisitor extends Visitor {
         else {
             return null;
         }
+    }
+    
+    private static boolean checkMember(Tree.QualifiedMemberOrTypeExpression qmte) {
+        Tree.Primary p = qmte.getPrimary();
+        ProducedType pt = p.getTypeModel();
+        boolean packageQualified = p instanceof Tree.Package;
+        return packageQualified ||
+                (qmte.getStaticMethodReference() &&
+                        p instanceof Tree.StaticMemberOrTypeExpression &&
+                        ((Tree.StaticMemberOrTypeExpression) p).getDeclaration()!=null) ||
+                pt!=null && 
+                //account for dynamic blocks
+                (!pt.isUnknown() || 
+                        qmte.getMemberOperator() instanceof Tree.SpreadOp);
     }
     
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
