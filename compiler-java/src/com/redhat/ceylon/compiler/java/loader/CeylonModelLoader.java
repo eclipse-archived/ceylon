@@ -173,7 +173,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             ceylonTree.visit(new SourceDeclarationVisitor(){
                 @Override
                 public void loadFromSource(Declaration decl) {
-                    if(isNative(decl))
+                    if(!checkNative(decl))
                         return;
                     String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
