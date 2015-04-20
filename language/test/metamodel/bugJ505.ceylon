@@ -16,7 +16,7 @@ object jsTop505{
 @test
 shared void bugJ505() {
   object o505{}
-  assert(exists v505 = `class o505`.objectValue);
+  assert(!`class o505`.objectValue exists);
   class Test505(){}
   Object t1=`Test505`;
   assert(t1 is Class);
