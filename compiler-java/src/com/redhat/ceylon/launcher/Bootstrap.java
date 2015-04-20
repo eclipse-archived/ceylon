@@ -42,9 +42,7 @@ public class Bootstrap {
                 mainMethod = launcherClass.getMethod("main", String[].class);
             } catch (Exception e) {
                 System.err.println("Fatal: Ceylon command could not be executed");
-                if (LauncherUtil.hasArgument(args, "--stacktraces")) {
-                    e.printStackTrace();
-                }
+                throw e;
             }
             try {
                 mainMethod.invoke(null, (Object)args);
