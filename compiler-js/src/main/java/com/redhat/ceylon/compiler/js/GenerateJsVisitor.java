@@ -901,7 +901,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     boolean shouldStitch(Declaration d) {
-        return JsCompiler.isCompilingLanguageModule() && d.isNative();
+        return d.isNative();
     }
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
@@ -913,7 +913,11 @@ public class GenerateJsVisitor extends Visitor
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '/').replace("::", "/");
-        return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+        if (JsCompiler.isCompilingLanguageModule()) {
+            return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+        } else {
+            return new File(new File(d.getUnit().getFullPath()).getParentFile(), fqn + suffix);
+        }
     }
 
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
@@ -934,9 +938,10 @@ public class GenerateJsVisitor extends Visitor
             endLine(true);
             return true;
         } else {
-            if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition)) {
+            if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition
+                    || (n instanceof Tree.MethodDeclaration && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null))) {
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d) + ": " + f;
+                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
                 spitOut(err);
                 out("/*", err, "*/");
             }
