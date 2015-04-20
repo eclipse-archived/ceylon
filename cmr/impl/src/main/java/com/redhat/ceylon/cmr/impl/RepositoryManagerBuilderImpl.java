@@ -59,7 +59,8 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     }
 
     protected void init() {
-        getCache().addService(MergeStrategy.class, new DefaultMergeStrategy());
+        if(getCache() != null)
+            getCache().addService(MergeStrategy.class, new DefaultMergeStrategy());
     }
 
     private OpenNode getCache() {
@@ -72,17 +73,20 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {
-        getCache().addService(MergeStrategy.class, strategy);
+        if(getCache() != null)
+            getCache().addService(MergeStrategy.class, strategy);
         return this;
     }
 
     public RepositoryManagerBuilderImpl contentTransformer(ContentTransformer transformer) {
-        getCache().addService(ContentTransformer.class, transformer);
+        if(getCache() != null)
+            getCache().addService(ContentTransformer.class, transformer);
         return this;
     }
 
     public RepositoryManagerBuilderImpl cacheContent() {
-        getCache().addService(ContentTransformer.class, new CachingContentTransformer());
+        if(getCache() != null)
+            getCache().addService(ContentTransformer.class, new CachingContentTransformer());
         return this;
     }
 

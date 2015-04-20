@@ -57,15 +57,19 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     public RootRepositoryManager(File rootDir, Logger log, Overrides overrides) {
         super(log, overrides);
-        if (!rootDir.exists() && !rootDir.mkdirs()) {
-            throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
+        if(rootDir != null){
+            if (!rootDir.exists() && !rootDir.mkdirs()) {
+                throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
+            }
+            if (!rootDir.isDirectory()) {
+                throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
+            }
+            this.fileContentStore = new FileContentStore(rootDir);
+            final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
+            setCache(aaca);
+        }else{
+            this.fileContentStore = null;
         }
-        if (!rootDir.isDirectory()) {
-            throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
-        }
-        this.fileContentStore = new FileContentStore(rootDir);
-        final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
-        setCache(aaca);
     }
 
     protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {
@@ -120,12 +124,13 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             }
         }
 
-        if (hasRemote) {
+        if (hasRemote && cache != null) {
             // Create a .missing file in the cache to mark that we tried to locate the file but it didn't exist 
             Node parent = cache.findParent(context);
             if (parent != null) {
                 context.toNode(parent);
                 try {
+                    // fileContentStore cannot be null if we have a cache
                     File parentDir = fileContentStore.getFile(parent);
                     String[] names = cache.getArtifactNames(context);
                     File missingFile = new File(parentDir, names[0].concat(MISSING));
@@ -160,8 +165,11 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
-        log.debug("Creating local copy of external node: " + node + " at repo: " + fileContentStore.getDisplayString());
-
+        log.debug("Creating local copy of external node: " + node + " at repo: " + 
+                (fileContentStore != null ? fileContentStore.getDisplayString() : null));
+        if(fileContentStore == null)
+            throw new IOException("No location to place node at: fileContentStore is null");
+        
         ArtifactCallback callback = context.getCallback();
         if (callback == null) {
             callback = ArtifactCallbackStream.getCallback();
@@ -232,15 +240,17 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         }
 
         // refresh markers from root to this newly put node
-        final List<String> paths = NodeUtils.toLabelPath(node);
-        OpenNode current = getCache();
-        for (String path : paths) {
-            if (current == null)
-                break;
+        if(getCache() != null){
+            final List<String> paths = NodeUtils.toLabelPath(node);
+            OpenNode current = getCache();
+            for (String path : paths) {
+                if (current == null)
+                    break;
 
-            current.refresh(false);
-            final Node tmp = current.peekChild(path);
-            current = (tmp instanceof OpenNode) ? OpenNode.class.cast(tmp) : null;
+                current.refresh(false);
+                final Node tmp = current.peekChild(path);
+                current = (tmp instanceof OpenNode) ? OpenNode.class.cast(tmp) : null;
+            }
         }
 
         return file;
@@ -269,22 +279,24 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     protected void removeNode(Node parent, String child) throws IOException {
         final Node node = parent.getChild(child);
 
-        try {
-            if (node != null) {
-                final Node sl = parent.getChild(child + SHA1 + LOCAL);
-                if (sl != null) {
-                    fileContentStore.removeFile(sl);
+        if(fileContentStore != null){
+            try {
+                if (node != null) {
+                    final Node sl = parent.getChild(child + SHA1 + LOCAL);
+                    if (sl != null) {
+                        fileContentStore.removeFile(sl);
+                    }
+                    final Node origin = parent.getChild(child + ORIGIN);
+                    if (origin != null) {
+                        fileContentStore.removeFile(origin);
+                    }
+                    final Node descriptor = Configuration.getResolvers(this).descriptor(node);
+                    if (descriptor != null) {
+                        fileContentStore.removeFile(descriptor);
+                    }
                 }
-                final Node origin = parent.getChild(child + ORIGIN);
-                if (origin != null) {
-                    fileContentStore.removeFile(origin);
-                }
-                final Node descriptor = Configuration.getResolvers(this).descriptor(node);
-                if (descriptor != null) {
-                    fileContentStore.removeFile(descriptor);
-                }
+            } catch (Exception ignored) {
             }
-        } catch (Exception ignored) {
         }
 
         try {
@@ -299,9 +311,11 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     @Override
     protected Boolean checkSHA(Node artifact) throws IOException {
         Boolean result = super.checkSHA(artifact);
-        if (result == null && artifact.isRemote() == false && NodeUtils.isAncestor(getCache(), artifact)) {
+        if (result == null && artifact.isRemote() == false 
+                && getCache() != null && NodeUtils.isAncestor(getCache(), artifact)) {
             Node sha = artifact.getChild(SHA1 + LOCAL);
             if (sha != null) {
+                // fileContentStore cannot be null if we have a cache
                 File shaFile = fileContentStore.getFile(sha);
                 if (shaFile.exists())
                     return checkSHA(artifact, IOUtils.toInputStream(shaFile));

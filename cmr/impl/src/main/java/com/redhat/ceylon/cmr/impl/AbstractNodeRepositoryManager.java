@@ -31,10 +31,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.ArtifactOverrides;
-import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -47,6 +43,8 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -79,23 +77,24 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
     protected OpenNode getCache() {
         if (cache == null)
-            throw new IllegalArgumentException("Missing cache!");
+            return null;
 
         return cache.getRoot();
     }
 
     protected synchronized void setCache(Repository cache) {
-        if (cache == null)
-            throw new IllegalArgumentException("Null cache");
-        if (this.cache != null)
-            throw new IllegalArgumentException("Cache already set!");
+        if (this.cache != null && addCacheAsRoot){
+            roots.remove(this.cache);
+        }
 
         this.cache = cache;
         if (addCacheAsRoot) {
-            roots.add(cache);
+            if(cache != null)
+                roots.add(cache);
             allRoots = null;
         }
-        setupOverrides(cache);
+        if(cache != null)
+            setupOverrides(cache);
     }
 
     private void setupOverrides(Repository repo) {
@@ -124,13 +123,18 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             allRoots = new ArrayList<>();
             boolean cacheAdded = false;
             for (Repository root : roots) {
-                if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
+                if (!addCacheAsRoot
+                        && cache != null
+                        && !cacheAdded 
+                        && root.getRoot().isRemote()) {
                     allRoots.add(cache);
                     cacheAdded = true;
                 }
                 allRoots.add(root);
             }
-            if (!addCacheAsRoot && !cacheAdded) {
+            if (!addCacheAsRoot
+                    && cache != null
+                    && !cacheAdded) {
                 allRoots.add(cache);
             }
         }
