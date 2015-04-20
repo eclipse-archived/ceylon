@@ -30,11 +30,11 @@ function pushTypes(list, types,targ$2) {
 }
 
 function applyUnionType(ut,targ$2) { //return AppliedUnionType
-  var cases = pushTypes([], ut.l,targ$2);
+  var cases = pushTypes([], flattentype$(ut.l,'u'),targ$2);
   return AppliedUnionType$jsint(ut, cases.rt$(ut), {Union$AppliedUnionType:ut});
 }
 function applyIntersectionType(it,targ$2) { //return AppliedIntersectionType
-  var sats = pushTypes([], it.l,targ$2);
+  var sats = pushTypes([], flattentype$(it.l,'i'),targ$2);
   return AppliedIntersectionType$jsint(it, sats.rt$(it), {Union$AppliedIntersectionType:it});
 }
 
