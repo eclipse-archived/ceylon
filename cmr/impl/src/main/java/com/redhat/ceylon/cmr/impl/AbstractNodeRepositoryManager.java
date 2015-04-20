@@ -306,15 +306,6 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug(" -> [done]");
     }
 
-    private boolean isHerd() {
-        return isHerd(cache);
-    }
-
-    private boolean isHerd(Repository repo) {
-        ContentStore cs = repo.getRoot().getService(ContentStore.class);
-        return cs != null && cs.isHerd();
-    }
-
     private boolean canHandleFolders() {
         return canHandleFolders(cache);
     }
