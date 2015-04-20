@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -403,11 +405,13 @@ public class InvocationGenerator {
                 } else {
                     expr = null;
                 }
+                boolean chained=false;
                 if (opened) {
                     SequenceGenerator.closeSequenceWithReifiedType(that,
                             TypeUtils.wrapAsIterableArguments(sequencedType), gen);
                     gen.out(".chain(");
                     sequencedType=null;
+                    chained=true;
                 } else if (!first) {
                     gen.out(",");
                 }
@@ -494,10 +498,12 @@ public class InvocationGenerator {
                 }
                 if (opened) {
                     gen.out(",");
+                    Map<TypeParameter,ProducedType> _targs;
+                    Map<TypeParameter, SiteVariance> _vo;
                     if (expr == null) {
                         //it's a comprehension
-                        TypeUtils.printTypeArguments(that,
-                                TypeUtils.wrapAsIterableArguments(arg.getTypeModel()), gen, false, null);
+                        _targs = TypeUtils.wrapAsIterableArguments(arg.getTypeModel());
+                        _vo = null;
                     } else {
                         ProducedType spreadType = TypeUtils.findSupertype(
                                 that.getUnit().getSequentialDeclaration(),
@@ -507,9 +513,25 @@ public class InvocationGenerator {
                             spreadType = TypeUtils.findSupertype(that.getUnit().getIterableDeclaration(),
                                     expr.getTypeModel());
                         }
-                        TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen, false,
-                                spreadType.getVarianceOverrides());
+                        _targs = spreadType.getTypeArguments();
+                        _vo = spreadType.getVarianceOverrides();
                     }
+                    if (chained) {
+                        ProducedType[] _tlist = new ProducedType[2];
+                        for (TypeParameter tp : _targs.keySet()) {
+                            if ("Element".equals(tp.getName())) {
+                                _tlist[0] = _targs.get(tp);
+                            } else if ("Absent".equals(tp.getName())) {
+                                _tlist[1] = _targs.get(tp);
+                            }
+                        }
+                        if (_tlist[1] == null) {
+                            _tlist[1] = that.getUnit().getNothingDeclaration().getType();
+                        }
+                        Method cdec = (Method)that.getUnit().getIterableDeclaration().getMember("chain", null, false);
+                        _targs = TypeUtils.matchTypeParametersWithArguments(cdec.getTypeParameters(), Arrays.asList(_tlist));
+                    }
+                    TypeUtils.printTypeArguments(that, _targs, gen, false, _vo);
                     gen.out(")");
                 }
                 if (arg instanceof Tree.Comprehension) {
