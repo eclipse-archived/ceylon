@@ -69,6 +69,7 @@ function is$(obj,type,containers){
         return false;
       }
     }
+    type=value2type$(type);
     if(type.t.$$.T$name in obj.getT$all()){
       if(type.t==Callable&&!(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
           && getrtmm$$(obj)&&obj.$crtmm$.$t && obj.$crtmm$.ps!==undefined){
@@ -268,6 +269,7 @@ function extendsType(t1, t2,tparm) {
     } else if (t2.t==='T') {
       t2=retpl$(t2);
     }
+    t1=value2type$(t1);
     for (t in t1.t.$$.T$all) {
         if (t === t2.t.$$.T$name || t === 'ceylon.language::Nothing') {
             if (t1.a && t2.a) {

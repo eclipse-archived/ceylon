@@ -1288,14 +1288,26 @@ public class Util {
         Arrays.fill(array, val);
         return array;
     }
+    
+    private static void checkArrayElementType(TypeDescriptor $reifiedElement) {
+        if ($reifiedElement instanceof TypeDescriptor.Composite) {
+            throw new AssertionError("cannot create Java array with union or intersection element type "
+                    + $reifiedElement.toString());
+        }
+        else if ($reifiedElement instanceof TypeDescriptor.Nothing) {
+            throw new AssertionError("cannot create Java array with bottom element type Nothing");
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int size) {
+        checkArrayElementType($reifiedElement);
         return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), size);
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int... dimensions) {
+        checkArrayElementType($reifiedElement);
         return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), dimensions);
     }
 

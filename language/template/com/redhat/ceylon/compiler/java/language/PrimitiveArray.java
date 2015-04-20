@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
@@ -35,23 +36,23 @@ import ceylon.language.impl.BaseIterable;
  */
 /**
  * A type representing Java primitive arrays of type 
- * <code>@PrimitiveType@[]</code>.
+ * {@code @PrimitiveType@[]}.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 /*
  * @GeneratedWarning@ 
  */
-// This type is never instantiated, it is completely erased to 
-// <code>@PrimitiveType@[]</code>.
-// 
-// The {@link #get(int)}, {@link #set(int,@PrimitiveType@)}, 
-// {@link #length size} methods and the constructor are also 
-// completely erased to Java array operators, or 
-// {@link Util#fillArray(@PrimitiveType@[],@PrimitiveType@)} 
-// in the case that an initial element is specified.
-// 
-// Only the value type static methods are really invoked.
+//This type is never actually instantiated, it is always
+//replaced by the Java object array type @PrimitiveType@[].
+//
+//The operations which call 
+//Util.makeJavaArrayWrapperException() are completely 
+//erased to Java array operators, or Util.fillArray() 
+//in the case of the constructor if the initial element is 
+//specified.
+//
+//Only the value type static methods are really invoked.
 @Ceylon(major = 8)
 @Class
 @ValueType
@@ -62,9 +63,18 @@ public final class @Classname@ implements ReifiedType {
     public final static TypeDescriptor $TypeDescriptor$ = 
     TypeDescriptor.klass(@Classname@.class);
     
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to the given {@code element}.
+     * 
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     * @param element the initial value of the array elements
+     */
     public @Classname@(
             /**
-             * The size of the array.
+             * The size of the new array.
              */
             @Name("size") int size, 
             /**
@@ -76,10 +86,18 @@ public final class @Classname@ implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Create a new array of the given {@code size}, with
+     * all elements initialized to {@code null}.
+     * 
+     * @throws NegativeArraySizeException if {@code size}
+     *         is negative
+     * @param size the size of the array
+     */
     @Ignore
     public @Classname@(
             /**
-             * The size of the array.
+             * The size of the new array.
              */
             @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
@@ -92,7 +110,13 @@ public final class @Classname@ implements ReifiedType {
     }
 
     /**
-     * Get the element with the given {@link index}.
+     * Get the element with the given {@code index}.
+     * 
+     * @param index the index within this array
+     * @return the element of this array at the given 
+     *         {@code index}
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
      */
     public @PrimitiveType@ get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
@@ -104,11 +128,27 @@ public final class @Classname@ implements ReifiedType {
     }
 
     /**
-     * Set the element with the given {@link index} to the
-     * given {@link element} value.
+     * Set the element with the given {@code index} to the
+     * given {@code element} value.
+     * 
+     * @param index the index within this array
+     * @param element the new element value
+     * @throws ArrayIndexOutOfBoundsException if the index
+     *         does not refer to an element of this array
+     * @throws ArrayStoreException if the given element can
+     *         not be stored in the array. 
      */
-    public void set(@Name("index") int index, 
-            @Name("element") @PrimitiveType@ element) {
+    public void set(
+            /**
+             * The index within the array.
+             */
+            @Name("index") 
+            int index, 
+            /**
+             * The new value of the array element.
+             */
+            @Name("element") 
+            @PrimitiveType@ element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -125,12 +165,12 @@ public final class @Classname@ implements ReifiedType {
     public final int length = 0;
 
     /**
-     * A view of this array as a Ceylon 
-     * <code>Array&lt;@JavaBoxedTypeName@&gt;</code>
-     * where <code>@JavaBoxedTypeName@</code> is the Java 
-     * wrapper type corresponding to the primitive type 
-     * <code>@PrimitiveType@</code> of elements of this 
-     * Java array.
+     * A view of this array as a Ceylon
+     * {@code Array<@JavaBoxedTypeName@>}, where
+     * {@code @JavaBoxedTypeName@} is the Java wrapper type
+     * corresponding to the primitive type
+     * {@code @PrimitiveType@} of elements of this Java
+     * array.
      */
     @TypeInfo("ceylon.language::Array<@JavaBoxedTypeName@>")
     public ceylon.language.Array<@JavaBoxedType@> getArray(){
@@ -144,11 +184,11 @@ public final class @Classname@ implements ReifiedType {
     }
 
     @Optional@/**
-    @Optional@ * A view of this array as a Ceylon 
-    @Optional@ * <code>Array&lt;@CeylonArrayGetterTypeName@&gt;</code>
-    @Optional@ * where <code>@CeylonArrayGetterTypeName@</code>  
-    @Optional@ * is the Ceylon type corresponding to the 
-    @Optional@ * primitive type <code>@PrimitiveType@</code> 
+    @Optional@ * A view of this array as a Ceylon
+    @Optional@ * {@code Array<@CeylonArrayGetterTypeName@>}
+    @Optional@ * where {@code @CeylonArrayGetterTypeName@}
+    @Optional@ * is the Ceylon type corresponding to the
+    @Optional@ * primitive type {@code @PrimitiveType@}
     @Optional@ * of elements of this Java array.
     @Optional@ */
     @OptionalStart@@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
@@ -166,6 +206,14 @@ public final class @Classname@ implements ReifiedType {
     /**
      * Efficiently copy a measure of this Java primitive 
      * array to the given Java primitive array.
+     * 
+     * @param destination the array into which to copy the
+     *        elements of this array
+     * @param sourcePosition the starting position within
+     *        this array
+     * @param destinationPosition the starting position 
+     *        within the {@code destination} array
+     * @param length the number of elements to copy
      */
     public void copyTo(@Name("destination") @PrimitiveType@[] destination, 
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
@@ -290,9 +338,10 @@ public final class @Classname@ implements ReifiedType {
     }
     
     /**
-     * A Ceylon <code>Iterable<code> containing the
+     * A Ceylon {@code Iterable<@BoxedType@>} containing the 
      * elements of this primitive Java array.
      */
+    @TypeInfo("ceylon.language::Iterable<@BoxedTypeName@,ceylon.language::Null>")
     public @Classname@Iterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -303,7 +352,7 @@ public final class @Classname@ implements ReifiedType {
     }
     
     /* Implement Iterable */
-
+    @Ignore
     public static class @Classname@Iterable 
     extends BaseIterable<@BoxedType@, ceylon.language.Null> {
         

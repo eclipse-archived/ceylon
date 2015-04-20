@@ -152,6 +152,17 @@ public final class process_ implements ReifiedType {
         }
     }
     
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
+    public String environmentVariableValue(@Name("name") java.lang.String name) {
+        if (name.isEmpty()) {
+            return null;
+        }
+        else {
+            java.lang.String env = System.getenv(name);
+            return env==null ? null : String.instance(env);
+        }
+    }
+    
     @Override
     @Transient
     public java.lang.String toString() {

@@ -516,7 +516,7 @@ public abstract class TypeDescriptor {
         }
     }
     
-    private static class Nothing extends TypeDescriptor {
+    public static class Nothing extends TypeDescriptor {
         
         @Override
         public boolean is(TypeDescriptor instanceType) {
@@ -556,7 +556,7 @@ public abstract class TypeDescriptor {
         }
     }
     
-    private abstract static class Composite extends TypeDescriptor {
+    public abstract static class Composite extends TypeDescriptor {
         protected final TypeDescriptor[] members;
 
         public Composite(TypeDescriptor[] members) {
