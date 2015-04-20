@@ -27,29 +27,36 @@ import java.util.Arrays;
 public class Bootstrap {
 
     public static void main(String[] args) throws Throwable {
-        run(args);
+        // we don't need to clean up the class loader when run from main because the JVM will either exit, or
+        // keep running with daemon threads in which case it will keep needing this classloader open 
+        int exit = run(args);
+        // WARNING: NEVER CALL EXIT IF WE STILL HAVE DAEMON THREADS RUNNING AND WE'VE NO REASON TO EXIT WITH A NON-ZERO CODE
+        if (exit != 0) {
+            System.exit(exit);
+        }
     }
 
-    public static void run(String... args) throws Throwable {
+    public static int run(String... args) throws Throwable {
         CeylonClassLoader cl = null;
         try {
-            Method mainMethod = null;
+            Integer result = -1;
+            Method runMethod = null;
             try {
                 String ceylonVersion = LauncherUtil.determineSystemVersion();
                 File module = CeylonClassLoader.getRepoJar("ceylon.bootstrap", ceylonVersion);
                 cl = CeylonClassLoader.newInstance(Arrays.asList(module));
                 Class<?> launcherClass = cl.loadClass("com.redhat.ceylon.launcher.Launcher");
-                mainMethod = launcherClass.getMethod("main", String[].class);
+                runMethod = launcherClass.getMethod("run", String[].class);
             } catch (Exception e) {
                 System.err.println("Fatal: Ceylon command could not be executed");
                 throw e;
             }
             try {
-                mainMethod.invoke(null, (Object)args);
+                result = (Integer)runMethod.invoke(null, (Object)args);
             } catch (InvocationTargetException e) {
                 throw e.getCause();
             }
-            return;
+            return result.intValue();
         } finally {
             if (cl != null) {
                 cl.clearCache();
