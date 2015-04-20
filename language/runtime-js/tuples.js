@@ -114,7 +114,7 @@ function tpl$(elems,types,spread){
       } else if (x<0) {
         return this;
       }
-      return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence}).sequence();
+      return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
     }
     var r=elems.spanFrom(x);
     return r.size===0?empty():tpl$(r,(types.t==='T'?types.l:types).slice(x));
@@ -134,7 +134,7 @@ function tpl$(elems,types,spread){
       if (b>0 && a+b-1>=elems.length) {
         var m1=elems.measure(a,elems.length-a);
         var m2=spread.measure(0,b-m1.size);
-        return m1.chain(m2,{Other$chain:spread.$$targs$$.Element$Sequence}).sequence();
+        return m1.chain(m2,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
       }
     }
     var r=elems.measure(a,b);
@@ -203,7 +203,7 @@ function tpl$(elems,types,spread){
       }
       return e;
     }
-    return elems;
+    return elems.slice(0);
   }
   return that;
 }
