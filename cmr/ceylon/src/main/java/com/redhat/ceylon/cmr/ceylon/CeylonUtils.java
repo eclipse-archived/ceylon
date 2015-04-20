@@ -577,7 +577,7 @@ public class CeylonUtils {
             }
             if (!isRemote(path)) {
                 File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
-                path = f.getPath();
+                path = f.getAbsolutePath();
             }
             if(prefix == null)
                 return path;
