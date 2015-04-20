@@ -398,4 +398,10 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
             localDeclarations = new HashMap<String, Declaration>();
         localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
+
+    @Override
+    public boolean isDeprecated() {
+        load();
+        return super.isDeprecated();
+    }
 }
