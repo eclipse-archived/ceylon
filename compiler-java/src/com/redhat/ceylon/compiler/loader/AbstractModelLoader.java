@@ -2392,6 +2392,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 modelAnnotation.setName("deprecated");
                 modelAnnotation.getPositionalArguments().add("");
                 decl.getAnnotations().add(modelAnnotation);
+                decl.setDeprecated(true);
             }
         }
         // Set "native" annotation

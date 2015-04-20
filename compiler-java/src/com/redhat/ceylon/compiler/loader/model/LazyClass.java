@@ -444,4 +444,10 @@ public class LazyClass extends Class implements LazyContainer {
             localDeclarations = new HashMap<String, Declaration>();
         localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
+    
+    @Override
+    public boolean isDeprecated() {
+        load();
+        return super.isDeprecated();
+    }
 }

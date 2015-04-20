@@ -45,7 +45,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     public CeylonCopyTool() {
         super(CeylonCopyMessages.RESOURCE_BUNDLE);
     }
-    
+
     @Argument(argumentName="module", multiplicity="+")
     public void setModules(List<String> modules) {
         setModuleSpecs(ModuleSpec.parseEachList(modules));
@@ -110,6 +110,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     @Override
     protected boolean needsSystemRepo() {
         return false;
+    }
+
+    @Override
+    protected boolean doNotReadFromOutputRepo(){
+        return true;
     }
 
     @Override
@@ -223,8 +228,8 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Override
-    protected CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
-        return createRepositoryManagerBuilderNoOut();
+    protected CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
+        return createRepositoryManagerBuilderNoOut(forInput);
     }
 
 }

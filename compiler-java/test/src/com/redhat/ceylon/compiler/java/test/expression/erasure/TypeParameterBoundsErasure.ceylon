@@ -32,11 +32,11 @@ T bug1327inv<T>(T t)
         given T satisfies String[]{
     return t;
 }
-T bug1327cov<out T>(T t)
+T bug1327cov<out T>()
         given T satisfies String[]{
-    return t;
+    return nothing;
 }
-T bug1327con<in T>(T t)
+Object bug1327con<in T>(T t)
         given T satisfies String[]{
     return t;
 }
@@ -49,8 +49,9 @@ void bug1327user(){
     Empty a2 = Bug1327Cov([]).t;
     Bug1327Con([]);
     Empty a3 = bug1327inv([]);
-    Empty a4 = bug1327cov([]);
-    String[] a5 = bug1327con([]);
+    Empty a4 = bug1327cov<Empty>();
+    // not allowed anymore
+    //String[] a5 = bug1327con([]);
     Empty a6 = Bug1327Inv2().t;
     Empty a7 = Bug1327Cov2().t;
     Bug1327Con2();

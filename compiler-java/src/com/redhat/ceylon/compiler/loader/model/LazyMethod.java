@@ -402,4 +402,10 @@ public class LazyMethod extends Method implements LazyElement, LocalDeclarationC
             localDeclarations = new HashMap<String, Declaration>();
         localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
+
+    @Override
+    public boolean isDeprecated() {
+        load();
+        return super.isDeprecated();
+    }
 }

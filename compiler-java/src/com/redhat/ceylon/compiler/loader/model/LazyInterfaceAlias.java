@@ -348,4 +348,10 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     public void addLocalDeclaration(Declaration declaration) {
         throw new RuntimeException("type aliases do not contain any local declarations");
     }
+
+    @Override
+    public boolean isDeprecated() {
+        load();
+        return super.isDeprecated();
+    }
 }
