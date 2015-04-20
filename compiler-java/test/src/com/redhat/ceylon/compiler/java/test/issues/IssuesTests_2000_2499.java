@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 import javax.tools.Diagnostic;
+import javax.tools.Diagnostic.Kind;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -247,5 +248,12 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2124() {
         compareWithJavaSource("bug21xx/Bug2124");
         run("com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2124");
+    }
+
+    @Test
+    public void testBug2136() {
+        assertErrors("bug21xx/Bug2136",
+                new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
+                new CompilerError(Kind.WARNING, null, 3, "type is deprecated: 'StringBufferInputStream'"));
     }
 }
