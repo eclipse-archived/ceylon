@@ -172,11 +172,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
-    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
-        return createRepositoryManagerBuilderNoOut();
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
+        return createRepositoryManagerBuilderNoOut(forInput);
     }
     
-    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut() {
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut(boolean forInput) {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
                 .overrides(overrides)
@@ -198,7 +198,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     protected synchronized RepositoryManager getRepositoryManager() {
         if (rm == null) {
-            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
+            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder(true);
             rm = rmb.buildManager();   
         }
         return rm;

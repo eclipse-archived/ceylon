@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
 
@@ -14,6 +15,7 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
     protected String pass;
 
     private RepositoryManager outrm;
+    private String resolvedOutputRepo;
     
     public static final String DOCSECTION_CONFIG_COMPILER =
             "## Configuration file" +
@@ -57,15 +59,26 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
     }
     
     @Override
-    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
-        return super.createRepositoryManagerBuilder()
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
+        return super.createRepositoryManagerBuilder(forInput)
                 .outRepo(out)
                 .user(user)
                 .password(pass);
     }
-    
+
+    @Override
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut(boolean forInput) {
+        CeylonRepoManagerBuilder repoManagerBuilder = super.createRepositoryManagerBuilderNoOut(forInput);
+        if(forInput && doNotReadFromOutputRepo()){
+            // make sure we avoid the output repo for reading
+            getOutputRepositoryManager();
+            repoManagerBuilder.avoidRepo(resolvedOutputRepo);
+        }
+        return repoManagerBuilder;
+    }
+
     protected CeylonUtils.CeylonRepoManagerBuilder createOutputRepositoryManagerBuilder() {
-        return super.createRepositoryManagerBuilder()
+        return super.createRepositoryManagerBuilder(false)
                 .outRepo(out)
                 .user(user)
                 .password(pass);
@@ -75,8 +88,16 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
         if (outrm == null) {
             CeylonUtils.CeylonRepoManagerBuilder rmb = createOutputRepositoryManagerBuilder();
             outrm = rmb.buildOutputManager();
+            resolvedOutputRepo = rmb.getResolvedOutRepo();
         }
         return outrm;
+    }
+
+    /**
+     * For subclasses that do not want to read from the output repo
+     */
+    protected boolean doNotReadFromOutputRepo(){
+        return false;
     }
 
     protected void signArtifact(ArtifactContext context, File jarFile){
