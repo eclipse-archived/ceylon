@@ -55,7 +55,6 @@ public class MissingNativeVisitor extends Visitor {
     
     public void visit(Tree.ClassOrInterface decl) {
         checkNativeExistence(decl);
-        validateNativeApi(decl);
         super.visit(decl);
     }
 
@@ -81,7 +80,6 @@ public class MissingNativeVisitor extends Visitor {
 
     public void visit(Tree.AnyMethod decl) {
         checkNativeExistence(decl);
-        validateNativeApi(decl);
         super.visit(decl);
     }
 
@@ -141,49 +139,5 @@ public class MissingNativeVisitor extends Visitor {
         }
         if(!ok)
             node.addError("native declaration not found");
-    }
-
-    private void validateNativeApi(Tree.Declaration node) {
-        Declaration model = node.getDeclarationModel();
-        if(model == null)
-            return;
-        if(!Decl.isToplevel(model) || !Decl.isNative(model))
-            return;
-        Package pkg = Decl.getPackage(model);
-        if(pkg == null)
-            return;
-        
-        Functional f = (Functional)model;
-        if (f.getOverloads() !=  null) {
-            Declaration abstraction = null;
-            if ("".equals(model.getNative())) {
-                abstraction = model;
-            } else {
-                for (Declaration d : f.getOverloads()) {
-                    if ("".equals(d.getNative())) {
-                        abstraction = d;
-                        break;
-                    }
-                }
-            }
-            if (abstraction == null) {
-                // Abstraction-less native implementation, check it's not shared
-                if (model.isShared()) {
-                    node.addError("native implementation should have an abstraction or not be shared");
-                }
-            } else {
-                // Native implementation with abstraction, check it's shared
-                if (!model.isShared()) {
-                    if (model == abstraction) {
-                        node.addError("native abstraction should be shared");
-                    } else {
-                        node.addError("native implementation should be shared");
-                    }
-                }
-            }
-        } else {
-            // External implementation, probably hand-written in Java
-            // TODO check anything?
-        }
     }
 }
