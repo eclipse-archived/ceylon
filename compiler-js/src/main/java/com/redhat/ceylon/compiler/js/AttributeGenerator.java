@@ -207,9 +207,8 @@ public class AttributeGenerator {
             gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
             gen.out("{");
             if (gen.shouldStitch(d)) {
-                if (!gen.stitchNative(d, that)) {
-                    gen.out("throw new Error('MISSING native code for " + d.getQualifiedNameString() + "');");
-                }
+                //this is for native member attribute declaration with no value
+                gen.stitchNative(d, that);
             } else {
                 //Just return the private value #451
                 if (d.isLate()) {
@@ -251,21 +250,32 @@ public class AttributeGenerator {
             if (d.isParameter()) {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
-            if (d.isVariable() || param != null || d.isLate()) {
+            if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable() || param != null
+                    || d.isLate() || gen.shouldStitch(d)) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
                     gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
                     gen.beginBlock();
                     gen.initSelf(that);
-                    gen.out("return ");
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
-                    if (!gen.isNaturalLiteral(expr.getTerm())) {
-                        final int boxType = gen.boxStart(expr.getTerm());
-                        expr.visit(gen);
-                        gen.endLine(true);
-                        if (boxType == 4) gen.out("/*TODO: callable targs 3*/");
-                        gen.boxUnboxEnd(boxType);
+                    boolean stitch = gen.shouldStitch(d);
+                    if (stitch) {
+                        stitch=gen.stitchNative(d, that);
+                        if (stitch) {
+                            gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                                    ", ignoring Ceylon declaration");
+                        }
+                    }
+                    if (!stitch) {
+                        gen.out("return ");
+                        if (!gen.isNaturalLiteral(expr.getTerm())) {
+                            final int boxType = gen.boxStart(expr.getTerm());
+                            expr.visit(gen);
+                            gen.endLine(true);
+                            if (boxType == 4) gen.out("/*TODO: callable targs 3*/");
+                            gen.boxUnboxEnd(boxType);
+                        }
                     }
                     gen.endBlock();
                     Tree.AttributeSetterDefinition setterDef = null;
@@ -295,7 +305,19 @@ public class AttributeGenerator {
                     if (d.isLate()) {
                         gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d));
                     }
-                    gen.out("return this.", privname, ";}");
+                    if (gen.shouldStitch(d)) {
+                        if (gen.stitchNative(d, that)) {
+                            gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                                    ", ignoring Ceylon declaration");
+                        } else {
+                            gen.out("return ");
+                            that.getSpecifierOrInitializerExpression().getExpression().visit(gen);
+                            gen.out(";");
+                        }
+                        gen.out("}");
+                    } else {
+                        gen.out("return this.", privname, ";}");
+                    }
                     if (d.isVariable() || d.isLate()) {
                         final String pname = gen.getNames().createTempVariable();
                         gen.out(",function(", pname, "){");

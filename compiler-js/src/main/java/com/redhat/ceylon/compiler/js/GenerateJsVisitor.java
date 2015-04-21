@@ -1207,7 +1207,18 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         defineAttribute(names.self(outer), names.name(d));
-        AttributeGenerator.getter(that, this, true);
+        if (shouldStitch(d)) {
+            out("{");
+            if (stitchNative(d, that)) {
+                spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                        ", ignoring Ceylon declaration");
+            } else {
+                AttributeGenerator.getter(that, this, false);
+            }
+            out("}");
+        } else {
+            AttributeGenerator.getter(that, this, true);
+        }
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
         if (setterDef == null) {
             out(",undefined");
@@ -1309,18 +1320,21 @@ public class GenerateJsVisitor extends Visitor
         final boolean asprop = defineAsProperty(d);
         if (d.isFormal()) {
             if (!opts.isOptimize()) {
+                comment(that);
                 generateAttributeMetamodel(that, false, false);
             }
         } else {
-            comment(that);
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
                     || d.isVariable() || d.isLate();
             final boolean addSetter = (d.isVariable() || d.isLate()) && !asprop;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-                if (specInitExpr != null
-                        && !(specInitExpr instanceof LazySpecifierExpression)) {
+                //Stitch native member attribute declaration with no value
+                final boolean eagerExpr = specInitExpr != null
+                        && !(specInitExpr instanceof LazySpecifierExpression); 
+                if (eagerExpr && !shouldStitch(d)) {
+                    comment(that);
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
                     if (d.isLate()) {
@@ -1332,6 +1346,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
+                comment(that);
                 if (asprop) {
                     defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
                     out("{");
