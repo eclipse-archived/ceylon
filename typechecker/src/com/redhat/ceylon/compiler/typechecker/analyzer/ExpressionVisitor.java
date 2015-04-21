@@ -6010,7 +6010,12 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (type instanceof Constructor) {
                 Scope container = type.getContainer();
-                if (container instanceof Class) {
+                if (type.isAbstract()) {
+                    that.addError("abstract constructor cannot be invoked: '" +
+                            type.getName(unit) + "' is abstract");
+                    return false;
+                }
+                else if (container instanceof Class) {
                     Class c = (Class) container;
                     if (c.isAbstract()) {
                         that.addError("class cannot be instantiated: '" +
