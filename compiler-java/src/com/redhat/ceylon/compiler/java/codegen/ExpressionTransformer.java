@@ -5417,12 +5417,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
                 methodBody = List.<JCStatement>of(make().WhileLoop(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()),
                         make().Block(0, contextBody.toList())));
+                // It can happen that we never get into the body because the outer iterator is exhausted, if so, mark
+                // this one exhausted too
                 if (lastIteratorCtxtName != null) {
-                    // It can happen that we never get into the body because the outer iterator is exhausted, if so, mark
-                    // this one exhausted too
+                    // FIXME: this may actually not be useful to check for exhaustion because in theory we can only get out
+                    // of the loop because the previous supplier is exhausted.
                     methodBody = methodBody.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(), 
                             make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))), 
                             null));
+                }else{
+                    methodBody = methodBody.append(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))));
                 }
                 methodBody = methodBody.append(make().Return(makeBoolean(false)));
             }else
