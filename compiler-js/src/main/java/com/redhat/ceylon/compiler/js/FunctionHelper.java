@@ -214,8 +214,8 @@ public class FunctionHelper {
                         if (m.isShared()) {
                             gen.share(m);
                         }
+                        return;
                     }
-                    return;
                 }
                 gen.out(m.isToplevel() ? GenerateJsVisitor.function : "var ");
             }
