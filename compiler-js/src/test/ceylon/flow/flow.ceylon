@@ -197,5 +197,6 @@ shared void test() {
     check(assertionCount()==assertsBefore+6, "block assertions skipped: ``(assertsBefore+6-assertionCount())``");
     testConditions();
     testSwitches();
+    test525();
     results();
 }
