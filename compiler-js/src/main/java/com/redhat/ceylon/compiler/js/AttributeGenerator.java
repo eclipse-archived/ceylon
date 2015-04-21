@@ -16,11 +16,15 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 
 public class AttributeGenerator {
 
-    static void getter(final Tree.AttributeGetterDefinition that, final GenerateJsVisitor gen) {
-        gen.beginBlock();
+    static void getter(final Tree.AttributeGetterDefinition that, final GenerateJsVisitor gen, final boolean block) {
+        if (block) {
+            gen.beginBlock();
+        }
         gen.initSelf(that);
         gen.visitStatements(that.getBlock().getStatements());
-        gen.endBlock();
+        if (block) {
+            gen.endBlock();
+        }
     }
 
     static void setter(final Tree.AttributeSetterDefinition that, final GenerateJsVisitor gen) {
@@ -50,7 +54,8 @@ public class AttributeGenerator {
         } else {
             varName = gen.getNames().name(decl);
         }
-        final boolean initVal = decl.isToplevel();
+        final boolean initVal = decl.isToplevel() && !gen.shouldStitch(decl);
+        boolean stitch = gen.shouldStitch(decl);
         gen.out("var ", varName);
         if (expr != null) {
             if (initVal) {
@@ -65,36 +70,51 @@ public class AttributeGenerator {
             } else {
                 gen.out("=");
             }
-            int boxType = gen.boxStart(expr.getExpression().getTerm());
-            if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getExpression().getTypeModel())
-                    && !Util.isTypeUnknown(decl.getType())) {
-                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,
-                        expr.getExpression().getTypeModel().getTypeArguments());
-            } else {
-                expr.visit(gen);
-            }
-            if (boxType == 4) {
-                //Pass Callable argument types
-                gen.out(",");
-                if (decl instanceof Method) {
-                    //Add parameters
-                    TypeUtils.encodeParameterListForRuntime(attributeNode, ((Method)decl).getParameterLists().get(0), gen);
-                } else {
-                    //Type of value must be Callable
-                    //And the Args Type Parameters is a Tuple
-                    TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(attributeNode,
-                            expr.getExpression().getTypeModel(), gen);
+            boolean genatr=true;
+            if (stitch) {
+                genatr=!gen.stitchNative(decl, attributeNode);
+                if (!genatr) {
+                    gen.spitOut("Stitching in native attribute " + decl.getQualifiedNameString()
+                            + ", ignoring Ceylon declaration");
                 }
-                gen.out(",");
-                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false,
-                        expr.getExpression().getTypeModel().getVarianceOverrides());
+                stitch=false;
             }
-            gen.boxUnboxEnd(boxType);
+            if (genatr) {
+                int boxType = gen.boxStart(expr.getExpression().getTerm());
+                if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getExpression().getTypeModel())
+                        && !Util.isTypeUnknown(decl.getType())) {
+                    TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,
+                            expr.getExpression().getTypeModel().getTypeArguments());
+                } else {
+                    expr.visit(gen);
+                }
+                if (boxType == 4) {
+                    //Pass Callable argument types
+                    gen.out(",");
+                    if (decl instanceof Method) {
+                        //Add parameters
+                        TypeUtils.encodeParameterListForRuntime(attributeNode, ((Method)decl).getParameterLists().get(0), gen);
+                    } else {
+                        //Type of value must be Callable
+                        //And the Args Type Parameters is a Tuple
+                        TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(attributeNode,
+                                expr.getExpression().getTypeModel(), gen);
+                    }
+                    gen.out(",");
+                    TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false,
+                            expr.getExpression().getTypeModel().getVarianceOverrides());
+                }
+                gen.boxUnboxEnd(boxType);
+            }
             if (initVal) {
                 gen.out("};return ", varName, ";}");
             }
         } else if (param != null) {
             gen.out("=", param);
+        } else if (stitch) {
+            gen.out("=");
+            gen.stitchNative(decl, attributeNode);
+            stitch=false;
         }
         gen.endLine(true);
         if (decl instanceof Method) {
@@ -140,6 +160,11 @@ public class AttributeGenerator {
                     gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){return ");
                     if (initVal) {
                         gen.out("$valinit$", varName, "();}");
+                    } else if (stitch) {
+                        gen.stitchNative(decl, attributeNode);
+                        gen.out(";}");
+                        gen.spitOut("Stitching in native attribute " + decl.getQualifiedNameString()
+                                + ", ignoring Ceylon declaration");
                     } else {
                         gen.out(varName, ";}");
                     }
@@ -226,8 +251,7 @@ public class AttributeGenerator {
             if (d.isParameter()) {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
-            if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
-                        || param != null || d.isLate()) {
+            if (d.isVariable() || param != null || d.isLate()) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
