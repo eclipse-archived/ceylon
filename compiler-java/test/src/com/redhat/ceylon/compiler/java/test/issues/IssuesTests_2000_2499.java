@@ -251,6 +251,12 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     }
 
     @Test
+    public void testBug2135() {
+        compareWithJavaSource("bug21xx/Bug2135");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2135");
+    }
+
+    @Test
     public void testBug2136() {
         assertErrors("bug21xx/Bug2136",
                 new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
