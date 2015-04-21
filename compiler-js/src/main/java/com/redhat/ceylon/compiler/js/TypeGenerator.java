@@ -758,7 +758,7 @@ public class TypeGenerator {
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
             }
-            gen.visitClassStatements(cdef.getClassBody().getStatements(), that);
+            gen.generateClassStatements(cdef.getClassBody().getStatements(), that);
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_after");
             }

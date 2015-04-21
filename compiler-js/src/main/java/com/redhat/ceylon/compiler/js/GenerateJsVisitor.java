@@ -317,7 +317,7 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    void visitClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
+    void generateClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
         if (cnstr == null) {
             visitStatements(classBody);
         } else {
@@ -328,11 +328,18 @@ public class GenerateJsVisitor extends Visitor
                 if (st == cnstr) {
                     for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
                         s2.visit(this);
+                        if (!opts.isMinify())beginNewLine();
+                        retainedVars.emitRetainedVars(this);
                     }
                 } else if (st instanceof Tree.Constructor == false) {
                     st.visit(this);
                     if (!opts.isMinify())beginNewLine();
                     retainedVars.emitRetainedVars(this);
+                    //Remove attribute declaration in lexical style so that
+                    //every constructor adds metamodel to that attribute
+                    if (!opts.isOptimize() && cnstr != null && st instanceof Tree.AttributeDeclaration) {
+                        generatedAttributes.remove(((Tree.AttributeDeclaration)st).getDeclarationModel());
+                    }
                 }
             }
             retainedVars.reset(oldRetainedVars);
