@@ -103,8 +103,8 @@ public abstract class LazyModuleManager extends ModuleManager {
                         String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
                         String error = "source code imports two different versions of module '" + 
                                 moduleName + "': "+
-                                "version '\"" + versions[0] + "\"' and version '\"" + versions[1] +
-                                "\"'";
+                                "version '" + versions[0] + "' and version '" + versions[1] +
+                                "'";
                         addErrorToModule(dependencyTree.getFirst(), error);
                     }else{
                         String moduleA;
