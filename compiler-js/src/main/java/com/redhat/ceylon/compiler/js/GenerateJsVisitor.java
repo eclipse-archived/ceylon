@@ -317,6 +317,29 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
+    void visitClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
+        if (cnstr == null) {
+            visitStatements(classBody);
+        } else {
+            List<String> oldRetainedVars = retainedVars.reset(null);
+            final List<? extends Statement> prevStatements = currentStatements;
+            currentStatements = classBody;
+            for (Tree.Statement st : classBody) {
+                if (st == cnstr) {
+                    for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
+                        s2.visit(this);
+                    }
+                } else if (st instanceof Tree.Constructor == false) {
+                    st.visit(this);
+                    if (!opts.isMinify())beginNewLine();
+                    retainedVars.emitRetainedVars(this);
+                }
+            }
+            retainedVars.reset(oldRetainedVars);
+            currentStatements = prevStatements;
+        }
+    }
+
     void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars.reset(null);
         final List<? extends Statement> prevStatements = currentStatements;
@@ -329,7 +352,6 @@ public class GenerateJsVisitor extends Visitor
             retainedVars.emitRetainedVars(this);
         }
         retainedVars.reset(oldRetainedVars);
-        
         currentStatements = prevStatements;
     }
 

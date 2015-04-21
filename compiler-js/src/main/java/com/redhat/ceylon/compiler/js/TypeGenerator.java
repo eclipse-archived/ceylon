@@ -252,13 +252,11 @@ public class TypeGenerator {
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Tree.ParameterList plist = that.getParameterList();
         final List<Tree.Constructor> constructors;
-        final List<Tree.Statement> classBody;
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         //Find the constructors, if any
         Tree.Constructor defconstr = null;
         if (d.hasConstructors()) {
             constructors = new ArrayList<>(3);
-            classBody = new ArrayList<>(that.getClassBody().getStatements().size());
             for (Tree.Statement st : that.getClassBody().getStatements()) {
                 if (st instanceof Tree.Constructor) {
                     Tree.Constructor constr = (Tree.Constructor)st;
@@ -266,13 +264,10 @@ public class TypeGenerator {
                     if (constr.getDeclarationModel().getName() == null) {
                         defconstr = constr;
                     }
-                } else {
-                    classBody.add(st);
                 }
             }
         } else {
             constructors = Collections.emptyList();
-            classBody = that.getClassBody().getStatements();
         }
         gen.comment(that);
         if (gen.shouldStitch(d)) {
@@ -292,7 +287,7 @@ public class TypeGenerator {
             }
             if (d.hasConstructors()) {
                 for (Tree.Constructor cnstr : constructors) {
-                    classConstructor(cnstr, that.getTypeParameterList(), d, gen);
+                    classConstructor(cnstr, that, gen);
                 }
             }
             if (bye)return;
@@ -366,15 +361,17 @@ public class TypeGenerator {
                 }
             }
         }
-        if (d.isNative()) {
-            gen.stitchConstructorHelper(that, "_cons_before");
-        }
-        gen.visitStatements(classBody);
-        if (d.isNative()) {
-            gen.stitchConstructorHelper(that, "_cons_after");
-        }
-        if (constructors.isEmpty()) {
-            gen.out("return ", me, ";");
+        if (!d.hasConstructors()) {
+            if (d.isNative()) {
+                gen.stitchConstructorHelper(that, "_cons_before");
+            }
+            gen.visitStatements(that.getClassBody().getStatements());
+            if (d.isNative()) {
+                gen.stitchConstructorHelper(that, "_cons_after");
+            }
+            if (constructors.isEmpty()) {
+                gen.out("return ", me, ";");
+            }
         }
         gen.endBlockNewLine();
         if (defconstr != null) {
@@ -396,7 +393,7 @@ public class TypeGenerator {
             gen.endLine();
         }
         for (Tree.Constructor cnstr : constructors) {
-            classConstructor(cnstr, that.getTypeParameterList(), d, gen);
+            classConstructor(cnstr, that, gen);
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
@@ -727,13 +724,15 @@ public class TypeGenerator {
     }
 
     static void classConstructor(final Tree.Constructor that,
-            final Tree.TypeParameterList tparms, final Class container, final GenerateJsVisitor gen) {
+            final Tree.ClassDefinition cdef, final GenerateJsVisitor gen) {
         gen.comment(that);
         Constructor d = that.getDeclarationModel();
+        final Class container = cdef.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!d.isNative() || !gen.stitchNative(d, that)) {
             gen.out("function ", fullName);
-            final boolean withTargs = generateParameters(tparms, that.getParameterList(), container, gen);
+            final boolean withTargs = generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
+                    container, gen);
             final String me = gen.getNames().self(container);
             gen.beginBlock();
             gen.out("$init$", gen.getNames().name(container), "();");
@@ -756,7 +755,13 @@ public class TypeGenerator {
             gen.out(me, ");");
             gen.endLine();
             gen.initParameters(that.getParameterList(), container, null);
-            gen.visitStatements(that.getBlock().getStatements());
+            if (d.isNative()) {
+                gen.stitchConstructorHelper(cdef, "_cons_before");
+            }
+            gen.visitClassStatements(cdef.getClassBody().getStatements(), that);
+            if (d.isNative()) {
+                gen.stitchConstructorHelper(cdef, "_cons_after");
+            }
             gen.out("return ", me, ";");
             gen.endBlockNewLine(true);
         }
