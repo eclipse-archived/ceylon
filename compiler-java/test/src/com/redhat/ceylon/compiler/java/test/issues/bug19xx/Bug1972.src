@@ -13,6 +13,10 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972((.ceylon.language.String)null);
+    }
+    
     public static final .ceylon.language.String Bug1972$x() {
         return null;
     }
@@ -28,10 +32,6 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private Bug1972(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Other $name$) {
-    }
-    
-    private final void m$priv$() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972((.ceylon.language.String)null);
     }
     
     @.java.lang.Override

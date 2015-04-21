@@ -4898,11 +4898,12 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
         }
         classBuilder.hasConstructors(true);
-        List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
+        List<JCStatement> preInitStmts = classBuilder.getInitBuilder().getPreBodyCopy(that);
+        List<JCStatement> postInitStmts = classBuilder.getInitBuilder().getPostBodyCopy(that);
         
         List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
         at(that);
-        ctorDb.block(make().Block(0, ctorStmts.prependList(initStmts)));
+        ctorDb.block(make().Block(0, postInitStmts.prependList(ctorStmts).prependList(preInitStmts)));
         
         result.add(ctorDb.build());
         return result.toList();
