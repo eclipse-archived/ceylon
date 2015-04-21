@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
@@ -41,6 +42,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean declared = false;
     private boolean hasParameter = false;
     private Tree.Statement lastExecutableStatement;
+    private Tree.Constructor lastConstructor;
     private boolean declarationSection = false;
     private boolean endsInBreakReturnThrow = false;
     private boolean inExtends = false;
@@ -710,7 +712,7 @@ public class SpecificationVisitor extends Visitor {
         }
         super.visit(that);
         if (declaration.getContainer()==c.getContainer() &&
-                that==lastExecutableStatement && 
+                that==lastConstructor && 
                 initedByEveryConstructor) {
             specified.definitely = true;
         }
@@ -933,11 +935,14 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.ClassBody that) {
         if (that.getScope()==declaration.getContainer()) {
             Tree.Statement les = getLastExecutableStatement(that);
+            Tree.Constructor lc = getLastConstructor(that);
             declarationSection = les==null;
             lastExecutableStatement = les;
+            lastConstructor = lc;
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
+            lastConstructor = null;
 
             if (!declaration.isAnonymous()) {
                 if (isSharedDeclarationUninitialized()) {

@@ -1125,8 +1125,9 @@ TypeConstraints?
             <para>The initial part of the body of a class is called the 
             <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
             statements, and control structures. The initializer is executed every time the 
-            class is instantiated. The initializer section may end with a list of
-            constructors, as defined in <xref linkend="constructors"/>.</para>
+            class is instantiated. If the class does not have an initializer parameter list, 
+            the initializer section may include one or more constructor declarations, as 
+            defined in <xref linkend="constructors"/>.</para>
                
             <para>A class initializer is responsible for initializing the state of the new 
             instance of the class, before a reference to the new instance is available to 
@@ -1282,7 +1283,7 @@ TypeConstraints?
                     <xref linkend="references"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>a constructor, as defined below in 
+                    <para>a constructor declaration, as defined below in 
                     <xref linkend="constructors"/>,</para>
                 </listitem>
                 <listitem>
@@ -2848,9 +2849,6 @@ print(greeting);</programlisting>
         restriction, and simply require that every <literal>actual</literal> class 
         provide a constructor with the same signature as the constructor of its 
         superclass.</para></comment>
-        
-        <para>The constructors of a class must occur after every other statement,
-        declaration, and control structure in the initializer section of the class.</para>
         
         <para>A constructor annotated <literal>sealed</literal> may not be invoked 
         outside the module in which it is defined.</para>

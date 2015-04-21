@@ -443,17 +443,20 @@ String result = middleObject.string;</programlisting>
                     <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
                     there is exactly one other superclass <literal>Y</literal> of 
                     <literal>C</literal> that directly extends <literal>X</literal>. When
-                    execution of the initializer of <literal>X</literal>, and the constructor
-                    of <literal>X</literal>, if any, terminates without a thrown exception, 
-                    execution of the initializer of <literal>Y</literal> begins. Finally, if 
-                    <literal>Y</literal> has constructors, the constructor delegated by 
-                    <literal>X</literal> is executed.</para>
+                    execution of the initializer of <literal>X</literal> terminates without 
+                    a thrown exception, execution of the initializer of <literal>Y</literal> 
+                    begins. When sequential execution of the initializer reaches the 
+                    declaration of the invoked or delegated constructor of <literal>Y</literal>, 
+                    if any, the constructor itself is executed. When execution of the 
+                    constructor terminates without a thrown exception, execution of the 
+                    initializer resumes at the next statement after the constructor 
+                    declaration.</para>
                 </listitem>
                 <listitem>
                     <para>Finally, when execution of the initializer of <literal>C</literal>, 
-                    and the invoked constructor of <literal>C</literal>, if any, terminates 
-                    without a thrown exception, the new instance of <literal>C</literal> is 
-                    fully-initialized and made accessible to the calling code.</para>
+                     terminates without a thrown exception, the new instance of 
+                     <literal>C</literal> is fully-initialized and made accessible to the 
+                     calling code.</para>
                 </listitem>
             </itemizedlist>
             
