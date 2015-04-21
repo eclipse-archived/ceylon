@@ -45,6 +45,7 @@ class JavaArrayIterationStatic() {
     void arrayOfIntsDisabled(IntArray array) {
         @disableOptimization:"JavaArrayIterationStatic"
         @disableOptimization:"ArrayIterationDynamic"
+        @disableOptimization:"TupleIterationDynamic"
         for (element in array.iterable) {
             print(element + 5);
         }
