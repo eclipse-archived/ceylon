@@ -3826,12 +3826,26 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType srcElementType = expr.getTarget().getQualifyingType();
             JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
             JCExpression srcIterableExpr;
+            boolean isSuperOrSuperOf = false;
             if (spreadMethodReferenceInner) {
                 srcIterableExpr = srcIterableName.makeIdent();
             } else {
-                srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
+                boolean isSuper = isSuper(expr.getPrimary());
+                isSuperOrSuperOf = isSuper || isSuperOf(expr.getPrimary());
+                if(isSuperOrSuperOf){
+                    // in this case we can't capture the iterable because it may be a mixin impl class, but it's constant
+                    // so we just refer to it later
+                    if(isSuper){
+                        Declaration member = expr.getPrimary().getTypeModel().getDeclaration().getMember("iterator", null, false);
+                        srcIterableExpr = transformSuper(expr, (TypeDeclaration) member.getContainer());
+                    }else
+                        srcIterableExpr = transformSuperOf(expr, expr.getPrimary(), "iterator");
+                }else{
+                    srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
+                }
             }
-            if (!spreadMethodReferenceInner) {
+            // do not capture the iterable for super invocations: see above
+            if (!spreadMethodReferenceInner && !isSuperOrSuperOf) {
                 JCVariableDecl srcIterable = null;
                 srcIterable = makeVar(Flags.FINAL, srcIterableName, srcIterableTypeExpr, srcIterableExpr);
                 letStmts.prepend(srcIterable);
@@ -3842,7 +3856,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // private Iterator<srcElementType> iterator = srcIterableName.iterator();
             JCVariableDecl srcIterator = makeVar(Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getIteratorType(srcElementType)), 
                     make().Apply(null,
-                            naming.makeQualIdent(srcIterableName.makeIdent(), "iterator"),
+                            // for super we do not capture it because we can't and it's constant anyways
+                            naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "iterator"),
                             List.<JCExpression>nil()));
             
             Naming.SyntheticName iteratorResultName = varBaseName.suffixedBy(Suffix.$element$);
