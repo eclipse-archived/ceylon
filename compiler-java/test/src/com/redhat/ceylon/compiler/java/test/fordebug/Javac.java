@@ -70,8 +70,14 @@ public class Javac {
     private List<String> buildArgs() {
         List<String> args = new ArrayList<String>();
         String home = System.getenv("JAVA_HOME");
+        if (home == null) {
+            home = System.getProperty("java.home");
+        }
         if (home != null) {
             File javac = new File(home, "bin/javac");
+            if (!javac.exists()) {// maybe we found the JRE home
+                javac = new File(home, "../bin/javac");
+            }
             args.add(javac.getPath());
         } else {
             args.add("javac");
