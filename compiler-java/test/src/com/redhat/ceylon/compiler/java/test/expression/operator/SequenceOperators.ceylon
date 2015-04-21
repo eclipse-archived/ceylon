@@ -18,7 +18,10 @@
  * MA  02110-1301, USA.
  */
 @noanno
-shared class SequenceOperators() {
+shared abstract class SequenceOperators() satisfies List<String> {
+    
+    equals(Object o) => false;
+    hash => 1;
     
     Correspondence<Integer, String> c1 = [""];
     Correspondence<Integer,String>? c2 = [""];
@@ -31,6 +34,10 @@ shared class SequenceOperators() {
         variable String? s = c1[1];
         s = this.c1[1];
         s = c1[box(1)];
+        s = this[1];
+        s = super[1];
+        s = (super of List<String>)[1];
+        s = super.get(1);
 // M5:
 //        if (c1 satisfies OpenCorrespondence<Integer, String>) {
 //            c1[n1] = s;
@@ -41,12 +48,18 @@ shared class SequenceOperators() {
 //        variable Iterable<String> it1 = c1[indices.iterator];
         String[] sequence = ["foo", "bar"];
         variable String[] subrange;
+        variable List<String> subrangeList;
         subrange = sequence[1..2];
         subrange = this.sequence[1..2];
         subrange = sequence[box(1)..box(2)];
+        subrangeList = this[1..2];
+        subrangeList = super[1..2];
+        
         subrange = sequence[1:2];
         subrange = this.sequence[1:2];
         subrange = sequence[box(1):box(2)];
+        subrangeList = this[1:2];
+        subrangeList = super[1:2];
         
         // make sure the length is cast to Integer and not String
         String stringRangeRet = stringRange[1:integerAndList];
@@ -55,17 +68,31 @@ shared class SequenceOperators() {
         upperRange = sequence[1...];
         upperRange = this.sequence[1...];
         upperRange = sequence[box(1)...];
+        subrangeList = this[1...];
+        subrangeList = super[1...];
+
         variable String[] lowerRange;
         lowerRange = sequence[...1];
         lowerRange = this.sequence[...1];
         lowerRange = sequence[...box(1)];
+        subrangeList = this[...1];
+        subrangeList = super[...1];
         
         Integer[] spreadMemberWithUnboxedType = sequence*.size;
+        Integer[] spreadMemberOnThis = this*.size;
+        Integer[] spreadMemberOnSuper = super*.size;
+        Integer[] spreadMemberOnSuperOf = (super of List<String>)*.size;
         Integer[] intSequence = [1];
         Integer[] spreadMemberWithBoxedType = intSequence*.wholePart;
         variable Character?[] spreadInvoke;
         spreadInvoke = sequence*.get(0);
         spreadInvoke = sequence*.get{index = 0;};
+        spreadInvoke = this*.get(0);
+        spreadInvoke = this*.get{index = 0;};
+        spreadInvoke = super*.get(0);
+        spreadInvoke = super*.get{index = 0;};
+        spreadInvoke = (super of List<String>)*.get(0);
+        spreadInvoke = (super of List<String>)*.get{index = 0;};
 
         String[] empty = [];
         String[] upperCasedEmpty = empty*.uppercased;
@@ -82,6 +109,25 @@ shared class SequenceOperators() {
     }
  }
 
+@noanno
+shared interface List2<Element> satisfies List<Element> {
+    getFromFirst(Integer i) => get(i);
+}
+
+// also test super[x] when getFromFirst is not formal
+@noanno
+shared abstract class SequenceOperators2() satisfies List2<String> {
+     
+     equals(Object o) => false;
+     hash => 1;
+     
+     void testSequence() {
+         variable String? s;
+         s = super[1];
+         s = (super of List2<String>)[1];
+         s = super.get(1);
+     }
+}
 @noanno
 void sequenceOperators() {
     value t = [1, "2", Singleton('3')];
