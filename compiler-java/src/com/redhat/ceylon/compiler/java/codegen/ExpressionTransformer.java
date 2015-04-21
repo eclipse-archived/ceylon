@@ -78,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -4005,7 +4006,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSuper(primary)) {
                 result = transformSuper(expr);
             } else if (isSuperOf(primary)) {
-                result = transformSuperOf(expr);
+                result = transformSuperOf(expr, expr.getPrimary(), expr.getDeclaration().getName());
             } else if (isThis(primary)
                     && !expr.getDeclaration().isCaptured() 
                     && !expr.getDeclaration().isShared()
@@ -4129,8 +4130,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return isSuper(primary) || isSuperOf(primary);
     }
     
-    private JCExpression transformSuperOf(Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr) {
-        Tree.Term superOf = eliminateParens(superOfQualifiedExpr.getPrimary());
+    private JCExpression transformSuperOf(Node node, Tree.Primary superPrimary, String forMemberName) {
+        Tree.Term superOf = eliminateParens(superPrimary);
         if (!(superOf instanceof Tree.OfOp)) {
             throw new BugException();
         }
@@ -4138,16 +4139,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!(eliminateParens(((Tree.OfOp)superOf).getTerm()) instanceof Tree.Super)) {
             throw new BugException();
         }
-        Declaration member = superOfQualifiedExpr.getDeclaration();
         TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
         if (inheritedFrom instanceof Interface) {
-            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(member.getName(), null, false).getContainer();
+            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(forMemberName, null, false).getContainer();
         }
-        return widen(superOfQualifiedExpr, inheritedFrom);
+        return widenSuper(node, inheritedFrom);
     }
 
-    private JCExpression widen(
-            Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr,
+    private JCExpression widenSuper(
+            Node superOfQualifiedExpr,
             TypeDeclaration inheritedFrom) {
         JCExpression result;
         if (inheritedFrom instanceof Class) {
@@ -4175,10 +4175,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression superQualifiedExpr) {
-        Declaration member = superQualifiedExpr.getDeclaration();
-        TypeDeclaration inheritedFrom = (TypeDeclaration)member.getContainer();
-        return widen(superQualifiedExpr, inheritedFrom);
+    public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression expression) {
+        TypeDeclaration inheritedFrom = (TypeDeclaration)expression.getDeclaration().getContainer();
+        return transformSuper(expression, inheritedFrom);
+    }
+    
+    public JCExpression transformSuper(Node node, TypeDeclaration superDeclaration) {
+        return widenSuper(node, superDeclaration);
     }
     
     // Base members
@@ -4715,8 +4718,35 @@ public class ExpressionTransformer extends AbstractTransformer {
                     leftType.isSubtypeOf(typeFact().getListDeclaration().getProducedType(
                             null, Collections.singletonList(typeFact().getAnythingDeclaration().getType())));
             
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, 
-                    listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType);
+            ProducedType leftTypeForGetCall = listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType;
+            
+            Tree.Primary primary = access.getPrimary();
+            JCExpression lhs;
+            boolean isSuper = isSuper(primary);
+            if(isSuper || isSuperOf(primary)){
+                TypeDeclaration leftDeclaration = null;
+                // this is super special: if we use the optim and call super we need to make sure that "getFromFirst" already
+                // has a concrete super implementation
+                if(listOptim){
+                    Declaration member = leftType.getDeclaration().getMember("getFromFirst", null, false);
+                    if(member == null || member.isFormal()){
+                        listOptim = false;
+                    }else{
+                        leftDeclaration = (TypeDeclaration) member.getContainer();
+                    }
+                }
+                // if we did not already find the right supertype, try with "get"
+                if (leftDeclaration == null){
+                    Declaration member = leftType.getDeclaration().getMember("get", null, false);
+                    leftDeclaration = (TypeDeclaration) member.getContainer();
+                }
+                if(isSuper)
+                    lhs = transformSuper(access, leftDeclaration);
+                else
+                    lhs = transformSuperOf(access, access.getPrimary(), listOptim ? "getFromFirst" : "get");
+            }else{
+                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftTypeForGetCall);
+            }
             
             Tree.Element element = (Tree.Element) elementOrRange;
             
@@ -4740,7 +4770,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
         }else{
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
@@ -4770,6 +4799,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args = List.<JCExpression>of(makeErroneous(range, "compiler bug: unhandled range"));
             }
 
+            JCExpression lhs;
+
+            Tree.Primary primary = access.getPrimary();
+            boolean isSuper = isSuper(primary);
+            if(isSuper || isSuperOf(primary)){
+                Declaration member = leftType.getDeclaration().getMember(method, null, false);
+                TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
+                if(isSuper)
+                    lhs = transformSuper(access, leftDeclaration);
+                else
+                    lhs = transformSuperOf(access, access.getPrimary(), method);
+            }else{
+                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
+            }
+            
             // Because tuple open span access has the type of the indexed element
             // (not a sequential of the union of types in the ranged) a typecast may be required.
             ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 2);
@@ -4879,7 +4923,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (isSuper(qualified.getPrimary())) {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
-                expr = transformSuperOf(qualified);
+                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
             } else if (isThis(qualified.getPrimary())
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
