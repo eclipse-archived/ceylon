@@ -23,10 +23,20 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private boolean overloaded;
     private boolean abstraction;
+    private boolean abstr;
     private List<Declaration> overloads;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
     
+    @Override
+    public boolean isAbstract() {
+        return abstr;
+    }
+    
+    public void setAbstract(boolean isAbstract) {
+        this.abstr = isAbstract;
+    }
+
     @Override
     public boolean isParameterized() {
         return !typeParameters.isEmpty();
@@ -164,5 +174,5 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
         }
         return Objects.equals(getName(), b.getName());
     }
-
+    
 }

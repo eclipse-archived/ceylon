@@ -70,6 +70,10 @@ public abstract class TypeDeclaration extends Declaration
         this.inconsistentType = inconsistentType;
     }
     
+    public boolean isAbstract() {
+        return true;
+    }
+
     @Override
     protected TypeDeclaration clone() {
         try {
@@ -178,7 +182,7 @@ public abstract class TypeDeclaration extends Declaration
                 brokenSupertypes;
     }
     
-    public void addBrokenSupertype(ProducedType type){
+    public void addBrokenSupertype(ProducedType type) {
         if (brokenSupertypes == null) {
             brokenSupertypes = 
                     new ArrayList<ProducedType>(1);

@@ -7392,27 +7392,33 @@ public class ExpressionVisitor extends Visitor {
                     Constructor c = (Constructor) delegate;
                     ClassOrInterface delegatedType = 
                             c.getExtendedTypeDeclaration();
-                    if (!superclass.equals(delegatedType)) {
-                        type.addError("not a constructor of the immediate superclass: '" +
-                                delegate.getName(unit) + "' is not a constructor of '" + 
-                                superclass.getName(unit) + "'");
-                    }
-                    else {
+                    if (superclass.equals(delegatedType)) {
                         checkIsExactly(constructedType.getExtendedType(), 
                                 extendedType, type, 
                                 "type arguments must match type arguments in extended class expression");
                     }
-                }
-                else if (delegate instanceof Class) {
-                    if (!superclass.equals(delegate)) {
-                        type.addError("does not instantiate the immediate superclass: '" +
-                                delegate.getName(unit) + "' is not '" + 
-                                superclass.getName(unit) + "'");
+                    else if (containingClass.equals(delegatedType)) {
+                        //nothing to do
                     }
                     else {
+                        type.addError("not a constructor of the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not a constructor of '" + 
+                                superclass.getName(unit) + "'");
+                    }
+                }
+                else if (delegate instanceof Class) {
+                    if (superclass.equals(delegate)) {
                         checkIsExactly(constructedType, 
                                 extendedType, type, 
                                 "type arguments must match type arguments in extended class expression");
+                    }
+                    else if (containingClass.equals(delegate)) {
+                      //nothing to do
+                    }
+                    else {
+                        type.addError("does not instantiate the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not '" + 
+                                superclass.getName(unit) + "'");
                     }
                 }
             }

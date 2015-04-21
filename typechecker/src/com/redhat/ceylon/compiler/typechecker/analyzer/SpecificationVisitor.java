@@ -8,6 +8,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectively
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -15,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -411,6 +415,16 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Block that) {
+        if (that.getScope() instanceof Constructor) {
+            if (definitelyInitedBy.contains(delegatedConstructor)) {
+                specified.definitely = true;
+            }
+            if (possiblyInitedBy.contains(delegatedConstructor)) {
+                specified.possibly = true;
+            }
+            delegatedConstructor = null;
+        }
+        
         boolean oe = endsInBreakReturnThrow;
         Tree.Continue olc = lastContinue;
         Tree.Statement olcs = lastContinueStatement;
@@ -451,13 +465,39 @@ public class SpecificationVisitor extends Visitor {
         
         if (that.getScope() instanceof Constructor) {
             Constructor c = (Constructor) that.getScope();
-            if (declaration.getContainer()==c.getContainer()) {
+            if (specified.definitely) {
+                definitelyInitedBy.add(c);
+            }
+            if (specified.possibly) {
+                possiblyInitedBy.add(c);
+            }
+            if (!c.isAbstract() &&
+                    declaration.getContainer()==c.getContainer()) {
                 if (!specified.definitely) {
                     initedByEveryConstructor = false;
                 }
             }
         }
     }
+    
+    @Override 
+    public void visit(Tree.DelegatedConstructor that) {
+        super.visit(that);
+        Tree.SimpleType type = that.getType();
+        if (type!=null) {
+            delegatedConstructor = type.getDeclarationModel();
+            if (delegatedConstructor instanceof Class) {
+                //this case is not actually legal
+                delegatedConstructor = 
+                        ((Class) delegatedConstructor).getDefaultConstructor();
+            }
+        }
+    }
+    
+    private TypeDeclaration delegatedConstructor;
+    
+    private List<Constructor> definitelyInitedBy = new ArrayList<Constructor>();
+    private List<Constructor> possiblyInitedBy = new ArrayList<Constructor>();
     
     private boolean initedByEveryConstructor = true;
 
