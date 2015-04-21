@@ -5,11 +5,12 @@ import java.util.HashMap;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -93,7 +94,7 @@ public class MissingNativeVisitor extends Visitor {
         if(pkg == null)
             return;
         
-        if ((node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod)
+        if ((node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute)
                 && !model.getNative().isEmpty()
                 && !forBackend.nativeAnnotation.equals(model.getNative())) {
             // We don't care about declarations for other backends
@@ -105,7 +106,7 @@ public class MissingNativeVisitor extends Visitor {
             ok = checked.get(model);
         } else {
             try {
-                if (model instanceof Method || model instanceof Class) {
+                if (model instanceof Method || model instanceof Class || model instanceof Value) {
                     Declaration m = pkg.getDirectMember(model.getName(), null, false);
                     if (m != null && m.isNative()) {
                         // Native declarations are a bit weird, if there are multiple they
@@ -113,8 +114,8 @@ public class MissingNativeVisitor extends Visitor {
                         // We here check to see if any of them are for this backend
                         if (forBackend.nativeAnnotation.equals(m.getNative())) {
                             return;
-                        } else if (m instanceof Functional && ((Functional)m).getOverloads() != null) {
-                            for (Declaration o : ((Functional)m).getOverloads()) {
+                        } else if (m instanceof Overloadable && ((Overloadable)m).getOverloads() != null) {
+                            for (Declaration o : ((Overloadable)m).getOverloads()) {
                                 if (forBackend.nativeAnnotation.equals(o.getNative())) {
                                     return;
                                 }
