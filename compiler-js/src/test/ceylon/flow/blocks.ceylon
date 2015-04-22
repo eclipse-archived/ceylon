@@ -61,3 +61,23 @@ void testBlocks() {
   }
   check(ran==100, "Block test 6");
 }
+
+void issue526() {
+  //Issue #526
+  value sb = StringBuilder();
+  void inv(void f()) => f();
+  variable Anything() task = void() {
+    sb.append("task");
+  };
+  value funs=[inv,inv,inv];
+  for (c in funs) {
+    Anything() f=task;
+    task=void() {
+      sb.append("nested ");
+      c(f);
+    };
+  }
+  check(sb.string.empty, "#526.1");
+  task();
+  check(sb.string=="nested nested nested task", "#526.2");
+}
