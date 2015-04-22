@@ -182,6 +182,7 @@ public class AttributeGenerator {
 
     static void generateAttributeSetter(final Tree.AnyAttribute that, final Value d,
             final GenerateJsVisitor gen) {
+        if (!(d.isToplevel() || d.isCaptured()))return;
         final String varName = gen.getNames().name(d);
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
