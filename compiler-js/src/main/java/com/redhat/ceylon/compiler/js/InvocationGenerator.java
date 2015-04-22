@@ -281,7 +281,7 @@ public class InvocationGenerator {
                 //Add parameters
                 TypeUtils.encodeParameterListForRuntime(arg, marg.getParameterLists().get(0).getModel(), gen);
                 gen.out(",");
-                ProducedType margType = p == null ? marg.getType().getTypeModel() : p.getType();
+                ProducedType margType = marg.getDeclarationModel().getType().getFullType();
                 TypeUtils.printTypeArguments(arg, margType.getTypeArguments(), gen, false,
                         margType.getVarianceOverrides());
                 gen.boxUnboxEnd(4);
