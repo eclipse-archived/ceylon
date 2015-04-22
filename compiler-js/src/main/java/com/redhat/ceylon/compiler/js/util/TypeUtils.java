@@ -347,7 +347,7 @@ public class TypeUtils {
                     }
                 }
                 gen.out("'", tp.getName(), "'");
-                gen.out.spitOut("Passing reference to " + tp.getQualifiedNameString() + " as a string...");
+                //gen.out.spitOut("Passing reference to " + tp.getQualifiedNameString() + " as a string...");
                 //gen.out("/*Please report this to the ceylon-js team: METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
                 //        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "' container " + tp.getContainer() + " at " + node);
             }
