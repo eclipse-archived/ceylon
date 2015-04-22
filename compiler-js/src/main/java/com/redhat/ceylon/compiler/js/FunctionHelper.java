@@ -28,10 +28,12 @@ public class FunctionHelper {
         generateParameterLists(block, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
+                gen.beginBlock();
                 if (paramLists.size() == 1 && scope!=null && initSelf) { gen.initSelf(block); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
+                gen.endBlock();
             }
         }, true, gen);
     }
@@ -41,6 +43,7 @@ public class FunctionHelper {
         generateParameterLists(expr, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
+                gen.out("{");
                 if (paramLists.size() == 1 && scope != null && initSelf) { gen.initSelf(expr); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
@@ -48,7 +51,7 @@ public class FunctionHelper {
                 if (!gen.isNaturalLiteral(expr.getTerm())) {
                     expr.visit(gen);
                 }
-                gen.out(";");
+                gen.out(";}");
             }
         }, emitFunctionKeyword, gen);
     }
@@ -62,9 +65,7 @@ public class FunctionHelper {
             }
             Tree.ParameterList paramList = plist.get(0);
             paramList.visit(gen);
-            gen.beginBlock();
             callback.completeFunction();
-            gen.endBlock();
         } else {
             List<MplData> metas = new ArrayList<>(plist.size());
             Method m = scope instanceof Method ? (Method)scope : null;
