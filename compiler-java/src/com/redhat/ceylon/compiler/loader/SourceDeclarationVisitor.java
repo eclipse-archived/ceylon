@@ -19,13 +19,13 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
-import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class SourceDeclarationVisitor extends Visitor implements NaturalVisitor {
@@ -37,14 +37,7 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
     // Returns `true` if the declaration is not marked `native` or if
     // it has a "jvm" argument, in all other cases returns `false`.
     protected boolean checkNative(Tree.Declaration decl){
-        Annotation a = Util.getAnnotation(decl.getAnnotationList(), "native", decl.getUnit());
-        if (a != null) {
-            String backend = Util.getAnnotationArgument(a, "");
-            if (!backend.equals("\"" + Backend.Java.nativeAnnotation + "\"")) {
-                return false;
-            }
-        }
-        return true;
+        return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit());
     }
     
     @Override
