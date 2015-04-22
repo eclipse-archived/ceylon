@@ -2410,12 +2410,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.Return that) {
-        if (!continues.isEmpty()) {
-            ContinueBreakVisitor top=continues.peek();
-            if (that.getScope()==top.getScope()) {
-                out(top.getReturnName(), "=true;");
-            }
-        }
         out("return");
         if (that.getExpression() == null) {
             endLine(true);
@@ -3200,13 +3194,16 @@ public class GenerateJsVisitor extends Visitor
             if (markBlock) {
                 beginBlock();
             }
+            boolean vars=false;
             if (cbv.isContinues()) {
-                out("var ", cbv.getContinueName(), "=false"); endLine(true);
+                out("var ", cbv.getContinueName(), "=false");
+                vars=true;
             }
             if (cbv.isBreaks()) {
-                out("var ", cbv.getBreakName(), "=false"); endLine(true);
+                out(vars?",":"var ", cbv.getBreakName(), "=false");
+                vars=true;
             }
-            out("var ", cbv.getReturnName(), "=(function()");
+            out(vars?",":"var ", cbv.getReturnName(), "=(function()");
             if (!markBlock) {
                 beginBlock();
             }
@@ -3218,22 +3215,13 @@ public class GenerateJsVisitor extends Visitor
         }
         if (wrap) {
             continues.pop();
-            boolean genElse=false;
             if (!markBlock)endBlock();
-            if (cbv.isReturns()) {
-                out("());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
-                genElse=true;
-            } else {
-                out("());");
-            }
+            out("());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
             if (cbv.isContinues()) {
-                if (genElse)out("else ");
-                out("if(", cbv.getContinueName(),"===true){continue;}");
-                genElse=true;
+                out("else if(", cbv.getContinueName(),"===true){continue;}");
             }
             if (cbv.isBreaks()) {
-                if (genElse)out("else ");
-                out("if(", cbv.getBreakName(),"===true){break;}");
+                out("else if(", cbv.getBreakName(),"===true){break;}");
             }
             if (markBlock) {
                 endBlockNewLine();
