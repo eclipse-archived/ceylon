@@ -2117,7 +2117,13 @@ public class GenerateJsVisitor extends Visitor
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    out("[/*VALUE Callable params", moval.getClass().getName(), "*/],");
+                                    ProducedType ps = moval.getType().getTypeArgumentList().get(1);
+                                    TypeDeclaration pd = ps.getDeclaration();
+                                    if (moval.getUnit().getEmptyDeclaration().equals(pd)) {
+                                        out("[],");
+                                    } else {
+                                        out("[/*VALUE Callable params ", pd+"*/],");
+                                    }
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
                                         GenerateJsVisitor.this, false, expr.getTypeModel().getVarianceOverrides());
