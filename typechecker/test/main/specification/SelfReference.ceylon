@@ -111,7 +111,7 @@ interface SelfReference {
     
     class Concrete() extends Abstract() {
         @error print(hello);
-        @error print(super.hello);
+        print(super.hello);
         @error print(this.hello);
         void method() {
             print(hello);
