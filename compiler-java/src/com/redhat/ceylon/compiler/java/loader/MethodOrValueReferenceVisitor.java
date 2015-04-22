@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.java.loader;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -240,6 +242,18 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             that.getDeclarationModel().setCaptured(true);
         }
         exitCapturingScope(cs);
+    }
+    
+    @Override public void visit(Tree.Constructor that) {
+        Constructor ctor = that.getDeclarationModel();
+        if (ctor.isAbstract() 
+                || Decl.hasAbstractConstructor((Class)ctor.getContainer())) {
+            boolean cs = enterCapturingScope();
+            super.visit(that);
+            exitCapturingScope(cs);
+        } else {
+            super.visit(that);
+        }
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {

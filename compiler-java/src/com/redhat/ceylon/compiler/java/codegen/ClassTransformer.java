@@ -49,8 +49,8 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpec
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
+import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.OutputElement;
@@ -83,12 +83,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -107,7 +107,6 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -2957,7 +2956,9 @@ public class ClassTransformer extends AbstractTransformer {
         return transformDeclarationSharedFlags(cdecl);
     }
     private int transformConstructorDeclFlags(Constructor ctor) {
-        return Decl.isShared(ctor) && !Decl.isAncestorLocal(ctor) ? PUBLIC : PRIVATE;
+        return Decl.isShared(ctor) 
+                && !Decl.isAncestorLocal(ctor) 
+                && !ctor.isAbstract() ? PUBLIC : PRIVATE;
     }
 
     private int transformTypeAliasDeclFlags(TypeAlias decl) {
@@ -2991,7 +2992,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
         result |= PRIVATE;
-
+        
         return result;
     }
 
@@ -4872,8 +4873,6 @@ public class ClassTransformer extends AbstractTransformer {
             constructorNameClass.modifiers(classMods);
             constructorNameClass.annotations(makeAtIgnore());
             constructorNameClass.getInitBuilder().modifiers(PRIVATE);
-
-            
             
             if (clz.isToplevel()) {
                 result.addAll(constructorNameClass.build());
@@ -4897,20 +4896,9 @@ public class ClassTransformer extends AbstractTransformer {
             
         }
         
-        if (that.getDelegatedConstructor() != null) {
-            Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
-            JCExpression superExpr = expressionGen().transformSuper(that.getDelegatedConstructor(),
-                    chainedCtorInvocation, classBuilder);
-            classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
-        }
-        classBuilder.hasConstructors(true);
-        List<JCStatement> preInitStmts = classBuilder.getInitBuilder().getPreBodyCopy(that);
-        List<JCStatement> postInitStmts = classBuilder.getInitBuilder().getPostBodyCopy(that);
-        
-        List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
+        List<JCStatement> ctorBody = classBuilder.getInitBuilder().getBody(that, classBuilder);
         at(that);
-        ctorDb.block(make().Block(0, postInitStmts.prependList(ctorStmts).prependList(preInitStmts)));
-        
+        ctorDb.block(make().Block(0, ctorBody));
         result.add(ctorDb.build());
         return result.toList();
     }

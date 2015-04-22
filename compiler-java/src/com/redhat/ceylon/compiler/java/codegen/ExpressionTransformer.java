@@ -3507,7 +3507,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
         HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(extendedType);
         if (error != null) {
-            classBuilder.getInitBuilder().superCall(this.makeThrowUnresolvedCompilationError(error));
+            classBuilder.getInitBuilder().delegateCall(this.makeThrowUnresolvedCompilationError(error));
             return;
         }
         if (extendedType.getInvocationExpression() != null 
@@ -3515,12 +3515,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)extendedType.getInvocationExpression().getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
             if(paramLists.isEmpty()){
-                classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
+                classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: missing parameter list in extends clause: " + primaryDeclaration.getName() + " must be invoked")));
             } else {
                 boolean prevFnCall = withinInvocation(true);
                 try {
                     JCExpression superExpr = transformSuper(extendedType, extendedType.getInvocationExpression(), classBuilder);
-                    classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
+                    classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(superExpr));
                 } finally {
                     withinInvocation(prevFnCall);
                 }
@@ -3530,10 +3530,21 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression transformSuper(Node extendedType,
             Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
+        return transformConstructorDelegation(extendedType, true, invocation, classBuilder);
+    }
+    
+    JCExpression transformThisInvocation(Node extendedType,
+            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
+        return transformConstructorDelegation(extendedType, false, invocation, classBuilder);
+    }
+    
+    JCExpression transformConstructorDelegation(Node extendedType,
+            boolean isSuper,
+            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
         if(paramLists.isEmpty()){
-            classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
+            classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
             return null;
         }
         SuperInvocation builder = new SuperInvocation(this,
@@ -3574,6 +3585,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     outer = outer.getContainer();
                 }
                 if (expr == null) {
+                    if (!isSuper) {
+                        throw new BugException();
+                    }
                     Interface iface = (Interface)outerDeclaration;
                     JCExpression superQual;
                     if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
@@ -3584,7 +3598,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     expr = naming.makeQualifiedSuper(superQual);
                 }
             } else {
-                expr = naming.makeSuper();
+                expr = isSuper ? naming.makeSuper() : naming.makeThis();
             }
             final List<JCExpression> superArguments = transformSuperInvocationArguments(
                     classBuilder, builder, callBuilder);
