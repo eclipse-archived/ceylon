@@ -16,12 +16,12 @@ object jsTop505{
 @test
 shared void bugJ505() {
   object o505{}
-  assert(exists v505 = `class o505`.objectValue);
+  assert(!`class o505`.objectValue exists);
   class Test505(){}
   Object t1=`Test505`;
   assert(t1 is Class);
   assert(type(Test505()) is Class);
-  assert(type(jsTop505.Inner()) is MemberClass<Object>);
+  assert(type(jsTop505.Inner()) is MemberClass<Nothing>);
   assert(jsTop505.test1() is Class);
   assert(jsTop505.test2() is Class);
 }
