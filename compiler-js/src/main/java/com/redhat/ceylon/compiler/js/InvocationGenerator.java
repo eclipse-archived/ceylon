@@ -273,7 +273,21 @@ public class InvocationGenerator {
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");
-            arg.visit(gen);
+            if (arg instanceof Tree.MethodArgument) {
+                Tree.MethodArgument marg = (Tree.MethodArgument)arg;
+                gen.out(gen.getClAlias(), "$JsCallable(");
+                FunctionHelper.methodArgument(marg, gen);
+                gen.out(",");
+                //Add parameters
+                TypeUtils.encodeParameterListForRuntime(arg, marg.getParameterLists().get(0).getModel(), gen);
+                gen.out(",");
+                ProducedType margType = p == null ? marg.getType().getTypeModel() : p.getType();
+                TypeUtils.printTypeArguments(arg, margType.getTypeArguments(), gen, false,
+                        margType.getVarianceOverrides());
+                gen.boxUnboxEnd(4);
+            } else {
+                arg.visit(gen);
+            }
             gen.out(",");
         }
         Tree.SequencedArgument sarg = argList.getSequencedArgument();
@@ -626,7 +640,7 @@ public class InvocationGenerator {
         if (term instanceof Tree.FunctionArgument) {
             plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
         } else if (term instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mote = ((Tree.MemberOrTypeExpression)term);
+            Tree.MemberOrTypeExpression mote = (Tree.MemberOrTypeExpression)term;
             if (mote.getDeclaration() instanceof Method) {
                 plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
             } else if (mote.getDeclaration() instanceof Value && mote.getStaticMethodReference()) {
