@@ -251,6 +251,12 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     }
 
     @Test
+    public void testBug2132() {
+        compile("bug21xx/GenericOuter.java", "bug21xx/DateInnerFactory.java");
+        compareWithJavaSource("bug21xx/Bug2132");
+    }
+
+    @Test
     public void testBug2135() {
         compareWithJavaSource("bug21xx/Bug2135");
         run("com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2135");
