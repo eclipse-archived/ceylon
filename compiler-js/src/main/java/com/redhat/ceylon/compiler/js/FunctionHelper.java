@@ -169,24 +169,14 @@ public class FunctionHelper {
     }
 
     static void methodArgument(final Tree.MethodArgument that, final GenerateJsVisitor gen) {
-        generateParameterLists(that, that.getParameterLists(), that.getScope(),
-                new ParameterListCallback() {
-            @Override
-            public void completeFunction() {
-                Tree.Block block = that.getBlock();
-                Tree.SpecifierExpression specExpr = that.getSpecifierExpression();
-                if (specExpr != null) {
-                    gen.out("{return ");
-                    if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
-                        specExpr.getExpression().visit(gen);
-                    }
-                    gen.out(";}");
-                }
-                else if (block != null) {
-                    block.visit(gen);
-                }
-            }
-        }, true, gen);
+        gen.out("(");
+        if (that.getBlock() == null) {
+            singleExprFunction(that.getParameterLists(), that.getSpecifierExpression().getExpression(),
+                    that.getScope(), false, true, gen);
+        } else {
+            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
+        }
+        gen.out(")");
     }
 
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
