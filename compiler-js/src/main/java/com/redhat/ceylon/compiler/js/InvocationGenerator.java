@@ -291,39 +291,38 @@ public class InvocationGenerator {
 
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
                 Map<String, String> argVarNames, boolean superAccess, Tree.TypeArguments targs) {
-        boolean firstList = true;
-        for (ParameterList plist : func.getParameterLists()) {
-            boolean first=true;
-            if (firstList && superAccess) {
-                gen.out(".call(this");
-                if (!plist.getParameters().isEmpty()) { gen.out(","); }
-            }
-            else {
-                gen.out("(");
-            }
-            for (Parameter p : plist.getParameters()) {
-                if (!first) gen.out(",");
-                final String vname = argVarNames.get(p.getName());
-                if (vname == null) {
-                    if (p.isDefaulted()) {
-                        gen.out("undefined");
-                    } else {
-                        gen.out(gen.getClAlias(), "empty()");
-                    }
-                } else {
-                    gen.out(vname);
-                }
-                first = false;
-            }
-            if (targs != null && !targs.getTypeModels().isEmpty()) {
-                Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                        func.getTypeParameters(), targs.getTypeModels());
-                if (!first) gen.out(",");
-                TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
-            }
-            gen.out(")");
-            firstList = false;
+        final ParameterList plist = func.getParameterLists().get(0);
+        boolean first=true;
+        if (superAccess) {
+            gen.out(".call(this");
+            if (!plist.getParameters().isEmpty()) { gen.out(","); }
         }
+        else {
+            gen.out("(");
+        }
+        for (Parameter p : plist.getParameters()) {
+            if (!first) gen.out(",");
+            final String vname = argVarNames.get(p.getName());
+            if (vname == null) {
+                if (p.isDefaulted()) {
+                    gen.out("undefined");
+                } else {
+                    gen.out(gen.getClAlias(), "empty()");
+                }
+            } else {
+                gen.out(vname);
+            }
+            first = false;
+        }
+        if (targs != null && !targs.getTypeModels().isEmpty()) {
+            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                    func.getTypeParameters(), targs.getTypeModels());
+            if (!first){
+                gen.out(",");
+            }
+            TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
+        }
+        gen.out(")");
     }
 
     /** Generate a list of PositionalArguments, optionally assigning a variable name to each one
