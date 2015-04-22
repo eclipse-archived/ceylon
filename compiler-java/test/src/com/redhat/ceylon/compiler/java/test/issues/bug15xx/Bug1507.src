@@ -15,7 +15,7 @@ final class bug1507_ {
                 boolean doforelse$2 = true;
                 final long $ceylontmp$start$3 = 0L;
                 final long $ceylontmp$end$4 = new .java.util.Random().nextInt(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
-                final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
+                final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$end$4, $ceylontmp$start$3) >= 0;
                 final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
                 loop_0: for (long j$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? j$7 - $ceylontmp$end$4 <= 0L : j$7 - $ceylontmp$end$4 >= 0L; j$7 += $ceylontmp$incr$6) {
                     final long j = j$7;
@@ -241,7 +241,7 @@ final class bug1507test6_ {
         boolean doforelse$51 = true;
         final long $ceylontmp$start$52 = 1L;
         final long $ceylontmp$end$53 = 2L;
-        final boolean $ceylontmp$increasing$54 = $ceylontmp$start$52 <= $ceylontmp$end$53;
+        final boolean $ceylontmp$increasing$54 = .ceylon.language.Integer.offset($ceylontmp$end$53, $ceylontmp$start$52) >= 0;
         final long $ceylontmp$incr$55 = $ceylontmp$increasing$54 ? 1L : -1L;
         loop_6: for (long i$56 = $ceylontmp$start$52; $ceylontmp$increasing$54 ? i$56 - $ceylontmp$end$53 <= 0L : i$56 - $ceylontmp$end$53 >= 0L; i$56 += $ceylontmp$incr$55) {
             final long i = i$56;
