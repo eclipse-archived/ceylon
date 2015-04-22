@@ -41,8 +41,14 @@ public class ForGenerator {
     private String generateForLoop(Tree.ForIterator that, boolean hasElse) {
         final Tree.SpecifierExpression iterable = that.getSpecifierExpression();
         final String itemVar;
+        boolean captured=false;
         if (that instanceof Tree.ValueIterator) {
-            itemVar = gen.getNames().name(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
+            captured=((Tree.ValueIterator)that).getVariable().getDeclarationModel().isCaptured();
+            if (captured) {
+                itemVar = gen.getNames().createTempVariable();
+            } else {
+                itemVar = gen.getNames().name(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
+            }
         } else {
             itemVar = gen.getNames().createTempVariable();
         }
@@ -54,6 +60,10 @@ public class ForGenerator {
         }
         gen.beginBlock();
         if (that instanceof Tree.ValueIterator) {
+            if (captured) {
+                gen.out("var ", gen.getNames().name(((Tree.ValueIterator)that).getVariable().getDeclarationModel()),
+                        "=", itemVar, ";");
+            }
             directAccess.add(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
         } else if (that instanceof Tree.PatternIterator) {
             gen.out("var ");
