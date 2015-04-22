@@ -31,6 +31,11 @@ import javax.lang.model.type.TypeKind;
 public interface TypeMirror {
 
     /**
+     * Returns the qualifying type, if any.
+     */
+    TypeMirror getQualifyingType();
+    
+    /**
      * Returns the fully-qualified name of this type with no type argument.
      */
     String getQualifiedName();

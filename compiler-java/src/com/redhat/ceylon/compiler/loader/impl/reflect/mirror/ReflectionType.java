@@ -56,6 +56,8 @@ public class ReflectionType implements TypeMirror {
     private boolean declaredClassSet;
     private boolean typeParameterSet;
     private ReflectionTypeParameter typeParameter;
+    private ReflectionType qualifyingType;
+    private boolean qualifyingTypeSet;
 
     public ReflectionType(Type type) {
         this.type = type;
@@ -237,5 +239,22 @@ public class ReflectionType implements TypeMirror {
             typeParameterSet = true;
         }
         return typeParameter;
+    }
+
+    @Override
+    public TypeMirror getQualifyingType() {
+        if(!qualifyingTypeSet){
+            Type ownerType = null;
+            if(type instanceof Class){
+                ownerType  = ((Class) type).getEnclosingClass();
+            }else if(type instanceof ParameterizedType){
+                ownerType = ((ParameterizedType) type).getOwnerType();
+            }
+            if(ownerType != null){
+                qualifyingType = new ReflectionType(ownerType);
+            }
+            qualifyingTypeSet = true;
+        }
+        return qualifyingType;
     }
 }

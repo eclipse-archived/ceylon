@@ -4422,7 +4422,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                     typeArguments.add(producedTypeArgument);
                 }
-                ProducedType ret = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+                ProducedType qualifyingType = null;
+                if(type.getQualifyingType() != null){
+                    qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
+                }
+                ProducedType ret = declaration.getProducedType(qualifyingType, typeArguments);
                 if(siteVarianceMap != null){
                     ret.setVarianceOverrides(siteVarianceMap);
                 }
@@ -4435,6 +4439,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     rawDeclarationsSeen.remove(declaration);
             }
         }
+        // we have no type args, but perhaps we have a qualifying type which has some?
+        if(type.getQualifyingType() != null){
+            // that one may have type arguments
+            ProducedType qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
+            ProducedType ret = declaration.getProducedType(qualifyingType, Collections.<ProducedType>emptyList());
+            ret.setUnderlyingType(type.getQualifiedName());
+            ret.setRaw(isRaw);
+            return ret;
+        }
+        // no type arg and no qualifying type
         return declaration.getType();
     }
 

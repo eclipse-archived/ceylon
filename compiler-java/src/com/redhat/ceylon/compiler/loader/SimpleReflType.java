@@ -109,4 +109,9 @@ public class SimpleReflType implements TypeMirror {
     public TypeParameterMirror getTypeParameter() {
         return null;
     }
+
+    @Override
+    public TypeMirror getQualifyingType() {
+        return null;
+    }
 }
