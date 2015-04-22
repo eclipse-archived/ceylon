@@ -19,6 +19,7 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.js.util.JsUtils;
@@ -51,7 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
-    private final Stack<Continuation> continues = new Stack<>();
+    private final Stack<ContinueBreakVisitor> continues = new Stack<>();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<>();
     private final Set<Declaration> generatedAttributes = new HashSet<>();
@@ -322,6 +323,36 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
+    void generateClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
+        if (cnstr == null) {
+            visitStatements(classBody);
+        } else {
+            List<String> oldRetainedVars = retainedVars.reset(null);
+            final List<? extends Statement> prevStatements = currentStatements;
+            currentStatements = classBody;
+            for (Tree.Statement st : classBody) {
+                if (st == cnstr) {
+                    for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
+                        s2.visit(this);
+                        if (!opts.isMinify())beginNewLine();
+                        retainedVars.emitRetainedVars(this);
+                    }
+                } else if (st instanceof Tree.Constructor == false) {
+                    st.visit(this);
+                    if (!opts.isMinify())beginNewLine();
+                    retainedVars.emitRetainedVars(this);
+                    //Remove attribute declaration in lexical style so that
+                    //every constructor adds metamodel to that attribute
+                    if (!opts.isOptimize() && cnstr != null && st instanceof Tree.AttributeDeclaration) {
+                        generatedAttributes.remove(((Tree.AttributeDeclaration)st).getDeclarationModel());
+                    }
+                }
+            }
+            retainedVars.reset(oldRetainedVars);
+            currentStatements = prevStatements;
+        }
+    }
+
     void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars.reset(null);
         final List<? extends Statement> prevStatements = currentStatements;
@@ -334,7 +365,6 @@ public class GenerateJsVisitor extends Visitor
             retainedVars.emitRetainedVars(this);
         }
         retainedVars.reset(oldRetainedVars);
-        
         currentStatements = prevStatements;
     }
 
@@ -907,7 +937,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     boolean shouldStitch(Declaration d) {
-        return JsCompiler.isCompilingLanguageModule() && TypeUtils.isNativeExternal(d);
+        return TypeUtils.isNativeExternal(d);
     }
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
@@ -919,7 +949,11 @@ public class GenerateJsVisitor extends Visitor
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '/').replace("::", "/");
-        return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+        if (JsCompiler.isCompilingLanguageModule()) {
+            return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+        } else {
+            return new File(new File(d.getUnit().getFullPath()).getParentFile(), fqn + suffix);
+        }
     }
 
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
@@ -934,15 +968,21 @@ public class GenerateJsVisitor extends Visitor
                     return true;
                 }
                 out(names.self((TypeDeclaration)d.getContainer()), ".");
+            } else if (n instanceof Tree.AttributeDeclaration || n instanceof Tree.AttributeGetterDefinition) {
+                return true;
             }
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
             endLine(true);
             return true;
         } else {
-            if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition)) {
+            if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition
+                    || (n instanceof Tree.MethodDeclaration && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null)
+                    || n instanceof Tree.AttributeGetterDefinition
+                    || (n instanceof Tree.AttributeDeclaration && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d) + ": " + f;
+                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
+                n.addError(err);
                 spitOut(err);
                 out("/*", err, "*/");
             }
@@ -1130,7 +1170,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         if (defineAsProperty(d)) {
             defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
-            AttributeGenerator.getter(that, this);
+            AttributeGenerator.getter(that, this, true);
             final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
             if (setterDef == null) {
                 out(",undefined");
@@ -1148,7 +1188,18 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             out(function, names.getter(d, false), "()");
-            AttributeGenerator.getter(that, this);
+            if (shouldStitch(d)) {
+                out("{");
+                if (stitchNative(d, that)) {
+                    spitOut("Stitching in native attribute " + d.getQualifiedNameString()
+                            + ", ignoring Ceylon declaration");
+                } else {
+                    AttributeGenerator.getter(that, this, false);
+                }
+                out("}");
+            } else {
+                AttributeGenerator.getter(that, this, true);
+            }
             endLine();
             out(names.getter(d, false), ".$crtmm$=");
             TypeUtils.encodeForRuntime(that, d, this);
@@ -1163,7 +1214,18 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         defineAttribute(names.self(outer), names.name(d));
-        AttributeGenerator.getter(that, this);
+        if (shouldStitch(d)) {
+            out("{");
+            if (stitchNative(d, that)) {
+                spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                        ", ignoring Ceylon declaration");
+            } else {
+                AttributeGenerator.getter(that, this, false);
+            }
+            out("}");
+        } else {
+            AttributeGenerator.getter(that, this, true);
+        }
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
         if (setterDef == null) {
             out(",undefined");
@@ -1265,18 +1327,21 @@ public class GenerateJsVisitor extends Visitor
         final boolean asprop = defineAsProperty(d);
         if (d.isFormal()) {
             if (!opts.isOptimize()) {
+                comment(that);
                 generateAttributeMetamodel(that, false, false);
             }
         } else {
-            comment(that);
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
                     || d.isVariable() || d.isLate();
             final boolean addSetter = (d.isVariable() || d.isLate()) && !asprop;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-                if (specInitExpr != null
-                        && !(specInitExpr instanceof LazySpecifierExpression)) {
+                //Stitch native member attribute declaration with no value
+                final boolean eagerExpr = specInitExpr != null
+                        && !(specInitExpr instanceof LazySpecifierExpression); 
+                if (eagerExpr && !shouldStitch(d)) {
+                    comment(that);
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
                     if (d.isLate()) {
@@ -1288,6 +1353,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
+                comment(that);
                 if (asprop) {
                     defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
                     out("{");
@@ -1295,37 +1361,48 @@ public class GenerateJsVisitor extends Visitor
                     out(function, names.getter(d, false), "(){");
                 }
                 initSelf(that);
-                out("return ");
-                if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
-                    int boxType = boxStart(specInitExpr.getExpression().getTerm());
-                    specInitExpr.getExpression().visit(this);
-                    if (boxType == 4) out("/*TODO: callable targs 1*/");
-                    boxUnboxEnd(boxType);
+                boolean genatr=true;
+                if (shouldStitch(d)) {
+                    if (stitchNative(d, that)) {
+                        spitOut("Stitching in native attribute " + d.getQualifiedNameString() +
+                                ", ignoring Ceylon declaration");
+                        genatr=false;
+                        out(";};");
+                    }
                 }
-                out(";}");
-                if (asprop) {
-                    Tree.AttributeSetterDefinition setterDef = null;
-                    if (d.isVariable()) {
-                        setterDef = associatedSetterDefinition(d);
-                        if (setterDef != null) {
-                            out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                            AttributeGenerator.setter(setterDef, this);
+                if (genatr) {
+                    out("return ");
+                    if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
+                        int boxType = boxStart(specInitExpr.getExpression().getTerm());
+                        specInitExpr.getExpression().visit(this);
+                        if (boxType == 4) out("/*TODO: callable targs 1*/");
+                        boxUnboxEnd(boxType);
+                    }
+                    out(";}");
+                    if (asprop) {
+                        Tree.AttributeSetterDefinition setterDef = null;
+                        if (d.isVariable()) {
+                            setterDef = associatedSetterDefinition(d);
+                            if (setterDef != null) {
+                                out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
+                                AttributeGenerator.setter(setterDef, this);
+                            }
                         }
-                    }
-                    if (setterDef == null) {
-                        out(",undefined");
-                    }
-                    out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    if (setterDef != null) {
+                        if (setterDef == null) {
+                            out(",undefined");
+                        }
                         out(",");
-                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                        if (setterDef != null) {
+                            out(",");
+                            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                        }
+                        out(")");
+                        endLine(true);
+                    } else {
+                        endLine(true);
+                        shareGetter(d);
                     }
-                    out(")");
-                    endLine(true);
-                } else {
-                    endLine(true);
-                    shareGetter(d);
                 }
             }
             else if (!(d.isParameter() && d.getContainer() instanceof Method)) {
@@ -2946,9 +3023,8 @@ public class GenerateJsVisitor extends Visitor
         if (continues.isEmpty()) {
             out("break;");
         } else {
-            Continuation top=continues.peek();
+            ContinueBreakVisitor top=continues.peek();
             if (that.getScope()==top.getScope()) {
-                top.useBreak();
                 out(top.getBreakName(), "=true; return;");
             } else {
                 out("break;");
@@ -2959,9 +3035,8 @@ public class GenerateJsVisitor extends Visitor
         if (continues.isEmpty()) {
             out("continue;");
         } else {
-            Continuation top=continues.peek();
+            ContinueBreakVisitor top=continues.peek();
             if (that.getScope()==top.getScope()) {
-                top.useContinue();
                 out(top.getContinueName(), "=true; return;");
             } else {
                 out("continue;");
@@ -3119,14 +3194,25 @@ public class GenerateJsVisitor extends Visitor
     /** Encloses the block in a function, IF NEEDED. */
     void encloseBlockInFunction(final Tree.Block block, final boolean markBlock) {
         final boolean wrap=shouldEncloseBlock(block);
+        final ContinueBreakVisitor cbv = new ContinueBreakVisitor(block, names);
         if (wrap) {
-            if (markBlock)beginBlock();
-            Continuation c = new Continuation(block.getScope(), names);
-            continues.push(c);
-            out("var ", c.getContinueName(), "=false"); endLine(true);
-            out("var ", c.getBreakName(), "=false"); endLine(true);
-            out("var ", c.getReturnName(), "=(function()");
-            if (!markBlock)beginBlock();
+            continues.push(cbv);
+            if (markBlock) {
+                beginBlock();
+            }
+            boolean vars=false;
+            if (cbv.isContinues()) {
+                out("var ", cbv.getContinueName(), "=false");
+                vars=true;
+            }
+            if (cbv.isBreaks()) {
+                out(vars?",":"var ", cbv.getBreakName(), "=false");
+                vars=true;
+            }
+            out(vars?",":"var ", cbv.getReturnName(), "=(function()");
+            if (!markBlock) {
+                beginBlock();
+            }
         }
         if (markBlock) {
             block.visit(this);
@@ -3134,39 +3220,19 @@ public class GenerateJsVisitor extends Visitor
             visitStatements(block.getStatements());
         }
         if (wrap) {
-            Continuation c = continues.pop();
+            continues.pop();
             if (!markBlock)endBlock();
-            out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
-            if (c.isContinued()) {
-                out("else if(", c.getContinueName(),"===true){continue;}");
+            out("());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
+            if (cbv.isContinues()) {
+                out("else if(", cbv.getContinueName(),"===true){continue;}");
             }
-            if (c.isBreaked()) {
-                out("else if(", c.getBreakName(),"===true){break;}");
+            if (cbv.isBreaks()) {
+                out("else if(", cbv.getBreakName(),"===true){break;}");
             }
-            if (markBlock)endBlockNewLine();
+            if (markBlock) {
+                endBlockNewLine();
+            }
         }
-    }
-
-    private static class Continuation {
-        private final String cvar;
-        private final String rvar;
-        private final String bvar;
-        private final Scope scope;
-        private boolean cused, bused;
-        public Continuation(Scope scope, JsIdentifierNames names) {
-            this.scope=scope;
-            cvar = names.createTempVariable();
-            rvar = names.createTempVariable();
-            bvar = names.createTempVariable();
-        }
-        public Scope getScope() { return scope; }
-        public String getContinueName() { return cvar; }
-        public String getBreakName() { return bvar; }
-        public String getReturnName() { return rvar; }
-        public void useContinue() { cused = true; }
-        public void useBreak() { bused=true; }
-        public boolean isContinued() { return cused; }
-        public boolean isBreaked() { return bused; } //"isBroken" sounds really really bad in this case
     }
 
     /** This interface is used inside type initialization method. */

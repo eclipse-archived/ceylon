@@ -229,10 +229,10 @@ public class TypeUtils {
         final List<ProducedType> subs;
         int seq=0;
         if (d instanceof IntersectionType) {
-            gen.out("{t:'i");
+            gen.out(gen.getClAlias(), "mit$([");
             subs = d.getSatisfiedTypes();
         } else if (d instanceof UnionType) {
-            gen.out("{t:'u");
+            gen.out(gen.getClAlias(), "mut$([");
             subs = d.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             subs = d.getUnit().getTupleElementTypes(pt);
@@ -259,11 +259,10 @@ public class TypeUtils {
                 subs.remove(subs.size()-1);
                 subs.add(utail.getType());
             }
-            gen.out("{t:'T");
+            gen.out(gen.getClAlias(), "mtt$([");
         } else {
             return false;
         }
-        gen.out("',l:[");
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
@@ -279,7 +278,7 @@ public class TypeUtils {
             }
             first = false;
         }
-        gen.out("]}");
+        gen.out("])");
         return true;
     }
 

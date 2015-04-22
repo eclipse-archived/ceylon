@@ -1,5 +1,6 @@
 import check { check,fail }
 import ceylon.language.meta.model { Class, UnionType }
+import ceylon.language.meta { type }
 
 shared interface Top1{}
 shared interface Middle1 satisfies Top1{}
@@ -151,6 +152,7 @@ void testReifiedRuntime(){
     Composer458<String, String, []> c1 = Composer458<String, String, []>();
     value c2 = c1.and<Integer>();
     c2.debug();
+    clang639();
 }
 
 class Holder458<T>() {
@@ -178,4 +180,32 @@ class Composer458<out Element, out First, out Rest>() given First satisfies Elem
   shared Composer458<Element|Other,Other,Tuple<Element|Other,Other,Tuple<First|Element,First,Rest>>>
       and<Other>()
       => Composer458<Element|Other,Other,Tuple<Element|Other,Other,Tuple<First|Element,First,Rest>>>();
+}
+
+void clang639() {
+    class Cons1<out Element>(first, rest=null) {
+        shared Element first;
+        shared Cons1<Element>? rest;
+        shared Cons1<Element|Other> follow<Other>(Other head)
+            =>  Cons1(head, this);                   // 1
+    }
+    class Cons2<out Element>(first, rest=null) {
+        shared Element first;
+        shared Cons2<Element>? rest;
+        shared Cons2<Element|Other> follow<Other>(Other head)
+            =>  Cons2<Element|Other>(head, this);  // 2
+    }
+
+    variable Cons1<Integer|String> it1 = Cons1("");    // 3
+    variable Cons2<Integer|String> it2 = Cons2("");    // 3
+    //variable {<Integer|String>*} it = {};         // 4
+    for (i in 0:10k) {
+        it1 = it1.follow("" of Integer|String);
+        it2 = it2.follow("");                       // 5
+    }
+
+    print("c.l#639 1: ``type(it1)``"); // error
+    print("c.l#639 2: ``type(it2)``"); // error
+    check((it1 of Anything) is Cons1<Integer|String>); // error
+    check((it2 of Anything) is Cons2<Integer|String>); // error
 }

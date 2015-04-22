@@ -208,6 +208,15 @@ public class FunctionHelper {
                 if (gen.opts.isOptimize() && m.isMember()) { return; }
                 gen.comment(that);
                 gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+                if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
+                    if (gen.stitchNative(m, that)) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                        if (m.isShared()) {
+                            gen.share(m);
+                        }
+                        return;
+                    }
+                }
                 gen.out(m.isToplevel() ? GenerateJsVisitor.function : "var ");
             }
             else {
@@ -248,6 +257,10 @@ public class FunctionHelper {
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
             if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
                 if (gen.stitchNative(m, that)) {
+                    if (!JsCompiler.isCompilingLanguageModule()) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
+                                + ", ignoring Ceylon declaration");
+                    }
                     if (m.isShared()) {
                         gen.share(m);
                     }
@@ -262,8 +275,14 @@ public class FunctionHelper {
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
             } else if (gen.shouldStitch(m)) {
-                if (gen.stitchNative(m, that) && m.isShared()) {
-                    gen.share(m);
+                if (gen.stitchNative(m, that)) {
+                    if (!JsCompiler.isCompilingLanguageModule()) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
+                                + ", ignoring Ceylon declaration");
+                    }
+                    if (m.isShared()) {
+                        gen.share(m);
+                    }
                 }
             }
         }
