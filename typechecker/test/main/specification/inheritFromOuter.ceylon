@@ -5,7 +5,7 @@ class XXX() {
         String name = "";
         @error String name2 = YYY().name;
         @error String name3 = this.YYY().name;
-        String name4 = super.YYY().name;
+        @error String name4 = super.YYY().name;
         String name5 = outer.YYY().name;
         @error String name6 = YYY().YYY().name;
         class VVV() extends WWW() {}

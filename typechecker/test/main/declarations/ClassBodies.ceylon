@@ -701,7 +701,7 @@ class ClassBodies() {
     
     class BadClassWithCallToSuper() {
     	@error String s1 = string;
-    	String s2 = super.string;
+    	@error String s2 = super.string;
         void method() {
             String s1 = string;
             String s2 = super.string;

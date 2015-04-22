@@ -103,7 +103,7 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     private boolean isSelfReference(Tree.Term that) {
-        return (directlyInBody() && that instanceof Tree.This)
+        return (directlyInBody() && (that instanceof Tree.This || that instanceof Tree.Super))
             || (directlyInNestedBody() && that instanceof Tree.Outer);
     }
 
