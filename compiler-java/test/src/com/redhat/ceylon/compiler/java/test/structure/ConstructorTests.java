@@ -137,4 +137,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorInitializingMethod() {
         compareWithJavaSource("constructor/CtorInitializingMethod");
     }
+    
+    @Test
+    public void testCtorIntermixedStatementsAndConstructors() {
+        compareWithJavaSource("constructor/CtorIntermixedStatementsAndConstructors");
+    }
 }

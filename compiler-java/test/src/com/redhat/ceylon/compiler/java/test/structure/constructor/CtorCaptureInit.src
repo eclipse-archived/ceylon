@@ -39,6 +39,40 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.String getCaptured$priv$() {
         return captured;
     }
+    
+    private final void inc$priv$() {
+        (
+            let
+            {
+                long $ceylontmp$op$1 = getCount$priv$();
+                setCount$priv$($ceylontmp$op$1 + 1);
+            }
+            returning $ceylontmp$op$1;
+        );
+    }
+    
+    private final void reset$priv$() {
+        setCount$priv$(getInit$priv$());
+    }
+    
+    public final void sharedInc() {
+        (
+            let
+            {
+                long $ceylontmp$op$2 = getSharedCount();
+                setSharedCount($ceylontmp$op$2 + 1);
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+    
+    public final void sharedReset() {
+        setSharedCount(getSharedInit());
+    }
+    
+    public final .java.lang.String m() {
+        return getCaptured$priv$();
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.WithAttributes WithAttributes = null;
     
     private static final class WithAttributes {
@@ -91,40 +125,6 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         init = initial$param$;
         sharedInit = initial$param$;
         captured = "ConstWithParameter";
-    }
-    
-    private final void inc$priv$() {
-        (
-            let
-            {
-                long $ceylontmp$op$1 = getCount$priv$();
-                setCount$priv$($ceylontmp$op$1 + 1);
-            }
-            returning $ceylontmp$op$1;
-        );
-    }
-    
-    private final void reset$priv$() {
-        setCount$priv$(getInit$priv$());
-    }
-    
-    public final void sharedInc() {
-        (
-            let
-            {
-                long $ceylontmp$op$2 = getSharedCount();
-                setSharedCount($ceylontmp$op$2 + 1);
-            }
-            returning $ceylontmp$op$2;
-        );
-    }
-    
-    public final void sharedReset() {
-        setSharedCount(getSharedInit());
-    }
-    
-    public final .java.lang.String m() {
-        return getCaptured$priv$();
     }
     
     @.java.lang.Override

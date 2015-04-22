@@ -12,6 +12,31 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return s;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void use$priv$() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o1 = (
+            let
+            {
+                .java.lang.String arg$0$0 = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$0$0);
+        );
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
+            let
+            {
+                long arg$1$0 = 0L;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$1$0);
+        );
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
+            let
+            {
+                long arg$2$0 = 0L;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$2$0);
+        );
+    }
+    
     @.ceylon.language.SharedAnnotation$annotation$
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -54,31 +79,6 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i$param$) {
         s = .ceylon.language.Integer.toString(i$param$);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void use$priv$() {
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o1 = (
-            let
-            {
-                .java.lang.String arg$0$0 = "";
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$0$0);
-        );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
-            let
-            {
-                long arg$1$0 = 0L;
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$1$0);
-        );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
-            let
-            {
-                long arg$2$0 = 0L;
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$2$0);
-        );
     }
     
     @.java.lang.Override

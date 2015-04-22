@@ -78,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -3825,12 +3826,26 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType srcElementType = expr.getTarget().getQualifyingType();
             JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
             JCExpression srcIterableExpr;
+            boolean isSuperOrSuperOf = false;
             if (spreadMethodReferenceInner) {
                 srcIterableExpr = srcIterableName.makeIdent();
             } else {
-                srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
+                boolean isSuper = isSuper(expr.getPrimary());
+                isSuperOrSuperOf = isSuper || isSuperOf(expr.getPrimary());
+                if(isSuperOrSuperOf){
+                    // in this case we can't capture the iterable because it may be a mixin impl class, but it's constant
+                    // so we just refer to it later
+                    if(isSuper){
+                        Declaration member = expr.getPrimary().getTypeModel().getDeclaration().getMember("iterator", null, false);
+                        srcIterableExpr = transformSuper(expr, (TypeDeclaration) member.getContainer());
+                    }else
+                        srcIterableExpr = transformSuperOf(expr, expr.getPrimary(), "iterator");
+                }else{
+                    srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
+                }
             }
-            if (!spreadMethodReferenceInner) {
+            // do not capture the iterable for super invocations: see above
+            if (!spreadMethodReferenceInner && !isSuperOrSuperOf) {
                 JCVariableDecl srcIterable = null;
                 srcIterable = makeVar(Flags.FINAL, srcIterableName, srcIterableTypeExpr, srcIterableExpr);
                 letStmts.prepend(srcIterable);
@@ -3841,7 +3856,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // private Iterator<srcElementType> iterator = srcIterableName.iterator();
             JCVariableDecl srcIterator = makeVar(Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getIteratorType(srcElementType)), 
                     make().Apply(null,
-                            naming.makeQualIdent(srcIterableName.makeIdent(), "iterator"),
+                            // for super we do not capture it because we can't and it's constant anyways
+                            naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "iterator"),
                             List.<JCExpression>nil()));
             
             Naming.SyntheticName iteratorResultName = varBaseName.suffixedBy(Suffix.$element$);
@@ -4005,7 +4021,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSuper(primary)) {
                 result = transformSuper(expr);
             } else if (isSuperOf(primary)) {
-                result = transformSuperOf(expr);
+                result = transformSuperOf(expr, expr.getPrimary(), expr.getDeclaration().getName());
             } else if (isThis(primary)
                     && !expr.getDeclaration().isCaptured() 
                     && !expr.getDeclaration().isShared()
@@ -4129,8 +4145,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return isSuper(primary) || isSuperOf(primary);
     }
     
-    private JCExpression transformSuperOf(Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr) {
-        Tree.Term superOf = eliminateParens(superOfQualifiedExpr.getPrimary());
+    private JCExpression transformSuperOf(Node node, Tree.Primary superPrimary, String forMemberName) {
+        Tree.Term superOf = eliminateParens(superPrimary);
         if (!(superOf instanceof Tree.OfOp)) {
             throw new BugException();
         }
@@ -4138,16 +4154,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!(eliminateParens(((Tree.OfOp)superOf).getTerm()) instanceof Tree.Super)) {
             throw new BugException();
         }
-        Declaration member = superOfQualifiedExpr.getDeclaration();
         TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
         if (inheritedFrom instanceof Interface) {
-            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(member.getName(), null, false).getContainer();
+            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(forMemberName, null, false).getContainer();
         }
-        return widen(superOfQualifiedExpr, inheritedFrom);
+        return widenSuper(node, inheritedFrom);
     }
 
-    private JCExpression widen(
-            Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr,
+    private JCExpression widenSuper(
+            Node superOfQualifiedExpr,
             TypeDeclaration inheritedFrom) {
         JCExpression result;
         if (inheritedFrom instanceof Class) {
@@ -4175,10 +4190,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression superQualifiedExpr) {
-        Declaration member = superQualifiedExpr.getDeclaration();
-        TypeDeclaration inheritedFrom = (TypeDeclaration)member.getContainer();
-        return widen(superQualifiedExpr, inheritedFrom);
+    public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression expression) {
+        TypeDeclaration inheritedFrom = (TypeDeclaration)expression.getDeclaration().getContainer();
+        return transformSuper(expression, inheritedFrom);
+    }
+    
+    public JCExpression transformSuper(Node node, TypeDeclaration superDeclaration) {
+        return widenSuper(node, superDeclaration);
     }
     
     // Base members
@@ -4715,8 +4733,35 @@ public class ExpressionTransformer extends AbstractTransformer {
                     leftType.isSubtypeOf(typeFact().getListDeclaration().getProducedType(
                             null, Collections.singletonList(typeFact().getAnythingDeclaration().getType())));
             
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, 
-                    listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType);
+            ProducedType leftTypeForGetCall = listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType;
+            
+            Tree.Primary primary = access.getPrimary();
+            JCExpression lhs;
+            boolean isSuper = isSuper(primary);
+            if(isSuper || isSuperOf(primary)){
+                TypeDeclaration leftDeclaration = null;
+                // this is super special: if we use the optim and call super we need to make sure that "getFromFirst" already
+                // has a concrete super implementation
+                if(listOptim){
+                    Declaration member = leftType.getDeclaration().getMember("getFromFirst", null, false);
+                    if(member == null || member.isFormal()){
+                        listOptim = false;
+                    }else{
+                        leftDeclaration = (TypeDeclaration) member.getContainer();
+                    }
+                }
+                // if we did not already find the right supertype, try with "get"
+                if (leftDeclaration == null){
+                    Declaration member = leftType.getDeclaration().getMember("get", null, false);
+                    leftDeclaration = (TypeDeclaration) member.getContainer();
+                }
+                if(isSuper)
+                    lhs = transformSuper(access, leftDeclaration);
+                else
+                    lhs = transformSuperOf(access, access.getPrimary(), listOptim ? "getFromFirst" : "get");
+            }else{
+                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftTypeForGetCall);
+            }
             
             Tree.Element element = (Tree.Element) elementOrRange;
             
@@ -4740,7 +4785,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
         }else{
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
@@ -4770,6 +4814,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args = List.<JCExpression>of(makeErroneous(range, "compiler bug: unhandled range"));
             }
 
+            JCExpression lhs;
+
+            Tree.Primary primary = access.getPrimary();
+            boolean isSuper = isSuper(primary);
+            if(isSuper || isSuperOf(primary)){
+                Declaration member = leftType.getDeclaration().getMember(method, null, false);
+                TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
+                if(isSuper)
+                    lhs = transformSuper(access, leftDeclaration);
+                else
+                    lhs = transformSuperOf(access, access.getPrimary(), method);
+            }else{
+                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
+            }
+            
             // Because tuple open span access has the type of the indexed element
             // (not a sequential of the union of types in the ranged) a typecast may be required.
             ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 2);
@@ -4879,7 +4938,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (isSuper(qualified.getPrimary())) {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
-                expr = transformSuperOf(qualified);
+                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
             } else if (isThis(qualified.getPrimary())
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
@@ -5417,12 +5476,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
                 methodBody = List.<JCStatement>of(make().WhileLoop(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()),
                         make().Block(0, contextBody.toList())));
+                // It can happen that we never get into the body because the outer iterator is exhausted, if so, mark
+                // this one exhausted too
                 if (lastIteratorCtxtName != null) {
-                    // It can happen that we never get into the body because the outer iterator is exhausted, if so, mark
-                    // this one exhausted too
+                    // FIXME: this may actually not be useful to check for exhaustion because in theory we can only get out
+                    // of the loop because the previous supplier is exhausted.
                     methodBody = methodBody.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(), 
                             make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))), 
                             null));
+                }else{
+                    methodBody = methodBody.append(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))));
                 }
                 methodBody = methodBody.append(make().Return(makeBoolean(false)));
             }else

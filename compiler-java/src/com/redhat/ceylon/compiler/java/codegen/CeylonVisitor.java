@@ -120,22 +120,31 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
     
-    public void visit(Tree.Constructor that) {
-        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(that);
-        if (plan instanceof Drop) {
-            return;
-        }
-        classBuilder.defs(gen.classGen().transform(that, classBuilder));
-    }
-
     public void visit(Tree.ClassBody that) {
+        // Transform executable statements and declarations in the body
+        // except constructors. 
         for (Tree.Statement stmt : that.getStatements()) {
-            HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
-            if (error != null) {
-                append(gen.makeThrowUnresolvedCompilationError(error));
+            if (stmt instanceof Tree.Constructor) {
+                classBuilder.getInitBuilder().constructor((Tree.Constructor)stmt);
             } else {
-                stmt.visit(this);
+                HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
+                if (error != null) {
+                    append(gen.makeThrowUnresolvedCompilationError(error));
+                } else {
+                    stmt.visit(this);
+                }
             }
+        }
+        for (Tree.Statement stmt : that.getStatements()) {
+            if (!(stmt instanceof Tree.Constructor)) {
+                continue;
+            }
+            Tree.Constructor ctor = (Tree.Constructor)stmt;
+            TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(ctor);
+            if (plan instanceof Drop) {
+                return;
+            }
+            classBuilder.defs(gen.classGen().transform(ctor, classBuilder));
         }
     }
     public void visit(Tree.InterfaceBody that) {
