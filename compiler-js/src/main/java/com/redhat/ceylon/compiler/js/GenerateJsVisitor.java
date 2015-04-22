@@ -188,7 +188,7 @@ public class GenerateJsVisitor extends Visitor
     /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     void beginNewLine() {
-        out.beginNewLine();
+        out.endLine(false);
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
