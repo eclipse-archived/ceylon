@@ -27,7 +27,6 @@ public class ForGenerator {
         final Tree.ForIterator foriter = that.getForClause().getForIterator();
         boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
         final String itemVar = generateForLoop(foriter, hasElse);
-
         gen.encloseBlockInFunction(that.getForClause().getBlock(), false);
         //If there's an else block, check for normal termination
         gen.endBlock();

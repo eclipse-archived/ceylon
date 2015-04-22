@@ -17,6 +17,7 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.js.util.JsUtils;
@@ -49,7 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
-    private final Stack<Continuation> continues = new Stack<>();
+    private final Stack<ContinueBreakVisitor> continues = new Stack<>();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<>();
     private final Set<Declaration> generatedAttributes = new HashSet<>();
@@ -2409,6 +2410,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.Return that) {
+        if (!continues.isEmpty()) {
+            ContinueBreakVisitor top=continues.peek();
+            if (that.getScope()==top.getScope()) {
+                out(top.getReturnName(), "=true;");
+            }
+        }
         out("return");
         if (that.getExpression() == null) {
             endLine(true);
@@ -3016,9 +3023,8 @@ public class GenerateJsVisitor extends Visitor
         if (continues.isEmpty()) {
             out("break;");
         } else {
-            Continuation top=continues.peek();
+            ContinueBreakVisitor top=continues.peek();
             if (that.getScope()==top.getScope()) {
-                top.useBreak();
                 out(top.getBreakName(), "=true; return;");
             } else {
                 out("break;");
@@ -3029,9 +3035,8 @@ public class GenerateJsVisitor extends Visitor
         if (continues.isEmpty()) {
             out("continue;");
         } else {
-            Continuation top=continues.peek();
+            ContinueBreakVisitor top=continues.peek();
             if (that.getScope()==top.getScope()) {
-                top.useContinue();
                 out(top.getContinueName(), "=true; return;");
             } else {
                 out("continue;");
@@ -3189,14 +3194,22 @@ public class GenerateJsVisitor extends Visitor
     /** Encloses the block in a function, IF NEEDED. */
     void encloseBlockInFunction(final Tree.Block block, final boolean markBlock) {
         final boolean wrap=shouldEncloseBlock(block);
+        final ContinueBreakVisitor cbv = new ContinueBreakVisitor(block, names);
         if (wrap) {
-            if (markBlock)beginBlock();
-            Continuation c = new Continuation(block.getScope(), names);
-            continues.push(c);
-            out("var ", c.getContinueName(), "=false"); endLine(true);
-            out("var ", c.getBreakName(), "=false"); endLine(true);
-            out("var ", c.getReturnName(), "=(function()");
-            if (!markBlock)beginBlock();
+            continues.push(cbv);
+            if (markBlock) {
+                beginBlock();
+            }
+            if (cbv.isContinues()) {
+                out("var ", cbv.getContinueName(), "=false"); endLine(true);
+            }
+            if (cbv.isBreaks()) {
+                out("var ", cbv.getBreakName(), "=false"); endLine(true);
+            }
+            out("var ", cbv.getReturnName(), "=(function()");
+            if (!markBlock) {
+                beginBlock();
+            }
         }
         if (markBlock) {
             block.visit(this);
@@ -3204,39 +3217,28 @@ public class GenerateJsVisitor extends Visitor
             visitStatements(block.getStatements());
         }
         if (wrap) {
-            Continuation c = continues.pop();
+            continues.pop();
+            boolean genElse=false;
             if (!markBlock)endBlock();
-            out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
-            if (c.isContinued()) {
-                out("else if(", c.getContinueName(),"===true){continue;}");
+            if (cbv.isReturns()) {
+                out("());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
+                genElse=true;
+            } else {
+                out("());");
             }
-            if (c.isBreaked()) {
-                out("else if(", c.getBreakName(),"===true){break;}");
+            if (cbv.isContinues()) {
+                if (genElse)out("else ");
+                out("if(", cbv.getContinueName(),"===true){continue;}");
+                genElse=true;
             }
-            if (markBlock)endBlockNewLine();
+            if (cbv.isBreaks()) {
+                if (genElse)out("else ");
+                out("if(", cbv.getBreakName(),"===true){break;}");
+            }
+            if (markBlock) {
+                endBlockNewLine();
+            }
         }
-    }
-
-    private static class Continuation {
-        private final String cvar;
-        private final String rvar;
-        private final String bvar;
-        private final Scope scope;
-        private boolean cused, bused;
-        public Continuation(Scope scope, JsIdentifierNames names) {
-            this.scope=scope;
-            cvar = names.createTempVariable();
-            rvar = names.createTempVariable();
-            bvar = names.createTempVariable();
-        }
-        public Scope getScope() { return scope; }
-        public String getContinueName() { return cvar; }
-        public String getBreakName() { return bvar; }
-        public String getReturnName() { return rvar; }
-        public void useContinue() { cused = true; }
-        public void useBreak() { bused=true; }
-        public boolean isContinued() { return cused; }
-        public boolean isBreaked() { return bused; } //"isBroken" sounds really really bad in this case
     }
 
     /** This interface is used inside type initialization method. */
