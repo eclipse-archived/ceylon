@@ -243,7 +243,7 @@ public class TypeVisitor extends Visitor {
                 }
                 if (!pkg.isShared()) {
                     path.addError("imported package is not shared: '" + 
-                            nameToImport + "'");
+                            nameToImport + "'", 402);
                 }
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&
