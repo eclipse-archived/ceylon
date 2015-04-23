@@ -19,7 +19,7 @@ function $JsCallable(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   function f(){
-    return f$.apply(0,spread$(arguments,f$));
+    return f$.apply(0,spread$(arguments,f$,targs));
   }
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
@@ -39,9 +39,9 @@ function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
   var f2 = function() {
-    var arg=spread$(arguments,f);
+    var arg=spread$(arguments,f,targs);
     if (targs)arg.push(targs);
-    return f.apply(o, arg, targs);
+    return f.apply(o, arg);
   };
   f2.$crtmm$=f.$crtmm$===undefined?Callable.$crtmm$:f.$crtmm$;
   return f2;
@@ -63,7 +63,9 @@ function spread$(a,f,targs) {
     //(it's just a regular 1-param func which happens to receive a tuple)
     if (!(a1t && is$(arg[0],a1t))) {
       var typecheck;
-      if (a1t && arg[0].$$targs$$) {
+      if (a1t && targs && targs.Arguments$Callable) {
+        typecheck=targs.Arguments$Callable;
+      } else if (a1t && arg[0].$$targs$$) {
         if (arg[0].$$targs$$.First$Tuple) {
           typecheck={t:Tuple,a:arg[0].$$targs$$};
         } else if (arg[0].$$targs$$.t==='T') {
