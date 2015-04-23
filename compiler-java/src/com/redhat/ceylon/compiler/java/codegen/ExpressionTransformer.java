@@ -4166,7 +4166,22 @@ public class ExpressionTransformer extends AbstractTransformer {
             TypeDeclaration inheritedFrom) {
         JCExpression result;
         if (inheritedFrom instanceof Class) {
-            result = naming.makeSuper();
+            if(isWithinSyntheticClassBody()){
+                // super refers to the closest ClassOrInterface
+                Scope scope = superOfQualifiedExpr.getScope();
+                while (!(scope instanceof Package)) {
+                    if (scope instanceof ClassOrInterface) {
+                        break;
+                    }
+                    scope = scope.getContainer();
+                }
+                if(scope instanceof ClassOrInterface)
+                    result = naming.makeQualifiedSuper(makeJavaType(((ClassOrInterface) scope).getType(), JT_RAW));
+                else
+                    result = naming.makeSuper();
+            }else{
+                result = naming.makeSuper();
+            }
         } else if (inheritedFrom instanceof Interface) {
             Interface iface = (Interface)inheritedFrom;
             JCExpression qualifier = null;
