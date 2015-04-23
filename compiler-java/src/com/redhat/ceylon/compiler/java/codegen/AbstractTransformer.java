@@ -3138,6 +3138,10 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtIgnore() {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
+    
+    List<JCAnnotation> makeAtNoInitCheck() {
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().ceylonAtNoInitCheckType), List.<JCExpression> nil()));
+    }
 
     List<JCAnnotation> makeAtTransient() {
         return makeModelAnnotation(syms().ceylonAtTransientType);

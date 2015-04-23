@@ -2837,8 +2837,13 @@ public class ClassTransformer extends AbstractTransformer {
                 if (concrete) {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
+                    
+                    List<JCAnnotation> annos = makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, decl));
+                    if (Decl.hasAbstractConstructor((Class)decl.getDeclarationModel().getContainer())) {
+                        annos = annos.prependList(makeAtNoInitCheck());
+                    }
                     // fields should be ignored, they are accessed by the getters
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, decl)));
+                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
                     if (model.isLate()) {
                         classBuilder.field(PRIVATE | Flags.VOLATILE, Naming.getInitializationFieldName(attrName), 
                                 make().Type(syms().booleanType), 

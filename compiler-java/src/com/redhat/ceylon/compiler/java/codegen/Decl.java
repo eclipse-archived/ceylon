@@ -949,6 +949,21 @@ public class Decl {
             return null;
         }
     }
+    
+    /**
+     * true iff the given class has any abstract constructors.
+     */
+    public static boolean hasAbstractConstructor(Class cls) {
+        if (cls.hasConstructors()) {
+            for (Declaration d : cls.getMembers()) {
+                if (d instanceof Constructor &&
+                        ((Constructor) d).isAbstract()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static Declaration getDeclarationScope(Scope scope) {
         while (true) {
