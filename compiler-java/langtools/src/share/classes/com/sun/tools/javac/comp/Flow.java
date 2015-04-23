@@ -363,6 +363,10 @@ public class Flow extends TreeScanner {
               classDef.sym.isEnclosedBy((ClassSymbol)sym.owner)));
     }
 
+    protected boolean ceylonNoInitCheck(VarSymbol sym) {
+        return sourceLanguage.isCeylon() && sym.attribute(syms.ceylonAtNoInitCheckType.tsym) != null;
+    }
+
     /** Initialize new trackable variable by setting its address field
      *  to the next available sequence number and entering it under that
      *  index into the vars array.
@@ -412,7 +416,7 @@ public class Flow extends TreeScanner {
                 }
             }
             inits.incl(sym.adr);
-        } else if ((sym.flags() & FINAL) != 0) {
+        } else if ((sym.flags() & FINAL) != 0 && !ceylonNoInitCheck(sym)) {
             log.error(pos, "var.might.already.be.assigned", sym);
         }
     }
@@ -436,7 +440,8 @@ public class Flow extends TreeScanner {
     void checkInit(DiagnosticPosition pos, VarSymbol sym) {
         if ((sym.adr >= firstadr || sym.owner.kind != TYP) &&
             trackable(sym) &&
-            !inits.isMember(sym.adr)) {
+            !inits.isMember(sym.adr) && 
+            !ceylonNoInitCheck(sym)) {
             log.error(pos, "var.might.not.have.been.initialized",
                       sym);
             inits.incl(sym.adr);
