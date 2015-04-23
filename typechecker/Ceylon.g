@@ -3735,12 +3735,15 @@ switchCaseElse returns [SwitchStatement statement]
 switchHeader returns [SwitchClause clause]
     : SWITCH_CLAUSE 
       { $clause = new SwitchClause($SWITCH_CLAUSE); }
-      LPAREN 
+      LPAREN
+      { $clause.setEndToken($LPAREN); }
       (
         switched 
-        { $clause.setSwitched($switched.switched); }
+        { $clause.setSwitched($switched.switched); 
+          clause.setEndToken(null); }
       )?
       RPAREN
+      { $clause.setEndToken($RPAREN); }
     ;
 
 switched returns [Switched switched]
