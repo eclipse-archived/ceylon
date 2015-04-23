@@ -42,7 +42,8 @@ public class JavaScriptRunnerImpl implements Runner {
         tool.setNoDefRepos(options.isNoDefaultRepositories());
         tool.setSystemRepository(options.getSystemRepository());
         tool.setOffline(options.isOffline());
-        tool.setRun(options.getRun());
+        if(options.getRun() != null)
+            tool.setRun(options.getRun());
         if(options.isVerbose())
             tool.setVerbose(options.getVerboseCategory());
     }
