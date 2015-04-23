@@ -3707,7 +3707,8 @@ public class ClassTransformer extends AbstractTransformer {
                     || ol.defaultParameterMethodOnOuter()) {
                 return List.<JCExpression>nil();
             } else if (ol.defaultParameterMethodStatic()){
-                return typeArguments((Functional)ol.getModel());
+                Functional f = (Functional)ol.getModel();
+                return typeArguments(f instanceof Constructor ? (Class)((Constructor)f).getContainer() : f);
             } else {
                 return List.<JCExpression>nil();
             }
