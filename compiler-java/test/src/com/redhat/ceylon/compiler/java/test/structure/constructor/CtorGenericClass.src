@@ -6,7 +6,7 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                T $ceylontmp$t$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass$t($reified$T);
+                T $ceylontmp$t$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.<T>CtorGenericClass$t($reified$T);
                 this($reified$T, $ceylontmp$t$8);
             }
             returning null;
@@ -17,7 +17,7 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                T $ceylontmp$t$9 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass$Foo$t($reified$T);
+                T $ceylontmp$t$9 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.<T>CtorGenericClass$Foo$t($reified$T);
                 this($reified$T, $name$, $ceylontmp$t$9);
             }
             returning null;
