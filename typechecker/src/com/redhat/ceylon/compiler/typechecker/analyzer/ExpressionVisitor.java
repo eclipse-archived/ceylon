@@ -6815,7 +6815,7 @@ public class ExpressionVisitor extends Visitor {
                     if (!caseUnionType.covers(switchExpressionType)) {
                         switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
                                 caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
-                                switchExpressionType.getProducedTypeName(unit) + "'");
+                                switchExpressionType.getProducedTypeName(unit) + "'", 10000);
                     }
                 }
             }
