@@ -48,7 +48,7 @@ public class Class extends ClassOrInterface implements Functional {
         return named;
     }
     
-    public void setNamed(boolean named){
+    public void setNamed(boolean named) {
         this.named = named;
     }
     

@@ -523,9 +523,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             that.getParameterList().getModel().setFirst(true);
             c.addParameterList(that.getParameterList().getModel());
         }
-        if (that.getIdentifier()==null && !c.isShared()) {
-            that.addError("default constructor must be annotated shared", 401);
-        }
+        if (that.getIdentifier()==null) {
+            //default constructor
+            if (!c.isShared()) {
+                that.addError("default constructor must be annotated shared", 401);
+            }
+            if (c.isAbstract()) {
+                that.addError("default constructor may not be annotated abstract", 1601);
+            }
 //        if (scope instanceof Class) {
 //            Class clazz = (Class) scope;
 //            //constructor of sealed class implicitly inherits sealed
@@ -533,6 +538,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //                c.setSealed(true);
 //            }
 //        }
+        }
+        if (c.isAbstract() && c.isShared()) {
+            that.addError("abstract constructor may not be annotated shared", 1610);
+        }
     }
 
     @Override
@@ -1283,6 +1292,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (hasAnnotation(al, "abstract", unit)) {
             if (model instanceof Class) {
                 ((Class) model).setAbstract(true);
+            }
+            else if (model instanceof Constructor) {
+                ((Constructor) model).setAbstract(true);
             }
             else {
                 that.addError("declaration is not a class, and may not be annotated abstract", 1600);

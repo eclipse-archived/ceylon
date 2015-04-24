@@ -50,8 +50,6 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     	}
     }
 
-    public abstract boolean isAbstract();
-
     @Override
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE;
