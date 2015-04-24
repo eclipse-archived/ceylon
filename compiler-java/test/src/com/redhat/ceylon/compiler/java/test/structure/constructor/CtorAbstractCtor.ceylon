@@ -17,8 +17,7 @@ object checker {
         value r = s.reversed.string;
         print(r);
         if (expect != r) {
-            print("X");
-            //throw AssertionError("Expected ``expect`` but got ``r``");
+            throw AssertionError("Expected ``expect`` but got ``r``");
         }
     }
 }
@@ -248,24 +247,24 @@ class CtorAbstractCtorGeneric<T> extends CtorAbstractCtorSuper {
 shared void runCtorAbstractCtor() {
     checker.reset();
     CtorAbstractCtorPartial.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
     CtorAbstractCtorPartialShared.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
     CtorAbstractCtorPartialCaptured.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     
     checker.reset();
     CtorAbstractCtorPartialVariable.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
     CtorAbstractCtorPartialSharedVariable.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
     CtorAbstractCtorPartialCapturedVariable.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
     CtorAbstractCtorGeneric.Rest(1);
-    checker.check("[super, a, partial, b, Rest, c]");
+    checker.check("[super, a, Partial, b, Rest, c]");
 }
