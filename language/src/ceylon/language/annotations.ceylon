@@ -285,7 +285,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `suppressedAlready`, 
      `suppressesNothing`, 
      `unknownWarning`, 
-     `ambiguousAnnotation`."
+     `ambiguousAnnotation`,
+     `javaAnnotationElement`."
     String* warnings) 
         => SuppressWarningsAnnotation(warnings);
 
