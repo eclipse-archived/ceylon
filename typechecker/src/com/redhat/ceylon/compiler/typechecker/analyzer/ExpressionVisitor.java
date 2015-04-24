@@ -4072,17 +4072,19 @@ public class ExpressionVisitor extends Visitor {
             Declaration target) {
         if (target instanceof Method && target.isAnnotation()) {
             Method method = (Method) target;
-            if (false) {
-                ParameterList parameterList = 
-                        method.getParameterLists().get(0);
+            ParameterList parameterList = 
+                    method.getParameterLists().get(0);
+            if (!parameterList.isPositionalParametersSupported()) {
                 for (int i=params.size(); i<args.size(); i++) {
                     Parameter parameter = 
                             parameterList.getParameters().get(i);
-                    if (!"value".equals(parameter.getName())) {
-                        Tree.PositionalArgument arg = args.get(i);
+                    Tree.PositionalArgument arg = args.get(i);
+                    if (arg!=null && 
+                            !"value".equals(parameter.getName())) {
                         arg.addUsageWarning(Warning.javaAnnotationElement, 
-                                "positional argument to Java annotation element: '"
-                                + parameter.getName() + "' (use named arguments)");
+                                "positional argument to Java annotation element: '" + 
+                                        parameter.getName() + 
+                                        "' (use named arguments)");
                     }
                 }
             }
