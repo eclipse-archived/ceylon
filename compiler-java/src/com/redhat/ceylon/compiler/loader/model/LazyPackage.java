@@ -327,6 +327,7 @@ public class LazyPackage extends Package {
         ctor.setUnit(iface.getUnit());
         
         ParameterList ctorpl = new ParameterList();
+        ctorpl.setPositionalParametersSupported(false);
         ctor.addParameterList(ctorpl);
         
         AnnotationInvocation ai = new AnnotationInvocation();
