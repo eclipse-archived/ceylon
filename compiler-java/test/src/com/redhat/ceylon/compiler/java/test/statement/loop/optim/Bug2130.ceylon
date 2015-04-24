@@ -353,25 +353,22 @@ void bug2130Span() {
         compareSpanIntegerBy2130(runtime.maxIntegerValue, runtime.maxIntegerValue, step);
         compareSpanIntegerBy2130(runtime.minIntegerValue, runtime.minIntegerValue, step);
         
-        if (step == 1 && step == 2) {// those take too damn long!
-            /*compareSpanIntegerBy2130{
-                start=-2; 
-                end=runtime.maxIntegerValue;
-                by=step;
-                breakAfter=3;
-                debug=true;
-            };
-            compareSpanIntegerBy2130{
-                start=runtime.maxIntegerValue; 
-                end=-2;
-                by=step;
-                breakAfter=3;
-                debug=true;
-            }; //TODO takes forever*/
-        } else {
-            //compareSpanIntegerBy2130(-2, runtime.maxIntegerValue, step);
-            //compareSpanIntegerBy2130(runtime.maxIntegerValue, -2, step);
-        }
+        
+        compareSpanIntegerBy2130{
+            start=-2; 
+            end=runtime.maxIntegerValue;
+            by=step;
+            breakAfter=if (step == 1 || step == 2) then 3 else null;
+            debug=false;
+        };
+        compareSpanIntegerBy2130{
+            start=runtime.maxIntegerValue; 
+            end=-2;
+            by=step;
+            breakAfter=if (step == 1 || step == 2) then 3 else null;
+            debug=false;
+        };
+        
     }
     
     compareSpanCharacter2130('\0', '\0');
@@ -742,7 +739,7 @@ void bug2130Measure() {
         compareMeasureIntegerBy2130(0, -1, step);
         compareMeasureIntegerBy2130(0, 1, step);
         compareMeasureIntegerBy2130(0, 10, step);
-        // TODO compareMeasureIntegerBy2130(runtime.maxIntegerValue, 10, step);
+        compareMeasureIntegerBy2130(runtime.maxIntegerValue, 10, step);
         // TODO compareMeasureIntegerBy2130(runtime.minIntegerValue, 10, step);
     }
     
