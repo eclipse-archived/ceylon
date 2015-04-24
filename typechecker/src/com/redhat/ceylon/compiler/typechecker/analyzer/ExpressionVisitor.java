@@ -4075,7 +4075,7 @@ public class ExpressionVisitor extends Visitor {
             ParameterList parameterList = 
                     method.getParameterLists().get(0);
             if (!parameterList.isPositionalParametersSupported()) {
-                for (int i=params.size(); i<args.size(); i++) {
+                for (int i=0; i<params.size() && i<args.size(); i++) {
                     Parameter parameter = 
                             parameterList.getParameters().get(i);
                     Tree.PositionalArgument arg = args.get(i);
