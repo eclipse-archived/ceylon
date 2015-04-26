@@ -822,26 +822,28 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.BaseType that) {
         super.visit(that);
         Tree.Identifier id = that.getIdentifier();
-        String name = name(id);
-        Scope scope = that.getScope();
-        TypeDeclaration type; 
-        if (that.getPackageQualified()) {
-            type = getPackageTypeDeclaration(name, 
-                    null, false, unit);
-        }
-        else {
-            type = getTypeDeclaration(scope, name, 
-                    null, false, unit);
-        }
-        if (type==null) {
-            that.addError("type declaration does not exist: '" + 
-                    name + "'", 102);
-            unit.getUnresolvedReferences().add(id);
-        }
-        else {
-            ProducedType outerType = 
-                    scope.getDeclaringType(type);
-            visitSimpleType(that, outerType, type);
+        if (id!=null) {
+            String name = name(id);
+            Scope scope = that.getScope();
+            TypeDeclaration type; 
+            if (that.getPackageQualified()) {
+                type = getPackageTypeDeclaration(name, 
+                        null, false, unit);
+            }
+            else {
+                type = getTypeDeclaration(scope, name, 
+                        null, false, unit);
+            }
+            if (type==null) {
+                that.addError("type declaration does not exist: '" + 
+                        name + "'", 102);
+                unit.getUnresolvedReferences().add(id);
+            }
+            else {
+                ProducedType outerType = 
+                        scope.getDeclaringType(type);
+                visitSimpleType(that, outerType, type);
+            }
         }
     }
     
