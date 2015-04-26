@@ -992,30 +992,32 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
       (
         m1=MEMBER_OP
         { bt.setEndToken($m1); }
-        t1=typeNameWithArguments
-        { if ($t1.identifier!=null) {
-            bt.setEndToken(null);
-            bt.setIdentifier($t1.identifier);
-          }
-          if ($t1.typeArgumentList!=null)
-              bt.setTypeArgumentList($t1.typeArgumentList);
-          $expression = new ExtendedTypeExpression(null);
-          $expression.setExtendedType($type); }
-        ( //constructor
-          m2=MEMBER_OP
-          { qt = new QualifiedType(null);
-            qt.setOuterType($type);
-            qt.setEndToken($m2); 
-            $type=qt; }
-          t2=typeNameWithArguments
-          { if ($t2.identifier!=null) {
-              qt.setEndToken(null);
-              qt.setIdentifier($t2.identifier);
+        (
+          t1=typeNameWithArguments
+          { if ($t1.identifier!=null) {
+              bt.setEndToken(null);
+              bt.setIdentifier($t1.identifier);
             }
-            if ($t2.typeArgumentList!=null)
-              qt.setTypeArgumentList($t2.typeArgumentList);
+            if ($t1.typeArgumentList!=null)
+                bt.setTypeArgumentList($t1.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
             $expression.setExtendedType($type); }
+          ( //constructor
+            m2=MEMBER_OP
+            { qt = new QualifiedType(null);
+              qt.setOuterType($type);
+              qt.setEndToken($m2); 
+              $type=qt; }
+            t2=typeNameWithArguments
+            { if ($t2.identifier!=null) {
+                qt.setEndToken(null);
+                qt.setIdentifier($t2.identifier);
+              }
+              if ($t2.typeArgumentList!=null)
+                qt.setTypeArgumentList($t2.typeArgumentList);
+              $expression = new ExtendedTypeExpression(null);
+              $expression.setExtendedType($type); }
+          )?
         )?
       )?
    ;
@@ -1037,15 +1039,17 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           qt.setOuterType($type);
           qt.setEndToken($m3); 
           $type=qt; }
-        t3=typeNameWithArguments
-        { if ($t3.identifier!=null) {
-            qt.setEndToken(null);
-            qt.setIdentifier($t3.identifier);
-          }
-          if ($t3.typeArgumentList!=null)
-              qt.setTypeArgumentList($t3.typeArgumentList);
-          $expression = new ExtendedTypeExpression(null);
-          $expression.setExtendedType($type); }
+        (
+          t3=typeNameWithArguments
+          { if ($t3.identifier!=null) {
+              qt.setEndToken(null);
+              qt.setIdentifier($t3.identifier);
+            }
+            if ($t3.typeArgumentList!=null)
+                qt.setTypeArgumentList($t3.typeArgumentList);
+            $expression = new ExtendedTypeExpression(null);
+            $expression.setExtendedType($type); }
+        )?
       )?
     ;
 
@@ -1058,15 +1062,17 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
         $type=qt; }
       m4=MEMBER_OP
       { qt.setEndToken($m4); }
-      t4=typeNameWithArguments 
-      { if ($t4.identifier!=null) {
-          qt.setEndToken(null);
-          qt.setIdentifier($t4.identifier);
-        }
-        if ($t4.typeArgumentList!=null)
-          qt.setTypeArgumentList($t4.typeArgumentList);
-        $expression = new ExtendedTypeExpression(null);
-        $expression.setExtendedType($type); }
+      (
+        t4=typeNameWithArguments 
+        { if ($t4.identifier!=null) {
+            qt.setEndToken(null);
+            qt.setIdentifier($t4.identifier);
+          }
+          if ($t4.typeArgumentList!=null)
+            qt.setTypeArgumentList($t4.typeArgumentList);
+          $expression = new ExtendedTypeExpression(null);
+          $expression.setExtendedType($type); }
+      )?
 	  ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]

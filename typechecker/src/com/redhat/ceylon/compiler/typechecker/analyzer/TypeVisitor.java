@@ -905,22 +905,24 @@ public class TypeVisitor extends Visitor {
             }
             TypeDeclaration d = pt.getDeclaration();
             Tree.Identifier id = that.getIdentifier();
-            String name = name(id);
-            TypeDeclaration type = 
-                    getTypeMember(d, name, null, false, unit);
-            if (type==null) {
-                if (d.isMemberAmbiguous(name, unit, null, false)) {
-                    that.addError("member type declaration is ambiguous: '" + 
-                            name + "' for type '" + d.getName() + "'");
+            if (id!=null) {
+                String name = name(id);
+                TypeDeclaration type = 
+                        getTypeMember(d, name, null, false, unit);
+                if (type==null) {
+                    if (d.isMemberAmbiguous(name, unit, null, false)) {
+                        that.addError("member type declaration is ambiguous: '" + 
+                                name + "' for type '" + d.getName() + "'");
+                    }
+                    else {
+                        that.addError("member type declaration does not exist: '" + 
+                                name + "' in type '" + d.getName() + "'", 100);
+                        unit.getUnresolvedReferences().add(id);
+                    }
                 }
                 else {
-                    that.addError("member type declaration does not exist: '" + 
-                            name + "' in type '" + d.getName() + "'", 100);
-                    unit.getUnresolvedReferences().add(id);
+                    visitSimpleType(that, pt, type);
                 }
-            }
-            else {
-                visitSimpleType(that, pt, type);
             }
         }
     }
