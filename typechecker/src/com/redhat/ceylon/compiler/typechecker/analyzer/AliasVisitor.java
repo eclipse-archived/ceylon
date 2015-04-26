@@ -27,7 +27,8 @@ public class AliasVisitor extends Visitor {
                     t.isRecursiveTypeAliasDefinition(singleton(d));
             if (!list.isEmpty()) {
                 that.addError("type alias is circular: definition of '" + 
-                        d.getName() + "' is recursive, involving " + 
+                        d.getName() + 
+                        "' is recursive, involving " + 
                         typeList(list));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
@@ -48,7 +49,6 @@ public class AliasVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -57,11 +57,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        super.visit(that);
         Tree.ClassSpecifier ts = that.getClassSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -70,11 +70,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -83,7 +83,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
+    
+    // Necessary in order to resolve a nasty bug #867 
+    // resulting from caching of type aliases:
     
     @Override
     public void visit(TupleType that) {

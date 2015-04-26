@@ -281,3 +281,7 @@ class Case() extends EnumAlias() {}
 @error object dupe extends Duped1() {}
 @error abstract class Duped2() of Dupe|Dupe {}
 @error class Dupe() extends Duped2() {}
+
+@error alias RCA => RCA();
+@error interface RCI => RCI(RCI);
+
