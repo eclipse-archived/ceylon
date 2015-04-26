@@ -83,7 +83,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -4170,7 +4169,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     ProducedType paramType = paramTypes.get(i);
                     if (sequenced && i==paramTypes.size()-1) {
-                        List<PositionalArgument> sublist = 
+                        List<Tree.PositionalArgument> sublist = 
                                 args.subList(i, args.size());
                         checkSequencedIndirectArgument(sublist, 
                                 paramType);
@@ -7460,10 +7459,13 @@ public class ExpressionVisitor extends Visitor {
             Constructor c = that.getDeclarationModel();
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
-                Class superclass = clazz.getExtendedTypeDeclaration();
-                if (!unit.getBasicDeclaration().equals(superclass)) {
+                Class superclass = 
+                        clazz.getExtendedTypeDeclaration();
+                if (!unit.getBasicDeclaration()
+                        .equals(superclass)) {
                     that.addError("constructor must explicitly delegate to some superclass constructor: '" +
-                            clazz.getName() + "' extends '" + superclass.getName() + "'");
+                            clazz.getName() + "' extends '" + 
+                            superclass.getName() + "'");
                 }
             }
         }
@@ -7497,10 +7499,16 @@ public class ExpressionVisitor extends Visitor {
             if (superclass!=null) {
                 ProducedType extendedType = 
                         containingClass.getExtendedType();
-                ProducedType constructedType = type.getTypeModel();
-                Declaration delegate = type.getDeclarationModel();
+                ProducedType constructedType = 
+                        type.getTypeModel();
+                Declaration delegate = 
+                        type.getDeclarationModel();
                 if (delegate instanceof Constructor) {
                     Constructor c = (Constructor) delegate;
+                    if (c.equals(constructor)) {
+                        type.addError("constructor delegates to itself: " +
+                                c.getName());
+                    }
                     ClassOrInterface delegatedType = 
                             c.getExtendedTypeDeclaration();
                     if (superclass.equals(delegatedType)) {
@@ -7513,7 +7521,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         type.addError("not a constructor of the immediate superclass: '" +
-                                delegate.getName(unit) + "' is not a constructor of '" + 
+                                delegate.getName(unit) + 
+                                "' is not a constructor of '" + 
                                 superclass.getName(unit) + "'");
                     }
                 }
