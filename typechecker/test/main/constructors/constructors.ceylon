@@ -288,3 +288,33 @@ shared class Thing {
         this.name = name;
     }
 }
+
+shared class WithPartialConstructor {
+    Float length;
+    String name;
+    abstract new WithLength(Float x, Float y) {
+        length = (x^2+y^2)^0.5;
+    }
+    shared new WithNameAndCoords(String name, Float x, Float y) 
+            extends WithLength(x, y) {
+        this.name = name;
+    }
+    string = "``name``:``length``";
+}
+
+shared class WithBrokenPartialConstructor {
+    Float length;
+    String name;
+    abstract new WithLength(Float x, Float y) {
+        //length = (x^2+y^2)^0.5;
+    }
+    @error shared abstract new WithBrokenLength(Float x, Float y) {
+        length = (x^2+y^2)^0.5;
+    }
+    shared new WithNameAndCoords(String name, Float x, Float y) 
+            extends WithLength(x, y) {
+        this.name = name;
+    }
+    @error string = "``name``:``length``";
+    @error print(WithLength(1.0, 2.0));
+}
