@@ -1574,9 +1574,14 @@ else {
                     the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>The constructors of a class definitely initialize a declaration if
-                    the body of every constructor of the class definititely initializes the
+                    <para>A constructor of a class definitely initializes a declaration if the 
+                    body of the constructor definitely initializes the declaration, or if the 
+                    constructor delegates to a constructor which definitely initializes the 
                     declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>The constructors of a class definitely initialize a declaration if
+                    every constructor of the class definitely initializes the declaration.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1604,7 +1609,8 @@ else {
             </itemizedlist>
             
             <para>As an exception, a member of a class is not considered definitely initialized
-            within the <literal>extends</literal> clause of the class or of any of its constructors.</para>
+            within the <literal>extends</literal> clause of the class or of any of its 
+            constructors.</para>
             
             <para>If a value declaration is definitely initialized at a certain statement or 
             declaration if it is referenceable at that statement or declaration and:</para>
@@ -1704,6 +1710,16 @@ else {
                     declaration, if one of the <literal>catch</literal> blocks possibly initializes 
                     the declaration, or if the <literal>finally</literal> block possibly initializes 
                     the declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>A constructor of a class possibly initializes a declaration if the 
+                    body of the constructor possibly initializes the declaration, or if the 
+                    constructor delegates to a constructor which possibly initializes the 
+                    declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>The constructors of a class possibly initialize a declaration if
+                    at least one constructor of the class definitely initializes the declaration.</para>
                 </listitem>
             </itemizedlist>
             

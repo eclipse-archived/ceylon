@@ -336,7 +336,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>abstract</literal> specifies that a class
-                    cannot be instantiated.</para>
+                    cannot be instantiated, or that a constructor is a 
+                    partial constructor.</para>
                 </listitem>
                  <listitem>
                     <para><literal>formal</literal> specifies that a member 

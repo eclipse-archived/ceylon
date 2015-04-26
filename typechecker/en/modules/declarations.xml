@@ -2845,6 +2845,24 @@ print(greeting);</programlisting>
         <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
         or <literal>actual</literal> may not declare constructors.</para>
         
+        <programlisting>shared class Point {
+    shared Float x;
+    shared Float y;
+    
+    shared new Cartesian(Float x, Float y) {
+        this.x = x; 
+        this.y = y;
+    }
+    shared new Polar(Float r, Float theta) {
+        this.x = r * cos(theta);
+        this.y = r * sin(theta);
+    }
+    shared new (Float x, Float y) 
+            extends Cartesian(x, y) {}
+    
+    string => "(``x``, ``y``)";
+}</programlisting>
+        
         <comment><para>Note: in a future release of the language, we might relax this 
         restriction, and simply require that every <literal>actual</literal> class 
         provide a constructor with the same signature as the constructor of its 
@@ -2867,6 +2885,22 @@ print(greeting);</programlisting>
             callable, except from the <literal>extends</literal> clause of a subclass, 
             or the class specifier of a class alias.</para>
             
+            <para>A partial constructor is not callable, except from the 
+            <literal>extends</literal> clause of another constructor of the same
+            class.</para>
+            
+        </section>
+        
+        <section id="partialconstructors">
+            <title>Partial constructors</title>
+            
+            <para>A constructor annotated <literal>abstract</literal> is called a
+            <emphasis>partial constructor</emphasis>.</para>
+            
+            <para>A partial constructor may not be annotated <literal>shared</literal>.</para>
+            
+            <para>A default constructor may not be annotated <literal>abstract</literal>.</para>
+            
         </section>
         
         <section id="constructordelegation">
@@ -2877,6 +2911,10 @@ print(greeting);</programlisting>
             must explicitly delegate to either:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para>a different constructor of the same class, specifying 
+                    arguments for the parameters of the constructor, or,</para>
+                </listitem>
                 <listitem>
                     <para>a constructor of its immediate superclass, specifying
                     arguments for the parameters of the superclass constructor, 
