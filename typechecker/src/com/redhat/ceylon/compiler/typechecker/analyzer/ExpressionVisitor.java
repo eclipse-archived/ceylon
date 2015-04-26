@@ -7506,8 +7506,8 @@ public class ExpressionVisitor extends Visitor {
                 if (delegate instanceof Constructor) {
                     Constructor c = (Constructor) delegate;
                     if (c.equals(constructor)) {
-                        type.addError("constructor delegates to itself: " +
-                                c.getName());
+                        type.addError("constructor delegates to itself: '" +
+                                c.getName() + "'");
                     }
                     ClassOrInterface delegatedType = 
                             c.getExtendedTypeDeclaration();
