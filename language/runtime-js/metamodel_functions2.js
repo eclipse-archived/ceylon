@@ -174,10 +174,3 @@ function convert$params(mm,a,$$targs$$) {
   a = fa;
   return a;
 }
-
-function getrtmm$$(x) {
-  if (x===undefined||x===null)return undefined;
-  if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
-  return x.$crtmm$;
-}
-ex$.getrtmm$$=getrtmm$$;
