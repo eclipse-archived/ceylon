@@ -445,20 +445,17 @@ public class CeylonRunJsTool extends RepoUsingTool {
             compileFlags = COMPILE_ONCE;
         }
         
-        //Create a repository manager to load the js module we're going to run
-        final RepositoryManager repoman = getRepositoryManager();
-        
         version = checkModuleVersionsOrShowSuggestions(
-                repoman, modname, version, ModuleQuery.Type.JS,
+                getRepositoryManager(), modname, version, ModuleQuery.Type.JS,
                 Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION, compileFlags);
         if (version == null) {
             return;
         }
-        File jsmod = getArtifact(repoman, modname, version, false);
+        File jsmod = getArtifact(getRepositoryManager(), modname, version, false);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         List<File> localRepos = new ArrayList<>();
-        for (Repository r : repoman.getRepositories()) {
+        for (Repository r : getRepositoryManager().getRepositories()) {
             if (!r.getRoot().isRemote()) {
                 File f = new File(r.getDisplayString());
                 if (!localRepos.contains(f)) {
@@ -470,8 +467,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (!localRepos.contains(rd)) {
             localRepos.add(rd);
         }
-        loadDependencies(localRepos, repoman, jsmod);
-        customizeDependencies(localRepos, repoman);
+        loadDependencies(localRepos, getRepositoryManager(), jsmod);
+        customizeDependencies(localRepos, getRepositoryManager());
 
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         Process nodeProcess = proc.start();

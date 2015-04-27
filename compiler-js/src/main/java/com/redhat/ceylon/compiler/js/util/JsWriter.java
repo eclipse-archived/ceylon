@@ -17,6 +17,8 @@ public class JsWriter {
     private final PrintWriter verboseOut;
     private Writer out;
     private Writer originalOut;
+    /** counter to avoid empty lines */
+    private int nlcount=0;
 
     public JsWriter(Writer output, PrintWriter verboseOut, boolean minify) {
         out = output;
@@ -31,6 +33,7 @@ public class JsWriter {
      * @param codez Optional additional strings to print after the main code. */
     public void write(String code, String... codez) {
         try {
+            if (!"\n".equals(code))nlcount=0;
             out.write(code);
             for (String s : codez) {
                 out.write(s);
@@ -57,14 +60,10 @@ public class JsWriter {
             write(";");
             if (minify)return;
         }
+        nlcount++;
+        if (nlcount>1)return;
         write("\n");
     }
-    /** Calls {@link #endLine()} if the current position is not already the beginning
-     * of a line. */
-    public void beginNewLine() {
-        endLine(false);
-    }
-
     /** Increases indentation level, prints opening brace and newline. Indentation will
      * automatically be printed by {@link #out(String, String...)} when the next line is started. */
     public void beginBlock() {
@@ -73,11 +72,11 @@ public class JsWriter {
     }
 
     /** Decreases indentation level and prints a closing brace in new line (using
-     * {@link #beginNewLine()}).
+     * {@link #endLine()}).
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace
      * @param newline  if <code>true</code> then additionally calls {@link #endLine()} */
     public void endBlock(boolean semicolon, boolean newline) {
-        if (!minify)beginNewLine();
+        if (!minify)endLine(false);
         write(semicolon ? "};" : "}");
         if (semicolon&&minify)return;
         if (newline) { endLine(false); }

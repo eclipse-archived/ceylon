@@ -180,15 +180,15 @@ public class AttributeGenerator {
         }
     }
 
+    /** Generates a setter function. This is only needed for toplevel variable attributes. s*/
     static void generateAttributeSetter(final Tree.AnyAttribute that, final Value d,
             final GenerateJsVisitor gen) {
+        if (!d.isToplevel())return;
         final String varName = gen.getNames().name(d);
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
         gen.generateImmutableAttributeReassignmentCheck(d, varName, gen.getNames().name(d));
-        if (d.isToplevel()) {
-            gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
-        }
+        gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
         gen.out("return ", varName, "=", paramVarName, ";}");
         gen.endLine(true);
         gen.shareSetter(d);

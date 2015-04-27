@@ -190,7 +190,7 @@ public class GenerateJsVisitor extends Visitor
     /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     void beginNewLine() {
-        out.beginNewLine();
+        out.endLine(false);
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
@@ -326,6 +326,12 @@ public class GenerateJsVisitor extends Visitor
     void generateClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
         if (cnstr == null) {
             visitStatements(classBody);
+        } else if (cnstr.getDeclarationModel().isAbstract()) {
+            for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
+                s2.visit(this);
+                if (!opts.isMinify())beginNewLine();
+                retainedVars.emitRetainedVars(this);
+            }
         } else {
             List<String> oldRetainedVars = retainedVars.reset(null);
             final List<? extends Statement> prevStatements = currentStatements;
@@ -2123,7 +2129,13 @@ public class GenerateJsVisitor extends Visitor
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    out("[/*VALUE Callable params", moval.getClass().getName(), "*/],");
+                                    ProducedType ps = moval.getType().getTypeArgumentList().get(1);
+                                    TypeDeclaration pd = ps.getDeclaration();
+                                    if (moval.getUnit().getEmptyDeclaration().equals(pd)) {
+                                        out("[],");
+                                    } else {
+                                        out("[/*VALUE Callable params ", pd+"*/],");
+                                    }
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
                                         GenerateJsVisitor.this, false, expr.getTypeModel().getVarianceOverrides());

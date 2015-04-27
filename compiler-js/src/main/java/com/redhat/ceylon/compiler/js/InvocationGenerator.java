@@ -273,7 +273,21 @@ public class InvocationGenerator {
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");
-            arg.visit(gen);
+            if (arg instanceof Tree.MethodArgument) {
+                Tree.MethodArgument marg = (Tree.MethodArgument)arg;
+                gen.out(gen.getClAlias(), "$JsCallable(");
+                FunctionHelper.methodArgument(marg, gen);
+                gen.out(",");
+                //Add parameters
+                TypeUtils.encodeParameterListForRuntime(arg, marg.getParameterLists().get(0).getModel(), gen);
+                gen.out(",");
+                ProducedType margType = marg.getDeclarationModel().getType().getFullType();
+                TypeUtils.printTypeArguments(arg, margType.getTypeArguments(), gen, false,
+                        margType.getVarianceOverrides());
+                gen.boxUnboxEnd(4);
+            } else {
+                arg.visit(gen);
+            }
             gen.out(",");
         }
         Tree.SequencedArgument sarg = argList.getSequencedArgument();
@@ -291,39 +305,38 @@ public class InvocationGenerator {
 
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
                 Map<String, String> argVarNames, boolean superAccess, Tree.TypeArguments targs) {
-        boolean firstList = true;
-        for (ParameterList plist : func.getParameterLists()) {
-            boolean first=true;
-            if (firstList && superAccess) {
-                gen.out(".call(this");
-                if (!plist.getParameters().isEmpty()) { gen.out(","); }
-            }
-            else {
-                gen.out("(");
-            }
-            for (Parameter p : plist.getParameters()) {
-                if (!first) gen.out(",");
-                final String vname = argVarNames.get(p.getName());
-                if (vname == null) {
-                    if (p.isDefaulted()) {
-                        gen.out("undefined");
-                    } else {
-                        gen.out(gen.getClAlias(), "empty()");
-                    }
-                } else {
-                    gen.out(vname);
-                }
-                first = false;
-            }
-            if (targs != null && !targs.getTypeModels().isEmpty()) {
-                Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                        func.getTypeParameters(), targs.getTypeModels());
-                if (!first) gen.out(",");
-                TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
-            }
-            gen.out(")");
-            firstList = false;
+        final ParameterList plist = func.getParameterLists().get(0);
+        boolean first=true;
+        if (superAccess) {
+            gen.out(".call(this");
+            if (!plist.getParameters().isEmpty()) { gen.out(","); }
         }
+        else {
+            gen.out("(");
+        }
+        for (Parameter p : plist.getParameters()) {
+            if (!first) gen.out(",");
+            final String vname = argVarNames.get(p.getName());
+            if (vname == null) {
+                if (p.isDefaulted()) {
+                    gen.out("undefined");
+                } else {
+                    gen.out(gen.getClAlias(), "empty()");
+                }
+            } else {
+                gen.out(vname);
+            }
+            first = false;
+        }
+        if (targs != null && !targs.getTypeModels().isEmpty()) {
+            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                    func.getTypeParameters(), targs.getTypeModels());
+            if (!first){
+                gen.out(",");
+            }
+            TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
+        }
+        gen.out(")");
     }
 
     /** Generate a list of PositionalArguments, optionally assigning a variable name to each one
@@ -627,7 +640,7 @@ public class InvocationGenerator {
         if (term instanceof Tree.FunctionArgument) {
             plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
         } else if (term instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mote = ((Tree.MemberOrTypeExpression)term);
+            Tree.MemberOrTypeExpression mote = (Tree.MemberOrTypeExpression)term;
             if (mote.getDeclaration() instanceof Method) {
                 plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
             } else if (mote.getDeclaration() instanceof Value && mote.getStaticMethodReference()) {

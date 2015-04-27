@@ -735,10 +735,12 @@ public class TypeGenerator {
                     container, gen);
             final String me = gen.getNames().self(container);
             gen.beginBlock();
-            gen.out("$init$", gen.getNames().name(container), "();");
-            gen.endLine();
-            gen.declareSelf(container);
-            gen.referenceOuter(container);
+            if (!d.isAbstract()) {
+                gen.out("$init$", gen.getNames().name(container), "();");
+                gen.endLine();
+                gen.declareSelf(container);
+                gen.referenceOuter(container);
+            }
             if (that.getDelegatedConstructor() != null) {
                 final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
                 ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
@@ -747,13 +749,15 @@ public class TypeGenerator {
                         that.getDelegatedConstructor().getInvocationExpression(),
                         container, plist, that, null, gen);
             }
-            //Call common initializer
-            gen.out(gen.getNames().name(container), "$$c(");
-            if (withTargs) {
-                gen.out("$$targs$$,");
+            if (!d.isAbstract()) {
+                //Call common initializer
+                gen.out(gen.getNames().name(container), "$$c(");
+                if (withTargs) {
+                    gen.out("$$targs$$,");
+                }
+                gen.out(me, ");");
+                gen.endLine();
             }
-            gen.out(me, ");");
-            gen.endLine();
             gen.initParameters(that.getParameterList(), container, null);
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
