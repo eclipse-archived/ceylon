@@ -28,6 +28,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -703,6 +703,8 @@ public abstract class CompilerTests {
                     result = ctor.newInstance(args);
                 }
                 return result;
+            }catch(InvocationTargetException x){
+                throw new RuntimeException(x.getTargetException());
             }catch(Exception x){
                 throw new RuntimeException(x);
             } finally {
