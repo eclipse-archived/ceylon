@@ -38,7 +38,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final long startTime = .ceylon.language.system_.get_().getNanoseconds();
         final long $ceylontmp$start$3 = 1L;
         final long $ceylontmp$end$4 = 100L;
-        final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$end$4, $ceylontmp$start$3) >= 0;
         final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
         loop_1: for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
             final long i = i$7;

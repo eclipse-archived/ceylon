@@ -26,9 +26,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum += i;
         }
         final int start$3 = 97;
-        final int length$4 = (int)26L;
-        loop_1: for (int i$5 = 0; i$5 < length$4; i$5++) {
-            final int c = i$5 + start$3;
+        final long length$4 = 26L;
+        loop_1: for (long i$5 = 0; i$5 < length$4; i$5++) {
+            final int c = .ceylon.language.Character.neighbour(start$3, i$5);
             sum += .ceylon.language.Character.getInteger(c);
         }
     }
@@ -54,7 +54,7 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         final long start$12 = 1L;
         final long length$13 = 10L;
         final long step$15 = 3L;
-        if (step$15 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if (length$13 > 0 && step$15 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_4: for (long i$14 = 0; i$14 < length$13; i$14 = .ceylon.language.Integer.neighbour(i$14, step$15)) {
             final long i = .ceylon.language.Integer.neighbour(start$12, i$14);
             sum += i;
@@ -62,7 +62,7 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         final long start$16 = 1L;
         final long length$17 = 10L;
         final long step$19 = 3L;
-        if (step$19 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if (length$17 > 0 && step$19 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_5: for (long i$18 = 0; i$18 < length$17; i$18 = .ceylon.language.Integer.neighbour(i$18, step$19)) {
             final long i = .ceylon.language.Integer.neighbour(start$16, i$18);
             sum += i;

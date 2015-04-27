@@ -23,12 +23,12 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
-import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -36,14 +36,10 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -574,6 +570,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder forDefinition(ClassOrInterface def) {
         this.forDefinition = def;
+        this.hasConstructors = def instanceof Class && ((Class)def).hasConstructors();
         return this;
     }
 
@@ -688,8 +685,4 @@ public class ClassDefinitionBuilder {
         return initBuilder;
     }
 
-
-    public void hasConstructors(boolean hasConstructors) {
-        this.hasConstructors = hasConstructors;
-    }
 }

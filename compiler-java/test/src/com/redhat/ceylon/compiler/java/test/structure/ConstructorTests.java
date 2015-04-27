@@ -142,4 +142,11 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorIntermixedStatementsAndConstructors() {
         compareWithJavaSource("constructor/CtorIntermixedStatementsAndConstructors");
     }
+    
+    @Test
+    public void testCtorAbstractCtor() {
+        compareWithJavaSource("constructor/CtorAbstractCtor");
+        //compile("constructor/CtorAbstractCtor.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.runCtorAbstractCtor");
+    }
 }

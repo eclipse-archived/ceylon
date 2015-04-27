@@ -48,6 +48,7 @@ public class JavacType implements TypeMirror {
     private boolean declaredClassSet;
     private TypeParameterMirror typeParameter;
     private boolean typeParameterSet;
+    private JavacType qualifyingType;
 
     public JavacType(Type type) {
         this.type = type;
@@ -156,5 +157,16 @@ public class JavacType implements TypeMirror {
             typeParameterSet = true;
         }
         return typeParameter;
+    }
+
+    @Override
+    public TypeMirror getQualifyingType() {
+        if(qualifyingType == null){
+            Type enclosingType = type.getEnclosingType();
+            if(enclosingType != null && enclosingType instanceof Type.ClassType){
+                qualifyingType = new JavacType(enclosingType);
+            }
+        }
+        return qualifyingType;
     }
 }

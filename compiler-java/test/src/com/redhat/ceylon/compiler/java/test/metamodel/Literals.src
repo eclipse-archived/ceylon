@@ -316,30 +316,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i$param$) {
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other Other = null;
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Other {
-        
-        private Other() {
-        }
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
-    public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i$param$) {
-    }
-    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(final boolean b$param$) {
         return new Member(b$param$);
@@ -386,6 +362,30 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member.class));
         }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i$param$) {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other Other = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class Other {
+        
+        private Other() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
+    public LitClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i$param$) {
     }
     
     @.java.lang.Override

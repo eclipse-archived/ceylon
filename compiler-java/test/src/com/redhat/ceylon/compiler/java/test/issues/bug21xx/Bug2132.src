@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+public final class bug2132_ {
+    
+    private bug2132_() {
+    }
+    
+    public static void bug2132() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date> dateOuter1 = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>(new .java.util.Date());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner1 = dateOuter1.new Inner();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter.dateInner());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner3 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter.dateInner());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner4 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.DateInnerFactory().dateInner());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner5 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.DateInnerFactory().dateInner());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2132_.bug2132();
+    }
+}

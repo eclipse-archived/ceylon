@@ -254,6 +254,7 @@ public class Symtab {
     public final Type ceylonAtTypeAliasType;
     public final Type ceylonAtTransientType;
     public final Type ceylonAtCompileTimeErrorType;
+    public final Type ceylonAtNoInitCheckType;
     
     public final Type ceylonAtBooleanValueType;
     public final Type ceylonAtBooleanExprsType;
@@ -684,6 +685,8 @@ public class Symtab {
         ceylonSerializationType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$");
         ceylonInstanceLeakerType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$");
         ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
+        
+        ceylonAtNoInitCheckType = enterClass("com.redhat.ceylon.compiler.java.metadata.NoInitCheck");
         
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);
