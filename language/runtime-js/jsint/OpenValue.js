@@ -19,7 +19,11 @@ function OpenValue$jsint(pkg, meta, that){
     that.tipo = meta;
     that.meta_ = get_model(_mm);
   }
-  that.name_=that.meta?that.meta.nm:_mm&&_mm.d&&_mm.d[_mm.d.length-1];
+  var nm=that.meta?that.meta.nm:_mm&&_mm.d&&_mm.d[_mm.d.length-1];
+  if (nm && nm.indexOf('$')>0) {
+    nm=nm.substring(0,nm.indexOf('$'));
+  }
+  that.name_=nm;
   that.toplevel_=_mm.$cont === undefined;
   ValueDeclaration$meta$declaration(that);
   return that;

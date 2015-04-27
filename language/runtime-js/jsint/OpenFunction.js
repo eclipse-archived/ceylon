@@ -14,7 +14,9 @@ function OpenFunction$jsint(pkg,meta,that){
       that.tipo = meta;
       that.meta_ = get_model(_mm);
     }
-    that.name_=(that.meta&&that.meta.nm)||'?';
+    var nm=(that.meta&&that.meta.nm)||'?';
+    if (nm.indexOf('$')>0)nm=nm.substring(0,nm.indexOf('$'));
+    that.name_=nm;
     that.toplevel_=_mm===undefined||_mm.$cont===undefined;
     FunctionDeclaration$meta$declaration(that);
     return that;
