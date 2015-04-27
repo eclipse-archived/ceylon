@@ -690,6 +690,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             tool.run();
             // Make sure we can find the newly created module
             repoMgr.refresh(false);
+            if (repoMgr == rm) {
+                rm = null;
+            }
         } catch (Exception e) {
             return false;
         }
