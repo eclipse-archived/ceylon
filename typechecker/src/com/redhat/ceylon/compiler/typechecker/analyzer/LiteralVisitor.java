@@ -32,7 +32,7 @@ public class LiteralVisitor extends Visitor {
     static final Pattern DOC_LINK_PATTERN = 
             Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = 
-            Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^#]([^}]*))\\}|(.))");
+            Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^#]([^}]*))\\}|(.?))");
     
     
     @Override
@@ -56,7 +56,8 @@ public class LiteralVisitor extends Visitor {
                 int start = that.getStartIndex()+m.start(1);
                 int end = that.getStartIndex()+m.end(1);
                 String[] linesUpTo = 
-                        text.substring(0, m.start(1)).split("\n");
+                        text.substring(0, m.start(1))
+                            .split("\n");
                 CommonToken token = 
                         new CommonToken(ASTRING_LITERAL, group);
                 token.setStartIndex(start);
@@ -101,9 +102,7 @@ public class LiteralVisitor extends Visitor {
         }
         StringBuilder result = new StringBuilder();
         boolean allTrimmed = 
-                stripIndent(text, indent, result, 
-                        type==VERBATIM_STRING || 
-                        type==AVERBATIM_STRING);
+                stripIndent(text, indent, result);
         if (!allTrimmed) {
             that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
@@ -130,8 +129,8 @@ public class LiteralVisitor extends Visitor {
     public void visit(QuotedLiteral that) {
         StringBuilder result = new StringBuilder();
         stripIndent(that.getText(), 
-                getIndentPosition(that), result,
-                true);
+                getIndentPosition(that), 
+                result);
         //interpolateEscapes(result, that);
         that.setText(result.toString());
     }
@@ -214,8 +213,7 @@ public class LiteralVisitor extends Visitor {
     }
         
     private static boolean stripIndent(final String text, 
-            final int indentation, final StringBuilder result,
-            boolean verbatim) {
+            final int indentation, final StringBuilder result) {
         boolean correctlyIndented = true;
         int num = 0;
         for (String line: text.split("\n|\r\n?")) {
@@ -237,12 +235,7 @@ public class LiteralVisitor extends Visitor {
                     }
                 }
             }
-            if (!verbatim && line.endsWith("\\")) {
-                result.setLength(result.length()-1);
-            }
-            else {
-                result.append("\n");
-            }
+            result.append("\n");
         }
         result.setLength(result.length()-1);
         return correctlyIndented;
@@ -257,6 +250,8 @@ public class LiteralVisitor extends Visitor {
                                         .find(start)) {
             String hex = matcher.group(2);
             String name = matcher.group(3);
+            int from = matcher.start();
+            int to = matcher.end();
             if (name!=null) {
                 boolean found=false;
                 for (int codePoint=0; 
@@ -264,146 +259,17 @@ public class LiteralVisitor extends Visitor {
                         codePoint++) {
                     String cn = Character.getName(codePoint);
                     if (cn!=null && cn.equals(name)) {
-                        char[] chars = toChars(codePoint);
-                        result.replace(matcher.start(), 
-                                matcher.end(), 
-                                new String(chars));
+                        String unicodeChar = 
+                                new String(toChars(codePoint));
+                        result.replace(from, to, unicodeChar);
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    int emoji = -1; 
-                    switch (name) {
-                    case ":)":
-                    case ":-)":
-                    case "=)":
-                        emoji = 0x1f603; break;
-                    case "O:)":
-                    case "O:-)":
-                    case "O=)":
-                        emoji = 0x1f607; break;
-                    case "}:)":
-                    case "}:-)":
-                    case "}=)":
-                        emoji = 0x1f608; break;
-                    case ":-(":
-                    case ":(":
-                    case "=(":
-                        emoji = 0x1f61e; break;
-                    case ":-|":
-                    case ":|":
-                    case "=|":
-                        emoji = 0x1f610; break;
-                    case ";-)":
-                    case ";)":
-                        emoji = 0x1f609; break;
-                    case "B-)":
-                    case "B)":
-                        emoji = 0x1f60e; break;
-                    case ":-D":
-                    case ":D":
-                        emoji = 0x1f600; break;
-                    case "=D":
-                        emoji = 0x1f604; break;
-                    case "-_-":
-                        emoji = 0x1f611; break;
-                    case "o_o":
-                        emoji = 0x1f613; break;
-                    case "u_u":
-                        emoji = 0x1f614; break;
-                    case ">_<":
-                        emoji = 0x1f623; break;
-                    case "^_^":
-                        emoji = 0x1f601; break;
-                    case "^_^;;":
-                        emoji = 0x1f605; break;
-                    case "<3":
-                        emoji = 0x1f49c; break;
-                    case "<\\3":
-                    case "</3":
-                        emoji = 0x1f494; break;
-                    case "~@~":
-                        emoji = 0x1f4a9; break;
-                    case "(]:{":
-                        emoji = 0x1f473; break;
-                    case "-<@%":
-                        emoji = 0x1f41d; break;
-                    case ":(|)":
-                        emoji = 0x1f435; break;
-                    case ":(:)":
-                        emoji = 0x1f437; break;
-                    case ":*":
-                    case ":-*":
-                        emoji = 0x1f617; break;
-                    case ";*":
-                    case ";-*":
-                        emoji = 0x1f618; break;
-                    case ":\\":
-                    case ":-\\":
-                    case "=\\":
-                    case ":/":
-                    case ":-/":
-                    case "=/":
-                        emoji = 0x1f615; break;
-                    case ":S":
-                    case ":-S":
-                    case ":s":
-                    case ":-s":
-                        emoji = 0x1f616; break;
-                    case ":P":
-                    case ":-P":
-                    case "=P":
-                    case ":p":
-                    case ":-p":
-                    case "=p":
-                        emoji = 0x1f61b; break;
-                    case ";P":
-                    case ";-P":
-                    case ";p":
-                    case ";-p":
-                        emoji = 0x1f61c; break;
-                    case ">.<":
-                    case ">:(":
-                    case ">:-(":
-                    case ">=(":
-                        emoji = 0x1f621; break;
-                    case "T_T":
-                    case ":'(":
-                    case ";_;":
-                    case "='(":
-                        emoji = 0x1f622; break;
-                    case "D:":
-                        emoji = 0x1f626; break;
-                    case "o.o":
-                    case ":o":
-                    case ":-o":
-                    case "=o":
-                        emoji = 0x1f62e; break;
-                    case "O.O":
-                    case ":O":
-                    case ":-O":
-                    case "=O":
-                        emoji = 0x1f632; break;
-                    case "x_x":
-                    case "X-O":
-                    case "x-o":
-                    case "X(":
-                    case "X-(":
-                        emoji = 0x1f635; break;
-                    case ":X)":
-                    case ":3":
-                    case "(=^..^=)":
-                    case "(=^.^=)":
-                    case "=^_^=":
-                        emoji = 0x1f638; break;
-                    default:
-                        node.addError("illegal unicode escape sequence: " + 
-                                name + " is not a Unicode character");
-                    }
-                    if (emoji>0) {
-                        result.replace(matcher.start(), matcher.end(), 
-                                new String(Character.toChars(emoji)));
+                    String emoji = getEmoji(node, name);
+                    if (emoji!=null) {
+                        result.replace(from, to, emoji);
                     }
                 }
             }
@@ -415,51 +281,209 @@ public class LiteralVisitor extends Visitor {
                     node.addError("illegal unicode escape sequence: must consist of 2, 4, or 6 digits");
                 }
                 else {
-                    int codePoint=0;
-                    try {
-                        codePoint = parseInt(hex, 16);
+                    String unicodeChar = 
+                            getUnicodeCharacter(node, hex);
+                    if (unicodeChar!=null) {
+                        result.replace(from, to, unicodeChar);
                     }
-                    catch (NumberFormatException nfe) {
-                        node.addError("illegal unicode escape sequence: '" + 
-                                hex + "' is not a hexadecimal number");
-                    }
-                    char[] chars;
-                    try {
-                        chars = toChars(codePoint);
-                    }
-                    catch (IllegalArgumentException iae) {
-                        node.addError("illegal unicode escape sequence: '" + 
-                                hex + "' is not a valid Unicode code point");
-                        chars = toChars(0);
-                    }
-                    result.replace(matcher.start(), matcher.end(), 
-                            new String(chars));
                 }
             }
             else {
-                char escape = matcher.group(5).charAt(0);
-                char ch;
-                switch (escape) {
-                    case 'b': ch = '\b'; break;
-                    case 't': ch = '\t'; break;
-                    case 'n': ch = '\n'; break;
-                    case 'f': ch = '\f'; break;
-                    case 'r': ch = '\r'; break;
-                    case 'e': ch = 0x1b; break;
-                    case '0': ch = 0; break;
-                    case '"':
-                    case '\'':
-                    case '`':
-                    case '\\':
-                    	ch = escape; break;
-                    default:
-                    	node.addError("illegal escape sequence: \\" + escape);
-                    	ch='?';
+                String legacyEscape = matcher.group(5);
+                if (legacyEscape.isEmpty()) {
+                    result.delete(from, to+1);                    
                 }
-                result.replace(matcher.start(), matcher.end(), 
-                        Character.toString(ch));
+                else {
+                    String legacyEscapeChar = 
+                            getLegacyEscape(node, legacyEscape);
+                    if (legacyEscapeChar!=null) {
+                        result.replace(from, to, legacyEscapeChar);
+                    }
+                }
             }
-            start = matcher.start()+1;
+            start = from+1;
+        }
+    }
+
+    private static String getLegacyEscape(Node node, String legacyEscape) {
+        char escape = legacyEscape.charAt(0);
+        char ch;
+        switch (escape) {
+            case 'b': ch = '\b'; break;
+            case 't': ch = '\t'; break;
+            case 'n': ch = '\n'; break;
+            case 'f': ch = '\f'; break;
+            case 'r': ch = '\r'; break;
+            case 'e': ch = 0x1b; break;
+            case '0': ch = 0; break;
+            case '"':
+            case '\'':
+            case '`':
+            case '\\':
+            	ch = escape; break;
+            default:
+            	node.addError("illegal escape sequence: \\" + escape);
+            	return null;
+        }
+        return Character.toString(ch);
+    }
+
+    private static String getUnicodeCharacter(Node node, String hex) {
+        int codePoint;
+        try {
+            codePoint = parseInt(hex, 16);
+        }
+        catch (NumberFormatException nfe) {
+            node.addError("illegal unicode escape sequence: '" + 
+                    hex + "' is not a hexadecimal number");
+            return null;
+        }
+        char[] chars;
+        try {
+            chars = toChars(codePoint);
+        }
+        catch (IllegalArgumentException iae) {
+            node.addError("illegal unicode escape sequence: '" + 
+                    hex + "' is not a valid Unicode code point");
+            return null;
+        }
+        return new String(chars);
+    }
+
+    private static String getEmoji(Node node, String name) {
+        int emoji = -1; 
+        switch (name) {
+        case ":)":
+        case ":-)":
+        case "=)":
+            emoji = 0x1f603; break;
+        case "O:)":
+        case "O:-)":
+        case "O=)":
+            emoji = 0x1f607; break;
+        case "}:)":
+        case "}:-)":
+        case "}=)":
+            emoji = 0x1f608; break;
+        case ":-(":
+        case ":(":
+        case "=(":
+            emoji = 0x1f61e; break;
+        case ":-|":
+        case ":|":
+        case "=|":
+            emoji = 0x1f610; break;
+        case ";-)":
+        case ";)":
+            emoji = 0x1f609; break;
+        case "B-)":
+        case "B)":
+            emoji = 0x1f60e; break;
+        case ":-D":
+        case ":D":
+            emoji = 0x1f600; break;
+        case "=D":
+            emoji = 0x1f604; break;
+        case "-_-":
+            emoji = 0x1f611; break;
+        case "o_o":
+            emoji = 0x1f613; break;
+        case "u_u":
+            emoji = 0x1f614; break;
+        case ">_<":
+            emoji = 0x1f623; break;
+        case "^_^":
+            emoji = 0x1f601; break;
+        case "^_^;;":
+            emoji = 0x1f605; break;
+        case "<3":
+            emoji = 0x1f49c; break;
+        case "<\\3":
+        case "</3":
+            emoji = 0x1f494; break;
+        case "~@~":
+            emoji = 0x1f4a9; break;
+        case "(]:{":
+            emoji = 0x1f473; break;
+        case "-<@%":
+            emoji = 0x1f41d; break;
+        case ":(|)":
+            emoji = 0x1f435; break;
+        case ":(:)":
+            emoji = 0x1f437; break;
+        case ":*":
+        case ":-*":
+            emoji = 0x1f617; break;
+        case ";*":
+        case ";-*":
+            emoji = 0x1f618; break;
+        case ":\\":
+        case ":-\\":
+        case "=\\":
+        case ":/":
+        case ":-/":
+        case "=/":
+            emoji = 0x1f615; break;
+        case ":S":
+        case ":-S":
+        case ":s":
+        case ":-s":
+            emoji = 0x1f616; break;
+        case ":P":
+        case ":-P":
+        case "=P":
+        case ":p":
+        case ":-p":
+        case "=p":
+            emoji = 0x1f61b; break;
+        case ";P":
+        case ";-P":
+        case ";p":
+        case ";-p":
+            emoji = 0x1f61c; break;
+        case ">.<":
+        case ">:(":
+        case ">:-(":
+        case ">=(":
+            emoji = 0x1f621; break;
+        case "T_T":
+        case ":'(":
+        case ";_;":
+        case "='(":
+            emoji = 0x1f622; break;
+        case "D:":
+            emoji = 0x1f626; break;
+        case "o.o":
+        case ":o":
+        case ":-o":
+        case "=o":
+            emoji = 0x1f62e; break;
+        case "O.O":
+        case ":O":
+        case ":-O":
+        case "=O":
+            emoji = 0x1f632; break;
+        case "x_x":
+        case "X-O":
+        case "x-o":
+        case "X(":
+        case "X-(":
+            emoji = 0x1f635; break;
+        case ":X)":
+        case ":3":
+        case "(=^..^=)":
+        case "(=^.^=)":
+        case "=^_^=":
+            emoji = 0x1f638; break;
+        default:
+            node.addError("illegal unicode escape sequence: " + 
+                    name + " is not a Unicode character");
+        }
+        if (emoji<0) {
+            return null;
+        }
+        else {
+            return new String(Character.toChars(emoji));
         }
     }
     
