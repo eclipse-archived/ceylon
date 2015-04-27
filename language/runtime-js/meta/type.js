@@ -54,5 +54,6 @@ function type$meta(x,$$targs$$) {
     }
   }
   if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;
+  c.src$=x;
   return c;
 }
