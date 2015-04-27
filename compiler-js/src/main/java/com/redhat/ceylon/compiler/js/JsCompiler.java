@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -109,8 +107,6 @@ public class JsCompiler {
         public void visit(Tree.ImportModule that) {
             if (hasErrors(that)) {
                 exitCode = 1;
-            } else if (!isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
-                // Just ignore imports marked with native("jvm")
             } else if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module &&
                     ((Module)that.getImportPath().getModel()).isJava()) {
                 that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript");

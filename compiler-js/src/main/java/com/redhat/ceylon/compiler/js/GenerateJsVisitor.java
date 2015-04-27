@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -249,9 +247,6 @@ public class GenerateJsVisitor extends Visitor
                 if (!opts.isMinify())endLine();
                 boolean first=true;
                 for (ImportModule im : md.getImportModuleList().getImportModules()) {
-                    if (!isForBackend(im.getAnnotationList(), Backend.JavaScript, im.getUnit())) {
-                        continue;
-                    }
                     final StringBuilder path=new StringBuilder("'");
                     if (im.getImportPath()==null) {
                         if (im.getQuotedLiteral()==null) {
