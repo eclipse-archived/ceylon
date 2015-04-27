@@ -391,10 +391,16 @@
             
             <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
             
-            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</synopsis>
+            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence | EscapedBreak</synopsis>
             
             <para>A string literal may contain escape sequences. An escape sequence is 
             replaced by its corresponding Unicode character during lexical analysis.</para>
+            
+            <para>A line-terminating character sequence may be escaped with a backslash,
+            in which case the escaped line termination is removed from the string literal
+            during lexical analysis.</para>
+            
+            <synopsis>EscapedBreak: "\" (CarriageReturn Newline | CarriageReturn | Newline)</synopsis>
             
             <para>A sequence of two backticks is used to delimit an interpolated expression
             embedded in a string template.</para>
