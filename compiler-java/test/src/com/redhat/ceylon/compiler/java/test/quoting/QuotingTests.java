@@ -155,12 +155,12 @@ public class QuotingTests extends CompilerTests {
             compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$goto.CaseCollision", "goto/CaseCollision.ceylon");
             Assert.fail();
         } catch (RuntimeException e) {
-            Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the class"));
+            Assert.assertTrue(e.getCause().getMessage().contains("i am the class"));
         }
         try {
             compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$goto.caseCollision", "goto/CaseCollision.ceylon");
         } catch (Exception e) {
-            Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the method"));
+            Assert.assertTrue(e.getCause().getMessage().contains("i am the method"));
         }
     }
     
