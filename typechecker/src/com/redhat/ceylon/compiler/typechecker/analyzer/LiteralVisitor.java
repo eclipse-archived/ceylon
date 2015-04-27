@@ -49,10 +49,7 @@ public class LiteralVisitor extends Visitor {
         int type = that.getToken().getType();
         String text = that.getText();
         
-        boolean verbatim = 
-                type==AVERBATIM_STRING || 
-                type==ASTRING_LITERAL;
-        if (verbatim) {
+        if (type==AVERBATIM_STRING || type==ASTRING_LITERAL) {
             Matcher m = DOC_LINK_PATTERN.matcher(text);
             while (m.find()) {
                 String group = m.group(1);
@@ -104,7 +101,9 @@ public class LiteralVisitor extends Visitor {
         }
         StringBuilder result = new StringBuilder();
         boolean allTrimmed = 
-                stripIndent(text, indent, result, verbatim);
+                stripIndent(text, indent, result, 
+                        type==VERBATIM_STRING || 
+                        type==AVERBATIM_STRING);
         if (!allTrimmed) {
             that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
