@@ -49,7 +49,10 @@ public class LiteralVisitor extends Visitor {
         int type = that.getToken().getType();
         String text = that.getText();
         
-        if (type==AVERBATIM_STRING || type==ASTRING_LITERAL) {
+        boolean verbatim = 
+                type==AVERBATIM_STRING || 
+                type==ASTRING_LITERAL;
+        if (verbatim) {
             Matcher m = DOC_LINK_PATTERN.matcher(text);
             while (m.find()) {
                 String group = m.group(1);
@@ -101,7 +104,7 @@ public class LiteralVisitor extends Visitor {
         }
         StringBuilder result = new StringBuilder();
         boolean allTrimmed = 
-                stripIndent(text, indent, result);
+                stripIndent(text, indent, result, verbatim);
         if (!allTrimmed) {
             that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
@@ -128,7 +131,8 @@ public class LiteralVisitor extends Visitor {
     public void visit(QuotedLiteral that) {
         StringBuilder result = new StringBuilder();
         stripIndent(that.getText(), 
-                getIndentPosition(that), result);
+                getIndentPosition(that), result,
+                true);
         //interpolateEscapes(result, that);
         that.setText(result.toString());
     }
@@ -211,7 +215,8 @@ public class LiteralVisitor extends Visitor {
     }
         
     private static boolean stripIndent(final String text, 
-            final int indentation, final StringBuilder result) {
+            final int indentation, final StringBuilder result,
+            boolean verbatim) {
         boolean correctlyIndented = true;
         int num = 0;
         for (String line: text.split("\n|\r\n?")) {
@@ -226,13 +231,19 @@ public class LiteralVisitor extends Visitor {
                             result.append(line.substring(i));
                             break;
                         }
-                    } else {
+                    }
+                    else {
                         result.append(line.substring(indentation));
                         break;
                     }
                 }
             }
-            result.append("\n");
+            if (!verbatim && line.endsWith("\\")) {
+                result.setLength(result.length()-1);
+            }
+            else {
+                result.append("\n");
+            }
         }
         result.setLength(result.length()-1);
         return correctlyIndented;
