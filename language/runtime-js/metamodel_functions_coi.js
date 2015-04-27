@@ -286,25 +286,39 @@ function coicase$(coi){
 //ClassOrInterface.string
 function coistr$(coi) {
   var mm = getrtmm$$(coi.tipo);
-  var cc=[];
-  var src=coi;
+  var cc=[coi];
+  var src=coicont$(coi);
   while(src) {
     cc.unshift(src);
     src=coicont$(src);
   }
   var qn=qname$(cc[0].tipo);
+  function simplename(t) {
+    var s='';
+    if (t.t==='i'||t.t==='u') {
+      for (var i=0;i<t.l.length;i++) {
+        if (s.length)s+= t.t==='i'?'&':'|';
+        s+=simplename(t.l[i]);
+      }
+    } else if (t.t==='T') {
+      s+='[TODO]Tuple';
+    } else {
+      s+=qname$(getrtmm$$(t.t));
+      if (t.a)s+=addtargs(t);
+    }
+    return s;
+  }
   function addtargs(x) {
     var mmm=getrtmm$$(x.t);
     var s='',tparms=mmm&&mmm.tp;
     if (tparms===undefined)return s;
     var tsrc=x.a || coi.$targs;
     for (var ta in tparms) {
-        var t2=tsrc[ta];
-        if (t2) {
-          if (s.length>1)s+=',';else s='<';
-          s+=qname$(getrtmm$$(t2.t));
-          if (t2.a)s+=addtargs(t2);
-        }
+      var t2=tsrc[ta];
+      if (t2) {
+        if (s.length>1)s+=',';else s='<';
+        s+=simplename(t2);
+      }
     }
     if (s.length)s+='>';
     return s;
@@ -312,7 +326,9 @@ function coistr$(coi) {
   qn+=addtargs(cc[0].$$targs$$.Target$Type);
   for (var i=1;i<cc.length;i++) {
     mm=getrtmm$$(cc[i].tipo)
-    qn+='.'+mm.d[mm.d.length-1]+addtargs(cc[i].$$targs$$.Target$Type);
+    var nm=mm.d[mm.d.length-1];
+    if (nm.indexOf('$')>0)nm=nm.substring(0,nm.indexOf('$'));
+    qn+='.'+nm+addtargs(cc[i].$$targs$$.Target$Type);
   }
   return qn;
   if (coi.src$) {
@@ -395,19 +411,21 @@ function coicont$(coi) {
   if (cont===0)return coi.containingPackage;
   var cmm=getrtmm$$(cont);
   var _t={t:cont};
-  var _out=undefined;
+  var rv;
   if (coi.src$ && coi.src$.outer$) {
-    _out=coi.src$.outer$;
+    var _out=coi.src$.outer$;
     if (_out.$$targs$$) {
       _t.a=_out.$$targs$$;
     }
+    //TODO this could still be a member class
+    rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    rv.src$=_out;
+  } else {
+    if (get_model(cmm).mt === 'i')
+      rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
+    //TODO tipos de parametros
+    rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
-  var rv;
-  if (get_model(cmm).mt === 'i')
-    rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
-  //TODO tipos de parametros
-  rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
-  if (_out)rv.src$=_out;
   return rv;
 }
 //ClassOrInterface.typeArguments
