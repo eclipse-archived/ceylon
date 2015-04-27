@@ -16,7 +16,7 @@ shared void testSerializeBasics() {
     value sc = serialization();
     variable value id = 0;
     sc.reference(id++, 1);
-    sc.reference(id++, 1.0);
+    //TODOsc.reference(id++, 1.0);
     sc.reference(id++, "");
     sc.reference(id++, '\{#00}');
     sc.reference(id++, null);

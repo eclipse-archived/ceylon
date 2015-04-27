@@ -46,7 +46,7 @@ shared annotation VariableAnnotation variable()
 "The annotation class for the [[abstract]] annotation."
 shared final annotation class AbstractAnnotation()
         satisfies OptionalAnnotation<AbstractAnnotation,
-                ClassDeclaration> {}
+                ClassDeclaration|ConstructorDeclaration> {}
 
 "Annotation to mark a class as abstract. An `abstract` class
  may have `formal` members, but may not be directly 
@@ -287,7 +287,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `suppressedAlready`, 
      `suppressesNothing`, 
      `unknownWarning`, 
-     `ambiguousAnnotation`."
+     `ambiguousAnnotation`,
+     `javaAnnotationElement`."
     String* warnings) 
         => SuppressWarningsAnnotation(warnings);
 

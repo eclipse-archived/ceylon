@@ -283,14 +283,22 @@ class Span<Element>(first, last)
             } else {
                 return object
                         satisfies Iterator<Element> {
-                    variable value current = first;
+                    variable Element|Finished current = first;
+                    variable value firstTime = true;
                     shared actual Element|Finished next() {
-                        if (containsElement(current)) {
-                            value result = current;
-                            current = nextStep(current, step);
-                            return result;
+                        if (firstTime) {
+                            firstTime = false;
+                            return current;
                         } else {
-                            return finished;
+                            if (is Element c=current) {
+                                value r = nextStep(c, step);
+                                if (!containsElement(r)) {
+                                    current = finished;
+                                } else {
+                                    current = r;
+                                }
+                            }
+                            return current;
                         }
                     }
                     string => "``outer``.iterator()";
