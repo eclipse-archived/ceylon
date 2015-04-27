@@ -1,4 +1,4 @@
 if (this.declaringType$===undefined) {
-  this.declaringType$=memberDeclaringType$(this);
+  this.declaringType$=coicont$(this);
 }
 return this.declaringType$;
