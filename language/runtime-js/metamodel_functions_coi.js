@@ -285,14 +285,18 @@ function coicase$(coi){
 }
 //ClassOrInterface.string
 function coistr$(coi) {
-  var mm = getrtmm$$(coi.tipo);
+  var mm=getrtmm$$(coi.tipo);
   var cc=[coi];
   var src=coicont$(coi);
   while(src) {
     cc.unshift(src);
     src=coicont$(src);
   }
-  var qn=qname$(cc[0].tipo);
+  mm=getrtmm$$(cc[0].tipo);
+  var qn=mm.d[0];
+  if (qn==='$')qn='ceylon.language';
+  qn+='::' + mm.d[mm.d.length-1];
+  if (qn.indexOf('$')>0)qn=qn.substring(0,qn.indexOf('$'));
   function simplename(t) {
     var s='';
     if (t.t==='i'||t.t==='u') {
@@ -410,6 +414,15 @@ function coicont$(coi) {
   if (cont===undefined)return null;
   if (cont===0)return coi.containingPackage;
   var cmm=getrtmm$$(cont);
+  var mod=get_model(cmm);
+  while (cont && !(mod.mt==='i' || mod.mt==='c')) {
+    cont=getrtmm$$(cmm);
+    if (cont) {
+      cmm=getrtmm$$(cont);
+      mod=get_model(cmm);
+    }
+  }
+  if (!cont)return null;
   var _t={t:cont};
   var rv;
   if (coi.src$ && coi.src$.outer$) {
