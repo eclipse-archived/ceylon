@@ -111,4 +111,20 @@ function _findTypeFromModel(pkg,mdl,cont) {
   }
   return rv;
 }
-
+//Generate the qualified name of a type
+function qname$(mm) {
+  if (mm.t) {
+    mm=mm.t;
+  }
+  if (mm.$crtmm$)mm=getrtmm$$(mm);
+  if (!mm.d && mm._alias)mm=getrtmm$$(mm._alias);
+  if (!mm.d)return "[unnamed type]";
+  var qn=mm.d[0];
+  if (qn==='$')qn='ceylon.language';
+  for (var i=1; i<mm.d.length; i++){
+    var n=mm.d[i];
+    var p=n.indexOf('$');
+    if(p!==0)qn+=(i==1?"::":".")+(p>0?n.substring(0,p):n);
+  }
+  return qn;
+}
