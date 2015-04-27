@@ -125,6 +125,7 @@ public class Naming implements LocalId {
      * Should start and end with a {@code $} and contain no {@code $}
      */
     public enum Suffix implements Affix {
+        $delegation$,
         $aliased$,
         $annotation$,
         $annotations$,
@@ -214,6 +215,7 @@ public class Naming implements LocalId {
     private static final String IMPL_POSTFIX = Suffix.$impl.toString();
     private static final String ANNO_POSTFIX = Suffix.$annotation$.toString();
     private static final String ANNOS_POSTFIX = Suffix.$annotations$.toString();
+    private static final String DELEGATION_POSTFIX = Suffix.$delegation$.toString();
 
     static enum DeclNameFlag {
         /** 
@@ -228,7 +230,9 @@ public class Naming implements LocalId {
         /** The name of the annotation type of this thing */
         ANNOTATION,
         /** The name of the annotation type of this thing */
-        ANNOTATIONS
+        ANNOTATIONS,
+        /** Quoted */
+        DELEGATION
     }
     
     /** Quote the given name by prefixing it with a dollar ($) */
@@ -619,6 +623,9 @@ public class Naming implements LocalId {
                 } else if (flags.contains(DeclNameFlag.ANNOTATIONS)
                         && last) {
                     typeDeclarationBuilder.append(ANNOS_POSTFIX);
+                }else if (flags.contains(DeclNameFlag.DELEGATION)
+                        && last) {
+                    typeDeclarationBuilder.append(DELEGATION_POSTFIX);
                 }
             }
         } else if (scope instanceof Interface) {
@@ -2277,21 +2284,23 @@ public class Naming implements LocalId {
         return prefixName(Prefix.$init$, quoteFieldName(fieldName));
     }
     
-    public JCExpression makeNamedConstructorName(Constructor constructor) {
+    public JCExpression makeNamedConstructorName(Constructor constructor, boolean delegation) {
+        DeclNameFlag[] flags = delegation ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}: new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
         Class cls = (Class)constructor.getContainer();
         if (cls.isToplevel() || 
                 (cls.isMember() && ((TypeDeclaration)cls.getContainer()).isToplevel())) {
-            return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
+            return makeTypeDeclarationExpression(null, constructor, flags);
         } else {
             return maker.TypeCast(
-                    makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED),
+                    makeTypeDeclarationExpression(null, constructor, flags),
                     //makeTypeDeclarationExpression(makeTypeDeclarationExpression(null, cls, DeclNameFlag.QUALIFIED), constructor, DeclNameFlag.QUALIFIED),
                     make().Literal(TypeTags.BOT, null));
         }
     }
     
-    public JCExpression makeNamedConstructorType(Constructor constructor) {
-        return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
+    public JCExpression makeNamedConstructorType(Constructor constructor, boolean delegation) {
+        DeclNameFlag[] flags = delegation ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}: new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
+        return makeTypeDeclarationExpression(null, constructor, flags);
     }
 }
 

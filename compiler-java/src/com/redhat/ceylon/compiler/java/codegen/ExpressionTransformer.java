@@ -78,7 +78,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -2915,10 +2914,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         final Constructor superConstructor = invocation.getConstructor();
-        if (superConstructor != null && !Decl.isDefaultConstructor(superConstructor)) {
+        boolean concreteDelegation = invocation instanceof SuperInvocation
+                && ((SuperInvocation)invocation).getDelegation().isConcreteSelfDelegation();
+        if (superConstructor == null && 
+                concreteDelegation) {
+            Constructor delegateTo = ((SuperInvocation)invocation).getDelegation().getConstructor();
             result = result.prepend(
-                    new ExpressionAndType(naming.makeNamedConstructorName(superConstructor),
-                            naming.makeNamedConstructorType(superConstructor)));
+                    new ExpressionAndType(naming.makeNamedConstructorName(delegateTo, true),
+                            naming.makeNamedConstructorType(delegateTo, true)));
+        } else if (superConstructor != null && !Decl.isDefaultConstructor(superConstructor)) {
+            result = result.prepend(
+                    new ExpressionAndType(naming.makeNamedConstructorName(superConstructor, concreteDelegation),
+                            naming.makeNamedConstructorType(superConstructor, concreteDelegation)));
         }
         
         return result;
@@ -3519,7 +3526,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 boolean prevFnCall = withinInvocation(true);
                 try {
-                    JCExpression superExpr = transformSuper(extendedType, extendedType.getInvocationExpression(), classBuilder);
+                    JCExpression superExpr = transformConstructorDelegation(extendedType, 
+                            new CtorDelegation(null, primaryDeclaration), 
+                            extendedType.getInvocationExpression(), classBuilder);
                     classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(superExpr));
                 } finally {
                     withinInvocation(prevFnCall);
@@ -3528,18 +3537,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    JCExpression transformSuper(Node extendedType,
-            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
-        return transformConstructorDelegation(extendedType, true, invocation, classBuilder);
-    }
-    
-    JCExpression transformThisInvocation(Node extendedType,
-            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
-        return transformConstructorDelegation(extendedType, false, invocation, classBuilder);
-    }
-    
+    /**
+     * Transform a delegated constructor call ({@code extends XXX()})
+     * which may be either a superclass initializer/constructor or a 
+     * same-class constructor. 
+     * @param extendedType
+     * @param delegation The kind of delegation 
+     * @param invocation
+     * @param classBuilder
+     * @return
+     */
     JCExpression transformConstructorDelegation(Node extendedType,
-            boolean isSuper,
+            CtorDelegation delegation,
             Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
@@ -3549,7 +3558,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         SuperInvocation builder = new SuperInvocation(this,
                 classBuilder.getForDefinition(),
-                invocation,
+                delegation, invocation,
                 paramLists.get(0));
         
         CallBuilder callBuilder = CallBuilder.instance(this);
@@ -3585,7 +3594,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     outer = outer.getContainer();
                 }
                 if (expr == null) {
-                    if (!isSuper) {
+                    if (delegation.isSelfDelegation()) {
                         throw new BugException();
                     }
                     Interface iface = (Interface)outerDeclaration;
@@ -3598,7 +3607,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     expr = naming.makeQualifiedSuper(superQual);
                 }
             } else {
-                expr = isSuper ? naming.makeSuper() : naming.makeThis();
+                expr = delegation.isSelfDelegation() ? naming.makeThis() : naming.makeSuper();
             }
             final List<JCExpression> superArguments = transformSuperInvocationArguments(
                     classBuilder, builder, callBuilder);

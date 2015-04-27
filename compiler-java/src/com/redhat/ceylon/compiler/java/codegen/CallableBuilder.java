@@ -331,7 +331,7 @@ public class CallableBuilder {
                 && !Decl.isDefaultConstructor((Constructor)methodClassOrCtor)) {
             // invoke the param class ctor
             Constructor ctor = (Constructor)methodClassOrCtor;
-            callBuilder.argument(gen.naming.makeNamedConstructorName(ctor));
+            callBuilder.argument(gen.naming.makeNamedConstructorName(ctor, false));
             for (Parameter parameter : parameterList.getParameters()) {
                 callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
             }

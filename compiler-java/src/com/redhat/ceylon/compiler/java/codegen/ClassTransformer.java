@@ -88,7 +88,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -1026,7 +1025,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
 
-    private void transformParameter(ParameterizedBuilder classBuilder, 
+    private void transformParameter(ParameterizedBuilder<?> classBuilder, 
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
@@ -1050,8 +1049,8 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.PARAMETER, ((Tree.ParameterDeclaration)p).getTypedDeclaration()));
         }
 
-        if (classBuilder instanceof ClassDefinitionBuilder
-                && pdb.requiresBoxedVariableDecl()) {
+        if (/*classBuilder instanceof ClassDefinitionBuilder
+                &&*/ pdb.requiresBoxedVariableDecl()) {
             ((ClassDefinitionBuilder)classBuilder).getInitBuilder().init(pdb.buildBoxedVariableDecl());
         }
         classBuilder.parameter(pdb);
@@ -1098,15 +1097,11 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Declaration node,
             Tree.ParameterList paramList,
             ClassDefinitionBuilder classBuilder,
-            ParameterizedBuilder constructorBuilder,
+            ParameterizedBuilder<?> constructorBuilder,
             boolean generateInstantiator, 
             ClassDefinitionBuilder instantiatorDeclCb,
             ClassDefinitionBuilder instantiatorImplCb) {
         
-        if (constructor != null
-                && !Decl.isDefaultConstructor(constructor)) {
-            constructorBuilder.parameter(makeConstructorNameParameter(constructor));
-        }
         for (final Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
             
@@ -1206,10 +1201,14 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private ParameterDefinitionBuilder makeConstructorNameParameter(Constructor ctor) {
+        return makeConstructorNameParameter(ctor, DeclNameFlag.QUALIFIED);
+    }
+    
+    private ParameterDefinitionBuilder makeConstructorNameParameter(Constructor ctor, DeclNameFlag... flags) {
         Class clz = (Class)ctor.getContainer();
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, Naming.Unfix.$name$.toString());
         pdb.ignored();
-        JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+        JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, flags);
         pdb.type(type, null);
         return pdb;
     }
@@ -2955,7 +2954,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
         return transformDeclarationSharedFlags(cdecl);
     }
-    private int transformConstructorDeclFlags(Constructor ctor) {
+    int transformConstructorDeclFlags(Constructor ctor) {
         return Decl.isShared(ctor) 
                 && !Decl.isAncestorLocal(ctor) 
                 && !ctor.isAbstract() ? PUBLIC : PRIVATE;
@@ -4818,7 +4817,23 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> transform(Tree.Constructor that, ClassDefinitionBuilder classBuilder) {
+    /**
+     * Makes a named constructor
+     * @param that
+     * @param classBuilder
+     * @param mods
+     * @param ctorName
+     * @param ctorBody
+     * @param declFlags
+     * @return
+     */
+    public List<JCTree> makeNamedConstructor(Tree.Constructor that, 
+            ClassDefinitionBuilder classBuilder,
+            boolean generateInstantiator,
+            int mods,
+            String ctorName,
+            List<JCStatement> ctorBody, 
+            DeclNameFlag... declFlags) {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         Class clz = (Class)ctor.getContainer();
@@ -4828,7 +4843,6 @@ public class ClassTransformer extends AbstractTransformer {
         
         ClassDefinitionBuilder decl = null;
         ClassDefinitionBuilder impl = null;
-        boolean generateInstantiator = Strategy.generateInstantiator(ctor);
         if (generateInstantiator) {
             if (clz.getContainer() instanceof Interface) {
                 decl = classBuilder.getContainingClassBuilder();
@@ -4844,63 +4858,64 @@ public class ClassTransformer extends AbstractTransformer {
         if (!Decl.isDefaultConstructor(ctor)) {
             ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         }
-        ctorDb.modifiers(transformConstructorDeclFlags(ctor));
+        ctorDb.modifiers(mods);
         
-        if (Decl.isDefaultConstructor(ctor)) {
-            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, that.getParameterList(), 
-                    classBuilder, classBuilder.getInitBuilder(), generateInstantiator, decl, impl);
-            // Note: We don't need to explicitly add the reified type parameters to the ctor
-            // in this case because they're already in the initbuilders list of parameters.
-            for (ParameterDefinitionBuilder p : classBuilder.getInitBuilder().getParameterList()) {
-                ctorDb.parameter(p);
-            }
-        } else {
-            ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
-                    naming.makeTypeDeclarationName(ctor), null, true);
-            int classMods = transformConstructorDeclFlags(ctor);
-            JCVariableDecl constructorNameConst;
-            if (clz.isToplevel() || 
-                    (clz.isMember() && Decl.isToplevel((Declaration)clz.getContainer()))) {
-                classMods |= FINAL | STATIC;
-                constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
-                        names().fromString(naming.makeTypeDeclarationName(ctor)),
-                        naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
-                        makeNull());
-            } else {
-                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
-                constructorNameConst = null;
-            }
-            constructorNameClass.modifiers(classMods);
-            constructorNameClass.annotations(makeAtIgnore());
-            constructorNameClass.getInitBuilder().modifiers(PRIVATE);
-            
-            if (clz.isToplevel()) {
-                result.addAll(constructorNameClass.build());
-                classBuilder.defs(constructorNameConst);
-            } else if (clz.isClassMember()){
-                classBuilder.getContainingClassBuilder().defs(constructorNameClass.build());
-                classBuilder.getContainingClassBuilder().defs(constructorNameConst);
-            } else if (clz.isInterfaceMember()){
-                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameClass.build());
-                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameConst);
-            } else {
-                result.addAll(constructorNameClass.build());
-            }
-            
-            for (TypeParameter tp : clz.getTypeParameters()) {
-                ctorDb.reifiedTypeParameter(tp);
-            }
-            
-            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, that.getParameterList(), 
-                    classBuilder, ctorDb, generateInstantiator, decl, impl);
-            
+        for (TypeParameter tp : clz.getTypeParameters()) {
+            ctorDb.reifiedTypeParameter(tp);
         }
+        if (ctorName != null ) {
+             
+            // generate a constructor name class (and constant)
+            transformConstructorName(classBuilder, result, ctor, clz, mods, ctorName, declFlags);
+            
+            // Add the name paramter
+            ctorDb.parameter(makeConstructorNameParameter(ctor, declFlags));
+        }
+        // Add the rest of the parameters (this worries about aliasing)
+        transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, that.getParameterList(), 
+                classBuilder, ctorDb, generateInstantiator, decl, impl);
         
-        List<JCStatement> ctorBody = classBuilder.getInitBuilder().getBody(that, classBuilder);
+        // Transformation of body has to happen after transformation of parameter so we know about parameter aliasing.
         at(that);
         ctorDb.block(make().Block(0, ctorBody));
         result.add(ctorDb.build());
         return result.toList();
+    }
+
+    protected void transformConstructorName(
+            ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
+            Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
+        ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
+                ctorName, null, true);
+        JCVariableDecl constructorNameConst;
+        if (clz.isToplevel() || 
+                (clz.isMember() && Decl.isToplevel((Declaration)clz.getContainer()))) {
+            classMods |= FINAL | STATIC;
+            constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
+                    names().fromString(ctorName),
+                    naming.makeTypeDeclarationExpression(null, ctor, declFlags), 
+                    makeNull());
+        } else {
+            classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+            constructorNameConst = null;
+        }
+        constructorNameClass.modifiers(classMods);
+        constructorNameClass.annotations(makeAtIgnore());
+        constructorNameClass.getInitBuilder().modifiers(PRIVATE);
+        
+        List<JCTree> ctorNameClassDecl = constructorNameClass.build();
+        if (clz.isToplevel()) {
+            result.addAll(ctorNameClassDecl);
+            classBuilder.defs(constructorNameConst);
+        } else if (clz.isClassMember()){
+            classBuilder.getContainingClassBuilder().defs(ctorNameClassDecl);
+            classBuilder.getContainingClassBuilder().defs(constructorNameConst);
+        } else if (clz.isInterfaceMember()){
+            classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(ctorNameClassDecl);
+            classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameConst);
+        } else {
+            result.addAll(ctorNameClassDecl);
+        }
     }
 
 }

@@ -121,7 +121,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         return init.isEmpty();
     }
     
-    List<JCStatement> statementsBetween(Constructor first, Constructor second) {
+    private List<JCStatement> statementsBetween(Constructor first, Constructor second) {
         ListBuffer<JCStatement> buffer = ListBuffer.lb();
         boolean found = first == null;
         for (Object o : this.init) {
@@ -135,74 +135,16 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         }
         return buffer.toList();
     }
-    <T extends JCTree> List<T> copyOf(List<T> list) {
+    private <T extends JCTree> List<T> copyOf(List<T> list) {
         TreeCopier<?> copier = new TreeCopier(gen.make());
         return copier.copy(list);
+    }
+    List<JCStatement> copyStatementsBetween(Constructor first, Constructor second) {
+        return copyOf(statementsBetween(first, second));
     }
     
     public List<ParameterDefinitionBuilder> getParameterList() {
         return params.toList();
     }
-
-    /**
-     * Constructs the body of the given constructor
-     * @param ctor The constructor whose body we're constructing
-     * @param delegatedCtorOrClass The constructor or class this constructor delegates to
-     * @param delegateExpr The {@code super()} or {@code this()} constructor delegation
-     * @param ctorStmts The statements from the constructors body
-     * @return
-     */
-    public List<JCStatement> getBody(Tree.Constructor that, ClassDefinitionBuilder classBuilder) {
-        Constructor ctor = that.getDeclarationModel();
-        
-        JCStatement delegateExpr;
-        Declaration delegatedCtor;
-        if (that.getDelegatedConstructor() != null) {
-            Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
-            delegatedCtor = (((MemberOrTypeExpression)chainedCtorInvocation.getPrimary())).getDeclaration();
-            if (delegatedCtor instanceof Constructor
-                    && delegatedCtor.getContainer().equals(ctor.getContainer())) {
-                delegateExpr = gen.make().Exec(gen.expressionGen().transformThisInvocation(that.getDelegatedConstructor(),
-                        chainedCtorInvocation, classBuilder));
-            } else {
-                delegateExpr = gen.make().Exec(gen.expressionGen().transformSuper(that.getDelegatedConstructor(),
-                        chainedCtorInvocation, classBuilder));
-            }
-        } else {
-            // TODO statement execution order when  init statements and implicit super() call
-            delegatedCtor = null;
-            delegateExpr = null;
-        }
-        
-        /*
-         * abstract ctor && extends super class ctor: super(), pre-init, ctor-body
-         * abstract ctor && extends abstract ctor: this(), between init, ctor-body
-         * concrete ctor && extends super class ctor: super(), pre-init, ctory-body, post-init
-         * concrete ctor && extends abstract ctor: this(), between init, ctory-body, post-init
-         * 
-         * Note we need to take a copy of the statements because they ones in 
-         * this.init will be shared between all constructors!
-         */
-        boolean thisDelegation = delegatedCtor != null && Decl.getConstructedClass(delegatedCtor)
-                .equals(
-                        ctor
-                        .getContainer());
-        ListBuffer<JCStatement> stmts = ListBuffer.lb();
-        if (delegateExpr != null) {
-            stmts.add(delegateExpr);
-        }
-        if (thisDelegation) {// delegating to abstract
-            stmts.addAll(copyOf(statementsBetween((Constructor)delegatedCtor, ctor)));
-        } else {// super delegation 
-            stmts.addAll(copyOf(statementsBetween(null, ctor)));
-        }
-        stmts.addAll(gen.statementGen().transformBlock(that.getBlock()));
-        if (!ctor.isAbstract()) {
-            stmts.addAll(copyOf(statementsBetween(ctor, null)));
-        }
-        return stmts.toList();
-    }
-
-
 
 }

@@ -895,9 +895,11 @@ class SuperInvocation extends PositionalInvocation {
     }
     
     private final ClassOrInterface sub;
+    private CtorDelegation delegation;
     
     SuperInvocation(AbstractTransformer gen,
             ClassOrInterface sub,
+            CtorDelegation delegation,
             Tree.InvocationExpression invocation,
             ParameterList parameterList) {
         super(gen, 
@@ -907,8 +909,13 @@ class SuperInvocation extends PositionalInvocation {
                 invocation,
                 parameterList.getParameters());
         this.sub = sub;
+        this.delegation = delegation;
     }
-
+    
+    CtorDelegation getDelegation() {
+        return delegation;
+    }
+    
     ClassOrInterface getSub() {
         return sub;
     }
@@ -1679,8 +1686,8 @@ class NamedArgumentInvocation extends Invocation {
         final Constructor ctor = getConstructor();
         if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
             argsAndTypes.put(-1, 
-                    new ExpressionAndType(gen.naming.makeNamedConstructorName(ctor),
-                            gen.naming.makeNamedConstructorType(ctor)));
+                    new ExpressionAndType(gen.naming.makeNamedConstructorName(ctor, false),
+                            gen.naming.makeNamedConstructorType(ctor, false)));
         }
         return new TransformedInvocationPrimary(result, actualPrimExpr.selector);
     }
