@@ -286,7 +286,52 @@ function coicase$(coi){
 //ClassOrInterface.string
 function coistr$(coi) {
   var mm = getrtmm$$(coi.tipo);
-  var qn=coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name ? coi.tipo.$$.prototype.getT$name() : qname$(mm);
+  var cc=[];
+  var src=coi;
+  while(src) {
+    cc.unshift(src);
+    src=coicont$(src);
+  }
+  var qn=qname$(cc[0].tipo);
+  function addtargs(x) {
+    var mmm=getrtmm$$(x.t);
+    var s='',tparms=mmm&&mmm.tp;
+    if (tparms===undefined)return s;
+    var tsrc=x.a || coi.$targs;
+    for (var ta in tparms) {
+        var t2=tsrc[ta];
+        if (t2) {
+          if (s.length>1)s+=',';else s='<';
+          s+=qname$(getrtmm$$(t2.t));
+          if (t2.a)s+=addtargs(t2);
+        }
+    }
+    if (s.length)s+='>';
+    return s;
+  }
+  qn+=addtargs(cc[0].$$targs$$.Target$Type);
+  for (var i=1;i<cc.length;i++) {
+    mm=getrtmm$$(cc[i].tipo)
+    qn+='.'+mm.d[mm.d.length-1]+addtargs(cc[i].$$targs$$.Target$Type);
+  }
+  return qn;
+  if (coi.src$) {
+    var cc=[],ms=[];
+    var src=coi.src$;
+    var t=coi;
+    while (src!==undefined) {
+      cc.unshift(src);
+      ms.unshift(t);
+      src=src.outer$;
+      t=coicont$(t);
+    }
+    var qn=className(cc[0]);
+  }
+  var qn=qname$(mm);
+  if (coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name) {
+    console.trace("WTF");
+    qn=coi.tipo.$$.prototype.getT$name();
+  }
   if (mm.tp) {
     qn+="<";
     var first=true;
