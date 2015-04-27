@@ -252,6 +252,7 @@ public class LiteralVisitor extends Visitor {
             String name = matcher.group(3);
             int from = matcher.start();
             int to = matcher.end();
+            int next = to;
             if (name!=null) {
                 boolean found=false;
                 for (int codePoint=0; 
@@ -262,6 +263,7 @@ public class LiteralVisitor extends Visitor {
                         String unicodeChar = 
                                 new String(toChars(codePoint));
                         result.replace(from, to, unicodeChar);
+                        next = from+unicodeChar.length();
                         found = true;
                         break;
                     }
@@ -270,6 +272,7 @@ public class LiteralVisitor extends Visitor {
                     String emoji = getEmoji(node, name);
                     if (emoji!=null) {
                         result.replace(from, to, emoji);
+                        next = from+emoji.length();
                     }
                 }
             }
@@ -285,23 +288,26 @@ public class LiteralVisitor extends Visitor {
                             getUnicodeCharacter(node, hex);
                     if (unicodeChar!=null) {
                         result.replace(from, to, unicodeChar);
+                        next = from+unicodeChar.length();
                     }
                 }
             }
             else {
                 String legacyEscape = matcher.group(5);
                 if (legacyEscape.isEmpty()) {
-                    result.delete(from, to+1);                    
+                    result.delete(from, to+1);
+                    next = from;
                 }
                 else {
                     String legacyEscapeChar = 
                             getLegacyEscape(node, legacyEscape);
                     if (legacyEscapeChar!=null) {
                         result.replace(from, to, legacyEscapeChar);
+                        next = from+legacyEscapeChar.length();
                     }
                 }
             }
-            start = from+1;
+            start = next;
         }
     }
 
