@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -39,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
+import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -57,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
@@ -124,15 +127,20 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
+        
+        Declaration modelToAdd = model;
         if (setModelName(that, model, that.getIdentifier())) {
             if (checkDupe) {
+                modelToAdd = checkForNativeAnnotation(that, model);
                 checkForDuplicateDeclaration(that, model, scope);
             }
         }
         //that.setDeclarationModel(model);
-        unit.addDeclaration(model);
-        Scope sc = getContainer(that);
-        sc.addMember(model);
+        if (modelToAdd != null) {
+            unit.addDeclaration(modelToAdd);
+            Scope sc = getContainer(that);
+            sc.addMember(modelToAdd);
+        }
         
         handleDeclarationAnnotations(that, model);        
         
@@ -173,6 +181,98 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             return true;
             //TODO: check for dupe arg name
         }
+    }
+    
+    private static Declaration checkForNativeAnnotation(
+            final Tree.Declaration that,
+            final Declaration model) {
+        Declaration modelToAdd = model;
+        
+        Unit unit = model.getUnit();
+        Annotation a = getAnnotation(that.getAnnotationList(), "native", unit);
+        if (a != null) {
+            String backend = getAnnotationArgument(a, "");
+            String name = model.getName();
+            boolean canBeNativeModel = model instanceof Method
+                    || model instanceof Class || model instanceof Value;
+            if (canBeNativeModel && model.isToplevel()) {
+                if (!backend.isEmpty() && !Backend.validAnnotation(backend)) {
+                    that.addError("invalid native backend name: '" + backend + "', should be one of: " + Backend.annotations());
+                }
+                Scope s = model.getContainer();
+                Declaration member = s.getDirectMember(name, null, false);
+                if (member == null) {
+                    initOverloads(model, model);
+                }
+                else {
+                    // TODO check that the signatures are all the same
+                    List<Declaration> overloads = getOverloads(member);
+                    if (hasOverload(overloads, backend)) {
+                        if (backend.isEmpty()) {
+                            that.addError("duplicate native abstraction: '" + name + "'");
+                        }
+                        else {
+                            that.addError("duplicate native implementation: '" + name + "'");
+                        }
+                    }
+                    overloads.add(model);
+                    setOverloads(model, overloads);
+                    modelToAdd = null;
+                }
+// Re-enable when we support native member/inner declarations
+//              Scope container = model.getContainer();
+//              if (container instanceof Declaration) {
+//                  Declaration ci = (Declaration) container;
+//                  if (!ci.isNative()) {
+//                      that.addError("native member belongs to a non-native declaration: '" + 
+//                              model.getName() + "' of '" + ci.getName());
+//                  } else if (!model.getNative().equals(ci.getNative())) {
+//                      that.addError("native member and its native declaration are not for the same backend: '" + 
+//                              model.getName() + "' of '" + ci.getName());
+//                  }
+//              }
+            } else {
+                if (!backend.isEmpty()) {
+                    that.addError("only toplevel classes and methods can have native implementations");
+                }
+            }
+        }
+        return modelToAdd;
+    }
+    
+    private static List<Declaration> initOverloads(Declaration decl, Declaration initial) {
+        ArrayList<Declaration> al = new ArrayList<Declaration>(3);
+        al.add(initial);
+        setOverloads(decl, al);
+        return al;
+    }
+
+    private static void setOverloads(Declaration decl, List<Declaration> overloads) {
+        if (decl instanceof Method) {
+            ((Method)decl).setOverloads(overloads);
+        }
+        else if (decl instanceof Value) {
+            ((Value)decl).setOverloads(overloads);
+        }
+        else if (decl instanceof Class) {
+            ((Class)decl).setOverloads(overloads);
+        }
+    }
+
+    private static List<Declaration> getOverloads(Declaration decl)  {
+        if (decl instanceof Overloadable) {
+            return ((Overloadable)decl).getOverloads();
+        }
+        return null;
+    }
+
+    private static boolean hasOverload(List<Declaration> overloads, String backend)  {
+        for (Declaration d : overloads) {
+            if (backend.equals(d.getNative())) {
+                return true;
+            }
+        }
+        return false;
     }
     
     private static void checkForDuplicateDeclaration(Tree.Declaration that, 
