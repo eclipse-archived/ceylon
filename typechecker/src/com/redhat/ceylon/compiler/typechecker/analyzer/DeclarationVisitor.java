@@ -9,6 +9,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentM
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyMap;
@@ -1280,8 +1282,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 model.setFormal(true);
             }
         }
-        if (hasAnnotation(al, "native", unit)) {
-            model.setNative(true);
+        Tree.Annotation na = getAnnotation(al, "native", unit);
+        if (na != null) {
+            model.setNative(getAnnotationArgument(na, ""));
         }
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both formal and default", 1320);
