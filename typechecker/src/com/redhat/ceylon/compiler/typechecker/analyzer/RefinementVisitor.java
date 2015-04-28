@@ -14,8 +14,10 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDecla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInheritedDeclarations;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.hasNativeImplementation;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
@@ -35,6 +37,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -133,10 +137,135 @@ public class RefinementVisitor extends Visitor {
                     that.addError("name is not unique in scope: '" + 
                             dec.getName() + "'");
                 }
-            } 
+            }
             
+            boolean isNativeWithImplementation = hasNativeImplementation(dec);
+            if (isNativeWithImplementation) {
+                checkNative(that, dec);
+            }
         }
         
+    }
+
+    private void checkNative(Tree.Declaration that, Declaration dec) {
+        // Find the abstraction first (if it exists)
+        Declaration abstraction = getNativeAbstraction(dec);
+        if (abstraction == null) {
+            // Abstraction-less native implementation, check it's not shared
+            if (dec.isShared()) {
+                that.addError("native implementation should have an abstraction or not be shared");
+            }
+            // If there's no abstraction we just compare to the first implementation in the list
+            Declaration firstImpl = ((Overloadable)dec).getOverloads().get(0);
+            if (dec != firstImpl) {
+                checkSameDeclaration(that, dec, firstImpl);
+            }
+        } else {
+            if (dec != abstraction) {
+                checkSameDeclaration(that, dec, abstraction);
+            }
+        }
+    }
+    
+    private void checkSameDeclaration(Tree.Declaration that, Declaration dec, Declaration abstraction) {
+        checkSameAnnotations(that, dec, abstraction);
+        if (dec.getClass() == abstraction.getClass()) {
+            if (dec instanceof Method) {
+                checkSameMethod(that, (Method)dec, (Method)abstraction);
+            } else if (dec instanceof Value) {
+                checkSameValue(that, (Value)dec, (Value)abstraction);
+            } else if (dec instanceof Class) {
+                checkSameClass(that, (Class)dec, (Class)abstraction);
+            }
+        } else {
+            that.addError("native declarations not of same type: " + message(dec));
+        }
+    }
+    
+    private void checkSameAnnotations(Tree.Declaration that, Declaration dec, Declaration abstraction) {
+        boolean ok = true;
+        List<Annotation> das = dec.getAnnotations();
+        List<Annotation> aas = abstraction.getAnnotations();
+        if (das.size() == aas.size()) {
+            for (Annotation da : das) {
+                boolean found = false;
+                for (Annotation aa : aas) {
+                    if (da.getName().equals(aa.getName())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    ok = false;
+                    break;
+                }
+            }
+        } else {
+            ok = false;
+        }
+        if (!ok) {
+            that.addError("native declarations have different annotations: " + message(dec));
+        }
+    }
+
+    private void checkSameClass(Tree.Declaration that, Class dec, Class abstraction) {
+        ProducedType dext = dec.getExtendedType();
+        ProducedType aext = abstraction.getExtendedType();
+        if ((dext != null && aext == null)
+                || (dext == null && aext != null)
+                || !dext.isExactly(aext)) {
+            that.addError("native classes do not extend the same type: " + message(dec));
+        }
+        List<ProducedType> dst = dec.getSatisfiedTypes();
+        List<ProducedType> ast = abstraction.getSatisfiedTypes();
+        if (dst.size() != ast.size() || !dst.containsAll(ast)) {
+            that.addError("native classes do not satisfy the same interfaces: " + message(dec));
+        }
+        // FIXME probably not the right tests
+        checkClassParameters(that, dec, abstraction, dec.getReference(), abstraction.getReference(), true);
+        checkRefiningMemberTypeParameters(that, dec, dec.getTypeParameters(), abstraction.getTypeParameters(), true);
+        // TODO check shared members
+    }
+    
+    private void checkSameMethod(Tree.Declaration that, Method dec, Method abstraction) {
+        if (!dec.getType().isExactly(abstraction.getType())) {
+            that.addError("native methods do not have the same return type: " + message(dec));
+        }
+        // FIXME probably not the right tests
+        checkRefiningMemberParameters(that, dec, abstraction, dec.getReference(), abstraction.getReference(), true);
+        checkRefiningMemberTypeParameters(that, dec, dec.getTypeParameters(), abstraction.getTypeParameters(), true);
+    }
+    
+    private void checkSameValue(Tree.Declaration that, Value dec, Value abstraction) {
+        if (!dec.getType().isExactly(abstraction.getType())) {
+            that.addError("native attributes do not have the same type: " + message(dec));
+        }
+    }
+    
+    private void checkClassParameters(Tree.Declaration that,
+            Declaration dec, Declaration refined,
+            ProducedReference refinedMember, 
+            ProducedReference refiningMember,
+            boolean forNative) {
+        List<ParameterList> refiningParamLists = 
+                ((Functional) dec).getParameterLists();
+        List<ParameterList> refinedParamLists = 
+                ((Functional) refined).getParameterLists();
+        if (refinedParamLists.size()!=refiningParamLists.size()) {
+            that.addError("native classes must have the same number of parameter lists: " + 
+                    message(dec));
+        }
+        for (int i=0; 
+                i<refinedParamLists.size() && 
+                i<refiningParamLists.size(); 
+                i++) {
+            checkParameterTypes(that, 
+                    getParameterList(that, i), 
+                    refiningMember, refinedMember, 
+                    refiningParamLists.get(i), 
+                    refinedParamLists.get(i),
+                    forNative);
+        }
     }
 
     private void checkMember(Tree.Declaration that, Declaration dec) {
@@ -321,7 +450,7 @@ public class RefinementVisitor extends Visitor {
             List<TypeParameter> refiningTypeParams = 
                     ((Generic) dec).getTypeParameters();
             checkRefiningMemberTypeParameters(that, refined, 
-            		refinedTypeParams, refiningTypeParams);
+            		refinedTypeParams, refiningTypeParams, false);
             typeArgs = checkRefiningMemberUpperBounds(that, 
                     ci, refined, 
                     refinedTypeParams, refiningTypeParams);
@@ -364,20 +493,22 @@ public class RefinementVisitor extends Visitor {
         if (dec instanceof Functional && 
                 refined instanceof Functional) {
            checkRefiningMemberParameters(that, dec, refined, 
-                   refinedMember, refiningMember);
+                   refinedMember, refiningMember, false);
         }
     }
 
 	private void checkRefiningMemberParameters(Tree.Declaration that,
             Declaration dec, Declaration refined,
             ProducedReference refinedMember, 
-            ProducedReference refiningMember) {
+            ProducedReference refiningMember,
+            boolean forNative) {
 		List<ParameterList> refiningParamLists = 
 		        ((Functional) dec).getParameterLists();
 		List<ParameterList> refinedParamLists = 
 		        ((Functional) refined).getParameterLists();
 		if (refinedParamLists.size()!=refiningParamLists.size()) {
-			that.addError("member must have the same number of parameter lists as refined member: " + 
+		    String subject = forNative ? "native abstraction" : "refined memeber";
+			that.addError("member must have the same number of parameter lists as " + subject + ": " + 
 			        message(dec) + " refines " + message(refined));
 		}
 		for (int i=0; 
@@ -388,7 +519,8 @@ public class RefinementVisitor extends Visitor {
 			        getParameterList(that, i), 
 					refiningMember, refinedMember, 
 					refiningParamLists.get(i), 
-					refinedParamLists.get(i));
+					refinedParamLists.get(i),
+					forNative);
 		}
     }
 
@@ -429,11 +561,13 @@ public class RefinementVisitor extends Visitor {
 
 	private void checkRefiningMemberTypeParameters(Tree.Declaration that,
             Declaration refined, List<TypeParameter> refinedTypeParams,
-            List<TypeParameter> refiningTypeParams) {
+            List<TypeParameter> refiningTypeParams,
+            boolean forNative) {
 	    int refiningSize = refiningTypeParams.size();
 	    int refinedSize = refinedTypeParams.size();
 	    if (refiningSize!=refinedSize) {
-	        that.addError("member does not have the same number of type parameters as refined member: " + 
+	        String subject = forNative ? "native abstraction" : "refined member";
+	        that.addError("member does not have the same number of type parameters as " + subject + ": " + 
 	                    message(refined));
 	    }
     }
@@ -631,16 +765,23 @@ public class RefinementVisitor extends Visitor {
     }
     
     private static String containerName(ProducedReference member) {
-        return ((Declaration) member.getDeclaration().getContainer()).getName();
+        Scope container = member.getDeclaration().getContainer();
+        if (container instanceof Declaration) {
+            return ((Declaration) container).getName();
+        } else if (container instanceof Package) {
+            return ((Package) container).getQualifiedNameString();
+        } else {
+            return "Unknown";
+        }
     }
 
     private void checkParameterTypes(Tree.Declaration that, Tree.ParameterList pl,
             ProducedReference member, ProducedReference refinedMember,
-            ParameterList params, ParameterList refinedParams) {
+            ParameterList params, ParameterList refinedParams, boolean forNative) {
         List<Parameter> paramsList = params.getParameters();
 		List<Parameter> refinedParamsList = refinedParams.getParameters();
 		if (paramsList.size()!=refinedParamsList.size()) {
-           handleWrongParameterListLength(that, member, refinedMember);
+           handleWrongParameterListLength(that, member, refinedMember, forNative);
         }
         else {
             for (int i=0; i<paramsList.size(); i++) {
@@ -673,13 +814,15 @@ public class RefinementVisitor extends Visitor {
             		else if (refinedParameterType==null || 
             		        parameterType==null) {
             			handleUnknownParameterType(member, 
-            			        refinedMember, param, typeNode);
+            			        refinedMember, param,
+            			        typeNode, forNative);
                     }
                     else {
                         checkRefiningParameterType(member, 
                                 refinedMember, refinedParams, 
                                 rparam, refinedParameterType,
-                                param, parameterType, typeNode);
+                                param, parameterType,
+                                typeNode, forNative);
                     }
                 }
             }
@@ -687,35 +830,42 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private void handleWrongParameterListLength(Tree.Declaration that,
-            ProducedReference member, ProducedReference refinedMember) {
-	    that.addError("member does not have the same number of parameters as the member it refines: '" + 
-                   member.getDeclaration().getName() + 
-                   "' declared by '" + containerName(member) +
-                   "' refining '" + refinedMember.getDeclaration().getName() +
-                   "' declared by '" + containerName(refinedMember) + "'", 
-                   9100);
+            ProducedReference member, ProducedReference refinedMember,
+            boolean forNative) {
+	    String err = forNative ? "native declarations do not have the same number of parameters "
+	            : "member does not have the same number of parameters as the member it refines ";
+	    err += member.getDeclaration().getName() + 
+                "' declared by '" + containerName(member) + "'";
+	    if (!forNative) {
+	        err += " refining '" + refinedMember.getDeclaration().getName() +
+	                "' declared by '" + containerName(refinedMember) + "'";
+	    }
+	    that.addError(err, 9100);
     }
 
 	private static void checkRefiningParameterType(ProducedReference member,
             ProducedReference refinedMember, ParameterList refinedParams,
             Parameter rparam, ProducedType refinedParameterType,
-            Parameter param, ProducedType parameterType, Node typeNode) {
+            Parameter param, ProducedType parameterType,
+            Node typeNode, boolean forNative) {
 	    //TODO: consider type parameter substitution!!!
+	    String subject = forNative ? "native abstraction" : "refined member";
 	    checkIsExactlyForInterop(typeNode.getUnit(), 
 	            refinedParams.isNamedParametersSupported(), 
 	            parameterType, refinedParameterType, typeNode,
-	            "type of parameter '" + param.getName() + "' of '" + 
+	            "type of parameter '" + param.getName() + "' of '" +
 	                    member.getDeclaration().getName() +
 	                    "' declared by '" + containerName(member) +
 	                    "' is different to type of corresponding parameter '" +
-	                    rparam.getName() + "' of refined member '" + 
+	                    rparam.getName() + "' of " + subject + " '" +
 	                    refinedMember.getDeclaration().getName() + "' of '" +
 	                    containerName(refinedMember) + "'");
     }
 
 	private void handleUnknownParameterType(ProducedReference member,
-            ProducedReference refinedMember, Parameter param, Node typeNode) {
-	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: '" +
+            ProducedReference refinedMember, Parameter param, Node typeNode, boolean forNative) {
+	    String subject = forNative ? "native abstraction" : "refined member";
+	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of " + subject + ": '" +
 	            param.getName() + "' of '" + 
 	            member.getDeclaration().getName() + 
 	            "' declared by '" + containerName(member) +
