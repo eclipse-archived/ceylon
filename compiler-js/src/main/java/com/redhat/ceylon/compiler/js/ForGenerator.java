@@ -88,8 +88,8 @@ public class ForGenerator {
         final Tree.Term right = range.getRightTerm();
         if (left instanceof Tree.NaturalLiteral && right instanceof NaturalLiteral) {
             try {
-                long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left);
-                long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right);
+                long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left, false);
+                long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right, false);
                 optimizeNaturals(una, dos, itemVar);
                 return true;
             } catch (NumberFormatException ex) {
@@ -118,15 +118,15 @@ public class ForGenerator {
         final boolean rightNat = right instanceof Tree.NaturalLiteral;
         if (leftNat && rightNat) {
             try {
-                long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left);
-                long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right);
+                long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left, false);
+                long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right, false);
                 optimizeNaturals(una, una+dos-1, itemVar);
                 return true;
             } catch (NumberFormatException ex) {
                 return false;
             }
         }
-        final String limvar = rightNat ? Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)right))
+        final String limvar = rightNat ? Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)right, false))
                 : gen.getNames().createTempVariable();
         gen.out("var ", itemVar, "=");
         left.visit(gen);

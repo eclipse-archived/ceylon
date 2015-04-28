@@ -16,13 +16,13 @@ public class Operators {
             gen.out(before);
         }
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm())));
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)));
         } else {
             gen.box(exp.getLeftTerm());
         }
         gen.out(op);
         if (exp.getRightTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm())));
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm(), false)));
         } else {
             gen.box(exp.getRightTerm());
         }
@@ -35,13 +35,13 @@ public class Operators {
             final Map<TypeParameter, ProducedType> targs, final Map<TypeParameter, SiteVariance> overrides,
             final GenerateJsVisitor gen) {
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm())));
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)));
         } else {
             gen.box(exp.getLeftTerm());
         }
         gen.out(op);
         if (exp.getRightTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm())));
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm(), false)));
         } else {
             gen.box(exp.getRightTerm());
         }
@@ -58,7 +58,7 @@ public class Operators {
             gen.out(before);
         }
         if ((after==null || after.charAt(0)!='.' ) && exp.getTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getTerm())));
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getTerm(), false)));
         } else {
             final int boxTypeLeft = gen.boxStart(exp.getTerm());
             exp.getTerm().visit(gen);

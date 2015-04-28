@@ -1554,17 +1554,22 @@ public class GenerateJsVisitor extends Visitor
         out(getClAlias(), "Float(", that.getText(), ")");
     }
 
-    public long parseNaturalLiteral(Tree.NaturalLiteral that) throws NumberFormatException {
-        char prefix = that.getText().charAt(0);
-        int radix = 10;
+    long parseNaturalLiteral(Tree.NaturalLiteral that, boolean neg) throws NumberFormatException {
         String nt = that.getText();
+        char prefix = nt.charAt(0);
+        int radix = 10;
         if (prefix == '$' || prefix == '#') {
             radix = prefix == '$' ? 2 : 16;
             nt = nt.substring(1);
         }
         final java.math.BigInteger lit = new java.math.BigInteger(nt, radix);
-        if (lit.bitLength() > 63) {
-            that.addError("Natural literal outside the valid range (-9223372036854775808..9223372036854775807)");
+        if (radix==10 && lit.bitLength() > 63) {
+            if (lit.bitLength() == 64 && neg) {
+                return -lit.longValue();
+            }
+            that.addError("literal outside representable range: " + nt + " is too large to be represented as an Integer");
+        } else if (lit.bitLength() > 63 && lit.bitLength()==lit.bitCount()) {
+            out("/*bit length=" + lit.bitLength() + ", count=" + lit.bitCount(), " ERGO " + (lit.longValue()),"*/");
         }
         return lit.longValue();
     }
@@ -1572,7 +1577,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.NaturalLiteral that) {
         try {
-            out("(", Long.toString(parseNaturalLiteral(that)), ")");
+            out("(", Long.toString(parseNaturalLiteral(that, false)), ")");
         } catch (NumberFormatException ex) {
             that.addError("Invalid numeric literal " + that.getText());
         }
@@ -2630,12 +2635,13 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(final Tree.NegativeOp that) {
         if (that.getTerm() instanceof Tree.NaturalLiteral) {
-            long t = parseNaturalLiteral((Tree.NaturalLiteral)that.getTerm());
+            long t = parseNaturalLiteral((Tree.NaturalLiteral)that.getTerm(), true);
             out("(");
             if (t > 0) {
-                out("-");
+                out("-", Long.toString(t));
+            } else {
+                out(Long.toString(-t));
             }
-            out(Long.toString(t));
             out(")");
             if (t == 0) {
                 //Force -0
@@ -3406,7 +3412,10 @@ public class GenerateJsVisitor extends Visitor
 
     boolean isNaturalLiteral(Tree.Term that) {
         if (that instanceof Tree.NaturalLiteral) {
-            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that)));
+            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that, false)));
+            return true;
+        } else if (that instanceof Tree.NegativeOp) {
+            that.visit(this);
             return true;
         }
         return false;
