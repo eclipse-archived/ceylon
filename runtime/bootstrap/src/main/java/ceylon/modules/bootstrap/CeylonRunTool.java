@@ -50,7 +50,7 @@ import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 
 @Summary("Executes a Ceylon program")
 @Description(
-        "Executes the ceylon program specified as the `<module>` argument. " +
+        "Executes the Ceylon program specified as the `<module>` argument. " +
                 "The `<module>` may optionally include a version."
 )
 @RemainingSections(
