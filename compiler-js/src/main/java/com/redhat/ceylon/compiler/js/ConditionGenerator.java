@@ -252,6 +252,9 @@ public class ConditionGenerator {
             }
         }
         if (vars.isEmpty()) {
+            if (nested) {
+                gen.out(" return ");
+            }
             //No special conditions means we can use a simple ternary
             specialConditions(vars, that.getIfClause().getConditionList(), "");
             gen.out("?");

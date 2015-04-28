@@ -1,6 +1,11 @@
 import ceylon.language.meta.declaration {
   FunctionDeclaration, ClassOrInterfaceDeclaration, Package, ValueDeclaration
 }
+import ceylon.language.meta.model {
+  MemberClass
+}
+import ceylon.language.meta { type }
+
 import check { check, fail }
 
 shared class Fuera() {
@@ -25,6 +30,11 @@ shared class Padre() {
 shared class Hijo() extends Padre() {
   shared void c() {}
   shared dumb void d() {}
+}
+class Issue669<Z,A>() {
+  shared class Middle<T>() {
+    shared class Inner(){}
+  }
 }
 
 void issues() {
@@ -69,4 +79,15 @@ void issues() {
     } else {
         fail("#489.4 package 'nesting.sub' not found");
     }
+    value model669 = type(Issue669<String,Integer>().Middle<Float>().Inner());
+    assert (is MemberClass<Issue669<String,Integer>.Middle<Float>,Issue669<String,Integer>.Middle<Float>.Inner,[]> model669);
+    if (exists c669=model669.container) {
+      check(c669.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>", "langmod #669.1 says ``c669``");
+    } else {
+      fail("langmod #669 model669.container should exist");
+    }
+    check(model669.declaringType.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>", "langmod #669.2 says ``model669.declaringType``");
+    check(model669.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>.Inner", "langmod #669.3 says ``model669``");
+    value static669=`Issue669<String,Integer>.Middle<Float>.Inner`;
+    check(static669.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>.Inner", "langmod #669.4 says ``static669``");
 }
