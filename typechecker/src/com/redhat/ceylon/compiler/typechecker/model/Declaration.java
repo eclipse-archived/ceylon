@@ -33,7 +33,7 @@ public abstract class Declaration
     private boolean protectedVisibility;
     private boolean packageVisibility;
     private String qualifiedNameAsStringCache;
-	private boolean nat;
+	private String nativeBackend;
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
 
@@ -138,11 +138,15 @@ public abstract class Declaration
     }
 
     public boolean isNative() {
-    	return nat;
+        return getNative() != null;
     }
     
-    public void setNative(boolean nat) {
-    	this.nat=nat;
+    public String getNative() {
+    	return nativeBackend;
+    }
+    
+    public void setNative(String backend) {
+    	this.nativeBackend=backend;
     }
 
     public boolean isDefault() {
