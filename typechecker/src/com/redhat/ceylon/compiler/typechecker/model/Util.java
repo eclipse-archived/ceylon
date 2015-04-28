@@ -142,22 +142,22 @@ public class Util {
     }
     
     public static boolean isAbstraction(Declaration d) {
-        return d instanceof Functional && 
-                ((Functional) d).isAbstraction();
+        return d instanceof Overloadable && 
+                ((Overloadable) d).isAbstraction();
     }
 
     public static boolean notOverloaded(Declaration d) {
         if(!d.isFunctional())
             return true;
-        Functional f = (Functional) d;
+        Overloadable f = (Overloadable) d;
         return  !f.isOverloaded() ||
                 f.isAbstraction();
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {
-        return (decl instanceof Functional) &&
-                ((Functional) decl).isOverloaded() &&
-                !((Functional) decl).isAbstraction();
+        return (decl instanceof Overloadable) &&
+                ((Overloadable) decl).isOverloaded() &&
+                !((Overloadable) decl).isAbstraction();
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 
