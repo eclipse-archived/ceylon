@@ -11,6 +11,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNativeImplementation;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelAnonymousClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isToplevelClassConstructor;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
@@ -1407,6 +1408,9 @@ public class TypeVisitor extends Visitor {
                 sie.addError("function is an initializer parameter and may not have an initial value: '" + 
                         dec.getName() + "'");
             }
+        }
+        if (isNativeImplementation(dec) && that.getSpecifierExpression() == null) {
+            that.addError("missing method body for native method implementation");
         }
     }
     
