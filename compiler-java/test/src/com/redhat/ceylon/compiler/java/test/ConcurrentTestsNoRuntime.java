@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests2;
 import com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionTests;
 import com.redhat.ceylon.compiler.java.test.expression.ref.StaticRefTests;
+import com.redhat.ceylon.compiler.java.test.fordebug.SourcePositionsTests;
 import com.redhat.ceylon.compiler.java.test.fordebug.TraceTests;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTests;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_0000_0499;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.compiler.java.test.misc.MiscTests;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTests;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTests;
 import com.redhat.ceylon.compiler.java.test.model.ValueTypeTests;
+import com.redhat.ceylon.compiler.java.test.nativecode.NativeTests;
 import com.redhat.ceylon.compiler.java.test.quoting.QuotingTests;
 import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTests;
 import com.redhat.ceylon.compiler.java.test.reporting.ReportingTests;
@@ -101,7 +103,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTests.class,
-    ReportingTests.class
+    SourcePositionsTests.class,
+    NativeTests.class,
 })
 public class ConcurrentTestsNoRuntime {
 }
