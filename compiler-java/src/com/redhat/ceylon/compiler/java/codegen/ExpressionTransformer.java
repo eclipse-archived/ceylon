@@ -1010,9 +1010,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Don't need to handle the negative infinity and negative zero cases 
         // because Ceylon Float literals have no sign
         if (value == Double.POSITIVE_INFINITY) {
-            throw new ErroneousException(literal, "literal so large it is indistinguishable from infinity: "+ literal.getText() + " (use infinity)");
+            throw new ErroneousException(literal, "literal so large it is indistinguishable from infinity: '"+ literal.getText() + "' (use infinity)");
         } else if (value == 0.0 && !literal.getText().equals("0.0")) {
-            throw new ErroneousException(literal, "literal so small it is indistinguishable from zero: " + literal.getText() + " (use 0.0)");
+            throw new ErroneousException(literal, "literal so small it is indistinguishable from zero: '" + literal.getText() + "' (use 0.0)");
         }
         return value;
     }
@@ -1023,15 +1023,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     static private long literalValue(Tree.NaturalLiteral literal, String text) throws ErroneousException {
         if(text.startsWith("#")){
-            return literalValue(literal, 16, "invalid hexadecimal literal: " + text + " has more than 64 bits");
+            return literalValue(literal, 16, "invalid hexadecimal literal: '" + text + "' has more than 64 bits");
         }
         if(text.startsWith("$")){
-            return literalValue(literal, 2, "invalid binary literal: " + text + " has more than 64 bits");
+            return literalValue(literal, 2, "invalid binary literal: '" + text + "' has more than 64 bits");
         }
         try {
             return Long.parseLong(text);
         } catch (NumberFormatException e) {
-            throw new ErroneousException(literal, "literal outside representable range: " + text + " is too large to be represented as an Integer");
+            throw new ErroneousException(literal, "literal outside representable range: '" + text + "' is too large to be represented as an 'Integer'");
         }
         
     }
