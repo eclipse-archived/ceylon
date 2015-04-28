@@ -2114,4 +2114,52 @@ public class Util {
         }
     }
     
+    public static boolean isNativeAbstraction(Declaration decl) {
+        if (decl instanceof Overloadable) {
+            Overloadable f = (Overloadable)decl;
+            return decl.isNative() && decl.getNative().isEmpty()
+                    && f.getOverloads() != null && f.getOverloads().size() > 1;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public static boolean isNativeNoImpl(Declaration decl) {
+        return decl.isNative() && decl.getNative().isEmpty();
+    }
+    
+    public static boolean isNativeImplementation(Declaration decl) {
+        return decl.isNative() && !decl.getNative().isEmpty();
+    }
+    
+    public static boolean hasNativeImplementation(Declaration decl) {
+        if (decl instanceof Overloadable) {
+            Overloadable f = (Overloadable)decl;
+            if (decl.isNative() && f.getOverloads() != null) {
+                for (Declaration d : f.getOverloads()) {
+                    if (d.isNative() && !d.getNative().isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static Declaration getNativeAbstraction(Declaration decl) {
+        Declaration abstraction = null;
+        Overloadable f = (Overloadable)decl;
+        if ("".equals(decl.getNative())) {
+            abstraction = decl;
+        } else {
+            for (Declaration d : f.getOverloads()) {
+                if ("".equals(d.getNative())) {
+                    abstraction = d;
+                    break;
+                }
+            }
+        }
+        return abstraction;
+    }
 }
