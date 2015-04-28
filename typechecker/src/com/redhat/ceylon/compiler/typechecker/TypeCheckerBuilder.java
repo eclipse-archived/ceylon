@@ -59,8 +59,9 @@ public class TypeCheckerBuilder {
         return this;
     }
 
-    public void setRepositoryManager(RepositoryManager repositoryManager) {
+    public TypeCheckerBuilder setRepositoryManager(RepositoryManager repositoryManager) {
         this.repositoryManager = repositoryManager;
+        return this;
     }
 
     public TypeCheckerBuilder setModuleFilters(List<String> moduleFilters){
