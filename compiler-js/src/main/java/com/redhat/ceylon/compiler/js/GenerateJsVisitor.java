@@ -1562,7 +1562,11 @@ public class GenerateJsVisitor extends Visitor
             radix = prefix == '$' ? 2 : 16;
             nt = nt.substring(1);
         }
-        return new java.math.BigInteger(nt, radix).longValue();
+        final java.math.BigInteger lit = new java.math.BigInteger(nt, radix);
+        if (lit.bitLength() > 63) {
+            that.addError("Natural literal outside the valid range (-9223372036854775808..9223372036854775807)");
+        }
+        return lit.longValue();
     }
 
     @Override
