@@ -186,7 +186,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     @Option(longName="auto-export-maven-dependencies")
-    @Description("When using JBoss Modules (the default), treats all module dependencies between"+
+    @Description("When using JBoss Modules (the default), treats all module dependencies between " +
                  "Maven modules as shared.")
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
