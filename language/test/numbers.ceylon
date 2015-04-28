@@ -621,6 +621,13 @@ void checkParseInteger() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add parseInteger() tests for this platform");
     }
+    //js#530
+    value h530=-#ffff_ffff_ffff_ffff;
+    value m530= #ffff_ffff_ffff_ffff;
+    check( h530== 1, "js#530.1");
+    check(-m530== 1, "js#530.2");
+    check( m530==-1, "js#530.3");
+    check(-h530==-1, "js#530.4");
 
     check(!parseInteger("") exists, "parseInteger()");
     check(!parseInteger("+") exists, "parseInteger(+)");
