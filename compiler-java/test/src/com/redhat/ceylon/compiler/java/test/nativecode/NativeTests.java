@@ -153,6 +153,8 @@ public class NativeTests extends CompilerTests {
     public void testNativeInvalidTypes() {
         testNativeErrors("NativeInvalidTypes",
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
-                new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"));
+                new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
+                new CompilerError(27, "invalid native backend name: 'foo', should be one of: jvm, js")
+        );
     }
 }

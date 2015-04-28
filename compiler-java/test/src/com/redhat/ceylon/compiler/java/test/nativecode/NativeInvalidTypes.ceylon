@@ -23,3 +23,5 @@ native("jvm") shared Integer nativeInvalidTypes => 1;
 
 native("js") shared class \InativeInvalidTypes() {
 }
+
+native("foo") shared Integer nativeInvalidTypes() => 2;
