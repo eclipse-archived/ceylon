@@ -1440,16 +1440,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         
-        if (d.isNative()) {
-            if (container instanceof Declaration) {
-                Declaration ci = (Declaration) container;
-                if (!ci.isNative()) {
-                    that.addError("native member belongs to a non-native declaration: '" + 
-                            d.getName() + "' of '" + ci.getName());
-                }
-            }
-        }
-        
         /*if ( !d.isFormal() && 
                 d.getContainer() instanceof Interface && 
                 !(that instanceof Tree.TypeParameterDeclaration) &&
