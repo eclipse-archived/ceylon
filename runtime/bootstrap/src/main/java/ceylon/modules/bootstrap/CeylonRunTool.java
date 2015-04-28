@@ -104,15 +104,15 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @Option(longName="auto-export-maven-dependencies")
-    @Description("When using JBoss Modules (the default), treats all module dependencies between"+
+    @Description("When using JBoss Modules (the default), treats all module dependencies between " +
                  "Maven modules as shared.")
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
-    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. "+
-            "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator "+
+    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. " +
+            "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
             "between the package name and the toplevel class or method name.")
     public void setRun(String run) {
         this.run = run;
