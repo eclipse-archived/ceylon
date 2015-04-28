@@ -220,6 +220,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     Declaration member = 
                             scope.getDirectMember(name, null, false);
                     if (member!=null) {
+                        boolean dup = false;
+                        boolean memberCanBeNative = member instanceof Method || member instanceof Value || member instanceof Class;
+                        boolean modelCanBeNative = model instanceof Method || model instanceof Value || model instanceof Class;
                         if (member instanceof Method && 
                             model instanceof Method &&
                             scope instanceof ClassOrInterface) {
@@ -245,13 +248,20 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             }
                             ((Method) model).setOverloaded(true);
                             abstraction.getOverloads().add(model);
+                            dup = true;
+                        }
+                        else if (memberCanBeNative && modelCanBeNative && member.isNative()) {
+                            // Just to make sure no error gets reported
                         }
                         else {
+                            dup = true;
                             that.addError("duplicate declaration name: '" + 
                                     name + "'");
                         }
-                        unit.getDuplicateDeclarations()
-                            .add(member);
+                        if (dup) {
+                            unit.getDuplicateDeclarations()
+                                .add(member);
+                        }
                     }
                     isControl = scope instanceof ControlBlock;
                     scope = scope.getContainer();
