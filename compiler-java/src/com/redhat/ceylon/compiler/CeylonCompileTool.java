@@ -286,7 +286,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "If no `warnings` are given then suppresss the reporting of all warnings, " +
             "otherwise just suppresss those which are present. " +
             "Allowed flags include: " +
-            "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
+            "`filenameNonAscii`, `filenameCaselessCollision`, `deprecation`, "+
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
             "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
