@@ -318,9 +318,18 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    void generateClassStatements(final List<? extends Tree.Statement> classBody, final Tree.Constructor cnstr) {
+    /** Generate the statements for a class initializer, considering the specified constructor, if any.
+     * @param cdef the class definition for which the body is generated.
+     * @param cnstr The constructor for which the statements are being generated (optional)
+     * @param cnst2 An optional constructor for which statements should also be generated
+     * (used in pseudo abstract constructor generation)
+     * @param filter Indicates if the generation should start or stop at a certain point:
+     * 0 means don't stop, 1 means stop after generating the constructor's statements,
+     * 2 means start after the constructor's statements, and include the second constructor's statements. */
+    void generateClassStatements(final Tree.ClassDefinition cdef, final Tree.Constructor cnstr,
+            final Tree.Constructor cnst2, final int filter) {
         if (cnstr == null) {
-            visitStatements(classBody);
+            visitStatements(cdef.getClassBody().getStatements());
         } else if (cnstr.getDeclarationModel().isAbstract()) {
             for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
                 s2.visit(this);
@@ -330,15 +339,21 @@ public class GenerateJsVisitor extends Visitor
         } else {
             List<String> oldRetainedVars = retainedVars.reset(null);
             final List<? extends Statement> prevStatements = currentStatements;
-            currentStatements = classBody;
-            for (Tree.Statement st : classBody) {
-                if (st == cnstr) {
-                    for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
-                        s2.visit(this);
-                        if (!opts.isMinify())beginNewLine();
-                        retainedVars.emitRetainedVars(this);
+            currentStatements = cdef.getClassBody().getStatements();
+            boolean go = filter < 2;
+            for (Tree.Statement st : cdef.getClassBody().getStatements()) {
+                if (st == cnstr || st == cnst2) {
+                    if (filter == 2 && st == cnstr) {
+                        go=true;
+                    } else {
+                        for (Tree.Statement s2 : ((Tree.Constructor)st).getBlock().getStatements()) {
+                            s2.visit(this);
+                            if (!opts.isMinify())beginNewLine();
+                            retainedVars.emitRetainedVars(this);
+                        }
+                        go=filter!=1;
                     }
-                } else if (st instanceof Tree.Constructor == false) {
+                } else if (st instanceof Tree.Constructor == false && go) {
                     st.visit(this);
                     if (!opts.isMinify())beginNewLine();
                     retainedVars.emitRetainedVars(this);
