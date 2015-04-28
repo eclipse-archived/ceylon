@@ -7,6 +7,29 @@ shared void testInlineExpressions() {
     check((if (is Integer str) then str else str.size)==3, "inline if 2");
     check((if (is String int) then int.size else int)==1, "inline if 3");
     check((if (is Integer int) then int else int.size)==1, "inline if 4");
+    //ceylon-js#531
+    check((if (is Integer int) then int else if (true) then int.size else int.size)==1, "inline if 5 (if/else if/else)");
+    Object o531="X";
+    check((if (is Integer o531) then o531 else
+           if (is String o531) then o531.size else
+           if (is Anything[] o531) then o531.size else
+           if (true) then 2 else 3)==1, "inline if 6");
+    check((if (is Integer o531) then o531 else
+           if (is String o531) then o531.size else
+           if (is Anything[] o531) then o531.size else
+           if (false) then 2 else 3)==1, "inline if 7");
+    check((if (is Integer o531) then o531 else
+           if (is Anything[] o531) then o531.size else
+           if (is String o531) then o531.size else
+           if (false) then 2 else 3)==1, "inline if 8");
+    check((if (is Integer o531) then o531 else
+           if (is Anything[] o531) then o531.size else
+           if (is Character o531) then o531.integer else
+           if (true) then 2 else 3)==2, "inline if 9");
+    check((if (is Integer o531) then o531 else
+           if (is Anything[] o531) then o531.size else
+           if (is Character o531) then o531.integer else
+           if (false) then 2 else 3)==3, "inline if 10");
     for (i in 1..4) {
         check(if (i%2==0) then true else i%2==1, "If expressions 1");
     }
