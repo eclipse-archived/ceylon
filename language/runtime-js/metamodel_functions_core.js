@@ -1,3 +1,9 @@
+function getrtmm$$(x) {
+  if (x===undefined||x===null)return undefined;
+  if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
+  return x.$crtmm$;
+}
+ex$.getrtmm$$=getrtmm$$;
 //From a runtime metamodel, get the model definition by following the path into the module's model.
 function get_model(mm) {
   var map=typeof(mm.mod)==='function'?mm.mod():mm.mod;
@@ -38,50 +44,6 @@ function applyIntersectionType(it,targ$2) { //return AppliedIntersectionType
   return AppliedIntersectionType$jsint(it, sats.rt$(it), {Union$AppliedIntersectionType:it});
 }
 
-function getAnnotationBitmask(t) {
-  var mask = 0;
-  mask |= extendsType({t:SharedAnnotation},t)?1:0;
-  mask |= extendsType({t:ActualAnnotation},t)?2:0;
-  mask |= extendsType({t:FormalAnnotation},t)?4:0;
-  mask |= extendsType({t:DefaultAnnotation},t)?8:0;
-  mask |= extendsType({t:SealedAnnotation},t)?16:0;
-  mask |= extendsType({t:FinalAnnotation},t)?32:0;
-  mask |= extendsType({t:NativeAnnotation},t)?64:0;
-  mask |= extendsType({t:LateAnnotation},t)?128:0;
-  mask |= extendsType({t:AbstractAnnotation},t)?256:0;
-  mask |= extendsType({t:AnnotationAnnotation},t)?512:0;
-  mask |= extendsType({t:VariableAnnotation},t)?1024:0;
-  return mask;
-}
-function getAnnotationsForBitmask(bits) {
-  var ans=[];
-  if (bits&1)ans.push(shared());
-  if (bits&2)ans.push(actual());
-  if (bits&4)ans.push(formal());
-  if (bits&8)ans.push($_default());
-  if (bits&16)ans.push(sealed());
-  if (bits&32)ans.push($_final());
-  if (bits&64)ans.push($_native());
-  if (bits&128)ans.push(late());
-  if (bits&256)ans.push($_abstract());
-  if (bits&512)ans.push(annotation());
-  if (bits&1024)ans.push(variable());
-  return ans;
-}
-//Retrieve the docs from the specified path of the compile-time model
-function doc$(root, path) {
-  path = path.split(':');
-  path.push('an','doc',0);
-  if (path[0]==='$')path[0]='ceylon.language';
-  var e = typeof(root)==='function'?root():root;
-  for (var i=0; i < path.length; i++) {
-    var k = path[i];
-    e = e[path[i]];
-    if (e===undefined)return doc('<missing>');
-  }
-  return doc(e);
-}
-ex$.doc$=doc$;
 //Shortcut for modules$meta().find(m/v).findPackage(p)
 function fmp$(m,v,p) {
   return modules$meta().find(m,v).findPackage(p);
@@ -124,4 +86,45 @@ function getnpmem$(proto,n) {
   if (n.substring(0,6)==='$prop$')return undefined;
   if (proto['$prop$get'+n[0].toUpperCase()+n.substring(1)])return undefined;
   return proto[n];
+}
+//Find the real declaration of something from its model definition
+function _findTypeFromModel(pkg,mdl,cont) {
+  var mod = pkg.container;
+  //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
+  var nm = mdl.nm;
+  var mt = mdl['mt'];
+  if (mt === 'a' || mt === 'g' || mt === 'o' || mt === 's') {
+    nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
+  }
+  if (cont) {
+    var imm=getrtmm$$(cont);
+    if (mt==='c'||mt==='i')nm=nm+'$'+imm.d[imm.d.length-1];
+  }else if (pkg.suffix) {
+    nm+=pkg.suffix;
+  }
+  var out=cont?cont.$$.prototype:mod.meta;
+  var rv=out[nm];
+  if (rv===undefined)rv=out['$_'+nm];
+  if (rv===undefined){
+    rv=out['$init$'+nm];
+    if (typeof(rv)==='function')rv=rv();
+  }
+  return rv;
+}
+//Generate the qualified name of a type
+function qname$(mm) {
+  if (mm.t) {
+    mm=mm.t;
+  }
+  if (mm.$crtmm$)mm=getrtmm$$(mm);
+  if (!mm.d && mm._alias)mm=getrtmm$$(mm._alias);
+  if (!mm.d)return "[unnamed type]";
+  var qn=mm.d[0];
+  if (qn==='$')qn='ceylon.language';
+  for (var i=1; i<mm.d.length; i++){
+    var n=mm.d[i];
+    var p=n.indexOf('$');
+    if(p!==0)qn+=(i==1?"::":".")+(p>0?n.substring(0,p):n);
+  }
+  return qn;
 }

@@ -88,23 +88,6 @@ function tupleize$params(ps,aux) {
   }
   return tupa;
 }
-//Generate the qualified name of a type
-function qname$(mm) {
-  if (mm.t) {
-    mm=mm.t;
-  }
-  if (mm.$crtmm$)mm=getrtmm$$(mm);
-  if (!mm.d && mm._alias)mm=getrtmm$$(mm._alias);
-  if (!mm.d)return "[unnamed type]";
-  var qn=mm.d[0];
-  if (qn==='$')qn='ceylon.language';
-  for (var i=1; i<mm.d.length; i++){
-    var n=mm.d[i];
-    var p=n.indexOf('$');
-    if(p!==0)qn+=(i==1?"::":".")+(p>0?n.substring(0,p):n);
-  }
-  return qn;
-}
 //Resolve a type argument by looking into the metamodel,
 //as well as the type arguments provided (if any)
 function resolve$typearg(ta,mm,$$targs$$) {
@@ -174,10 +157,3 @@ function convert$params(mm,a,$$targs$$) {
   a = fa;
   return a;
 }
-
-function getrtmm$$(x) {
-  if (x===undefined||x===null)return undefined;
-  if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
-  return x.$crtmm$;
-}
-ex$.getrtmm$$=getrtmm$$;
