@@ -44,8 +44,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotation;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 
@@ -55,7 +54,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -87,7 +85,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1756,14 +1753,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AnyMethod that) {
         boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = !forBackend(that);
+        nativeWrongBackend = !isForBackend(that.getAnnotationList(), backendSupport, that.getUnit());
         super.visit(that);
         nativeWrongBackend = nwb;
     }
     
     @Override public void visit(Tree.AnyAttribute that) {
         boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = !forBackend(that);
+        nativeWrongBackend = !isForBackend(that.getAnnotationList(), backendSupport, that.getUnit());
         super.visit(that);
         nativeWrongBackend = nwb;
     }
@@ -1782,7 +1779,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ClassOrInterface that) {
         boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = !forBackend(that);
+        nativeWrongBackend = !isForBackend(that.getAnnotationList(), backendSupport, that.getUnit());
         super.visit(that);
         nativeWrongBackend = nwb;
         validateEnumeratedSupertypeArguments(that, 
@@ -8515,17 +8512,6 @@ public class ExpressionVisitor extends Visitor {
         	}
         }
         return dec;
-    }
-    
-    private boolean forBackend(Tree.Declaration that) {
-        Annotation a = getAnnotation(that.getAnnotationList(), "native", that.getUnit());
-        if (a != null) {
-            Backend backend = Backend.fromAnnotation(getAnnotationArgument(a, ""));
-            if (backend == null || !backendSupport.supportsBackend(backend)) {
-                return false;
-            }
-        }
-        return true;
     }
     
 }
