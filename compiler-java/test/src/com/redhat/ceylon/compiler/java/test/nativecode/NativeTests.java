@@ -145,7 +145,9 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' is different to type of corresponding parameter 'i' of native header 'NativeClassMismatch2': 'String' is not exactly 'Integer'"),
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "formal member 'test2' of 'NativeClassMismatchSuper2' not implemented in class hierarchy"),
-                new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'")
+                new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
+                new CompilerError(82, "native header conflicts with non-native declaration: 'NativeClassMismatch6'"),
+                new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'")
         );
     }
     

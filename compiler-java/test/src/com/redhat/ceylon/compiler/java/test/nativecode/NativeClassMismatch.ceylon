@@ -75,3 +75,10 @@ native("jvm") class NativeClassMismatch5() satisfies NativeClassMismatchSuper1 {
 native("js") class NativeClassMismatch5() satisfies NativeClassMismatchSuper2 {
     shared actual void test2(Integer i) {}
 }
+
+
+class NativeClassMismatch6() {}
+
+native class NativeClassMismatch6() {}
+
+native("js") class NativeClassMismatch6() {}
