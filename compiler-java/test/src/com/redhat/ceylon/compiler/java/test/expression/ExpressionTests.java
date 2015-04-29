@@ -559,7 +559,19 @@ public class ExpressionTests extends CompilerTests {
     }
     
     @Test
+    public void testOptmInIntegerMeasureCorrect(){
+        compile("optimisations/InIntegerMeasureCorrect.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.optimisations.inIntegerMeasureCorrect");
+    }
+    
+    @Test
     public void testOptmInCharacterMeasure(){
         compareWithJavaSource("optimisations/InCharacterMeasure");
+    }
+    
+    @Test
+    public void testOptmInCharacterMeasureCorrect(){
+        compile("optimisations/InCharacterMeasureCorrect.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.optimisations.inCharacterMeasureCorrect");
     }
 }

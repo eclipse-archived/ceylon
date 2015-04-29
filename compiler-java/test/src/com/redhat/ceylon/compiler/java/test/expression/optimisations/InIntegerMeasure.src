@@ -13,17 +13,19 @@ final class inIntegerMeasure_ {
                 long $ceylontmp$x$0 = x;
                 long $ceylontmp$y$1 = 0L;
                 long $ceylontmp$z$2 = 10L;
+                long $ceylontmp$w$3 = .ceylon.language.Integer.offset($ceylontmp$x$0, $ceylontmp$y$1);
             }
-            returning $ceylontmp$z$2 > 0L && ($ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= .ceylon.language.Integer.neighbour($ceylontmp$y$1, $ceylontmp$z$2));
+            returning $ceylontmp$z$2 > 0L && (0L <= $ceylontmp$w$3 && $ceylontmp$w$3 < $ceylontmp$z$2);
         );
         b = (
             let
             {
-                long $ceylontmp$x$3 = x;
-                long $ceylontmp$y$4 = y;
-                long $ceylontmp$z$5 = z;
+                long $ceylontmp$x$4 = x;
+                long $ceylontmp$y$5 = y;
+                long $ceylontmp$z$6 = z;
+                long $ceylontmp$w$7 = .ceylon.language.Integer.offset($ceylontmp$x$4, $ceylontmp$y$5);
             }
-            returning $ceylontmp$z$5 > 0L && ($ceylontmp$y$4 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= .ceylon.language.Integer.neighbour($ceylontmp$y$4, $ceylontmp$z$5));
+            returning $ceylontmp$z$6 > 0L && (0L <= $ceylontmp$w$7 && $ceylontmp$w$7 < $ceylontmp$z$6);
         );
     }
 }
