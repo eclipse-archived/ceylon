@@ -1876,7 +1876,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (op.getRightTerm() instanceof Tree.RangeOp
                 && isCeylonInteger(((Tree.RangeOp)op.getRightTerm()).getLeftTerm().getTypeModel())
                 && isCeylonInteger(((Tree.RangeOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
-                return makeOptimizedInIntegerOrCharacterRange(op, syms().longType);
+                return makeOptimizedInIntegerRange(op, syms().longType);
             } else if (op.getRightTerm() instanceof Tree.SegmentOp
                     && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getLeftTerm().getTypeModel())
                     && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
@@ -1888,7 +1888,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && isCeylonCharacter(((Tree.RangeOp)op.getRightTerm()).getLeftTerm().getTypeModel())
                     && isCeylonCharacter(((Tree.RangeOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
                 // x in y..z with x, y, z all Character
-                return makeOptimizedInIntegerOrCharacterRange(op, syms().intType);
+                return makeOptimizedInCharacterRange(op);
             } else if (op.getRightTerm() instanceof Tree.SegmentOp
                     && isCeylonCharacter(((Tree.SegmentOp)op.getRightTerm()).getLeftTerm().getTypeModel())
                     && isCeylonInteger(((Tree.SegmentOp)op.getRightTerm()).getRightTerm().getTypeModel())) {
@@ -1933,27 +1933,98 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 ));
     }
 
-    protected JCTree makeOptimizedInIntegerOrCharacterRange(Tree.InOp op, com.sun.tools.javac.code.Type type) {
-        // x in y..z with x, y, z all Integer or all Character
+    protected JCTree makeOptimizedInIntegerRange(Tree.InOp op, com.sun.tools.javac.code.Type type) {
+        // x in y..z with x, y, z all Integer
+        com.sun.tools.javac.code.Type ceylonType = syms().ceylonIntegerType;
         Tree.RangeOp rangeOp = (Tree.RangeOp)op.getRightTerm();
         JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectDeclaration().getType());
-        JCExpression y = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
-        JCExpression z = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
+        JCExpression first = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
+        JCExpression last = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
         SyntheticName xName = naming.temp("x");
-        SyntheticName yName = naming.temp("y");
-        SyntheticName zName = naming.temp("z");
+        SyntheticName firstName = naming.temp("y");
+        SyntheticName lastName = naming.temp("z");
+        SyntheticName recursiveName = naming.temp("recursive");
         return make().LetExpr(List.<JCStatement>of(
                 makeVar(xName, make().Type(type), x),
-                makeVar(yName, make().Type(type), y),
-                makeVar(zName, make().Type(type), z)),
-                make().Binary(JCTree.OR, 
+                makeVar(firstName, make().Type(type), first),
+                makeVar(lastName, make().Type(type), last),
+                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.AND,
+                        make().Binary(JCTree.GT,
+                                firstName.makeIdent(),
+                                make().Binary(JCTree.PLUS, firstName.makeIdent(), make().Literal(1L))),
+                        make().Binary(JCTree.GT,
+                                make().Binary(JCTree.MINUS, lastName.makeIdent(), make().Literal(1L)),
+                                lastName.makeIdent())))),
+                make().Conditional(recursiveName.makeIdent(), 
+                        // x.offset(first) <= last.offset(first)
+                        make().Binary(JCTree.LE,
+                                make().Apply(null, 
+                                        naming.makeSelect(make().QualIdent(ceylonType.tsym), "offset"),
+                                        List.<JCExpression>of(
+                                                xName.makeIdent(),
+                                                firstName.makeIdent())),
+                                make().Apply(null, 
+                                        naming.makeSelect(make().QualIdent(ceylonType.tsym), "offset"),
+                                        List.<JCExpression>of(
+                                                lastName.makeIdent(),
+                                                firstName.makeIdent()))),
+                        make().Binary(JCTree.OR, 
+                                make().Binary(JCTree.AND, 
+                                        make().Binary(JCTree.LE, firstName.makeIdent(), xName.makeIdent()),
+                                        make().Binary(JCTree.LE, xName.makeIdent(), lastName.makeIdent())),
+                                make().Binary(JCTree.AND, 
+                                        make().Binary(JCTree.LE, lastName.makeIdent(), xName.makeIdent()),
+                                        make().Binary(JCTree.LE, xName.makeIdent(), firstName.makeIdent())
+                                        ))));
+    }
+    
+    protected JCTree makeOptimizedInCharacterRange(Tree.InOp op) {
+        com.sun.tools.javac.code.Type type = syms().intType;
+        com.sun.tools.javac.code.Type ceylonType = syms().ceylonCharacterType;
+        // x in y..z with x, y, z all Character
+        Tree.RangeOp rangeOp = (Tree.RangeOp)op.getRightTerm();
+        JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectDeclaration().getType());
+        JCExpression first = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
+        JCExpression last = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
+        SyntheticName xName = naming.temp("x");
+        SyntheticName firstName = naming.temp("first");
+        SyntheticName lastName = naming.temp("last");
+        SyntheticName recursiveName = naming.temp("recursive");
+        return make().LetExpr(List.<JCStatement>of(
+                makeVar(xName, make().Type(type), x),
+                makeVar(firstName, make().Type(type), first),
+                makeVar(lastName, make().Type(type), last),
+                // annoyingly then a Span evaluates `contains` (= `containsElement`)
+                // it first evaluates `recursive`, 
+                // which uses `successor` and `predecessor` which throw on overflow
+                // so we have to replicate that **short-circuit** logic here
+                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.AND,
+                        make().Binary(JCTree.GT,
+                                firstName.makeIdent(),
+                                make().Apply(null, 
+                                            naming.makeSelect(make().QualIdent(ceylonType.tsym), "getSuccessor"),
+                                            List.<JCExpression>of(firstName.makeIdent()))),
+                        make().Binary(JCTree.GT,
+                                make().Apply(null, 
+                                            naming.makeSelect(make().QualIdent(ceylonType.tsym), "getPredecessor"),
+                                            List.<JCExpression>of(lastName.makeIdent())),
+                                lastName.makeIdent())))),
+                make().Conditional(make().Binary(JCTree.LT, firstName.makeIdent(), lastName.makeIdent()),
                         make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.LE, yName.makeIdent(), xName.makeIdent()),
-                                make().Binary(JCTree.LE, xName.makeIdent(), zName.makeIdent())),
+                                make().Binary(JCTree.LE, 
+                                        xName.makeIdent(), 
+                                        lastName.makeIdent()),
+                                make().Binary(JCTree.GE, 
+                                        xName.makeIdent(), 
+                                        firstName.makeIdent())),
                         make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.LE, zName.makeIdent(), xName.makeIdent()),
-                                make().Binary(JCTree.LE, xName.makeIdent(), yName.makeIdent())
-                                )));
+                                make().Binary(JCTree.GE, 
+                                        xName.makeIdent(), 
+                                        lastName.makeIdent()),
+                                make().Binary(JCTree.LE, 
+                                        xName.makeIdent(), 
+                                        firstName.makeIdent()))
+                                ));
     }
     
     // Logical operators
