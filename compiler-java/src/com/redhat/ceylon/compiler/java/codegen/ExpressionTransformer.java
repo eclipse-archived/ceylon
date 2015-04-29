@@ -1911,22 +1911,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         SyntheticName xName = naming.temp("x");
         SyntheticName yName = naming.temp("y");
         SyntheticName zName = naming.temp("z");
+        SyntheticName wName = naming.temp("w");
         JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectDeclaration().getType());
         JCExpression y = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
         JCExpression z = transformExpression(rangeOp.getRightTerm(), BoxingStrategy.UNBOXED, rangeOp.getRightTerm().getTypeModel());
         JCExpression w = make().Apply(null, 
-                naming.makeSelect(make().QualIdent(ceylonType.tsym), "neighbour"),
-                List.<JCExpression>of(yName.makeIdent(), 
-                        zName.makeIdent()));
+                naming.makeSelect(make().QualIdent(ceylonType.tsym), "offset"),
+                List.<JCExpression>of(xName.makeIdent(), 
+                        yName.makeIdent()));
         return make().LetExpr(List.<JCStatement>of(
                 makeVar(xName, make().Type(javaType), x),
                 makeVar(yName, make().Type(javaType), y),
-                makeVar(zName, make().Type(syms().longType), z)),
+                makeVar(zName, make().Type(syms().longType), z),
+                makeVar(wName, make().Type(syms().longType), w)),
                 make().Binary(JCTree.AND, 
                         make().Binary(JCTree.GT, zName.makeIdent(), make().Literal(0L)),
                         make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.LE, yName.makeIdent(), xName.makeIdent()),
-                                make().Binary(JCTree.LE, xName.makeIdent(), w))
+                                make().Binary(JCTree.LE, make().Literal(0L), wName.makeIdent()),
+                                make().Binary(JCTree.LT, wName.makeIdent(), zName.makeIdent()))
                         
                                 ));
     }
