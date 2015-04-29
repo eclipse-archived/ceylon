@@ -221,7 +221,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_EMPTY_TYPE_NAME = "ceylon.language::Empty";
     
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
+    private static final TypeMirror ANNOTATION_TYPE = simpleCeylonObjectType("java.lang.annotation.Annotation");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
+    private static final TypeMirror CEYLON_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.Annotation");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     private static final TypeMirror CEYLON_SERIALIZABLE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
@@ -1429,6 +1431,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else if ("java.lang.Exception".equals(typeName)) {
                     // FIXME: this being here is highly dubious
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
+                } else if ("java.lang.Annotation".equals(typeName)) {
+                    // FIXME: this being here is highly dubious
+                    // here we prefer Annotation over ConstrainedAnnotation but that's fine
+                    return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Annotation", declarationType);
                 }
                 ClassMirror classMirror;
                 try{
@@ -4265,6 +4271,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
         } else if (sameType(type, EXCEPTION_TYPE)) {
             return CEYLON_EXCEPTION_TYPE;
+            
+        } else if (sameType(type, ANNOTATION_TYPE)) {
+            // here we prefer Annotation over ConstrainedAnnotation but that's fine
+            return CEYLON_ANNOTATION_TYPE;
             
         } else if (type.getKind() == TypeKind.ARRAY) {
 

@@ -1353,6 +1353,14 @@ public abstract class AbstractTransformer implements Transformation {
                 || isCeylonByte(type));
     }
     
+    boolean willEraseToAnnotation(ProducedType type) {
+        type = simplifyType(type);
+        return type != null 
+                && (type.isExactly(typeFact.getAnnotationDeclaration().getType())
+                        || (type.getDeclaration() instanceof ClassOrInterface 
+                                && type.getDeclaration().equals(typeFact.getConstrainedAnnotationDeclaration())));
+    }
+
     boolean willEraseToException(ProducedType type) {
         type = simplifyType(type);
         return type != null && type.isExactly(typeFact.getExceptionDeclaration().getType());
@@ -1837,6 +1845,8 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().objectType);
             }
+        } else if (willEraseToAnnotation(type)) {
+            return make().Type(syms().annotationType);
         } else if (willEraseToException(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
