@@ -5,23 +5,6 @@ class CtorAbstractCtorSuper {
     }
 }
 
-object checker {
-    variable String[] s = [];
-    shared void reset() {
-        s=[];
-    }
-    shared void note(String str) {
-        s = [str, *s];
-    }
-    shared void check(String expect) {
-        value r = s.reversed.string;
-        print(r);
-        if (expect != r) {
-            throw AssertionError("Expected ``expect`` but got ``r``");
-        }
-    }
-}
-
 @noanno
 class CtorAbstractCtorPartial extends CtorAbstractCtorSuper {
     Integer x;
