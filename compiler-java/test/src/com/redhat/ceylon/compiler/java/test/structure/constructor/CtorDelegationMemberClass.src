@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedAbstractDelegating.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.Super.class)})
@@ -138,6 +139,8 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         private AbstractDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating$A $name$) {
             super();
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.1");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.A");
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -160,9 +163,100 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void runNonShared() {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$A);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, ConcreteDelegating.1, ConcreteDelegating.A, ConcreteDelegating.2, ConcreteDelegating.3]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$B);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, ConcreteDelegating.1, ConcreteDelegating.A, ConcreteDelegating.2, ConcreteDelegating.B, ConcreteDelegating.3]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating$B);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, AbstractDelegating.1, AbstractDelegating.A, AbstractDelegating.2, AbstractDelegating.B, AbstractDelegating.3]");
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final class SharedConcreteDelegating$A$delegation$ {
+        
+        private SharedConcreteDelegating$A$delegation$() {
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$ SharedConcreteDelegating$A$delegation$ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating SharedConcreteDelegating$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A $name$) {
+        return new SharedConcreteDelegating($name$);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class SharedConcreteDelegating$A {
+        
+        private SharedConcreteDelegating$A() {
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A SharedConcreteDelegating$A = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating SharedConcreteDelegating$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$B $name$) {
+        return new SharedConcreteDelegating($name$);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class SharedConcreteDelegating$B {
+        
+        private SharedConcreteDelegating$B() {
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$B SharedConcreteDelegating$B = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Class(
+            constructors = true,
+            extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationMemberClass.Super")
+    public class SharedConcreteDelegating extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.Super {
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("A")
+        private SharedConcreteDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$ $name$) {
+            super();
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.1");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.A");
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("A")
+        public SharedConcreteDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A $name$) {
+            this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.2");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.3");
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("B")
+        public SharedConcreteDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$B $name$) {
+            this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.2");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.B");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.3");
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating.class));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
@@ -204,6 +298,8 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         private SharedAbstractDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedAbstractDelegating$A $name$) {
             super();
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.1");
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.A");
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -243,7 +339,15 @@ public final class runCtorDelegationMemberClass_ {
     public static void runCtorDelegationMemberClass() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass instance = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass();
         instance.runNonShared();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        instance.SharedConcreteDelegating$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, SharedConcreteDelegating.1, SharedConcreteDelegating.A, SharedConcreteDelegating.2, SharedConcreteDelegating.3]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        instance.SharedConcreteDelegating$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$B);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, SharedConcreteDelegating.1, SharedConcreteDelegating.A, SharedConcreteDelegating.2, SharedConcreteDelegating.B, SharedConcreteDelegating.3]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         instance.SharedAbstractDelegating$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedAbstractDelegating$B);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, SharedAbstractDelegating.1, SharedAbstractDelegating.A, SharedAbstractDelegating.2, SharedAbstractDelegating.B, SharedAbstractDelegating.3]");
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

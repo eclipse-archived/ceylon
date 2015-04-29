@@ -162,16 +162,16 @@ public class ConstructorTests extends CompilerTests {
     @Test
     public void testCtorDelegationMemberClass() {
         compile("constructor/checker.ceylon");
-        //compareWithJavaSource("constructor/CtorDelegationMemberClass");
-        compile("constructor/CtorDelegationMemberClass.ceylon");
+        compareWithJavaSource("constructor/CtorDelegationMemberClass");
+        //compile("constructor/CtorDelegationMemberClass.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.constructor.runCtorDelegationMemberClass");
     }
     
     @Test
     public void testCtorDelegationClassRefs() {
         compile("constructor/checker.ceylon");
-        //compareWithJavaSource("constructor/CtorDelegationClassRefs");
-        compile("constructor/CtorDelegationClassRefs.ceylon");
+        compareWithJavaSource("constructor/CtorDelegationClassRefs");
+        //compile("constructor/CtorDelegationClassRefs.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.constructor.runCtorDelegationClassRefs");
     }
 }
