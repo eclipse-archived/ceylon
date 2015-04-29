@@ -37,7 +37,8 @@ class AmbiguousClass(s2,s3) {
     shared String s3;
 }
 
-typeOrConstructorTarget__CONSTRUCTOR
+// Not supported anymore since https://github.com/ceylon/ceylon-compiler/issues/2109 made java constraints visible
+//typeOrConstructorTarget__CONSTRUCTOR
 fieldOrMethodTarget__FIELD
 object ambiguousObject {}
 

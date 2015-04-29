@@ -5,7 +5,6 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
     HeuristicTarget1() {
     }
     
@@ -80,11 +79,9 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("heuristicTarget3")
-@.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
     private heuristicTarget3_() {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -143,7 +140,6 @@ final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java
         this();
     }
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
     HeuristicAnnotationClass() {
     }
     

@@ -45,7 +45,6 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrConstructorTarget
     private ambiguousObject_() {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

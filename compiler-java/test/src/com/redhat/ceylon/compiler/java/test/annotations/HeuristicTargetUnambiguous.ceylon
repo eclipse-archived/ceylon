@@ -23,7 +23,8 @@ import ceylon.language.meta.declaration{
 
 "Targeting annotations on a class"
 typeTarget
-constructorTarget
+// Not supported anymore since https://github.com/ceylon/ceylon-compiler/issues/2109 made java constraints visible
+//constructorTarget
 class HeuristicTarget1() {
     
 }
@@ -47,8 +48,9 @@ class HeuristicTarget2(
 }
  
 "Targeting annotations on object definitions"
-typeTarget
-constructorTarget
+// Not supported anymore since https://github.com/ceylon/ceylon-compiler/issues/2109 made java constraints visible
+//typeTarget
+//constructorTarget
 fieldTarget
 methodTarget
 object heuristicTarget3 {
@@ -56,7 +58,8 @@ object heuristicTarget3 {
 
 annotationTypeTarget
 typeTarget
-constructorTarget
+// Not supported anymore since https://github.com/ceylon/ceylon-compiler/issues/2109 made java constraints visible
+//constructorTarget
 final annotation class HeuristicAnnotationClass() 
         satisfies OptionalAnnotation<HeuristicAnnotationClass, ClassDeclaration> {
 }
