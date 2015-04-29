@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -212,6 +213,11 @@ public abstract class LazyModuleManager extends ModuleManager {
         return Arrays.asList("car", "jar");
     }
 
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return backend == Backend.Java;
+    }
+    
     @Override
     public void addImplicitImports() {
         Module languageModule = getContext().getModules().getLanguageModule();
