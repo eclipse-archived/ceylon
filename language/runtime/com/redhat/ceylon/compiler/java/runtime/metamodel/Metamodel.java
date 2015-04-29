@@ -1058,29 +1058,14 @@ public class Metamodel {
             Annotated annotated, ArrayList<? extends java.lang.annotation.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
-        InvocationHandler handler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, java.lang.reflect.Method method,
-                    Object[] args) throws Throwable {
-                // TODO Auto-generated method stub
-                // 
-                return null;
-            }
-        };
-        ClassLoader classLoader = jAnnotationType.getClassLoader();
-        if (classLoader == null) {
-            classLoader = ceylon.language.Annotation.class.getClassLoader();
-        }
-        try {
-            java.lang.reflect.Proxy.newProxyInstance(classLoader, 
-                    new Class[]{jAnnotationType, ceylon.language.Annotation.class}, 
-                    handler);
-        } catch (IllegalArgumentException e) {
-            throw Metamodel.newModelError("Element " + annotated 
-                    + " with Java annotation type " + jAnnotationType.getName() 
-                    + " (classloader: " + jAnnotationType.getClassLoader()
-                    + ") using classloader for proxy: " + classLoader, e);
-        }
+        // we add java.lang.Deprecated on top of our own annotation, so ignore it
+        if(jAnnotationType == java.lang.Deprecated.class)
+            return;
+        // ignore all our metadata annotations
+        if(jAnnotationType.getName().startsWith("com.redhat.ceylon.compiler.java.metadata."))
+            return;
+        // seriously, wtf?
+        ((ArrayList)ceylonAnnotations).add(jAnnotation);
     }
     
     public static <A extends java.lang.annotation.Annotation> Sequential<? extends A> annotations(

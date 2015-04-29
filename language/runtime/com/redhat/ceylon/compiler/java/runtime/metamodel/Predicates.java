@@ -12,6 +12,7 @@ import ceylon.language.meta.model.nothingType_;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
@@ -482,20 +483,26 @@ class Predicates {
                 }
             };
         } else {
-            try {
-                refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation$", 
-                        false, refAnnotationClass.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw Metamodel.newModelError("Class not found: " + refAnnotationClass.getName()+"$annotation$");
+            if (refAnnotationClass.getAnnotation(Ceylon.class) == null) {
+                // Java annotation
+                refAnnotationType = refAnnotationClass;
+                refAnnotationWrapperType = null;
+            }else{
+                try {
+                    refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation$", 
+                            false, refAnnotationClass.getClassLoader());
+                } catch (ClassNotFoundException e) {
+                    throw Metamodel.newModelError("Class not found: " + refAnnotationClass.getName()+"$annotation$");
+                }
+                Class<?> c;
+                try {
+                    c = Class.forName(refAnnotationClass.getName()+"$annotations$", 
+                            false, refAnnotationClass.getClassLoader());
+                } catch (ClassNotFoundException e) {
+                    c = null;
+                }
+                refAnnotationWrapperType = c;
             }
-            Class<?> c;
-            try {
-                c = Class.forName(refAnnotationClass.getName()+"$annotations$", 
-                        false, refAnnotationClass.getClassLoader());
-            } catch (ClassNotFoundException e) {
-                c = null;
-            }
-            refAnnotationWrapperType = c;
         }
         return new AnnotationPredicate<A>() {
 
