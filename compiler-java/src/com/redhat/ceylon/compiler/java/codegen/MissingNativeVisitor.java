@@ -114,7 +114,11 @@ public class MissingNativeVisitor extends Visitor {
             try {
                 if (model instanceof Method || model instanceof Class || model instanceof Value) {
                     Declaration m = pkg.getDirectMember(model.getName(), null, false);
-                    if (m != null && m.isNative()) {
+                    if (m != null) {
+                        if (!m.isNative()) {
+                            // An error will already have been added by the typechecker
+                            return;
+                        }
                         // Native declarations are a bit weird, if there are multiple they
                         // will all have the same list of overloads containing each of them.
                         // We here check to see if any of them are for this backend
