@@ -189,15 +189,19 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Declaration modelToAdd = model;
         
         Unit unit = model.getUnit();
-        Annotation a = getAnnotation(that.getAnnotationList(), "native", unit);
+        Annotation a = 
+                getAnnotation(that.getAnnotationList(), 
+                        "native", unit);
         if (a != null) {
             String backend = getAnnotationArgument(a, "");
             String name = model.getName();
             boolean canBeNativeModel = model instanceof Method
                     || model instanceof Class || model instanceof Value;
             if (canBeNativeModel && model.isToplevel()) {
-                if (!backend.isEmpty() && !Backend.validAnnotation(backend)) {
-                    that.addError("invalid native backend name: '" + backend + "', should be one of: " + Backend.annotations());
+                if (!backend.isEmpty() && 
+                        !Backend.validAnnotation(backend)) {
+                    that.addError("invalid native backend name: '" + backend + "', "
+                            + "should be one of: " + Backend.annotations());
                 }
                 Scope s = model.getContainer();
                 Declaration member = s.getDirectMember(name, null, false);
@@ -241,7 +245,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
     
     private static List<Declaration> initOverloads(Declaration decl, Declaration initial) {
-        ArrayList<Declaration> al = new ArrayList<Declaration>(3);
+        ArrayList<Declaration> al = 
+                new ArrayList<Declaration>(3);
         al.add(initial);
         setOverloads(decl, al);
         return al;
@@ -267,9 +272,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
 
     private static boolean hasOverload(List<Declaration> overloads, String backend)  {
-        for (Declaration d : overloads) {
-            if (backend.equals(d.getNative())) {
-                return true;
+        if (overloads!=null) {
+            for (Declaration d: overloads) {
+                if (backend.equals(d.getNative())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -321,8 +328,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             scope.getDirectMember(name, null, false);
                     if (member!=null) {
                         boolean dup = false;
-                        boolean memberCanBeNative = member instanceof Method || member instanceof Value || member instanceof Class;
-                        boolean modelCanBeNative = model instanceof Method || model instanceof Value || model instanceof Class;
+                        boolean memberCanBeNative = 
+                                member instanceof Method || 
+                                member instanceof Value || 
+                                member instanceof Class;
+                        boolean modelCanBeNative = 
+                                model instanceof Method || 
+                                model instanceof Value || 
+                                model instanceof Class;
                         if (member instanceof Method && 
                             model instanceof Method &&
                             scope instanceof ClassOrInterface) {
@@ -350,7 +363,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             abstraction.getOverloads().add(model);
                             dup = true;
                         }
-                        else if (memberCanBeNative && modelCanBeNative && member.isNative()) {
+                        else if (memberCanBeNative && 
+                                modelCanBeNative && 
+                                member.isNative()) {
                             // Just to make sure no error gets reported
                         }
                         else {
