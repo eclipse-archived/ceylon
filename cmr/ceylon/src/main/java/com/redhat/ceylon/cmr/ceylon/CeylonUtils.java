@@ -52,6 +52,7 @@ public class CeylonUtils {
         private boolean jdkIncluded;
         private Logger log;
         private String avoidRepository;
+        private boolean skipRemoteRepositories;
 
         /**
          * Sets the configuration to use for building the repository manager
@@ -338,8 +339,11 @@ public class CeylonUtils {
             }
             // do not use the cache if we want to avoid its repo
             // For example, if we intend to write to it, we should never read from it
-            if(avoidRepository(root.getAbsolutePath()))
+            if(avoidRepository(root.getAbsolutePath())){
                 root = null;
+                // remote repos don't work without cache
+                skipRemoteRepositories = true;
+            }
 
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getOverrides(config));
 
@@ -534,7 +538,8 @@ public class CeylonUtils {
         }
 
         private boolean avoidRepository(String path) {
-            return avoidRepository != null && avoidRepository.equals(path);
+            return (avoidRepository != null && avoidRepository.equals(path))
+                    || (skipRemoteRepositories && isRemote(path));
         }
 
         private String resolveRepoUrl(Repositories repositories, String repoUrl) {
