@@ -79,36 +79,50 @@ public class UnsupportedVisitor extends Visitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
+        if (!Decl.isForBackend(that))
+            return;
         interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
