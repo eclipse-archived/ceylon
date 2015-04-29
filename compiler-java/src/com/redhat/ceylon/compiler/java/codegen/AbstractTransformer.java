@@ -4836,7 +4836,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeClassLiteral(ProducedType type) {
-        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL), "class");
+        return makeClassLiteral(type, 0);
+    }
+
+    public JCExpression makeClassLiteral(ProducedType type, int extraFlags) {
+        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL | extraFlags), "class");
     }
 
     /**

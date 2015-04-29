@@ -36,9 +36,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -621,6 +623,24 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    public ClassDefinitionBuilder addAnnotationTypeMethod(ProducedType type){
+        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, "annotationType");
+        method.modifiers(PUBLIC);
+        method.resultType(List.<JCAnnotation>nil(), 
+                gen.make().TypeApply(gen.make().QualIdent(gen.syms().classType.tsym), 
+                    List.<JCTree.JCExpression>of(gen.make().Wildcard(gen.make().TypeBoundKind(BoundKind.EXTENDS), gen.make().Type(gen.syms().annotationType)))));
+        method.isOverride(true);
+
+        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeClassLiteral(type, AbstractTransformer.JT_ANNOTATION)));
+
+        method.body(body);
+        JCMethodDecl build = method.build();
+        defs(build);
+        
+        return this;
+    }
+
+    
     public void reifiedTypeParameters(java.util.List<TypeParameter> typeParameterList) {
         for(TypeParameter tp : typeParameterList) {
             reifiedTypeParameter(tp);

@@ -238,6 +238,7 @@ public class ClassTransformer extends AbstractTransformer {
             ListBuffer<JCTree> trees = ListBuffer.lb();
             trees.addAll(transformAnnotationClass((Tree.AnyClass)def));
             transformAnnotationClassConstructor((Tree.AnyClass)def, classBuilder);
+            classBuilder.addAnnotationTypeMethod(model.getType());
             trees.addAll(classBuilder.build());
             result = trees.toList();
         } else {
