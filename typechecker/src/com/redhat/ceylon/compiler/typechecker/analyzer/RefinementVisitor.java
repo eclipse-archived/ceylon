@@ -139,7 +139,8 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            boolean isNativeWithImplementation = hasNativeImplementation(dec);
+            boolean isNativeWithImplementation = 
+                    hasNativeImplementation(dec);
             if (isNativeWithImplementation) {
                 checkNative(that, dec);
             }
@@ -156,11 +157,14 @@ public class RefinementVisitor extends Visitor {
                 that.addError("native implementation should have an abstraction or not be shared");
             }
             // If there's no abstraction we just compare to the first implementation in the list
-            Declaration firstImpl = ((Overloadable)dec).getOverloads().get(0);
+            Overloadable overloadable = (Overloadable) dec;
+            Declaration firstImpl = 
+                    overloadable.getOverloads().get(0);
             if (dec != firstImpl) {
                 checkSameDeclaration(that, dec, firstImpl);
             }
-        } else {
+        }
+        else {
             if (dec != abstraction) {
                 checkSameDeclaration(that, dec, abstraction);
             }
@@ -171,13 +175,22 @@ public class RefinementVisitor extends Visitor {
         checkSameAnnotations(that, dec, abstraction);
         if (dec.getClass() == abstraction.getClass()) {
             if (dec instanceof Method) {
-                checkSameMethod(that, (Method)dec, (Method)abstraction);
-            } else if (dec instanceof Value) {
-                checkSameValue(that, (Value)dec, (Value)abstraction);
-            } else if (dec instanceof Class) {
-                checkSameClass(that, (Class)dec, (Class)abstraction);
+                checkSameMethod(that, 
+                        (Method) dec, 
+                        (Method) abstraction);
             }
-        } else {
+            else if (dec instanceof Value) {
+                checkSameValue(that, 
+                        (Value) dec, 
+                        (Value) abstraction);
+            }
+            else if (dec instanceof Class) {
+                checkSameClass(that, 
+                        (Class) dec, 
+                        (Class) abstraction);
+            }
+        }
+        else {
             that.addError("native declarations not of same type: " + message(dec));
         }
     }
@@ -832,9 +845,10 @@ public class RefinementVisitor extends Visitor {
 	private void handleWrongParameterListLength(Tree.Declaration that,
             ProducedReference member, ProducedReference refinedMember,
             boolean forNative) {
-	    String err = forNative ? "native declarations do not have the same number of parameters "
-	            : "member does not have the same number of parameters as the member it refines ";
-	    err += member.getDeclaration().getName() + 
+	    String err = forNative ? 
+	            "native declarations do not have the same number of parameters " : 
+	            "member does not have the same number of parameters as the member it refines ";
+	    err += "'" + member.getDeclaration().getName() + 
                 "' declared by '" + containerName(member) + "'";
 	    if (!forNative) {
 	        err += " refining '" + refinedMember.getDeclaration().getName() +
