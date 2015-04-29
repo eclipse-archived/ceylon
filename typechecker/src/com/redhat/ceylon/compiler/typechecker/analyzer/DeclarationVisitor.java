@@ -202,6 +202,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         !Backend.validAnnotation(backend)) {
                     that.addError("invalid native backend name: '" + backend + "', "
                             + "should be one of: " + Backend.annotations());
+                } else {
+                    model.setNative(backend);
                 }
                 Scope s = model.getContainer();
                 Declaration member = s.getDirectMember(name, null, false);
@@ -209,18 +211,25 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     initOverloads(model, model);
                 }
                 else {
-                    // TODO check that the signatures are all the same
-                    List<Declaration> overloads = getOverloads(member);
-                    if (hasOverload(overloads, backend)) {
-                        if (backend.isEmpty()) {
-                            that.addError("duplicate native abstraction: '" + name + "'");
+                    if (member.isNative()) {
+                        List<Declaration> overloads = getOverloads(member);
+                        if (hasOverload(overloads, backend)) {
+                            if (backend.isEmpty()) {
+                                that.addError("duplicate native abstraction: '" + name + "'");
+                            }
+                            else {
+                                that.addError("duplicate native implementation: '" + name + "'");
+                            }
                         }
-                        else {
-                            that.addError("duplicate native implementation: '" + name + "'");
+                        overloads.add(model);
+                        setOverloads(model, overloads);
+                    } else {
+                        if (backend.isEmpty()) {
+                            that.addError("native header conflicts with non-native declaration: '" + name + "'");
+                        } else {
+                            that.addError("native implementation for non-native header: '" + name + "'");
                         }
                     }
-                    overloads.add(model);
-                    setOverloads(model, overloads);
                     modelToAdd = null;
                 }
 // Re-enable when we support native member/inner declarations
@@ -363,9 +372,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             abstraction.getOverloads().add(model);
                             dup = true;
                         }
-                        else if (memberCanBeNative && 
-                                modelCanBeNative && 
-                                member.isNative()) {
+                        else if (memberCanBeNative && modelCanBeNative &&
+                                (member.isNative() || model.isNative())) {
                             // Just to make sure no error gets reported
                         }
                         else {
