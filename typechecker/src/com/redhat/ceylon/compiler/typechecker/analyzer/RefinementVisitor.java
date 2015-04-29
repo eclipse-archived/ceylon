@@ -171,7 +171,8 @@ public class RefinementVisitor extends Visitor {
         }
     }
     
-    private void checkSameDeclaration(Tree.Declaration that, Declaration dec, Declaration abstraction) {
+    private void checkSameDeclaration(Tree.Declaration that, 
+            Declaration dec, Declaration abstraction) {
         checkSameAnnotations(that, dec, abstraction);
         if (dec.getClass() == abstraction.getClass()) {
             if (dec instanceof Method) {
@@ -191,11 +192,13 @@ public class RefinementVisitor extends Visitor {
             }
         }
         else {
-            that.addError("native declarations not of same type: " + message(dec));
+            that.addError("native declarations not of same type: " + 
+                    message(dec));
         }
     }
     
-    private void checkSameAnnotations(Tree.Declaration that, Declaration dec, Declaration abstraction) {
+    private void checkSameAnnotations(Tree.Declaration that, 
+            Declaration dec, Declaration abstraction) {
         boolean ok = true;
         List<Annotation> das = dec.getAnnotations();
         List<Annotation> aas = abstraction.getAnnotations();
@@ -217,7 +220,8 @@ public class RefinementVisitor extends Visitor {
             ok = false;
         }
         if (!ok) {
-            that.addError("native declarations have different annotations: " + message(dec));
+            that.addError("native declarations have different annotations: " + 
+                    message(dec));
         }
     }
 
@@ -227,12 +231,14 @@ public class RefinementVisitor extends Visitor {
         if ((dext != null && aext == null)
                 || (dext == null && aext != null)
                 || !dext.isExactly(aext)) {
-            that.addError("native classes do not extend the same type: " + message(dec));
+            that.addError("native classes do not extend the same type: " + 
+                    message(dec));
         }
         List<ProducedType> dst = dec.getSatisfiedTypes();
         List<ProducedType> ast = abstraction.getSatisfiedTypes();
         if (dst.size() != ast.size() || !dst.containsAll(ast)) {
-            that.addError("native classes do not satisfy the same interfaces: " + message(dec));
+            that.addError("native classes do not satisfy the same interfaces: " + 
+                    message(dec));
         }
         // FIXME probably not the right tests
         checkClassParameters(that, dec, abstraction, dec.getReference(), abstraction.getReference(), true);
@@ -242,7 +248,8 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameMethod(Tree.Declaration that, Method dec, Method abstraction) {
         if (!dec.getType().isExactly(abstraction.getType())) {
-            that.addError("native methods do not have the same return type: " + message(dec));
+            that.addError("native methods do not have the same return type: " + 
+                    message(dec));
         }
         // FIXME probably not the right tests
         checkRefiningMemberParameters(that, dec, abstraction, dec.getReference(), abstraction.getReference(), true);
@@ -251,7 +258,8 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameValue(Tree.Declaration that, Value dec, Value abstraction) {
         if (!dec.getType().isExactly(abstraction.getType())) {
-            that.addError("native attributes do not have the same type: " + message(dec));
+            that.addError("native attributes do not have the same type: " + 
+                    message(dec));
         }
     }
     
@@ -291,7 +299,8 @@ public class RefinementVisitor extends Visitor {
         }
         if (dec instanceof Setter) {
             Value getter = ((Setter) dec).getGetter();
-            dec.setRefinedDeclaration(getter.getRefinedDeclaration());
+            Declaration rd = getter.getRefinedDeclaration();
+            dec.setRefinedDeclaration(rd);
             return;
         }
         ClassOrInterface type = 
@@ -313,7 +322,8 @@ public class RefinementVisitor extends Visitor {
         }
         List<ProducedType> signature = getSignature(dec);
         Declaration root = 
-                type.getRefinedMember(name, signature, false);
+                type.getRefinedMember(name, 
+                        signature, false);
         boolean legallyOverloaded = 
                 !isOverloadedVersion(dec);
         if (root == null || root.equals(dec)) {
@@ -521,8 +531,8 @@ public class RefinementVisitor extends Visitor {
 		        ((Functional) refined).getParameterLists();
 		if (refinedParamLists.size()!=refiningParamLists.size()) {
 		    String subject = forNative ? "native abstraction" : "refined memeber";
-			that.addError("member must have the same number of parameter lists as " + subject + ": " + 
-			        message(dec) + " refines " + message(refined));
+			that.addError("member must have the same number of parameter lists as " + 
+			        subject + ": " + message(dec) + " refines " + message(refined));
 		}
 		for (int i=0; 
 		        i<refinedParamLists.size() && 
@@ -552,7 +562,9 @@ public class RefinementVisitor extends Visitor {
 
 	private void checkRefiningMemberDynamicallyTyped(Declaration refined,
             Declaration refiningMemberDec, Node typeNode) {
-	    if (!((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
+	    TypedDeclaration td = 
+	            (TypedDeclaration) refiningMemberDec;
+        if (!td.isDynamicallyTyped()) {
 	    	typeNode.addError("member which refines dynamically typed refined member must also be dynamically typed: " + 
 	    			message(refined));
 	    }
@@ -566,26 +578,30 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private boolean refinedMemberIsDynamicallyTyped(
-            Declaration refinedMemberDec, Declaration refiningMemberDec) {
+            Declaration refinedMemberDec, 
+            Declaration refiningMemberDec) {
 	    return refinedMemberDec instanceof TypedDeclaration && 
 				refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped();
     }
 
-	private void checkRefiningMemberTypeParameters(Tree.Declaration that,
-            Declaration refined, List<TypeParameter> refinedTypeParams,
+	private void checkRefiningMemberTypeParameters(
+	        Tree.Declaration that,
+            Declaration refined, 
+            List<TypeParameter> refinedTypeParams,
             List<TypeParameter> refiningTypeParams,
             boolean forNative) {
 	    int refiningSize = refiningTypeParams.size();
 	    int refinedSize = refinedTypeParams.size();
 	    if (refiningSize!=refinedSize) {
 	        String subject = forNative ? "native abstraction" : "refined member";
-	        that.addError("member does not have the same number of type parameters as " + subject + ": " + 
-	                    message(refined));
+	        that.addError("member does not have the same number of type parameters as " + 
+	                subject + ": " + message(refined));
 	    }
     }
 
-	private List<ProducedType> checkRefiningMemberUpperBounds(Tree.Declaration that,
+	private List<ProducedType> checkRefiningMemberUpperBounds(
+	        Tree.Declaration that,
             ClassOrInterface ci, Declaration refined,
             List<TypeParameter> refinedTypeParams, 
             List<TypeParameter> refiningTypeParams) {
@@ -610,7 +626,8 @@ public class RefinementVisitor extends Visitor {
             Map<TypeParameter, ProducedType> args = 
                     ci.getType().getSupertype(rc)
                         .getTypeArguments();
-	        for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+	        for (ProducedType t: 
+	                refiningTypeParam.getSatisfiedTypes()) {
 	            ProducedType bound = 
 	            		t.substitute(singletonMap(refiningTypeParam, 
 	            		        refinedProducedType));
@@ -670,13 +687,15 @@ public class RefinementVisitor extends Visitor {
             Unit unit = refiningMember.getDeclaration().getUnit();
             ProducedType optionalRefinedType = 
                     unit.getOptionalType(refinedMember.getType());
-            checkAssignableToOneOf(refiningMember.getType(), refinedMember.getType(), 
-            		optionalRefinedType, that, 
+            checkAssignableToOneOf(refiningMember.getType(), 
+                    refinedMember.getType(), 
+                    optionalRefinedType, that, 
             		"type of member must be assignable to type of refined member: " + 
             				message(refined), 9000);
         }
         else {
-            checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+            checkAssignable(refiningMember.getType(), 
+                    refinedMember.getType(), that,
             		"type of member must be assignable to type of refined member: " + 
             		        message(refined), 9000);
         }
@@ -688,7 +707,8 @@ public class RefinementVisitor extends Visitor {
             Unit unit = refiningMember.getDeclaration().getUnit();
             ProducedType optionalRefinedType = 
                     unit.getOptionalType(refinedMember.getType());
-            checkIsExactlyOneOf(refiningMember.getType(), refinedMember.getType(), 
+            checkIsExactlyOneOf(refiningMember.getType(), 
+                    refinedMember.getType(), 
             		optionalRefinedType, that, 
             		"type of member must be exactly the same as type of variable refined member: " + 
             	            message(refined));
@@ -780,10 +800,14 @@ public class RefinementVisitor extends Visitor {
     private static String containerName(ProducedReference member) {
         Scope container = member.getDeclaration().getContainer();
         if (container instanceof Declaration) {
-            return ((Declaration) container).getName();
-        } else if (container instanceof Package) {
-            return ((Package) container).getQualifiedNameString();
-        } else {
+            Declaration dec = (Declaration) container;
+            return dec.getName();
+        }
+        else if (container instanceof Package) {
+            Package pack = (Package) container;
+            return pack.getQualifiedNameString();
+        }
+        else {
             return "Unknown";
         }
     }
@@ -792,24 +816,30 @@ public class RefinementVisitor extends Visitor {
             ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams, boolean forNative) {
         List<Parameter> paramsList = params.getParameters();
-		List<Parameter> refinedParamsList = refinedParams.getParameters();
+		List<Parameter> refinedParamsList = 
+		        refinedParams.getParameters();
 		if (paramsList.size()!=refinedParamsList.size()) {
-           handleWrongParameterListLength(that, member, refinedMember, forNative);
+           handleWrongParameterListLength(that, 
+                   member, refinedMember, forNative);
         }
         else {
             for (int i=0; i<paramsList.size(); i++) {
                 Parameter rparam = refinedParamsList.get(i);
                 Parameter param = paramsList.get(i);
                 ProducedType refinedParameterType = 
-                		refinedMember.getTypedParameter(rparam).getFullType();
+                		refinedMember.getTypedParameter(rparam)
+                		        .getFullType();
                 ProducedType parameterType = 
-                		member.getTypedParameter(param).getFullType();
-                Tree.Parameter parameter = pl.getParameters().get(i);
+                		member.getTypedParameter(param)
+                		        .getFullType();
+                Tree.Parameter parameter = 
+                        pl.getParameters().get(i);
                 Node typeNode = parameter;
                 if (parameter instanceof Tree.ParameterDeclaration) {
                 	Tree.ParameterDeclaration pd = 
                 	        (Tree.ParameterDeclaration) parameter;
-                    Tree.Type type = pd.getTypedDeclaration().getType();
+                    Tree.Type type = 
+                            pd.getTypedDeclaration().getType();
                 	if (type!=null) {
                 		typeNode = type;
                 	}
@@ -845,16 +875,15 @@ public class RefinementVisitor extends Visitor {
 	private void handleWrongParameterListLength(Tree.Declaration that,
             ProducedReference member, ProducedReference refinedMember,
             boolean forNative) {
-	    String err = forNative ? 
-	            "native declarations do not have the same number of parameters " : 
-	            "member does not have the same number of parameters as the member it refines ";
-	    err += "'" + member.getDeclaration().getName() + 
-                "' declared by '" + containerName(member) + "'";
+	    String subject = forNative ? "native header" : "refined member";
+	    String message = "member does not have the same number of parameters as " + 
+	            subject + ": '" + member.getDeclaration().getName() + 
+	            "' declared by '" + containerName(member) + "'";
 	    if (!forNative) {
-	        err += " refining '" + refinedMember.getDeclaration().getName() +
+	        message += " refining '" + refinedMember.getDeclaration().getName() +
 	                "' declared by '" + containerName(refinedMember) + "'";
 	    }
-	    that.addError(err, 9100);
+	    that.addError(message, 9100);
     }
 
 	private static void checkRefiningParameterType(ProducedReference member,
@@ -863,7 +892,7 @@ public class RefinementVisitor extends Visitor {
             Parameter param, ProducedType parameterType,
             Node typeNode, boolean forNative) {
 	    //TODO: consider type parameter substitution!!!
-	    String subject = forNative ? "native abstraction" : "refined member";
+	    String subject = forNative ? "native header" : "refined member";
 	    checkIsExactlyForInterop(typeNode.getUnit(), 
 	            refinedParams.isNamedParametersSupported(), 
 	            parameterType, refinedParameterType, typeNode,
@@ -877,9 +906,11 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private void handleUnknownParameterType(ProducedReference member,
-            ProducedReference refinedMember, Parameter param, Node typeNode, boolean forNative) {
-	    String subject = forNative ? "native abstraction" : "refined member";
-	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of " + subject + ": '" +
+            ProducedReference refinedMember, Parameter param, 
+            Node typeNode, boolean forNative) {
+	    String subject = forNative ? "native header" : "refined member";
+	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of " + 
+	            subject + ": '" +
 	            param.getName() + "' of '" + 
 	            member.getDeclaration().getName() + 
 	            "' declared by '" + containerName(member) +
