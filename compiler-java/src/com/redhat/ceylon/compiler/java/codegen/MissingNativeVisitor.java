@@ -143,6 +143,6 @@ public class MissingNativeVisitor extends Visitor {
             }
         }
         if(!ok)
-            node.addError("native declaration not found");
+            node.addError("native header not found");
     }
 }
