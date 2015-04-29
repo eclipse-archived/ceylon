@@ -10,6 +10,7 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.impl.JSUtils;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
@@ -100,6 +101,11 @@ public class JsModuleManager extends ModuleManager {
     @Override
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("js");
+    }
+
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return backend == Backend.JavaScript;
     }
 
     @Override
