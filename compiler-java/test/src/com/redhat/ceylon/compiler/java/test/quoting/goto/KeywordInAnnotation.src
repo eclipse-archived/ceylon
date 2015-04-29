@@ -21,18 +21,6 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
     }
     
     public AnnotationClass(final .java.lang.String $strictfp) {
-        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this$;
-    }
-    
-    @.java.lang.Override
-    public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
     @.java.lang.Override
@@ -40,6 +28,11 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
         return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation$.class;
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},

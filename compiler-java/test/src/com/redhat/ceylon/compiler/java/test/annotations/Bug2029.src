@@ -14,18 +14,6 @@ public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public A() {
-        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.ceylon.language.Annotation, .com.redhat.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$), (.ceylon.language.ConstrainedAnnotation)this);
-    }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.ceylon.language.Annotation, .com.redhat.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.ConstrainedAnnotation$impl $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this$;
-    }
-    
-    @.java.lang.Override
-    public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -38,6 +26,11 @@ public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.A.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.A$annotation$.class;
+    }
 }
 final class annos_ {
     
@@ -48,7 +41,7 @@ final class annos_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.com.redhat.ceylon.compiler.java.test.annotations.A)(.java.lang.Object).ceylon.language.meta.annotations_.<.ceylon.language.ConstrainedAnnotation, .com.redhat.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated>annotations(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$), (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.annotations.A, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), (.ceylon.language.Annotated).ceylon.language.nothing_.get_());
+            value = (.com.redhat.ceylon.compiler.java.test.annotations.A)(.java.lang.Object).ceylon.language.meta.annotations_.<.java.lang.annotation.Annotation, .com.redhat.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated>annotations(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$), (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.annotations.A, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), (.ceylon.language.Annotated).ceylon.language.nothing_.get_());
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {

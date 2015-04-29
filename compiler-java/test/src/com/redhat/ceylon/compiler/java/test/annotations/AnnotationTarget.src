@@ -18,18 +18,6 @@ final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     AnnotationTarget() {
-        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, ? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this$;
-    }
-    
-    @.java.lang.Override
-    public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
     @.java.lang.Override
@@ -37,6 +25,11 @@ final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$.class;
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
@@ -69,18 +62,6 @@ final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     AnnotationTarget2() {
-        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, ? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this$;
-    }
-    
-    @.java.lang.Override
-    public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     
     @.java.lang.Override
@@ -88,6 +69,11 @@ final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtim
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$.class;
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
