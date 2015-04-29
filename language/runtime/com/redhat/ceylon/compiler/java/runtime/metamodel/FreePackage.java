@@ -52,14 +52,14 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     }
     
     @Override
-    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+    public <AnnotationType extends java.lang.annotation.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
     @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation"))
-    public <Annotation extends ceylon.language.Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    public <Annotation extends java.lang.annotation.Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
@@ -115,7 +115,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"), 
         @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation") 
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends java.lang.annotation.Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(

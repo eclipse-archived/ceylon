@@ -326,7 +326,7 @@ class Predicates {
     /**
      * A Predicate on the Declarations having a given annotation 
      */
-    private static class AnnotatedWith<A extends ceylon.language.Annotation> 
+    private static class AnnotatedWith<A extends java.lang.annotation.Annotation> 
             implements Predicate<Declaration> {
 
         private final TypeDescriptor annotation;
@@ -354,14 +354,14 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    static <Kind extends ceylon.language.meta.declaration.Declaration, A extends ceylon.language.Annotation>  
+    static <Kind extends ceylon.language.meta.declaration.Declaration, A extends java.lang.annotation.Annotation>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         Type<?> at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
     }
     
     @SuppressWarnings("unchecked")
-    private static <A extends ceylon.language.Annotation> Predicate<Declaration> 
+    private static <A extends java.lang.annotation.Annotation> Predicate<Declaration> 
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type<?> at) {
         if (at instanceof nothingType_) {
             return false_();
@@ -397,12 +397,12 @@ class Predicates {
      * @param $reifiedAnnotation
      * @return
      */
-    static <A extends ceylon.language.Annotation> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
+    static <A extends java.lang.annotation.Annotation> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
         Type<?> at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         return isAnnotationOfType($reifiedAnnotation, at);
     }
 
-    private static <A extends ceylon.language.Annotation> Predicate<A> isAnnotationOfType(
+    private static <A extends java.lang.annotation.Annotation> Predicate<A> isAnnotationOfType(
             TypeDescriptor $reifiedAnnotation, Type<?> at)
             throws EnumeratedTypeError {
         if (at instanceof nothingType_) {
@@ -423,7 +423,7 @@ class Predicates {
         }
     }
     
-    private static <A extends ceylon.language.Annotation> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
+    private static <A extends java.lang.annotation.Annotation> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
             Sequential<? extends Type<?>> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<A>[] preds = new Predicate[Util.toInt(caseTypes.getSize())];
@@ -437,7 +437,7 @@ class Predicates {
         return preds;
     }
 
-    static interface AnnotationPredicate<A extends ceylon.language.Annotation> extends Predicates.Predicate<A> {
+    static interface AnnotationPredicate<A extends java.lang.annotation.Annotation> extends Predicates.Predicate<A> {
         // TODO Is this a worthwhile optimization to make?
         /** 
          * Whether we should instantiate the given Java annotation into a 
@@ -455,15 +455,16 @@ class Predicates {
         public boolean accept(A cAnnotation);
     }
     
-    private static <A extends ceylon.language.Annotation,
-    Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends Annotated>
+    private static <A extends java.lang.annotation.Annotation,
+    Value extends java.lang.annotation.Annotation, Values, ProgramElement extends Annotated>
     AnnotationPredicate<A> annotationPredicate(
             final TypeDescriptor $reifiedValues,
-            ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, Values, ? super ProgramElement>> annotationType) {
+            ClassOrInterface<? extends java.lang.annotation.Annotation> annotationType) {
         final Class<?> refAnnotationClass = Metamodel.getReflectedAnnotationClass(annotationType);
         final Class<?> refAnnotationType;
         final Class<?> refAnnotationWrapperType;
-        if (ceylon.language.Annotation.class == refAnnotationClass
+        if (java.lang.annotation.Annotation.class == refAnnotationClass
+                || ceylon.language.Annotation.class == refAnnotationClass
                 || ceylon.language.ConstrainedAnnotation.class == refAnnotationClass
                 || ceylon.language.OptionalAnnotation.class == refAnnotationClass
                 || ceylon.language.SequencedAnnotation.class == refAnnotationClass) {

@@ -357,7 +357,7 @@ public class FreeClass
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
-    public <A extends ceylon.language.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+    public <A extends java.lang.annotation.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
         return filterConstructors(Predicates.isDeclarationAnnotatedWith(reified$Annotation));
     }
 }

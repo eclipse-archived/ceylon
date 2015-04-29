@@ -18,7 +18,7 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
 import ceylon.language.Annotated;
-import ceylon.language.Annotation;
+import java.lang.annotation.Annotation;
 import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Callable;
@@ -957,11 +957,11 @@ public class Metamodel {
      * an annotation class.
      */
     public static 
-    <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, 
+    <Value extends java.lang.annotation.Annotation, 
     Values, 
     ProgramElement extends Annotated>
     Class<?> getReflectedAnnotationClass(
-            ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType) {
+            ClassOrInterface<? extends java.lang.annotation.Annotation> annotationType) {
         FreeClassOrInterface freeClass;
         if (annotationType instanceof AppliedClassOrInterface) {
             freeClass = (FreeClassOrInterface)((AppliedClassOrInterface<?>)annotationType).getDeclaration();
@@ -972,7 +972,7 @@ public class Metamodel {
         return refAnnotationClass;
     }
     
-    private static <A extends ceylon.language.Annotation> void addAnnotation(
+    private static <A extends java.lang.annotation.Annotation> void addAnnotation(
             Annotated annotated, 
             ArrayList<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
@@ -1055,7 +1055,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            Annotated annotated, ArrayList<? extends ceylon.language.Annotation> ceylonAnnotations,
+            Annotated annotated, ArrayList<? extends java.lang.annotation.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -1083,7 +1083,7 @@ public class Metamodel {
         }
     }
     
-    public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(
+    public static <A extends java.lang.annotation.Annotation> Sequential<? extends A> annotations(
             TypeDescriptor $reifiedValues,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
@@ -1093,7 +1093,7 @@ public class Metamodel {
     }
 
     @SuppressWarnings("unchecked")
-    public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
+    public static <A extends java.lang.annotation.Annotation> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations$();
         if (jAnnotations == null) {
@@ -1105,7 +1105,7 @@ public class Metamodel {
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
             addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
-        ceylon.language.Annotation[] array = ceylonAnnotations.toArray(new ceylon.language.Annotation[0]);
+        java.lang.annotation.Annotation[] array = ceylonAnnotations.toArray(new java.lang.annotation.Annotation[0]);
 		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 

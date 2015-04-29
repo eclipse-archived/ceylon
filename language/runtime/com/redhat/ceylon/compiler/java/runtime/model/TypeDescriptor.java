@@ -195,6 +195,10 @@ public abstract class TypeDescriptor {
                 else if (klass==Throwable.class) {
                     realKlass = java.lang.Throwable.class;
                 }
+                else if (klass==ceylon.language.Annotation.class
+                        || klass==ceylon.language.ConstrainedAnnotation.class) {
+                    realKlass = java.lang.annotation.Annotation.class;
+                }
                 else {
                     realKlass = klass;
                 }
@@ -297,6 +301,10 @@ public abstract class TypeDescriptor {
             if (klass==ceylon.language.Exception.class ||
                 klass==ceylon.language.Throwable.class) {
                 return java.lang.Throwable.class;
+            }
+            if (klass==ceylon.language.Annotation.class
+                    || klass==ceylon.language.ConstrainedAnnotation.class){
+                return java.lang.annotation.Annotation.class;
             }
             if (klass==ObjectArray.class) {
                 return java.lang.Object[].class;

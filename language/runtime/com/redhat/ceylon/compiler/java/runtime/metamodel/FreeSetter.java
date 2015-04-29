@@ -70,7 +70,7 @@ public class FreeSetter
     }
     
     @Override
-    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+    public <AnnotationType extends java.lang.annotation.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
     

@@ -172,7 +172,7 @@ public abstract class FreeClassOrInterface
             @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
             @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation")
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends java.lang.annotation.Annotation> Sequential<? extends Kind> 
     annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -188,7 +188,7 @@ public abstract class FreeClassOrInterface
             @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
             @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation")
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends java.lang.annotation.Annotation> Sequential<? extends Kind> 
     annotatedDeclaredMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -507,7 +507,7 @@ public abstract class FreeClassOrInterface
     }
     
     @Override
-    public <AnnotationType extends ceylon.language.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
+    public <AnnotationType extends java.lang.annotation.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 }

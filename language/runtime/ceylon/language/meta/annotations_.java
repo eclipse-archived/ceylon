@@ -34,7 +34,7 @@ public final class annotations_ {
                 satisfies = {"ceylon.language::Annotated"}, 
                 variance=Variance.IN)
     })
-    public static <Value extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends ceylon.language.Annotated>Values annotations(@com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <Value extends java.lang.annotation.Annotation, Values, ProgramElement extends ceylon.language.Annotated>Values annotations(@com.redhat.ceylon.compiler.java.metadata.Ignore
             final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @com.redhat.ceylon.compiler.java.metadata.Ignore
             final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Values, @com.redhat.ceylon.compiler.java.metadata.Ignore
             final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ProgramElement, @com.redhat.ceylon.compiler.java.metadata.Name("annotationType")

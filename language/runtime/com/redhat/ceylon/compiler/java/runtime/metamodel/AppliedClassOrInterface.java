@@ -563,7 +563,7 @@ public abstract class AppliedClassOrInterface<Type>
                                   @Ignore TypeDescriptor $reifiedGet, 
                                   @Ignore TypeDescriptor $reifiedSet,
                                   @Sequenced
-                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         // check the container type first
@@ -644,7 +644,7 @@ public abstract class AppliedClassOrInterface<Type>
                           @Ignore TypeDescriptor $reifiedGet, 
                           @Ignore TypeDescriptor $reifiedSet,
                           @Sequenced
-                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         Sequential<? extends ValueDeclaration> declaredDeclarations = declaration.<ValueDeclaration>memberDeclarations(ValueDeclaration.$TypeDescriptor$);
@@ -707,7 +707,7 @@ public abstract class AppliedClassOrInterface<Type>
                                @Ignore TypeDescriptor $reifiedType, 
                                @Ignore TypeDescriptor $reifiedArguments,
                                @Sequenced
-                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         // check the container type first
@@ -774,7 +774,7 @@ public abstract class AppliedClassOrInterface<Type>
                        @Ignore TypeDescriptor $reifiedType, 
                        @Ignore TypeDescriptor $reifiedArguments,
                        @Sequenced
-                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         Sequential<? extends FunctionDeclaration> declaredDeclarations = declaration.<FunctionDeclaration>memberDeclarations(FunctionDeclaration.$TypeDescriptor$);
@@ -861,7 +861,7 @@ public abstract class AppliedClassOrInterface<Type>
                                @Ignore TypeDescriptor $reifiedType, 
                                @Ignore TypeDescriptor $reifiedArguments,
                                @Sequenced
-                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         // check the container type first
@@ -928,7 +928,7 @@ public abstract class AppliedClassOrInterface<Type>
                        @Ignore TypeDescriptor $reifiedType, 
                        @Ignore TypeDescriptor $reifiedArguments,
                        @Sequenced
-                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         Sequential<? extends ClassDeclaration> declaredDeclarations = declaration.<ClassDeclaration>memberDeclarations(ClassDeclaration.$TypeDescriptor$);
@@ -1012,7 +1012,7 @@ public abstract class AppliedClassOrInterface<Type>
             getDeclaredInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
                                   @Ignore TypeDescriptor $reifiedType, 
                                   @Sequenced
-                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         // check the container type first
@@ -1075,7 +1075,7 @@ public abstract class AppliedClassOrInterface<Type>
             getInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
                           @Ignore TypeDescriptor $reifiedType, 
                           @Sequenced
-                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         checkInit();
         
         Sequential<? extends InterfaceDeclaration> declaredDeclarations = declaration.<InterfaceDeclaration>memberDeclarations(InterfaceDeclaration.$TypeDescriptor$);
