@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -84,6 +86,13 @@ public class JsCompiler {
         public void visitAny(Node that) {
             super.visitAny(that);
             hasErrors(that);
+        }
+        @Override
+        public void visit(Tree.Declaration that) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+                super.visitAny(that);
+                hasErrors(that);
+            }
         }
         @Override
         public void visit(Tree.Import that) {
