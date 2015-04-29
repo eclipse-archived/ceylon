@@ -72,7 +72,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     class ConcreteDelegating extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.Super {
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Name("A")
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private ConcreteDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$A$delegation$ $name$) {
             super();
@@ -225,7 +225,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     public class SharedConcreteDelegating extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.Super {
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Name("A")
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private SharedConcreteDelegating(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$ $name$) {
             super();

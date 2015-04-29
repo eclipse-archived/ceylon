@@ -65,7 +65,7 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Concrete")
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private CtorDelegationClassRefs(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete$delegation$ $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract);
