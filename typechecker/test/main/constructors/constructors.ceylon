@@ -302,6 +302,30 @@ shared class WithPartialConstructor {
     string = "``name``:``length``";
 }
 
+shared class WithNonPartialConstructorDelegation {
+    Float length;
+    String name;
+    new WithLengthAndName(Float x, Float y, String name) {
+        length = (x^2+y^2)^0.5;
+        this.name = name;
+    }
+    shared new WithNameAndCoords(String name, Float x, Float y) 
+            extends WithLengthAndName(x, y, name) {}
+    string = "``name``:``length``";
+}
+
+shared class WithDefaultConstructorDelegation {
+    Float length;
+    String name;
+    shared new (Float x, Float y, String name) {
+        length = (x^2+y^2)^0.5;
+        this.name = name;
+    }
+    shared new WithNameAndCoords(String name, Float x, Float y) 
+            extends WithDefaultConstructorDelegation(x, y, name) {}
+    string = "``name``:``length``";
+}
+
 shared class WithBrokenPartialConstructor {
     Float length;
     String name;
