@@ -224,6 +224,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror ANNOTATION_TYPE = simpleCeylonObjectType("java.lang.annotation.Annotation");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.Annotation");
+    private static final TypeMirror CEYLON_CONSTRAINED_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.ConstrainedAnnotation");
+    private static final TypeMirror CEYLON_FUNCTION_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionDeclaration");
+    private static final TypeMirror CEYLON_FUNCTION_OR_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionOrValueDeclaration");
+    private static final TypeMirror CEYLON_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ValueDeclaration");
+    private static final TypeMirror CEYLON_ALIAS_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.AliasDeclaration");
+    private static final TypeMirror CEYLON_CLASS_OR_INTERFACE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassOrInterfaceDeclaration");
+    private static final TypeMirror CEYLON_CONSTRUCTOR_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ConstructorDeclaration");
+    private static final TypeMirror CEYLON_ANNOTATED_TYPE = simpleCeylonObjectType("ceylon.language.Annotated");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     private static final TypeMirror CEYLON_SERIALIZABLE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
@@ -2989,6 +2997,70 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
+    private ProducedType getJavaAnnotationExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
+        TypeDeclaration constrainedAnnotation = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CONSTRAINED_ANNOTATION_TYPE, klass, DeclarationType.TYPE);
+        AnnotationMirror target = classMirror.getAnnotation("java.lang.annotation.Target");
+        Set<ProducedType> types = new HashSet<ProducedType>();
+        if(target != null){
+            List<String> values = (List<String>) target.getValue();
+            for(String value : values){
+                switch(value){
+                case "TYPE":
+                    TypeDeclaration decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CLASS_OR_INTERFACE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_ALIAS_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                case "ANNOTATION_TYPE":
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CLASS_OR_INTERFACE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                case "CONSTRUCTOR":
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CONSTRUCTOR_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                case "METHOD":
+                    // method annotations may be applied to shared members which are turned into getter methods
+                case "PARAMETER":
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_FUNCTION_OR_VALUE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                case "FIELD":
+                case "LOCAL_VARIABLE":
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_VALUE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                default:
+                    // all other values are ambiguous or have no mapping
+                }
+            }
+        }
+        Module module = Decl.getModuleContainer(klass);
+        ProducedType annotatedType;
+        if(types.size() == 1)
+            annotatedType = types.iterator().next();
+        else if(types.isEmpty()){
+            TypeDeclaration decl;
+            if(target == null){
+                // default is anything
+                decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_ANNOTATED_TYPE, klass, DeclarationType.TYPE);
+            }else{
+                // we either had an empty set which means cannot be used as annotation in Java (only as annotation member)
+                // or that we only had unmappable targets
+                decl = typeFactory.getNothingDeclaration();
+            }
+            annotatedType = decl.getType();
+        }else{
+            List<ProducedType> list = new ArrayList<ProducedType>(types.size());
+            list.addAll(types);
+            UnionType ut = new UnionType(getUnitForModule(module));
+            ut.setCaseTypes(list);
+            annotatedType =  ut.getType();
+        }
+        ProducedType constrainedType = constrainedAnnotation.getProducedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
+        return constrainedType;
+    }
+    
     private void setParameters(Functional decl, ClassMirror classMirror, MethodMirror methodMirror, boolean isCeylon, Scope container) {
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
@@ -3869,6 +3941,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(satisfiedTypes != null){
             klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass, Decl.getModuleContainer(klass), "satisfied types", klass.getQualifiedNameString()));
         }else{
+            if(classMirror.isAnnotationType())
+                // this only happens for Java annotations since Ceylon annotations are ignored
+                // turn @Target into a subtype of ConstrainedAnnotation
+                klass.getSatisfiedTypes().add(getJavaAnnotationExtendedType(klass, classMirror));
+
             for(TypeMirror iface : classMirror.getInterfaces()){
                 // ignore generated interfaces
                 if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE) 
