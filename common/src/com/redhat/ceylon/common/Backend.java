@@ -11,12 +11,16 @@ public enum Backend {
     }
     
     public static boolean validAnnotation(String backend) {
+        return fromAnnotation(backend) != null;
+    }
+    
+    public static Backend fromAnnotation(String backend) {
         for (Backend b : Backend.values()) {
             if (b.nativeAnnotation.equals(backend)) {
-                return true;
+                return b;
             }
         }
-        return false;
+        return null;
     }
     
     public static String annotations() {
