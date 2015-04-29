@@ -3,10 +3,12 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 
 
 public class Util {
@@ -67,10 +69,14 @@ public class Util {
     }
     
     public static boolean isForBackend(Tree.AnnotationList al, Backend forBackend, Unit unit) {
-        Tree.Annotation a = getAnnotation(al, "native", unit);
+        return isForBackend(al, forBackend.backendSupport, unit);
+    }
+    
+    public static boolean isForBackend(Tree.AnnotationList al, BackendSupport backendSupport, Unit unit) {
+        Annotation a = getAnnotation(al, "native", unit);
         if (a != null) {
-            String backend = getAnnotationArgument(a, "");
-            if (!backend.equals(forBackend.nativeAnnotation)) {
+            Backend backend = Backend.fromAnnotation(getAnnotationArgument(a, ""));
+            if (backend == null || !backendSupport.supportsBackend(backend)) {
                 return false;
             }
         }
