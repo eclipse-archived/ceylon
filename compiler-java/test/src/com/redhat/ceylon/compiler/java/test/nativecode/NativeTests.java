@@ -58,8 +58,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
-                new CompilerError(20, "native implementation should have an abstraction or not be shared"),
-                new CompilerError(23, "native implementation should have an abstraction or not be shared"));
+                new CompilerError(20, "native implementation should have a header or not be shared"),
+                new CompilerError(23, "native implementation should have a header or not be shared"));
     }
     
     @Test
@@ -68,8 +68,8 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(25, "native declarations have different annotations: 'nativeMethodMismatch1'"),
                 new CompilerError(30, "native methods do not have the same return type: 'nativeMethodMismatch2'"),
                 new CompilerError(34, "native methods do not have the same return type: 'nativeMethodMismatch2'"),
-                new CompilerError(40, "native declarations do not have the same number of parameters nativeMethodMismatch3' declared by 'com.redhat.ceylon.compiler.java.test.nativecode'"),
-                new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' declared by 'com.redhat.ceylon.compiler.java.test.nativecode' is different to type of corresponding parameter 'i' of native abstraction 'nativeMethodMismatch3' of 'com.redhat.ceylon.compiler.java.test.nativecode': 'String' is not exactly 'Integer'"));
+                new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
+                new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"));
     }
     
     // Attributes
@@ -92,8 +92,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAttributeSharedInvalid() {
         testNativeErrors("NativeAttributeSharedInvalid",
-                new CompilerError(20, "native implementation should have an abstraction or not be shared"),
-                new CompilerError(22, "native implementation should have an abstraction or not be shared"));
+                new CompilerError(20, "native implementation should have a header or not be shared"),
+                new CompilerError(22, "native implementation should have a header or not be shared"));
     }
     
     @Test
@@ -133,16 +133,16 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassSharedInvalid() {
         testNativeErrors("NativeClassSharedInvalid",
-                new CompilerError(20, "native implementation should have an abstraction or not be shared"),
-                new CompilerError(22, "native implementation should have an abstraction or not be shared"));
+                new CompilerError(20, "native implementation should have a header or not be shared"),
+                new CompilerError(22, "native implementation should have a header or not be shared"));
     }
     
     @Test
     public void testNativeClassMismatch() {
         testNativeErrors("NativeClassMismatch",
                 new CompilerError(35, "native declarations have different annotations: 'NativeClassMismatch1'"),
-                new CompilerError(40, "native declarations do not have the same number of parameters NativeClassMismatch2' declared by 'com.redhat.ceylon.compiler.java.test.nativecode'"),
-                new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' declared by 'com.redhat.ceylon.compiler.java.test.nativecode' is different to type of corresponding parameter 'i' of native abstraction 'NativeClassMismatch2' of 'com.redhat.ceylon.compiler.java.test.nativecode': 'String' is not exactly 'Integer'"),
+                new CompilerError(40, "member does not have the same number of parameters as native header: 'NativeClassMismatch2'"),
+                new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' is different to type of corresponding parameter 'i' of native header 'NativeClassMismatch2': 'String' is not exactly 'Integer'"),
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "formal member 'test2' of 'NativeClassMismatchSuper2' not implemented in class hierarchy"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'")
