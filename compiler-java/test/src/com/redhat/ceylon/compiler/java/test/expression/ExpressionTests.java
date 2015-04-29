@@ -549,8 +549,20 @@ public class ExpressionTests extends CompilerTests {
     }
     
     @Test
+    public void testOptmInIntegerSpanCorrect(){
+        compile("optimisations/InIntegerSpanCorrect.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.optimisations.inIntegerSpanCorrect");
+    }
+    
+    @Test
     public void testOptmInCharacterSpan(){
         compareWithJavaSource("optimisations/InCharacterSpan");
+    }
+    
+    @Test
+    public void testOptmInCharacterSpanCorrect(){
+        compile("optimisations/InCharacterSpanCorrect.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.optimisations.inCharacterSpanCorrect");
     }
     
     @Test

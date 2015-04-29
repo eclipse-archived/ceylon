@@ -13,17 +13,19 @@ final class inIntegerSpan_ {
                 long $ceylontmp$x$0 = x;
                 long $ceylontmp$y$1 = 0L;
                 long $ceylontmp$z$2 = 10L;
+                boolean $ceylontmp$recursive$3 = $ceylontmp$y$1 > $ceylontmp$y$1 + 1L && $ceylontmp$z$2 - 1L > $ceylontmp$z$2;
             }
-            returning $ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$z$2 || $ceylontmp$z$2 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$y$1;
+            returning $ceylontmp$recursive$3 ? .ceylon.language.Integer.offset($ceylontmp$x$0, $ceylontmp$y$1) <= .ceylon.language.Integer.offset($ceylontmp$z$2, $ceylontmp$y$1) : $ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$z$2 || $ceylontmp$z$2 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$y$1;
         );
         b = (
             let
             {
-                long $ceylontmp$x$3 = x;
-                long $ceylontmp$y$4 = y;
-                long $ceylontmp$z$5 = z;
+                long $ceylontmp$x$4 = x;
+                long $ceylontmp$y$5 = y;
+                long $ceylontmp$z$6 = z;
+                boolean $ceylontmp$recursive$7 = $ceylontmp$y$5 > $ceylontmp$y$5 + 1L && $ceylontmp$z$6 - 1L > $ceylontmp$z$6;
             }
-            returning $ceylontmp$y$4 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$z$5 || $ceylontmp$z$5 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$y$4;
+            returning $ceylontmp$recursive$7 ? .ceylon.language.Integer.offset($ceylontmp$x$4, $ceylontmp$y$5) <= .ceylon.language.Integer.offset($ceylontmp$z$6, $ceylontmp$y$5) : $ceylontmp$y$5 <= $ceylontmp$x$4 && $ceylontmp$x$4 <= $ceylontmp$z$6 || $ceylontmp$z$6 <= $ceylontmp$x$4 && $ceylontmp$x$4 <= $ceylontmp$y$5;
         );
     }
 }

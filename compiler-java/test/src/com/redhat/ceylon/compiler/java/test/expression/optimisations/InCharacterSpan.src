@@ -11,19 +11,21 @@ final class inCharacterSpan_ {
             let
             {
                 int $ceylontmp$x$0 = x;
-                int $ceylontmp$y$1 = 97;
-                int $ceylontmp$z$2 = 122;
+                int $ceylontmp$first$1 = 97;
+                int $ceylontmp$last$2 = 122;
+                boolean $ceylontmp$recursive$3 = $ceylontmp$first$1 > .ceylon.language.Character.getSuccessor($ceylontmp$first$1) && .ceylon.language.Character.getPredecessor($ceylontmp$last$2) > $ceylontmp$last$2;
             }
-            returning $ceylontmp$y$1 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$z$2 || $ceylontmp$z$2 <= $ceylontmp$x$0 && $ceylontmp$x$0 <= $ceylontmp$y$1;
+            returning $ceylontmp$first$1 < $ceylontmp$last$2 ? $ceylontmp$x$0 <= $ceylontmp$last$2 && $ceylontmp$x$0 >= $ceylontmp$first$1 : $ceylontmp$x$0 >= $ceylontmp$last$2 && $ceylontmp$x$0 <= $ceylontmp$first$1;
         );
         b = (
             let
             {
-                int $ceylontmp$x$3 = x;
-                int $ceylontmp$y$4 = y;
-                int $ceylontmp$z$5 = z;
+                int $ceylontmp$x$4 = x;
+                int $ceylontmp$first$5 = y;
+                int $ceylontmp$last$6 = z;
+                boolean $ceylontmp$recursive$7 = $ceylontmp$first$5 > .ceylon.language.Character.getSuccessor($ceylontmp$first$5) && .ceylon.language.Character.getPredecessor($ceylontmp$last$6) > $ceylontmp$last$6;
             }
-            returning $ceylontmp$y$4 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$z$5 || $ceylontmp$z$5 <= $ceylontmp$x$3 && $ceylontmp$x$3 <= $ceylontmp$y$4;
+            returning $ceylontmp$first$5 < $ceylontmp$last$6 ? $ceylontmp$x$4 <= $ceylontmp$last$6 && $ceylontmp$x$4 >= $ceylontmp$first$5 : $ceylontmp$x$4 >= $ceylontmp$last$6 && $ceylontmp$x$4 <= $ceylontmp$first$5;
         );
     }
 }
