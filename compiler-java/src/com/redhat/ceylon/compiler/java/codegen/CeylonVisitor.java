@@ -187,7 +187,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                     
                 }
                 // We need to generate $delegation$ delegation constructor
-                makeDelegateConstructor(ctor, ctorModel,
+                makeDelegationConstructor(ctor, ctorModel,
                         delegation, chainedCtorInvocation);
                 JCStatement delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(ctor.getDelegatedConstructor(),
                         delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
@@ -227,21 +227,21 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             
             String ctorName = !Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : null;
             classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, classBuilder, Strategy.generateInstantiator(ctorModel),
-                    gen.classGen().transformConstructorDeclFlags(ctorModel),
+                    gen.classGen().transformConstructorDeclFlags(ctorModel), false,
                     ctorName, stmts.toList(),
                     DeclNameFlag.QUALIFIED));
         }
     }
 
     /**
-     * Make a {@code ...$delegate$} constructor, returning
+     * Make a {@code ...$delegation$} constructor, returning
      * @param ctor
      * @param ctorModel
      * @param delegatedTo
      * @param chainedCtorInvocation
      * @return
      */
-    protected void makeDelegateConstructor(Tree.Constructor ctor,
+    protected void makeDelegationConstructor(Tree.Constructor ctor,
             Constructor ctorModel, CtorDelegation delegation,
             Tree.InvocationExpression chainedCtorInvocation) {
         
@@ -266,7 +266,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(delegation.getExtendingConstructor(), ctorModel));
         stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
         String ctorName = (!Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : "") + Naming.Suffix.$delegation$;
-        classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, classBuilder, false, PRIVATE, ctorName, stmts.toList(),
+        classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, classBuilder, false, PRIVATE, true, ctorName, stmts.toList(),
                 DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION));
         
     }

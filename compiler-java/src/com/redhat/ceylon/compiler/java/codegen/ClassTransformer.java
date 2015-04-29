@@ -4831,6 +4831,7 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder,
             boolean generateInstantiator,
             int mods,
+            boolean atIgnoreCtor,
             String ctorName,
             List<JCStatement> ctorBody, 
             DeclNameFlag... declFlags) {
@@ -4855,9 +4856,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
-        if (!Decl.isDefaultConstructor(ctor)) {
+        if (atIgnoreCtor) {
+            ctorDb.modelAnnotations(makeAtIgnore());
+        } else if (!Decl.isDefaultConstructor(ctor)) {
             ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         }
+        
         ctorDb.modifiers(mods);
         
         for (TypeParameter tp : clz.getTypeParameters()) {
