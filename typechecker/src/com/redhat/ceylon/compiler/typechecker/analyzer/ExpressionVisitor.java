@@ -7542,14 +7542,11 @@ public class ExpressionVisitor extends Visitor {
                                 "type arguments must match type arguments in extended class expression");
                     }
                     else if (containingClass.equals(delegatedType)) {
-                        if (!c.isAbstract()) {
-                            type.addError("delegates to a non-abstract constructor: '" +
-                                    c.getName() + "' is not abstract");
-                        }
+                        //nothing to do
                     }
                     else {
                         type.addError("not a constructor of the immediate superclass: '" +
-                                c.getName(unit) + 
+                                delegate.getName(unit) + 
                                 "' is not a constructor of '" + 
                                 superclass.getName(unit) + "'");
                     }
@@ -7561,7 +7558,7 @@ public class ExpressionVisitor extends Visitor {
                                 "type arguments must match type arguments in extended class expression");
                     }
                     else if (containingClass.equals(delegate)) {
-                        type.addError("delegates to default constructor");
+                      //nothing to do
                     }
                     else {
                         type.addError("does not instantiate the immediate superclass: '" +

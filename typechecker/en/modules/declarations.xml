@@ -2912,9 +2912,8 @@ print(greeting);</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>a (different) partial constructor of the same class, 
-                    specifying arguments for the parameters of the partial 
-                    constructor, or,</para>
+                    <para>a different constructor of the same class, specifying 
+                    arguments for the parameters of the constructor, or,</para>
                 </listitem>
                 <listitem>
                     <para>a constructor of its immediate superclass, specifying
