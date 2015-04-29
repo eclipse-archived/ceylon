@@ -44,6 +44,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 
@@ -53,6 +55,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
@@ -83,6 +87,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -103,9 +108,11 @@ public class ExpressionVisitor extends Visitor {
     private boolean isCondition;
     private boolean dynamic;
     private boolean inExtendsClause = false;
+    private boolean nativeWrongBackend = false;
 
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
+    
     
     private Tree.IfClause ifClause() {
         if (ifStatementOrExpression instanceof Tree.IfStatement) {
@@ -138,11 +145,15 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private Unit unit;
+    private final BackendSupport backendSupport;
     
-    public ExpressionVisitor() {}
+    public ExpressionVisitor(BackendSupport backendSupport) {
+        this.backendSupport = backendSupport;
+    }
     
-    public ExpressionVisitor(Unit unit) {
+    public ExpressionVisitor(Unit unit, BackendSupport backendSupport) {
         this.unit = unit;
+        this.backendSupport = backendSupport;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -1743,6 +1754,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.AnyMethod that) {
+        boolean nwb = nativeWrongBackend;
+        nativeWrongBackend = !forBackend(that);
+        super.visit(that);
+        nativeWrongBackend = nwb;
+    }
+    
+    @Override public void visit(Tree.AnyAttribute that) {
+        boolean nwb = nativeWrongBackend;
+        nativeWrongBackend = !forBackend(that);
+        super.visit(that);
+        nativeWrongBackend = nwb;
+    }
+    
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = 
                 beginReturnScope(new Tree.VoidModifier(that.getToken()));
@@ -1756,7 +1781,10 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.ClassOrInterface that) {
+        boolean nwb = nativeWrongBackend;
+        nativeWrongBackend = !forBackend(that);
         super.visit(that);
+        nativeWrongBackend = nwb;
         validateEnumeratedSupertypeArguments(that, 
                 that.getDeclarationModel());
     }
@@ -3793,7 +3821,7 @@ public class ExpressionVisitor extends Visitor {
                         sp.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && 
+            else if (!dynamic && !nativeWrongBackend &&
                     isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
                         sp.getName() + "' of '" + 
@@ -3829,7 +3857,7 @@ public class ExpressionVisitor extends Visitor {
                         p.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && 
+            else if (!dynamic && !nativeWrongBackend &&
                     isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: '" + 
                         p.getName() + "' of '" + 
@@ -3871,7 +3899,7 @@ public class ExpressionVisitor extends Visitor {
             		.getTypedReference() //argument can't have type parameters
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
-            if (!dynamic && 
+            if (!dynamic && !nativeWrongBackend &&
                     isTypeUnknown(argType)) {
                 a.addError("could not determine type of named argument: '" + 
                         p.getName() + "'");
@@ -4008,7 +4036,7 @@ public class ExpressionVisitor extends Visitor {
             } 
             else {
                 Tree.PositionalArgument a = args.get(i);
-                if (!dynamic && 
+                if (!dynamic && !nativeWrongBackend &&
                         isTypeUnknown(p.getType())) {
                     a.addError("parameter type could not be determined: '" + 
                             p.getName() + "' of '" + 
@@ -5645,7 +5673,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getSignature(), that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
-            if (!dynamic && error) {
+            if (!dynamic && !nativeWrongBackend && error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
                 unit.getUnresolvedReferences().add(id);
@@ -5867,7 +5895,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType fullType =
                     ptr.getFullType(wrap(ptr.getType(), 
                             receivingType, that));
-            if (!dynamic && !isAbstraction(member) && 
+            if (!dynamic && !nativeWrongBackend && !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 String unknownTypeError = fullType.getFirstUnknownTypeError();
                 
@@ -5996,13 +6024,13 @@ public class ExpressionVisitor extends Visitor {
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
             ProducedType fullType = pr.getFullType();
-            if (!dynamic && !isAbstraction(member) && 
+            if (!dynamic && !nativeWrongBackend && !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
                         member.getName(unit) + "'" + 
                         getTypeUnknownError(fullType));
             }
-            if (dynamic && isTypeUnknown(fullType)) {
+            if (dynamic && !nativeWrongBackend && isTypeUnknown(fullType)) {
                 //deliberately throw away the partial
                 //type information we have
                 return;
@@ -6050,7 +6078,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getSignature(), that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && error) {
+            if (!dynamic && !nativeWrongBackend && error) {
                 that.addError("type does not exist: '" + name + "'", 102);
                 unit.getUnresolvedReferences().add(id);
             }
@@ -6455,7 +6483,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTarget(type);
             ProducedType fullType =
                     type.getFullType(wrap(type, receivingType, that));
-            if (!dynamic && 
+            if (!dynamic && !nativeWrongBackend &&
                     !that.getStaticMethodReference() &&
                     memberType instanceof Class &&
                     !isAbstraction(memberType) &&
@@ -6855,7 +6883,7 @@ public class ExpressionVisitor extends Visitor {
             }
             Tree.Variable v = that.getVariable();
             if (v!=null) {
-                if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
+                if (dynamic || nativeWrongBackend || !isTypeUnknown(st)) { //eliminate dupe errors
                     v.visit(this);
                 }
                 initOriginalDeclaration(v);
@@ -8487,6 +8515,17 @@ public class ExpressionVisitor extends Visitor {
         	}
         }
         return dec;
+    }
+    
+    private boolean forBackend(Tree.Declaration that) {
+        Annotation a = getAnnotation(that.getAnnotationList(), "native", that.getUnit());
+        if (a != null) {
+            Backend backend = Backend.fromAnnotation(getAnnotationArgument(a, ""));
+            if (backend == null || !backendSupport.supportsBackend(backend)) {
+                return false;
+            }
+        }
+        return true;
     }
     
 }

@@ -375,7 +375,7 @@ public class PhasedUnit {
         if (!fullyTyped) {
             ProducedType.depth.set(-100);
             //System.out.println("Run analysis phase for " + fileName);
-            rootNode.visit(new ExpressionVisitor());
+            rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
             rootNode.visit(new VisibilityVisitor());
             rootNode.visit(new AnnotationVisitor());
             rootNode.visit(new TypeArgumentVisitor());
