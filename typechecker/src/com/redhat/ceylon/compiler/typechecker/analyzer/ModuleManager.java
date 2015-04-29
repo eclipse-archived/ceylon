@@ -18,6 +18,8 @@ import java.util.WeakHashMap;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -35,7 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleManager {
+public class ModuleManager implements BackendSupport {
     public static class ModuleDependencyAnalysisError extends AnalysisError {
     
         public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
@@ -446,6 +448,11 @@ public class ModuleManager {
 
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("src");
+    }
+
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return true;
     }
 
     public static List<String> splitModuleName(String moduleName) {
