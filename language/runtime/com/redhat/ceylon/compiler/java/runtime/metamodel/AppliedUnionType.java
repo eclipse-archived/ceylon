@@ -36,7 +36,7 @@ public class AppliedUnionType<Union>
     @Ignore
     protected final TypeDescriptor $reifiedUnion;
     
-    final com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+    final com.redhat.ceylon.model.typechecker.model.ProducedType model;
     
     protected final Sequential<? extends ceylon.language.meta.model.Type<? extends Union>> caseTypes;
     
@@ -52,14 +52,14 @@ public class AppliedUnionType<Union>
         return sb.toString();
     }
 
-    AppliedUnionType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.UnionType union){
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
+    AppliedUnionType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.model.typechecker.model.UnionType union){
+        List<com.redhat.ceylon.model.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
         this.model = union.getType();
         this.$reifiedUnion = $reifiedType;
         @SuppressWarnings("unchecked")
         ceylon.language.meta.model.Type<? extends Union>[] types = new ceylon.language.meta.model.Type[caseTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
+        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
         this.caseTypes = Util.<ceylon.language.meta.model.Type<? extends Union>>sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);

@@ -5,8 +5,8 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -36,18 +36,18 @@ public class FreeTypeParameterType
     private void init(){
         // we need to find where it came from to look up the proper wrapper
         Scope container = wrapped.getContainer();
-        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration){
+        if(container instanceof com.redhat.ceylon.model.typechecker.model.TypeDeclaration){
             ceylon.language.meta.declaration.GenericDeclaration containerMetamodel = 
                     (ceylon.language.meta.declaration.GenericDeclaration) 
-                    Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration) container);
+                    Metamodel.getOrCreateMetamodel((com.redhat.ceylon.model.typechecker.model.TypeDeclaration) container);
             ceylon.language.meta.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
                 throw Metamodel.newModelError("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
-        }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
+        }else if(container instanceof com.redhat.ceylon.model.typechecker.model.Method){
             // try to find it in the method
-            ceylon.language.meta.declaration.FunctionDeclaration method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
+            ceylon.language.meta.declaration.FunctionDeclaration method = Metamodel.getMetamodel((com.redhat.ceylon.model.typechecker.model.Method)container);
             ceylon.language.meta.declaration.TypeParameter typeParameter = method.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;

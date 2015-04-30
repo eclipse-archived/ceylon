@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 public class AppliedMemberClassConstructor<Container,Type, Arguments extends Sequential<? extends Object>> 
         implements MemberClassConstructor<Container, Type, Arguments>, ReifiedType {

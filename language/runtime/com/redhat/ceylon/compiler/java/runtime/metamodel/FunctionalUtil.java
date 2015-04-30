@@ -8,9 +8,9 @@ import ceylon.language.finished_;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 public class FunctionalUtil {
     public static Sequential<FunctionOrValueDeclaration> getParameters(Functional declaration) {

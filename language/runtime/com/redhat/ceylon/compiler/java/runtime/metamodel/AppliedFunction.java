@@ -24,9 +24,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -66,7 +66,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.instance = instance;
         this.appliedFunction = appliedFunction;
         
-        com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
+        com.redhat.ceylon.model.typechecker.model.Method decl = (com.redhat.ceylon.model.typechecker.model.Method) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
 
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
@@ -93,7 +93,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // FIXME: delay method setup for when we actually use it?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
         Method found = null;
-        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
+        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Method) function.declaration);
         
         // special cases for some erased types
         if(javaClass == ceylon.language.Object.class
@@ -124,7 +124,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         } else{
             // FIXME: deal with Java classes and overloading
             // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-            found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
+            found = Metamodel.getJavaMethod((com.redhat.ceylon.model.typechecker.model.Method) function.declaration);
             
             int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(found, false) ? found.getTypeParameters().length : 0;
             boolean isArray = MethodHandleUtil.isJavaArray(javaClass);
@@ -208,8 +208,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-            Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
-            for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
+            Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
+            for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.model.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
             method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
@@ -409,7 +409,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
 
         return Metamodel.namedApply(this, this, 
-                (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
+                (com.redhat.ceylon.model.typechecker.model.Functional)declaration.declaration, 
                 arguments, parameterProducedTypes);
     }
 

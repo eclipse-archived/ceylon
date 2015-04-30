@@ -535,7 +535,7 @@ public class Main {
                     return loadCeylonModuleCar(file, zipFile, moduleDescriptor, name, version);
                 
                 // Special case for Ceylon default module
-                if(name.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME)
+                if(name.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME)
                         && version == null
                         && file.getName().equalsIgnoreCase("default.car"))
                     return new Module(name, null, Type.CEYLON, file);
@@ -836,10 +836,11 @@ public class Main {
             registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
+            registerInMetamodel("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
         }
-        if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
+        if(module.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
         registerInMetamodel(module, version, false);
     }
@@ -916,7 +917,7 @@ public class Main {
         }
         ModuleSpec moduleSpec = ModuleSpec.parse(args[idx], Option.VERSION_REQUIRED);
         String version;
-        if(moduleSpec.getName().equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
+        if(moduleSpec.getName().equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
         else
             version = moduleSpec.getVersion();

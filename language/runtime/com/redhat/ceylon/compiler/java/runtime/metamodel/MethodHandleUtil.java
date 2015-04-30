@@ -22,8 +22,8 @@ import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 public class MethodHandleUtil {
 
@@ -35,7 +35,7 @@ public class MethodHandleUtil {
         return MethodHandles.insertArguments(constructor, insertAt, typeDescriptors);
     }
     
-    public static MethodHandle insertConstructorNameArgument(MethodHandle constructor, int insertAt, com.redhat.ceylon.compiler.typechecker.model.Constructor ctor) {
+    public static MethodHandle insertConstructorNameArgument(MethodHandle constructor, int insertAt, com.redhat.ceylon.model.typechecker.model.Constructor ctor) {
         return MethodHandles.insertArguments(constructor, insertAt, new Object[]{null});
     }
 
@@ -218,7 +218,7 @@ public class MethodHandleUtil {
         if(producedType == null)
             return false;
         TypeDeclaration declaration = producedType.getDeclaration();
-        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class == false)
+        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Class == false)
             return false;
         // this is probably the fastest check we can make
         return declaration.getQualifiedNameString().equals("ceylon.language::Character");

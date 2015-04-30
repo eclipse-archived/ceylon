@@ -21,11 +21,11 @@ public abstract class FreeNestableDeclaration
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeNestableDeclaration.class);
 
     @Ignore
-    protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
+    protected com.redhat.ceylon.model.typechecker.model.Declaration declaration;
     
     private Package pkg;
 
-    public FreeNestableDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+    public FreeNestableDeclaration(com.redhat.ceylon.model.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
     }
 

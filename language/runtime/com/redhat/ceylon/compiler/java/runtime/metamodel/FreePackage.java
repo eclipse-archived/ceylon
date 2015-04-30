@@ -29,11 +29,11 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreePackage.class);
     
-    private com.redhat.ceylon.compiler.typechecker.model.Package declaration;
+    private com.redhat.ceylon.model.typechecker.model.Package declaration;
 
     private FreeModule module;
 
-    public FreePackage(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
+    public FreePackage(com.redhat.ceylon.model.typechecker.model.Package declaration){
         this.declaration = declaration;
     }
     
@@ -132,9 +132,9 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         if (predicate == Predicates.false_()) {
             return (Sequential<? extends Kind>)empty_.get_();
         }
-        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        List<com.redhat.ceylon.model.typechecker.model.Declaration> modelMembers = declaration.getMembers();
         ArrayList<Kind> members = new ArrayList<Kind>(modelMembers.size());
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+        for(com.redhat.ceylon.model.typechecker.model.Declaration modelDecl : modelMembers){
             if (predicate.accept(modelDecl)) {
                 Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
                 members.add(member);
@@ -153,8 +153,8 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         if (predicate == Predicates.false_()) {
             return null;
         }
-        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+        List<com.redhat.ceylon.model.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        for(com.redhat.ceylon.model.typechecker.model.Declaration modelDecl : modelMembers){
             if (predicate.accept(modelDecl)) {
                 return (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
             }
@@ -165,40 +165,40 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     @Override
     @TypeInfo("ceylon.language.meta.declaration::ValueDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.ValueDeclaration getValue(String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
-        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
+        com.redhat.ceylon.model.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.Value == false)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) toplevel;
+        com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) toplevel;
         return (FreeValue) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.FunctionDeclaration getFunction(String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
-        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
+        com.redhat.ceylon.model.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.Method == false)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) toplevel;
+        com.redhat.ceylon.model.typechecker.model.Method decl = (com.redhat.ceylon.model.typechecker.model.Method) toplevel;
         return (FreeFunction) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
-        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
+        com.redhat.ceylon.model.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface == false)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) toplevel;
+        com.redhat.ceylon.model.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) toplevel;
         return (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::AliasDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.AliasDeclaration getAlias(String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
-        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias == false)
+        com.redhat.ceylon.model.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.TypeAlias == false)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.TypeAlias decl = (com.redhat.ceylon.compiler.typechecker.model.TypeAlias) toplevel;
+        com.redhat.ceylon.model.typechecker.model.TypeAlias decl = (com.redhat.ceylon.model.typechecker.model.TypeAlias) toplevel;
         return (FreeAliasDeclaration) Metamodel.getOrCreateMetamodel(decl);
     }
 

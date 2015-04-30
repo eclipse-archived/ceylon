@@ -28,8 +28,8 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -69,9 +69,9 @@ public class AppliedValue<Get, Set>
     }
 
     private void initField(Object instance, ProducedType valueType) {
-        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) declaration.declaration;
+        com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
         if(decl instanceof JavaBeanValue){
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
+            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
             if(javaClass == ceylon.language.Object.class
                     || javaClass == ceylon.language.Basic.class
                     || javaClass == ceylon.language.Identifiable.class){
@@ -133,7 +133,7 @@ public class AppliedValue<Get, Set>
             }
         }else if(decl instanceof FieldValue){
             FieldValue fieldDecl = (FieldValue) decl;
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
+            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
             String fieldName = fieldDecl.getRealName();
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 try {
@@ -171,7 +171,7 @@ public class AppliedValue<Get, Set>
             throw Metamodel.newModelError("Unsupported attribute type: "+decl);
     }
 
-    private void initSetter(com.redhat.ceylon.compiler.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
+    private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
                             java.lang.Class<?> getterReturnType, Object instance, ProducedType valueType) {
         if(!decl.isVariable())
             return;

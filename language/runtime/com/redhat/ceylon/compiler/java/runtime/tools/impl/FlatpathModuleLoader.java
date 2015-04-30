@@ -13,7 +13,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     final Map<String, String> extraModules;
@@ -51,6 +51,7 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
                 loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
                 loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true);
                 loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true);
+                loadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false, true);
                 loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true);
                 loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true);
                 // these ones not necessarily
@@ -70,6 +71,7 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
             registerInMetamodel("ceylon.language", registered);
             registerInMetamodel("com.redhat.ceylon.typechecker", registered);
             registerInMetamodel("com.redhat.ceylon.common", registered);
+            registerInMetamodel("com.redhat.ceylon.model", registered);
             registerInMetamodel("com.redhat.ceylon.module-resolver", registered);
             registerInMetamodel("com.redhat.ceylon.compiler.java", registered);
             registerInMetamodel(module, registered);

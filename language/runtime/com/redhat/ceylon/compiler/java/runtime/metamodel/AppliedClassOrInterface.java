@@ -31,11 +31,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -46,7 +46,7 @@ public abstract class AppliedClassOrInterface<Type>
     implements ceylon.language.meta.model.ClassOrInterface<Type>, ReifiedType {
 
     private volatile boolean initialised;
-    final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
+    final com.redhat.ceylon.model.typechecker.model.ProducedType producedType;
     protected final com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
@@ -54,7 +54,7 @@ public abstract class AppliedClassOrInterface<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.model.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
         this.declaration = Metamodel.getOrCreateMetamodel(producedType.getDeclaration());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
@@ -79,20 +79,20 @@ public abstract class AppliedClassOrInterface<Type>
     
     @SuppressWarnings("unchecked")
     protected void init() {
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
         
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
+            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
             this.superclass = (ceylon.language.meta.model.ClassModel<?,? super Sequential<? extends Object>>) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
+        List<com.redhat.ceylon.model.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
         ceylon.language.meta.model.InterfaceModel<?>[] interfaces = new ceylon.language.meta.model.InterfaceModel[satisfiedTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
+        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
+            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
             interfaces[i++] = (ceylon.language.meta.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
         this.interfaces = Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor$), interfaces);
@@ -505,7 +505,7 @@ public abstract class AppliedClassOrInterface<Type>
             FreeNestableDeclaration decl) {
         FreeClassOrInterface valueContainer = (FreeClassOrInterface) decl.getContainer();
         if(valueContainer != declaration){
-            ProducedType valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration)valueContainer.declaration);
+            ProducedType valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.model.typechecker.model.TypeDeclaration)valueContainer.declaration);
             return (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel(valueContainerType);
         }else{
             return (AppliedClassOrInterface<Container>) this;
@@ -1231,19 +1231,19 @@ public abstract class AppliedClassOrInterface<Type>
             Declaration memberInContainer = reifiedContainer.getDeclaration().getMember(value.getName(), null, false);
             // cheaper this way than through reflection type checks
             if($reifiedT == FreeValue.$TypeDescriptor$){
-                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
+                if(memberInContainer instanceof com.redhat.ceylon.model.typechecker.model.Value == false)
                     return null;
             }else if($reifiedT == FreeFunction.$TypeDescriptor$){
-                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
+                if(memberInContainer instanceof com.redhat.ceylon.model.typechecker.model.Method == false)
                     return null;
             }else if($reifiedT == FreeInterface.$TypeDescriptor$){
-                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Interface == false)
+                if(memberInContainer instanceof com.redhat.ceylon.model.typechecker.model.Interface == false)
                     return null;
             }else if($reifiedT == FreeClass.$TypeDescriptor$){
-                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Class == false)
+                if(memberInContainer instanceof com.redhat.ceylon.model.typechecker.model.Class == false)
                     return null;
             }else if($reifiedT == FreeClassOrInterface.$TypeDescriptor$){
-                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
+                if(memberInContainer instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface == false)
                     return null;
             }else{
                 throw new AssertionError("Member type not supported: "+$reifiedT);

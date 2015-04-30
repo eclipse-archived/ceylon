@@ -24,9 +24,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -52,7 +52,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
                         @Ignore TypeDescriptor $reifiedArguments,
-                        com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, 
+                        com.redhat.ceylon.model.typechecker.model.ProducedType producedType, 
                         ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, producedType);
         this.$reifiedArguments = $reifiedArguments;
@@ -67,7 +67,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
 
     protected boolean hasConstructors() {
-        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Class decl = (com.redhat.ceylon.model.typechecker.model.Class) producedType.getDeclaration();
         return decl.hasConstructors();
     }
     
@@ -75,7 +75,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     protected void init() {
         super.init();
-        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Class decl = (com.redhat.ceylon.model.typechecker.model.Class) producedType.getDeclaration();
 
         // anonymous classes don't have constructors
         // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
@@ -90,16 +90,16 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
-    private void initConstructor(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
+    private void initConstructor(com.redhat.ceylon.model.typechecker.model.Class decl) {
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
         boolean invokeOnCompanionInstance = this.instance != null 
-                && decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
+                && decl.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.Interface
                 && !decl.isShared();
         if (invokeOnCompanionInstance) {
-            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration.declaration.getContainer());
+            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.model.typechecker.model.Interface)declaration.declaration.getContainer());
         }
         
         Object[] defaultedMethods = null;
@@ -478,15 +478,15 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             return ctor.namedApply(arguments);
         } else {
             return Metamodel.namedApply(this, this, 
-                    (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
+                    (com.redhat.ceylon.model.typechecker.model.Functional)declaration.declaration, 
                     arguments, parameterProducedTypes);
         }
     }
     
     @Override
     public Object getDefaultParameterValue(Parameter parameter, Array<Object> values, int collectedValueCount) {
-        com.redhat.ceylon.compiler.typechecker.model.Class decl = 
-                (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.declaration;
+        com.redhat.ceylon.model.typechecker.model.Class decl = 
+                (com.redhat.ceylon.model.typechecker.model.Class)declaration.declaration;
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(decl);
 
         Method found = null;

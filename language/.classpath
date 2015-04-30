@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/lib/jboss-modules-1.3.3.Final.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/lib/jandex-1.0.3.Final.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-js"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

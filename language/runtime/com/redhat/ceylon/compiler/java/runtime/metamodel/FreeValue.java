@@ -19,10 +19,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -37,7 +37,7 @@ public class FreeValue
 
     private FreeSetter setter;
 
-    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+    protected FreeValue(com.redhat.ceylon.model.typechecker.model.Value declaration) {
         super(declaration);
 
         this.type = Metamodel.getMetamodel(declaration.getType());
@@ -51,7 +51,7 @@ public class FreeValue
 
     @Override
     public boolean getVariable(){
-        return ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) declaration).isVariable();
+        return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isVariable();
     }
     
     
@@ -82,13 +82,13 @@ public class FreeValue
                                                                       @Ignore TypeDescriptor $reifiedSet){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
+        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
 
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType getType = typedReference.getType();
+        com.redhat.ceylon.model.typechecker.model.ProducedType getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType setType = getVariable() ? 
+        com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
                 getType : modelDecl.getUnit().getNothingDeclaration().getType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
@@ -115,16 +115,16 @@ public class FreeValue
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
         ProducedType qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
-        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
+        com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
         // find the proper qualifying type
         ProducedType memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
-        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<ProducedType>emptyList());
+        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType getType = typedReference.getType();
+        com.redhat.ceylon.model.typechecker.model.ProducedType getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType setType = getVariable() ? 
+        com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
                 getType : modelDecl.getUnit().getNothingDeclaration().getType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
@@ -192,11 +192,11 @@ public class FreeValue
     @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration|ceylon.language::Null")
     @Override
     public SetterDeclaration getSetter() {
-        if(setter == null && ((com.redhat.ceylon.compiler.typechecker.model.Value)declaration).getSetter() != null){
+        if(setter == null && ((com.redhat.ceylon.model.typechecker.model.Value)declaration).getSetter() != null){
             synchronized(Metamodel.getLock()){
                 if(setter == null){
                     // must be deferred because getter/setter refer to one another
-                    com.redhat.ceylon.compiler.typechecker.model.Setter setterModel = ((com.redhat.ceylon.compiler.typechecker.model.Value)declaration).getSetter();
+                    com.redhat.ceylon.model.typechecker.model.Setter setterModel = ((com.redhat.ceylon.model.typechecker.model.Value)declaration).getSetter();
                     if(setterModel != null)
                         this.setter = (FreeSetter) Metamodel.getOrCreateMetamodel(setterModel);
                 }
@@ -219,23 +219,23 @@ public class FreeValue
             // get the annotations from the parameter itself
             Annotation[][] parameterAnnotations;
             Scope container = parameter.getModel().getContainer();
-            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+            if(container instanceof com.redhat.ceylon.model.typechecker.model.Method) {
                 parameterAnnotations = Metamodel.getJavaMethod(
-                        (com.redhat.ceylon.compiler.typechecker.model.Method)container)
+                        (com.redhat.ceylon.model.typechecker.model.Method)container)
                         .getParameterAnnotations();
-            } else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassAlias){
+            } else if(container instanceof com.redhat.ceylon.model.typechecker.model.ClassAlias){
                 parameterAnnotations = Reflection.findClassAliasInstantiator(
-                        Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container),
-                        (com.redhat.ceylon.compiler.typechecker.model.ClassAlias)container)
+                        Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.Class)container),
+                        (com.redhat.ceylon.model.typechecker.model.ClassAlias)container)
                         .getParameterAnnotations();
-            } else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            } else if(container instanceof com.redhat.ceylon.model.typechecker.model.Class){
                 // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
-                parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)).getParameterAnnotations();
+                parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.Class)container)).getParameterAnnotations();
             }else{
                 throw Metamodel.newModelError("Unsupported parameter container");
             }
             // now find the right parameter
-            List<Parameter> parameters = ((com.redhat.ceylon.compiler.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
+            List<Parameter> parameters = ((com.redhat.ceylon.model.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
             int index = parameters.indexOf(parameter);
             if(index == -1)
                 throw Metamodel.newModelError("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());

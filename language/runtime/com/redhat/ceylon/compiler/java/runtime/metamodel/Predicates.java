@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 /**
  * Factory methods for constructing predicates on things. 
@@ -192,7 +192,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_VALUE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value;
         }
         @Override
         public String toString() {
@@ -204,7 +204,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Method;
         }
         @Override
         public String toString() {
@@ -216,8 +216,8 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION_OR_VALUE = new Predicate<Declaration>() {
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                || declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
+                || declaration instanceof com.redhat.ceylon.model.typechecker.model.Method
             ;
         }
         @Override
@@ -230,7 +230,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_CLASS = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Class;
         }
         @Override
         public String toString() {
@@ -242,7 +242,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_INTERFACE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Interface;
         }
         @Override
         public String toString() {
@@ -254,7 +254,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_CLASS_OR_INTERFACE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
         }
         @Override
         public String toString() {
@@ -266,7 +266,7 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_ALIAS = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.TypeAlias;
         }
         @Override
         public String toString() {

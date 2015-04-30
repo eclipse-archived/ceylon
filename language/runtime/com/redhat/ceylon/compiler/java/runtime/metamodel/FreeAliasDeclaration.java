@@ -24,7 +24,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
 
     private OpenType extendedType;
     
-    public FreeAliasDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration) {
+    public FreeAliasDeclaration(com.redhat.ceylon.model.typechecker.model.TypeAlias declaration) {
         super(declaration);
         
         this.openType = Metamodel.getMetamodel(declaration.getType().resolveAliases());
@@ -42,7 +42,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     }
 
     private void init() {
-        com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration = (com.redhat.ceylon.compiler.typechecker.model.TypeAlias) this.declaration;
+        com.redhat.ceylon.model.typechecker.model.TypeAlias declaration = (com.redhat.ceylon.model.typechecker.model.TypeAlias) this.declaration;
         
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         

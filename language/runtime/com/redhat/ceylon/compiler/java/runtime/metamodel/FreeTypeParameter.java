@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -33,7 +33,7 @@ public class FreeTypeParameter
 
     private FreeNestableDeclaration container;
     
-    public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
+    public FreeTypeParameter(com.redhat.ceylon.model.typechecker.model.TypeParameter declaration) {
         this.declaration = declaration;
     }
 

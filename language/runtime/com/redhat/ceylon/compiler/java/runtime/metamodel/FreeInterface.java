@@ -21,7 +21,7 @@ public class FreeInterface
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeInterface.class);
     
-    public FreeInterface(com.redhat.ceylon.compiler.typechecker.model.Interface declaration) {
+    public FreeInterface(com.redhat.ceylon.model.typechecker.model.Interface declaration) {
         super(declaration);
     }
 

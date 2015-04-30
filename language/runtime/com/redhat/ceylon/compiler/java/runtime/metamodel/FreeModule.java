@@ -36,11 +36,11 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeModule.class);
     private static final java.lang.annotation.Annotation[] NO_ANNOTATION = new java.lang.annotation.Annotation[0];
-    protected com.redhat.ceylon.compiler.typechecker.model.Module declaration;
+    protected com.redhat.ceylon.model.typechecker.model.Module declaration;
     private Sequential<? extends Package> packages;
     private Sequential<? extends Import> dependencies;
     
-    public FreeModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
+    public FreeModule(com.redhat.ceylon.model.typechecker.model.Module declaration) {
         this.declaration = declaration;
     }
 
@@ -78,7 +78,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     public Sequential<? extends Package> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
-            List<com.redhat.ceylon.compiler.typechecker.model.Package> modelPackages = declaration.getPackages();
+            List<com.redhat.ceylon.model.typechecker.model.Package> modelPackages = declaration.getPackages();
             Package[] packages = new Package[modelPackages.size()];
             for(int i=0;i<packages.length;i++){
                 packages[i] = Metamodel.getOrCreateMetamodel(modelPackages.get(i));
@@ -91,14 +91,14 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Package")
     public Package findPackage(@Name("name") String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getDirectPackage(name);
+        com.redhat.ceylon.model.typechecker.model.Package pkg = declaration.getDirectPackage(name);
         return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
     }
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Package")
     public Package findImportedPackage(@Name("name") String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getPackage(name);
+        com.redhat.ceylon.model.typechecker.model.Package pkg = declaration.getPackage(name);
         return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
     }
 
@@ -107,10 +107,10 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     public Sequential<? extends Import> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.dependencies == null){
-            List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
+            List<com.redhat.ceylon.model.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
             ArrayList<FreeImport> sb = new ArrayList<FreeImport>(modelImports.size());
-            for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
+            for(com.redhat.ceylon.model.typechecker.model.ModuleImport moduleImport : modelImports){
                 sb.add(new FreeImport(this, moduleImport));
             }
             FreeImport[] array = sb.toArray(new FreeImport[0]);

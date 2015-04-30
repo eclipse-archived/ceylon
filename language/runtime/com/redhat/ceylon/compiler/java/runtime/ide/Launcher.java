@@ -18,7 +18,7 @@ import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
  * Temporary launcher for the IDE that sets up the runtime module system, to be removed when the IDE

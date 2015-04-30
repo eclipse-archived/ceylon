@@ -25,11 +25,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates.Predicate;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -42,7 +42,7 @@ public class FreeClass
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameters;
     private List<ConstructorDeclaration> constructors;
     
-    public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
+    public FreeClass(com.redhat.ceylon.model.typechecker.model.Class declaration) {
         super(declaration);
     }
     
@@ -52,11 +52,11 @@ public class FreeClass
         super.init();
         // anonymous classes don't have parameter lists
         if(!declaration.isAnonymous()){
-            com.redhat.ceylon.compiler.typechecker.model.Class classDeclaration = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration;
+            com.redhat.ceylon.model.typechecker.model.Class classDeclaration = (com.redhat.ceylon.model.typechecker.model.Class)declaration;
             if(classDeclaration.isAbstraction()){
                 List<Declaration> overloads = classDeclaration.getOverloads();
                 if(overloads.size() == 1){
-                    classDeclaration = (com.redhat.ceylon.compiler.typechecker.model.Class) overloads.get(0);
+                    classDeclaration = (com.redhat.ceylon.model.typechecker.model.Class) overloads.get(0);
                 }else{
                     throw Metamodel.newModelError("Class has more than one overloaded constructor");
                 }
@@ -116,12 +116,12 @@ public class FreeClass
 
     @Override
     public boolean getAbstract() {
-        return ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).isAbstract();
+        return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isAbstract();
     }
 
     @Override
     public boolean getFinal() {
-        return ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).isFinal();
+        return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isFinal();
     }
 
     @Override
@@ -158,9 +158,9 @@ public class FreeClass
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
         AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());;
         Metamodel.checkReifiedTypeArgument("classApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
                 Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);

@@ -30,7 +30,7 @@ public class FreeSetter
     
     private Method declaredSetter;
 
-    public FreeSetter(com.redhat.ceylon.compiler.typechecker.model.Setter setter) {
+    public FreeSetter(com.redhat.ceylon.model.typechecker.model.Setter setter) {
         super(setter);
     }
 
@@ -39,7 +39,7 @@ public class FreeSetter
         if(value == null){
             synchronized(Metamodel.getLock()){
                 if(value == null){
-                    com.redhat.ceylon.compiler.typechecker.model.Setter setter = ((com.redhat.ceylon.compiler.typechecker.model.Setter)declaration);
+                    com.redhat.ceylon.model.typechecker.model.Setter setter = ((com.redhat.ceylon.model.typechecker.model.Setter)declaration);
                     this.value = (FreeValue) Metamodel.getOrCreateMetamodel(setter.getGetter());
                     java.lang.Class<?> javaClass = Metamodel.getJavaClass(value.declaration);
                     String setterName = Naming.getSetterName(value.declaration);

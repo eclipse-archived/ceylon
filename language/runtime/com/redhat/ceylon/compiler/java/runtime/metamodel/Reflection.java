@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
+import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 
 class Reflection {
 

@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
@@ -38,7 +38,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     protected void init() {
         super.init();
-        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Class decl = (com.redhat.ceylon.model.typechecker.model.Class) producedType.getDeclaration();
 
         // anonymous classes don't have constructors
         // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about

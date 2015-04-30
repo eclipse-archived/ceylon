@@ -27,8 +27,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8, minor=0)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -72,7 +72,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         this.declaration = declaration;
         this.instance = instance;
         
-        com.redhat.ceylon.compiler.typechecker.model.Constructor decl = declaration.constructor;
+        com.redhat.ceylon.model.typechecker.model.Constructor decl = declaration.constructor;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         
         // get a list of produced parameter types
@@ -96,9 +96,9 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     }
 
     private void initConstructor() {
-        com.redhat.ceylon.compiler.typechecker.model.Constructor constructorModel = this.declaration.constructor;
+        com.redhat.ceylon.model.typechecker.model.Constructor constructorModel = this.declaration.constructor;
         
-        com.redhat.ceylon.compiler.typechecker.model.Class classModel = (com.redhat.ceylon.compiler.typechecker.model.Class)constructorModel.getContainer();
+        com.redhat.ceylon.model.typechecker.model.Class classModel = (com.redhat.ceylon.model.typechecker.model.Class)constructorModel.getContainer();
         
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(classModel);
 
@@ -108,10 +108,10 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
                 && constructorModel.isShared()
                 && classModel.isShared();
         boolean invokeOnCompanionInstance = this.instance != null 
-                && classModel.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
+                && classModel.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.Interface
                 && !(constructorModel.isShared() && classModel.isShared());
         if (invokeOnCompanionInstance) {
-            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.compiler.typechecker.model.Interface)classModel.getContainer());
+            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.model.typechecker.model.Interface)classModel.getContainer());
         }
         
         List<Parameter> parameters = constructorModel.getParameterLists().get(0).getParameters();
@@ -477,7 +477,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         checkConstructor();
         
         return Metamodel.namedApply(this, this, 
-                (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.constructor, 
+                (com.redhat.ceylon.model.typechecker.model.Functional)declaration.constructor, 
                 arguments, parameterProducedTypes);
     }
 

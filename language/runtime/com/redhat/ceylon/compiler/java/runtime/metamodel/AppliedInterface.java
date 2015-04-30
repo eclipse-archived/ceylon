@@ -23,7 +23,7 @@ public class AppliedInterface<Type>
 
     // FIXME: get rid of duplicate instantiations of AppliedInterfaceType when the type in question has no type parameters
     public AppliedInterface(@Ignore TypeDescriptor $reifiedType, 
-                            com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType,
+                            com.redhat.ceylon.model.typechecker.model.ProducedType producedType,
                             ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, producedType);
         this.container = container;

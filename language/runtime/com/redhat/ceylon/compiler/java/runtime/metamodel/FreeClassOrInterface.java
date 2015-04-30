@@ -27,10 +27,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -58,13 +58,13 @@ public abstract class FreeClassOrInterface
 
     private Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypes;
 
-    public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
+    public FreeClassOrInterface(com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void init(){
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
+        com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) this.declaration;
         
         ProducedType superType = declaration.getExtendedType();
         if(superType != null)
@@ -85,42 +85,42 @@ public abstract class FreeClassOrInterface
 
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
-        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
+        List<com.redhat.ceylon.model.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         this.declaredDeclarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
+        for(com.redhat.ceylon.model.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(isSupportedType(memberModelDeclaration))
                 declaredDeclarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
         }
 
-        Collection<com.redhat.ceylon.compiler.typechecker.model.Declaration> inheritedModelDeclarations = 
+        Collection<com.redhat.ceylon.model.typechecker.model.Declaration> inheritedModelDeclarations = 
                 collectMembers(declaration);
         this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : inheritedModelDeclarations){
+        for(com.redhat.ceylon.model.typechecker.model.Declaration memberModelDeclaration : inheritedModelDeclarations){
             if(isSupportedType(memberModelDeclaration))
                 declarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
         }
     }
 
     private boolean isSupportedType(Declaration memberModelDeclaration) {
-        return memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                || (memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
-                        && !((com.redhat.ceylon.compiler.typechecker.model.Method)memberModelDeclaration).isAbstraction())
-                || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias
-                || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface
-                || (memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class
-                        && !((com.redhat.ceylon.compiler.typechecker.model.Class)memberModelDeclaration).isAbstraction());
+        return memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Value
+                || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Method
+                        && !((com.redhat.ceylon.model.typechecker.model.Method)memberModelDeclaration).isAbstraction())
+                || memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.TypeAlias
+                || memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Interface
+                || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Class
+                        && !((com.redhat.ceylon.model.typechecker.model.Class)memberModelDeclaration).isAbstraction());
     }
 
-    private Collection<com.redhat.ceylon.compiler.typechecker.model.Declaration> collectMembers(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration base){
-        Map<String, com.redhat.ceylon.compiler.typechecker.model.Declaration> byName = 
-                new HashMap<String, com.redhat.ceylon.compiler.typechecker.model.Declaration>();
+    private Collection<com.redhat.ceylon.model.typechecker.model.Declaration> collectMembers(com.redhat.ceylon.model.typechecker.model.TypeDeclaration base){
+        Map<String, com.redhat.ceylon.model.typechecker.model.Declaration> byName = 
+                new HashMap<String, com.redhat.ceylon.model.typechecker.model.Declaration>();
         collectMembers(base, byName);
         return byName.values();
     }
     
-    private void collectMembers(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration base, Map<String, Declaration> byName) {
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration decl : base.getMembers()){
-            if(decl.isShared() && com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable(decl)){
+    private void collectMembers(com.redhat.ceylon.model.typechecker.model.TypeDeclaration base, Map<String, Declaration> byName) {
+        for(com.redhat.ceylon.model.typechecker.model.Declaration decl : base.getMembers()){
+            if(decl.isShared() && com.redhat.ceylon.model.typechecker.model.Util.isResolvable(decl)){
                 Declaration otherDeclaration = byName.get(decl.getName());
                 if(otherDeclaration == null || decl.refines(otherDeclaration))
                     byName.put(decl.getName(), decl);
@@ -128,7 +128,7 @@ public abstract class FreeClassOrInterface
         }
         if(base.getExtendedTypeDeclaration() != null)
             collectMembers(base.getExtendedTypeDeclaration(), byName);
-        for(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration st : base.getSatisfiedTypeDeclarations()){
+        for(com.redhat.ceylon.model.typechecker.model.TypeDeclaration st : base.getSatisfiedTypeDeclarations()){
             collectMembers(st, byName);
         }
     }
@@ -329,12 +329,12 @@ public abstract class FreeClassOrInterface
 
     @Override
     public boolean getIsAlias(){
-        return ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)declaration).isAlias();
+        return ((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)declaration).isAlias();
     }
 
     @Override
     public OpenType getOpenType() {
-        return Metamodel.getMetamodel(((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)declaration).getType());
+        return Metamodel.getMetamodel(((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)declaration).getType());
     }
 
     @Override
@@ -360,9 +360,9 @@ public abstract class FreeClassOrInterface
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
         Metamodel.checkReifiedTypeArgument("apply", "ClassOrInterface<$1>", Variance.OUT, appliedType.getType(), $reifiedType);
         return (ClassOrInterface<Type>) Metamodel.getAppliedMetamodel(appliedType.getType());
     }
@@ -420,7 +420,7 @@ public abstract class FreeClassOrInterface
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         Sequential<? extends ceylon.language.meta.model.Type<?>> types,
                                                                         ceylon.language.meta.model.Type<? extends Object> container){
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);

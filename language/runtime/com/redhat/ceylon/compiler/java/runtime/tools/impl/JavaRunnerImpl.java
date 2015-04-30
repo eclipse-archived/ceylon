@@ -38,7 +38,7 @@ public class JavaRunnerImpl implements JavaRunner {
         
         if(options.getRun() != null)
             className = options.getRun().replace("::", ".");
-        else if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
+        else if(module.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
             className = "run_";
         else
             className = module + ".run_";

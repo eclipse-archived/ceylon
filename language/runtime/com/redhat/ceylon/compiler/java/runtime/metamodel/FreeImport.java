@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

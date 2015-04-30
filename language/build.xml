@@ -53,6 +53,9 @@
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
     <!-- For JS -->
     <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
     <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
@@ -70,11 +73,13 @@
 
     <path id="compile.classpath">
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
     </path>
     
     <path id="test.compile.classpath">
         <pathelement path="${build.dist.repo}/${ceylon.language.car}"/>
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${junit.lib}"/>
     </path>
@@ -95,6 +100,7 @@
         <pathelement path="${antlr.lib}"/>
         <pathelement path="${json.lib}" />
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler-js.lib}"/>
