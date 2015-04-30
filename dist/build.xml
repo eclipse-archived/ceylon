@@ -13,7 +13,7 @@
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
     <property name="ceylon.bin.dir" value="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
+    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
 
@@ -119,6 +119,7 @@ Some more basic ant tasks:
             </reposet>
             <moduleset>
                 <module name="com.redhat.ceylon.common" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
@@ -194,6 +195,7 @@ Use this when NOT doing a release!">
 Used with another target such as 'package'.">
         <property name="projects.base.dir" value="${projects.dir}"/>
         <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
         <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
@@ -209,6 +211,7 @@ Used with another target such as 'package'.">
 Used with another target such as 'package'">
         <property name="projects.base.dir" value="${basedir}/.." />
         <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
         <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
@@ -392,7 +395,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-typechecker" depends="install-cmr,install-typechecker-nodeps" />
+    <target name="install-typechecker" depends="install-model,install-cmr,install-typechecker-nodeps" />
     <target name="install-typechecker-nodeps">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -413,6 +416,15 @@ Used with another target such as 'package'">
     <target name="install-common" depends="install-common-nodeps" />
     <target name="install-common-nodeps">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-model" depends="install-model-nodeps" />
+    <target name="install-model-nodeps">
+        <ant antfile="${ceylon-model.dir}/build.xml" target="publish" dir="${ceylon-model.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
