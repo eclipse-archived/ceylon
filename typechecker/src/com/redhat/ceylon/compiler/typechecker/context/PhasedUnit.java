@@ -32,12 +32,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.VisibilityVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
@@ -50,6 +44,13 @@ import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
+import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -60,7 +61,7 @@ public class PhasedUnit {
     
     private Tree.CompilationUnit rootNode;
     private Package pkg;
-    private Unit unit;
+    private TypecheckerUnit unit;
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
@@ -170,8 +171,8 @@ public class PhasedUnit {
         return null;
     }
 
-    protected Unit createUnit() {
-        return new Unit();
+    protected TypecheckerUnit createUnit() {
+        return new TypecheckerUnit();
     }
     
     public void visitRemainingModulePhase() {
@@ -317,7 +318,7 @@ public class PhasedUnit {
                 UnitFactory unitFactory = 
                         new UnitFactory() {
                     @Override
-                    public Unit createUnit() {
+                    public TypecheckerUnit createUnit() {
                         return PhasedUnit.this.createUnit();
                     }
                 };

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.context;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.model.typechecker.model.Modules;
 
 /**
  * Keep compiler contextual information like the package stack and the current module

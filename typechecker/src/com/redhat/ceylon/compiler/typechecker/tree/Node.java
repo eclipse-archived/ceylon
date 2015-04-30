@@ -11,11 +11,11 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 public abstract class Node {
     
@@ -25,7 +25,7 @@ public abstract class Node {
     private Token firstChildToken;
     private Token lastChildToken;
     private Scope scope;
-    private Unit unit;
+    private TypecheckerUnit unit;
     private List<Message> errors = null;
     
     protected Node(Token token) {
@@ -47,11 +47,11 @@ public abstract class Node {
      * The compilation unit in which the node
      * occurs.
      */
-    public Unit getUnit() {
+    public TypecheckerUnit getUnit() {
         return unit;
     }
     
-    public void setUnit(Unit unit) {
+    public void setUnit(TypecheckerUnit unit) {
         this.unit = unit;
     }
     
