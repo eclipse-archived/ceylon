@@ -9,34 +9,71 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
 public class CtorDelegation {
     
-    private Constructor ctor;
-    private Declaration extending;
+    private final Constructor ctor;
+    private final Declaration extending;
     
+    /**
+     * 
+     * @param ctor The constructor
+     * @param extending The declaration of what the constructor extends 
+     * (Class, Constructor from superclass, Constructor from this class)
+     */
     public CtorDelegation(Constructor ctor, Declaration extending){
         this.ctor = ctor;
         this.extending = extending;
     }
-    
+
+    /**
+     * The constructor
+     * @return
+     */
     public Constructor getConstructor() {
         return ctor;
     }
+    
+    /**
+     * The declaration of what the constructor extends 
+     * (Class, Constructor from superclass, Constructor from this class)
+     * @return
+     */
     public Declaration getExtending() {
         return extending;
     }
+    /**
+     * The extended Constructor if it is a Constructor. Will be null if extending a Class initializer
+     */
     public Constructor getExtendingConstructor() {
         return extending instanceof Constructor ? (Constructor)extending : null;
     }
+    /**
+     * Is the constructor delegating to another constructor in the same class
+     * @return
+     */
     public boolean isSelfDelegation() {
         return ctor != null && extending instanceof Constructor && ctor.getContainer().equals(extending.getContainer());
     }
+    /**
+     * true if the constructor is extending a non-abstract constructor from the same class
+     * @return
+     */
     public boolean isConcreteSelfDelegation() {
         return isSelfDelegation() && !((Constructor)extending).isAbstract();
     }
+    /**
+     * true if the constructor is extends an abstract constructor from the same class
+     * @return
+     */
     public boolean isAbstractSelfDelegation() {
         return isSelfDelegation() && ((Constructor)extending).isAbstract();
     }
+    /**
+     * true if this delegation is delegating to a superclass initializer or constructor,
+     * or is delegating to an abstract constructor of the same class
+     * @return
+     */
     public boolean isAbstractSelfOrSuperDelegation() {
-        return extending instanceof Constructor == false || ((Constructor)extending).isAbstract();
+        return !isSelfDelegation() || 
+                extending instanceof Constructor && ((Constructor)extending).isAbstract();
     }
     /**
      * Does any other constructor in the given map delegate to the given constructor? 

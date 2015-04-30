@@ -36,11 +36,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.List;
@@ -132,7 +134,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ClassBody that) {
         // Transform executable statements and declarations in the body
         // except constructors. Record how constructors delegate.
-        HashMap<Constructor, CtorDelegation> delegatedConcretes = new HashMap<Constructor, CtorDelegation>();
+        HashMap<Constructor, CtorDelegation> delegates = new HashMap<Constructor, CtorDelegation>();
         for (Tree.Statement stmt : that.getStatements()) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
@@ -140,10 +142,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                 Constructor ctorModel = ctor.getDeclarationModel();
                 if (ctor.getDelegatedConstructor() != null) {
                     Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
-                    delegatedConcretes.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
+                    delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
                 } else {
                     // implicitly delegating to superclass initializer
-                    delegatedConcretes.put(ctorModel, new CtorDelegation(ctorModel, Decl.getConstructedClass(ctorModel).getExtendedTypeDeclaration()));
+                    delegates.put(ctorModel, new CtorDelegation(ctorModel, Decl.getConstructedClass(ctorModel).getExtendedTypeDeclaration()));
                 }
             } else {
                 HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
@@ -173,10 +175,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
             
             Constructor ctorModel = ctor.getDeclarationModel();
-            final CtorDelegation delegation = delegatedConcretes.get(ctorModel);
+            final CtorDelegation delegation = delegates.get(ctorModel);
             
             ListBuffer<JCStatement> stmts = ListBuffer.lb();
-            boolean delegatedTo = CtorDelegation.isDelegatedTo(delegatedConcretes, ctorModel);
+            boolean delegatedTo = CtorDelegation.isDelegatedTo(delegates, ctorModel);
             if (delegatedTo
                     && !ctorModel.isAbstract()) {
                 Tree.InvocationExpression chainedCtorInvocation;
@@ -189,14 +191,33 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                 // We need to generate $delegation$ delegation constructor
                 makeDelegationConstructor(ctor, ctorModel,
                         delegation, chainedCtorInvocation);
-                JCStatement delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(ctor.getDelegatedConstructor(),
-                        delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
-                        chainedCtorInvocation, classBuilder));
+
+                JCStatement delegateExpr;
+                if (chainedCtorInvocation != null) {
+                    delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(chainedCtorInvocation, 
+                            delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
+                                    chainedCtorInvocation, classBuilder));
+                } else {
+                    // In this case there is no extends clause in the source code
+                    // so we have to construct the argument list "by hand".
+                    ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+                    for (TypeParameter tp : ((Class)delegation.getConstructor().getContainer()).getTypeParameters()) {
+                        arguments.add(gen.makeReifiedTypeArgument(tp.getType()));
+                    }
+                    arguments.add(gen.naming.makeNamedConstructorName(delegation.getConstructor(), true));
+                    
+                    for (Parameter p : delegation.getConstructor().getParameterLists().get(0).getParameters()) {
+                        arguments.add(gen.naming.makeName(p.getModel(), Naming.NA_IDENT));
+                    }
+                    delegateExpr = gen.make().Exec(gen.make().Apply(null, 
+                            gen.naming.makeThis(),
+                            arguments.toList()));
+                }
                 stmts.add(delegateExpr);
                 
             } else if (ctor.getDelegatedConstructor() != null) {
-                Tree.InvocationExpression chainedCtorInvocation = ctor.getDelegatedConstructor().getInvocationExpression();
-                stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(ctor.getDelegatedConstructor(), delegation, chainedCtorInvocation, classBuilder)));
+                stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
+                        ctor.getDelegatedConstructor(), delegation, ctor.getDelegatedConstructor().getInvocationExpression(), classBuilder)));
             } else {
                 // no explicit extends clause
             }
@@ -253,17 +274,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // delegating to a constructor in this class
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
         
-        JCExpressionStatement superOrThis;
-        if (!delegation.isConcreteSelfDelegation()) {
-            superOrThis = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(ctor.getDelegatedConstructor(), 
-                delegation, chainedCtorInvocation, classBuilder));
-        } else {
-            superOrThis = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(ctor.getDelegatedConstructor(), 
-                    delegation, chainedCtorInvocation, classBuilder));
+        if (chainedCtorInvocation != null) {
+            stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
+                    ctor.getDelegatedConstructor(), 
+                    delegation, chainedCtorInvocation, classBuilder)));
         }
-        stmts.add(superOrThis);
         
-        stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(delegation.getExtendingConstructor(), ctorModel));
+        stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(
+                delegation.getExtendingConstructor(), ctorModel));
         stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
         String ctorName = (!Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : "") + Naming.Suffix.$delegation$;
         classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, classBuilder, false, PRIVATE, true, ctorName, stmts.toList(),
