@@ -119,6 +119,56 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.C.class, $reified$T);
     }
 }
+class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ For$delegation$ = null;
+    
+    private static final class For$delegation$ {
+        
+        private For$delegation$() {
+        }
+    }
+    
+    private ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ $name$, final X who$param$) {
+        this.$reified$X = $reified$X;
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        final X who;
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("For");
+        who = who$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For For = null;
+    
+    public static final class For {
+        
+        private For() {
+        }
+    }
+    
+    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For $name$, final X who$param$) {
+        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$, who$param$);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World World = null;
+    
+    public static final class World {
+        
+        private World() {
+        }
+    }
+    
+    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World $name$) {
+        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$, (X)null);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("World");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.class, $reified$X);
+    }
+}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class runCtorConcreteDelegation_ {
@@ -141,6 +191,12 @@ public final class runCtorConcreteDelegation_ {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Alpha);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, 1, X, 2, 3, Z, 4, alpha, 5]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For, .ceylon.language.String.instance("tom"));
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, For, 2, 3]");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, For, 2, World, 3]");
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
