@@ -65,6 +65,7 @@ import com.redhat.ceylon.common.Versions;
 public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
     private static final ModuleIdentifier COMMON;
+    private static final ModuleIdentifier MODEL;
     private static final ModuleIdentifier CMR;
     private static final ModuleIdentifier TYPECHECKER;
     private static final ModuleIdentifier COMPILER;
@@ -89,6 +90,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         final String defaultVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
         COMMON = ModuleIdentifier.create("com.redhat.ceylon.common", defaultVersion);
+        MODEL = ModuleIdentifier.create("com.redhat.ceylon.model", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
         TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
         COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
@@ -106,6 +108,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP = new HashSet<>();
         BOOTSTRAP.add(LANGUAGE);
         BOOTSTRAP.add(COMMON);
+        BOOTSTRAP.add(MODEL);
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(TYPECHECKER);
         BOOTSTRAP.add(COMPILER);
@@ -160,7 +163,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         // The runtime model needs knowledge of these modules existing at runtime, since the language module
         // implementation contains types from these modules
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
-        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR,
+        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, MODEL, TYPECHECKER, COMPILER, CMR,
             ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
