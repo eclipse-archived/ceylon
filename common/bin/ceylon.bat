@@ -37,3 +37,5 @@ set "LIB=%CEYLON_HOME%\lib"
     %*
 
 endlocal
+
+if %errorlevel% neq 0 exit /B %errorlevel%
