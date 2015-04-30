@@ -29,8 +29,8 @@ import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /** A simple program that takes the main JS module file and replaces #include markers with the contents of other files.
  * 

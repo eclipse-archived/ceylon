@@ -10,11 +10,11 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 /** A visitor that can return a list of suggestions given a location on the AST.
  * 
@@ -71,7 +71,7 @@ public class AutocompleteVisitor {
 
     /** Looks for matching declarations in the specified phased unit, recursively navigating through its dependent units. */
     protected void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
-            Set<com.redhat.ceylon.compiler.typechecker.model.Package> packs, PhasedUnit pu) {
+            Set<com.redhat.ceylon.model.typechecker.model.Package> packs, PhasedUnit pu) {
         if (!packs.contains(pu.getPackage())) {
             Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), text, 100);
             comps.putAll(c2);
@@ -93,7 +93,7 @@ public class AutocompleteVisitor {
         Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
         if (node != null) {
             HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
-            HashSet<com.redhat.ceylon.compiler.typechecker.model.Package> packs = new HashSet<>();
+            HashSet<com.redhat.ceylon.model.typechecker.model.Package> packs = new HashSet<>();
             if (node instanceof Tree.QualifiedMemberExpression) {
                 final Tree.QualifiedMemberExpression exp = (Tree.QualifiedMemberExpression)node;
                 ProducedType type = exp.getPrimary().getTypeModel();

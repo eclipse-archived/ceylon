@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.js.util;
 
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 public class ContinueBreakVisitor extends Visitor {
 

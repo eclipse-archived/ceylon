@@ -5,26 +5,26 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class MetamodelHelper {
 
     static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
-        final boolean isConstructor = d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+        final boolean isConstructor = d instanceof com.redhat.ceylon.model.typechecker.model.Constructor
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (JsCompiler.isCompilingLanguageModule()) {
@@ -33,7 +33,7 @@ public class MetamodelHelper {
                 gen.out(gen.getClAlias(), "Open");
             }
         }
-        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+        if (d instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
             gen.out("Interface$jsint");
         } else if (isConstructor) {
             gen.out("Constructor$jsint");
@@ -43,15 +43,15 @@ public class MetamodelHelper {
             gen.out("Function$jsint");
         } else if (d instanceof Value) {
             gen.out("Value$jsint");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
+        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.IntersectionType) {
             gen.out("Intersection");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
+        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.UnionType) {
             gen.out("Union");
         } else if (d instanceof TypeParameter) {
             generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen);
             gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
             return;
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
+        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
             gen.out("Alias$jsint(");
@@ -133,7 +133,7 @@ public class MetamodelHelper {
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
-                || td instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor;
+                || td instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
         if (td instanceof Class) {
             if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
@@ -173,7 +173,7 @@ public class MetamodelHelper {
                         that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
-        } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+        } else if (td instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
             if (td.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
             } else {
@@ -189,7 +189,7 @@ public class MetamodelHelper {
                         that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
-        } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
+        } else if (td instanceof com.redhat.ceylon.model.typechecker.model.NothingType) {
             gen.out(gen.getClAlias(),"nothingType$meta$model()");
         } else if (that instanceof Tree.AliasLiteral) {
             gen.out("/*TODO: applied alias*/");
@@ -203,7 +203,7 @@ public class MetamodelHelper {
     }
 
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
-        final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
+        final com.redhat.ceylon.model.typechecker.model.ProducedReference ref = that.getTarget();
         final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;

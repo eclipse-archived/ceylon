@@ -12,31 +12,31 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.AttributeGenerator;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Overloadable;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** A convenience class to help with the handling of certain type declarations. */
 public class TypeUtils {
@@ -631,7 +631,7 @@ public class TypeUtils {
 
     public static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
         if (d.getAnnotations() == null || d.getAnnotations().isEmpty() ||
-                (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAnonymous())) {
+                (d instanceof com.redhat.ceylon.model.typechecker.model.Class && d.isAnonymous())) {
             encodeForRuntime(that, d, gen, null);
         } else {
             encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
@@ -667,9 +667,9 @@ public class TypeUtils {
                 sb.add(i, TypeUtils.modelName(p));
                 //Build the path in reverse
                 if (!p.isToplevel()) {
-                    if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                    if (p instanceof com.redhat.ceylon.model.typechecker.model.Class) {
                         sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
-                    } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+                    } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
                         sb.add(i, MetamodelGenerator.KEY_INTERFACES);
                     } else if (p instanceof Method) {
                         sb.add(i, MetamodelGenerator.KEY_METHODS);
@@ -707,8 +707,8 @@ public class TypeUtils {
         List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
         List<ProducedType> caseTypes = null;
-        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            com.redhat.ceylon.compiler.typechecker.model.Class _cd = (com.redhat.ceylon.compiler.typechecker.model.Class)d;
+        if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+            com.redhat.ceylon.model.typechecker.model.Class _cd = (com.redhat.ceylon.model.typechecker.model.Class)d;
             if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
                 metamodelTypeNameOrList(that, d.getUnit().getPackage(), _cd.getExtendedType(), gen);
@@ -721,10 +721,10 @@ public class TypeUtils {
             satisfies = _cd.getSatisfiedTypes();
             caseTypes = _cd.getCaseTypes();
 
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
 
-            satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
-            caseTypes = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getCaseTypes();
+            satisfies = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getSatisfiedTypes();
+            caseTypes = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getCaseTypes();
 
         } else if (d instanceof MethodOrValue) {
 
@@ -881,7 +881,7 @@ public class TypeUtils {
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
     static void metamodelTypeNameOrList(final Node node,
-            final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
+            final com.redhat.ceylon.model.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
@@ -916,7 +916,7 @@ public class TypeUtils {
      * intersection and tuple types.
      * @return true if output was generated, false otherwise (it was a regular type) */
     static boolean outputMetamodelTypeList(final Node node,
-            final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
+            final com.redhat.ceylon.model.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
         final List<ProducedType> subs;
@@ -1143,8 +1143,8 @@ public class TypeUtils {
         final StringBuilder p = new StringBuilder(d.getName());
         Scope s = d.getContainer();
         while (s != null) {
-            if (s instanceof com.redhat.ceylon.compiler.typechecker.model.Package) {
-                final String pkname = ((com.redhat.ceylon.compiler.typechecker.model.Package)s).getNameAsString();
+            if (s instanceof com.redhat.ceylon.model.typechecker.model.Package) {
+                final String pkname = ((com.redhat.ceylon.model.typechecker.model.Package)s).getNameAsString();
                 if (!pkname.isEmpty()) {
                     p.insert(0, "::");
                     p.insert(0, pkname);
@@ -1160,7 +1160,7 @@ public class TypeUtils {
 
     public static String modelName(Declaration d) {
         String dname = d.getName();
-        if (dname == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+        if (dname == null && d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             dname = "$def";
         }
         if (dname.startsWith("anonymous#")) {

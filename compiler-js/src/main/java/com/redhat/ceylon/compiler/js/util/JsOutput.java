@@ -18,10 +18,10 @@ import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** A container for things we need to keep per-module. */
 public class JsOutput {
@@ -152,7 +152,7 @@ public class JsOutput {
 
     public void publishUnsharedDeclarations(JsIdentifierNames names) {
         //#489 lists with unshared toplevel members of each package
-        for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : module.getPackages()) {
+        for (com.redhat.ceylon.model.typechecker.model.Package pkg : module.getPackages()) {
             ArrayList<Declaration> unsharedDecls = new ArrayList<>(pkg.getMembers().size());
             for (Declaration d : pkg.getMembers()) {
                 if (!d.isShared()

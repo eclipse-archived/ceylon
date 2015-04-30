@@ -5,10 +5,10 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsWriter;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /** Recursively generates code for a destructuring pattern that may contain other
  * patterns.

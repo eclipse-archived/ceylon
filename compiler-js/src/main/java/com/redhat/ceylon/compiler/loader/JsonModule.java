@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Package;
 
 public class JsonModule extends Module {
 

@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Util;
 
 public class SequenceGenerator {
 

@@ -3,16 +3,16 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class AttributeGenerator {
 
@@ -246,7 +246,7 @@ public class AttributeGenerator {
             gen.out(")");
             gen.endLine(true);
         } else {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter param = null;
+            com.redhat.ceylon.model.typechecker.model.Parameter param = null;
             if (d.isParameter()) {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }

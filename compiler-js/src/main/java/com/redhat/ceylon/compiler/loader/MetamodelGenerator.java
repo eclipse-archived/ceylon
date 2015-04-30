@@ -13,26 +13,26 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
  * This is used by the MetamodelVisitor.
@@ -194,7 +194,7 @@ public class MetamodelGenerator {
             //For types that reference type parameters, we're done
             return m;
         }
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
+        com.redhat.ceylon.model.typechecker.model.Package pkg = d.getUnit().getPackage();
         if (pkg == null || pkg.equals(from.getUnit().getPackage())) {
             addPackage(m, ".");
         } else {
@@ -256,7 +256,7 @@ public class MetamodelGenerator {
             //Don't add package, etc
             return m;
         }
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
+        com.redhat.ceylon.model.typechecker.model.Package pkg = d.getUnit().getPackage();
         if (pkg.equals(from.getUnit().getPackage())) {
             addPackage(m, ".");
         } else {
@@ -402,7 +402,7 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String,Object> encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
+    public Map<String,Object> encodeClass(com.redhat.ceylon.model.typechecker.model.Class d) {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
         m.put(KEY_NAME, TypeUtils.modelName(d));
@@ -679,7 +679,7 @@ public class MetamodelGenerator {
         return false;
     }
 
-    public Map<String,Object> getPackageMap(com.redhat.ceylon.compiler.typechecker.model.Package p) {
+    public Map<String,Object> getPackageMap(com.redhat.ceylon.model.typechecker.model.Package p) {
         @SuppressWarnings("unchecked")
         Map<String,Object> pkgmap = (Map<String,Object>)model.get(p.getNameAsString());
         if (pkgmap == null) {

@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 public class Operators {
 

@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
@@ -15,6 +12,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /** A Visitor that gathers ceylondoc info for each node's declaration.
  * 

@@ -9,13 +9,13 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This visitor finds all the shared class and interface definitions in the language module,
  * along with all their shared actual methods, and checks that they are also defined in the

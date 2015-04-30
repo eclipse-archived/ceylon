@@ -18,8 +18,8 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 
 public class TestSiteVariance {
 

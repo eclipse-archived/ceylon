@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.loader;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,34 +13,34 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.NothingType;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
-public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Package {
+public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Package {
 
     //Ugly hack to have a ref to Basic at hand, to use as implicit supertype of classes
     private final static Map<String,Object> idobj = new HashMap<String, Object>();
@@ -72,7 +72,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         setName(ModuleManager.splitModuleName(pkgname));
     }
 
-    public void setModule(com.redhat.ceylon.compiler.typechecker.model.Module module) {
+    public void setModule(com.redhat.ceylon.model.typechecker.model.Module module) {
         if (module instanceof JsonModule && model == null) {
             model = ((JsonModule)module).getModelForPackage(getNameAsString());
             if (model != null) {
@@ -116,7 +116,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
-                        refineMembers((com.redhat.ceylon.compiler.typechecker.model.Class)loadObject(k, m, this, null));
+                        refineMembers((com.redhat.ceylon.model.typechecker.model.Class)loadObject(k, m, this, null));
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_ALIAS)) {
                         loadTypeAlias(k, m, this, null);
                     }
@@ -132,12 +132,12 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     /** Loads a class from the specified map. To avoid circularities, when the class is being created it is
      * added to the map, and once it's been fully loaded, all other keys are removed. */
     @SuppressWarnings("unchecked")
-    com.redhat.ceylon.compiler.typechecker.model.Class loadClass(String name, Map<String, Object> m,
+    com.redhat.ceylon.model.typechecker.model.Class loadClass(String name, Map<String, Object> m,
             Scope parent, final List<TypeParameter> existing) {
-        com.redhat.ceylon.compiler.typechecker.model.Class cls;
+        com.redhat.ceylon.model.typechecker.model.Class cls;
         m.remove(MetamodelGenerator.KEY_NAME);
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            cls = (com.redhat.ceylon.compiler.typechecker.model.Class)m.get(MetamodelGenerator.KEY_METATYPE);
+        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+            cls = (com.redhat.ceylon.model.typechecker.model.Class)m.get(MetamodelGenerator.KEY_METATYPE);
             if (m.size() <= 3) {
                 //It's been fully loaded
                 return cls;
@@ -145,9 +145,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         } else {
             //It's not there, so create it
             if (m.containsKey("$alias")) {
-                cls = new com.redhat.ceylon.compiler.typechecker.model.ClassAlias();
+                cls = new com.redhat.ceylon.model.typechecker.model.ClassAlias();
             } else {
-                cls = new com.redhat.ceylon.compiler.typechecker.model.Class();
+                cls = new com.redhat.ceylon.model.typechecker.model.Class();
             }
             cls.setAbstract(m.remove("abstract") != null);
             cls.setAnonymous(m.remove("$anon") != null);
@@ -617,7 +617,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             obj.setName(name);
             obj.setContainer(parent);
             obj.setUnit(u2);
-            com.redhat.ceylon.compiler.typechecker.model.Class type = new com.redhat.ceylon.compiler.typechecker.model.Class();
+            com.redhat.ceylon.model.typechecker.model.Class type = new com.redhat.ceylon.model.typechecker.model.Class();
             type.setName(name);
             type.setAnonymous(true);
             type.setUnit(u2);
@@ -790,7 +790,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if ("$".equals(mname)) {
                     mname = Module.LANGUAGE_MODULE_NAME;
                 }
-                com.redhat.ceylon.compiler.typechecker.model.Package rp;
+                com.redhat.ceylon.model.typechecker.model.Package rp;
                 if ("$".equals(pname)) {
                     //Language module package
                     rp = Module.LANGUAGE_MODULE_NAME.equals(getNameAsString())? this :
@@ -921,9 +921,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
                 || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
             return loadAttribute(name, map, this, null);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_CLASS) || metatype instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        } else if (metatype.equals(MetamodelGenerator.METATYPE_CLASS) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Class) {
             return loadClass(name, map, this, existing);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_INTERFACE) || metatype instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+        } else if (metatype.equals(MetamodelGenerator.METATYPE_INTERFACE) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
             return loadInterface(name, map, this, existing);
         } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
             return loadMethod(name, map, this, existing);
@@ -953,9 +953,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if (hasAnnotationBit(bits, "sealed")) {
                 ((TypeDeclaration)d).setSealed(true);
             }
-            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
+            if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                ((com.redhat.ceylon.model.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
+                ((com.redhat.ceylon.model.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
             }
             if (hasAnnotationBit(bits, "late")) {
                 ((Value)d).setLate(true);

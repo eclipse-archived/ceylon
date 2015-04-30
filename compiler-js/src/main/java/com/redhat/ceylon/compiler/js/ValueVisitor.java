@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.js;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Determines if a value is "captured" by 
@@ -155,7 +155,7 @@ public class ValueVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         //Mark all class initializer parameters as captured
-        if (that.getParameterModel().getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        if (that.getParameterModel().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Class) {
             that.getParameterModel().getModel().setCaptured(true);
         }
         super.visit(that);

@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class TryCatchGenerator {
 

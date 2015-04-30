@@ -7,15 +7,15 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
  * 

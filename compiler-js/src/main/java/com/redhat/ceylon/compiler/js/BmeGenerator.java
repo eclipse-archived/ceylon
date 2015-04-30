@@ -7,15 +7,15 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Util;
 
 public class BmeGenerator {
 
@@ -152,7 +152,7 @@ public class BmeGenerator {
             that.getPrimary().visit(gen);
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (that.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            } else if (that.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                 gen.out("_", gen.getNames().name(that.getDeclaration()));
             } else {
                 gen.out(".", gen.getNames().name(that.getDeclaration()));

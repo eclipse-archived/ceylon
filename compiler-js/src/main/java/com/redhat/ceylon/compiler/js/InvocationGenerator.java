@@ -10,20 +10,20 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates js code for invocation expression (named and positional). */
 public class InvocationGenerator {
@@ -478,8 +478,8 @@ public class InvocationGenerator {
                         boolean found = false;
                         if (pdd instanceof Method) {
                             moreParams = ((Method)pdd).getParameterLists().get(0).getParameters();
-                        } else if (pdd instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                            moreParams = ((com.redhat.ceylon.compiler.typechecker.model.Class)pdd).getParameterList().getParameters();
+                        } else if (pdd instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                            moreParams = ((com.redhat.ceylon.model.typechecker.model.Class)pdd).getParameterList().getParameters();
                         } else {
                             //Check the parameters of the primary (obviously a callable, so this is a Tuple)
                             List<Parameter> cparms = TypeUtils.convertTupleToParameters(

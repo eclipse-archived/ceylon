@@ -20,9 +20,9 @@ import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
 /** A ModuleManager that loads modules from js files.
  * 
@@ -137,9 +137,9 @@ public class JsModuleManager extends ModuleManager {
     }
 
     @Override
-    protected com.redhat.ceylon.compiler.typechecker.model.Package createPackage(String pkgName, Module module) {
+    protected com.redhat.ceylon.model.typechecker.model.Package createPackage(String pkgName, Module module) {
         if (module!=null && module == getContext().getModules().getDefaultModule()) {
-            com.redhat.ceylon.compiler.typechecker.model.Package pkg = module.getPackage(pkgName);
+            com.redhat.ceylon.model.typechecker.model.Package pkg = module.getPackage(pkgName);
             if (pkg != null) {
                 return pkg;
             }

@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.loader;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class TestBitAnnotations {
 

@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
@@ -18,6 +15,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for conditions.
  * 

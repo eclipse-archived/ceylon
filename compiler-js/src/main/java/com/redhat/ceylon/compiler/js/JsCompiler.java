@@ -37,11 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -52,6 +47,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.model.typechecker.model.ImportableScope;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class JsCompiler {
 
@@ -209,8 +209,8 @@ public class JsCompiler {
                 logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
             }
             //Perform capture analysis
-            for (com.redhat.ceylon.compiler.typechecker.model.Declaration d : pu.getDeclarations()) {
-                if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.compiler.typechecker.model.Setter == false) {
+            for (com.redhat.ceylon.model.typechecker.model.Declaration d : pu.getDeclarations()) {
+                if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.model.typechecker.model.Setter == false) {
                     pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
                 }
             }
@@ -260,7 +260,7 @@ public class JsCompiler {
                 Module mod = pu.getPackage().getModule();
                 if (mod.getVersion() == null && !mod.isDefault()) {
                     //Switch with the default module
-                    for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : mod.getPackages()) {
+                    for (com.redhat.ceylon.model.typechecker.model.Package pkg : mod.getPackages()) {
                         defmod.getPackages().add(pkg);
                         pkg.setModule(defmod);
                     }

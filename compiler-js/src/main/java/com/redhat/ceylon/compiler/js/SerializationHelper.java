@@ -7,25 +7,25 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class SerializationHelper {
 
     /** Add serialize method to a class. Can be on the prototype or the instance, depending on the style being used. */
-    static void addSerializer(final Node node, final com.redhat.ceylon.compiler.typechecker.model.Class d,
+    static void addSerializer(final Node node, final com.redhat.ceylon.model.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
         gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
         gen.beginBlock();
         gen.out("var ", gen.getNames().self(d), "=this;");
         //Call super.ser$$ if possible
-        com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Class et = d.getExtendedTypeDeclaration();
         while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(node, et);
@@ -75,7 +75,7 @@ public class SerializationHelper {
     }
     /** Add deserialize method to a class. This one resides directly under the class constructor, since it creates
      * an uninitialized instance and adds state to it. */
-    static void addDeserializer(final Node that, final com.redhat.ceylon.compiler.typechecker.model.Class d,
+    static void addDeserializer(final Node that, final com.redhat.ceylon.model.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
         final String cmodel = gen.getNames().createTempVariable();
@@ -115,7 +115,7 @@ public class SerializationHelper {
         gen.beginBlock();
         //Call super.deser$$ if possible
         boolean create = true;
-        com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Class et = d.getExtendedTypeDeclaration();
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(that, et);
@@ -181,7 +181,7 @@ public class SerializationHelper {
     }
 
     /** Recursively add all the type arguments from extended and satisfied types. */
-    private static void setDeserializedTypeArguments(final com.redhat.ceylon.compiler.typechecker.model.Class root,
+    private static void setDeserializedTypeArguments(final com.redhat.ceylon.model.typechecker.model.Class root,
             ProducedType pt, boolean first, final Node that, final String ni, final GenerateJsVisitor gen,
             final Set<TypeDeclaration> decs) {
         if (pt == null) {
@@ -229,7 +229,7 @@ public class SerializationHelper {
         }
     }
 
-    static List<Value> serializableValues(com.redhat.ceylon.compiler.typechecker.model.Class d) {
+    static List<Value> serializableValues(com.redhat.ceylon.model.typechecker.model.Class d) {
         ArrayList<Value> vals = new ArrayList<>();
         for (Declaration m : d.getMembers()) {
             if (!m.isFormal() && m instanceof Value && !m.isSetter() && m.isCaptured()) {

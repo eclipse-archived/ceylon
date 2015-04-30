@@ -16,14 +16,14 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class TestModuleManager {
 
@@ -33,8 +33,8 @@ public class TestModuleManager {
     private static Options options;
     private static Module srcmod;
     private static Module jsmod;
-    private static com.redhat.ceylon.compiler.typechecker.model.Package  srclang;
-    private static com.redhat.ceylon.compiler.typechecker.model.Package  jslang;
+    private static com.redhat.ceylon.model.typechecker.model.Package  srclang;
+    private static com.redhat.ceylon.model.typechecker.model.Package  jslang;
 
     @BeforeClass
     public static void setup() throws IOException {

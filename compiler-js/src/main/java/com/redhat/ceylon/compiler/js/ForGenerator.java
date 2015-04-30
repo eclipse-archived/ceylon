@@ -2,9 +2,9 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class ForGenerator {
 

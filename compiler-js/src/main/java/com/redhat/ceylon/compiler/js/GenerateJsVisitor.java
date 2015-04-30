@@ -27,26 +27,26 @@ import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassAlias;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
@@ -507,7 +507,7 @@ public class GenerateJsVisitor extends Visitor
             dname = dname.substring(0, dname.length()-7);
         }
         if (that instanceof Tree.Constructor) {
-            String cname = ((com.redhat.ceylon.compiler.typechecker.model.Class)((Tree.Constructor)that)
+            String cname = ((com.redhat.ceylon.model.typechecker.model.Class)((Tree.Constructor)that)
                     .getDeclarationModel().getContainer()).getName();
             out("//Constructor ", cname, ".",
                     that.getDeclarationModel().getName() == null ? "<default>" : that.getDeclarationModel().getName());
@@ -670,7 +670,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(d), "){return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         final String aliasedName;
-        if (aliased instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+        if (aliased instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             aliasedName = names.name((Class)aliased.getContainer()) + "_" + names.name(aliased);
         } else {
             aliasedName = names.name(aliased);
@@ -742,7 +742,7 @@ public class GenerateJsVisitor extends Visitor
     /** Returns the name of the type or its $init$ function if it's local. */
     String typeFunctionName(final Tree.StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
-        if ((removeAlias && d.isAlias()) || d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+        if ((removeAlias && d.isAlias()) || d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             d = d.getExtendedTypeDeclaration();
         }
         boolean inProto = opts.isOptimize()
@@ -760,15 +760,15 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void addToPrototype(Node node, ClassOrInterface d, List<Tree.Statement> statements) {
-        final boolean isSerial = d instanceof com.redhat.ceylon.compiler.typechecker.model.Class
-                && ((com.redhat.ceylon.compiler.typechecker.model.Class)d).isSerializable();
+        final boolean isSerial = d instanceof com.redhat.ceylon.model.typechecker.model.Class
+                && ((com.redhat.ceylon.model.typechecker.model.Class)d).isSerializable();
         boolean enter = opts.isOptimize();
-        ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
+        ArrayList<com.redhat.ceylon.model.typechecker.model.Parameter> plist = null;
         if (enter) {
             enter = !statements.isEmpty();
-            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
-                        ((com.redhat.ceylon.compiler.typechecker.model.Class)d).getParameterList();
+            if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                com.redhat.ceylon.model.typechecker.model.ParameterList _pl =
+                        ((com.redhat.ceylon.model.typechecker.model.Class)d).getParameterList();
                 if (_pl != null) {
                     plist = new ArrayList<>(_pl.getParameters().size());
                     plist.addAll(_pl.getParameters());
@@ -785,8 +785,8 @@ public class GenerateJsVisitor extends Visitor
             if (enter) {
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
-                    for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
-                        generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                    for (com.redhat.ceylon.model.typechecker.model.Parameter p : plist) {
+                        generateAttributeForParameter(node, (com.redhat.ceylon.model.typechecker.model.Class)d, p);
                     }
                 }
                 for (Statement s: statements) {
@@ -808,7 +808,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             if (isSerial) {
-                SerializationHelper.addSerializer(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
+                SerializationHelper.addSerializer(node, (com.redhat.ceylon.model.typechecker.model.Class)d, this);
             }
             endBlock();
             out(")(", names.name(d), ".$$.prototype)");
@@ -818,8 +818,8 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
-            com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
+    void generateAttributeForParameter(Node node, com.redhat.ceylon.model.typechecker.model.Class d,
+            com.redhat.ceylon.model.typechecker.model.Parameter p) {
         final String privname = names.name(p) + "_";
         final MethodOrValue pdec = p.getModel();
         defineAttribute(names.self(d), names.name(pdec));
@@ -847,7 +847,7 @@ public class GenerateJsVisitor extends Visitor
     private ClassOrInterface prototypeOwner;
 
     private void addToPrototype(ClassOrInterface d, final Tree.Statement s,
-            List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params) {
+            List<com.redhat.ceylon.model.typechecker.model.Parameter> params) {
         ClassOrInterface oldPrototypeOwner = prototypeOwner;
         prototypeOwner = d;
         if (s instanceof MethodDefinition) {
@@ -878,9 +878,9 @@ public class GenerateJsVisitor extends Visitor
         //This fixes #231 for prototype style
         if (params != null && s instanceof Tree.Declaration) {
             Declaration m = ((Tree.Declaration)s).getDeclarationModel();
-            for (Iterator<com.redhat.ceylon.compiler.typechecker.model.Parameter> iter = params.iterator();
+            for (Iterator<com.redhat.ceylon.model.typechecker.model.Parameter> iter = params.iterator();
                     iter.hasNext();) {
-                com.redhat.ceylon.compiler.typechecker.model.Parameter _p = iter.next();
+                com.redhat.ceylon.model.typechecker.model.Parameter _p = iter.next();
                 if (m.getName() != null && m.getName().equals(_p.getName())) {
                     iter.remove();
                     break;
@@ -892,7 +892,7 @@ public class GenerateJsVisitor extends Visitor
 
     void declareSelf(ClassOrInterface d) {
         out("if(", names.self(d), "===undefined)");
-        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
+        if (d instanceof com.redhat.ceylon.model.typechecker.model.Class && d.isAbstract()) {
             out(getClAlias(), "throwexc(", getClAlias(), "InvocationException$meta$model(");
             out("\"Cannot instantiate abstract class ", d.getQualifiedNameString(), "\"),'?','?')");
         } else {
@@ -968,7 +968,7 @@ public class GenerateJsVisitor extends Visitor
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
-        if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+        if (d.getName() == null && d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             String cname = "default$constructor";
             fqn = fqn.substring(0, fqn.length()-4) + cname;
         }
@@ -1008,7 +1008,7 @@ public class GenerateJsVisitor extends Visitor
                     || (n instanceof Tree.AttributeDeclaration
                             && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
                 String missingDeclarationName = d.getQualifiedNameString();
-                if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                if (d.getName() == null && d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                     missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
                             + "<default constructor>";
                 }
@@ -1102,7 +1102,7 @@ public class GenerateJsVisitor extends Visitor
     void initDefaultedParameters(final Tree.ParameterList params, Method container) {
         if (!container.isMember())return;
         for (final Parameter param : params.getParameters()) {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
+            com.redhat.ceylon.model.typechecker.model.Parameter pd = param.getParameterModel();
             if (pd.isDefaulted()) {
                 final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
                 if (expr == null) {
@@ -1132,7 +1132,7 @@ public class GenerateJsVisitor extends Visitor
     /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
     void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Method m) {
         for (final Parameter param : params.getParameters()) {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
+            com.redhat.ceylon.model.typechecker.model.Parameter pd = param.getParameterModel();
             final String paramName = names.name(pd);
             if (pd.isDefaulted() || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
@@ -1141,7 +1141,7 @@ public class GenerateJsVisitor extends Visitor
                         qualify(params, m);
                         out(names.name(m), "$defs$", pd.getName(), "(");
                         boolean firstParam=true;
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p :
+                        for (com.redhat.ceylon.model.typechecker.model.Parameter p :
                                 m.getParameterLists().get(0).getParameters()) {
                             if (firstParam){firstParam=false;}else out(",");
                             out(names.name(p));
@@ -1169,7 +1169,7 @@ public class GenerateJsVisitor extends Visitor
                 endLine();
             }
             if ((typeDecl != null) && (pd.getModel().isCaptured() ||
-                    pd.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)) {
+                    pd.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Class)) {
                 out(names.self(typeDecl), ".", paramName, "_=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
                     out(";", names.self(typeDecl), ".", paramName, "=", paramName);
@@ -1355,7 +1355,7 @@ public class GenerateJsVisitor extends Visitor
         final Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
-        final com.redhat.ceylon.compiler.typechecker.model.Parameter param = d.isParameter() ?
+        final com.redhat.ceylon.model.typechecker.model.Parameter param = d.isParameter() ?
                 ((Functional)d.getContainer()).getParameter(d.getName()) : null;
         final boolean asprop = defineAsProperty(d);
         if (d.isFormal()) {
@@ -1689,7 +1689,7 @@ public class GenerateJsVisitor extends Visitor
 
     private static boolean hasAnnotationByName(Declaration d, String name){
         if (d != null) {
-            for(com.redhat.ceylon.compiler.typechecker.model.Annotation annotation : d.getAnnotations()){
+            for(com.redhat.ceylon.model.typechecker.model.Annotation annotation : d.getAnnotations()){
                 if(annotation.getName().equals(name))
                     return true;
             }
@@ -1851,12 +1851,12 @@ public class GenerateJsVisitor extends Visitor
                     return sb.toString();
                 }
             }
-            sb.append(decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? '_':'.');
+            sb.append(decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor ? '_':'.');
         }
         Scope scope = getSuperMemberScope(node);
         boolean metaGetter = false;
         if (opts.isOptimize() && (scope != null) &&
-                decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor == false) {
+                decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor == false) {
             sb.append("getT$all()['");
             if (scope instanceof Declaration) {
                 sb.append(TypeUtils.qualifiedNameSkippingMethods((Declaration)scope));
@@ -1919,7 +1919,7 @@ public class GenerateJsVisitor extends Visitor
             generateThrow(null, "Undefined type " + id, that);
             out(":", id, ")");
         } else {
-            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                 //This is an ugly-ass hack for when the typechecker incorrectly reports
                 //the declaration as the constructor instead of the class;
                 //this happens with classes that have a default constructor with the same name as the type
@@ -1979,7 +1979,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
-    int boxUnboxStart(final Tree.Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
+    int boxUnboxStart(final Tree.Term fromTerm, com.redhat.ceylon.model.typechecker.model.TypedDeclaration toDecl) {
         return boxUnboxStart(fromTerm, isNativeJs(toDecl));
     }
 
@@ -2203,15 +2203,15 @@ public class GenerateJsVisitor extends Visitor
                         out(names.name(moval), "=function ", names.name(moval), "(");
                         //Build the parameter list, we'll use it several times
                         final StringBuilder paramNames = new StringBuilder();
-                        final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params =
+                        final List<com.redhat.ceylon.model.typechecker.model.Parameter> params =
                                 ((Method) moval).getParameterLists().get(0).getParameters();
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : params) {
+                        for (com.redhat.ceylon.model.typechecker.model.Parameter p : params) {
                             if (paramNames.length() > 0) paramNames.append(",");
                             paramNames.append(names.name(p));
                         }
                         out(paramNames.toString());
                         out("){");
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : params) {
+                        for (com.redhat.ceylon.model.typechecker.model.Parameter p : params) {
                             if (p.isDefaulted()) {
                                 out("if(", names.name(p), "===undefined)", names.name(p),"=");
                                 qualify(specStmt, moval);
@@ -2347,7 +2347,7 @@ public class GenerateJsVisitor extends Visitor
     public boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
-            out(path, d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor ? "_" : ".");
+            out(path, d instanceof com.redhat.ceylon.model.typechecker.model.Constructor ? "_" : ".");
         }
         return path.length() > 0;
     }
@@ -2379,7 +2379,7 @@ public class GenerateJsVisitor extends Visitor
                 final StringBuilder path = new StringBuilder();
                 final Declaration innermostDeclaration = Util.getContainingDeclarationOfScope(scope);
                 while (scope != null) {
-                    if (scope instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+                    if (scope instanceof com.redhat.ceylon.model.typechecker.model.Constructor
                             && scope == innermostDeclaration) {
                         if (that instanceof BaseTypeExpression) {
                             path.append(names.name((TypeDeclaration)scope.getContainer()));
@@ -2393,7 +2393,7 @@ public class GenerateJsVisitor extends Visitor
                     } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
                             path.append(".outer$");
-                        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor
+                        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor
                                 && Util.getContainingDeclaration(d) == scope) {
                             if (!d.getName().equals(((TypeDeclaration)scope).getName())) {
                                 path.append(names.name((TypeDeclaration) scope));
@@ -2435,7 +2435,7 @@ public class GenerateJsVisitor extends Visitor
                         }
                         sb.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
                         return sb.toString();
-                    } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                    } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                         return names.name(id);
                     } else {
                         //a shared local declaration
@@ -3391,8 +3391,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.PackageLiteral that) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg =
-                (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
+        com.redhat.ceylon.model.typechecker.model.Package pkg =
+                (com.redhat.ceylon.model.typechecker.model.Package)that.getImportPath().getModel();
         MetamodelHelper.findModule(pkg.getModule(), this);
         out(".findPackage('", pkg.getNameAsString(), "')");
     }

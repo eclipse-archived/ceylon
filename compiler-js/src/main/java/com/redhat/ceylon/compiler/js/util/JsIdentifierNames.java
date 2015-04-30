@@ -8,16 +8,16 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.JsCompiler;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /**
  * Manages the identifier names in the JavaScript code generated for a Ceylon
@@ -256,7 +256,7 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (name == null && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+        if (name == null && decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             return "$c$";
         }
         if (name.startsWith("anonymous#")) {
@@ -272,8 +272,8 @@ public class JsIdentifierNames {
                 decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
                 || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias));
         }
-        if (nonLocal && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class
-                && ((com.redhat.ceylon.compiler.typechecker.model.Class)decl).isAnonymous() && !forGetterSetter) {
+        if (nonLocal && decl instanceof com.redhat.ceylon.model.typechecker.model.Class
+                && ((com.redhat.ceylon.model.typechecker.model.Class)decl).isAnonymous() && !forGetterSetter) {
             // A lower-case class name belongs to an object and is not public.
             nonLocal = false;
         }
@@ -300,7 +300,7 @@ public class JsIdentifierNames {
             }
         }
         //Fix #204 - same top-level declarations in different packages
-        final com.redhat.ceylon.compiler.typechecker.model.Package declPkg = decl.getUnit().getPackage();
+        final com.redhat.ceylon.model.typechecker.model.Package declPkg = decl.getUnit().getPackage();
         if (decl.isToplevel() && !declPkg.equals(declPkg.getModule().getRootPackage())) {
             //rootPackage can be null when compiling from IDE
             String rootName = declPkg.getModule().getRootPackage() == null ?
