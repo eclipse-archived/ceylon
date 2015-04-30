@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader.model;
 
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Marker class to be able to mark class attributes that are not JavaBean properties

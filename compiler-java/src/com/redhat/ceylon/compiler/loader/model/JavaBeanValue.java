@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Normal value which allows us to remember if it's a "get" or "is" type of getter for interop.

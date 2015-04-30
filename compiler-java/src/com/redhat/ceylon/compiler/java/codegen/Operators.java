@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree;
 
 /**

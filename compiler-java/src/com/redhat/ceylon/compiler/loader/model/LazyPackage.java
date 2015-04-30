@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,17 +43,17 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Represents a lazy Package declaration.
@@ -157,8 +157,8 @@ public class LazyPackage extends Package {
 
     private Declaration getDirectMemberFromSource(String name) {
         for (Declaration d: super.getMembers()) {
-            if (com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable(d) /* && d.isShared() */ 
-            && com.redhat.ceylon.compiler.typechecker.model.Util.isNamed(name, d)) {
+            if (com.redhat.ceylon.model.typechecker.model.Util.isResolvable(d) /* && d.isShared() */ 
+            && com.redhat.ceylon.model.typechecker.model.Util.isNamed(name, d)) {
                 return d;
             }
         }

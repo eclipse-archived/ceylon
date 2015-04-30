@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 
 /**
  * Setter subclass which can contain local declarations.

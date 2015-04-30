@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.loader.model;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Enumerates the possible program elements capable of supporting 

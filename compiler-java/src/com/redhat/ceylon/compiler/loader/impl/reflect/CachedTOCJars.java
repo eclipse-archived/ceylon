@@ -38,7 +38,7 @@ import java.util.zip.ZipFile;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class CachedTOCJars {
 

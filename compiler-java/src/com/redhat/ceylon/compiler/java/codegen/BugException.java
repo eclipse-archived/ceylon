@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**

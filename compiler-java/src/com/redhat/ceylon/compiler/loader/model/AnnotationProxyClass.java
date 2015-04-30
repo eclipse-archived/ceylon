@@ -24,7 +24,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Class;
 
 /**
  * Used for annotation proxies for interop.

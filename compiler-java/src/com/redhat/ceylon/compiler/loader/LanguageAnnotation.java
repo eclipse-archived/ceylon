@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 
 /** 
  * Enumerates the language module annotations and allows them to be loaded from mirrors

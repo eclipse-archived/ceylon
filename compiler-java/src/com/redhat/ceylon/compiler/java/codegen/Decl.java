@@ -27,33 +27,33 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Element;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Specification;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.ConditionScope;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.ControlBlock;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Element;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -244,7 +244,7 @@ public class Decl {
      * @return true if the declaration is within a package
      */
     public static boolean withinPackage(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Package;
     }
     
     /**
@@ -253,11 +253,11 @@ public class Decl {
      * @return true if the declaration is within a class
      */
     public static boolean withinClass(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Class;
     }
     
     public static boolean withinClass(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Class;
     }
     
     /**
@@ -266,11 +266,11 @@ public class Decl {
      * @return true if the declaration is within an interface
      */
     public static boolean withinInterface(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Interface;
     }
     
     public static boolean withinInterface(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Interface;
     }
     
     /**
@@ -288,7 +288,7 @@ public class Decl {
      * @return true if the declaration is within a class or interface
      */
     public static boolean withinClassOrInterface(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
     }
     
     public static boolean isShared(Tree.Declaration decl) {

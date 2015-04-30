@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
-import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Method;
 
 /**
  * Used for annotation interop.

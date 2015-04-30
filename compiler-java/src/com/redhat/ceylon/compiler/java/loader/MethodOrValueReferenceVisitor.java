@@ -5,16 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
@@ -24,6 +14,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerEx
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Determines if a value is "captured" by 
@@ -149,13 +149,13 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         if (!(d instanceof MethodOrValue)) {
             return false;
         }
-        com.redhat.ceylon.compiler.typechecker.model.Parameter param = ((MethodOrValue)d).getInitializerParameter();
+        com.redhat.ceylon.model.typechecker.model.Parameter param = ((MethodOrValue)d).getInitializerParameter();
         if (param == null) {
             return false;
         }
         Declaration paramDecl = param.getDeclaration();
         if (paramDecl instanceof Functional) {
-            List<com.redhat.ceylon.compiler.typechecker.model.ParameterList> parameterLists = ((Functional)paramDecl).getParameterLists();
+            List<com.redhat.ceylon.model.typechecker.model.ParameterList> parameterLists = ((Functional)paramDecl).getParameterLists();
             for (int i = 0; i < parameterLists.size()-1; i++) {
                 if (parameterLists.get(i).getParameters().contains(param)) {
                     return true;

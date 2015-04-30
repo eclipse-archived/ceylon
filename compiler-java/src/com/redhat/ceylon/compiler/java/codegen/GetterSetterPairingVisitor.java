@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * A visitor which constructs a map associating getters and setters

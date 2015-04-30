@@ -54,7 +54,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;

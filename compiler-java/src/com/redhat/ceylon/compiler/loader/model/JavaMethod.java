@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Method;
 
 /**
  * Instance method that allows us to remember the exact method name

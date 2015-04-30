@@ -67,13 +67,13 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 import com.sun.tools.javac.util.Context;
 
@@ -516,12 +516,12 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                         for (CompilerAnnotation ca : that.getCompilerAnnotations()) {
                             Identifier identifier = ca.getIdentifier();
                             if ("test".equals(identifier.getToken().getText())) {
-                                final com.redhat.ceylon.compiler.typechecker.model.Declaration decl = that.getDeclarationModel();
+                                final com.redhat.ceylon.model.typechecker.model.Declaration decl = that.getDeclarationModel();
                                 if (moduleName.isEmpty() || Decl.getModule(decl).getNameAsString().equals(moduleName)) {
                                     boolean added = false;
                                     if (testClassName != null || decl.isToplevel()) {
-                                        if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
-                                            com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)decl;
+                                        if (decl instanceof com.redhat.ceylon.model.typechecker.model.Method) {
+                                            com.redhat.ceylon.model.typechecker.model.Method method = (com.redhat.ceylon.model.typechecker.model.Method)decl;
                                             String methodName = method.getName();
                                             if (method.getParameterLists().size() == 1
                                                     && method.getParameterLists().get(0).getParameters().size() == 0) {

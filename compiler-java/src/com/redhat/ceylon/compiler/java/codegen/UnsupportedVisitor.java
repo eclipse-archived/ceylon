@@ -6,9 +6,9 @@ import com.redhat.ceylon.compiler.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.compiler.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.loader.model.OutputElement;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class UnsupportedVisitor extends Visitor {
     

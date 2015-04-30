@@ -20,8 +20,8 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 /**
  * Scope used to contain local declarations.

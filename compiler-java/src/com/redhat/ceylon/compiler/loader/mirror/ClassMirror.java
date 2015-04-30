@@ -21,7 +21,7 @@ package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
  * Represents a Java Class definition.

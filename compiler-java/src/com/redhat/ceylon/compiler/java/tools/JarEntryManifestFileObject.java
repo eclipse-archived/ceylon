@@ -38,9 +38,6 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class JarEntryManifestFileObject implements JavaFileObject {
 

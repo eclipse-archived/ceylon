@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader.model;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public interface LazyContainer extends LazyElement, LocalDeclarationContainer {
     public void addMember(Declaration decl);

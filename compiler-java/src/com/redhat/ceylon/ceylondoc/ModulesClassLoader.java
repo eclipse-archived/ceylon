@@ -32,7 +32,7 @@ import java.util.jar.JarInputStream;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
  * Class loader which looks into a list of jar files

@@ -23,7 +23,7 @@ package com.redhat.ceylon.ceylondoc;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class Search extends CeylonDoc {
 

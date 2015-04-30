@@ -18,7 +18,7 @@ import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
 
@@ -51,6 +51,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 			success &= internalLoadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
+            success &= internalLoadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule(moduleName, moduleVersion, false);

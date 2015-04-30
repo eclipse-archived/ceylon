@@ -1,12 +1,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.HashMap;
 import java.util.Map;
 
-
-import com.redhat.ceylon.compiler.typechecker.model.Constructor;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class CtorDelegation {
     
