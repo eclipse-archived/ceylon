@@ -1409,8 +1409,8 @@ public class TypeVisitor extends Visitor {
                         dec.getName() + "'");
             }
         }
-        if (isNativeImplementation(dec) && that.getSpecifierExpression() == null) {
-            that.addError("missing method body for native method implementation");
+        if (sie==null && isNativeImplementation(dec)) {
+            that.addError("missing method body for native function implementation");
         }
     }
     
@@ -1444,6 +1444,9 @@ public class TypeVisitor extends Visitor {
                 sie.addError("value is an initializer parameter and may not have an initial value: '" + 
                         dec.getName() + "'");
             }
+        }
+        if (sie==null && isNativeImplementation(dec)) {
+            that.addError("missing method body for native value implementation");
         }
     }
     

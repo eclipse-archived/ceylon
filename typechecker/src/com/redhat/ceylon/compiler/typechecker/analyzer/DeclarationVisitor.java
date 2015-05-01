@@ -125,7 +125,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         visitDeclaration(that,  model, true);
     }
     
-    private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
+    private void visitDeclaration(Tree.Declaration that, 
+            Declaration model, boolean checkDupe) {
         visitElement(that, model);
         
         Declaration modelToAdd = model;
@@ -195,39 +196,51 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (a != null) {
             String backend = getAnnotationArgument(a, "");
             String name = model.getName();
-            boolean canBeNativeModel = model instanceof Method
-                    || model instanceof Class || model instanceof Value;
+            boolean canBeNativeModel = 
+                    model instanceof Method || 
+                    model instanceof Class || 
+                    model instanceof Value;
             if (canBeNativeModel && model.isToplevel()) {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
-                    that.addError("invalid native backend name: '" + backend + "', "
-                            + "should be one of: " + Backend.annotations());
-                } else {
+                    that.addError("invalid native backend name: '\"" + 
+                            backend + "\"', " + "should be one of: '" + 
+                            Backend.annotations() + "'");
+                }
+                else {
                     model.setNative(backend);
                 }
                 Scope s = model.getContainer();
-                Declaration member = s.getDirectMember(name, null, false);
+                Declaration member = 
+                        s.getDirectMember(name, null, false);
                 if (member == null) {
                     initOverloads(model, model);
                 }
                 else {
                     if (member.isNative()) {
-                        List<Declaration> overloads = getOverloads(member);
+                        List<Declaration> overloads = 
+                                getOverloads(member);
                         if (hasOverload(overloads, backend)) {
                             if (backend.isEmpty()) {
-                                that.addError("duplicate native abstraction: '" + name + "'");
+                                that.addError("duplicate native header: '" + 
+                                        name + "'");
                             }
                             else {
-                                that.addError("duplicate native implementation: '" + name + "'");
+                                that.addError("duplicate native implementation: '" + 
+                                        name + "'");
                             }
                         }
                         overloads.add(model);
                         setOverloads(model, overloads);
-                    } else {
+                    }
+                    else {
                         if (backend.isEmpty()) {
-                            that.addError("native header conflicts with non-native declaration: '" + name + "'");
-                        } else {
-                            that.addError("native implementation for non-native header: '" + name + "'");
+                            that.addError("native header for non-native declaration: '" + 
+                                    name + "'");
+                        }
+                        else {
+                            that.addError("native implementation for non-native header: '" + 
+                                    name + "'");
                         }
                     }
                     modelToAdd = null;
@@ -244,9 +257,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //                              model.getName() + "' of '" + ci.getName());
 //                  }
 //              }
-            } else {
+            }
+            else {
                 if (!backend.isEmpty()) {
-                    that.addError("only toplevel classes and methods can have native implementations");
+                    that.addError("native implementation is not a toplevel value, function, or class: '" + 
+                                    name + "'");
                 }
             }
         }
@@ -261,7 +276,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return al;
     }
 
-    private static void setOverloads(Declaration decl, List<Declaration> overloads) {
+    private static void setOverloads(Declaration decl, 
+            List<Declaration> overloads) {
         if (decl instanceof Method) {
             ((Method)decl).setOverloads(overloads);
         }
@@ -280,7 +296,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return null;
     }
 
-    private static boolean hasOverload(List<Declaration> overloads, String backend)  {
+    private static boolean hasOverload(List<Declaration> overloads, 
+            String backend)  {
         if (overloads!=null) {
             for (Declaration d: overloads) {
                 if (backend.equals(d.getNative())) {
@@ -395,8 +412,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         else if (model instanceof Constructor) {
             Scope container = model.getContainer();
             if (container instanceof Class) {
+                Class c = (Class) container;
                 Constructor defaultConstructor = 
-                        ((Class) container).getDefaultConstructor();
+                        c.getDefaultConstructor();
                 if (defaultConstructor!=null) {
                     that.addError("duplicate default constructor");
                     unit.getDuplicateDeclarations()

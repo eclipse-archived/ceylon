@@ -153,9 +153,10 @@ public class RefinementVisitor extends Visitor {
         Declaration abstraction = getNativeAbstraction(dec);
         if (abstraction == null) {
             // Abstraction-less native implementation, check it's not shared
-            if (dec.isShared()) {
-                that.addError("native implementation should have a header or not be shared");
-            }
+//            if (dec.isShared()) {
+                that.addError("native implementation must have a header: " + 
+                        dec.getName());
+//            }
             // If there's no abstraction we just compare to the first implementation in the list
             Overloadable overloadable = (Overloadable) dec;
             Declaration firstImpl = 
@@ -173,7 +174,6 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration abstraction) {
-        checkSameAnnotations(that, dec, abstraction);
         if (dec.getClass() == abstraction.getClass()) {
             if (dec instanceof Method) {
                 checkSameMethod(that, 
@@ -197,35 +197,48 @@ public class RefinementVisitor extends Visitor {
         }
     }
     
-    private void checkSameAnnotations(Tree.Declaration that, 
-            Declaration dec, Declaration abstraction) {
-        boolean ok = true;
-        List<Annotation> das = dec.getAnnotations();
-        List<Annotation> aas = abstraction.getAnnotations();
-        if (das.size() == aas.size()) {
-            for (Annotation da : das) {
-                boolean found = false;
-                for (Annotation aa : aas) {
-                    if (da.getName().equals(aa.getName())) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    ok = false;
-                    break;
-                }
-            }
-        } else {
-            ok = false;
-        }
-        if (!ok) {
-            that.addError("native declarations have different annotations: " + 
+    private void checkSameClass(Tree.Declaration that, 
+            Class dec, Class abstraction) {
+        if (dec.isShared() && !abstraction.isShared()) {
+            that.addError("native abstraction is not shared: " + 
                     message(dec));
         }
-    }
-
-    private void checkSameClass(Tree.Declaration that, Class dec, Class abstraction) {
+        if (!dec.isShared() && abstraction.isShared()) {
+            that.addError("native abstraction is shared: " + 
+                    message(dec));
+        }
+        if (dec.isAbstract() && !abstraction.isAbstract()) {
+            that.addError("native abstraction is not abstract: " + 
+                    message(dec));
+        }
+        if (!dec.isAbstract() && abstraction.isAbstract()) {
+            that.addError("native abstraction is abstract: " + 
+                    message(dec));
+        }
+        if (dec.isFinal() && !abstraction.isFinal()) {
+            that.addError("native abstraction is not final: " + 
+                    message(dec));
+        }
+        if (!dec.isFinal() && abstraction.isFinal()) {
+            that.addError("native abstraction is final: " + 
+                    message(dec));
+        }
+        if (dec.isSealed() && !abstraction.isSealed()) {
+            that.addError("native abstraction is not sealed: " + 
+                    message(dec));
+        }
+        if (!dec.isSealed() && abstraction.isSealed()) {
+            that.addError("native abstraction is sealed: " + 
+                    message(dec));
+        }
+        if (dec.isAnnotation() && !abstraction.isAnnotation()) {
+            that.addError("native abstraction is not an annotation type: " + 
+                    message(dec));
+        }
+        if (!dec.isAnnotation() && abstraction.isAnnotation()) {
+            that.addError("native abstraction is an annotation type: " + 
+                    message(dec));
+        }
         ProducedType dext = dec.getExtendedType();
         ProducedType aext = abstraction.getExtendedType();
         if ((dext != null && aext == null)
@@ -254,9 +267,27 @@ public class RefinementVisitor extends Visitor {
         // TODO check shared members
     }
     
-    private void checkSameMethod(Tree.Declaration that, Method dec, Method abstraction) {
+    private void checkSameMethod(Tree.Declaration that, 
+            Method dec, Method abstraction) {
         if (!dec.getType().isExactly(abstraction.getType())) {
-            that.addError("native methods do not have the same return type: " + 
+            that.addError("native implementation must have the same return type as native abstraction: " + 
+                    message(dec) + " must have the type '" + 
+                    abstraction.getType().getProducedTypeName(that.getUnit()) + "'");
+        }
+        if (dec.isShared() && !abstraction.isShared()) {
+            that.addError("native abstraction is not shared: " + 
+                    message(dec));
+        }
+        if (!dec.isShared() && abstraction.isShared()) {
+            that.addError("native abstraction is shared: " + 
+                    message(dec));
+        }
+        if (dec.isAnnotation() && !abstraction.isAnnotation()) {
+            that.addError("native abstraction is not an annotation constructor: " + 
+                    message(dec));
+        }
+        if (!dec.isAnnotation() && abstraction.isAnnotation()) {
+            that.addError("native abstraction is an annotation constructor: " + 
                     message(dec));
         }
         // FIXME probably not the right tests
@@ -270,9 +301,27 @@ public class RefinementVisitor extends Visitor {
                 true);
     }
     
-    private void checkSameValue(Tree.Declaration that, Value dec, Value abstraction) {
+    private void checkSameValue(Tree.Declaration that, 
+            Value dec, Value abstraction) {
         if (!dec.getType().isExactly(abstraction.getType())) {
-            that.addError("native attributes do not have the same type: " + 
+            that.addError("native implementation must have the same type as native abstraction: " + 
+                    message(dec) + " must have the type '" + 
+                    abstraction.getType().getProducedTypeName(that.getUnit()) + "'");
+        }
+        if (dec.isShared() && !abstraction.isShared()) {
+            that.addError("native abstraction is not shared: " + 
+                    message(dec));
+        }
+        if (!dec.isShared() && abstraction.isShared()) {
+            that.addError("native abstraction is shared: " + 
+                    message(dec));
+        }
+        if (dec.isVariable() && !abstraction.isVariable()) {
+            that.addError("native abstraction is not variable: " + 
+                    message(dec));
+        }
+        if (!dec.isVariable() && abstraction.isVariable()) {
+            that.addError("native abstraction is variable: " + 
                     message(dec));
         }
     }
@@ -909,7 +958,8 @@ public class RefinementVisitor extends Visitor {
             ProducedReference member, ProducedReference refinedMember,
             boolean forNative) {
 	    String subject = forNative ? "native header" : "refined member";
-	    String message = "member does not have the same number of parameters as " + 
+	    String message = 
+	            "member does not have the same number of parameters as " + 
 	            subject + ": '" + member.getDeclaration().getName() + "'";
 	    if (!forNative) {
 	        message += " declared by '" + containerName(member) + 
