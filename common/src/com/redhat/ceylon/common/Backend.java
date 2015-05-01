@@ -25,14 +25,4 @@ public enum Backend {
         return null;
     }
     
-    public static String annotations() {
-        String result = "";
-        for (Backend b : Backend.values()) {
-            if (!result.isEmpty()) {
-                result += ", ";
-            }
-            result += b.nativeAnnotation;
-        }
-        return result;
-    }
 }
