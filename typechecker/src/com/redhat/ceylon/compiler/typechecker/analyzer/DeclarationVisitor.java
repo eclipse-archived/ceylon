@@ -203,7 +203,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             if (canBeNativeModel && model.isToplevel()) {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
-                    that.addError("invalid native backend name: '\"" + 
+                    a.addError("illegal native backend name: '\"" + 
                             backend + "\"', must be either '\"jvm\"' or '\"js\"'");
                 }
                 else {
