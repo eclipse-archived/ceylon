@@ -16,7 +16,7 @@ void paramMinus<T>(T arg) {
         @type:"T" value x = arg;
     }
     if (!is Object arg) {
-        @type:"T&null" value x = arg;
+        @type:"T&Null" value x = arg;
     }
     if (!is Null arg) {
         @type:"T&Object" value x = arg;

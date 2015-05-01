@@ -963,6 +963,22 @@ public class Unit {
                 ut.setCaseTypes(list);
                 return ut.getType();
     		}
+            if (d instanceof IntersectionType) {
+                List<ProducedType> sts = 
+                        d.getSatisfiedTypes();
+                List<ProducedType> list = 
+                        new ArrayList<ProducedType>
+                            (sts.size()+1);
+                for (ProducedType st: sts) {
+                    addToIntersection(list, 
+                            denotableType(st), 
+                            this);
+                }
+                IntersectionType it = 
+                        new IntersectionType(this);
+                it.setSatisfiedTypes(list);
+                return it.canonicalize().getType();
+            }
     		if (d instanceof Functional) {
     			Functional fd = (Functional) d;
                 if (fd.isOverloaded()) {
@@ -974,7 +990,7 @@ public class Unit {
     		    return pt.getSupertype(
     		            d.getExtendedTypeDeclaration());
     		}
-    		if (d!=null && d.isAnonymous() ) {
+    		if (d!=null && d.isAnonymous()) {
     			ClassOrInterface etd = 
     			        d.getExtendedTypeDeclaration();
     			List<TypeDeclaration> stds = 
