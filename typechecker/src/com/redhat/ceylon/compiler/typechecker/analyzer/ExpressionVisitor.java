@@ -870,8 +870,9 @@ public class ExpressionVisitor extends Visitor {
             v.getType().setTypeModel( getAnythingDeclaration().getType() );
         }*/
         v.getType().visit(this);
-        if (v.getDeclarationModel().getType()==null) {
-            v.getDeclarationModel().setType(defaultType());
+        Value dec = v.getDeclarationModel();
+        if (dec.getType()==null) {
+            dec.setType(defaultType());
         }
     }
 
@@ -4149,8 +4150,7 @@ public class ExpressionVisitor extends Visitor {
             else if (!dynamic && !nativeWrongBackend &&
                     isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
-                        sp.getName() + "' of '" + 
-                        sp.getDeclaration().getName(unit) + "'" +
+                        paramdesc(sp) +
                         getTypeUnknownError(sp.getType()));
             }
             checkSequencedArgument(sa, pr, sp);
@@ -4184,9 +4184,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!dynamic && !nativeWrongBackend &&
                     isTypeUnknown(p.getType())) {
-                a.addError("parameter type could not be determined: '" + 
-                        p.getName() + "' of '" + 
-                        p.getDeclaration().getName(unit) + "'" +
+                a.addError("parameter type could not be determined: " + 
+                        paramdesc(p) + 
                         getTypeUnknownError(p.getType()));
             }
             checkNamedArgument(a, pr, p);
@@ -4203,13 +4202,29 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private String paramdesc(Parameter p) {
+        Declaration dec = p.getDeclaration();
+        String result = 
+                "'" + p.getName() + "' of '" + 
+                dec.getName(unit) + "'";
+        if (dec.isClassOrInterfaceMember()) {
+            ClassOrInterface ci = 
+                    (ClassOrInterface) dec.getContainer();
+            result += " in '" + ci.getName(unit) + "'";
+        }
+        return result;
+    }
+
     private String argdesc(Parameter p, ProducedReference pr) {
-        return "'" + p.getName() + "' of '" + 
-                pr.getDeclaration().getName(unit) + "'" + 
-                (pr.getQualifyingType()==null ? "" : 
-                    " in '" + 
-                    pr.getQualifyingType().getProducedTypeName(unit) + 
-                    "'");
+        Declaration dec = pr.getDeclaration();
+        String result = 
+                "'" + p.getName() + "' of '" + 
+                dec.getName(unit) + "'";
+        ProducedType qt = pr.getQualifyingType();
+        if (qt!=null) { 
+            result += " in '" + qt.getProducedTypeName(unit) + "'";
+        }
+        return result;
     }
     
     private void checkNamedArgument(Tree.NamedArgument a, 
@@ -4367,8 +4382,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!dynamic && !nativeWrongBackend &&
                         isTypeUnknown(p.getType())) {
                     a.addError("parameter type could not be determined: '" + 
-                            p.getName() + "' of '" + 
-                            p.getDeclaration().getName(unit) + "'" +
+                            paramdesc(p) +
                             getTypeUnknownError(p.getType()));
                 }
                 if (a instanceof Tree.SpreadArgument) {
@@ -4473,9 +4487,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-            ProducedType paramTypesAsTuple, List<ProducedType> paramTypes, 
-            boolean sequenced, boolean atLeastOne, int firstDefaulted) {
+    private void checkIndirectInvocationArguments(
+            Tree.InvocationExpression that, 
+            ProducedType paramTypesAsTuple, 
+            List<ProducedType> paramTypes, 
+            boolean sequenced, boolean atLeastOne, 
+            int firstDefaulted) {
         
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
@@ -4509,7 +4526,8 @@ public class ExpressionVisitor extends Visitor {
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
-                    ProducedType paramType = paramTypes.get(i);
+                    ProducedType paramType = 
+                            paramTypes.get(i);
                     if (sequenced && 
                             i==paramTypes.size()-1) {
                         Tree.Comprehension c = 
@@ -7389,7 +7407,8 @@ public class ExpressionVisitor extends Visitor {
                     if (!caseUnionType.covers(switchExpressionType)) {
                         switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
                                 caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
-                                switchExpressionType.getProducedTypeName(unit) + "'", 10000);
+                                switchExpressionType.getProducedTypeName(unit) + "'", 
+                                10000);
                     }
                 }
             }
@@ -7430,8 +7449,10 @@ public class ExpressionVisitor extends Visitor {
             var.visit(this);
             initOriginalDeclaration(var);
             if (switchStatementOrExpression!=null) {
+                Tree.Switched switched = 
+                        switchClause().getSwitched();
                 ProducedType switchExpressionType = 
-                        getSwitchedExpressionType(switchClause().getSwitched());
+                        getSwitchedExpressionType(switched);
                 Tree.SwitchCaseList switchCaseList = 
                         switchCaseList();
                 if (switchExpressionType!=null && 
@@ -7442,9 +7463,12 @@ public class ExpressionVisitor extends Visitor {
                         if (caseUnionType!=null) {
                             ProducedType complementType = 
                                     /*unit.denotableType(*/
-                                    switchExpressionType.minus(caseUnionType);
-                            var.getType().setTypeModel(complementType);
-                            var.getDeclarationModel().setType(complementType);
+                                    switchExpressionType
+                                        .minus(caseUnionType);
+                            var.getType()
+                                .setTypeModel(complementType);
+                            var.getDeclarationModel()
+                                .setType(complementType);
                         }
                     }
                 }
@@ -7454,7 +7478,8 @@ public class ExpressionVisitor extends Visitor {
                         ifClause().getConditionList();
                 if (conditionList!=null) {
                     Tree.Condition c = 
-                            conditionList.getConditions().get(0);
+                            conditionList.getConditions()
+                                .get(0);
                     Tree.SpecifierExpression se = 
                             var.getSpecifierExpression();
                     if (c instanceof Tree.ExistsCondition) {
@@ -7468,10 +7493,12 @@ public class ExpressionVisitor extends Visitor {
                         inferNonemptyType(var, se, !ec.getNot());
                     }
                     else if (c instanceof Tree.IsCondition) {
-                        Tree.IsCondition ic = (Tree.IsCondition) c;
+                        Tree.IsCondition ic = 
+                                (Tree.IsCondition) c;
+                        Tree.Expression e = se.getExpression();
                         ProducedType t = 
                                 narrow(ic.getType().getTypeModel(), 
-                                        se.getExpression().getTypeModel(),
+                                        e.getTypeModel(),
                                         !ic.getNot());
                         var.getType().setTypeModel(t);
                         var.getDeclarationModel().setType(t);
@@ -7486,7 +7513,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
-        List<Tree.CaseClause> cases = switchCaseList.getCaseClauses();
+        List<Tree.CaseClause> cases = 
+                switchCaseList.getCaseClauses();
         boolean hasIsCase = false;
         for (Tree.CaseClause cc: cases) {
             if (cc.getCaseItem() instanceof Tree.IsCase) {
@@ -7579,10 +7607,14 @@ public class ExpressionVisitor extends Visitor {
                     String etv = getLiteralText(et);
                     if (et instanceof Tree.NaturalLiteral && 
                         ft instanceof Tree.NaturalLiteral &&
-                        ((ftv.startsWith("#") && !etv.startsWith("#")) ||
-                        (!ftv.startsWith("#") && etv.startsWith("#")) ||
-                        (ftv.startsWith("$") && !etv.startsWith("$")) ||
-                        (!ftv.startsWith("$") && etv.startsWith("$")))) {
+                        ((ftv.startsWith("#") && 
+                                !etv.startsWith("#")) ||
+                        (!ftv.startsWith("#") && 
+                                etv.startsWith("#")) ||
+                        (ftv.startsWith("$") && 
+                                !etv.startsWith("$")) ||
+                        (!ftv.startsWith("$") && 
+                                etv.startsWith("$")))) {
                         cci.addUnsupportedError("literal cases with mixed bases not yet supported");
                     }
                     else if (etv.equals(ftv) && eneg==fneg) {
@@ -7677,7 +7709,7 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
-        for (final Tree.CatchClause cc: that.getCatchClauses()) {
+        for (Tree.CatchClause cc: that.getCatchClauses()) {
             Tree.CatchVariable ccv = cc.getCatchVariable();
             if (ccv!=null && 
                     ccv.getVariable()!=null) {
@@ -7685,7 +7717,7 @@ public class ExpressionVisitor extends Visitor {
                         ccv.getVariable().getType()
                             .getTypeModel();
                 if (ct!=null) {
-                    for (final Tree.CatchClause ecc: 
+                    for (Tree.CatchClause ecc: 
                             that.getCatchClauses()) {
                         Tree.CatchVariable eccv = 
                                 ecc.getCatchVariable();
@@ -7693,20 +7725,24 @@ public class ExpressionVisitor extends Visitor {
                                 eccv.getVariable()!=null) {
                             if (cc==ecc) break;
                             ProducedType ect = 
-                                    eccv.getVariable().getType()
+                                    eccv.getVariable()
+                                        .getType()
                                         .getTypeModel();
                             if (ect!=null) {
                                 if (ct.isSubtypeOf(ect)) {
-                                    ccv.getVariable().getType()
+                                    ccv.getVariable()
+                                        .getType()
                                         .addError("exception type is already handled by earlier catch clause: '" 
                                                 + ct.getProducedTypeName(unit) + "'");
                                 }
                                 if (ct.getDeclaration() instanceof UnionType) {
                                     for (ProducedType ut: 
-                                            ct.getDeclaration().getCaseTypes()) {
+                                            ct.getDeclaration()
+                                                .getCaseTypes()) {
                                         if (ut.substitute(ct.getTypeArguments())
                                                 .isSubtypeOf(ect)) {
-                                            ccv.getVariable().getType()
+                                            ccv.getVariable()
+                                                .getType()
                                                 .addError("exception type is already handled by earlier catch clause: '"
                                                         + ut.getProducedTypeName(unit) + "'");
                                         }
@@ -7730,7 +7766,8 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean acceptsTypeArguments(Declaration member, 
             List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent, boolean metamodel) {
+            Tree.TypeArguments tal, Node parent, 
+            boolean metamodel) {
         return acceptsTypeArguments(null, member, 
                 typeArguments, tal, parent, metamodel);
     }
@@ -7754,9 +7791,8 @@ public class ExpressionVisitor extends Visitor {
             }
             if (receiver==null && 
                     dec.isClassOrInterfaceMember()) {
-                receiver = 
-                        parent.getScope()
-                            .getDeclaringType(dec);
+                receiver = parent.getScope()
+                        .getDeclaringType(dec);
             }
             int max = params.size();
             int args = typeArguments.size();
@@ -7770,7 +7806,8 @@ public class ExpressionVisitor extends Visitor {
                             argType!=null && 
                             !(argType.getDeclaration() 
                                     instanceof UnknownType);
-                    for (ProducedType st: param.getSatisfiedTypes()) {
+                    for (ProducedType st: 
+                            param.getSatisfiedTypes()) {
                         //sts = sts.substitute(self);
                         ProducedType sts = 
                                 st.getProducedType(receiver, 
@@ -7803,8 +7840,8 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (!isCondition && 
-                            !argumentSatisfiesEnumeratedConstraint(receiver, dec, 
-                                    typeArguments, argType, param)) {
+                            !argumentSatisfiesEnumeratedConstraint(receiver, 
+                                    dec, typeArguments, argType, param)) {
                         if (argTypeMeaningful) {
                             if (tal instanceof Tree.InferredTypeArguments) {
                                 parent.addError("inferred type argument '" 
@@ -7829,7 +7866,8 @@ public class ExpressionVisitor extends Visitor {
                 return true;
             }
             else {
-                if (tal==null || tal instanceof Tree.InferredTypeArguments) {
+                if (tal==null || 
+                        tal instanceof Tree.InferredTypeArguments) {
                     if (!metamodel) {
                         parent.addError("missing type arguments to generic type: '" + 
                                 dec.getName(unit) + 
@@ -7837,7 +7875,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else {
-                    String help="";
+                    String help;
                     if (args<min) {
                         help = " requires at least " + min + 
                                 " type arguments";
@@ -7845,6 +7883,9 @@ public class ExpressionVisitor extends Visitor {
                     else if (args>max) {
                         help = " allows at most " + max + 
                                 " type arguments";
+                    }
+                    else {
+                        help = "";
                     }
                     tal.addError("wrong number of type arguments: '" + 
                             dec.getName(unit) + "'" + help);
@@ -7891,7 +7932,8 @@ public class ExpressionVisitor extends Visitor {
         if (argType.getDeclaration() instanceof TypeParameter) {
             List<ProducedType> argCaseTypes = 
                     argType.getDeclaration().getCaseTypes();
-            if (argCaseTypes!=null && !argCaseTypes.isEmpty()) {
+            if (argCaseTypes!=null && 
+                    !argCaseTypes.isEmpty()) {
                 for (ProducedType act: argCaseTypes) {
                     boolean foundCase = false;
                     for (ProducedType ct: caseTypes) {
@@ -8060,26 +8102,35 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         inExtendsClause = false;
                 
-        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        TypeDeclaration td = 
+                (TypeDeclaration) that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();
             if (et!=null) {
                 Tree.InvocationExpression ie = 
                         that.getInvocationExpression();
                 Class clazz = (Class) td;
-                if (ie==null && (!clazz.hasConstructors() || clazz.isAnonymous())) {
-                    et.addError("missing instantiation arguments");
+                boolean hasConstructors = 
+                        clazz.hasConstructors();
+                boolean anonymous = clazz.isAnonymous();
+                if (ie==null) { 
+                    if (!hasConstructors || anonymous) {
+                        et.addError("missing instantiation arguments");
+                    }
                 }
-                else if (ie!=null && clazz.hasConstructors() && !clazz.isAnonymous()) {
-                    et.addError("unnecessary instantiation arguments");
+                else {
+                    if (hasConstructors && !anonymous) {
+                        et.addError("unnecessary instantiation arguments");
+                    }
                 }
-                
+
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
                     checkSelfTypes(et, td, type);
                     checkExtensionOfMemberType(et, td, type);
                     //checkCaseOfSupertype(et, td, type);
-                    TypeDeclaration etd = td.getExtendedTypeDeclaration();
+                    TypeDeclaration etd = 
+                            td.getExtendedTypeDeclaration();
                     while (etd!=null && etd.isAlias()) {
                         etd = etd.getExtendedTypeDeclaration();
                     }
@@ -8088,13 +8139,15 @@ public class ExpressionVisitor extends Visitor {
                             et.addError("extends a final class: '" + 
                                     etd.getName(unit) + "'");
                         }
-                    	if (etd.isSealed() && !inSameModule(etd)) {
-                    		et.addError("extends a sealed class in a different module: '" +
-                    				etd.getName(unit) + "' in '" + 
-                    				etd.getUnit()
+                    	if (etd.isSealed() && 
+                    	        !inSameModule(etd)) {
+                    		String moduleName = 
+                    		        etd.getUnit()
                     				    .getPackage()
                     				    .getModule()
-                    				    .getNameAsString() + "'");
+                    				    .getNameAsString();
+                            et.addError("extends a sealed class in a different module: '" +
+                    				etd.getName(unit) + "' in '" + moduleName + "'");
                     	}
                     }
 //                if (td.isParameterized() &&
@@ -8139,7 +8192,9 @@ public class ExpressionVisitor extends Visitor {
         }
         Set<TypeDeclaration> set = 
                 new HashSet<TypeDeclaration>();
-        if (td.getSatisfiedTypes().isEmpty()) return; //handle undecidability case
+        if (td.getSatisfiedTypes().isEmpty()) {
+            return; //handle undecidability case
+        }
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (type!=null && type.getDeclaration()!=null) {
@@ -8166,9 +8221,13 @@ public class ExpressionVisitor extends Visitor {
                 }
             	if (td instanceof ClassOrInterface && 
             			std.isSealed() && !inSameModule(std)) {
-        			t.addError("satisfies a sealed interface in a different module: '" +
-        					std.getName(unit) + "' in '" + 
-        					std.getUnit().getPackage().getModule().getNameAsString() + "'");
+        			String moduleName = 
+        			        std.getUnit()
+        			            .getPackage()
+        			            .getModule()
+        			            .getNameAsString();
+                    t.addError("satisfies a sealed interface in a different module: '" +
+        					std.getName(unit) + "' in '" + moduleName + "'");
             	}
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
@@ -8177,7 +8236,8 @@ public class ExpressionVisitor extends Visitor {
                 }*/
             }
             if (t instanceof Tree.SimpleType) {
-                checkSupertypeVarianceAnnotations((Tree.SimpleType) t);
+                Tree.SimpleType st = (Tree.SimpleType) t;
+                checkSupertypeVarianceAnnotations(st);
             }
         }
         //Moved to RefinementVisitor, which 
@@ -8271,7 +8331,8 @@ public class ExpressionVisitor extends Visitor {
                         Tree.TypeArgumentList tal = 
                                 s.getTypeArgumentList();
                         if (tal!=null) {
-                            List<Tree.Type> args = tal.getTypes();
+                            List<Tree.Type> args = 
+                                    tal.getTypes();
                             List<TypeParameter> typeParameters = 
                                     ctd.getTypeParameters();
                             for (int i=0; 
@@ -8280,7 +8341,8 @@ public class ExpressionVisitor extends Visitor {
                                     i++) {
                                 Tree.Type arg = args.get(i);
                                 TypeParameter typeParameter = 
-                                        ctd.getTypeParameters().get(i);
+                                        ctd.getTypeParameters()
+                                            .get(i);
                                 ProducedType argType = 
                                         arg.getTypeModel();
                                 if (argType!=null) {
@@ -8288,7 +8350,8 @@ public class ExpressionVisitor extends Visitor {
                                             argType.getDeclaration();
                                     if (argTypeDec instanceof TypeParameter) {
                                         TypeParameter tp = 
-                                                (TypeParameter) argTypeDec;
+                                                (TypeParameter) 
+                                                    argTypeDec;
                                         if (!tp.getDeclaration().equals(td)) {
                                             arg.addError("type argument is not a type parameter of the enumerated type: '" +
                                                     argTypeDec.getName() + "' is not a type parameter of '" + td.getName());
