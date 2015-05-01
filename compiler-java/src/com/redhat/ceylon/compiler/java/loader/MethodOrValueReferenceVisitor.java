@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.java.loader;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -216,9 +217,38 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.ClassDefinition that) {
-        boolean cs = enterCapturingScope();
-        super.visit(that);
-        exitCapturingScope(cs);
+        if (!that.getDeclarationModel().hasConstructors()) {
+            boolean cs = enterCapturingScope();
+            super.visit(that);
+            exitCapturingScope(cs);
+        } else {
+            Map<Constructor,Constructor> delegatedTo = new HashMap<Constructor,Constructor>();
+            for (Tree.Statement stmt : that.getClassBody().getStatements()) {
+                if (stmt instanceof Tree.Constructor) {
+                    Tree.Constructor ctor = (Tree.Constructor)stmt;
+                    if (ctor.getDelegatedConstructor() != null) {
+                        if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
+                            Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
+                            if (ete.getDeclaration() instanceof Constructor
+                                    && ete.getDeclaration().getContainer().equals(that.getDeclarationModel())) {
+                                    delegatedTo.put(ctor.getDeclarationModel(), (Constructor)ete.getDeclaration());
+                            }
+                        }
+                    }
+                }
+            }
+            for (Tree.Statement stmt : that.getClassBody().getStatements()) {
+            if (stmt instanceof Tree.Constructor &&
+                        (delegatedTo.containsKey(((Tree.Constructor)stmt).getDeclarationModel())
+                        || delegatedTo.containsValue(((Tree.Constructor)stmt).getDeclarationModel()))) {
+                    boolean cs = enterCapturingScope();
+                    stmt.visit(this);
+                    exitCapturingScope(cs);
+                } else {
+                    stmt.visit(this);
+                }
+            }
+        }
     }
     
     @Override public void visit(Tree.ObjectDefinition that) {
@@ -244,17 +274,6 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         exitCapturingScope(cs);
     }
     
-    @Override public void visit(Tree.Constructor that) {
-        Constructor ctor = that.getDeclarationModel();
-        if (ctor.isAbstract() 
-                || Decl.hasAbstractConstructor((Class)ctor.getContainer())) {
-            boolean cs = enterCapturingScope();
-            super.visit(that);
-            exitCapturingScope(cs);
-        } else {
-            super.visit(that);
-        }
-    }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
