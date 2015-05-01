@@ -437,7 +437,7 @@ TypeConstraints?
         
         <para>As a special exception, if a parameter of an anonymous function has no explicit 
         type declaration, and there is no declaration with the given name occurring in the body 
-        of the anonymous function, then the type of the parameyer must be inferable, according 
+        of the anonymous function, then the type of the parameter must be inferable, according 
         to <xref linkend="parametertypeinference"/>.</para>
         
         <para>Conversely, every parameter declaration that occurs outside a parameter list must 
