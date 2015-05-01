@@ -561,7 +561,8 @@ public class ProducedType extends ProducedReference {
     }
     
     private ProducedType minusInternal(ProducedType pt) {
-        Unit unit = getDeclaration().getUnit();
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
         if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
             return unit.getNothingDeclaration().getType();
         }
@@ -576,9 +577,10 @@ public class ProducedType extends ProducedReference {
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(types);
-                return ut.getType();
+                ProducedType type = ut.getType();
+                return type.coversInternal(this) ? this : type;
             }
-            else if (getDeclaration() instanceof IntersectionType) {
+            else if (dec instanceof IntersectionType) {
                 List<ProducedType> cts = ucts.getSatisfiedTypes();
                 List<ProducedType> types = 
                         new ArrayList<ProducedType>(cts.size());
@@ -587,13 +589,16 @@ public class ProducedType extends ProducedReference {
                 }
                 IntersectionType ut = new IntersectionType(unit);
                 ut.setSatisfiedTypes(types);
-                return ut.canonicalize().getType();
+                ProducedType type = ut.canonicalize().getType();
+                return type.coversInternal(this) ? this : type;
             }
-            else if (getDeclaration() instanceof TypeParameter) {
+            else if (dec instanceof TypeParameter) {
                 ProducedType upperBoundsMinus = 
-                        intersectionOfSupertypes(getDeclaration())
+                        intersectionOfSupertypes(dec)
                                 .minusInternal(pt);
-                return intersectionType(upperBoundsMinus, this, unit);
+                ProducedType type = 
+                        intersectionType(upperBoundsMinus, this, unit);
+                return type.coversInternal(this) ? this : type;
             }
             else {
                 return this;
