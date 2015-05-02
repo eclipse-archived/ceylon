@@ -7244,27 +7244,29 @@ public class ExpressionVisitor extends Visitor {
                     if (switchStatementOrExpression!=null) {
                         Tree.Switched switched = 
                                 switchClause().getSwitched();
-                        Tree.Expression switchExpression = 
-                                switched.getExpression();
-                        Tree.Variable switchVariable = 
-                                switched.getVariable();
-                        if (switchVariable!=null) {
-                            ProducedType st = 
-                                    switchVariable.getType()
-                                        .getTypeModel();
-                            if (!isTypeUnknown(st)) {
-                                checkAssignable(t, st, e, 
-                                        "case must be assignable to switch variable type");
-                            }
-                        }
-                        else if (switchExpression!=null) {
-                            ProducedType st = 
-                                    switchExpression.getTypeModel();
-                            if (!isTypeUnknown(st)) {
-                                if (!hasUncheckedNulls(switchExpression.getTerm()) || 
-                                        !isNullCase(t)) {
+                        if (switched!=null) {
+                            Tree.Expression switchExpression = 
+                                    switched.getExpression();
+                            Tree.Variable switchVariable = 
+                                    switched.getVariable();
+                            if (switchVariable!=null) {
+                                ProducedType st = 
+                                        switchVariable.getType()
+                                            .getTypeModel();
+                                if (!isTypeUnknown(st)) {
                                     checkAssignable(t, st, e, 
-                                            "case must be assignable to switch expression type");
+                                            "case must be assignable to switch variable type");
+                                }
+                            }
+                            else if (switchExpression!=null) {
+                                ProducedType st = 
+                                        switchExpression.getTypeModel();
+                                if (!isTypeUnknown(st)) {
+                                    if (!hasUncheckedNulls(switchExpression.getTerm()) || 
+                                            !isNullCase(t)) {
+                                        checkAssignable(t, st, e, 
+                                                "case must be assignable to switch expression type");
+                                    }
                                 }
                             }
                         }
@@ -7319,51 +7321,53 @@ public class ExpressionVisitor extends Visitor {
         if (switchStatementOrExpression!=null) {
             Tree.Switched switched = 
                     switchClause().getSwitched();
-            Tree.Expression switchExpression = 
-                    switched.getExpression();
-            Tree.Variable switchVariable = 
-                    switched.getVariable();
-            ProducedType st;
-            if (switchVariable!=null) {
-                st = switchVariable.getType().getTypeModel();
-            }
-            else if (switchExpression!=null) {
-                st = switchExpression.getTypeModel();
-            }
-            else {
-                //NOTE: early exit!
-                return;
-            }
-            Tree.Variable v = that.getVariable();
-            if (v!=null) {
-                if (dynamic || nativeWrongBackend || 
-                        !isTypeUnknown(st)) { //eliminate dupe errors
-                    v.visit(this);
-                }
-                initOriginalDeclaration(v);
-            }
-            if (t!=null) {
-                ProducedType pt = t.getTypeModel();
-                ProducedType it = intersectionType(pt, st, unit);
+            if (switched!=null) {
+                Tree.Expression switchExpression = 
+                        switched.getExpression();
+                Tree.Variable switchVariable = 
+                        switched.getVariable();
+                ProducedType st;
                 if (switchVariable!=null) {
-                    if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                        that.addError("narrows to Nothing type: '" + 
-                                pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
-                                st.getProducedTypeName(unit) + "'");
-                    }
+                    st = switchVariable.getType().getTypeModel();
                 }
                 else if (switchExpression!=null) {
-                    if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
+                    st = switchExpression.getTypeModel();
+                }
+                else {
+                    //NOTE: early exit!
+                    return;
+                }
+                Tree.Variable v = that.getVariable();
+                if (v!=null) {
+                    if (dynamic || nativeWrongBackend || 
+                            !isTypeUnknown(st)) { //eliminate dupe errors
+                        v.visit(this);
+                    }
+                    initOriginalDeclaration(v);
+                }
+                if (t!=null) {
+                    ProducedType pt = t.getTypeModel();
+                    ProducedType it = intersectionType(pt, st, unit);
+                    if (switchVariable!=null) {
                         if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                            that.addError("narrows to bottom type 'Nothing': '" + 
+                            that.addError("narrows to Nothing type: '" + 
                                     pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
                                     st.getProducedTypeName(unit) + "'");
                         }
                     }
-                }
-                if (v!=null) {
-                    v.getType().setTypeModel(it);
-                    v.getDeclarationModel().setType(it);
+                    else if (switchExpression!=null) {
+                        if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
+                            if (it.isExactly(unit.getNothingDeclaration().getType())) {
+                                that.addError("narrows to bottom type 'Nothing': '" + 
+                                        pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                                        st.getProducedTypeName(unit) + "'");
+                            }
+                        }
+                    }
+                    if (v!=null) {
+                        v.getType().setTypeModel(it);
+                        v.getDeclarationModel().setType(it);
+                    }
                 }
             }
         }
@@ -7389,26 +7393,28 @@ public class ExpressionVisitor extends Visitor {
             Tree.SwitchCaseList switchCaseList) {
         Tree.Switched switched = 
                 switchClause.getSwitched();
-        ProducedType switchExpressionType = 
-                getSwitchedExpressionType(switched);
-        if (switchCaseList!=null && 
-                switchExpressionType!=null) {
-            checkCases(switchCaseList);
-            Tree.ElseClause elseClause = 
-                    switchCaseList.getElseClause();
-            if (!isTypeUnknown(switchExpressionType) 
-                    && elseClause==null) {
-                ProducedType caseUnionType = 
-                        caseUnionType(switchCaseList);
-                if (caseUnionType!=null) {
-                    //if the union of the case types covers 
-                    //the switch expression type then the 
-                    //switch is exhaustive
-                    if (!caseUnionType.covers(switchExpressionType)) {
-                        switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
-                                caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
-                                switchExpressionType.getProducedTypeName(unit) + "'", 
-                                10000);
+        if (switched!=null) {
+            ProducedType switchExpressionType = 
+                    getSwitchedExpressionType(switched);
+            if (switchCaseList!=null && 
+                    switchExpressionType!=null) {
+                checkCases(switchCaseList);
+                Tree.ElseClause elseClause = 
+                        switchCaseList.getElseClause();
+                if (!isTypeUnknown(switchExpressionType) 
+                        && elseClause==null) {
+                    ProducedType caseUnionType = 
+                            caseUnionType(switchCaseList);
+                    if (caseUnionType!=null) {
+                        //if the union of the case types covers 
+                        //the switch expression type then the 
+                        //switch is exhaustive
+                        if (!caseUnionType.covers(switchExpressionType)) {
+                            switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
+                                    caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
+                                    switchExpressionType.getProducedTypeName(unit) + "'", 
+                                    10000);
+                        }
                     }
                 }
             }
@@ -7417,15 +7423,17 @@ public class ExpressionVisitor extends Visitor {
 
     private static ProducedType getSwitchedExpressionType(
             Tree.Switched switched) {
-        Tree.Expression e = switched.getExpression();
-        Tree.Variable v = switched.getVariable();
-        if (e!=null) {
-            return e.getTypeModel();
-        }
-        else if (v!=null) {
-            Tree.Type t = v.getType();
-            if (t!=null) {
-                return t.getTypeModel();
+        if (switched!=null) {
+            Tree.Expression e = switched.getExpression();
+            Tree.Variable v = switched.getVariable();
+            if (e!=null) {
+                return e.getTypeModel();
+            }
+            else if (v!=null) {
+                Tree.Type t = v.getType();
+                if (t!=null) {
+                    return t.getTypeModel();
+                }
             }
         }
         return null;
@@ -7451,24 +7459,26 @@ public class ExpressionVisitor extends Visitor {
             if (switchStatementOrExpression!=null) {
                 Tree.Switched switched = 
                         switchClause().getSwitched();
-                ProducedType switchExpressionType = 
-                        getSwitchedExpressionType(switched);
-                Tree.SwitchCaseList switchCaseList = 
-                        switchCaseList();
-                if (switchExpressionType!=null && 
-                        switchCaseList!=null) {
-                    if (!isTypeUnknown(switchExpressionType)) {
-                        ProducedType caseUnionType = 
-                                caseUnionType(switchCaseList);
-                        if (caseUnionType!=null) {
-                            ProducedType complementType = 
-                                    /*unit.denotableType(*/
-                                    switchExpressionType
-                                        .minus(caseUnionType);
-                            var.getType()
-                                .setTypeModel(complementType);
-                            var.getDeclarationModel()
-                                .setType(complementType);
+                if (switched!=null) {
+                    ProducedType switchExpressionType = 
+                            getSwitchedExpressionType(switched);
+                    Tree.SwitchCaseList switchCaseList = 
+                            switchCaseList();
+                    if (switchExpressionType!=null && 
+                            switchCaseList!=null) {
+                        if (!isTypeUnknown(switchExpressionType)) {
+                            ProducedType caseUnionType = 
+                                    caseUnionType(switchCaseList);
+                            if (caseUnionType!=null) {
+                                ProducedType complementType = 
+                                        /*unit.denotableType(*/
+                                        switchExpressionType
+                                            .minus(caseUnionType);
+                                var.getType()
+                                    .setTypeModel(complementType);
+                                var.getDeclarationModel()
+                                    .setType(complementType);
+                            }
                         }
                     }
                 }
@@ -7527,19 +7537,22 @@ public class ExpressionVisitor extends Visitor {
         }
         if (hasIsCase) {
             if (switchStatementOrExpression!=null) {
-                Tree.Expression switchExpression =
-                        switchClause().getSwitched()
-                            .getExpression();
-                if (switchExpression!=null) {
-                    Tree.Term st = 
-                            switchExpression.getTerm();
-                    if (st instanceof Tree.BaseMemberExpression) {
-                        Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) st;
-                        checkReferenceIsNonVariable(bme, true);
-                    }
-                    else if (st!=null) {
-                        st.addError("switch expression must be a value reference in switch with type cases", 3102);
+                Tree.Switched switched = 
+                        switchClause().getSwitched();
+                if (switched!=null) {
+                    Tree.Expression switchExpression =
+                            switched.getExpression();
+                    if (switchExpression!=null) {
+                        Tree.Term st = 
+                                switchExpression.getTerm();
+                        if (st instanceof Tree.BaseMemberExpression) {
+                            Tree.BaseMemberExpression bme = 
+                                    (Tree.BaseMemberExpression) st;
+                            checkReferenceIsNonVariable(bme, true);
+                        }
+                        else if (st!=null) {
+                            st.addError("switch expression must be a value reference in switch with type cases", 3102);
+                        }
                     }
                 }
             }
