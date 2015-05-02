@@ -128,11 +128,12 @@ class ComprehensionGenerator {
             ComprehensionLoopInfo loop = loops.get(loopIndex);
 
             // iterator variable
-            gen.out("var ", loop.itVarName);
+            gen.out("var ", loop.itVarName, "=");
             if (loopIndex == 0) {
-                gen.out("=");
                 loop.forIterator.getSpecifierExpression().visit(gen);
                 gen.out(".iterator()");
+            } else {
+                gen.out(gen.getClAlias(), "emptyIterator()");
             }
 
             // value or key/value variables
@@ -188,7 +189,6 @@ class ComprehensionGenerator {
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
                     gen.out(".iterator()"); gen.endLine(true);
-                    gen.out("n", nextLoop.valueVarName, "();");
                 }
 
                 gen.out("return ", elemVarName, ";");
@@ -197,16 +197,14 @@ class ComprehensionGenerator {
 
                 // for key/value iterators, value==undefined indicates that the iterator is finished
                 if (loop.pattern != null) {
-                    gen.out(loop.valueVarName, "=undefined;");
+                    gen.out("return undefined;");
+                } else {
+                    gen.out("return ", finished, ";");
                 }
 
-                gen.out("return ", finished, ";");
                 gen.endBlockNewLine();
             }
         }
-
-        // get the first element
-        gen.out("n", loops.get(0).valueVarName, "();");
 
         // generate the "next" function for the comprehension
         gen.out("return function()");
@@ -220,7 +218,7 @@ class ComprehensionGenerator {
         // Check if another element is available on the innermost loop.
         // If yes, evaluate the expression, advance the iterator and return the result.
         ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
-        gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.pattern==null)
+        gen.out("if(n", lastLoop.valueVarName, "()!==", (lastLoop.pattern==null)
                 ? finished : "undefined", ")");
         gen.beginBlock();
         String tv = names.createTempVariable();
@@ -230,7 +228,6 @@ class ComprehensionGenerator {
         expression.visit(gen);
         gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
-        gen.out("n", lastLoop.valueVarName, "();");
         gen.out("return ", tempVarName, ";");
         gen.endBlockNewLine();
 
