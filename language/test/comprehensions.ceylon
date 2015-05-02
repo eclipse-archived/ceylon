@@ -88,15 +88,19 @@ shared void comprehensions() {
   Iterable<String> b85 = {for (k->v in ["a","b","c","d","e"].indexed) if (k%2==0) v.uppercased};
   Iterator<String> iter85 = b85.iterator();
   if (is String x=iter85.next()) {
-    check(x=="A", "ceylon-language #85");
-  } else { fail("ceylon-language #85"); }
+    check(x=="A", "ceylon-language #85.1");
+  } else { fail("ceylon-language #85.1"); }
   if (is String x=iter85.next()) {
-    check(x=="C", "ceylon-language #85");
-  } else { fail("ceylon-language #85"); }
+    check(x=="C", "ceylon-language #85.2");
+  } else { fail("ceylon-language #85.2"); }
   if (is String x=iter85.next()) {
-    check(x=="E", "ceylon-language #85");
-  } else { fail("ceylon-language #85"); }
+    check(x=="E", "ceylon-language #85.3");
+  } else { fail("ceylon-language #85.3"); }
   if (is String x=iter85.next()) {
-    fail("ceylon-language #85");
+    fail("ceylon-language #85.4");
   }
+  //ceylon-js#532
+  value boom = {1, nothing};
+  check({ for (elem in boom) elem }.take(1).sequence()==[1],"js#532.1 comprehension not lazy enough");
+  check({ for (elem in boom) for (sub in boom) sub }.take(1).sequence()==[1],"js#532.2 comprehension not lazy enough");
 }
