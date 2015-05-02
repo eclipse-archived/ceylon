@@ -544,8 +544,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     parameterizes, or</para>
                 </listitem>
                 <listitem>
-                    <para>the declaration does not directly occur in a block or in the
-                    initializer section of a class body.</para>
+                    <para>the declaration does not directly occur in a block, nor in 
+                    the initializer section of a class body.</para>
                 </listitem>
             </itemizedlist>
             
