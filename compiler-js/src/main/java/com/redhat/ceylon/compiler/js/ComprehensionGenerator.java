@@ -188,16 +188,16 @@ class ComprehensionGenerator {
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
                     gen.out(".iterator()"); gen.endLine(true);
-                    gen.out("n", nextLoop.valueVarName, "()"); gen.endLine(true);
+                    gen.out("n", nextLoop.valueVarName, "();");
                 }
 
-                gen.out("return ", elemVarName); gen.endLine(true);
+                gen.out("return ", elemVarName, ";");
                 for (int i=0; i<=loop.conditions.size(); i++) { gen.endBlockNewLine(); }
                 retainedVars.emitRetainedVars(gen);
 
                 // for key/value iterators, value==undefined indicates that the iterator is finished
                 if (loop.pattern != null) {
-                    gen.out(loop.valueVarName, "=undefined"); gen.endLine(true);
+                    gen.out(loop.valueVarName, "=undefined;");
                 }
 
                 gen.out("return ", finished, ";");
@@ -206,7 +206,7 @@ class ComprehensionGenerator {
         }
 
         // get the first element
-        gen.out("n", loops.get(0).valueVarName, "()"); gen.endLine(true);
+        gen.out("n", loops.get(0).valueVarName, "();");
 
         // generate the "next" function for the comprehension
         gen.out("return function()");
@@ -223,13 +223,14 @@ class ComprehensionGenerator {
         gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.pattern==null)
                 ? finished : "undefined", ")");
         gen.beginBlock();
-        declareExternalLoopVars(lastLoop);
+        String tv = names.createTempVariable();
         String tempVarName = names.createTempVariable();
-        gen.out("var ", tempVarName, "=");
+        names.forceName(lastLoop.valDecl, tv);
+        gen.out("var ", tv, "=", lastLoop.valueVarName, ",", tempVarName, "=");
         expression.visit(gen);
         gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
-        gen.out("n", lastLoop.valueVarName, "()"); gen.endLine(true);
+        gen.out("n", lastLoop.valueVarName, "();");
         gen.out("return ", tempVarName, ";");
         gen.endBlockNewLine();
 
@@ -257,12 +258,6 @@ class ComprehensionGenerator {
         TypeUtils.printTypeArguments(that, TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
                 gen, false, null);
         gen.out(")");
-    }
-
-    private void declareExternalLoopVars(ComprehensionLoopInfo loop) {
-        String tv = names.createTempVariable();
-        gen.out("var ", tv, "=", loop.valueVarName); gen.endLine(true);
-        names.forceName(loop.valDecl, tv);
     }
 
     /** Represents one of the for loops of a comprehension including the associated conditions */
