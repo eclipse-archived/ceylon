@@ -555,11 +555,17 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.CompilationUnit that) {
     	for (Tree.Declaration st: that.getDeclarations()) {
-    		withinAttributeInitializer = 
-    				(st instanceof Tree.AttributeDeclaration) &&
-    				st.getDeclarationModel()==declaration &&
-    				!(((Tree.AttributeDeclaration) st).getSpecifierOrInitializerExpression()
-    						instanceof Tree.LazySpecifierExpression);
+    	    if (st instanceof Tree.AttributeDeclaration) {
+    	        Tree.AttributeDeclaration ad =
+    	                (Tree.AttributeDeclaration) st;
+    	        withinAttributeInitializer = 
+    	                ad.getDeclarationModel()==declaration &&
+    	                !(ad.getSpecifierOrInitializerExpression()
+    	                        instanceof Tree.LazySpecifierExpression);
+    	    }
+    	    else {
+                withinAttributeInitializer = false;
+            }
     		st.visit(this);
     		withinAttributeInitializer = false;
     	}
@@ -567,13 +573,23 @@ public class SpecificationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Body that) {
-    	for (Tree.Statement st: that.getStatements()) {
-    		withinAttributeInitializer = 
-    				(st instanceof Tree.AttributeDeclaration) &&
-    				((Tree.AttributeDeclaration) st).getDeclarationModel()==declaration &&
-    				!(((Tree.AttributeDeclaration) st).getSpecifierOrInitializerExpression()
-    						instanceof Tree.LazySpecifierExpression);
-    		st.visit(this);
+        if (hasParameter &&
+                that.getScope()==declaration.getContainer()) {
+            hasParameter = false;
+        }
+        for (Tree.Statement st: that.getStatements()) {
+            if (st instanceof Tree.AttributeDeclaration) {
+                Tree.AttributeDeclaration ad =
+                        (Tree.AttributeDeclaration) st;
+                withinAttributeInitializer =
+                        ad.getDeclarationModel()==declaration &&
+                        !(ad.getSpecifierOrInitializerExpression()
+                                instanceof Tree.LazySpecifierExpression);
+            }
+            else {
+                withinAttributeInitializer = false;
+            }
+            st.visit(this);
     		withinAttributeInitializer = false;
     	}
     }

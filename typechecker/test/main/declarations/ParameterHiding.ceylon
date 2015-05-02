@@ -87,11 +87,12 @@ interface NewParameterHiding {
     
     class Up(Float x, Float y) {}
     class Down(x,y) extends Up(x,y) {
-        shared Float x; variable shared Float y;
+        shared Float x; 
+        variable shared Float y;
     }
     
     void hrrm(s) {
-        print(s);
+        @error print(s);
         String s;
     }
     

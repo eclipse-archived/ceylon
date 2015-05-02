@@ -536,7 +536,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the program element occurs within the lexical scope of the 
-                    declaration, or</para>
+                    declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a parameter and the program element occurs 
+                    within the <literal>extends</literal> clause of the declaration it
+                    parameterizes, or</para>
                 </listitem>
                 <listitem>
                     <para>the declaration does not directly occur in a block or in the
