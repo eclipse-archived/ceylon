@@ -6319,15 +6319,12 @@ public class ExpressionVisitor extends Visitor {
             if (!dynamic && !nativeWrongBackend && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
-                String unknownTypeError = 
-                        fullType.getFirstUnknownTypeError();
-                
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 that.addError("could not determine type of method or attribute reference: '" +
                         member.getName(unit) + "' of '" + 
-                        receiverType.getDeclaration().getName(unit) + "'" +
-                        (unknownTypeError != null ? ": " + unknownTypeError : ""));
+                        receiverType.getDeclaration().getName(unit) + "'" + 
+                        getTypeUnknownError(fullType));
             }
             that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
             //}

@@ -584,10 +584,18 @@ public class Util {
     }
     
     public static String getTypeUnknownError(ProducedType type) {
-        if(type == null)
+        if (type == null) {
             return "";
-        String error = type.getFirstUnknownTypeError();
-        return error != null ? ": " + error : "";
+        }
+        else {
+            String error = type.getFirstUnknownTypeError();
+            if (error != null) {
+                return ": " + error;
+            }
+            else {
+                return "";
+            }
+        }
     }
 
     public static void buildAnnotations(Tree.AnnotationList al, 
