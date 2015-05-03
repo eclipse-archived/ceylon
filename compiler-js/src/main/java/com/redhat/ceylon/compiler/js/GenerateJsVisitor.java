@@ -665,8 +665,14 @@ public class GenerateJsVisitor extends Visitor
         }
         out(names.self(d), "){return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
+        final String aliasedName;
+        if (aliased instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+            aliasedName = names.name((Class)aliased.getContainer()) + "_" + names.name(aliased);
+        } else {
+            aliasedName = names.name(aliased);
+        }
         qualify(that, aliased);
-        out(names.name(aliased), "(");
+        out(aliasedName, "(");
         if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
             ext.getInvocationExpression().getPositionalArgumentList().visit(this);
             if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
@@ -685,7 +691,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         out(aname, ".$$=");
         qualify(that, aliased);
-        out(names.name(aliased), ".$$");
+        out(aliasedName, ".$$");
         endLine(true);
         out(aname,".$crtmm$=");
         TypeUtils.encodeForRuntime(that, d, this);
