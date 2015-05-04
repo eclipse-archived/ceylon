@@ -1005,7 +1005,8 @@ public class GenerateJsVisitor extends Visitor
             if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition
                     || (n instanceof Tree.MethodDeclaration && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null)
                     || n instanceof Tree.AttributeGetterDefinition
-                    || (n instanceof Tree.AttributeDeclaration && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
+                    || (n instanceof Tree.AttributeDeclaration
+                            && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
                 String missingDeclarationName = d.getQualifiedNameString();
                 if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
                     missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
@@ -1140,7 +1141,8 @@ public class GenerateJsVisitor extends Visitor
                         qualify(params, m);
                         out(names.name(m), "$defs$", pd.getName(), "(");
                         boolean firstParam=true;
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : m.getParameterLists().get(0).getParameters()) {
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p :
+                                m.getParameterLists().get(0).getParameters()) {
                             if (firstParam){firstParam=false;}else out(",");
                             out(names.name(p));
                         }
@@ -1426,7 +1428,8 @@ public class GenerateJsVisitor extends Visitor
                         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
                         if (setterDef != null) {
                             out(",");
-                            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(),
+                                    setterDef.getAnnotationList(), this);
                         }
                         out(")");
                         endLine(true);
@@ -1456,7 +1459,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Generate runtime metamodel info for an attribute declaration or definition. */
-    void generateAttributeMetamodel(final Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
+    void generateAttributeMetamodel(final Tree.TypedDeclaration that,
+            final boolean addGetter, final boolean addSetter) {
         //No need to define all this for local values
         Scope _scope = that.getScope();
         while (_scope != null) {
@@ -1556,7 +1560,8 @@ public class GenerateJsVisitor extends Visitor
                 out(".plus(");
                 final Expression expr = exprs.get(i);
                 expr.visit(this);
-                if (expr.getTypeModel() == null || !"ceylon.language::String".equals(expr.getTypeModel().getProducedTypeQualifiedName())) {
+                if (expr.getTypeModel() == null || !"ceylon.language::String".equals(
+                        expr.getTypeModel().getProducedTypeQualifiedName())) {
                     out(".string");
                 }
                 out(").plus(");
@@ -1583,14 +1588,16 @@ public class GenerateJsVisitor extends Visitor
         }
         if (radix == 10) {
             if (lit.compareTo(maxLong) > 0 || lit.compareTo(minLong) < 0) {
-                that.addError("literal outside representable range: " + lit + " is too large to be represented as an Integer");
+                that.addError("literal outside representable range: " + lit
+                        + " is too large to be represented as an Integer");
                 return 0;
             }
         } else {
             if ((neg?lit.negate():lit).compareTo(maxUnsignedLong) == 0) {
                 return neg?1:-1;
-            } else {
-                out("/*bit length=" + lit.bitLength() + ", count=" + lit.bitCount(), " ERGO " + (lit.longValue()),"*/");
+            } else if ((neg?lit.negate():lit).compareTo(maxUnsignedLong) > 0) {
+                that.addError("invalid hexadecimal literal: '" + (radix==2?"$":"#") + nt + "' has more than 64 bits");
+                return 0;
             }
         }
         return lit.longValue();
@@ -2414,7 +2421,8 @@ public class GenerateJsVisitor extends Visitor
         }
         else if (d != null) {
             if (isMember && (d.isShared() || inProto || (!d.isParameter() && defineAsProperty(d)))) {
-                TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
+                TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d :
+                    that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
                     //a local declaration of some kind,
                     //perhaps in an outer scope
@@ -2584,7 +2592,8 @@ public class GenerateJsVisitor extends Visitor
         assignOp(that, "||", null);
     }
 
-    private void assignOp(final Tree.AssignmentOp that, final String functionName, final Map<TypeParameter, ProducedType> targs) {
+    private void assignOp(final Tree.AssignmentOp that, final String functionName,
+            final Map<TypeParameter, ProducedType> targs) {
         Term lhs = that.getLeftTerm();
         final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
