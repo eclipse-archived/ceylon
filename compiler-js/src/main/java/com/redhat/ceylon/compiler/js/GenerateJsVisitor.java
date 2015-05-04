@@ -506,7 +506,7 @@ public class GenerateJsVisitor extends Visitor
             String cname = ((com.redhat.ceylon.compiler.typechecker.model.Class)((Tree.Constructor)that)
                     .getDeclarationModel().getContainer()).getName();
             out("//Constructor ", cname, ".",
-                    that.getDeclarationModel().getName() == null ? cname : that.getDeclarationModel().getName());
+                    that.getDeclarationModel().getName() == null ? "<default>" : that.getDeclarationModel().getName());
         } else {
             out("//", dname, " ", that.getDeclarationModel().getName());
         }
@@ -965,7 +965,7 @@ public class GenerateJsVisitor extends Visitor
     private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
         if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-            String cname = ((com.redhat.ceylon.compiler.typechecker.model.Constructor)d).getExtendedTypeDeclaration().getName();
+            String cname = "default$constructor";
             fqn = fqn.substring(0, fqn.length()-4) + cname;
         }
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
@@ -1002,8 +1002,13 @@ public class GenerateJsVisitor extends Visitor
                     || (n instanceof Tree.MethodDeclaration && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null)
                     || n instanceof Tree.AttributeGetterDefinition
                     || (n instanceof Tree.AttributeDeclaration && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
+                String missingDeclarationName = d.getQualifiedNameString();
+                if (d.getName() == null && d instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
+                    missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
+                            + "<default constructor>";
+                }
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
+                        + missingDeclarationName + " => " + f + ", containing " + names.name(d);
                 n.addError(err);
                 spitOut(err);
                 out("/*", err, "*/");
