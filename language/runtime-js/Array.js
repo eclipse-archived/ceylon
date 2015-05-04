@@ -3,4 +3,4 @@ function $_Array$$c(a$,t$){
   List({Element$List:t}, a$);
   return a$.rt$(t);
 }
-function $_Array(e$,t$){return $_Array_$_Array(e$,t$);}
+function $_Array(e$,t$){return $_Array_$c$(e$,t$);}

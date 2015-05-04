@@ -3,7 +3,7 @@ function(nm,$mpt){
   //Member Type Name
   var mtn=mm.d[mm.d.length-1];
   if (mtn.indexOf('$')>0)mtn=mtn.substring(0,mtn.indexOf('$'));
-  if (nm==='')nm=mtn;
+  if (nm==='')nm='$c$';
   var startingType=this.container;
   while (is$(startingType,{t:Class$meta$model})) {
     var pn=startingType.declaration.name;

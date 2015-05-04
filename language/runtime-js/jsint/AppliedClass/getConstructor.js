@@ -1,6 +1,6 @@
 function(nm,$mpt){
   var mm=getrtmm$$(this.tipo);
-  var fn=mm.d[mm.d.length-1]+"_"+(nm===''?mm.d[mm.d.length-1]:nm);
+  var fn=mm.d[mm.d.length-1]+"_"+(nm===''?'$c$':nm);
   var cn=this.tipo[fn];
   if (cn) {
     mm=getrtmm$$(cn);
