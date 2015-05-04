@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,6 +62,9 @@ public class GenerateJsVisitor extends Visitor
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
     private int exitCode = 0;
+    protected static final BigInteger minLong = new BigInteger(Long.toString(Long.MIN_VALUE));
+    protected static final BigInteger maxLong = new BigInteger(Long.toString(Long.MAX_VALUE));
+    protected static final BigInteger maxUnsignedLong = new BigInteger("ffffffffffffffff", 16);
 
     static final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -1573,14 +1577,21 @@ public class GenerateJsVisitor extends Visitor
             radix = prefix == '$' ? 2 : 16;
             nt = nt.substring(1);
         }
-        final java.math.BigInteger lit = new java.math.BigInteger(nt, radix);
-        if (radix==10 && lit.bitLength() > 63) {
-            if (lit.bitLength() == 64 && neg) {
-                return -lit.longValue();
+        BigInteger lit = new java.math.BigInteger(nt, radix);
+        if (neg) {
+            lit = lit.negate();
+        }
+        if (radix == 10) {
+            if (lit.compareTo(maxLong) > 0 || lit.compareTo(minLong) < 0) {
+                that.addError("literal outside representable range: " + lit + " is too large to be represented as an Integer");
+                return 0;
             }
-            that.addError("literal outside representable range: " + nt + " is too large to be represented as an Integer");
-        } else if (lit.bitLength() > 63 && lit.bitLength()==lit.bitCount()) {
-            out("/*bit length=" + lit.bitLength() + ", count=" + lit.bitCount(), " ERGO " + (lit.longValue()),"*/");
+        } else {
+            if ((neg?lit.negate():lit).compareTo(maxUnsignedLong) == 0) {
+                return neg?1:-1;
+            } else {
+                out("/*bit length=" + lit.bitLength() + ", count=" + lit.bitCount(), " ERGO " + (lit.longValue()),"*/");
+            }
         }
         return lit.longValue();
     }
@@ -2649,22 +2660,20 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.NegativeOp that) {
-        if (that.getTerm() instanceof Tree.NaturalLiteral) {
-            long t = parseNaturalLiteral((Tree.NaturalLiteral)that.getTerm(), true);
-            out("(");
-            if (t > 0) {
-                out("-", Long.toString(t));
-            } else {
-                out(Long.toString(-t));
-            }
-            out(")");
+        Tree.Term term = that.getTerm();
+        if (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        if (term instanceof Tree.NaturalLiteral) {
+            long t = parseNaturalLiteral((Tree.NaturalLiteral)term, true);
+            out("(", Long.toString(t), ")");
             if (t == 0) {
                 //Force -0
                 out(".negated");
             }
             return;
         }
-        final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
+        final TypeDeclaration d = term.getTypeModel().getDeclaration();
         final boolean isint = d.inherits(that.getUnit().getIntegerDeclaration());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
