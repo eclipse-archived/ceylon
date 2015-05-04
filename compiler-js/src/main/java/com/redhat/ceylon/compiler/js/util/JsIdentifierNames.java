@@ -257,7 +257,7 @@ public class JsIdentifierNames {
         if (decl == null) { return null; }
         String name = decl.getName();
         if (name == null && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor) {
-            name = ((com.redhat.ceylon.compiler.typechecker.model.Class)decl.getContainer()).getName();
+            return "$c$";
         }
         if (name.startsWith("anonymous#")) {
             name="anon$" + name.substring(10);

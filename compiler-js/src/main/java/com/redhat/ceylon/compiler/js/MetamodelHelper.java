@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -93,7 +92,7 @@ public class MetamodelHelper {
                 final String constrName;
                 if (d instanceof Class) {
                     actualClass = (Class)d;
-                    constrName = JsIdentifierNames.sanitize(d.getName());
+                    constrName = "$c$";
                 } else {
                     actualClass = (Class)d.getContainer();
                     constrName = gen.getNames().name(d);
