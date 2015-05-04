@@ -1840,7 +1840,11 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize() && (scope != null) &&
                 decl instanceof com.redhat.ceylon.compiler.typechecker.model.Constructor == false) {
             sb.append("getT$all()['");
-            sb.append(scope.getQualifiedNameString());
+            if (scope instanceof Declaration) {
+                sb.append(TypeUtils.qualifiedNameSkippingMethods((Declaration)scope));
+            } else {
+                sb.append(scope.getQualifiedNameString());
+            }
             sb.append("']");
             if (defineAsProperty(decl)) {
                 return getClAlias() + (setter ? "attrSetter(" : "attrGetter(")
