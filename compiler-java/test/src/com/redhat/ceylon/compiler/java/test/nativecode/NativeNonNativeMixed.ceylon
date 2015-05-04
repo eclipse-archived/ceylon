@@ -17,28 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm") Integer nativeAttributePrivate1 = 1;
+class NativeNonNativeMixed1() {}
+native("jvm") class NativeNonNativeMixed1() {}
+native("js") class NativeNonNativeMixed1() {}
 
-native("js") Integer nativeAttributePrivate1 = 2;
+variable String nativeNonNativeMixed2 = "Foo";
+native variable String nativeNonNativeMixed2;
+native("jvm") variable String nativeNonNativeMixed2 = "Bar";
+native("js") variable String nativeNonNativeMixed2 = "Baz";
 
-
-native("jvm") variable Integer nativeAttributePrivate2 = 1;
-
-native("js") variable Integer nativeAttributePrivate2 = 2;
-
-
-native("jvm") Integer nativeAttributePrivate3 {
-    throw Exception("NativeAttributePrivate-JVM");
-}
-
-native("js") Integer nativeAttributePrivate3 {
-    throw Exception("NativeAttributePrivate-JS");
-}
-
-
-void testNativeAttributePrivate() {
-    value x = nativeAttributePrivate1;
-    value y = nativeAttributePrivate2;
-    nativeAttributePrivate2 = 3;
-    value z = nativeAttributePrivate3;
-}
+native variable String nativeNonNativeMixed3;
+variable String nativeNonNativeMixed3 = "Foo";
+native("jvm") variable String nativeNonNativeMixed3 = "Bar";
+native("js") variable String nativeNonNativeMixed3 = "Baz";

@@ -26,24 +26,24 @@ interface NativeClassSatisfiesSuper2 {
 }
 
 native class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
-    shared actual void test1(Integer i);
-    shared actual void test2(Integer i);
+    native shared actual void test1(Integer i);
+    native shared actual void test2(Integer i);
 }
 
 native("jvm") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
-    shared actual void test1(Integer i) {
+    native("jvm") shared actual void test1(Integer i) {
         throw Exception("NativeClassSatisfies-JVM");
     }
-    shared actual void test2(Integer i) {
+    native("jvm") shared actual void test2(Integer i) {
         test1(i);
     }
 }
 
 native("js") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
-    shared actual void test1(Integer i) {
+    native("js") shared actual void test1(Integer i) {
         throw Exception("NativeClassSatisfies-JS");
     }
-    shared actual void test2(Integer i) {
+    native("js") shared actual void test2(Integer i) {
         test1(i);
     }
 }

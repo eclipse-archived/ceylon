@@ -17,28 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm") Integer nativeAttributePrivate1 = 1;
+native shared Integer nativeSetterShared;
+native assign nativeSetterShared;
 
-native("js") Integer nativeAttributePrivate1 = 2;
+native("jvm") shared Integer nativeSetterShared => 1;
+native("jvm") assign nativeSetterShared { throw Exception("NativeSetterShared-JVM"); }
 
-
-native("jvm") variable Integer nativeAttributePrivate2 = 1;
-
-native("js") variable Integer nativeAttributePrivate2 = 2;
-
-
-native("jvm") Integer nativeAttributePrivate3 {
-    throw Exception("NativeAttributePrivate-JVM");
-}
-
-native("js") Integer nativeAttributePrivate3 {
-    throw Exception("NativeAttributePrivate-JS");
-}
+native("js") shared Integer nativeSetterShared => 1;
+native("js") assign nativeSetterShared { throw Exception("NativeSetterShared-JS"); }
 
 
-void testNativeAttributePrivate() {
-    value x = nativeAttributePrivate1;
-    value y = nativeAttributePrivate2;
-    nativeAttributePrivate2 = 3;
-    value z = nativeAttributePrivate3;
+void testNativeSetterShared() {
+    value x = nativeSetterShared;
+    if (x == 1) {
+        nativeSetterShared = x;
+    }
 }
