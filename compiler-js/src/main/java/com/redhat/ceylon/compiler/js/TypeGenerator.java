@@ -385,9 +385,6 @@ public class TypeGenerator {
                     }
                 }
             }
-            if (localConstructorDelegation(defconstr.getDeclarationModel(), constructors)) {
-                gen.out("/*DEFAULT CONSTRUCTOR SHOULD BE ABSTRACT*/");
-            }
             gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(){return ",
                     gen.getNames().name(d), "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
                     _this, ",arguments);}");
@@ -425,7 +422,11 @@ public class TypeGenerator {
                 qpath = gen.qualifiedPath(that, typeDecl, false);
             }
             if (pseudoAbstractConstructor) {
-                gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "$$a(");
+                if (typeDecl instanceof Constructor) {
+                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "$$a(");
+                } else {
+                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "_$c$$$a(");
+                }
             } else {
                 gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
                         (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType) != null))
