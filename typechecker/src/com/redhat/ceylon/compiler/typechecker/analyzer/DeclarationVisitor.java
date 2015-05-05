@@ -7,10 +7,13 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclar
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isInNativeContainer;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNativeNoImpl;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyMap;
@@ -206,9 +209,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     a.addError("illegal native backend name: '\"" + 
                             backend + "\"', must be either '\"jvm\"' or '\"js\"'");
                 }
-                else {
-                    model.setNative(backend);
-                }
+                model.setNative(backend);
                 Scope s = model.getContainer();
                 Declaration member = 
                         s.getDirectMember(name, null, false);
@@ -258,7 +259,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //              }
             }
             else {
-                if (!backend.isEmpty()) {
+                if (isInNativeContainer(model)) {
+                    String cbackend = ((Declaration)model.getContainer()).getNative();
+                    if (!cbackend.equals(backend)) {
+                        that.addError("native backend must be the same as its container: '" + 
+                                name + "' of '" + ((Declaration)model.getContainer()).getName() + "'");
+                    }
+                }
+                else if (!backend.isEmpty() && !(model instanceof Setter)) {
                     that.addError("native implementation is not a toplevel value, function, or class: '" + 
                                     name + "'");
                 }
@@ -316,8 +324,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 Setter setter = (Setter) model;
                 //a setter must have a matching getter
                 Declaration member = 
-                        model.getContainer()
-                             .getDirectMember(name, null, false);
+                        getDirectMember(model.getContainer(),
+                                name,
+                                getNativeBackend(that.getAnnotationList(), unit));
                 if (member==null) {
                     that.addError("setter with no matching getter: '" + 
                             name + "'");
@@ -326,7 +335,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     that.addError("setter name does not resolve to matching getter: '" + 
                             name + "'");
                 }
-                else if (!((Value) member).isTransient()) {
+                else if (!((Value) member).isTransient() && !isNativeNoImpl(member)) {
                     that.addError("matching value is a reference or is forward-declared: '" + 
                             name + "'");
                 }
@@ -340,6 +349,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     else {
                         getter.setSetter(setter);
                     }
+                    setter.setNative(getter.getNative());
                 }
             }
             else {
@@ -389,7 +399,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             dup = true;
                         }
                         else if (memberCanBeNative && modelCanBeNative &&
-                                (member.isNative() || model.isNative())) {
+                                model.isNative()) {
                             // Just to make sure no error gets reported
                         }
                         else {
@@ -423,6 +433,23 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
     }
 
+    // Find the named member and return it. In case a backend has been specified
+    // and the found member is native return the proper backend declaration
+    private static Declaration getDirectMember(Scope scope, String name, String backend) {
+        Declaration member = scope.getDirectMember(name, null, false);
+        if (member.isNative() && backend != null) {
+            Declaration m = null;
+            for (Declaration o : ((Overloadable)member).getOverloads()) {
+                if (backend.equals(o.getNative())) {
+                    m = o;
+                    break;
+                }
+            }
+            member = m;
+        }
+        return member;
+    }
+    
     private void visitElement(Node that, Element model) {
         model.setUnit(unit);
         model.setScope(scope);
@@ -1035,7 +1062,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         exitScope(o);
         
         if (that.getSpecifierExpression()==null &&
-                that.getBlock()==null) {
+                that.getBlock()==null &&
+                !isNativeNoImpl(s)) {
             that.addError("setter declaration must have a body or => specifier");
         }
     }
