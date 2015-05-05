@@ -14,7 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDecla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInheritedDeclarations;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.hasNativeImplementation;
@@ -150,7 +150,7 @@ public class RefinementVisitor extends Visitor {
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
         // Find the abstraction first (if it exists)
-        Declaration abstraction = getNativeAbstraction(dec);
+        Declaration abstraction = getNativeDeclaration(dec, "");
         if (abstraction == null) {
             // Abstraction-less native implementation, check it's not shared
 //            if (dec.isShared()) {

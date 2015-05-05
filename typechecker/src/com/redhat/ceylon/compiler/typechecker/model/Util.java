@@ -2155,16 +2155,18 @@ public class Util {
         return false;
     }
     
-    public static Declaration getNativeAbstraction(Declaration decl) {
+    public static Declaration getNativeDeclaration(Declaration decl, String backend) {
         Declaration abstraction = null;
         Overloadable f = (Overloadable)decl;
-        if ("".equals(decl.getNative())) {
+        if (backend.equals(decl.getNative())) {
             abstraction = decl;
         } else {
-            for (Declaration d : f.getOverloads()) {
-                if ("".equals(d.getNative())) {
-                    abstraction = d;
-                    break;
+            if (f.getOverloads() != null) {
+                for (Declaration d : f.getOverloads()) {
+                    if (backend.equals(d.getNative())) {
+                        abstraction = d;
+                        break;
+                    }
                 }
             }
         }

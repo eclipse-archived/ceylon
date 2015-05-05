@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
@@ -541,6 +542,13 @@ public class TypeHierarchyVisitor extends Visitor {
                         member.isStaticallyImportable() ||
                         isAbstraction(member)) {
                     continue;
+                }
+                if (declaration.isNative() && member.isNative()) {
+                    // Make sure we get the right member declaration (the one for the same backend as its container)
+                    member = getNativeDeclaration(member, declaration.getNative());
+                    if (member == null) {
+                        continue;
+                    }
                 }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);
