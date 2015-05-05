@@ -66,7 +66,7 @@ class ModuleDescriptorReader {
     private final Module moduleDescriptor;
 
     public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), DefaultToolOptions.getDefaultOffline(), (int)DefaultToolOptions.getDefaultTimeout());
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), DefaultToolOptions.getDefaultOffline(), (int)DefaultToolOptions.getDefaultTimeout(), DefaultToolOptions.getDefaultProxy());
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);

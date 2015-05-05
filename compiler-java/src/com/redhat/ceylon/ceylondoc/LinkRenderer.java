@@ -781,7 +781,7 @@ public class LinkRenderer {
         Boolean result = ceylonDocTool.getModuleUrlAvailabilityCache().get(moduleUrl);
         if( result == null ) {
             try {
-                HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection();
+                HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection(DefaultToolOptions.getDefaultProxy());
                 con.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
                 con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout() * Constants.READ_TIMEOUT_MULTIPLIER);
                 con.setRequestMethod("HEAD");
