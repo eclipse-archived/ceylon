@@ -231,15 +231,15 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1576() {
         assertErrors("bug15xx/Bug1576",
-                new CompilerError(21, "native declaration not found"),
-                new CompilerError(26, "native declaration not found"),
-                new CompilerError(29, "native declaration not found"),
-                new CompilerError(32, "native declaration not found"),
-                new CompilerError(36, "native declaration not found"),
-                new CompilerError(40, "native declaration not found"),
-                new CompilerError(45, "native declaration not found"),
-                new CompilerError(50, "native declaration not found"),
-                new CompilerError(55, "native declaration not found")
+                new CompilerError(21, "native implementation not found"),
+                new CompilerError(26, "native implementation not found"),
+                new CompilerError(29, "native implementation not found"),
+                new CompilerError(32, "native implementation not found"),
+                new CompilerError(36, "native implementation not found"),
+                new CompilerError(40, "native implementation not found"),
+                new CompilerError(45, "native implementation not found"),
+                new CompilerError(50, "native implementation not found"),
+                new CompilerError(55, "native implementation not found")
                 );
     }
 
