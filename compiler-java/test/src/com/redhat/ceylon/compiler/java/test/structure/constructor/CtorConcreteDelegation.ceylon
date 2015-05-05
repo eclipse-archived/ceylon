@@ -38,6 +38,16 @@ class ExtendsBasic<X> {
     }
     checker.note("3");
 }
+@noanno
+class Hello {
+    String who;
+    shared new For(String who) {
+        this.who = who;
+    }
+    shared new World()
+            extends For("world") {}
+    print("Hello " + who);
+}
 shared void runCtorConcreteDelegation() {
     checker.reset();
     C<String>.X();

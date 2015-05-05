@@ -121,6 +121,11 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
 }
 class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final X who;
+    
+    private final X getWho$priv$() {
+        return who;
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ For$delegation$ = null;
     
     private static final class For$delegation$ {
@@ -132,9 +137,8 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ $name$, final X who$param$) {
         this.$reified$X = $reified$X;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
-        final X who;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("For");
-        who = who$param$;
+        this.who = who$param$;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For For = null;
     
@@ -168,6 +172,54 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.class, $reified$X);
     }
+}
+class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private final .java.lang.String who;
+    
+    private final .java.lang.String getWho$priv$() {
+        return who;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$ For$delegation$ = null;
+    
+    private static final class For$delegation$ {
+        
+        private For$delegation$() {
+        }
+    }
+    
+    private Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$ $name$, final .java.lang.String who$param$) {
+        this.who = who$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For For = null;
+    
+    public static final class For {
+        
+        private For() {
+        }
+    }
+    
+    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For $name$, final .java.lang.String who$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$, who$param$);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.World World = null;
+    
+    public static final class World {
+        
+        private World() {
+        }
+    }
+    
+    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.World $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$, "world");
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
