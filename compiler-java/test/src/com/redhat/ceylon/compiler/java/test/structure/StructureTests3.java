@@ -121,4 +121,9 @@ public class StructureTests3 extends CompilerTests {
     public void testMcrInterfaceFormalMemberClassDefaultedParameter(){
         compareWithJavaSource("mcr/InterfaceFormalMemberClassDefaultedParameter");
     }
+    
+    @Test
+    public void testMcrLocalInterfaceFormalMemberClass(){
+        compareWithJavaSource("mcr/LocalInterfaceFormalMemberClass");
+    }
 }
