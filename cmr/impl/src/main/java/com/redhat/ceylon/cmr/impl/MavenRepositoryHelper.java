@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 import java.io.File;
+import java.net.Proxy;
 
 /**
  * Maven repository helper.
@@ -53,8 +54,8 @@ public class MavenRepositoryHelper {
         return new MavenRepository(new MavenContentStore(mvnRepository).createRoot());
     }
 
-    public static Repository getMavenRepository(String repositoryURL, Logger log, boolean offline, int timeout) {
-        return new MavenRepository(new RemoteContentStore(repositoryURL, log, offline, timeout).createRoot());
+    public static Repository getMavenRepository(String repositoryURL, Logger log, boolean offline, int timeout, Proxy proxy) {
+        return new MavenRepository(new RemoteContentStore(repositoryURL, log, offline, timeout, proxy).createRoot());
     }
 
     public static Repository getMavenRepository(StructureBuilder structureBuilder) {

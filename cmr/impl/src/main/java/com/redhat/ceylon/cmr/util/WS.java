@@ -111,9 +111,17 @@ public class WS {
     public static void getXML(String url, XMLHandler handler){
         try{
             URL endpoint = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(DefaultToolOptions.getDefaultProxy());
             connection.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
             connection.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout() * Constants.READ_TIMEOUT_MULTIPLIER);
+            getXML(connection, handler);
+        }catch(IOException x){
+            throw new RuntimeException(x);
+        }
+    }
+
+    public static void getXML(HttpURLConnection connection, XMLHandler handler){
+        try{
             connection.addRequestProperty("Accept", "application/xml");
             connection.connect();
             try{

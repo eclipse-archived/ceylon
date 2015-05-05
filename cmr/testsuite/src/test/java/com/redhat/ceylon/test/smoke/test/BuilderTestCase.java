@@ -33,12 +33,12 @@ public class BuilderTestCase extends AbstractTest {
     public void testDefault() throws Exception {
         try {
             // property not set
-            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
             assertBuilder(builder, RepositoryManagerBuilderImpl.class);
 
             // blank
             System.setProperty("ceylon.module.resolver.builder", "");
-            builder = getRepositoryManagerBuilder(false, 60000);
+            builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
             assertBuilder(builder, RepositoryManagerBuilderImpl.class);
         } finally {
             System.clearProperty("ceylon.module.resolver.builder");
@@ -50,7 +50,7 @@ public class BuilderTestCase extends AbstractTest {
         try {
             // invalid name
             System.setProperty("ceylon.module.resolver.builder", "some.fake.name");
-            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
             assertBuilder(builder, RepositoryManagerBuilderImpl.class);
         } finally {
             System.clearProperty("ceylon.module.resolver.builder");
@@ -62,7 +62,7 @@ public class BuilderTestCase extends AbstractTest {
         try {
             // invalid name
             System.setProperty("ceylon.module.resolver.builder", BuilderTestCase.class.getName());
-            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
             assertBuilder(builder, RepositoryManagerBuilderImpl.class);
         } finally {
             System.clearProperty("ceylon.module.resolver.builder");
@@ -73,7 +73,7 @@ public class BuilderTestCase extends AbstractTest {
     public void testImpl() throws Exception {
         try {
             System.setProperty("ceylon.module.resolver.builder", com.redhat.ceylon.test.smoke.support.RepositoryManagerBuilderTester.class.getName());
-            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+            RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
             assertBuilder(builder, RepositoryManagerBuilderTester.class);
         } finally {
             System.clearProperty("ceylon.module.resolver.builder");

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
@@ -40,13 +41,13 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public class RemoteContentStore extends URLContentStore {
 
-    public RemoteContentStore(String root, Logger log, boolean offline, int timeout) {
-        super(root, log, offline, timeout);
+    public RemoteContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
+        super(root, log, offline, timeout, proxy);
     }
 
     protected InputStream openStream(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn = url.openConnection();
+            final URLConnection conn = url.openConnection(proxy);
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);

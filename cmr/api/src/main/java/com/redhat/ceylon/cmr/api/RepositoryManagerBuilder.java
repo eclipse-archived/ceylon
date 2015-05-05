@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.net.Proxy;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
@@ -39,17 +40,17 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(Logger log) {
-        this(log, true, 0);
+        this(log, true, 0, Proxy.NO_PROXY);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout) {
-        this(log, offline, timeout, null);
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy) {
+        this(log, offline, timeout, proxy, null);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Overrides overrides) {
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Overrides.class);
-            delegate = ctor.newInstance(log, offline, timeout, overrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Proxy.class, Overrides.class);
+            delegate = ctor.newInstance(log, offline, timeout, proxy, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {
@@ -64,14 +65,14 @@ public class RepositoryManagerBuilder {
         }
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout) {
-        this(mainRepository, log, offline, timeout, null);
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy) {
+        this(mainRepository, log, offline, timeout, proxy, null);
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Overrides overrides) {
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Overrides.class);
-            delegate = ctor.newInstance(mainRepository, log, offline, timeout, overrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Proxy.class, Overrides.class);
+            delegate = ctor.newInstance(mainRepository, log, offline, timeout, proxy, overrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {

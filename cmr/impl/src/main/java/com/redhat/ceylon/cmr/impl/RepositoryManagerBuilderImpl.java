@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
+import java.net.Proxy;
 import java.util.List;
 
 import com.redhat.ceylon.common.log.Logger;
@@ -37,24 +38,27 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  */
 public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
-    private RootRepositoryManager repository;
-    private Logger log;
-    private int timeout;
-    private boolean offline;
+    private final RootRepositoryManager repository;
+    private final Logger log;
+    private final boolean offline;
+    private final int timeout;
+    private final Proxy proxy;
 
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Overrides overrides) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
         repository = new RootRepositoryManager(log, overrides);
         this.log = log;
-        this.timeout = timeout;
         this.offline = offline;
+        this.timeout = timeout;
+        this.proxy = proxy;
         init();
     }
 
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Overrides overrides) {
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
         repository = new RootRepositoryManager(mainRepository, log, overrides);
         this.log = log;
-        this.timeout = timeout;
         this.offline = offline;
+        this.timeout = timeout;
+        this.proxy = proxy;
         init();
     }
 
@@ -69,7 +73,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     @Override
     public RepositoryBuilder repositoryBuilder() {
-        return new RepositoryBuilderImpl(log, offline, timeout);
+        return new RepositoryBuilderImpl(log, offline, timeout, proxy);
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {

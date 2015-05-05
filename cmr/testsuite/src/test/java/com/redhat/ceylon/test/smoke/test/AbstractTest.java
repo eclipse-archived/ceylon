@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileVisitResult;
@@ -116,35 +117,35 @@ public class AbstractTest {
         return new File(url.toURI());
     }
 
-    protected RepositoryManagerBuilder getRepositoryManagerBuilder(boolean offline, int timeout) throws Exception {
-        return getRepositoryManagerBuilder(getRepositoryRoot(), offline, timeout);
+    protected RepositoryManagerBuilder getRepositoryManagerBuilder(boolean offline, int timeout, Proxy proxy) throws Exception {
+        return getRepositoryManagerBuilder(getRepositoryRoot(), offline, timeout, proxy);
     }
 
-    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout) throws Exception {
-        return getRepositoryManagerBuilder(root, offline, timeout, null);
+    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout, Proxy proxy) throws Exception {
+        return getRepositoryManagerBuilder(root, offline, timeout, proxy, null);
     }
 
-    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout, String overrideFileName) throws Exception {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline, timeout, RepositoryManagerBuilder.parseOverrides(overrideFileName));
+    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout, Proxy proxy, String overrideFileName) throws Exception {
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline, timeout, proxy, RepositoryManagerBuilder.parseOverrides(overrideFileName));
         builder.addRepository(new DefaultRepository(new FileContentStore(root).createRoot()));
         return builder;
     }
 
-    protected RepositoryManager getRepositoryManager(boolean offline, int timeout) throws Exception {
+    protected RepositoryManager getRepositoryManager(boolean offline, int timeout, Proxy proxy) throws Exception {
         return getRepositoryManager(offline, timeout, null);
     }
 
-    protected RepositoryManager getRepositoryManager(boolean offline, int timeout, String overrideFileName) throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(getRepositoryRoot(), offline, timeout, overrideFileName);
+    protected RepositoryManager getRepositoryManager(boolean offline, int timeout, Proxy proxy, String overrideFileName) throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(getRepositoryRoot(), offline, timeout, proxy, overrideFileName);
         return builder.buildRepository();
     }
 
     protected RepositoryManager getRepositoryManager() throws Exception {
-        return getRepositoryManager(false, 20000);
+        return getRepositoryManager(false, 20000, Proxy.NO_PROXY);
     }
 
     protected RepositoryManager getRepositoryManager(String overrideFileName) throws Exception {
-        return getRepositoryManager(false, 20000, overrideFileName);
+        return getRepositoryManager(false, 20000, Proxy.NO_PROXY, overrideFileName);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager) {

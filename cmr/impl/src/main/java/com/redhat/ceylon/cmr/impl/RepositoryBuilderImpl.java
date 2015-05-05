@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.Proxy;
 import java.net.URI;
 
 import com.redhat.ceylon.cmr.api.Repository;
@@ -34,13 +35,15 @@ import com.redhat.ceylon.common.log.Logger;
 class RepositoryBuilderImpl implements RepositoryBuilder {
 
     private Logger log;
-    private int timeout;
     private boolean offline;
+    private int timeout;
+    private Proxy proxy;
     
-    RepositoryBuilderImpl(Logger log, boolean offline, int timeout) {
+    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy) {
         this.log = log;
-        this.timeout = timeout;
         this.offline = offline;
+        this.timeout = timeout;
+        this.proxy = proxy;
     }
 
     public Repository buildRepository(String token) throws Exception {
@@ -54,7 +57,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
 
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
-            structureBuilder = new RemoteContentStore(token, log, offline, timeout);
+            structureBuilder = new RemoteContentStore(token, log, offline, timeout, proxy);
         } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {

@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -70,6 +71,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private static final String HERD_ORIGIN = "The Herd";
     
     protected final String root;
+    protected final Proxy proxy;
+    private final String herdRequestedApi;
+    
     protected String username;
     protected String password;
     private Boolean _isHerd = null;
@@ -77,17 +81,18 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdCompleteModulesURL;
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
-    private String herdRequestedApi;
     private int herdVersion = 1; // assume 1 until we find otherwise
 
-    protected URLContentStore(String root, Logger log, boolean offline, int timeout) {
-        this(root, log, offline, timeout, null);
+    protected URLContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
+        this(root, log, offline, timeout, proxy, null);
     }
-    protected URLContentStore(String root, Logger log, boolean offline, int timeout, String apiVersion) {
+    
+    protected URLContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy, String apiVersion) {
         super(log, offline, timeout);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
+        this.proxy = proxy;
         this.herdRequestedApi = apiVersion != null ? apiVersion : "4";
         if(apiVersion != null
                 && !apiVersion.equals("1")
@@ -117,7 +122,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         try{
             // we support both API 1 to 3
             URL rootURL = getURL("?version="+herdRequestedApi);
-            HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
+            HttpURLConnection con = (HttpURLConnection) rootURL.openConnection(proxy);
             try{
                 con.setConnectTimeout(timeout);
                 con.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
@@ -295,7 +300,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected HttpURLConnection head(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn = url.openConnection();
+            final URLConnection conn = url.openConnection(proxy);
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);

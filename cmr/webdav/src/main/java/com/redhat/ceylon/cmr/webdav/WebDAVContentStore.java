@@ -19,7 +19,7 @@ package com.redhat.ceylon.cmr.webdav;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ProxySelector;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,12 +28,10 @@ import java.util.List;
 
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.config.Registry;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.github.sardine.DavResource;
@@ -47,7 +45,6 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -64,12 +61,12 @@ public class WebDAVContentStore extends URLContentStore {
     /**
      * For tests only!!!
      */
-    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, String apiVersion) {
-        super(root, log, offline, timeout, apiVersion);
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy, String apiVersion) {
+        super(root, log, offline, timeout, proxy, apiVersion);
     }
 
-    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout) {
-        super(root, log, offline, timeout);
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
+        super(root, log, offline, timeout, proxy);
     }
 
     protected Sardine getSardine() {

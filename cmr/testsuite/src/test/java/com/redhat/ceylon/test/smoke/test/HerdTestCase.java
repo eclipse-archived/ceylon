@@ -69,8 +69,8 @@ public class HerdTestCase extends AbstractTest {
     }
 
     private RepositoryManager getRepositoryManager(File root, boolean offline, int timeout, String apiVersion) throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline, timeout);
-        WebDAVContentStore rcs = new WebDAVContentStore(HERD_URL , log, false, 60000, apiVersion);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline, timeout, java.net.Proxy.NO_PROXY);
+        WebDAVContentStore rcs = new WebDAVContentStore(HERD_URL , log, false, 60000, java.net.Proxy.NO_PROXY, apiVersion);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.addRepository(repo).buildRepository();
     }

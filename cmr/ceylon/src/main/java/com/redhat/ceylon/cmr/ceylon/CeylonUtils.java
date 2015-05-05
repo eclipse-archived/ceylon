@@ -3,6 +3,7 @@ package com.redhat.ceylon.cmr.ceylon;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,7 @@ public class CeylonUtils {
         private String user;
         private String password;
         private int timeout = -1;
+        private Proxy proxy;
         private boolean offline;
         private boolean noSystemRepo;
         private boolean noDefRepos;
@@ -262,6 +264,15 @@ public class CeylonUtils {
         }
         
         /**
+         * Sets the proxy for any connections that might be established
+         * to remote repositories (defaults to no proxy)
+         */
+        public CeylonRepoManagerBuilder proxy(Proxy proxy){
+            this.proxy = proxy;
+            return this;
+        }
+        
+        /**
          * Enables offline mode that will prevent the module loader from connecting
          * to remote repositories (defaults to false)
          */
@@ -345,7 +356,7 @@ public class CeylonUtils {
                 skipRemoteRepositories = true;
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getOverrides(config));
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getProxy(config), getOverrides(config));
 
             // Now we add all the rest of the repositories in the order that they will be searched
             
@@ -515,7 +526,7 @@ public class CeylonUtils {
                 File cachingDir = FileUtil.makeTempDir("ceylon-webdav-cache-");
 
                 // HTTP
-                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config));
+                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config), getProxy(config));
                 davContentStore.setUsername(user);
                 davContentStore.setPassword(password);
 
@@ -596,6 +607,10 @@ public class CeylonUtils {
 
         private int getTimeout(CeylonConfig config) {
             return (timeout >= 0) ? timeout : (int)DefaultToolOptions.getDefaultTimeout(config);
+        }
+
+        private Proxy getProxy(CeylonConfig config) {
+            return (proxy != null) ? proxy : DefaultToolOptions.getDefaultProxy(config);
         }
         
         protected Overrides getOverrides(CeylonConfig config) {
