@@ -33,7 +33,7 @@ public class NativeTests extends CompilerTests {
         try {
             compileAndRun("com.redhat.ceylon.compiler.java.test.nativecode.test" + test, test + ".ceylon");
         } catch (RuntimeException ex) {
-            assert((test + "-JVM").equals(ex.getMessage()));
+            assert(("ceylon.language.Exception \"" + test + "-JVM\"").equals(ex.getMessage()));
             ok = true;
         }
         if (!ok) {
