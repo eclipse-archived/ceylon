@@ -5,6 +5,7 @@ import java.util.Map;
 
 
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
 public class CtorDelegation {
@@ -50,21 +51,29 @@ public class CtorDelegation {
      * @return
      */
     public boolean isSelfDelegation() {
-        return ctor != null && extending instanceof Constructor && ctor.getContainer().equals(extending.getContainer());
+        return ctor != null 
+                && ((extending instanceof Constructor 
+                && ctor.getContainer().equals(extending.getContainer()))
+                || (extending instanceof Class
+                && ctor.getContainer().equals(extending)));
     }
     /**
      * true if the constructor is extending a non-abstract constructor from the same class
      * @return
      */
     public boolean isConcreteSelfDelegation() {
-        return isSelfDelegation() && !((Constructor)extending).isAbstract();
+        return isSelfDelegation() 
+                && (extending instanceof Class 
+                || !((Constructor)extending).isAbstract());
     }
     /**
      * true if the constructor is extends an abstract constructor from the same class
      * @return
      */
     public boolean isAbstractSelfDelegation() {
-        return isSelfDelegation() && ((Constructor)extending).isAbstract();
+        return isSelfDelegation()
+                && extending instanceof Constructor
+                && ((Constructor)extending).isAbstract();
     }
     /**
      * true if this delegation is delegating to a superclass initializer or constructor,
