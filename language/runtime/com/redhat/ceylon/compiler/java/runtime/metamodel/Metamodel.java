@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,11 +18,9 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
 import ceylon.language.Annotated;
-import java.lang.annotation.Annotation;
 import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Callable;
-import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
@@ -154,7 +152,7 @@ public class Metamodel {
                 System.err.println("DEBUG: "+str);
             }
             
-        }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
+        }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT, java.net.Proxy.NO_PROXY);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
