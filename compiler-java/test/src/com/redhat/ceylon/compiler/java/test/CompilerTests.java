@@ -118,6 +118,16 @@ public abstract class CompilerTests {
      */
     public static final Object RUN_LOCK = new Object();
 
+    // We use Java assertions in our tests, so if they are not enabled
+    // we're not really testing anything in those cases.
+    static {
+        boolean assertsEnabled = false;
+        assert assertsEnabled = true; // Intentional side effect!!!
+        if (!assertsEnabled) {
+            throw new RuntimeException("Assertions have not been be enabled! Add the `-ea` option to the compiler arguments");
+        }
+    } 
+
     public CompilerTests() {
         // for comparing with java source
         Package pakage = getClass().getPackage();
