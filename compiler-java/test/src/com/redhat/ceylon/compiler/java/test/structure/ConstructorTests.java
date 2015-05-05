@@ -174,4 +174,9 @@ public class ConstructorTests extends CompilerTests {
         //compile("constructor/CtorDelegationClassRefs.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.constructor.runCtorDelegationClassRefs");
     }
+    
+    @Test
+    public void testCtorDelegationExtendDefault() {
+        compareWithJavaSource("constructor/CtorDelegationExtendDefault");
+    }
 }

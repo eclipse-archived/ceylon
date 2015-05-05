@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public CtorDelegationExtendDefault(final .java.lang.String _$param$) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("In Default"));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.Alt Alt = null;
+    
+    public static final class Alt {
+        
+        private Alt() {
+        }
+    }
+    
+    public CtorDelegationExtendDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.Alt $name$) {
+        this("");
+        .ceylon.language.print_.print(.ceylon.language.String.instance("In Alt"));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.class);
+}
