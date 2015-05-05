@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -71,7 +72,8 @@ public class MissingNativeVisitor extends Visitor {
     }
     
     public void visit(Tree.AttributeSetterDefinition decl) {
-        checkNativeExistence(decl);
+        Setter model = (Setter)decl.getDeclarationModel();
+        checkNativeExistence(decl, model.getGetter());
         super.visit(decl);
     }
 
@@ -108,7 +110,11 @@ public class MissingNativeVisitor extends Visitor {
             try {
                 if (model instanceof Method || model instanceof Class || model instanceof Value) {
                     Declaration m = pkg.getDirectMember(model.getName(), null, false);
-                    if (m != null && m.isNative()) {
+                    if (m != null) {
+                        if (!m.isNative()) {
+                            // An error will already have been added by the typechecker
+                            return;
+                        }
                         // Native declarations are a bit weird, if there are multiple they
                         // will all have the same list of overloads containing each of them.
                         // We here check to see if any of them are for this backend
@@ -134,7 +140,7 @@ public class MissingNativeVisitor extends Visitor {
             }
         }
         if(!ok)
-            node.addError("native declaration not found");
+            node.addError("native implementation not found");
     }
 
     private static Package getPackage(Declaration decl){
