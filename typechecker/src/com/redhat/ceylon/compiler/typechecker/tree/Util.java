@@ -73,14 +73,22 @@ public class Util {
     }
     
     public static boolean isForBackend(Tree.AnnotationList al, BackendSupport backendSupport, Unit unit) {
-        Annotation a = getAnnotation(al, "native", unit);
-        if (a != null) {
-            Backend backend = Backend.fromAnnotation(getAnnotationArgument(a, ""));
+        String be = getNativeBackend(al, unit);
+        if (be != null) {
+            Backend backend = Backend.fromAnnotation(be);
             if (backend == null || !backendSupport.supportsBackend(backend)) {
                 return false;
             }
         }
         return true;
+    }
+    
+    public static String getNativeBackend(Tree.AnnotationList al, Unit unit) {
+        Annotation a = getAnnotation(al, "native", unit);
+        if (a != null) {
+            return getAnnotationArgument(a, "");
+        }
+        return null;
     }
     
     public static boolean hasUncheckedNulls(Tree.Term term) {

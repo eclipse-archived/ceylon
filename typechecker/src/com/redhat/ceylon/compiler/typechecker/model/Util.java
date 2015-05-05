@@ -2147,6 +2147,14 @@ public class Util {
         return false;
     }
     
+    public static boolean isInNativeContainer(Declaration decl) {
+        Scope container = decl.getContainer();
+        if (container instanceof Declaration) {
+            return ((Declaration) container).isNative();
+        }
+        return false;
+    }
+    
     public static Declaration getNativeAbstraction(Declaration decl) {
         Declaration abstraction = null;
         Overloadable f = (Overloadable)decl;
