@@ -13,6 +13,7 @@ void bug2054() {
         b = (Bug2054Raw() of Object) is Bug2054Java<JString, JString>;
         throw;
     } catch (Throwable e) {
+        print(e.message) ;
         assert(e.message == "Cannot determine whether class com.redhat.ceylon.compiler.java.test.interop.Bug2054Raw is a com.redhat.ceylon.compiler.java.test.interop.Bug2054Java<java.lang.String,java.lang.String>");
     } 
     
@@ -33,6 +34,7 @@ void bug2054() {
     try {
         b = (Bug2054Partial<JString>() of Object) is Bug2054Java<JString, JString>;
     } catch (Throwable e) {
+        print(e.message) ;
         assert(e.message == "Cannot determine whether class com.redhat.ceylon.compiler.java.test.interop.Bug2054Partial is a com.redhat.ceylon.compiler.java.test.interop.Bug2054Java<java.lang.String,java.lang.String>");
     }
     b = (Bug2054PartialUpper<JString>() of Object) is Bug2054Java<out Anything, out JString>;
