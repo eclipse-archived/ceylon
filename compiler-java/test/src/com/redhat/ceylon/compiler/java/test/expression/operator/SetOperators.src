@@ -195,15 +195,6 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
         this.b = b$param$;
         this.sync = getA();
     }
-    private .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
-    
-    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getSync() {
-        return sync;
-    }
-    
-    public final void setSync(final .ceylon.language.Set<? extends .ceylon.language.Integer> sync) {
-        this.sync = sync;
-    }
     private .ceylon.language.Set<? extends .ceylon.language.Integer> a;
     
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getA() {
@@ -221,6 +212,15 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public final void setB(final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
         this.b = b;
+    }
+    private .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
+    
+    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getSync() {
+        return sync;
+    }
+    
+    public final void setSync(final .ceylon.language.Set<? extends .ceylon.language.Integer> sync) {
+        this.sync = sync;
     }
     
     public .java.lang.Object m() {

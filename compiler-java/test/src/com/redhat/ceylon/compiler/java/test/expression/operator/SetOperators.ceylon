@@ -112,9 +112,9 @@ shared class SetOperators() {
 }
 @noanno
 class SetOperatorsSuper(a, b) {
-    shared variable Set<Integer> sync = a;
     shared variable Set<Integer> a;
     shared variable Set<Integer> b; 
+    shared variable Set<Integer> sync = a;
     
     shared default void m() {
         sync = a | b;

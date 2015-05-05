@@ -7,9 +7,10 @@ class ParametersAndMembers(
     String unsharedCapturedVpd,
     shared String sharedVpd) {
     
+    String unsharedUncapturedHidden;
+    
     print(unsharedUncapturedHidden + unsharedUncapturedVpd);
     
-    String unsharedUncapturedHidden;
     String unsharedCapturedHidden;
     shared String sharedHidden;
     
