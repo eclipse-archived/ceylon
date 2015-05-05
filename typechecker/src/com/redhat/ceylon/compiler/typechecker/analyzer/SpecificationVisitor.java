@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isInNativeContainer;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNativeNoImpl;
 
 import java.util.ArrayList;
@@ -273,7 +274,7 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
                 else if (!metamodel &&
-                        !isNative() &&
+                        !isNativeNoImpl(declaration) &&
                         (!isLate() || !isForwardReferenceable())) {
                     if (isVariable()) {
                         that.addError("not definitely initialized: '" + 
@@ -840,13 +841,20 @@ public class SpecificationVisitor extends Visitor {
             else {
                 super.visit(that);
             	if (declaration.isToplevel() && 
-            	        !isNative()) {
+            	        !isNativeNoImpl(declaration)) {
 	                that.addError("toplevel function must be specified: '" +
 	                        declaration.getName() + 
 	                        "' may not be forward declared");
 	            }
+                else if (declaration.isClassMember() && 
+                        !isNativeNoImpl(declaration) &&
+                        isInNativeContainer(declaration)) {
+                    that.addError("member in native container must be native: '" +
+                                declaration.getName() + "'", 
+                                1450);
+                }
 	            else if (declaration.isClassMember() && 
-	                    !isNative() &&
+	                    !isNativeNoImpl(declaration) &&
 	                    !declaration.isFormal() && 
 	                    that.getDeclarationModel()
 	                        .getInitializerParameter()==null &&
@@ -856,7 +864,7 @@ public class SpecificationVisitor extends Visitor {
 	                            1450);
 	            }
 	            else if (declaration.isInterfaceMember() && 
-	                    !isNative() &&
+	                    !isNativeNoImpl(declaration) &&
 	            		!declaration.isFormal()) {
 	                that.addError("interface method must be formal or specified: '" +
 	                        declaration.getName() + "'", 
@@ -866,19 +874,6 @@ public class SpecificationVisitor extends Visitor {
         }
         else {
             super.visit(that);
-        }
-    }
-    
-    private boolean isNative() {
-        if (isNativeNoImpl(declaration)) {
-            return true;
-        }
-        else {
-//            Scope container = declaration.getContainer();
-//            if (container instanceof Declaration) {
-//                return isNativeNoImpl((Declaration) container);
-//            }
-            return false;
         }
     }
     
@@ -950,7 +945,7 @@ public class SpecificationVisitor extends Visitor {
             else {
             	super.visit(that);
             	if (declaration.isToplevel() && 
-	                    !isNative() &&
+	                    !isNativeNoImpl(declaration) &&
 	                    !isLate()) {
 	                if (isVariable()) {
 	                    that.addError("toplevel variable value must be initialized: '" +
@@ -962,7 +957,7 @@ public class SpecificationVisitor extends Visitor {
 	                }
 	            }
 	            else if (declaration.isClassOrInterfaceMember() && 
-	                    !isNative() &&
+	                    !isNativeNoImpl(declaration) &&
 	                    !declaration.isFormal() &&
 	                    that.getDeclarationModel()
 	                        .getInitializerParameter()==null &&
@@ -1112,7 +1107,7 @@ public class SpecificationVisitor extends Visitor {
         return (declaration.isShared() || 
         		declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() && 
-                !isNative() &&
+                !isNativeNoImpl(declaration) &&
                 !isLate() &&
                 !specified.definitely;
     }
