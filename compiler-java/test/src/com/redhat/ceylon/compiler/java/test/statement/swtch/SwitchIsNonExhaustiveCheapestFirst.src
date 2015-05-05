@@ -23,7 +23,7 @@ class SwitchIsNonExhaustiveCheapestFirst<TP1 extends .ceylon.language.Float, TP2
                 final TP1 b$2 = (TP1)sel$0;
                 name = "TP1";
             } else {
-                final .java.lang.Object b$1 = (.java.lang.Object)sel$0;
+                final TP2 b$1 = (TP2)sel$0;
                 name = "Other";
             }
         }
