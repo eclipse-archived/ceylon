@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -75,7 +76,10 @@ public class MissingNativeVisitor extends Visitor {
     }
     
     public void visit(Tree.AttributeSetterDefinition decl) {
-        checkNativeExistence(decl);
+        if(!Decl.isToplevel(decl) || !Decl.isNative(decl))
+            return;
+        Setter model = (Setter)decl.getDeclarationModel();
+        checkNativeExistence(decl, model.getGetter());
         super.visit(decl);
     }
 
@@ -143,6 +147,6 @@ public class MissingNativeVisitor extends Visitor {
             }
         }
         if(!ok)
-            node.addError("native header not found");
+            node.addError("native implementation not found");
     }
 }

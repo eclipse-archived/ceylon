@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.nativecode;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -27,10 +29,15 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 public class NativeTests extends CompilerTests {
 	
     private void testNative(String test) {
+        boolean ok = false;
         try {
             compileAndRun("com.redhat.ceylon.compiler.java.test.nativecode.test" + test, test + ".ceylon");
         } catch (RuntimeException ex) {
             assert((test + "-JVM").equals(ex.getMessage()));
+            ok = true;
+        }
+        if (!ok) {
+            Assert.fail("Test terminated incorrectly");
         }
     }
     
@@ -40,7 +47,7 @@ public class NativeTests extends CompilerTests {
     
     // Methods
     
-    @Test
+    @Test @Ignore
     public void testNativeMethodPrivate() {
         testNative("NativeMethodPrivate");
     }
@@ -58,23 +65,23 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
-                new CompilerError(20, "native implementation should have a header or not be shared"),
-                new CompilerError(23, "native implementation should have a header or not be shared"));
+                new CompilerError(20, "native implementation must have a header: nativeMethodSharedInvalid"),
+                new CompilerError(23, "native implementation must have a header: nativeMethodSharedInvalid"));
     }
     
     @Test
     public void testNativeMethodMismatch() {
         testNativeErrors("NativeMethodMismatch",
-                new CompilerError(25, "native declarations have different annotations: 'nativeMethodMismatch1'"),
-                new CompilerError(30, "native methods do not have the same return type: 'nativeMethodMismatch2'"),
-                new CompilerError(34, "native methods do not have the same return type: 'nativeMethodMismatch2'"),
+                new CompilerError(25, "native abstraction is not shared: 'nativeMethodMismatch1'"),
+                new CompilerError(30, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
+                new CompilerError(34, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"));
     }
     
     // Attributes
     
-    @Test
+    @Test @Ignore
     public void testNativeAttributePrivate() {
         testNative("NativeAttributePrivate");
     }
@@ -90,22 +97,37 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeSetterShared() {
+        testNative("NativeSetterShared");
+    }
+    
+    @Test
+    public void testNativeVariableSetter() {
+        testNative("NativeVariableSetter");
+    }
+    
+    @Test
+    public void testNativeSetterVariable() {
+        testNative("NativeSetterVariable");
+    }
+    
+    @Test
     public void testNativeAttributeSharedInvalid() {
         testNativeErrors("NativeAttributeSharedInvalid",
-                new CompilerError(20, "native implementation should have a header or not be shared"),
-                new CompilerError(22, "native implementation should have a header or not be shared"));
+                new CompilerError(20, "native implementation must have a header: nativeAttributeSharedInvalid"),
+                new CompilerError(22, "native implementation must have a header: nativeAttributeSharedInvalid"));
     }
     
     @Test
     public void testNativeAttributeMismatch() {
         testNativeErrors("NativeAttributeMismatch",
-                new CompilerError(24, "native declarations have different annotations: 'nativeAttributeMismatch1'"),
-                new CompilerError(28, "native attributes do not have the same type: 'nativeAttributeMismatch2'"));
+                new CompilerError(24, "native abstraction is not shared: 'nativeAttributeMismatch1'"),
+                new CompilerError(28, "native implementation must have the same type as native abstraction: 'nativeAttributeMismatch2' must have the type 'Integer'"));
     }
     
     // Classes
     
-    @Test
+    @Test @Ignore
     public void testNativeClassPrivate() {
         testNative("NativeClassPrivate");
     }
@@ -133,21 +155,22 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassSharedInvalid() {
         testNativeErrors("NativeClassSharedInvalid",
-                new CompilerError(20, "native implementation should have a header or not be shared"),
-                new CompilerError(22, "native implementation should have a header or not be shared"));
+                new CompilerError(20, "native implementation must have a header: NativeClassSharedInvalid"),
+                new CompilerError(22, "native implementation must have a header: NativeClassSharedInvalid"));
     }
     
     @Test
     public void testNativeClassMismatch() {
         testNativeErrors("NativeClassMismatch",
-                new CompilerError(35, "native declarations have different annotations: 'NativeClassMismatch1'"),
+                new CompilerError(35, "native abstraction is not shared: 'NativeClassMismatch1'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'NativeClassMismatch2'"),
                 new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' is different to type of corresponding parameter 'i' of native header 'NativeClassMismatch2': 'String' is not exactly 'Integer'"),
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
-                new CompilerError(75, "formal member 'test2' of 'NativeClassMismatchSuper2' not implemented in class hierarchy"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
-                new CompilerError(82, "native header conflicts with non-native declaration: 'NativeClassMismatch6'"),
-                new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'")
+                new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
+                new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
+                new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
+                new CompilerError(92, "native backend must be the same as its container: 'test1' of 'NativeClassMismatch7'")
         );
     }
     
@@ -156,7 +179,19 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeInvalidTypes",
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
-                new CompilerError(27, "invalid native backend name: 'foo', should be one of: jvm, js")
+                new CompilerError(26, "illegal native backend name: '\"foo\"', must be either '\"jvm\"' or '\"js\"'")
+        );
+    }
+    
+    @Test
+    public void testNativeNonNativeMixed() {
+        testNativeErrors("NativeNonNativeMixed",
+                new CompilerError(21, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
+                new CompilerError(22, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
+                new CompilerError(25, "native header for non-native declaration: 'nativeNonNativeMixed2'"),
+                new CompilerError(26, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
+                new CompilerError(27, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
+                new CompilerError(30, "duplicate declaration name: 'nativeNonNativeMixed3'")
         );
     }
 }

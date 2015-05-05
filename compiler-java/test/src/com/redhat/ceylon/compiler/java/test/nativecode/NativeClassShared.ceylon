@@ -18,21 +18,24 @@
  * MA  02110-1301, USA.
  */
 native shared class NativeClassShared() {
-    shared void test(Integer i);
+    native shared Integer test(Integer i);
+    native shared Integer foo;
 }
 
 native("jvm") shared class NativeClassShared() {
-    shared void test(Integer i) {
+    native("jvm") shared Integer test(Integer i) {
         throw Exception("NativeClassShared-JVM");
     }
+    native("jvm") shared Integer foo => test(0);
 }
 
 native("js") shared class NativeClassShared() {
-    shared void test(Integer i) {
+    native("js") shared Integer test(Integer i) {
         throw Exception("NativeClassShared-JS");
     }
+    native("js") shared Integer foo => test(0);
 }
 
 void testNativeClassShared() {
-    value x = NativeClassShared().test(0);
+    value x = NativeClassShared().foo;
 }

@@ -23,17 +23,17 @@ abstract class NativeClassExtendsSuper() {
 }
 
 native class NativeClassExtends() extends NativeClassExtendsSuper() {
-    shared actual void test(Integer i);
+    native shared actual void test(Integer i);
 }
 
 native("jvm") class NativeClassExtends() extends NativeClassExtendsSuper() {
-    shared actual void test(Integer i) {
+    native("jvm") shared actual void test(Integer i) {
         throw Exception("NativeClassExtends-JVM");
     }
 }
 
 native("js") class NativeClassExtends() extends NativeClassExtendsSuper() {
-    shared actual void test(Integer i) {
+    native("js") shared actual void test(Integer i) {
         throw Exception("NativeClassExtends-JS");
     }
 }
