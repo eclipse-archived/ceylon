@@ -40,7 +40,7 @@ To begin, make sure you have:
 - [GitHub SSH][] access set up correctly.
 
 [Java 7 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[Ant 1.8+](http://ant.apache.org/)
+[Ant 1.8+]: http://ant.apache.org/
 [Git set up]: https://help.github.com/articles/set-up-git
 [GitHub SSH]: https://help.github.com/articles/generating-ssh-keys
 
