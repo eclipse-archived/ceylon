@@ -231,8 +231,9 @@ public class Authentication {
         if (proxy != null && proxy.getHost() != null) {
             return new java.net.Proxy(java.net.Proxy.Type.valueOf(proxy.getType()), new InetSocketAddress(proxy.getHost(), proxy.getPort()));
         }
-        return null;            
+        return java.net.Proxy.NO_PROXY;
     }
+    
     /**
      * Gets a new {@link java.net.ProxySelector} using the information in the given 
      * Proxy configuration

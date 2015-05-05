@@ -201,7 +201,7 @@ public class ProxiesTest extends AbstractKeystoreTest {
         PasswordAuthentication up = Authenticator.requestPasswordAuthentication(null, 80, "ceylon-lang.org", "Hello, world", "fnar");
         Assert.assertNull(up);
         
-        Assert.assertNull(auth.getProxy());
+        Assert.assertEquals(auth.getProxy(), java.net.Proxy.NO_PROXY);
         Assert.assertNull(auth.getProxySelector());
         // Check there were no prompts
         mockPrompt.assertSeenOnlyGivenPrompts();

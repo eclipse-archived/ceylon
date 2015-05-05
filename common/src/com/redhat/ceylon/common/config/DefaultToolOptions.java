@@ -1,6 +1,7 @@
 package com.redhat.ceylon.common.config;
 
 import java.io.File;
+import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,15 @@ public class DefaultToolOptions {
     
     public static long getDefaultTimeout(CeylonConfig config) {
         return config.getNumberOption(DEFAULTS_TIMEOUT, Constants.DEFAULT_TIMEOUT);
+    }
+    
+    public static Proxy getDefaultProxy() {
+        return getDefaultProxy(CeylonConfig.get());
+    }
+    
+    public static Proxy getDefaultProxy(CeylonConfig config) {
+        Authentication auth = Authentication.fromConfig(config);
+        return auth.getProxy();
     }
     
     public static String getDefaultOverrides() {
