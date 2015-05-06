@@ -20,7 +20,6 @@
 package com.redhat.ceylon.compiler.java.test.nativecode;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -29,9 +28,13 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 public class NativeTests extends CompilerTests {
 	
     private void testNative(String test) {
+        testNative("simple", test);
+    }
+    
+    private void testNative(String dir, String test) {
         boolean ok = false;
         try {
-            compileAndRun("com.redhat.ceylon.compiler.java.test.nativecode.test" + test, test + ".ceylon");
+            compileAndRun("com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test" + test, dir + "/" + test + ".ceylon");
         } catch (RuntimeException ex) {
             assert(("ceylon.language.Exception \"" + test + "-JVM\"").equals(ex.getMessage()));
             ok = true;
@@ -42,12 +45,16 @@ public class NativeTests extends CompilerTests {
     }
     
     private void testNativeErrors(String test, CompilerError... expectedErrors) {
-        assertErrors(test, expectedErrors);
+        testNativeErrors("simple", test, expectedErrors);        
+    }
+    
+    private void testNativeErrors(String dir, String test, CompilerError... expectedErrors) {
+        assertErrors(dir + "/" + test, expectedErrors);
     }
     
     // Methods
     
-    @Test @Ignore
+    @Test
     public void testNativeMethodPrivate() {
         testNative("NativeMethodPrivate");
     }
@@ -76,12 +83,16 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(30, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(34, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
-                new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"));
+                new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
+                new CompilerError(49, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4js'"),
+                new CompilerError(53, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4jvm'"),
+                new CompilerError(58, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4js'")
+        );
     }
     
     // Attributes
     
-    @Test @Ignore
+    @Test
     public void testNativeAttributePrivate() {
         testNative("NativeAttributePrivate");
     }
@@ -127,7 +138,7 @@ public class NativeTests extends CompilerTests {
     
     // Classes
     
-    @Test @Ignore
+    @Test
     public void testNativeClassPrivate() {
         testNative("NativeClassPrivate");
     }
@@ -170,7 +181,10 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
-                new CompilerError(92, "native backend must be the same as its container: 'test1' of 'NativeClassMismatch7'")
+                new CompilerError(92, "native backend must be the same as its container: 'test1' of 'NativeClassMismatch7'"),
+                new CompilerError(98, "type does not have a proper native backend implementation: 'NativeClassMismatch8js'"),
+                new CompilerError(104, "type does not have a proper native backend implementation: 'NativeClassMismatch8jvm'"),
+                new CompilerError(110, "type does not have a proper native backend implementation: 'NativeClassMismatch8js'")
         );
     }
     

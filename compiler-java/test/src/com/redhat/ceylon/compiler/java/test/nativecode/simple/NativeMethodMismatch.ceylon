@@ -44,3 +44,16 @@ native("jvm") void nativeMethodMismatch3(Integer i, Boolean b) {
 native("js") void nativeMethodMismatch3(String s) {
     throw Exception("NativeMethodMismatch-JS");
 }
+
+native("jvm") void nativeMethodMismatch4jvm() {
+    nativeMethodMismatch4js();
+}
+
+native("js") void nativeMethodMismatch4js() {
+    nativeMethodMismatch4jvm();
+}
+
+void test() {
+    nativeMethodMismatch4jvm();
+    nativeMethodMismatch4js();
+}
