@@ -129,8 +129,9 @@ public class JsModuleManager extends ModuleManager {
             ModuleImport imp = new ModuleImport(dep, false, false);
             module.addImport(imp);
             module.setLanguageModule(dep);
-            //Fix 280 part 1
-            getContext().getModules().getDefaultModule().addImport(new ModuleImport(module, false, false));
+            //Fix 280 part 1 -- [Tako] I have the feeling this can't be correct
+//            Backend backend = null; // TODO Figure out if this dependency is only for a specific backend
+//            getContext().getModules().getDefaultModule().addImport(new ModuleImport(module, false, false, backend));
         }
         return module;
     }
