@@ -8054,8 +8054,9 @@ public class ExpressionVisitor extends Visitor {
                 Class clazz = (Class) c.getContainer();
                 Class superclass = 
                         clazz.getExtendedTypeDeclaration();
-                if (!unit.getBasicDeclaration()
-                        .equals(superclass)) {
+                if (superclass!=null &&
+                        !unit.getBasicDeclaration()
+                            .equals(superclass)) {
                     that.addError("constructor must explicitly delegate to some superclass constructor: '" +
                             clazz.getName() + "' extends '" + 
                             superclass.getName() + "'");
