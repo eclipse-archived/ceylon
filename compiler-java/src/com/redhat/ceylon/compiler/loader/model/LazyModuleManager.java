@@ -141,7 +141,7 @@ public abstract class LazyModuleManager extends ModuleManager {
 
                     ModuleImport depImport = findImport(module, dependency);
                     if (depImport == null) {
-                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT);
+                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
                         module.addImport(moduleImport);
                     }
                 }
@@ -165,7 +165,8 @@ public abstract class LazyModuleManager extends ModuleManager {
                         List<ModuleImport> newModuleImports = new ArrayList<>();
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport());
+                            Backend backend = null; // TODO Figure out if this dependency is only for a specific backend
+                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backend);
                             newModuleImports.add(moduleImport);
                         }
                         module.overrideImports(newModuleImports);

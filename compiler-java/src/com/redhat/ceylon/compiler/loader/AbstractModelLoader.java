@@ -37,6 +37,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -504,13 +505,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", "1.3.3.Final"), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", "1.0.3.Final"), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", "1.3.3.Final"), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", "1.0.3.Final"), false, false, Backend.Java));
         
         return languageModule;
     }
@@ -1810,11 +1811,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
                     Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
+                    String backend = null; // TODO (String) importAttribute.getValue("native");
+
                     ModuleImport moduleImport = moduleManager.findImport(module, dependency);
                     if (moduleImport == null) {
                         boolean optional = optionalVal != null && optionalVal;
                         boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export);
+                        moduleImport = new ModuleImport(dependency, optional, export, backend);
                         module.addImport(moduleImport);
                     }
                 }
