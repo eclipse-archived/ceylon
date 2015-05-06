@@ -190,7 +190,8 @@ public class JsModuleManager extends ModuleManager {
                 }
                 //This will cause the dependency to be loaded later
                 JsonModule mod = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
-                ModuleImport imp = new ModuleImport(mod, optional, export);
+                Backend backend = null; // TODO Figure out if this dependency is only for a specific backend
+                ModuleImport imp = new ModuleImport(mod, optional, export, backend);
                 module.addImport(imp);
             }
             model.remove("$mod-deps");
