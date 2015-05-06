@@ -107,6 +107,16 @@ public class Errors {
         return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
     }
     
+    public HasErrorException getFirstErrorBlock(Tree.Block block) {
+        for (Tree.Statement stmt : block.getStatements()) {
+            HasErrorException ex = getFirstErrorBlock(stmt);
+            if (ex != null) {
+                return ex;
+            }
+        }
+        return null;
+    }
+    
     /**
      * Visit the given statement returning the first error found, 
      * or null if the tree is free of errors. Does not visit the 

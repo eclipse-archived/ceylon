@@ -3564,8 +3564,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         // We void methods need to have their Callables return null
         // so adjust here.
+        HasErrorException error = errors().getFirstErrorBlock(block);
         if ((Decl.isMpl(model) || Strategy.useBoxedVoid(model))
-                && !block.getDefinitelyReturns()) {
+                && !block.getDefinitelyReturns() && error == null) {
             if (Decl.isUnboxedVoid(model)) {
                 body = body.append(make().Return(makeNull()));
             } else {
