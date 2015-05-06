@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -278,10 +279,16 @@ public class TypeVisitor extends Visitor {
                 }
             } else {
                 for (ModuleImport mi: module.getImports()) {
-                    if (mi.isNative()
-                            && !backendSupport.supportsBackend(Backend.fromAnnotation(mi.getNative()))
-                            && nameToImport.startsWith(mi.getModule().getNameAsString())) {
-                        return null;
+                    if (mi.isNative()) {
+                        if (!backendSupport.supportsBackend(Backend.fromAnnotation(mi.getNative()))
+                                && nameToImport.startsWith(mi.getModule().getNameAsString())) {
+                            return null;
+                        }
+                        if (!backendSupport.supportsBackend(Backend.Java)
+                                && (JDKUtils.isJDKAnyPackage(nameToImport)
+                                        || JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
+                            return null;
+                        }
                     }
                 }
             }
