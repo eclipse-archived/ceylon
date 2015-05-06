@@ -486,7 +486,7 @@ public class ModuleManager implements BackendSupport {
             ! realVersion.equals(module.getVersion())) {
             if (module != module.getLanguageModule()) {
                 Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
-                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport()));
+                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport(), moduleImport.getNative()));
                 return realModule;
             }
         }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Arrays.asList;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -274,6 +276,15 @@ public class ModuleVisitor extends Visitor {
                 }
             }
             else {
+                Tree.AnnotationList al = that.getAnnotationList();
+                String be = getNativeBackend(al, unit.getUnit());
+                if (be != null) {
+                    Backend backend = Backend.fromAnnotation(be);
+                    if (backend == null) {
+                        node.addError("illegal native backend name: '\"" + 
+                                be + "\"', must be either '\"jvm\"' or '\"js\"'");
+                    }
+                }
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
                 if (that.getImportPath()!=null) {
                 	that.getImportPath().setModel(importedModule);
@@ -285,10 +296,9 @@ public class ModuleVisitor extends Visitor {
                         }
                         ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                         if (moduleImport == null) {
-                            Tree.AnnotationList al = that.getAnnotationList();
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
-                            moduleImport = new ModuleImport(importedModule, optional, export);
+                            moduleImport = new ModuleImport(importedModule, optional, export, be);
                             moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);
