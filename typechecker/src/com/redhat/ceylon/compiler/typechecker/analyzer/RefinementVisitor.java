@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -149,14 +150,14 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
-        // Find the abstraction first (if it exists)
-        Declaration abstraction = getNativeDeclaration(dec, "");
+        // Find the header first (if it exists)
+        Declaration abstraction = getNativeDeclaration(dec, Backend.None);
         if (abstraction == null) {
             // Abstraction-less native implementation, check it's not shared
-//            if (dec.isShared()) {
+            if (dec.isShared()) {
                 that.addError("native implementation must have a header: " + 
                         dec.getName());
-//            }
+            }
             // If there's no abstraction we just compare to the first implementation in the list
             Overloadable overloadable = (Overloadable) dec;
             Declaration firstImpl = 

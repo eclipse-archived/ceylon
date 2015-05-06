@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -545,7 +546,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (declaration.isNative() && member.isNative()) {
                     // Make sure we get the right member declaration (the one for the same backend as its container)
-                    member = getNativeDeclaration(member, declaration.getNative());
+                    member = getNativeDeclaration(member, Backend.fromAnnotation(declaration.getNative()));
                     if (member == null) {
                         continue;
                     }

@@ -452,7 +452,7 @@ public class ModuleManager implements BackendSupport {
 
     @Override
     public boolean supportsBackend(Backend backend) {
-        return true;
+        return backend != Backend.None;
     }
 
     public static List<String> splitModuleName(String moduleName) {

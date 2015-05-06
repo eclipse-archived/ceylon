@@ -33,6 +33,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
@@ -43,8 +44,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 
@@ -55,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -107,7 +109,7 @@ public class ExpressionVisitor extends Visitor {
     private boolean isCondition;
     private boolean dynamic;
     private boolean inExtendsClause = false;
-    private boolean nativeWrongBackend = false;
+    private Backend inBackend = null;
 
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
@@ -1898,30 +1900,27 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.AnyMethod that) {
-        boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = 
-                !isForBackend(that.getAnnotationList(), 
-                        backendSupport, unit);
+        Backend ib = inBackend;
+        inBackend = Backend.fromAnnotation(
+                getNativeBackend(that.getAnnotationList(), unit));
         super.visit(that);
-        nativeWrongBackend = nwb;
+        inBackend = ib;
     }
     
     @Override public void visit(Tree.AnyAttribute that) {
-        boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = 
-                !isForBackend(that.getAnnotationList(), 
-                        backendSupport, unit);
+        Backend ib = inBackend;
+        inBackend = Backend.fromAnnotation(
+                getNativeBackend(that.getAnnotationList(), unit));
         super.visit(that);
-        nativeWrongBackend = nwb;
+        inBackend = ib;
     }
     
     @Override public void visit(Tree.ClassOrInterface that) {
-        boolean nwb = nativeWrongBackend;
-        nativeWrongBackend = 
-                !isForBackend(that.getAnnotationList(), 
-                        backendSupport, unit);
+        Backend ib = inBackend;
+        inBackend = Backend.fromAnnotation(
+                getNativeBackend(that.getAnnotationList(), unit));
         super.visit(that);
-        nativeWrongBackend = nwb;
+        inBackend = ib;
         validateEnumeratedSupertypeArguments(that, 
                 that.getDeclarationModel());
     }
@@ -4147,7 +4146,7 @@ public class ExpressionVisitor extends Visitor {
                         sp.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && !nativeWrongBackend &&
+            else if (!dynamic && !isNativeForWrongBackend() &&
                     isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
                         paramdesc(sp) +
@@ -4182,7 +4181,7 @@ public class ExpressionVisitor extends Visitor {
                         p.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && !nativeWrongBackend &&
+            else if (!dynamic && !isNativeForWrongBackend() &&
                     isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: " + 
                         paramdesc(p) + 
@@ -4248,7 +4247,7 @@ public class ExpressionVisitor extends Visitor {
             		.getTypedReference() //argument can't have type parameters
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
-            if (!dynamic && !nativeWrongBackend &&
+            if (!dynamic && !isNativeForWrongBackend() &&
                     isTypeUnknown(argType)) {
                 a.addError("could not determine type of named argument: '" + 
                         p.getName() + "'");
@@ -4379,7 +4378,7 @@ public class ExpressionVisitor extends Visitor {
             } 
             else {
                 Tree.PositionalArgument a = args.get(i);
-                if (!dynamic && !nativeWrongBackend &&
+                if (!dynamic && !isNativeForWrongBackend() &&
                         isTypeUnknown(p.getType())) {
                     a.addError("parameter type could not be determined: '" + 
                             paramdesc(p) +
@@ -6093,18 +6092,27 @@ public class ExpressionVisitor extends Visitor {
                         that.getSignature(), that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
-            if (!dynamic && !nativeWrongBackend && error) {
+            if (!dynamic && !isNativeForWrongBackend() && error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
                 unit.getUnresolvedReferences().add(id);
             }
         }
         else {
-            member = (TypedDeclaration) 
-                    handleAbstraction(member, that);
-            that.setDeclaration(member);
-            if (error) {
-                checkBaseVisibility(that, member, name);
+            if (member.isNative()) {
+                member = (TypedDeclaration)nativeDeclaration(member);
+            }
+            if (member == null) {
+                that.addError("function or value does not have a proper native backend implementation: '" +
+                        name + "'" /* , 100 */);
+                unit.getUnresolvedReferences().add(id);
+            } else {
+                member = (TypedDeclaration) 
+                        handleAbstraction(member, that);
+                that.setDeclaration(member);
+                if (error) {
+                    checkBaseVisibility(that, member, name);
+                }
             }
         }
         return member;
@@ -6245,18 +6253,27 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                member = (TypedDeclaration) 
-                        handleAbstraction(member, that);
-                that.setDeclaration(member);
-                resetSuperReference(that);
-                boolean selfReference = isSelfReference(p);
-                if (!selfReference && !member.isShared()) {
-                    member.setOtherInstanceAccess(true);
+                if (member.isNative()) {
+                    member = (TypedDeclaration)nativeDeclaration(member);
                 }
-                if (error) {
-                    checkQualifiedVisibility(that, member, 
-                            name, container, selfReference);
-                    checkSuperMember(that);
+                if (member == null) {
+                    that.addError("method or attribute does not have a proper native backend implementation: '" +
+                            name + "' in " + container /*, 100 */);
+                    unit.getUnresolvedReferences().add(id);
+                } else {
+                    member = (TypedDeclaration) 
+                            handleAbstraction(member, that);
+                    that.setDeclaration(member);
+                    resetSuperReference(that);
+                    boolean selfReference = isSelfReference(p);
+                    if (!selfReference && !member.isShared()) {
+                        member.setOtherInstanceAccess(true);
+                    }
+                    if (error) {
+                        checkQualifiedVisibility(that, member, 
+                                name, container, selfReference);
+                        checkSuperMember(that);
+                    }
                 }
             }
             return member;
@@ -6316,7 +6333,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType fullType =
                     ptr.getFullType(wrap(ptr.getType(), 
                             receivingType, that));
-            if (!dynamic && !nativeWrongBackend && 
+            if (!dynamic && !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
@@ -6451,14 +6468,14 @@ public class ExpressionVisitor extends Visitor {
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
             ProducedType fullType = pr.getFullType();
-            if (!dynamic && !nativeWrongBackend && 
+            if (!dynamic && !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
                         member.getName(unit) + "'" + 
                         getTypeUnknownError(fullType));
             }
-            if (dynamic && !nativeWrongBackend && 
+            if (dynamic && !isNativeForWrongBackend() && 
                     isTypeUnknown(fullType)) {
                 //deliberately throw away the partial
                 //type information we have
@@ -6507,19 +6524,28 @@ public class ExpressionVisitor extends Visitor {
                         that.getSignature(), that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && !nativeWrongBackend && error) {
+            if (!dynamic && !isNativeForWrongBackend() && error) {
                 that.addError("type does not exist: '" + name + "'", 102);
                 unit.getUnresolvedReferences().add(id);
             }
         }
         else {
-            type = (TypeDeclaration) 
-                    handleAbstraction(type, that);
-            that.setDeclaration(type);
-            if (error) {
-                if (checkConcreteClass(type, that)) {
-                    if (checkSealedReference(type, that)) {
-                        checkBaseTypeAndConstructorVisibility(that, name, type);
+            if (type.isNative()) {
+                type = (TypeDeclaration)nativeDeclaration(type);
+            }
+            if (type == null) {
+                that.addError("type does not have a proper native backend implementation: '" +
+                        name + "'" /* , 102 */);
+                unit.getUnresolvedReferences().add(id);
+            } else {
+                type = (TypeDeclaration) 
+                        handleAbstraction(type, that);
+                that.setDeclaration(type);
+                if (error) {
+                    if (checkConcreteClass(type, that)) {
+                        if (checkSealedReference(type, that)) {
+                            checkBaseTypeAndConstructorVisibility(that, name, type);
+                        }
                     }
                 }
             }
@@ -6788,22 +6814,31 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                type = (TypeDeclaration) 
-                        handleAbstraction(type, that);
-                that.setDeclaration(type);
-                resetSuperReference(that);
-                if (!isSelfReference(p) && !type.isShared()) {
-                    type.setOtherInstanceAccess(true);
+                if (type.isNative()) {
+                    type = (TypeDeclaration)nativeDeclaration(type);
                 }
-                if (error) {
-                    if (checkConcreteClass(type, that)) {
-                        if (checkSealedReference(type, that)) {
-                            checkQualifiedTypeAndConstructorVisibility(that, 
-                                    type, name, container);
-                        }
+                if (type == null) {
+                    that.addError("member type does not have a proper native backend implementation: '" +
+                            name + "' in " + container /*, 100 */);
+                    unit.getUnresolvedReferences().add(id);
+                } else {
+                    type = (TypeDeclaration) 
+                            handleAbstraction(type, that);
+                    that.setDeclaration(type);
+                    resetSuperReference(that);
+                    if (!isSelfReference(p) && !type.isShared()) {
+                        type.setOtherInstanceAccess(true);
                     }
-                    if (!inExtendsClause) {
-                        checkSuperMember(that);
+                    if (error) {
+                        if (checkConcreteClass(type, that)) {
+                            if (checkSealedReference(type, that)) {
+                                checkQualifiedTypeAndConstructorVisibility(that, 
+                                        type, name, container);
+                            }
+                        }
+                        if (!inExtendsClause) {
+                            checkSuperMember(that);
+                        }
                     }
                 }
             }
@@ -6924,7 +6959,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTarget(type);
             ProducedType fullType =
                     type.getFullType(wrap(type, receivingType, that));
-            if (!dynamic && !nativeWrongBackend &&
+            if (!dynamic && !isNativeForWrongBackend() &&
                     !that.getStaticMethodReference() &&
                     memberType instanceof Class &&
                     !isAbstraction(memberType) &&
@@ -7336,7 +7371,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 Tree.Variable v = that.getVariable();
                 if (v!=null) {
-                    if (dynamic || nativeWrongBackend || 
+                    if (dynamic || isNativeForWrongBackend() || 
                             !isTypeUnknown(st)) { //eliminate dupe errors
                         v.visit(this);
                     }
@@ -9112,4 +9147,15 @@ public class ExpressionVisitor extends Visitor {
         return dec;
     }
     
+    private boolean isNativeForWrongBackend() {
+        return inBackend != null && !backendSupport.supportsBackend(inBackend);
+    }
+    
+    private Declaration nativeDeclaration(Declaration decl) {
+        Declaration d = getNativeDeclaration(decl, inBackend != null ? inBackend.backendSupport : backendSupport);
+        if (d == null) {
+            d = getNativeDeclaration(decl, Backend.None);
+        }
+        return d;
+    }
 }

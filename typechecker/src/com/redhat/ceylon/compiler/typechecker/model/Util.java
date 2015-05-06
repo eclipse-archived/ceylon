@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
+
 public class Util {
     
     private static final List<ProducedType> NO_TYPE_ARGS = 
@@ -2155,21 +2158,29 @@ public class Util {
         return false;
     }
     
-    public static Declaration getNativeDeclaration(Declaration decl, String backend) {
-        Declaration abstraction = null;
-        Overloadable f = (Overloadable)decl;
-        if (backend.equals(decl.getNative())) {
-            abstraction = decl;
-        } else {
-            if (f.getOverloads() != null) {
-                for (Declaration d : f.getOverloads()) {
-                    if (backend.equals(d.getNative())) {
-                        abstraction = d;
-                        break;
+    public static Declaration getNativeDeclaration(Declaration decl, Backend backend) {
+        return getNativeDeclaration(decl, backend != null ? backend.backendSupport : null);
+    }
+    
+    public static Declaration getNativeDeclaration(Declaration decl, BackendSupport backendSupport) {
+        if (decl.isNative() && backendSupport != null) {
+            Declaration abstraction = null;
+            Overloadable f = (Overloadable)decl;
+            if (backendSupport.supportsBackend(Backend.fromAnnotation(decl.getNative()))) {
+                abstraction = decl;
+            } else {
+                if (f.getOverloads() != null) {
+                    for (Declaration d : f.getOverloads()) {
+                        if (backendSupport.supportsBackend(Backend.fromAnnotation(d.getNative()))) {
+                            abstraction = d;
+                            break;
+                        }
                     }
                 }
             }
+            return abstraction;
+        } else {
+            return decl;
         }
-        return abstraction;
     }
 }
