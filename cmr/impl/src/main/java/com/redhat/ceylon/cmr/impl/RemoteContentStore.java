@@ -47,7 +47,12 @@ public class RemoteContentStore extends URLContentStore {
 
     protected InputStream openStream(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn = url.openConnection(proxy);
+            final URLConnection conn;
+            if (proxy != null) {
+                conn = url.openConnection(proxy);
+            } else {
+                conn = url.openConnection();
+            }
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);

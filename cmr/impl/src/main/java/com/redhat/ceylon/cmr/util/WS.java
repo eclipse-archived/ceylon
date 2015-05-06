@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -111,7 +112,13 @@ public class WS {
     public static void getXML(String url, XMLHandler handler){
         try{
             URL endpoint = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(DefaultToolOptions.getDefaultProxy());
+            HttpURLConnection connection;
+            Proxy proxy = DefaultToolOptions.getDefaultProxy();
+            if (proxy != null) {
+                connection = (HttpURLConnection) endpoint.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) endpoint.openConnection();
+            }
             connection.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
             connection.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout() * Constants.READ_TIMEOUT_MULTIPLIER);
             getXML(connection, handler);

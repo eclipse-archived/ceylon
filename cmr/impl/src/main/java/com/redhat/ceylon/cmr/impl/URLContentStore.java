@@ -122,7 +122,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         try{
             // we support both API 1 to 3
             URL rootURL = getURL("?version="+herdRequestedApi);
-            HttpURLConnection con = (HttpURLConnection) rootURL.openConnection(proxy);
+            HttpURLConnection con;
+            if (proxy != null) {
+                con = (HttpURLConnection) rootURL.openConnection(proxy);
+            } else {
+                con = (HttpURLConnection) rootURL.openConnection();
+            }
             try{
                 con.setConnectTimeout(timeout);
                 con.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
@@ -300,7 +305,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected HttpURLConnection head(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn = url.openConnection(proxy);
+            final URLConnection conn;
+            if (proxy != null) {
+                conn = url.openConnection(proxy);
+            } else {
+                conn = url.openConnection();
+            }
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);
