@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
@@ -154,7 +155,9 @@ public class JsOutput {
         for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : module.getPackages()) {
             ArrayList<Declaration> unsharedDecls = new ArrayList<>(pkg.getMembers().size());
             for (Declaration d : pkg.getMembers()) {
-                if (!d.isShared() && !(d.isAnonymous() && d.getName().startsWith("anonymous#"))) {
+                if (!d.isShared()
+                        && !(d.isAnonymous() && d.getName().startsWith("anonymous#"))
+                        && (!d.isNative() || d.getNative().equals(Backend.JavaScript.nativeAnnotation))) {
                     unsharedDecls.add(d);
                 }
             }
