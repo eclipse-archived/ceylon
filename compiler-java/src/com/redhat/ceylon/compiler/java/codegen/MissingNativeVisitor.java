@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.HashMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeDeclaration;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Overloadable;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -29,12 +28,9 @@ public class MissingNativeVisitor extends Visitor {
     private final Backend forBackend;
     private final AbstractModelLoader loader;
 
-    private final HashMap<Declaration, Boolean> checked;
-    
     public MissingNativeVisitor(Backend forBackend, AbstractModelLoader loader) {
         this.forBackend = forBackend;
         this.loader = loader;
-        checked = new HashMap<Declaration, Boolean>();
     }
 
     //
@@ -56,97 +52,93 @@ public class MissingNativeVisitor extends Visitor {
     // Declaration
     
     public void visit(Tree.ClassOrInterface decl) {
-        checkNativeExistence(decl);
-        super.visit(decl);
+        if (checkNativeExistence(decl)) {
+            super.visit(decl);
+        }
     }
 
     public void visit(Tree.ObjectDefinition decl) {
-        checkNativeExistence(decl);
-        super.visit(decl);
+        if (checkNativeExistence(decl)) {
+            super.visit(decl);
+        }
     }
 
     public void visit(Tree.AttributeDeclaration decl){
-        checkNativeExistence(decl);
-        super.visit(decl);
+        if (checkNativeExistence(decl)) {
+            super.visit(decl);
+        }
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
-        checkNativeExistence(decl);
-        super.visit(decl);
+        if (checkNativeExistence(decl)) {
+            super.visit(decl);
+        }
     }
     
     public void visit(Tree.AttributeSetterDefinition decl) {
         if(!Decl.isToplevel(decl) || !Decl.isNative(decl))
             return;
         Setter model = (Setter)decl.getDeclarationModel();
-        checkNativeExistence(decl, model.getGetter());
-        super.visit(decl);
+        if (checkNativeExistence(decl, model.getGetter())) {
+            super.visit(decl);
+        }
     }
 
     public void visit(Tree.AnyMethod decl) {
-        checkNativeExistence(decl);
-        super.visit(decl);
+        if (checkNativeExistence(decl)) {
+            super.visit(decl);
+        }
     }
 
-    private void checkNativeExistence(Tree.Declaration decl) {
+    private boolean  checkNativeExistence(Tree.Declaration decl) {
         if(!Decl.isToplevel(decl) || !Decl.isNative(decl))
-            return;
+            return true;
         Declaration model = decl.getDeclarationModel();
-        checkNativeExistence(decl, model);
+        return checkNativeExistence(decl, model);
     }
     
-    private void checkNativeExistence(Node node, Declaration model) {
+    private boolean checkNativeExistence(Node node, Declaration model) {
         if(model == null)
-            return;
+            return true;
         if(!Decl.isToplevel(model) || !Decl.isNative(model))
-            return;
+            return true;
         Package pkg = Decl.getPackage(model);
         if(pkg == null)
-            return;
+            return true;
         
         if ((node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute)
                 && !model.getNative().isEmpty()
                 && !forBackend.nativeAnnotation.equals(model.getNative())) {
             // We don't care about declarations for other backends
-            return;
+            return false;
         }
         
         boolean ok = true;
-        if (checked.containsKey(model)) {
-            ok = checked.get(model);
-        } else {
-            try {
-                if (model instanceof Method || model instanceof Class || model instanceof Value) {
-                    Declaration m = pkg.getDirectMember(model.getName(), null, false);
-                    if (m != null) {
-                        if (!m.isNative()) {
-                            // An error will already have been added by the typechecker
-                            return;
-                        }
-                        // Native declarations are a bit weird, if there are multiple they
-                        // will all have the same list of overloads containing each of them.
-                        // We here check to see if any of them are for this backend
-                        if (forBackend.nativeAnnotation.equals(Decl.getNative(m))) {
-                            return;
-                        } else if (m instanceof Overloadable && ((Overloadable)m).getOverloads() != null) {
-                            for (Declaration o : ((Overloadable)m).getOverloads()) {
-                                if (forBackend.nativeAnnotation.equals(Decl.getNative(o))) {
-                                    return;
-                                }
-                            }
-                        }
-                    }
+        if (model instanceof Method || model instanceof Class || model instanceof Value) {
+            Declaration m = pkg.getDirectMember(model.getName(), null, false);
+            if (m != null) {
+                if (!m.isNative()) {
+                    // An error will already have been added by the typechecker
+                    return true;
                 }
-                
-                String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
-                String qualifiedName = Naming.toplevelClassName(pkgName, model);
-                ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
-                ok = (classMirror != null);
-            } finally {
-                checked.put(model, ok);
+                // Native declarations are a bit weird, if there are multiple they
+                // will all have the same list of overloads containing each of them.
+                // We here check to see if any of them are for this backend
+                m = getNativeDeclaration(m, forBackend);
+                if (m != null) {
+                    return true;
+                }
+                ok = false;
             }
         }
+        
+        String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
+        String qualifiedName = Naming.toplevelClassName(pkgName, model);
+        ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
+        ok = ok && (classMirror != null);
         if(!ok)
             node.addError("native implementation not found");
+
+        return true;
     }
 }
