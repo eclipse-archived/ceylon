@@ -8760,7 +8760,7 @@ public class ExpressionVisitor extends Visitor {
             p = unit.getPackage();
         }
         else {
-            p = TypeVisitor.getPackage(that.getImportPath());
+            p = TypeVisitor.getPackage(that.getImportPath(), backendSupport);
         }
         that.getImportPath().setModel(p);
         that.setTypeModel(unit.getPackageDeclarationType());

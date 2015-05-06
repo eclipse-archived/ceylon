@@ -343,7 +343,7 @@ public class PhasedUnit {
                 //System.out.println("Scan type declarations for " + fileName);
                 rootNode.visit(new DefaultTypeArgVisitor());
                 rootNode.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
-                rootNode.visit(new TypeVisitor());
+                rootNode.visit(new TypeVisitor(moduleManagerRef.get()));
                 typeDeclarationsScanned = true;
             }
         }

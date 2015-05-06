@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -76,13 +78,19 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
+    private final BackendSupport backendSupport;
+    
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
-    public TypeVisitor() {}
-    public TypeVisitor(Unit unit) {
+    public TypeVisitor(BackendSupport backendSupport) {
+        this.backendSupport = backendSupport;
+    }
+    
+    public TypeVisitor(Unit unit, BackendSupport backendSupport) {
         this.unit = unit;
+        this.backendSupport = backendSupport;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -103,7 +111,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = 
-                getPackage(that.getImportPath());
+                getPackage(that.getImportPath(), backendSupport);
         if (importedPackage!=null) {
             that.getImportPath().setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 
@@ -233,7 +241,7 @@ public class TypeVisitor extends Visitor {
         return null;
     }
     
-    public static Package getPackage(Tree.ImportPath path) {
+    public static Package getPackage(Tree.ImportPath path, BackendSupport backendSupport) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -266,6 +274,14 @@ public class TypeVisitor extends Visitor {
                     if (findModuleInTransitiveImports(mi.getModule(), 
                             pkg.getModule(), visited)) {
                         return pkg; 
+                    }
+                }
+            } else {
+                for (ModuleImport mi: module.getImports()) {
+                    if (mi.isNative()
+                            && !backendSupport.supportsBackend(Backend.fromAnnotation(mi.getNative()))
+                            && nameToImport.startsWith(mi.getModule().getNameAsString())) {
+                        return null;
                     }
                 }
             }

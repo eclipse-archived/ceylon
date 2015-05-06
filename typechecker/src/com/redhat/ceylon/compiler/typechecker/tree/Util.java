@@ -74,8 +74,16 @@ public class Util {
     
     public static boolean isForBackend(Tree.AnnotationList al, BackendSupport backendSupport, Unit unit) {
         String be = getNativeBackend(al, unit);
-        if (be != null) {
-            Backend backend = Backend.fromAnnotation(be);
+        return isForBackend(be, backendSupport);
+    }
+    
+    public static boolean isForBackend(String backendName, Backend forBackend) {
+        return isForBackend(backendName, forBackend.backendSupport);
+    }
+    
+    public static boolean isForBackend(String backendName, BackendSupport backendSupport) {
+        if (backendName != null) {
+            Backend backend = Backend.fromAnnotation(backendName);
             if (backend == null || !backendSupport.supportsBackend(backend)) {
                 return false;
             }
