@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -781,7 +782,14 @@ public class LinkRenderer {
         Boolean result = ceylonDocTool.getModuleUrlAvailabilityCache().get(moduleUrl);
         if( result == null ) {
             try {
-                HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection(DefaultToolOptions.getDefaultProxy());
+                URL url = new URL(moduleUrl + "index.html");
+                HttpURLConnection con;
+                Proxy proxy = DefaultToolOptions.getDefaultProxy();
+                if (proxy != null) {
+                    con = (HttpURLConnection) url.openConnection(proxy);
+                } else {
+                    con = (HttpURLConnection) url.openConnection();
+                }
                 con.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
                 con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout() * Constants.READ_TIMEOUT_MULTIPLIER);
                 con.setRequestMethod("HEAD");
