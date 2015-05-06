@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
@@ -98,7 +99,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
                         		findImport(module, dependency);
                         if (depImport == null) {
                             ModuleImport moduleImport = 
-                            		new ModuleImport(dependency, false, false);
+                            		new ModuleImport(dependency, false, false, Backend.Java);
                             module.addImport(moduleImport);
                         }
                     }
