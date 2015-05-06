@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
@@ -43,6 +44,7 @@ import java.util.TreeSet;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -2889,6 +2891,9 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtModule(Module module) {
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
         for(ModuleImport dependency : module.getImports()){
+            if (!isForBackend(dependency.getNative(), Backend.Java)) {
+                continue;
+            }
             Module dependencyModule = dependency.getModule();
             JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"),
                     make().Literal(dependencyModule.getNameAsString()));

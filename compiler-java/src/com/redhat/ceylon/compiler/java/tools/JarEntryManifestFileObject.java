@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import java.io.*;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,7 @@ import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -329,6 +332,9 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             StringBuilder requires = new StringBuilder();
             boolean distImportAlreadyFound = false;
             for (ModuleImport anImport : module.getImports()) {
+                if (!isForBackend(anImport.getNative(), Backend.Java)) {
+                    continue;
+                }
                 Module m = anImport.getModule();
                 String moduleName = m.getNameAsString();
                 if ("com.redhat.ceylon.dist".equals(moduleName)) {

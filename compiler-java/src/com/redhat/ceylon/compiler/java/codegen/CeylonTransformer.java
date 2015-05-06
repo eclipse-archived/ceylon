@@ -20,13 +20,15 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
-import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
 import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -487,6 +489,9 @@ public class CeylonTransformer extends AbstractTransformer {
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
         builder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, module));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
+            if (!isForBackend(imported.getAnnotationList(), Backend.Java, imported.getUnit())) {
+                continue;
+            }
             String quotedName;
             if (imported.getImportPath() != null) {
                 StringBuilder sb = new StringBuilder();
