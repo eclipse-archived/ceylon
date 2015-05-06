@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -88,6 +91,9 @@ public class MetamodelGenerator {
         if (!module.getImports().isEmpty()) {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
+                if (!isForBackend(mi.getNative(), Backend.JavaScript)) {
+                    continue;
+                }
                 if (mi.getModule().getVersion() == null) { //#416
                     continue;
                 }
