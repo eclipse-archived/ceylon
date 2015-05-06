@@ -231,7 +231,7 @@ public class Authentication {
         if (proxy != null && proxy.getHost() != null) {
             return new java.net.Proxy(java.net.Proxy.Type.valueOf(proxy.getType()), new InetSocketAddress(proxy.getHost(), proxy.getPort()));
         }
-        return java.net.Proxy.NO_PROXY;
+        return null;
     }
     
     /**
@@ -256,6 +256,9 @@ public class Authentication {
                     }
                     if (netProxy == null) {
                         netProxy = getProxy();
+                    }
+                    if (netProxy == null) {
+                        netProxy = java.net.Proxy.NO_PROXY;
                     }
                     return Collections.singletonList(netProxy);
                 }

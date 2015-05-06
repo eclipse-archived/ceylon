@@ -41,7 +41,11 @@ public class ProxyTool {
         switch (mode){
         case "proxy":
             java.net.Proxy netProxy = auth.getProxy();
-            conn = url.openConnection(netProxy);
+            if (netProxy != null) {
+                conn = url.openConnection(netProxy);
+            } else {
+                conn = url.openConnection();
+            }
             break;
         case "install":
             auth.installProxy();
