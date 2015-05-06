@@ -12,6 +12,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -174,6 +175,10 @@ public class ModuleValidator {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
+            if (moduleImport.isNative() && !moduleManager.supportsBackend(Backend.fromAnnotation(moduleImport.getNative()))) {
+                //import is not for this backend
+                continue;
+            }
             Module module = moduleImport.getModule();
             if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency: stop right here
