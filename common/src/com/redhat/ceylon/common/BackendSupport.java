@@ -16,4 +16,11 @@ public interface BackendSupport {
             return backend == Backend.JavaScript;
         }
     };
+    
+    public static final BackendSupport HEADER = new BackendSupport() {
+        @Override
+        public boolean supportsBackend(Backend backend) {
+            return backend == Backend.None;
+        }
+    };
 }

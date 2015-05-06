@@ -1,6 +1,7 @@
 package com.redhat.ceylon.common;
 
 public enum Backend {
+    None("", BackendSupport.HEADER),
     Java("jvm", BackendSupport.JAVA),
     JavaScript("js", BackendSupport.JAVASCRIPT);
     
