@@ -90,8 +90,7 @@ public class JsCompiler {
         @Override
         public void visit(Tree.Declaration that) {
             if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
-                super.visitAny(that);
-                hasErrors(that);
+                super.visit(that);
             }
         }
         @Override
