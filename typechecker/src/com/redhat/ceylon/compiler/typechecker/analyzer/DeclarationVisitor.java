@@ -135,7 +135,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Declaration modelToAdd = model;
         if (setModelName(that, model, that.getIdentifier())) {
             if (checkDupe) {
-                modelToAdd = checkForNativeAnnotation(that, model);
+                modelToAdd = checkForNativeAnnotation(that, model, scope);
                 checkForDuplicateDeclaration(that, model, scope);
             }
         }
@@ -189,7 +189,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     private static Declaration checkForNativeAnnotation(
             final Tree.Declaration that,
-            final Declaration model) {
+            final Declaration model, Scope scope) {
         Declaration modelToAdd = model;
         
         Unit unit = model.getUnit();
@@ -210,9 +210,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             backend + "\"', must be either '\"jvm\"' or '\"js\"'");
                 }
                 model.setNative(backend);
-                Scope s = model.getContainer();
                 Declaration member = 
-                        s.getDirectMember(name, null, false);
+                        scope.getDirectMember(name, null, false);
                 if (member == null) {
                     initOverloads(model, model);
                 }
