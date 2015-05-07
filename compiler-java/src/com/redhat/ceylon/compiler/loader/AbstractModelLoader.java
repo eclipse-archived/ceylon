@@ -2394,24 +2394,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 
             }
         }
+
+        boolean hasCeylonDeprecated = false;
+        for(Annotation a : decl.getAnnotations()) {
+            if (a.getName().equals("deprecated")) {
+                hasCeylonDeprecated = true;
+                break;
+            }
+        }
+
         // Add a ceylon deprecated("") if it's annotated with java.lang.Deprecated
         // and doesn't already have the ceylon annotation
         if (classMirror.getAnnotation(JAVA_DEPRECATED_ANNOTATION) != null) {
-            boolean hasCeylonDeprecated = false;
-            for(Annotation a : decl.getAnnotations()) {
-                if (a.getName().equals("deprecated")) {
-                    hasCeylonDeprecated = true;
-                    break;
-                }
-            }
             if (!hasCeylonDeprecated) {
                 Annotation modelAnnotation = new Annotation();
                 modelAnnotation.setName("deprecated");
                 modelAnnotation.getPositionalArguments().add("");
                 decl.getAnnotations().add(modelAnnotation);
-                decl.setDeprecated(true);
+                hasCeylonDeprecated = true;
             }
         }
+        
+        if (hasCeylonDeprecated) {
+            decl.setDeprecated(true);
+        }
+
         // Set "native" annotation
         decl.setNative(getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend"));
     }
