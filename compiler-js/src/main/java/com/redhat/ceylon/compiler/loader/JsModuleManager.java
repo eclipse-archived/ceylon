@@ -191,7 +191,7 @@ public class JsModuleManager extends ModuleManager {
                 }
                 //This will cause the dependency to be loaded later
                 JsonModule mod = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
-                Backend backend = null; // TODO Figure out if this dependency is only for a specific backend
+                Backend backend = Backend.fromAnnotation(mod.getNative());
                 ModuleImport imp = new ModuleImport(mod, optional, export, backend);
                 module.addImport(imp);
             }
