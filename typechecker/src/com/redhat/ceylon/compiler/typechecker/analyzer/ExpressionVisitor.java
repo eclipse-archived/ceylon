@@ -4124,7 +4124,8 @@ public class ExpressionVisitor extends Visitor {
                     (!p.isSequenced() || p.isAtLeastOne())) {
                 nal.addError("missing named argument to parameter '" + 
                         p.getName() + "' of '" + 
-                        pr.getDeclaration().getName(unit) + "'");
+                        pr.getDeclaration().getName(unit) + "'",
+                        11000);
             }
         }
     }
