@@ -299,6 +299,12 @@ public class ModuleVisitor extends Visitor {
                         if (moduleImport == null) {
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
+                            if (be == null) {
+                                be = importedModule.getNative();
+                            } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
+                                node.addError("native backend name conflicts with imported module: '\"" + 
+                                        be + "\"' is not '\"" + importedModule.getNative() + "\"'");
+                            }
                             moduleImport = new ModuleImport(importedModule, optional, export, be);
                             moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
