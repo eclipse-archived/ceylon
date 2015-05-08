@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
 import java.io.BufferedReader;
@@ -45,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
@@ -246,6 +248,8 @@ public class JsCompiler {
             List<PhasedUnit> phasedUnits = tc.getPhasedUnits().getPhasedUnits();
             boolean generatedCode = false;
             
+            checkInvalidNativePUs(phasedUnits);
+            
             //First generate the metamodel
             final Module defmod = tc.getContext().getModules().getDefaultModule();
             for (PhasedUnit pu: phasedUnits) {
@@ -409,6 +413,15 @@ public class JsCompiler {
         return new File(pu.getUnit().getFullPath());
     }
 
+    private void checkInvalidNativePUs(List<PhasedUnit> phasedUnits) {
+        for (PhasedUnit pu : phasedUnits) {
+            ModuleDescriptor md = pu.findModuleDescriptor();
+            if (md != null && !isForBackend(md.getAnnotationList(), Backend.JavaScript, md.getUnit())) {
+                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
+            }
+        }
+    }
+    
     /** Creates a JsOutput if needed, for the PhasedUnit.
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
