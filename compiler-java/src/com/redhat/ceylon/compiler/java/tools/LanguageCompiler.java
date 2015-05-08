@@ -30,6 +30,9 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -55,6 +58,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.util.JarUtils;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -81,6 +85,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -476,10 +481,7 @@ public class LanguageCompiler extends JavaCompiler {
         timer.startTask("loadCompiledModules");
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
         // now load modules and associate their moduleless packages with the corresponding modules
-        loadCompiledModules(trees, moduleTrees);
-        for (JCCompilationUnit moduleTree : moduleTrees) {
-            trees = trees.append(moduleTree);
-        }
+        trees = loadCompiledModules(trees, moduleTrees);
         /*
          * Stef: see javadoc for cacheModulelessPackages() for why this is here.
          */
@@ -488,7 +490,8 @@ public class LanguageCompiler extends JavaCompiler {
         return trees;
     }
 
-    private void loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
+    private List<JCCompilationUnit> loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
+        trees = stripInvalidNativePUs(trees);
         compilerDelegate.visitModules(phasedUnits);
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
@@ -518,8 +521,39 @@ public class LanguageCompiler extends JavaCompiler {
                 moduleNamesToFileObjects .put(name, cfo);
             }
         }
+        for (JCCompilationUnit moduleTree : moduleTrees) {
+            trees = trees.append(moduleTree);
+        }
+        return trees;
     }
 
+    private List<JCCompilationUnit> stripInvalidNativePUs(List<JCCompilationUnit> trees) {
+        for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
+            ModuleDescriptor md = pu.findModuleDescriptor();
+            if (md != null && !isForBackend(md.getAnnotationList(), Backend.Java, md.getUnit())) {
+                Log.printLines(log.noticeWriter, "Skipping module for unsupported backend: " + formatPath(md.getImportPath().getIdentifiers()));
+                // We found a module descriptor for another backend, let's remove all related phased units
+                String pkg = pu.getPackage().getQualifiedNameString();
+                for (PhasedUnit pu2 : phasedUnits.getPhasedUnits()) {
+                    String pkg2 = pu2.getPackage().getQualifiedNameString();
+                    if (pkg2.equals(pkg) || pkg2.startsWith(pkg + ".")) {
+                        phasedUnits.removePhasedUnitForRelativePath(pu2.getPathRelativeToSrcDir());
+                    }
+                }
+                // And remove them from the trees as well
+                List<JCCompilationUnit> trees2 = List.<JCCompilationUnit> nil();
+                for (JCCompilationUnit cu : trees) {
+                    String pkg2 = cu.getPackageName().toString();
+                    if (!pkg2.equals(pkg) && !pkg2.startsWith(pkg + ".")) {
+                        trees2 = trees2.append(cu);
+                    }
+                }
+                trees = trees2;
+            }
+        }
+        return trees;
+    }
+    
     private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
         // skip it if we already resolved the package
         if(pkg.getModule() != null){

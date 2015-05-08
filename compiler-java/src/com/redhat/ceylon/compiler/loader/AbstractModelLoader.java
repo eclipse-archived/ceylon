@@ -4857,7 +4857,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronized(getLock()){
             for(LazyPackage pkg : modulelessPackages.values()){
                 String quotedPkgName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
-                packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+                if (pkg.getModule() != null) {
+                    packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+                }
             }
             modulelessPackages.clear();
         }
