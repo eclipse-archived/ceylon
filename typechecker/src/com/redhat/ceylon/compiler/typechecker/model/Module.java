@@ -35,7 +35,10 @@ public class Module
     private ProducedTypeCache cache = new ProducedTypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
+    private String nativeBackend;
 
+    public Module() {}
+    
     /**
      * Whether or not the module is available in the
      * source path or the repository
@@ -248,6 +251,18 @@ public class Module
 
     public boolean isJava() {
         return false;
+    }
+
+    public boolean isNative() {
+        return getNative() != null;
+    }
+    
+    public String getNative() {
+        return nativeBackend;
+    }
+    
+    public void setNative(String backend) {
+        this.nativeBackend=backend;
     }
     
     @Override
