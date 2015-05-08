@@ -383,8 +383,8 @@ shared native final class String(characters)
     shared actual native Comparison compare(String other) {
         value min = smallest(size, other.size);
         for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i));
-            assert (exists thatChar = other.getFromFirst(i));
+            assert (exists thisChar = this.getFromFirst(i),
+                    exists thatChar = other.getFromFirst(i));
             if (thisChar!=thatChar) {
                 return thisChar <=> thatChar;
             }
@@ -408,8 +408,8 @@ shared native final class String(characters)
     shared native Comparison compareIgnoringCase(String other) {
         value min = smallest(size, other.size);
         for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i));
-            assert (exists thatChar = other.getFromFirst(i));
+            assert (exists thisChar = this.getFromFirst(i),
+                    exists thatChar = other.getFromFirst(i));
             if (thisChar!=thatChar && 
                 thisChar.uppercased!=thatChar.uppercased &&
                 thisChar.lowercased!=thatChar.lowercased) {
@@ -442,8 +442,8 @@ shared native final class String(characters)
             }
             value min = smallest(size, that.size);
             for (i in 0:min) {
-                assert (exists thisChar = this.getFromFirst(i));
-                assert (exists thatChar = that.getFromFirst(i));
+                assert (exists thisChar = this.getFromFirst(i),
+                        exists thatChar = that.getFromFirst(i));
                 if (thisChar!=thatChar) {
                     return false;
                 }
@@ -470,8 +470,8 @@ shared native final class String(characters)
         }
         value min = smallest(size, that.size);
         for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i));
-            assert (exists thatChar = that.getFromFirst(i));
+            assert (exists thisChar = this.getFromFirst(i),
+                    exists thatChar = that.getFromFirst(i));
             if (thisChar!=thatChar && 
                 thisChar.uppercased!=thatChar.uppercased &&
                 thisChar.lowercased!=thatChar.lowercased) {
