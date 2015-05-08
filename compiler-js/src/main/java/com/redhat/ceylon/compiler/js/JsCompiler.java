@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
 import java.io.BufferedReader;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -286,6 +288,9 @@ public class JsCompiler {
                     e.getValue().encodeModel(names);
                 }
             }
+            
+            checkInvalidNativeImports(phasedUnits);
+            
             //Output all the require calls for any imports
             final Visitor importVisitor = new Visitor() {
                 public void visit(Tree.Import that) {
@@ -418,6 +423,24 @@ public class JsCompiler {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null && !isForBackend(md.getAnnotationList(), Backend.JavaScript, md.getUnit())) {
                 md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
+            }
+        }
+    }
+    
+    private void checkInvalidNativeImports(List<PhasedUnit> phasedUnits) {
+        for (PhasedUnit pu : phasedUnits) {
+            ModuleDescriptor md = pu.findModuleDescriptor();
+            if (md != null) {
+                for (ImportModule im : md.getImportModuleList().getImportModules()) {
+                    String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
+                    if (im.getImportPath() != null) {
+                        Module m = (Module)im.getImportPath().getModel();
+                        if (be != null && m.isNative() && !be.equals(m.getNative())) {
+                            im.addError("native backend name conflicts with imported module: '\"" + 
+                                    be + "\"' is not '\"" + m.getNative() + "\"'");
+                        }
+                    }
+                }
             }
         }
     }
