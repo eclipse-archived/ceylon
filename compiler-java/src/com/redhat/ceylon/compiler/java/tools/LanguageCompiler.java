@@ -31,6 +31,7 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
 import java.io.File;
@@ -85,6 +86,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
@@ -491,7 +493,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private List<JCCompilationUnit> loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
-        checkInvalidNativePUs();
+        checkInvalidNativeModules();
         compilerDelegate.visitModules(phasedUnits);
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
@@ -499,6 +501,7 @@ public class LanguageCompiler extends JavaCompiler {
             Package pkg = pu.getPackage();
             loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
+        checkInvalidNativeImports();
         // also make sure we have packages and modules set up for every Java file we compile
         for(JCCompilationUnit cu : trees){
             // skip Ceylon CUs
@@ -527,11 +530,29 @@ public class LanguageCompiler extends JavaCompiler {
         return trees;
     }
 
-    private void checkInvalidNativePUs() {
+    private void checkInvalidNativeModules() {
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null && !isForBackend(md.getAnnotationList(), Backend.Java, md.getUnit())) {
                 md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
+            }
+        }
+    }
+    
+    private void checkInvalidNativeImports() {
+        for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
+            ModuleDescriptor md = pu.findModuleDescriptor();
+            if (md != null) {
+                for (ImportModule im : md.getImportModuleList().getImportModules()) {
+                    String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
+                    if (im.getImportPath() != null) {
+                        Module m = (Module)im.getImportPath().getModel();
+                        if (be != null && m.isNative() && !be.equals(m.getNative())) {
+                            im.addError("native backend name conflicts with imported module: '\"" + 
+                                    be + "\"' is not '\"" + m.getNative() + "\"'");
+                        }
+                    }
+                }
             }
         }
     }
