@@ -68,6 +68,7 @@ public class PhasedUnit {
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
     private ModuleVisitor moduleVisitor;
+    private Tree.ModuleDescriptor moduleDescriptor;
     private VirtualFile srcDir;
     private boolean treeValidated = false;
     private boolean declarationsScanned = false;
@@ -140,6 +141,18 @@ public class PhasedUnit {
         return false;
     }
     
+    public ModuleDescriptor findModuleDescriptor() {
+        if (ModuleManager.MODULE_FILE.equals(fileName)) {
+            rootNode.visit(new Visitor() {
+                @Override
+                public void visit(ModuleDescriptor that) {
+                    moduleDescriptor = that;
+                }
+            });
+        }
+        return moduleDescriptor;
+    }
+
     public Module visitSrcModulePhase() {
         if (ModuleManager.MODULE_FILE.equals(fileName) ||
             ModuleManager.PACKAGE_FILE.equals(fileName)) {
