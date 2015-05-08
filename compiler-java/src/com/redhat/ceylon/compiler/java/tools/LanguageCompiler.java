@@ -491,7 +491,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private List<JCCompilationUnit> loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
-        trees = stripInvalidNativePUs(trees);
+        checkInvalidNativePUs();
         compilerDelegate.visitModules(phasedUnits);
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
@@ -527,31 +527,13 @@ public class LanguageCompiler extends JavaCompiler {
         return trees;
     }
 
-    private List<JCCompilationUnit> stripInvalidNativePUs(List<JCCompilationUnit> trees) {
+    private void checkInvalidNativePUs() {
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null && !isForBackend(md.getAnnotationList(), Backend.Java, md.getUnit())) {
-                Log.printLines(log.noticeWriter, "Skipping module for unsupported backend: " + formatPath(md.getImportPath().getIdentifiers()));
-                // We found a module descriptor for another backend, let's remove all related phased units
-                String pkg = pu.getPackage().getQualifiedNameString();
-                for (PhasedUnit pu2 : phasedUnits.getPhasedUnits()) {
-                    String pkg2 = pu2.getPackage().getQualifiedNameString();
-                    if (pkg2.equals(pkg) || pkg2.startsWith(pkg + ".")) {
-                        phasedUnits.removePhasedUnitForRelativePath(pu2.getPathRelativeToSrcDir());
-                    }
-                }
-                // And remove them from the trees as well
-                List<JCCompilationUnit> trees2 = List.<JCCompilationUnit> nil();
-                for (JCCompilationUnit cu : trees) {
-                    String pkg2 = cu.getPackageName().toString();
-                    if (!pkg2.equals(pkg) && !pkg2.startsWith(pkg + ".")) {
-                        trees2 = trees2.append(cu);
-                    }
-                }
-                trees = trees2;
+                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
             }
         }
-        return trees;
     }
     
     private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
