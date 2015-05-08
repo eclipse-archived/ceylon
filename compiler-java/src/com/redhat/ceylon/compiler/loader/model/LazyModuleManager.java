@@ -70,6 +70,7 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(JDKUtils.jdk.providesVersion(version)){
                 module.setAvailable(true);
                 module.setJava(true);
+                module.setNative(Backend.Java.nativeAnnotation);
             }
         }
     }
@@ -134,6 +135,7 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(!module.isDefault() && !getModelLoader().loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
+                module.setNative(Backend.Java.nativeAnnotation);
                 
                 List<ArtifactResult> deps = artifact.dependencies();
                 for (ArtifactResult dep : deps) {
