@@ -167,7 +167,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                         List<ModuleImport> newModuleImports = new ArrayList<>();
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            Backend backend = null; // TODO Figure out if this dependency is only for a specific backend
+                            Backend backend = Backend.fromAnnotation(dependency.getNative());
                             moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backend);
                             newModuleImports.add(moduleImport);
                         }
