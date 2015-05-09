@@ -1927,59 +1927,71 @@ public class ProducedType extends ProducedReference {
      */
     static class Substitution {
         
-        ProducedType substitute(ProducedType pt, 
+        ProducedType substitute(final ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions) {
             Declaration dec;
-            if (pt.getDeclaration() instanceof UnionType) {
+            TypeDeclaration ptd = pt.getDeclaration();
+            if (ptd instanceof UnionType) {
                 UnionType ut = 
-                        new UnionType(pt.getDeclaration().getUnit());
+                        new UnionType(ptd.getUnit());
                 List<ProducedType> cts = 
-                        pt.getDeclaration().getCaseTypes();
+                        ptd.getCaseTypes();
                 List<ProducedType> types = 
-                        new ArrayList<ProducedType>(cts.size());
+                        new ArrayList<ProducedType>
+                            (cts.size());
                 for (ProducedType ct: cts) {
                     addTypeToUnion(ct, substitutions, types);
                 }
                 ut.setCaseTypes(types);
                 dec = ut;
             }
-            else if (pt.getDeclaration() instanceof IntersectionType) {
+            else if (ptd instanceof IntersectionType) {
                 IntersectionType it = 
-                        new IntersectionType(pt.getDeclaration().getUnit());
+                        new IntersectionType(ptd.getUnit());
                 List<ProducedType> sts = 
-                        pt.getDeclaration().getSatisfiedTypes();
+                        ptd.getSatisfiedTypes();
                 List<ProducedType> types = 
-                        new ArrayList<ProducedType>(sts.size());
+                        new ArrayList<ProducedType>
+                            (sts.size());
                 for (ProducedType ct: sts) {
-                    addTypeToIntersection(ct, substitutions, types);
+                    addTypeToIntersection(ct, substitutions, 
+                            types);
                 }
                 it.setSatisfiedTypes(types);
                 dec = it.canonicalize();
             }
             else {
-                if (pt.getDeclaration() instanceof TypeParameter) {
+                if (ptd instanceof TypeParameter) {
                     ProducedType sub = 
-                            substitutions.get(pt.getDeclaration());
+                            substitutions.get(ptd);
                     if (sub!=null) {
-                        if (pt.getDeclaration().getTypeParameters().isEmpty() || pt.isTypeConstructor()) {
+                        if (ptd.getTypeParameters().isEmpty() || 
+                            pt.isTypeConstructor()) {
                             return sub;
                         }
                         else {
-                            List<ProducedType> sta = new ArrayList<ProducedType>();
-                            for (ProducedType ta: pt.getTypeArgumentList()) {
+                            //needed for higher-order generics
+                            List<ProducedType> tal = 
+                                    pt.getTypeArgumentList();
+                            List<ProducedType> sta = 
+                                    new ArrayList<ProducedType>
+                                        (tal.size());
+                            for (ProducedType ta: tal) {
                                 sta.add(ta.substitute(substitutions));
                             }
-                            return sub.getDeclaration().getProducedType(null, sta);
+                            return sub.getDeclaration()
+                                    .getProducedType(null, sta);
                         }
                     }
                 }
-                dec = pt.getDeclaration();
+                dec = ptd;
             }
             return substitutedType(dec, pt, substitutions);
         }
 
-        void addTypeToUnion(ProducedType ct, Map<TypeParameter, 
-                ProducedType> substitutions, List<ProducedType> types) {
+        void addTypeToUnion(ProducedType ct, 
+                Map<TypeParameter, ProducedType> substitutions, 
+                List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
@@ -1988,8 +2000,9 @@ public class ProducedType extends ProducedReference {
             }
         }
 
-        void addTypeToIntersection(ProducedType ct, Map<TypeParameter, 
-                ProducedType> substitutions, List<ProducedType> types) {
+        void addTypeToIntersection(ProducedType ct, 
+                Map<TypeParameter, ProducedType> substitutions, 
+                List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
@@ -2004,14 +2017,18 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             Map<TypeParameter, ProducedType> typeArguments = 
                     pt.getTypeArguments();
-            if (substitutions.isEmpty() && typeArguments.isEmpty()) {
+            if (substitutions.isEmpty() && 
+                    typeArguments.isEmpty()) {
                 return Collections.emptyMap();
             }
             Map<TypeParameter, ProducedType> map = 
-                    new HashMap<TypeParameter, ProducedType>(typeArguments.size());
-            for (Map.Entry<TypeParameter, ProducedType> e: typeArguments.entrySet()) {
+                    new HashMap<TypeParameter, ProducedType>
+                        (typeArguments.size());
+            for (Map.Entry<TypeParameter, ProducedType> e: 
+                    typeArguments.entrySet()) {
                 if (e.getValue()!=null) {
-                    map.put(e.getKey(), substitute(e.getValue(), substitutions));
+                    map.put(e.getKey(), 
+                            substitute(e.getValue(), substitutions));
                 }
             }
             /*ProducedType dt = pt.getDeclaringType();
