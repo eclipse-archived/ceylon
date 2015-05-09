@@ -408,10 +408,12 @@ public class ProducedType extends ProducedReference {
                         return true;
                     }
                 }
-                if (isTypeConstructor() && type.isTypeConstructor()) {
+                if (isTypeConstructor() && 
+                        type.isTypeConstructor()) {
                     return getDeclaration().equals(type.getDeclaration());
                 }
-                else if (isTypeConstructor() || type.isTypeConstructor()) {
+                else if (isTypeConstructor() || 
+                        type.isTypeConstructor()) {
                     return false;
                 }
                 for (ProducedType ct: getInternalSatisfiedTypes()) {
