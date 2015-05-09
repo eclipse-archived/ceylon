@@ -2414,6 +2414,9 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.Throw that) {
         super.visit(that);
+        if (returnDeclaration instanceof Constructor) {
+            that.addUnsupportedError("throw in constructor is not yet supported");
+        }
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             ProducedType et = e.getTypeModel();
@@ -2431,6 +2434,9 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Return that) {
         super.visit(that);
+        if (returnDeclaration instanceof Constructor) {
+            that.addUnsupportedError("return in constructor is not yet supported");
+        }
         if (returnType==null) {
             //misplaced return statements are already handled by ControlFlowVisitor
             //missing return types declarations already handled by TypeVisitor
@@ -8049,8 +8055,8 @@ public class ExpressionVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.Constructor that) {
+        Constructor c = that.getDeclarationModel();
         if (that.getDelegatedConstructor()==null) {
-            Constructor c = that.getDeclarationModel();
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
                 Class superclass = 
@@ -8068,7 +8074,13 @@ public class ExpressionVisitor extends Visitor {
         constructorClass = 
                 that.getDeclarationModel()
                         .getExtendedTypeDeclaration();
+        Tree.Type rt = 
+                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+        Declaration od = 
+                beginReturnDeclaration(c);
         super.visit(that);
+        endReturnDeclaration(od);
+        endReturnScope(rt, null);
         constructorClass = occ;
     }
     
