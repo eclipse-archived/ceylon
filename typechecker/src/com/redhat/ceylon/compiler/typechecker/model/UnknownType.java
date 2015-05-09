@@ -1,12 +1,29 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class UnknownType extends TypeDeclaration {
 
-    private Runnable errorReporter;
-
+    private ErrorReporter errorReporter;
+    
+    public static class ErrorReporter {
+        private String message;
+        
+        public ErrorReporter(String message){
+            this.message = message;
+        }
+        
+        public String getMessage(){
+            return message;
+        }
+        
+        public void reportError(){}
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
     public UnknownType(Unit unit) {
         this.unit = unit;
     }
@@ -20,12 +37,7 @@ public class UnknownType extends TypeDeclaration {
 	public DeclarationKind getDeclarationKind() {
 		return DeclarationKind.TYPE;
 	}
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return Arrays.asList(getQualifiedNameString());
-    }
-
+	
     @Override
     public String getQualifiedNameString() {
         return getName();
@@ -51,19 +63,27 @@ public class UnknownType extends TypeDeclaration {
     	return System.identityHashCode(this);
     }
 
-    public void setErrorReporter(Runnable errorReporter) {
+    public void setErrorReporter(ErrorReporter errorReporter) {
         this.errorReporter = errorReporter;
     }
     
-    public Runnable getErrorReporter(){
+    public ErrorReporter getErrorReporter(){
         return errorReporter;
     }
 
     public void reportErrors() {
         if(errorReporter != null){
-            errorReporter.run();
-            errorReporter = null;
+            errorReporter.reportError();
         }
     }
+
+    @Override
+    protected int hashCodeForCache() {
+        return hashCode();
+    }
     
+    @Override
+    protected boolean equalsForCache(Object o) {
+        return equals(o);
+    }
 }

@@ -18,3 +18,14 @@ Boolean prob2(Anything[] x) {
         return false;
     }
 }
+
+void scoping() {
+    assert (exists xxx = parseInteger("1"),
+            exists yyy = parseInteger("2"),
+            exists zzz = parseInteger(yyy.string+xxx.string),
+            exists @error zzz = parseInteger(""));
+    @error value xxx = 2;
+    @type:"Integer" value x = xxx;
+    @type:"Integer" value y = yyy;
+    @type:"Integer" value z = zzz;
+}

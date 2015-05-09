@@ -13,6 +13,11 @@ public class IntersectionType extends TypeDeclaration {
     }
     
     @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
     public String getName() {
         return getType().getProducedTypeName();
     }
@@ -32,17 +37,13 @@ public class IntersectionType extends TypeDeclaration {
         return "IntersectionType[" + getName() + "]";
     }
     
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException("intersection types don't have names");
-    }
-    
     @Override
     public ProducedType getType() {
         List<ProducedType> sts = getSatisfiedTypes();
         for (ProducedType pt: sts) {
-            if (pt.isUnknown()) {
-                List<ProducedType> list = new ArrayList<ProducedType>(sts.size()-1);
+            if (pt==null || pt.isUnknown()) {
+                List<ProducedType> list = 
+                        new ArrayList<ProducedType>(sts.size()-1);
                 for (ProducedType st: sts) {
                     if (!st.isUnknown()) {
                         list.add(st);
@@ -54,7 +55,7 @@ public class IntersectionType extends TypeDeclaration {
             }
         }
         if (sts.isEmpty()) {
-            return unit.getAnythingDeclaration().getType();
+            return unit.getType(unit.getAnythingDeclaration());
         }
         else if (sts.size()==1) {
             return sts.get(0).getType();
@@ -63,13 +64,17 @@ public class IntersectionType extends TypeDeclaration {
             return super.getType();
         }
     }
+    
+    public TypeDeclaration canonicalize() {
+        return canonicalize(true);
+    }
 
     /**
      * Apply the distributive rule X&(Y|Z) == X&Y|X&Z to simplify the 
      * intersection to a canonical form with no parens. The result is 
      * a union of intersections, instead of an intersection of unions.
      */
-	public TypeDeclaration canonicalize() {
+	public TypeDeclaration canonicalize(boolean reduceDisjointTypes) {
 	    List<ProducedType> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
 	        return unit.getAnythingDeclaration();
@@ -83,20 +88,27 @@ public class IntersectionType extends TypeDeclaration {
 		for (ProducedType st: sts) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
-				List<ProducedType> ulist = new ArrayList<ProducedType>();
-				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
-					List<ProducedType> ilist = new ArrayList<ProducedType>();
+                List<ProducedType> caseTypes = 
+                        st.getDeclaration().getCaseTypes();
+				List<ProducedType> ulist = 
+				        new ArrayList<ProducedType>(caseTypes.size());
+                for (ProducedType ct: caseTypes) {
+					List<ProducedType> ilist = 
+					        new ArrayList<ProducedType>(sts.size());
 					for (ProducedType pt: sts) {
 						if (pt==st) {
-							addToIntersection(ilist, ct, unit);
+							addToIntersection(ilist, ct, unit, 
+							        reduceDisjointTypes);
 						}
 						else {
-							addToIntersection(ilist, pt, unit);
+							addToIntersection(ilist, pt, unit, 
+							        reduceDisjointTypes);
 						}
 					}
 					IntersectionType it = new IntersectionType(unit);
 					it.setSatisfiedTypes(ilist);
-					addToUnion(ulist, it.canonicalize().getType());
+					addToUnion(ulist, 
+					        it.canonicalize(reduceDisjointTypes).getType());
 				}
 				result.setCaseTypes(ulist);
 				return result;
@@ -115,4 +127,32 @@ public class IntersectionType extends TypeDeclaration {
         throw new UnsupportedOperationException("intersection types don't have well-defined equality");
     }
 
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        List<ProducedType> satisfiedTypes = getSatisfiedTypes();
+        for(int i=0, l=satisfiedTypes.size(); i<l; i++) {
+            ret = (37 * ret) + satisfiedTypes.get(i).hashCode();
+        }
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if (o == null || !(o instanceof IntersectionType)) {
+            return false;
+        }
+        IntersectionType b = (IntersectionType) o;
+        List<ProducedType> satisfiedTypesA = getSatisfiedTypes();
+        List<ProducedType> satisfiedTypesB = b.getSatisfiedTypes();
+        if (satisfiedTypesA.size() != satisfiedTypesB.size()) {
+            return false;
+        }
+        for (int i=0, l=satisfiedTypesA.size(); i<l; i++) {
+            if (!satisfiedTypesA.get(i).equals(satisfiedTypesB.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

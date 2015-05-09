@@ -33,3 +33,11 @@ void switchCirc(Circ c) {
 
 interface DupeSuper {}
 @error abstract class DupeSub() satisfies DupeSuper&DupeSuper {}
+
+
+@error abstract class AaAa() of BbBb<Integer> {}
+class BbBb<Type>(Type val) extends AaAa() {}
+
+@error class WithUnionCase() of <Float&Object> {}
+@error class WithIntersectionCase() of <Float&Object> {}
+@error class WithNothingCase() of Nothing {}

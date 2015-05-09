@@ -1,16 +1,16 @@
 class LanguageModule() {
     
-    @type:"Iterable<Entry<Integer,String>,Null>" entries{"hello", "world"};
-    @type:"Iterable<Entry<Integer,String>,Null>" entries(["hello", "world"]);
-    for (Integer i->String s in entries{"hello", "world", "!"}) {}
+    @type:"Iterable<Entry<Integer,String>,Nothing>" value e1 = {"hello", "world"}.indexed;
+    @type:"Iterable<Entry<Integer,String>,Nothing>" value e2 = ["hello", "world"].indexed;
+    for (Integer i->String s in {"hello", "world", "!"}.indexed) {}
     
     //print(append({"one", "two" , "three"}, "four").size==4);
     print(["one", "two" , "three"].withTrailing("four").size==4);
     
-    if ("hello".sequence nonempty) {}
+    if ("hello".sequence() nonempty) {}
     List<Character> chars = "hello";
     
-    [Integer*] ints2 = {};
+    [Integer*] ints2 = [];
     {Integer*} ints1 = {};
     
     Integer m1 = min { 1, 2 };
@@ -25,8 +25,8 @@ class LanguageModule() {
     @type:"Null|Integer" min(ints1);
     @type:"Null|Integer" min(ints2);
     
-    @type:"Sequential<Integer>" emptyOrSingleton(1);
-    @type:"Sequential<Nothing>" emptyOrSingleton(null);
-    @type:"Sequential<Integer>" emptyOrSingleton(1==1 then 1);
+    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1);
+    @type:"Empty|Tuple<Nothing,Nothing,Empty>" emptyOrSingleton(null);
+    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1==1 then 1);
 
 }

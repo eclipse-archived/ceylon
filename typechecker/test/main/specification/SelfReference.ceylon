@@ -1,3 +1,23 @@
+object bar {
+    @error print(bar);
+    @error print(this);
+    object baz {
+        @error print(bar);
+        @error print(baz);
+        @error print(outer.baz);
+        shared void printSelf() {
+            @error print(bar);
+            print(baz);
+            print(outer.baz);
+        }
+    }
+    shared void printSelf() {
+        print(baz);
+        print(bar);
+        print(this);
+    }
+}
+
 interface SelfReference {
     
     void use(Object o) {}
@@ -114,4 +134,18 @@ interface SelfReference {
         Inner getInn(Inner i) { return i; }
         Outer getOut(Outer o) { return o; }
     }
+}
+
+void recursivedefs() {
+    String a;
+    @error a => a;
+    String b;
+    @error b = b;
+    @error String c => c;
+    @error String d = d;
+    String e { @error return e; }
+    String f() { return f(); }
+    String g() => g();
+    String h();
+    h() => h();
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     private boolean expectingError = false;
+	private String errMessage;
     private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
@@ -71,10 +72,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             return;
         }
         if (that instanceof Tree.Variable) {
-            if ( ((Tree.Variable) that).getType() instanceof Tree.SyntheticVariable ) {
+            if (((Tree.Variable) that).getType() 
+                    instanceof Tree.SyntheticVariable) {
                 super.visit(that);
                 return;
             }
+        }
+        if (that instanceof Tree.ForIterator) {
+            super.visit(that);
+            return;
         }
         boolean b = expectingError;
         List<Message> f = foundErrors;
@@ -84,6 +90,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         checkErrors(that);
         expectingError = b;
+        errMessage = null;
         foundErrors = f;
     }
     
@@ -94,6 +101,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         boolean b = expectingError;
         List<Message> f = foundErrors;
         expectingError = false;
+        errMessage = null;
         foundErrors = new ArrayList<Message>();
         initExpectingError(that.getTypedDeclaration().getCompilerAnnotations());
         ignore=true;
@@ -101,6 +109,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         ignore=false;
         checkErrors(that);
         expectingError = b;
+        errMessage = null;
         foundErrors = f;
     }
     
@@ -113,6 +122,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         checkErrors(that);
         foundErrors = new ArrayList<Message>();
     	expectingError = false;
+    	errMessage = null;
     	super.visitAny(that);
     }
     
@@ -176,7 +186,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             loc(err));
     }
 
-    protected void out(AnalysisWarning err) {
+    protected void out(UnsupportedError err) {
         warnings++;
         System.out.println(
             "warning [" + 
@@ -203,49 +213,69 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
 	private String file(Node that) {
 		Unit unit = that.getUnit();
-		return !unit.getRelativePath().isEmpty() ?
-				unit.getRelativePath() : 
+		String relativePath = unit.getRelativePath();
+        return !relativePath.isEmpty() ?
+				relativePath : 
 				unit.getFilename();
 	}
 
     private void checkErrors(Node that) {
-    	for (Message err: foundErrors) {
-            if (err instanceof UnexpectedError) {
-                out( (UnexpectedError) err );
-            }
-    	}
-    	if (expectingError) {
+        try {
             for (Message err: foundErrors) {
-                if (err instanceof AnalysisError ||
-                		err instanceof LexError ||
-                		err instanceof ParseError) {
-                    return;
+                if (err instanceof UnexpectedError) {
+                    out( (UnexpectedError) err );
                 }
             }
-            out(that, "no errors");
+            if (expectingError) {
+            	boolean found = false;
+                for (Message err: foundErrors) {
+                    if (err instanceof AnalysisError ||
+                            err instanceof LexError ||
+                            err instanceof ParseError) {
+                    	if (errMessage==null ||
+                    			err.getMessage().contains(errMessage)) {
+                    		return;
+                    	}
+                    	else {
+                    		found = true;
+                    	}
+                    }
+                }
+                if (found) {
+            		out(that, "error message should contain \"" + 
+            				errMessage);
+                }
+                else {
+                	out(that, "no errors");
+                	return;
+                }
+            }
+//            else {
+                for (Message err: foundErrors) {
+                    if (err instanceof LexError) {
+                        out( that, (LexError) err );
+                    }
+                    else if (err instanceof ParseError) {
+                        out( that, (ParseError) err );
+                    }
+                    else if (err instanceof UnsupportedError) {
+                        if (includeUnsupportedErrors()) {
+                            out( (UnsupportedError) err );
+                        }
+                    } 
+                    else if (err instanceof AnalysisError) {
+                        out( (AnalysisError) err );
+                    }
+                    else if (err instanceof UsageWarning) {
+                        if (usageWarnings) {
+                            out( (UsageWarning) err );
+                        }
+                    }
+                }
+//            }
         }
-        else {
-            for (Message err: foundErrors) {
-                if (err instanceof LexError) {
-                    out( that, (LexError) err );
-                }
-                else if (err instanceof ParseError) {
-                    out( that, (ParseError) err );
-                }
-                else if (err instanceof AnalysisError) {
-                    out( (AnalysisError) err );
-                }
-                else if (err instanceof AnalysisWarning) {
-                    if (includeWarnings()) {
-                        out( (AnalysisWarning) err );
-                    }
-                } 
-                else if (err instanceof UsageWarning) {
-                    if (usageWarnings) {
-                        out( (UsageWarning) err );
-                    }
-                }
-            }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
@@ -253,11 +283,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         for (Tree.CompilerAnnotation c: annotations) {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;
+                Tree.StringLiteral sl = c.getStringLiteral();
+				if (sl!=null) {
+                	errMessage = sl.getText();
+                }
             }
         }
     }
     
-    protected boolean includeWarnings() {
+    protected boolean includeUnsupportedErrors() {
         return true;
     }
     

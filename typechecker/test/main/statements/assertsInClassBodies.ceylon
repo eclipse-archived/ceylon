@@ -30,7 +30,21 @@ class SecondTime(Integer hour,
                  second) 
         extends Time(hour, minute) {
     
+    shared Integer second;
+    
     assert (second>0);
+    
+    secondsSinceMidnight => 
+            super.secondsSinceMidnight+second%60;
+    
+}
+
+class SecondTime2(Integer hour, 
+    Integer minute, 
+    second) 
+        extends Time(hour, minute) {
+    
+    @error assert (second>0);
     
     shared Integer second;
     

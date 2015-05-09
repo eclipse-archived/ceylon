@@ -45,8 +45,8 @@ void testGraph() {
 
     Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
             given ActualGraph satisfies Graph<Node,Edge> 
-            given Node satisfies ActualGraph.Node 
-            given Edge satisfies ActualGraph.Edge {
+            @error given Node satisfies ActualGraph.Node 
+            @error given Edge satisfies ActualGraph.Edge {
     	Node n1 = g.Node() of Node;
     	Node n2 = g.Node() of Node;
         return g.Edge(n1,n2) of Edge;
@@ -57,12 +57,12 @@ void testGraph() {
     //it would be nice to make this work, if only we
     //could resolve the circularity in this constraint:
     //"given ActualGraph satisfies Graph<ActualGraph.Node,ActualGraph.Edge>"
-    /*ActualGraph.Edge method4<ActualGraph>(ActualGraph g) 
-            given ActualGraph satisfies Graph<ActualGraph.Node,ActualGraph.Edge> {
-        ActualGraph.Node n1 = g.Node();
-        ActualGraph.Node n2 = g.Node();
-        return g.Edge(n1,n2);
-    }*/
+    @error ActualGraph.Edge method4<ActualGraph>(ActualGraph g) 
+        @error given ActualGraph satisfies Graph<ActualGraph.Node,ActualGraph.Edge> {
+        @error ActualGraph.Node n1 = g.Node();
+        @error ActualGraph.Node n2 = g.Node();
+        @error return g.Edge(n1,n2);
+    }
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
     BasicGraph.Node nnn1 = nn of BasicGraph.Node;

@@ -26,11 +26,13 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 public class TypeCheckerBuilder {
     private boolean verbose = false;
     private boolean statistics = false;
+    private String encoding;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
+    private List<VirtualFile> srcFiles = null;
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
-        @Override protected boolean includeWarnings() {
+        @Override protected boolean includeUnsupportedErrors() {
             return false;
         }
     };
@@ -57,13 +59,26 @@ public class TypeCheckerBuilder {
         return this;
     }
 
-    public void setRepositoryManager(RepositoryManager repositoryManager) {
+    public TypeCheckerBuilder setRepositoryManager(RepositoryManager repositoryManager) {
         this.repositoryManager = repositoryManager;
+        return this;
     }
 
     public TypeCheckerBuilder setModuleFilters(List<String> moduleFilters){
         this.moduleFilters.clear();
         this.moduleFilters.addAll(moduleFilters);
+        return this;
+    }
+
+    public TypeCheckerBuilder setSourceFiles(List<File> srcFiles){
+        if (srcFiles != null) {
+            this.srcFiles = new ArrayList<VirtualFile>();
+            for (File src : srcFiles) {
+                this.srcFiles.add(vfs.getFromFile(src));
+            }
+        } else {
+            this.srcFiles = null;
+        }
         return this;
     }
     
@@ -119,14 +134,20 @@ public class TypeCheckerBuilder {
     public VFS getVFS(){
         return vfs;
     }
-    
+
+    public TypeCheckerBuilder encoding(String value) {
+        encoding = value;
+        return this;
+    }
+
     public TypeChecker getTypeChecker() {
         if (repositoryManager == null) {
             repositoryManager = CeylonUtils.repoManager()
                     .logger(new LeakingLogger())
                     .buildManager();
         }
-        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, statistics, moduleFilters);
+        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor,
+                moduleManagerFactory, verbose, statistics, moduleFilters, srcFiles, encoding);
     }
 
 }

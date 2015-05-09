@@ -76,18 +76,18 @@ class OuterTypeArgs() {
 	@error Outer<String>.Inner<String> oistr = oiobj;
 	@error Outer<Integer>.Inner<String> oinat = Outer("hello").Inner("world");
 
-	class Consumer<in T>(T t) {
+	class Consumer<in T>(void consume(T t)) {
 		shared class Inner<out S>(S s) {
 			shared S foo(T t) { return s; }
 		}
 	}
 	
-	@type:"OuterTypeArgs.Consumer<String>.Inner<String>" Consumer("hello").Inner("world");
-	@type:"String" Consumer("hello").Inner("world").foo("hello");
-	Consumer<Nothing>.Inner<String> ciobj = Consumer("hello").Inner("world");
-	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
+	@type:"OuterTypeArgs.Consumer<String>.Inner<String>" Consumer(void (String s) {}).Inner("world");
+	@type:"String" Consumer(void (String s) {}).Inner("world").foo("hello");
+	Consumer<Nothing>.Inner<String> ciobj = Consumer(void (String s) {}).Inner("world");
+	Consumer<String>.Inner<Object> ciobj2 = Consumer(void (String s) {}).Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
-	@error Consumer<Integer>.Inner<String> cinat = Consumer("hello").Inner("world");
+	@error Consumer<Integer>.Inner<String> cinat = Consumer(void (String s) {}).Inner("world");
 	
 	class Contains<out T>() {
 	    shared default class Contained() {}
@@ -104,3 +104,28 @@ class OuterTypeArgs() {
 
 }
 
+void qualifyingTypeParameters() {
+    class X() {}
+    class Y() extends X() {
+        shared String hello = "hello";
+    }
+    
+    class Sup() {
+        shared default class XX() => X();
+    }
+    
+    class Sub() extends Sup() {
+        shared actual class XX() => Y();
+    }
+    
+    @error S.XX fn<S>(S s) 
+            given S satisfies Sup 
+            => s.XX();
+    
+    void test() {
+        @type:"Sup.XX" value supXX = fn(Sup());  //inferred type Sup.XX
+        //@type:"Sup.XX" value subXX = fn(Sub());  //inferred type Sub.XX
+        @error print(subXX.hello);  //error!
+        @error Sub.XX err = subXX;  //error!
+    }
+}

@@ -5,7 +5,7 @@ void statements() {
         shared void doIt() {}
     }
     void y() {}
-    X x { return x; }
+    X x { @error return x; }
     
     @error x();
     @error X().hello();

@@ -106,3 +106,7 @@ void memberClassRefinementWithAliases() {
         @error shared class Alias() => super.Member();
     }
 }
+
+abstract class Out() {
+    @error shared formal sealed class In() {}
+}

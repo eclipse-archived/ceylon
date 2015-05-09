@@ -38,7 +38,7 @@ interface Declarations {
     @error Foo getFoo() {}
     @error Foo foo {}*/
     
-    void duplicate() {}
+    @error void duplicate() {}
     @error void duplicate(Y y) {}
     
     class Dupe() {}
@@ -66,7 +66,7 @@ interface Declarations {
     
     void method() {
         String hello = "hi";
-        for (c in hello.characters) {
+        for (c in hello.sequence()) {
             if (c=='h') {
                 try {
                     @error Integer hello = 1;
@@ -113,8 +113,8 @@ interface Declarations {
     @error shared assign getterForSharedSetter {
     }
     
-    class Ni���o() {
-        Ni���o ni���o = Ni���o();
+    class Niẍoℳᵫᵃ() {
+        Niẍoℳᵫᵃ niẍoℳᵫᵃ = Niẍoℳᵫᵃ();
     }
     
     void _bar() { _bar(); }

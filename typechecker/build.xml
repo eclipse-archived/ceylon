@@ -8,14 +8,18 @@
    language, compared with the English reference.
 -->
 <project name="Ceylon Language Specification" default="doc" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
     <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties"/>
+
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.dist" value="${build.dir}/dist"/>
+    <property name="build.dist.repo" value="${build.dist}/repo"/>
     <property name="build.classes" location="${build.dir}/classes"/>
 
     <property name="src" location="src"/>
@@ -39,7 +43,7 @@
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
-    <property name="ceylon.typechecker.dist" value="${build.dist}/${ceylon.typechecker.dir}"/>
+    <property name="ceylon.typechecker.dist" value="${build.dist.repo}/${ceylon.typechecker.dir}"/>
 
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
@@ -198,40 +202,36 @@
             <arg value="${basedir}/${lang}/master.xml"/>
             <arg value="${basedir}/${lang}/styles/${db.style.html}"/>
         </java>
-    	
-    	<replace dir="${build.dir}/${lang}/html/">
-    		<include name="**/*.html"/>
-    	  <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
-    	  <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
-<link type='text/css' href='../shared/css/shCore.css' rel='stylesheet'/>
-<link type='text/css' href='../shared/css/shThemeDefault.css' rel='stylesheet'/>
-<script src='../shared/css/shCore.js' type='text/javascript'></script>
-<script src='../shared/css/shBrushCeylon.js' type='text/javascript'></script>
-    	    <script type='text/javascript'>
-    	        SyntaxHighlighter.defaults['gutter'] = false;
-    	        SyntaxHighlighter.defaults['toolbar'] = false;
-    	        // register a listener for when the highlighter is done with replacing elements
-    	        var hl = SyntaxHighlighter.highlight;
-    	        SyntaxHighlighter.highlight = function(params, element){
-    	          hl(params, element);
-    	          postSyntaxHighlighting();
-    	        };
-    	        SyntaxHighlighter.all();
-    	    </script>]]></replacevalue>
-    	</replace>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
+          <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
+<link type='text/css' href='../shared/css/ceylon.css' rel='stylesheet'/>
+<link type='text/css' href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'/>
+<script src='../shared/css/rainbow.min.js' type='text/javascript'></script>
+<script src='../shared/css/ceylon.js' type='text/javascript'></script>
+<script src='../shared/css/bnf.js' type='text/javascript'></script>]]></replacevalue>
+        </replace>
         
         <replace dir="${build.dir}/${lang}/html/">
             <include name="**/*.html"/>
           <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
-          <replacevalue><![CDATA[<pre class="brush: ceylon">]]></replacevalue>
+          <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
         </replace>
-    	
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
+          <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
+        </replace>
+        
         <replace dir="${build.dir}/${lang}/html/">
             <include name="**/*.html"/>
           <replacetoken><![CDATA[<th colspan="3" align="center">Chapter&nbsp;]]></replacetoken>
           <replacevalue><![CDATA[<th colspan="3" align="center">The Ceylon Language &mdash; ]]></replacevalue>
         </replace>
-    	
+        
     </target>
 
     <target name="lang.dochtmlsingle"
@@ -249,31 +249,27 @@
         
         <replace dir="${build.dir}/${lang}/html_single/">
             <include name="**/*.html"/>
-          <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
-          <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
-<link type='text/css' href='../shared/css/shCore.css' rel='stylesheet'/>
-<link type='text/css' href='../shared/css/shThemeDefault.css' rel='stylesheet'/>
-<script src='../shared/css/shCore.js' type='text/javascript'></script>
-<script src='../shared/css/shBrushCeylon.js' type='text/javascript'></script>
-            <script type='text/javascript'>
-                SyntaxHighlighter.defaults['gutter'] = false;
-                SyntaxHighlighter.defaults['toolbar'] = false;
-                // register a listener for when the highlighter is done with replacing elements
-                var hl = SyntaxHighlighter.highlight;
-                SyntaxHighlighter.highlight = function(params, element){
-                  hl(params, element);
-                  postSyntaxHighlighting();
-                };
-                SyntaxHighlighter.all();
-            </script>]]></replacevalue>
-        </replace>
-        
-        <replace dir="${build.dir}/${lang}/html_single/">
-            <include name="**/*.html"/>
-          <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
-          <replacevalue><![CDATA[<pre class="brush:ceylon">]]></replacevalue>
-        </replace>
-        
+            <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
+            <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
+  <link type='text/css' href='../shared/css/ceylon.css' rel='stylesheet'/>
+  <link type='text/css' href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'/>
+  <script src='../shared/css/rainbow.min.js' type='text/javascript'></script>
+  <script src='../shared/css/ceylon.js' type='text/javascript'></script>
+  <script src='../shared/css/bnf.js' type='text/javascript'></script>]]></replacevalue>
+          </replace>
+          
+          <replace dir="${build.dir}/${lang}/html_single/">
+              <include name="**/*.html"/>
+            <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
+            <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
+          </replace>
+          
+          <replace dir="${build.dir}/${lang}/html_single/">
+              <include name="**/*.html"/>
+            <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
+            <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
+          </replace>
+          
     </target>
 
     <target name="lang.htmlmisc">
@@ -288,7 +284,7 @@
         <copy todir="${build.dir}/${lang}/shared/css">
             <fileset dir="${basedir}/${lang}/styles">
                 <include name="**/*.css"/>
-            	<include name="**/*.js"/>
+                <include name="**/*.js"/>
             </fileset>
         </copy>
 
@@ -345,6 +341,7 @@
             <!--arg value="treegen/Buildergen.g"-->
             <arg value="treegen/Walkergen.g"/>
             <arg value="treegen/Visitorgen.g"/>
+            <arg value="treegen/VisitorAdaptorgen.g"/>
             <arg value="treegen/Validatorgen.g"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
@@ -362,7 +359,11 @@
                 srcdir="${src}:${gensrc}"
                 destdir="${build.classes}"
                 debug="true"
-                classpath="${antlr.lib}">
+                encoding="UTF-8"
+                classpath="${antlr.lib}"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
         </javac>
     </target>
@@ -385,7 +386,11 @@
                 srcdir="${src}:${gensrc}"
                 destdir="${build.classes}"
                 debug="true"
-                classpathref="classpath">
+                encoding="UTF-8"
+                classpathref="classpath"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java"/>
         </javac>
     </target>
@@ -400,7 +405,7 @@
         <fail if="value"/>
         <basename file="${file}" property="filename"/>
         <checksum file="${file}" property="value" algorithm="sha1"/>
-        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
+        <echo file="${file}.sha1" message="${value}"/>
     </target>
     <!-- Repository targets -->
     <target name="init.repo"
@@ -413,27 +418,44 @@
         <delete dir="${ceylon.typechecker.repo}"/>
     </target>
 
-    <target name="ide" depends="dist">
-        <copy 
-            overwrite="true"
-            file="${build.dist}/${ceylon.typechecker.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
-        <copy 
-            overwrite="true"
-            file="${build.dist}/${ceylon.typechecker.jar}"
-            tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.typechecker.lib}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
     </target>
-    
-    <target name="dist" depends="compile">
-        <mkdir dir="${build.dist}"/>
-        <zip destfile="${build.dist}/${ceylon.typechecker.jar}">
+
+    <target name="typechecker.jar" depends="compile">
+        <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
+        <jar destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
             </fileset>
-        </zip>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.typechecker"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.version}.${qualifier}"/>
+            </manifest>
+        </jar>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.typechecker.jar}" />
+            <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
         </antcall>
+    </target>
+
+    <target name="build" depends="typechecker.jar">
+    </target>
+
+    <target name="dist" depends="build">
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
@@ -441,15 +463,15 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.typechecker.repo}" overwrite="true">
-            <fileset dir="${ceylon.typechecker.dist}"/>
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
     <target name="test"
             depends="publish"
             description="Run rudimentary tests">
-        <java classname="MainForTest">
+        <java classname="main.MainForTest">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>
@@ -460,7 +482,7 @@
     <target name="test.language"
             depends="publish"
             description="Run rudimentary tests">
-        <java classname="MainForLanguage">
+        <java classname="main.MainForLanguage">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>

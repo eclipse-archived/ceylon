@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -23,11 +24,10 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 //TODO make an interface?
 public class TypeChecker {
 
-    public static final String LANGUAGE_MODULE_VERSION = "0.6";
+    public static final String LANGUAGE_MODULE_VERSION = Versions.CEYLON_VERSION_NUMBER;
 
     private final boolean verbose;
     private final boolean statistics;
-    private final List<VirtualFile> srcDirectories;
     private final Context context;
     private final PhasedUnits phasedUnits;
     private List<PhasedUnits> phasedUnitsOfDependencies;
@@ -38,9 +38,8 @@ public class TypeChecker {
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, RepositoryManager repositoryManager, boolean verifyDependencies,
             AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose, boolean statistics,
-            List<String> moduleFilters) {
+            List<String> moduleFilters, List<VirtualFile> srcFiles, String encoding) {
         long start = System.nanoTime();
-        this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.statistics = statistics;
         this.context = new Context(repositoryManager, vfs);
@@ -48,7 +47,9 @@ public class TypeChecker {
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;
         statsVisitor = new StatisticsVisitor();
+        phasedUnits.setSourceFiles(srcFiles);
         phasedUnits.setModuleFilters(moduleFilters);
+        phasedUnits.setEncoding(encoding);
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
         if(statistics)
@@ -119,8 +120,12 @@ public class TypeChecker {
     }*/
 
     public void process() throws RuntimeException {
+        process(false);
+    }
+    
+    public void process(boolean forceSilence) throws RuntimeException {
         long start = System.nanoTime();
-        executePhases(phasedUnits, false);
+        executePhases(phasedUnits, forceSilence);
         long time = System.nanoTime()-start;
         if(statistics)
         	System.out.println("Type checked in " + time/1000000 + " ms");

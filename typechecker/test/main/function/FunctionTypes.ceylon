@@ -103,7 +103,7 @@ void method() {
         strings = ["goodbye"];
         Integer f(String s) { print(s); return s.size; }
     };
-    higher2 { 
+    higher2 {
         strings = ["goodbye"];
         @error void f(Integer n) { print(n.string); }
     };
@@ -278,7 +278,8 @@ void sequencedParams() {
     Anything(Character*) str0p = string1;
     Anything(Character) str1 = str;
     Anything(Character, Character) str2 = str;
-    str(*"hello".characters);
+    str(*"hello");
+    str(*"hello".sequence());
     str();
     str('X');
     str('h', 'e', 'l', 'l', 'o');
@@ -338,7 +339,11 @@ void lazyLazySpec() {
     String lazy2(String s, Float* x);
     lazy2(String s, Float* x) => s;
     String lazy3(String s, Float x=0.0);
-    @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
+    @error lazy3(String s, Float x, Boolean b) => b then s else x.string;
+    String lazy5(String s, Float x=0.0);
+    lazy5(String s, @error Float x=1.0) => s + x.string;
+    String lazy6(String s, Float x=0.0);
+    lazy6(String s, @error Integer x) => s + x.string;
     String lazy4(String s, Float x, Float y);
     @error lazy4(String s, @error Float* x) => s;
     Anything x(String s="")(Integer i);
@@ -384,4 +389,12 @@ T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
     @type:"Integer"
     (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
     return t;
+}
+
+void abbreviations<T>() given T satisfies Anything[] {
+    @type:"Callable<String,T>" String(*T) f1;
+    @type:"Callable<String,Tuple<T,T,Empty>>" String(T) f2;
+    @type:"Callable<String,Tuple<String,String,Empty>>" String(String) f3;
+    @error String(*String) f4;
+    @type:"Callable<String,Tuple<String,String,Empty>>" String(*[String]) f5;
 }

@@ -19,8 +19,8 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public List<String> getQualifiedName() {
-        return getContainer().getQualifiedName();
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
     }
     
     @Override
@@ -41,11 +41,6 @@ public class ImportList implements Scope {
     @Override
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         return getContainer().getMember(name, signature, ellipsis);
-    }
-    
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return getContainer().getDirectMemberOrParameter(name, signature, ellipsis);
     }
     
     @Override
@@ -81,7 +76,12 @@ public class ImportList implements Scope {
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity) {
         if (importedScope!=null) {
-            return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+            if (unit.getPackage().equals(importedScope)) {
+                return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity);
+            }
+            else {
+                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+            }
         }
         else {
             return Collections.emptyMap();

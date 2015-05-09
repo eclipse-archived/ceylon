@@ -12,7 +12,15 @@ object concrete extends Algebraic() {}
 void algebraic(Algebraic z) {
     switch (z)
     case (concrete) {}
-    case (is Concrete) {}
+    case (is Concrete) {
+        @type:"Concrete" value c = z;
+    }
+    
+    switch (zz=z)
+    case (concrete) {}
+    case (is Concrete) {
+        @type:"Concrete" value c = zz;
+    }
 }
 
 
@@ -25,10 +33,17 @@ void enumConstraint<T>(T t)
     case (is Integer) {
         print((t/100.0).string);
     }
+    switch (tt=t)
+    case (is String) {
+        print(tt);
+    }
+    case (is Integer) {
+        print((tt/100.0).string);
+    }
 }
 
 class EnumConstraint<T>(T* ti) given T of Float|Integer {
-    value ts = ti.sequence;
+    value ts = ti.sequence();
     shared actual String string {
         switch (ts)
         case(is Empty) { print(ts); return "empty"; }
@@ -158,12 +173,12 @@ Integer fib(Integer n) {
     }
 }
 
-    interface Association 
-        of OneToOne | OneToMany { }
-    @error interface OneTo satisfies Association {}
-    class OneToOne() satisfies OneTo {}
-    class OneToMany() satisfies OneTo {}
-    @error class Broken() satisfies Association {}
+@error interface Association 
+    of OneToOne | OneToMany { }
+@error interface OneTo satisfies Association {}
+class OneToOne() satisfies OneTo {}
+class OneToMany() satisfies OneTo {}
+@error class Broken() satisfies Association {}
     
     
 interface Anything of SomethingUsual | SomethingElse {}
@@ -183,6 +198,15 @@ void switchAnything(Anything any) {
     case (is SomethingElse) { 
         print("something else"); 
         print(any.somethingElse); 
+    }
+    switch (a=any)
+    case (is SomethingUsual) { 
+        print("something");
+        print(a.something); 
+    }
+    case (is SomethingElse) { 
+        print("something else"); 
+        print(a.somethingElse); 
     }
 }
 
@@ -243,7 +267,8 @@ void switchInterface(Interface i) {
     case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
-        
+    
+    @error    
     switch(i)
     case (is Class4) {}
     case (is Class1) {}
@@ -285,6 +310,24 @@ void switchUnion1(Class2|Class3|String val) {
     case (is Integer) {}
 }
 
+void switchUnion1var(Class2|Class3|String val) {
+    switch (v=val)
+    case (is Class2) {}
+    case (is Class3) {}
+    case (is String) {}
+    switch (v=val)
+    case (is Class2) {}
+    else {}
+    @error switch (v=val)
+    case (is Class2) {}
+    case (is Class3) {}
+    @error switch (v=val)
+    case (is Class2) {}
+    case (is Class3) {}
+    case (is String) {}
+    case (is Integer) {}
+}
+
 void switchUnion2(Class1|String val) {
     switch (val)
     case (is Class3) {}
@@ -295,6 +338,21 @@ void switchUnion2(Class1|String val) {
     case (object1) {}
     case (is String) {}
     @error switch (val)
+    case (is Class1) {}
+    case (is Class3) {}
+    case (is String) {}
+}
+
+void switchUnion2var(Class1|String val) {
+    switch (v=val)
+    case (is Class3) {}
+    case (object1) {}
+    case (is String) {}
+    @error switch (v=val)
+    case (is Class1) {}
+    case (object1) {}
+    case (is String) {}
+    @error switch (v=val)
     case (is Class1) {}
     case (is Class3) {}
     case (is String) {}
@@ -451,11 +509,11 @@ void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String sss,Super1&Su
 }
 
 void testLanguageModuleEffectivelyFinal<T>(T t) 
-        given T of String|Number|<String->Number> {
+        given T of String|Number<Float>|<String->Number<Integer>> {
     switch (t)
     case(is String) {}
-    case(is Number) {}
-    case(is String->Number) {}
+    case(is Number<Float>) {}
+    case(is String->Number<Integer>) {}
 }
 
 class RR<E>(E e) 

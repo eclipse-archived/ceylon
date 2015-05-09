@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
-import com.redhat.ceylon.compiler.typechecker.analyzer.FilenameWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -22,10 +22,11 @@ public abstract class Node {
     private String text;
     private Token token;
     private Token endToken;
+    private Token firstChildToken;
+    private Token lastChildToken;
     private Scope scope;
     private Unit unit;
-    private List<Message> errors = new ArrayList<Message>();
-    private List<Node> children = new ArrayList<Node>();
+    private List<Message> errors = null;
     
     protected Node(Token token) {
         this.token = token;
@@ -141,23 +142,25 @@ public abstract class Node {
 				+ token.getText().length()-1);
 	}
     
-    private boolean isMissingToken(Token t) {
-        return t.getText().startsWith("<missing ");
+    private static boolean isMissingToken(Token t) {
+        return t instanceof MissingToken;
     }
-    
+
+    public boolean isMissingToken() {
+        return isMissingToken(token);
+    }
+
     private Token getFirstChildToken() {
-        Token token=this.token==null || 
+        Token token = this.token==null || 
                 //the tokens ANTLR inserts to represent missing tokens
                 //don't come with useful offset information
                 isMissingToken(this.token) ?
                 null : this.token;
-		for (Node child: getChildren()) {
-			Token tok = child.getFirstChildToken();
-			if (tok!=null && (token==null || 
-					tok.getTokenIndex()<token.getTokenIndex())) {
-				token=tok;
-			}
-		}
+        if (firstChildToken!=null && 
+                (token==null || 
+                firstChildToken.getTokenIndex()<token.getTokenIndex())) {
+            token = firstChildToken;
+        }
 		return token;
     }
 
@@ -167,19 +170,21 @@ public abstract class Node {
 		        //don't come with useful offset information
 		        isMissingToken(endToken) ?
 				this.token : this.endToken;
-		for (Node child: getChildren()) {
-			Token tok = child.getLastChildToken();
-			if (tok!=null && (token==null || 
-			        tok.getTokenIndex()>token.getTokenIndex())) {
-				token=tok;
-			}
-		}
+        if (lastChildToken!=null && 
+                (token==null || 
+                lastChildToken.getTokenIndex()>token.getTokenIndex())) {
+            token = lastChildToken;
+        }
 		return token;
     }
     
     public Token getEndToken() {
     	return getLastChildToken();
 	}
+    
+    public void setToken(Token token) {
+        this.token = token;
+    }
     
     public void setEndToken(Token endToken) {
         //the tokens ANTLR inserts to represent missing tokens
@@ -193,39 +198,41 @@ public abstract class Node {
      * The compilation errors belonging to this node.
      */
     public List<Message> getErrors() {
-        return errors;
+        return errors != null ? errors : Collections.<Message>emptyList();
+    }
+    
+    public void addError(Message error){
+        if(errors == null)
+            errors = new ArrayList<Message>(2);
+        errors.add(error);
     }
     
     public void addError(String message) {
-        errors.add( new AnalysisError(this, message) );
+        addError( new AnalysisError(this, message) );
     }
     
     public void addError(String message, int code) {
-        errors.add( new AnalysisError(this, message, code) );
+        addError( new AnalysisError(this, message, code) );
     }
     
     public void addUnexpectedError(String message) {
-        errors.add( new UnexpectedError(this, message) );
+        addError( new UnexpectedError(this, message) );
     }
     
-    public void addWarning(String message) {
-        errors.add( new AnalysisWarning(this, message) );
+    public void addUnsupportedError(String message) {
+        addError( new UnsupportedError(this, message) );
     }
-
-    public void addUsageWarning(String message) {
-        errors.add( new UsageWarning(this, message) );
+    
+    public <E extends Enum<E>> void addUsageWarning(E warningName, String message) {
+        addError( new UsageWarning(this, message, warningName.toString()) );
     }
-
-    public void addFilenameWarning(String message) {
-        errors.add( new FilenameWarning(this, message) );
-    }
-
+    
     public void addParseError(ParseError error) {
-        errors.add(error);
+        addError(error);
     }
     
     public void addLexError(LexError error) {
-        errors.add(error);
+        addError(error);
     }
     
     public abstract void visit(Visitor visitor);
@@ -262,12 +269,19 @@ public abstract class Node {
 	
 	public void connect(Node child) {
 		if (child!=null) {
-			children.add(child);
+			Token childFirstChildToken = child.getFirstChildToken();
+            if (childFirstChildToken!=null &&
+                    (firstChildToken==null || 
+			        childFirstChildToken.getTokenIndex()<firstChildToken.getTokenIndex())) {
+			    firstChildToken = childFirstChildToken;
+			}
+            Token childLastChildToken = child.getLastChildToken();
+            if (childLastChildToken!=null &&
+                    (lastChildToken==null || 
+                    childLastChildToken.getTokenIndex()>lastChildToken.getTokenIndex())) {
+                lastChildToken = childLastChildToken;
+            }
 		}
-	}
-
-	public List<Node> getChildren() {
-		return children;
 	}
 
 }

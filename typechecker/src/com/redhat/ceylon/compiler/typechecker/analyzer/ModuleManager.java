@@ -10,12 +10,17 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.WeakHashMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -24,24 +29,36 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 
 /**
  * Manager modules and packages (build, retrieve, handle errors etc)
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleManager {
+public class ModuleManager implements BackendSupport {
+    public static class ModuleDependencyAnalysisError extends AnalysisError {
+    
+        public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
+            super(treeNode, message, code);
+        }
+        
+        public ModuleDependencyAnalysisError(Node treeNode, String message) {
+            super(treeNode, message);
+        }
+    }
+
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
     private final Context context;
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<ModuleImport,Set<Node>> moduleImportToNode = new HashMap<ModuleImport, Set<Node>>();
+    private static Object PRESENT = new Object();
+    private final Map<ModuleImport,WeakHashMap<Node, Object>> moduleImportToNode = new HashMap<ModuleImport, WeakHashMap<Node, Object>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
-    private Map<Module, Node> moduleToNode = new HashMap<Module, Node>();
+    private Map<Module, Node> moduleToNode = new TreeMap<Module, Node>();
 
     public ModuleManager(Context context) {
         this.context = context;
@@ -49,7 +66,7 @@ public class ModuleManager {
     
     protected Package createPackage(String pkgName, Module module) {
         final Package pkg = new Package();
-        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        List<String> name = pkgName.isEmpty() ? Arrays.asList("") : splitModuleName(pkgName); 
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
@@ -87,7 +104,7 @@ public class ModuleManager {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
+            defaultModule.addImport(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
         }
         else {
@@ -129,7 +146,7 @@ public class ModuleManager {
         for (Module current : moduleList) {
             final List<String> names = current.getName();
             if (moduleName.equals(names)
-                    && compareVersions(version, current.getVersion())) {
+                    && compareVersions(current, version, current.getVersion())) {
                 module = current;
                 break;
             }
@@ -142,7 +159,7 @@ public class ModuleManager {
         return module;
     }
 
-    private boolean compareVersions(String version, String currentVersion) {
+    protected boolean compareVersions(Module current, String version, String currentVersion) {
         return currentVersion == null || version == null || currentVersion.equals(version);
     }
 
@@ -160,11 +177,12 @@ public class ModuleManager {
                 bindPackageToModule(currentPkg, currentModule);
             }
             else {
-                addErrorToModule(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
+                addErrorToModule(new ArrayList<String>(), 
+                        "module may not be defined at the top level of the hierarchy");
             }
         }
         else {
-            StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
+            StringBuilder error = new StringBuilder("two modules within the same hierarchy: '");
             error.append( formatPath( currentModule.getName() ) )
                 .append( "' and '" )
                 .append( formatPath( packageStack.peekLast().getName() ) )
@@ -206,12 +224,12 @@ public class ModuleManager {
     }
 
     public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
-        Set<Node> moduleDepDefinition = moduleImportToNode.get(moduleImport);
+        WeakHashMap<Node, Object> moduleDepDefinition = moduleImportToNode.get(moduleImport);
         if (moduleDepDefinition == null) {
-            moduleDepDefinition = new HashSet<Node>();
+            moduleDepDefinition = new WeakHashMap<Node, Object>();
             moduleImportToNode.put(moduleImport, moduleDepDefinition);
         }
-        moduleDepDefinition.add(definition);
+        moduleDepDefinition.put(definition, PRESENT);
     }
 
     public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
@@ -241,10 +259,10 @@ public class ModuleManager {
     }
 
     private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
-        Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
+        WeakHashMap<Node, Object> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
-            for ( Node definition :  moduleDepError ) {
-                definition.addError(error);
+            for ( Node definition :  moduleDepError.keySet() ) {
+                definition.addError(new ModuleDependencyAnalysisError(definition, error));
             }
             return true;
         }
@@ -257,10 +275,10 @@ public class ModuleManager {
             addErrorToModule(module, error);
         }else{
             // we must be importing it
-            for(Entry<ModuleImport, Set<Node>> entry : moduleImportToNode.entrySet()){
+            for(Entry<ModuleImport, WeakHashMap<Node, Object>> entry : moduleImportToNode.entrySet()){
                 if(entry.getKey().getModule() == module){
-                    for ( Node definition :  entry.getValue() ) {
-                        definition.addError(error);
+                    for ( Node definition :  entry.getValue().keySet() ) {
+                        definition.addError(new ModuleDependencyAnalysisError(definition, error));
                     }
                 }
             }
@@ -271,7 +289,20 @@ public class ModuleManager {
     public void addErrorToModule(Module module, String error) {
         Node node = moduleToNode.get(module);
         if (node != null) {
-            node.addError(error);
+            node.addError(new ModuleDependencyAnalysisError(node, error));
+        }
+        else {
+            //might happen if the faulty module is a compiled module
+            System.err.println("This is a type checker bug, please report. " +
+                    "\nExpecting to add error on non present module node: " + module.toString() + ". Error " + error);
+        }
+    }
+
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addWarningToModule(Module module, Warning warningType, String error) {
+        Node node = moduleToNode.get(module);
+        if (node != null) {
+            node.addUsageWarning(warningType, error);
         }
         else {
             //might happen if the faulty module is a compiled module
@@ -281,7 +312,7 @@ public class ModuleManager {
     }
 
     //only used if we really don't know the version
-    private void addErrorToModule(List<String> moduleName, String error) {
+    protected void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
         if (errors == null) {
             errors = new HashSet<String>();
@@ -290,16 +321,16 @@ public class ModuleManager {
         errors.add(error);
     }
 
-    public void addLinkBetweenModuleAndNode(Module module, Node unit) {
+    public void addLinkBetweenModuleAndNode(Module module, ModuleDescriptor descriptor) {
         //keep link and display errors on modules where we don't know the version of
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
-                unit.addError(error);
+                descriptor.addError(new ModuleDependencyAnalysisError(descriptor, error));
             }
             errors.clear();
         }
-        moduleToNode.put(module,unit);
+        moduleToNode.put(module,descriptor);
     }
     
     public Set<Module> getCompiledModules(){
@@ -321,7 +352,7 @@ public class ModuleManager {
         for(int index = 0 ; index < leftName.size(); index++) {
             if (!leftName.get(index).equals(rightName.get(index))) return false;
         }
-        if (exactVersionMatch && left.getVersion()!=right.getVersion()) return false;
+        if (exactVersionMatch && !left.getVersion().equals(right.getVersion())) return false;
         return true;
     }
 
@@ -332,16 +363,38 @@ public class ModuleManager {
         return null;
     }
 
+    public boolean similarForModules(Module left, Module right) {
+        if (left == right) return true;
+        String leftName = ModuleUtil.toCeylonModuleName(left.getNameAsString());
+        String rightName = ModuleUtil.toCeylonModuleName(right.getNameAsString());
+        return leftName.equals(rightName);
+    }
+
+    /**
+     * This treats Maven and Ceylon modules as similar: com:foo and com.foo will match
+     */
+    public Module findSimilarModule(Module module, List<Module> listOfModules) {
+        for(Module current : listOfModules) {
+            if (similarForModules(module, current)) return current;
+        }
+        return null;
+    }
+
     public Module findLoadedModule(String moduleName, String searchedVersion) {
         return findLoadedModule(moduleName, searchedVersion, modules);
     }
     
+    /**
+     * @Deprecated This looks fishy: why would we have an extra Modules parameter?
+     */
+    @Deprecated
     public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+        if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
+            return modules.getDefaultModule();
         for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(moduleName)) {
-                if (searchedVersion != null && searchedVersion.equals(module.getVersion())){
-                    return module;
-                }
+            if(module.getNameAsString().equals(moduleName)
+                    && compareVersions(module, searchedVersion, module.getVersion())){
+                return module;
             }
         }
         return null;
@@ -364,14 +417,14 @@ public class ModuleManager {
         }
         else {
             
-            PhasedUnits modulePhasedUnit = createPhasedUnits();
-            phasedUnitsOfDependencies.add(modulePhasedUnit);
+            PhasedUnits modulePhasedUnits = createPhasedUnits();
             ClosableVirtualFile virtualArtifact= null;
             try {
                 virtualArtifact = context.getVfs().getFromZipFile(sourceArtifact.artifact());
-                modulePhasedUnit.parseUnit(virtualArtifact);
+                modulePhasedUnits.parseUnit(virtualArtifact);
                 //populate module.getDependencies()
-                modulePhasedUnit.visitModules();
+                modulePhasedUnits.visitModules();
+                addToPhasedUnitsOfDependencies(modulePhasedUnits, phasedUnitsOfDependencies, module);
             } catch (Exception e) {
                 StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
@@ -385,12 +438,21 @@ public class ModuleManager {
         }
     }
 
+    protected void addToPhasedUnitsOfDependencies(PhasedUnits modulePhasedUnits, List<PhasedUnits> phasedUnitsOfDependencies, Module module) {
+        phasedUnitsOfDependencies.add(modulePhasedUnits);
+    }
+    
     protected PhasedUnits createPhasedUnits() {
         return new PhasedUnits(getContext());
     }
 
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("src");
+    }
+
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return backend != Backend.None;
     }
 
     public static List<String> splitModuleName(String moduleName) {
@@ -410,5 +472,24 @@ public class ModuleManager {
 
     public void modulesVisited() {
         // to be overridden by subclasses
+    }
+
+    public void visitedModule(Module module, boolean forCompiledModule) {
+        // to be overridden by subclasses
+    }
+
+    protected Module overridesModule(ArtifactResult artifact,
+            Module module, ModuleImport moduleImport) {
+        String realName = artifact.name();
+        String realVersion = artifact.version();
+        if (! realName.equals(module.getNameAsString()) ||
+            ! realVersion.equals(module.getVersion())) {
+            if (module != module.getLanguageModule()) {
+                Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
+                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport(), moduleImport.getNative()));
+                return realModule;
+            }
+        }
+        return null;
     }
 }

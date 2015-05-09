@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.List;
 
 /**
  * An attribute setter.
@@ -27,12 +26,7 @@ public class Setter extends MethodOrValue implements Scope {
     public void setParameter(Parameter parameter) {
 		this.parameter = parameter;
 	}
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return getter.getQualifiedName();
-    }
-
+    
     @Override
     public String getQualifiedNameString() {
         return getter.getQualifiedNameString();
@@ -59,8 +53,17 @@ public class Setter extends MethodOrValue implements Scope {
     }
     
     @Override
-    public void setSetter(Setter setter) {
-        throw new UnsupportedOperationException();
+    public boolean isSetter() {
+        return true;
     }
 
+    @Override
+    public String getQualifier() {
+        Value getter = getGetter();
+        if(getter == null)
+            return null;
+        String getterQualifier = getter.getQualifier();
+        // use the same qualifier as the getter with a $setter$ prefix
+        return getterQualifier == null ? null : "$setter$"+getterQualifier;
+    }
 }

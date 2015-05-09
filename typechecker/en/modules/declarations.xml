@@ -3,8 +3,8 @@
     
     <para>Ceylon is a statically typed language. Classes, interfaces, functions, values 
     and aliases must be declared before use. The declaration of a function or value must 
-    include an explicit type, or allow the type to be inferred. This allows the compiler 
-    to detect many errors, including:</para>
+    include an explicit type, or allow the type to be inferred. Static typing allows the 
+    compiler to detect many errors, including:</para>
     
     <itemizedlist>
         <listitem><para>typing errors in identifier names,</para></listitem>
@@ -15,6 +15,7 @@
         <listitem><para>argument lists which do not match parameter lists,</para></listitem>
         <listitem><para>type argument lists which do not match type parameter 
         lists,</para></listitem>
+        <listitem><para>operands to which an operator cannot apply,</para></listitem>
         <listitem><para>incompatible assignment of an expression of one type to a
         program element of a different type,</para></listitem>
         <listitem><para>evaluation of a value before it has been explicitly specified 
@@ -77,7 +78,7 @@ TypeConstraints?
         <para>Any compilation unit may begin with a list of imported types, values, 
         and functions.</para>
         
-        <programlisting>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</programlisting>
+        <synopsis>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</synopsis>
         
         <section id="topleveldeclarations">
             <title>Toplevel and nested declarations</title>
@@ -144,7 +145,10 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
+        <para>An <literal>import</literal> statement specifies the name of a package to
+        import from, and a list of declarations to import from that package.</para>
+        
+        <synopsis>Import: "import" FullPackageName ImportElements</synopsis>
         
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
@@ -155,13 +159,15 @@ TypeConstraints?
         <itemizedlist>
             <listitem>
                 <para>the package belongs to the same module as the compilation unit 
-                containing the <literal>import</literal> statement, or</para>
+                containing the <literal>import</literal> statement, as specified by 
+                <xref linkend="sourcelayout"/>, or</para>
             </listitem>
             <listitem>
                 <para>the package is declared <literal>shared</literal> in its
-                package descriptor, and the module descriptor of the module containing 
-                the <literal>import</literal> statement explicitly imports the module 
-                containing the package, as defined by 
+                package descriptor, and the module descriptor of the module to which
+                the compilation unit containing the <literal>import</literal> statement 
+                belongs, as specified by <xref linkend="sourcelayout"/>, explicitly or 
+                implicitly imports the module containing the package, as defined by 
                 <xref linkend="moduledescriptors"/>.</para>
             </listitem>
         </itemizedlist>
@@ -170,9 +176,9 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <synopsis>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)?</synopsis>
+        <synopsis>ImportElements: "{" (ImportElement ",")* (ImportElement | ImportWildcard) "}"</synopsis>
         
-        <synopsis>ImportElement: ImportTypeElement | ImportFunctionValueElement</synopsis>
+        <synopsis>ImportElement: ImportTypeElement | ImportObjectElement | ImportFunctionValueElement</synopsis>
         
         <para>An import element is a reference to either:</para>
         
@@ -189,6 +195,23 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
+        <para>An import element may either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>import a name into the <emphasis>toplevel namespace</emphasis> 
+                of the compilation unit in which it occurs, or</para>
+            </listitem>
+            <listitem>
+                <para>result in an alias for a member of a type within the 
+                compilation unit in which it occurs.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Every import element belonging directly to an <literal>import</literal> 
+        statement imports into the <emphasis>toplevel namespace</emphasis> of the 
+        compilation unit.</para>
+        
         <para>An import element may not refer to a declaration that is not visible to
         the compilation unit, as defined by <xref linkend="visibility"/>.</para>
         
@@ -200,7 +223,7 @@ TypeConstraints?
         compilation unit.</para>
         
         <para>An imported function or value may not hide, as defined in 
-        <xref linkend="hidingdeclaration"/>, any of the modifiers declared in 
+        <xref linkend="hiddendeclarations"/>, any of the modifiers declared in 
         <literal>ceylon.language</literal> listed in <xref linkend="declarationmodifiers"/>,
         unless the modifier itself has an alias import in the compilation unit.</para>
         
@@ -208,39 +231,85 @@ TypeConstraints?
         
         <section id="typeimports">
             <title>Type imports</title>
-        
+            
             <para>An import element that specifies a type name imports the toplevel type 
-            with that name from the given package.</para>
+            with that name from the imported package or type.</para>
             
-            <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</synopsis>
+            <synopsis>ImportTypeElement: TypeAlias? TypeName ImportElements?</synopsis>
             
-            <para>A compilation unit may not import two types with the same name.</para>
+            <para>The specified name must be the name of a type declaration belonging to 
+            the imported package or type.</para>
             
-            <programlisting>import java.util { Set, List, Map }</programlisting>
+            <programlisting>import ceylon.collection { MutableSet, MutableList, MutableMap }</programlisting>
             
-            <para>The import element may be followed by a list of nested import elements, 
-            which must specify aliases.</para>
+            <para>The import element may be followed by a list of nested import elements:</para> 
             
-            <comment><para>Note: as a special exception to the usual language rules, to 
-            support interoperation with Java, a nested import element which references a
-            <literal>static</literal> member of a Java type results in a Ceylon
-            <emphasis>toplevel</emphasis> reference to the <literal>static</literal> member. 
-            In this case, the import element may omit the explicit alias.</para></comment>
+            <itemizedlist>
+                <listitem>
+                    <para>if the import element imports into the toplevel namespace of 
+                    the compilation unit, and if a nested import element is a reference 
+                    to a constructor, the nested import element imports into the toplevel 
+                    namespace of the compilation unit, and need not specify an alias, or,
+                    otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the nested import element only defines an alias for the 
+                    referenced member of the imported type, and this alias must be 
+                    specified explicitly.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: an import element referring to a <literal>static</literal>
+            member of a Java class imports the static member into the toplevel namespace of
+            the compilation unit. However, this behavior is outside the scope of this 
+            specification.</para></comment>
+            
+        </section>
         
+        <section id="anonymousclassimports">
+            <title>Anonymous class imports</title>
+            
+            <para>An import element that specifies the name of an anonymous class, as 
+            defined in <xref linkend="anonymousclasses"/>, imports the anonymous class 
+            with that name from the imported package or type.</para>
+            
+            <synopsis>ImportObjectElement: FunctionValueAlias? MemberName ImportElements?</synopsis>
+            
+            <para>The specified name must be the name of an anonymous class declaration 
+            belonging to the imported package or type.</para>
+            
+            <programlisting>import ceylon.file { home, current }</programlisting>
+            
+            <para>The import element may be followed by a list of nested import elements:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the import element imports into the toplevel namespace of 
+                    the compilation unit, a nested import element imports into the 
+                    toplevel namespace of the compilation unit, and need not specify 
+                    an alias, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the nested import element only defines an alias for the 
+                    referenced member of the imported type, and this alias must be 
+                    specified explicitly.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
         <section id="methodattributeimports">
             <title>Function and value imports</title>
-        
+            
             <para>An import element that specifies a function or value name imports the 
-            toplevel function or value with that name from the given package.</para>
+            toplevel function or value with that name from the imported package or type.</para> 
             
             <synopsis>ImportFunctionValueElement: FunctionValueAlias? MemberName</synopsis>
             
-            <para>A compilation unit may not import two methods or attributes with the same 
-            name.</para>
+            <para>The specified name must be the name of a function or value declaration
+            belonging to the imported package or type.</para>
             
-            <programlisting>import ceylon.math { sqr, sqrt, e, pi }</programlisting>
+            <programlisting>import ceylon.math.float { sqrt, e, pi }</programlisting>
         
         </section>
         
@@ -324,8 +393,18 @@ TypeConstraints?
             as the name of a toplevel declaration contained in the compilation unit in
             which the import element occurs.</para>
             
-            <para>Two import elements occurring in the same compilation unit may not result 
-            in the same imported name.</para>
+            <para>Two import elements occurring in the same compilation unit, which import 
+            into the toplevel namespace of the compilation unit, may not result in the same 
+            imported name.</para>
+            
+            <para>Two nested import elements belonging to the same import element may not 
+            result in the same imported name.</para>
+            
+            <emphasis><para>Note: if an imported declaration is already referenceable within 
+            a compilation unit without the <literal>import</literal> statement, for example, 
+            if it is defined in the same package, or in <literal>ceylon.language</literal>, 
+            then, even with the <literal>import</literal> statement, it is still referenceable 
+            via its declared name, as well as via the imported name.</para></emphasis>
             
         </section>
         
@@ -334,21 +413,46 @@ TypeConstraints?
     <section id="parameters">
         <title>Parameters</title>
         
-        <para>A function or class declaration may declare <emphasis>parameters</emphasis>.
-        A parameter is a value or function belonging to the declaration it parameterizes.
-        Parameters are distinguished from other values or functions because they occur in
-        a <emphasis>parameter list</emphasis>. A value or function is a parameter of a 
-        class or function if it is:</para>
+        <para>A function, class, or constructor declaration may declare 
+        <emphasis>parameters</emphasis>. A parameter is a value or function belonging to the 
+        declaration it parameterizes. Parameters are distinguished from other values or 
+        functions because they occur in a <emphasis>parameter list</emphasis>. A value or 
+        function is a parameter of a function, class, or constructor if it is:</para>
         
         <itemizedlist>
             <listitem>
-                <para>declared inline in a parameter list of the class or function, or</para>
+                <para>declared inline in a parameter list of the function, class, or constructor, 
+                or</para>
             </listitem>
             <listitem>
-                <para>declared normally, within the body of the class or function, but named 
-                in a parameter list of the class or function.</para>
+                <para>declared normally, within the body of the class, function, or constructor,
+                but named in a parameter list of the class or function.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A parameter list of a function, class, or constructor may have one or more 
+        elements without explicit type declarations. Each such element is interpreted as the 
+        name of a parameter declaration occurring in the body of the class, function, or 
+        constructor, and there must be a value or function declaration with that name.</para>
+        
+        <para>As a special exception, if a parameter of an anonymous function has no explicit 
+        type declaration, and there is no declaration with the given name occurring in the body 
+        of the anonymous function, then the type of the parameter must be inferable, according 
+        to <xref linkend="parametertypeinference"/>.</para>
+        
+        <para>Conversely, every parameter declaration that occurs outside a parameter list must 
+        have the same name as a parameter with no explicit type that occurs in the parameter 
+        list of the function, class, or constructor in whose body the parameter declaration 
+        directly occurs, and its default argument, if any, must be specified in the parameter 
+        list.</para>
+        
+        <para>A parameter declaration may only occur in a parameter list, or directly, as
+        defined by <xref linkend="blockstructure"/>, in the body of a class, function, or
+        constructor. A parameter declaration may not occur directly in the body of a getter 
+        or in a body of a control structure. Nor may a parameter declaration appear as a 
+        toplevel declaration in a compilation unit.</para>
+        
+        <synopsis>ParameterDeclaration: (ValueParameter | CallableParameter | VariadicParameter) ";"</synopsis>
         
         <para>The following class definitions are semantically identical:</para>
         
@@ -359,22 +463,7 @@ TypeConstraints?
     shared variable Integer age;
     Address* addresses;
 }</programlisting>
-        
-        <comment><para>TODO: are parameters really allowed to be <literal>variable</literal>?
-        Currently the typechecker rejects this, but it's hard to see why it should.</para></comment>
-        
-        <para>A parameter declaration may only occur in a parameter list, or directly, as
-        defined by <xref linkend="blockstructure"/>, in the body of a class or function. A 
-        parameter declaration may not occur directly in the body of a getter or in a body of 
-        a control structure. Nor may a parameter declaration appear as a toplevel declaration 
-        in a compilation unit.</para>
-        
-        <synopsis>ParameterDeclaration: ValueParameter | CallableParameter | VariadicParameter</synopsis>
-        
-        <para>Every parameter declaration that occurs outside a parameter list must be named
-        in the parameter list of the class or function in whose body it directly occurs, and
-        its default argument, if any, must be specified in the parameter list.</para>
-        
+
         <section id="parameterlists">
             <title>Parameter lists</title>
         
@@ -430,12 +519,20 @@ TypeConstraints?
         <section id="defaultedparameters">
             <title>Defaulted parameters</title>
             
-            <para>A defaulted parameter is a value or callable parameter that specifies a 
-            default argument.</para>
+            <para>A defaulted parameter is a value or callable parameter that specifies an 
+            expression that produces a <emphasis>default argument</emphasis>. A defaulted 
+            parameter may be either:</para>
             
-            <para>A defaulted parameter in a parameter list may be a parameter declaration, 
-            together with a default argument, or the name of a non-variadic parameter 
-            declared in the body of the function or class, together with its default argument.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>a non-variadic parameter declaration, together with a default 
+                    argument expression, or</para> 
+                </listitem>
+                <listitem>
+                    <para>the name of a non-variadic parameter declared in the body of the 
+                    function or class, together with its default argument expression.</para> 
+                </listitem>
+            </itemizedlist>
             
             <synopsis>Defaulted: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
             
@@ -446,24 +543,31 @@ TypeConstraints?
             <synopsis>Specifier: "=" Expression</synopsis>
             <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
             
+            <para>The default argument expression may involve other parameters declared 
+            earlier in the parameter list or lists. It may not involve parameters declared 
+            later in the parameter list or lists.</para>
+            
+            <para>The default argument expression may not involve an assignment, compound
+            assignment, increment, or decrement operator.</para>
+            
             <para>Defaulted parameters must occur after required parameters in the parameter 
             list.</para>
             
             <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
             
-            <para>The type of the default argument expression of a value parameter must be 
-            assignable to the declared type of the parameter. The type of the default argument
-            expression of a callable parameter must be assignable to the return type of the
-            callable parameter.</para>
+            <para>A parameter of a method or class annotated <literal>actual</literal> may 
+            not specify a default argument. Instead, it inherits the default argument, if 
+            any, of the corresponding parameter of the method it refines.</para>
             
-            <para>A parameter of a method or class annotated <literal>actual</literal> may not 
-            specify a default argument. Instead, it inherits the default argument, if any, of 
-            the corresponding parameter of the method it refines.</para>
+            <para>If two parameter lists are almost identical, differing only in that the 
+            first parameter of one list is defaulted, and the first parameter of the second 
+            list is required, and <literal>P</literal> is the the type of the second 
+            parameter list, then the type of the first parameter list is 
+            <literal>[]|P</literal>.</para>
             
-            <para>If two parameter lists are almost identical, differing only in that the first 
-            parameter of one list is defaulted, and the first parameter of the second list is 
-            not defaulted, and <literal>P</literal> is the the type of the second parameter list 
-            then the type of the first parameter list is <literal>[]|P</literal>.</para>
+            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
+            defaulted parameters may only occur in the first parameter list. This restriction
+            will be removed.</para></comment>
             
             <!--
             <para>If the declared type of the parameter is an optional type (a subtype of
@@ -485,29 +589,37 @@ TypeConstraints?
             Like any other value declaration, it has a name, type, and, optionally, 
             annotations.</para>
             
-            <synopsis>ValueParameter: Annotations (Type | "value") MemberName</synopsis>
+            <synopsis>ValueParameter: Annotations ValueParameterPrefix MemberName</synopsis>
             
-            <para>An argument to a value parameter must be an expression whose type is
-            assignable to the type of the value parameter.</para>
+            <synopsis>ValueParameterPrefix: Type | "dynamic"</synopsis>
             
-            <programlisting>(String label, Anything() onClick)</programlisting>
-            
-            <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
+            <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
+            in place of the parameter type, indicating that it is a partially typed declaration.
+            Such a parameter has no type.</para>
             
             <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
             and a parameter list has type <literal>P</literal> with the principal instantiation 
             <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
-            formed by prepending <literal>x</literal> to the first parameter list is 
-            <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> 
-            if <literal>x</literal> is defaulted.</para>
+            formed by prepending <literal>x</literal> to the first parameter list is:</para>
             
-            <!--para>A parameter may not be be declared <literal>variable</literal>, and 
-            may not be assigned to within the body of the method or class.</para-->
+            <itemizedlist>
+            <listitem>
+                <para><literal>Tuple&lt;X|Y,X,P&gt;</literal>, or </para>
+            </listitem>
+            <listitem>
+                <para><literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> if <literal>x</literal> is 
+                defaulted.</para>
+            </listitem>
+            </itemizedlist>
             
-            <para>Inside a <literal>dynamic</literal> block, a value parameter may be 
-            declared using the keyword <literal>value</literal> in place of the parameter 
-            type. Such a parameter has no type. In other locations, a parameter declaration 
-            must have an explicit type.</para>
+            <para>The default argument expression, if any, for a callable parameter is 
+            specified using an ordinary <literal>=</literal> specifier. The type of the 
+            default argument expression must be assignable to the declared type of the 
+            value parameter.</para> 
+            
+            <programlisting>(String label, Anything() onClick)</programlisting>
+            
+            <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
             
         </section>
         
@@ -519,23 +631,36 @@ TypeConstraints?
             any other function declaration, it has a name, type, one or more parameter 
             lists, and, optionally, annotations.</para>
             
-            <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
+            <synopsis>CallableParameter: Annotations CallableParameterPrefix MemberName Parameters+</synopsis>
             
-            <para>An argument to a callable parameter must be an expression whose type 
-            is assignable to the callable type of the callable parameter.</para>
+            <synopsis>CallableParameterPrefix: Type | "void"</synopsis>
+            
+            <para>If a callable parameter <literal>f</literal> has callable type 
+            <literal>X(*A)</literal>, as specified below in 
+            <xref linkend="callabletypeoffunction"/>, and a parameter list has type 
+            <literal>P</literal> with the principal instantiation 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+            formed by prepending <literal>f</literal> to the first parameter list is:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para><literal>Tuple&lt;Y|X(*A),X(*A),P&gt;</literal>, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para><literal>[]|Tuple&lt;Y|X(*A),X(*A),P&gt;</literal> 
+                if <literal>f</literal> is defaulted.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>The default argument expression, if any, for a callable parameter is 
+            specified using a lazy <literal>=&gt;</literal> specifier. The type of the 
+            default argument expression must be assignable to the return type of the 
+            callable parameter.</para> 
             
             <programlisting>(String label, void onClick())</programlisting>
             
             <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
-            
-            <para>If a callable parameter <literal>f</literal> has callable type 
-            <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type 
-            <literal>P</literal> with the principal instantiation 
-            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
-            formed by prepending <literal>f</literal> to the first parameter list is 
-            <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-            or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-            if <literal>f</literal> is defaulted.</para>
             
         </section>
         
@@ -556,9 +681,9 @@ TypeConstraints?
                 </listitem>
             </itemizedlist>
             
-            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
-                        
-            <synopsis>VariadicParameter: Annotations VariadicType MemberName</synopsis>
+            <synopsis>VariadicParameter: Annotations VariadicParameterPrefix MemberName</synopsis>
+            
+            <synopsis>VariadicParameterPrefix: UnionType ("*" | "+")</synopsis>
             
             <para>A variadic parameter in a parameter list may be a variadic parameter 
             declaration, or the name of a variadic parameter declared in the body of
@@ -578,6 +703,10 @@ TypeConstraints?
             <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
             containing just a variadic parameter of type <literal>T+</literal> is 
             <literal>[T+]</literal>.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
+            a variadic parameters may only occur in the first parameter list. This restriction
+            will be removed.</para></comment>
             
         </section>
         
@@ -617,7 +746,7 @@ TypeConstraints?
         is satisfies, a self type or an enumerated list of cases, and/or a list 
         of type constraints.</para>
         
-        <synopsis>InterfaceHeader: "interface" TypeName TypeParameters? InterfaceInheritance TypeConstraints?</synopsis>
+        <synopsis>InterfaceHeader: ("interface"|"dynamic") TypeName TypeParameters? InterfaceInheritance TypeConstraints?</synopsis>
         
         <synopsis>InterfaceInheritance: CaseTypes? SatisfiedTypes?</synopsis>
         
@@ -652,7 +781,9 @@ TypeConstraints?
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
         and member classes, and concrete methods, getters, setters, and member classes.
-        An interface may not declare a member field or member <literal>object</literal>.</para>
+        A reference declaration, as defined in <xref linkend="references"/>, or 
+        anonymous class declaration, as defined in <xref linkend="anonymousclasses"/>,
+        may not directly occur in the body of an interface.</para>
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
@@ -670,7 +801,10 @@ TypeConstraints?
                     <para>a statement or control structure,</para>
                 </listitem>
                 <listitem>
-                    <para>a method or attribute declaration with a non-lazy specifier, or</para>
+                    <para>a reference declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>a forward-declared method or attribute declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>an <literal>object</literal> declaration.</para>
@@ -685,8 +819,8 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a super reference as an argument of an instantiation, 
-                  method invocation, or <literal>extends</literal> clause expression or as 
-                  the value of a value assignment or specification,</para>
+                  function invocation, or <literal>extends</literal> clause expression 
+                  or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
                   <para>use a super reference as an operand of any operator except the
@@ -697,9 +831,8 @@ TypeConstraints?
                   <para>return a super reference, or</para>
                </listitem>
                <listitem>
-                  <para>narrow the type of a super reference using the 
-                  <literal>if (is ...)</literal> construct or 
-                  <literal>case (is ...)</literal>.</para>
+                  <para>narrow the type of a super reference using an assignability 
+                  condition, as defined in <xref linkend="assignabilityconditions"/>.</para>
                </listitem>
             </itemizedlist>
                     
@@ -785,8 +918,21 @@ TypeConstraints?
             that declares the nested interface.</para>
             
             <para>A user-defined interface may not satisfy the interface 
-            <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
+            <literal>Callable</literal> defined in <literal>ceylon.language</literal>
+            nor directly satisfy the interface <literal>ConstrainedAnnotation</literal>
+            defined in <literal>ceylon.language</literal>.</para>
          
+        </section>
+        
+        <section id="sealedinterfaces">
+            <title>Sealed interfaces</title>
+            
+            <para>A toplevel or nested interface may be annotated <literal>sealed</literal>
+            and is called a <literal>sealed</literal> interface.</para>
+                    
+            <para>An interface annotated <literal>sealed</literal> may not be satisfied 
+            by a class or interface outside the module in which it is defined.</para>
+            
         </section>
         
         <section id="interfaceswithcases">
@@ -798,30 +944,30 @@ TypeConstraints?
             of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
             
             <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
-            case may be an <literal>abstract</literal> class. Each case must be a subtype 
-            of the interface type. An interface may not be a case of itself. An interface 
-            declaration may not list the same case twice.</para>
+            case may be an <literal>abstract</literal> class. Each case must be a direct 
+            subtype of the interface type. An interface may not be a case of itself. An 
+            interface declaration may not list the same case twice.</para>
                     
             <para>If an interface has an <literal>of</literal> clause, then every interface 
-            or class which is a subtype of the interface must be subtype of exactly one of 
-            the enumerated cases.</para>
+            or class which is a subtype of the interface must occurs as exactly one of the 
+            enumerated cases of the interface.</para>
                     
         </section>
         
         <section id="interfacealiases">
             <title>Interface aliases</title>
             
-            <para>An interface declaration which specifies a reference to another interface
-            type defines an <emphasis>interface alias</emphasis> of the specified interface 
-            type.</para>
+            <para>An <emphasis>interface alias</emphasis> is an interface declaration which 
+            specifies another type.</para>
             
             <synopsis>TypeSpecifier: "=>" Type</synopsis>
     
-            <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
-            a reference to an interface with no type parameters, or an instantiation of a 
-            generic interface. An interface alias simply assigns an alternative name to the 
-            original interface type. A reference to the alias may occur anywhere a reference 
-            to an interface may occur.</para>
+            <para>The specified type must be an <emphasis>interface type</emphasis>, that 
+            is, a reference to an interface with no type parameters or an instantiation of 
+            a generic interface, and is called the <emphasis>aliased type</emphasis>.</para>
+            
+            <para>An interface alias simply assigns an alternative name to the aliased type. 
+            A reference to the alias may occur anywhere a reference to an interface may occur.</para>
             
             <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
             
@@ -840,6 +986,25 @@ TypeConstraints?
             <xref linkend="reification"/>.</para>
         
         </section>
+        
+        <section>
+            <title>Dynamic interfaces</title>
+            
+            <para>A <emphasis>dynamic interface</emphasis> is an interface declared with the 
+            keyword <literal>dynamic</literal>. Dynamic interfaces may be used to model the 
+            type of objects defined in dynamically typed native code.</para> 
+            
+            <para>Every declaration nested inside a dynamic interface must be declared 
+            <literal>formal</literal>. A dynamic interface may not satisfy any interface 
+            that is not also a dynamic interface.</para>
+            
+            <para>Within a dynamic block, defined in <xref linkend="dynamicblocks"/>, 
+            assignment of a value with no Ceylon type to a dynamic interface type does not 
+            result in an <literal>AssertionError</literal>, as defined in 
+            <xref linkend="dynamictypechecking"/>. Instead, the value is coerced to the
+            dynamic interface type.</para>
+            
+        </section>
             
     </section>
     
@@ -851,12 +1016,12 @@ TypeConstraints?
 
         <synopsis>ClassDeclaration: Annotations ClassHeader (ClassBody | ClassSpecifier ";")</synopsis>
         
-        <para>An ordinary class declaration specifies a list of parameters required 
-        to instantiate the type, and, optionally a list of type parameters.  A class 
-        declaration may have a superclass, a list of interfaces it satisfies, a self
-        type or an enumerated list of cases, and/or a list of type constraints.</para>
+        <para>An ordinary class declaration may specify, optionally, a list of parameters 
+        required to instantiate the type, and, also optionally, a list of type parameters.
+        A class declaration may have a superclass, a list of interfaces it satisfies, a 
+        self type or an enumerated list of cases, and/or a list of type constraints.</para>
         
-        <synopsis>ClassHeader: "class" TypeName TypeParameters? Parameters ClassInheritance TypeConstraints?</synopsis>
+        <synopsis>ClassHeader: "class" TypeName TypeParameters? Parameters? ClassInheritance TypeConstraints?</synopsis>
         
         <synopsis>ClassInheritance: CaseTypes? ExtendedType? SatisfiedTypes?</synopsis>
         
@@ -874,11 +1039,12 @@ TypeConstraints?
                 class declarations, and</para>
             </listitem>
             <listitem>
-                <para>instance initialization code.</para>
+                <para>instance initialization code and, if the class does not have
+                a parameter list, constructors.</para>
             </listitem>
         </itemizedlist>
 
-        <synopsis>ClassBody: "{" (Declaration | Statement)* "}"</synopsis>
+        <synopsis>ClassBody: "{" (Declaration | Statement | ConstructorDeclaration)* "}"</synopsis>
         
         <para>The body of a class may contain executable code.</para>
         
@@ -902,10 +1068,10 @@ TypeConstraints?
         <literal>abstract</literal> class declaration is not part of the schema of the 
         class type, and is therefore not considered a member of the class.</para>
         
-        <para>Ceylon classes do not have seperate nested constructor declarations. 
-        Instead, the body of the class declares <emphasis>initializer parameters</emphasis>. 
-        An initializer parameter may be used anywhere in the class body, including in 
-        method and attribute definitions.</para>
+        <para>A class is not required to have a separate nested constructor declaration.
+        Instead, the body of the class may itself declare its
+        <emphasis>initializer parameters</emphasis>. An initializer parameter may be 
+        used anywhere in the class body, including in method and attribute definitions.</para>
         
         <programlisting>shared class Key(Lock lock) {
     shared void lock() {
@@ -928,16 +1094,28 @@ TypeConstraints?
     shared void increment() => count++;
 }</programlisting>
         
+        <para>If a class does not specify an initializer parameter list, it must have
+        at least one constructor.</para>
+        
         <section id="callabletypeofclass">
             <title>Callable type of a class</title>
             
-            <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
-            types of the class. The callable type is <literal>Callable&lt;T,P&gt;</literal>, where
-            <literal>T</literal> is the class and <literal>P</literal> is the type of the initializer
-            parameter list of the class.</para>
+            <para>The <emphasis>callable type</emphasis> of a class with an initializer
+            parameter list captures the type and initializer parameter types of the class. 
+            The callable type is <literal>T(*P)</literal>, where <literal>T</literal> is 
+            the applied type formed by the class with its own type parameters as type 
+            arguments, and <literal>P</literal> is the type of the initializer parameter 
+            list of the class.</para>
+            
+            <para>The callable type of a class with a default constructor is the callable
+            type of the default constructor.</para>
+            
+            <para>A class with no initializer parameter list and no default constructor
+            does not have a callable type.</para>
             
             <para>An <literal>abstract</literal> class is not callable, except from the 
-            <literal>extends</literal> clause of a subclass, or the class specifier of a class alias.</para>
+            <literal>extends</literal> clause of a subclass, or the class specifier of a
+            class alias.</para>
             
         </section>
     
@@ -946,8 +1124,10 @@ TypeConstraints?
         
             <para>The initial part of the body of a class is called the 
             <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
-            statements and control structures. The initializer is executed every time the 
-            class is instantiated.</para>
+            statements, and control structures. The initializer is executed every time the 
+            class is instantiated. If the class does not have an initializer parameter list, 
+            the initializer section may include one or more constructor declarations, as 
+            defined in <xref linkend="constructors"/>.</para>
                
             <para>A class initializer is responsible for initializing the state of the new 
             instance of the class, before a reference to the new instance is available to 
@@ -981,14 +1161,20 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>any occurrence of the expression <literal>this</literal> or
-                    <literal>super</literal>, unless it also occurs in the body of a 
-                    nested class or interface declaration, or</para>
+                    <para>any occurrence of the expression <literal>this</literal>, as 
+                    defined in <xref linkend="this"/>, or <literal>super</literal>, as 
+                    defined in <xref linkend="super"/>, unless it also occurs in the 
+                    body of a nested class or interface declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>any occurrence of the expression <literal>outer</literal> in 
-                    the body of a class or interface declaration immediately contained 
-                    by the class.</para>
+                    <para>any occurrence of the expression <literal>outer</literal>, as 
+                    defined in <xref linkend="outer"/>, in the body of a class or 
+                    interface declaration immediately contained by the class, or</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of an anonymous class, any base expression, or 
+                    qualified expression with receiver expression <literal>outer</literal>, 
+                    that is a value reference to the anonymous class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1021,7 +1207,7 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a self reference to the instance being initialized as an 
-                  argument of an instantiation, method invocation, or <literal>extends</literal> 
+                  argument of an instantiation, function invocation, or <literal>extends</literal> 
                   clause expression or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
@@ -1033,9 +1219,9 @@ TypeConstraints?
                   <para>return a self reference to the instance being initialized, or</para>
                </listitem>
                <listitem>
-                  <para>attempt to narrow the type of a self reference to the instance 
-                  being initialized using the <literal>if (is ...)</literal> construct 
-                  or <literal>case (is ...)</literal>.</para>
+                  <para>narrow the type of a self reference to the instance being 
+                  initialized using an assignability condition, as defined in 
+                  <xref linkend="assignabilityconditions"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1052,7 +1238,7 @@ TypeConstraints?
             <programlisting>class Graph() {
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     class Node() {
-        nodes.add(this);    //compiler error (this reference in initializer)
+        nodes.add(this);    //error: self reference in initializer
     }
 }</programlisting>
             
@@ -1060,7 +1246,7 @@ TypeConstraints?
     class Node() {}
     Node createNode() {
         Node node = Node();
-        nodes.add(node);    //compiler error (forward reference in initializer)
+        nodes.add(node);    //error: forward reference in initializer
         return node;
     }
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
@@ -1089,14 +1275,22 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>a statement or control structure,</para>
+                    <para>a statement or control structure, defined in 
+                    <xref linkend="controlstructures"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>a method or attribute declaration with a non-lazy specifier,</para>
+                    <para>a reference declaration, as defined below in
+                    <xref linkend="references"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>a forward-declared method or attribute declaration not
-                    annotated <literal>late</literal>,</para>
+                    <para>a constructor declaration, as defined below in 
+                    <xref linkend="constructors"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>a forward-declared function or value declaration not
+                    annotated <literal>late</literal>, as defined below in 
+                    <xref linkend="functionforwarddeclaration"/> and 
+                    <xref linkend="valueforwarddeclaration"/>,</para>
                 </listitem>
                 <listitem>
                     <para>an <literal>object</literal> declaration with a non-empty 
@@ -1123,8 +1317,8 @@ TypeConstraints?
             <itemizedlist>
                <listitem>
                   <para>pass a super reference as an argument of an instantiation, 
-                  method invocation, or <literal>extends</literal> clause expression or as 
-                  the value of a value assignment or specification,</para>
+                  function invocation, or <literal>extends</literal> clause expression 
+                  or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
                   <para>use a super reference as an operand of any operator except the
@@ -1135,9 +1329,8 @@ TypeConstraints?
                   <para>return a super reference, or</para>
                </listitem>
                <listitem>
-                  <para>narrow the type of a super reference using the 
-                  <literal>if (is ...)</literal> construct or 
-                  <literal>case (is ...)</literal>.</para>
+                  <para>narrow the type of a super reference using an assignability 
+                  condition, as defined in <xref linkend="assignabilityconditions"/>.</para>
                </listitem>
             </itemizedlist>
             
@@ -1232,14 +1425,16 @@ TypeConstraints?
             the member.</para>
             -->
             
-            <para>A subclass must pass values to each superclass initialization parameter in 
-            the <literal>extends</literal> clause.</para>
-    
+            <para>A subclass with an initializer parameter list must pass arguments to 
+            each superclass initialization parameter or constructor parameter in the 
+            <literal>extends</literal> clause. A subclass with no initializer parameter 
+            list may not pass arguments in the <literal>extends</literal> clause.</para>
+            
             <programlisting>shared class SpecialKey1()
         extends Key( SpecialLock() ) {
     ...
 }</programlisting>
-    
+            
             <programlisting>shared class SpecialKey2(Lock lock) 
         extends Key(lock) {
     ...
@@ -1252,18 +1447,23 @@ TypeConstraints?
              nested interface.</para>
              
              <para>A user-defined class may not satisfy the interface 
-             <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
+             <literal>Callable</literal> defined in <literal>ceylon.language</literal> nor 
+             directly satisfy the interface <literal>ConstrainedAnnotation</literal> 
+             defined in <literal>ceylon.language</literal>.</para>
          
         </section>
         
         <section id="abstractandformalclasses">
-            <title>Abstract, final, formal, and default classes</title>
+            <title>Abstract, final, sealed, formal, and default classes</title>
             
             <para>A toplevel or nested class may be annotated <literal>abstract</literal>
             and is called an <literal>abstract</literal> class.</para>
                     
             <para>A toplevel or nested class may be annotated <literal>final</literal>
-            and is called an <literal>final</literal> class.</para>
+            and is called a <literal>final</literal> class.</para>
+                    
+            <para>A toplevel or nested class may be annotated <literal>sealed</literal>
+            and is called a <literal>sealed</literal> class.</para>
                     
             <para>If a class annotated <literal>shared</literal> is a member of a containing 
             class or interface, then the class may be annotated <literal>formal</literal>
@@ -1284,22 +1484,31 @@ TypeConstraints?
             
             <para>A class annotated <literal>final</literal> must be a concrete class.</para>
             
-            <para>A class annotated <literal>final</literal> may not have <literal>default</literal> 
-            members.</para>
+            <para>A class annotated <literal>final</literal> may not have 
+            <literal>default</literal> members.</para>
             
-            <para>If a concrete class annotated <literal>shared</literal> is a member of a 
-            containing class or interface, then the class may be annotated 
-            <literal>default</literal> and is called a <literal>default</literal> member
-            class.</para>
+            <para>If a concrete class annotated <literal>shared</literal> is a member 
+            of a containing class or interface, then the class may be annotated 
+            <literal>default</literal> and is called a <literal>default</literal> 
+            member class.</para>
             
             <para>A toplevel class may not be annotated <literal>formal</literal> or 
             <literal>default</literal>.</para>
             
             <para>An un-<literal>shared</literal> class may not be annotated 
             <literal>formal</literal> or <literal>default</literal>.</para>
-    
+            
+            <para>A class annotated <literal>sealed</literal> may not be instantiated 
+            or extended outside the module in which it is defined.</para>
+            
+            <para>A class with no parameter list may not be annotated 
+            <literal>sealed</literal>.</para>
+            
+            <para>A member class annotated <literal>sealed formal</literal> must 
+            belong to a <literal>sealed</literal> class or interface.</para>
+            
             <comment><para>Note: a <literal>formal</literal> member class would be a
-            reasonably syntax for declaring virtual types. We think we don't need 
+            reasonable syntax for declaring virtual types. We think we don't need 
             virtual types because they don't offer much that type parameters don't
             already provide. For example:</para>
             <programlisting>shared formal class Buffer(Character...) 
@@ -1310,8 +1519,8 @@ TypeConstraints?
         <section id="classrefinement">
             <title>Member class refinement</title>
             
-            <para>Member class refinement is a unique feature of Ceylon, akin to the
-            "factory method" pattern of many other languages.</para>
+            <para>Member class refinement is a unique feature of Ceylon, akin to 
+            the "factory method" pattern of many other languages.</para>
             
             <itemizedlist>
                 <listitem>
@@ -1391,7 +1600,7 @@ TypeConstraints?
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
     shared actual class Buffer(Character* chars) 
-            extends Reader.Buffer(chars) {
+            extends super.Buffer(chars) {
         ...
     }
     ...
@@ -1417,7 +1626,7 @@ TypeConstraints?
             <title>Anonymous classes</title>
             
             <para>An <literal>object</literal> declaration makes it possible to define
-            a class, instantiate the class, and declare an attribute referring to the 
+            a class, instantiate the class, and declare a value referring to the 
             resulting class instance in a single declaration.</para>
             
             <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
@@ -1431,25 +1640,22 @@ TypeConstraints?
             <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
             
             <para>An <literal>object</literal> declaration specifies the name of the
-            attribute and the schema, supertypes, and implementation of the class. It
-            does not specify a type name. Instead, the type has a name assigned 
-            internally by the compiler that is not available at compilation time.</para>
+            value and the schema, supertypes, and implementation of the class. It
+            does not explicitly specify a type name. Instead, the type name is formed 
+            by prefixing the value name with `\I`, turning it into an initial uppercase
+            identifier, as specified by <xref linkend="identifiersandkeywords"/>.</para>
             
             <para>An <literal>object</literal> class:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>is implicitly <literal>final</literal>,</para>
+                    <para>may not be <literal>abstract</literal> nor 
+                    <literal>formal</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>may not be extended by another class,</para>
-                </listitem>
-                <listitem>
-                    <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
-                    and</para>
-                </listitem>
-                <listitem>
-                    <para>may not declare <literal>default</literal> members.</para>
+                    <para>is implicitly <literal>final</literal>, and therefore
+                    may not declare <literal>default</literal> members nor be
+                    extended by another class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1457,29 +1663,36 @@ TypeConstraints?
             the class is <literal>shared</literal>.</para>
             
             <para>This class never appears in types inferred by local declaration type 
-            inference or generic type argument inference. Instead, occurrences of the class 
-            are replaced with the intersection of the extended type with all satisfied
-            types.</para>
+            inference or generic type argument inference. Instead, occurrences of the 
+            class are replaced with the intersection of the extended type with all 
+            satisfied types.</para>
             
-            <para>An <literal>object</literal> attribute:</para>
+            <para>An <literal>object</literal> value is a reference, as defined in
+            <xref linkend="references"/>, and:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>is non-<literal>variable</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>may not be refined or declared <literal>default</literal>.</para>
+                    <para>may not be refined, nor declared <literal>default</literal>
+                    nor <literal>formal</literal>.</para>
                 </listitem>
             </itemizedlist>
              
             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-            the attribute is <literal>shared</literal>. If the <literal>object</literal>
+            the value is <literal>shared</literal>. If the <literal>object</literal>
             is annotated <literal>actual</literal>, it refines an attribute of a 
             supertype.</para>
             
+            <para>Annotations applying to an <literal>object</literal> declaration are
+            considered annotations of the <literal>object</literal> value, and are
+            accessible via its <literal>ValueDeclaration</literal>, as defined in
+            <xref linkend="referenceexpressions"/>.</para>
+            
             <para>The following declaration:</para>
             
-            <programlisting>shared object red extends Color('FF0000') {
+            <programlisting>shared my object red extends Color('FF0000') {
      string => "Red";
 }</programlisting>
    
@@ -1489,16 +1702,11 @@ TypeConstraints?
      string => "Red";
 }
 
-shared \Ired red = \Ired();</programlisting>
+shared my \Ired red = \Ired();</programlisting>
             
-            <para>Where <literal>\Ired</literal> is a name generated by the compiler.
-            The algorithm for generating this name is not specified here.</para>
-            
-            <para>Note that a member of an anonymous class that is not annotated 
-            <literal>actual</literal> may only be accessed from within the body of 
-            the anonymous class or by directly invoking the <literal>object</literal> 
-            attribute.</para>
-            
+            <para>Where <literal>\Ired</literal> is the type name assigned by the 
+            compiler.</para>
+                        
             <programlisting>shared object sql {
     shared String escape(String string) { ... }
 }
@@ -1535,11 +1743,10 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
             <para>A class declaration may enumerate a list of cases of the class.</para>
             
             <programlisting>shared abstract class Boolean() 
-        of true | false 
-        extends Case() {}
+        of true | false {}
         
-shared object true extends Boolean() {}
-shared object false extends Boolean() {}</programlisting>
+shared object true extends Boolean() { string => "true"; }
+shared object false extends Boolean() { string => "false"; }</programlisting>
             
             <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
         of Branch<Element> | Leaf<Element> { ... }
@@ -1551,20 +1758,22 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         extends Node<Element>(name) { ... }]]></programlisting>
             
             <para>The cases may be classes or toplevel anonymous classes. A case may 
-            be an <literal>abstract</literal> class. Each case must be a subclass of 
-            the class. A class may not be a case of itself. A class declaration may 
-            not list the same case twice.</para>
+            be an <literal>abstract</literal> class. Each case must be a direct 
+            subclass of the enumerated class. A class may not be a case of itself. A 
+            class declaration may not list the same case twice.</para>
                         
             <para>If a class has an <literal>of</literal> clause, then every class 
-            that directly extends the class must be of one of the enumerated cases of 
-            the class.</para>
+            that directly extends the class must occur as exactly one of the enumerated 
+            cases of the class.</para>
             
             <para>A non-<literal>abstract</literal> class may not have an 
             <literal>of</literal> clause.</para>
             
             <comment><para>Note: in a future release of the language, we will introduce 
             an abbreviated syntax like:</para>
-            <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
+            <programlisting>shared abstract class Boolean(shared actual String string) 
+        of object true ("true") | 
+           object false ("false") {}</programlisting>
             </comment>
             
         </section>
@@ -1572,20 +1781,26 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="classaliases">
             <title>Class aliases</title>
             
-            <para>A class declaration which specifies a reference to another class type 
-            defines a <emphasis>class alias</emphasis> of the specified class type.</para>
+            <para>A <emphasis>class alias</emphasis> is a class declaration which specifies 
+            a reference to a class or constructor of a class, followed by a positional 
+            argument list, as defined in <xref linkend="positionalarguments"/>.</para>
             
-            <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
+            <synopsis>ClassSpecifier: "=>" (Extension | SuperclassExtension) PositionalArguments</synopsis>
             
-            <para>The specified type must be a <emphasis>class type</emphasis>, that is,
-            a reference to a class with no type parameters, or an instantiation of a generic 
-            class. A class alias simply assigns an alternative name to the original class 
-            type. A reference to the alias may occur anywhere a reference to a class may 
-            occur.</para>
+            <para>The specification of the class or class constructor is treated as a value 
+            expression, as in <xref linkend="extendedclass"/>. The type of this value 
+            expression must be a <emphasis>class type</emphasis>, that is, a reference
+            to a class with no type parameters or an instantiation of a generic class, and 
+            is called the <emphasis>aliased type</emphasis>.</para>
+            
+            <para>A class alias simply assigns an alternative name to the aliased type. A 
+            reference to the alias may occur anywhere a reference to a class may occur.</para>
             
             <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
             
-            <programlisting>class Named&lt;Value&gt;(String name, Value val) => Entry&lt;String,Value&gt;(name, val);</programlisting>
+            <programlisting>class Named&lt;Value&gt;(String name, Value val) 
+        given Value satisfies Object
+        => Entry&lt;String,Value&gt;(name, val);</programlisting>
             
             <para>Arguments to the initializer parameters of the aliased class must be
             specified.</para>
@@ -1605,7 +1820,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             
             <para>If a <literal>shared</literal> class alias nested inside the body 
             of a class or interface aliases an <literal>abstract</literal> class, the 
-            alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
+            alias must be annotated <literal>abstract</literal> or <literal>formal</literal>.
             If it is annotated <literal>formal</literal>, it is considered a member 
             class of the containing class or interface. If it is annotated 
             <literal>abstract</literal>, it is considered an abstract nested class of
@@ -1630,7 +1845,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A type alias declaration assigns a name to an arbitrary type expression,
         usually involving a union and/or intersection of types.</para>
         
-        <synopsis>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier</synopsis>
+        <synopsis>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier ";"</synopsis>
         
         <synopsis>AliasHeader: "alias" TypeName TypeParameters? TypeConstraints?</synopsis>
         
@@ -1662,25 +1877,37 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     <section id="functions">
         <title>Functions</title>
         
-        <para>A <emphasis>function</emphasis> is a callable block of code. Functions 
+        <para>A <emphasis>function</emphasis> is a callable block of code. A function 
         may have parameters and may return a value. If a function belongs to a type,
         it is called a <emphasis>method</emphasis>.</para>
         
         <synopsis>FunctionDeclaration: Annotations FunctionHeader (Block | LazySpecifier? ";")</synopsis>
         
         <para>All function declarations specify the function name, one or more parameter 
-        lists, and, optionally, a list of type parameters. A function declaration may 
-        specify a type, called the <emphasis>return type</emphasis>, to which the values 
-        the method returns are assignable, or it may specify that the function is a 
-        <literal>void</literal> function&mdash;a function which does not return a useful 
-        value, and only useful for its effect. The return type of a <literal>void</literal> 
-        function is considered to be <literal>Anything</literal> defined in 
-        <literal>ceylon.language</literal>. A generic function declaration may have a list 
-        of type constraints.</para>
+        lists, and, optionally, a list of type parameters. A generic function declaration 
+        may have a list of type constraints.</para>
         
-        <synopsis>FunctionHeader: (Type | "function" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
+        <synopsis>FunctionHeader: FunctionPrefix MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
-        <para>The Ceylon compiler preserves the names of function parameters.</para>
+        <para>A function declaration may specify a type, called the <emphasis>return 
+        type</emphasis>, to which the values the method returns are assignable, or it may
+        specify that the function is a <literal>void</literal> function&mdash;a function 
+        which does not return a useful value, and only useful for its effect.</para>
+        
+        <synopsis>FunctionPrefix: Type | "function" | "dynamic" | "void"</synopsis>
+        
+        <para>Instead of an explicit return type, a function may be declared using:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the keyword <literal>dynamic</literal>, indicating that it is a
+                partially typed declaration with no return type, or</para>
+            </listitem>
+            <listitem>
+		        <para>the keyword <literal>function</literal>, indicating that its return
+		        type is inferred.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>A function implementation may be specified using either:</para>
         
@@ -1695,6 +1922,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <para>If a function is a parameter, it must not specify any implementation.</para>
         
+        <para>The return type of a <literal>void</literal> function is considered to be 
+        <literal>Anything</literal> defined in <literal>ceylon.language</literal>.</para>
+        
         <comment><para>Note: a <literal>void</literal> function with a concrete 
         implementation returns the value <literal>null</literal>. However, since a
         <literal>void</literal> function may be a reference to a non-<literal>void</literal> 
@@ -1702,13 +1932,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         this behavior can not be depended upon and is not implied by the semantics 
         of <literal>void</literal>.</para></comment>
         
-        <para>Inside a <literal>dynamic</literal> block, a function may be declared using 
-        the keyword <literal>function</literal> in place of its return type, even if no 
-        return type may be inferred. Such a function has no return type. In other locations, 
-        a function declaration must either have an explicit return type, or a return type 
-        must be inferrable.</para>
-            
-        <section id="callabletype">
+        <section id="callabletypeoffunction">
             <title>Callable type of a function</title>
             
             <para>The <emphasis>callable type</emphasis> of a function captures the return
@@ -1717,16 +1941,16 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <itemizedlist>
             <listitem>
                 <para>The callable type of a function with a single parameter list is 
-                <literal>Callable&lt;R,P&gt;</literal> where <literal>R</literal> is the 
-                return type of the method, or <literal>Anything</literal> if the function is 
+                <literal>R(*P)</literal> where <literal>R</literal> is the return type 
+                of the method, or <literal>Anything</literal> if the function is 
                 <literal>void</literal>, and <literal>P</literal> is the type of the
                 parameter list.</para>
             </listitem>
             <listitem>
                 <para>The callable type of a function with multiple parameter lists is 
-                <literal>Callable&lt;O,P&gt;</literal>, where <literal>O</literal> is the
-                callable type of a method produced by eliminating the first parameter list, 
-                and <literal>P</literal> is the type of the first parameter list of the
+                <literal>O(*P)</literal>, where <literal>O</literal> is the callable 
+                type of a method produced by eliminating the first parameter list, and 
+                <literal>P</literal> is the type of the first parameter list of the
                 function.</para>
             </listitem>
             </itemizedlist>
@@ -1817,7 +2041,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
                 <listitem>
                     <para>if the function implementation is a block, and the function contains 
                     no <literal>return</literal> directive, then the return type of the method 
-                    is <literal>Bottom</literal> (this is the case where the method always 
+                    is <literal>Nothing</literal> (this is the case where the method always 
                     terminates in a <literal>throw</literal> directive), or,</para>
                 </listitem>
                 <listitem>
@@ -1842,7 +2066,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     }
 }</programlisting>
             
-            <para>This function has inferred return type <literal>Bottom</literal>.</para>
+            <para>This function has inferred return type <literal>Nothing</literal>.</para>
             
             <programlisting>function die() {
     throw;
@@ -1898,7 +2122,8 @@ case (hexadecimal) {
             not be declared using the keyword <literal>function</literal>.</para>
             
             <para>A toplevel function may not be forward-declared. A method of an interface
-            may not be forward-declared.</para>
+            may not be forward-declared. A method annotated <literal>default</literal> may 
+            not be forward-declared.</para>
             
             <para>If a <literal>shared</literal> method is forward-declared, its 
             implementation must be definitely specified by all conditional paths in the
@@ -2003,8 +2228,9 @@ case (hexadecimal) {
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a lazy specifier, or a block).</para>
             
-            <para>A method annotated <literal>default</literal> may specify an
-            implementation (a lazy specifier, or a block), or may be forward-declared.</para>
+            <para>A method annotated <literal>default</literal> must specify an
+            implementation (a lazy specifier, or a block), and may not be 
+            forward-declared.</para>
             
             <para>Every <literal>formal</literal> method must explicitly specify a type. 
             It may not be declared using the keyword <literal>function</literal>.</para>
@@ -2062,7 +2288,11 @@ case (hexadecimal) {
                 </listitem>
                  <listitem>
                     <para>have a return type that is assignable to the return type 
-                    of the realization.</para>
+                    of the realization, or</para>
+                </listitem>
+                 <listitem>
+                    <para>if it has no return type, the refined method must also 
+                    have no return type.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2133,17 +2363,30 @@ case (hexadecimal) {
             </listitem>
         </itemizedlist>
         
-        <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
-        
         <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
         
-        <para>All value declarations specify the attribute name. A value declaration may 
-        specify a type. A value may be <emphasis>variable</emphasis>, in which case it
-        may be freely assigned using the assignment and compound assignment operators 
-        defined in <xref linkend="operators"/>. This is the case for a reference annotated 
-        <literal>variable</literal>, or for a getter with a matching setter.</para>
+        <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
+        
+        <para>All value declarations specify the value name.</para> 
             
-        <synopsis>ValueHeader: (Type | "value") MemberName</synopsis>
+        <synopsis>ValueHeader: ValuePrefix MemberName</synopsis>
+        
+        <para>A value declaration may specify a type.</para>
+        
+        <synopsis>ValuePrefix: Type | "value" | "dynamic"</synopsis>
+        
+        <para>Instead of an explicit return type, a value may be declared using:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the keyword <literal>dynamic</literal>, indicating that it is a
+                partially typed declaration with no type, or</para>
+            </listitem>
+            <listitem>
+                <para>the keyword <literal>value</literal>, indicating that its type 
+                is inferred.</para>
+            </listitem>
+        </itemizedlist>
         
         <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
@@ -2151,11 +2394,11 @@ case (hexadecimal) {
         with zero parameter lists, or, alternatively, that a function is a value of type 
         <literal>Callable</literal>.</para></comment>
         
-        <para>Inside a <literal>dynamic</literal> block, a value may be declared using the 
-        keyword <literal>value</literal> in place of its type, even if no type may be
-        inferred. Such a value has no type. In other locations, a value declaration must 
-        either have an explicit type, or a type must be inferrable.</para>
-            
+        <para>A value may be <emphasis>variable</emphasis>, in which case it may be freely 
+        assigned using the assignment and compound assignment operators defined in 
+        <xref linkend="operators"/>. This is the case for a reference annotated 
+        <literal>variable</literal>, or for a getter with a matching setter.</para>
+        
         <section id="references">
             <title>References</title>
             
@@ -2171,14 +2414,14 @@ case (hexadecimal) {
                 <listitem>
                     <para>A reference declared directly inside the body of a class represents 
                     a persistent value associated with every instance of the class, as defined 
-                    by <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of 
-                    the attribute of a particular instance of the class returns the same result 
-                    until the attribute of the instance is assigned a new value.</para>
+                    by <xref linkend="currentinstanceofaclassorinterface"/>. Repeated evaluation 
+                    of the attribute of a particular instance of the class produces the same 
+                    result until the attribute of the instance is assigned a new value.</para>
                 </listitem>
                 <listitem>
                     <para>A reference declared inside a block represents state associated with 
                     a frame, that is, with a particular execution of the containing block of 
-                    code, as defined in <xref linkend="sequentialexecutionandclosure"/>.</para> 
+                    code, as defined in <xref linkend="currentframeofablock"/>.</para> 
                 </listitem>
             </itemizedlist>
             
@@ -2231,8 +2474,12 @@ case (hexadecimal) {
             <para>A reference belonging to a class may be annotated <literal>late</literal>, in 
             which case the initializer of the class is not required to initialize its persistent
             value. Furthermore, a self-reference to an instance being initialized may be
-            assigned to the reference. If the reference is evaluated before it is initialized,
-            or before its value has been completely initialized, an exception is thrown.</para>
+            assigned to the reference.</para>
+            
+            <para>A reference annotated <literal>late</literal> may not be initialized or 
+            assigned a value by the class initializer. A parameter may not be annotated 
+            <literal>late</literal>. A reference not belonging to a class may not be annotated 
+            <literal>late</literal>.</para>
             
             <para>If a class declares or inherits a <literal>variable</literal> reference, it 
             must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
@@ -2271,7 +2518,7 @@ case (hexadecimal) {
             
             <para>A setter defines how the value of a getter is assigned.</para>
             
-            <synopsis>SetterDeclaration: "assign" MemberName (Block | LazySpecifier)</synopsis>
+            <synopsis>SetterDeclaration: Annotations "assign" MemberName (Block | LazySpecifier)</synopsis>
             
             <para>The name specified in a setter declaration must be the name of a
             matching getter that directly occurs earlier in the body containing the 
@@ -2335,7 +2582,7 @@ assign name {
                 <listitem>
                     <para>if the value is a getter, and the getter implementation is a block, 
                     and the getter contains no <literal>return</literal> directive, then the 
-                    type of the value is <literal>Bottom</literal> (this is the case where 
+                    type of the value is <literal>Nothing</literal> (this is the case where 
                     the getter always terminates in a <literal>throw</literal> directive), or</para>
                 </listitem>
                 <listitem>
@@ -2394,7 +2641,8 @@ print(greeting);</programlisting>
             not be declared using the keyword <literal>value</literal>.</para>
         
             <para>A toplevel value may not be forward-declared. An attribute of an 
-            interface may not be forward-declared.</para>
+            interface may not be forward-declared. An attribute annotated 
+            <literal>default</literal> may not be forward-declared.</para>
             
             <para>A forward-declared getter may not have a setter.</para>
             
@@ -2440,8 +2688,8 @@ print(greeting);</programlisting>
             implementation (a specifier, lazy specifier, or a block). Nor may there be 
             a setter for a formal attribute.</para>
         
-            <para>An attribute annotated <literal>default</literal> may specify an
-            implementation (a specifier, lazy specifier, or a block), or may be 
+            <para>An attribute annotated <literal>default</literal> must specify an
+            implementation (a specifier, lazy specifier, or a block), and may not be 
             forward-declared.</para>
         
             <para>Every <literal>formal</literal> attribute must explicitly specify a type. 
@@ -2492,17 +2740,20 @@ print(greeting);</programlisting>
             defined in <xref linkend="realizations"/>, the refining attribute must:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para>be variable, if the attribute it refines is variable, and</para>
+                </listitem>
                  <listitem>
                     <para>have <emphasis>exactly the same type</emphasis> as the 
-                    realization, if the attribute it refines is variable, 
-                    or</para>
+                    realization, if the attribute it refines is variable,</para>
                 </listitem>
                  <listitem>
                     <para>have a type that is assignable to the type of the refined 
-                    schema, if the attribute it refines is not variable, and</para>
+                    schema, if the attribute it refines is not variable, or</para>
                 </listitem>
                 <listitem>
-                    <para>be variable, if the attribute it refines is variable.</para>
+                    <para>if it has no type, the refined attribute must also have no 
+                    type.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2559,4 +2810,130 @@ print(greeting);</programlisting>
         
     </section>
     
+    <section id="constructors">
+        <title>Constructors</title>
+        
+        <para>A <emphasis>constructor</emphasis> is a callable block of code that
+        produces a new instance of the class to which the constructor belongs.
+        Every constructor must occur directly in the initializer section of a class. 
+        A constructor may have parameters. Every constructor implementation is a 
+        block of code.</para>
+        
+        <synopsis>ConstructorDeclaration: Annotations ConstructorHeader Block</synopsis>
+        
+        <para>All constructor declarations specify the constructor name, if any, 
+        exactly one parameter list, and, optionally, an <literal>extends</literal> 
+        clause.</para>
+        
+        <synopsis>ConstructorHeader: "new" TypeName? Parameters ExtendedType?</synopsis>
+        
+        <para>If two constructors belong to the same class, then the constructors 
+        must have distinct names. A class may have at most one constructor with no
+        name.</para>
+        
+        <para>If a constructor has no name, then the constructor is called the 
+        <emphasis>default constructor</emphasis> of the class to which it belongs.</para>
+        
+        <para>Every default constructor must be annotated <literal>shared</literal>.</para>
+        
+        <comment><para>Note: from the point of view of a client, a class with a default
+        constructor and no named constructors is indistinguishable from a class with an
+        initializer parameter list.</para></comment>
+        
+        <para>A class with an initializer parameter list may not declare constructors.</para>
+        
+        <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
+        or <literal>actual</literal> may not declare constructors.</para>
+        
+        <programlisting>shared class Point {
+    shared Float x;
+    shared Float y;
+    
+    shared new Cartesian(Float x, Float y) {
+        this.x = x; 
+        this.y = y;
+    }
+    shared new Polar(Float r, Float theta) {
+        this.x = r * cos(theta);
+        this.y = r * sin(theta);
+    }
+    shared new (Float x, Float y) 
+            extends Cartesian(x, y) {}
+    
+    string => "(``x``, ``y``)";
+}</programlisting>
+        
+        <comment><para>Note: in a future release of the language, we might relax this 
+        restriction, and simply require that every <literal>actual</literal> class 
+        provide a constructor with the same signature as the constructor of its 
+        superclass.</para></comment>
+        
+        <para>A constructor annotated <literal>sealed</literal> may not be invoked 
+        outside the module in which it is defined.</para>
+            
+        <section id="callabletypeofaconstructor">
+            <title>Callable type of a constructor</title>
+            
+            <para>The <emphasis>callable type</emphasis> of a constructor captures 
+            the type of the class, and parameter types of the constructor. The
+            callable type is <literal>T(*P)</literal>, where <literal>T</literal> 
+            is the applied type formed by the class with its own type parameters 
+            as type arguments, and <literal>P</literal> is the type of the parameter 
+            list of the constructor.</para>
+            
+            <para>A constructor of an <literal>abstract</literal> class is not 
+            callable, except from the <literal>extends</literal> clause of a subclass, 
+            or the class specifier of a class alias.</para>
+            
+            <para>A partial constructor is not callable, except from the 
+            <literal>extends</literal> clause of another constructor of the same
+            class.</para>
+            
+        </section>
+        
+        <section id="partialconstructors">
+            <title>Partial constructors</title>
+            
+            <para>A constructor annotated <literal>abstract</literal> is called a
+            <emphasis>partial constructor</emphasis>.</para>
+            
+            <para>A partial constructor may not be annotated <literal>shared</literal>.</para>
+            
+            <para>A default constructor may not be annotated <literal>abstract</literal>.</para>
+            
+        </section>
+        
+        <section id="constructordelegation">
+            <title>Constructor delegation</title>
+            
+            <para>Every constructor of any class which does not directly extend
+            <literal>Basic</literal> defined in <literal>ceylon.language</literal>
+            must explicitly delegate to either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a different constructor of the same class, specifying 
+                    arguments for the parameters of the constructor, or,</para>
+                </listitem>
+                <listitem>
+                    <para>a constructor of its immediate superclass, specifying
+                    arguments for the parameters of the superclass constructor, 
+                    if the superclass declares constructors, or, otherwise</para>
+                </listitem>
+                <listitem>
+                    <para>the initializer of its immediate superclass, specifying
+                    arguments for the initializer parameters, if the superclass 
+                    has an initializer parameter list.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If the constructor of a class which directly extends 
+            <literal>Basic</literal> does not have an <literal>extends</literal>
+            clause, the constructor implicitly delegates to the initializer of
+            <literal>Basic</literal>.</para>
+             
+        </section>
+        
+    </section>
+        
 </chapter>

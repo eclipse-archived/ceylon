@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 
 import org.antlr.runtime.Token;
 
+/**
+ * An error or warning relating to a node of the AST.
+ */
 public class AnalysisMessage implements Message {
 	
     private Node treeNode;

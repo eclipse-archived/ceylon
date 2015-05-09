@@ -11,7 +11,7 @@ void qux<T>(T t)
 
 class Foo<T>(T* ti) given T of Float|Integer {
     shared actual String string {
-    	T[] ts = ti.sequence;
+    	T[] ts = ti.sequence();
         switch (ts)
         case(is Empty) { print(ts); return "empty"; }
         case(is Sequence<T>) { print(ts); return "sequence";}

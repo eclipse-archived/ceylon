@@ -1,3 +1,4 @@
+@error: "sealed interface"
 class List<T>() 
         extends Object()
         satisfies Sequence<T> {
@@ -8,10 +9,10 @@ class List<T>()
     shared actual Integer lastIndex {
         return 0;
     }
-    shared actual List<T> clone {
+    shared actual List<T> clone() {
         return this;
     }
-    shared actual T? get(Integer n) {
+    shared actual T? getFromFirst(Integer n) {
         return null;
     }
     shared actual Boolean contains(Object o) {
@@ -23,7 +24,7 @@ class List<T>()
     shared actual List<T> reversed {
         return this;
     }
-    shared actual T[] segment(Integer from, Integer length) {
+    shared actual T[] measure(Integer from, Integer length) {
         return this;
     }
     shared actual T first {

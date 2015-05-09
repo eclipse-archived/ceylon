@@ -21,7 +21,6 @@ class Refinement() {
     interface Bad {
 
         //formal member not implemented in concrete class
-        @error
         class X() {
             @error shared formal String hello;
         }
@@ -36,7 +35,6 @@ class Refinement() {
         }
 
         //formal member not implemented in concrete class
-        @error
         class W() extends X() {
             @error actual String hello = "Hello";
             @error default String goodbye = "Goodbye";
@@ -236,9 +234,19 @@ class QuxQux() extends Qux() {
     }
 }
 
+class CX() {
+    shared default String name = "Gavin";
+    shared actual String string => name;
+}
+class CY() {
+    shared default String name;
+    @error name = "Gavin";
+    @error shared actual String string => name;
+}
+
 class Elephant() {
     default shared String name;
-    name = "Trompon";
+    @error name = "Trompon"; //this is controversial. Should it really be an error?
     default shared Float size=1000.0;
     @error default shared Integer count;
     @error count++;
@@ -285,4 +293,56 @@ class ExtendsWithPrivate()
         extends WithPrivate() 
         satisfies OtherPrivate {
     String message = "goodbye";
+}
+
+interface AbstractThing {
+    string => "bar";
+    hash => 3;
+}
+@error class ConcreteThing() 
+        satisfies AbstractThing {
+}
+
+void intermediateShortcutRefinement() {
+
+    interface Foo {
+        shared formal String? method1();
+        shared formal Integer|Float val1;
+        shared formal String? method2();
+        shared formal Integer|Float val2;
+    }
+    
+    interface Bar satisfies Foo {
+        shared actual default String method1() => "Bar";
+        shared actual default Integer val1 => 0;
+        shared actual String? method2() => "Bar";
+        shared actual Float val2 => 0.0;
+    }
+    
+    interface Baz satisfies Foo {
+        shared actual formal String? method1();
+        shared actual formal Float val1;
+        shared actual formal String? method2();
+        shared actual formal Float val2;
+    }
+    
+    class BarAndBaz() satisfies Bar, Baz {
+        @error method1() => null;
+        @error val1 = 2.3;
+        @error method2() => null;
+        @error val2 = 2.3;
+    }
+
+}
+
+class ABC() {
+    shared void mul() {
+        print("Yep");
+    }
+}
+
+class DEF() extends ABC() {
+    @error shared void mul(Integer hi) {
+        print("Nope");
+    }
 }

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +15,19 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private boolean defaulted;
     private boolean constrained;
     private boolean typeConstructor;
+    private Boolean hasNonErasedBounds;
+    private List<Declaration> members = new ArrayList<Declaration>(0);
+    private boolean captured;
+
+    @Override
+    public List<Declaration> getMembers() {
+        return members;
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
     
     public boolean isInvariant() {
     	return !covariant && !contravariant;
@@ -145,5 +159,48 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setConstrained(boolean constrained) {
 		this.constrained = constrained;
 	}
+
+    public Boolean hasNonErasedBounds() {
+        return hasNonErasedBounds;
+    }
+
+    public void setNonErasedBounds(boolean hasNonErasedBounds) {
+        this.hasNonErasedBounds = hasNonErasedBounds;
+    }
     
+    @Override
+    public boolean isFunctional() {
+        return true;
+    }
+
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        ret = (37 * ret) + getDeclaration().hashCodeForCache();
+        ret = (37 * ret) + getName().hashCode();
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if(o == null || o instanceof TypeParameter == false)
+            return false;
+        TypeParameter b = (TypeParameter) o;
+        return getDeclaration().equalsForCache(b.getDeclaration())
+                && getName().equals(b.getName());
+    }
+
+    @Override
+    public void clearProducedTypeCache() {
+        Util.clearProducedTypeCache(this);
+    }
+
+    public void setCaptured(boolean captured) {
+        this.captured = captured;
+    }
+    
+    @Override
+    public boolean isCaptured() {
+        return captured;
+    }
 }

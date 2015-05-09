@@ -1,5 +1,5 @@
 class Union() {
-    String[] strings = {};
+    String[] strings = [];
     Iterator<String>? it1 = strings.iterator();
     Iterable<String> it2 = strings; 
 
@@ -50,8 +50,9 @@ class Union() {
     }
     
     BadU|BadV buv = BadU();
+    BadContainer<out Anything> buvsup = buv;
     
-    @error String buvs = buv.hello;
+    String buvs = buv.hello;
     @error Container<String> bc = buv;
     
     BadContainer<Nothing> bcb = BadV();
@@ -72,7 +73,7 @@ class Union() {
         print(s);
     }
     
-    T[]? method2<T>() { return {}; }
+    T[]? method2<T>() { return []; }
     
     String[]? mr2 = method2<String>();
     
@@ -138,7 +139,7 @@ class Union() {
     String|Integer sssnf = sssn.first;
     
     function first<T>(T* args) {
-        if (nonempty seq = args.sequence) {
+        if (nonempty seq = args.sequence()) {
             return seq.first;
         }
         else {
@@ -148,11 +149,11 @@ class Union() {
     @type:"String|Integer|Float" value ff1 = first(["hello", "world"], [+1, -1], [1.0]).first;
     @type:"String|Integer" value ff2 = first(["hello", "world"], [+1, -1, 1.0]).first;
     
-    @type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence, [+1, -1].sequence, [1.0].sequence).first;
-    @type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence, [+1, -1, 1.0].sequence).first;
+    @type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence(), [+1, -1].sequence(), [1.0].sequence()).first;
+    @type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence(), [+1, -1, 1.0].sequence()).first;
     
-    @type:"Null|String|Integer|Float" value ff5 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
-    @type:"Null|String|Integer|Float" value ff6 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
+    @type:"Null|String|Integer|Float" value ff5 = first({"hello", "world"}.sequence(), {+1, -1}.sequence(), {1.0}.sequence()).first;
+    @type:"Null|String|Integer|Float" value ff6 = first({"hello", "world"}.sequence(), {+1, -1, 1.0}.sequence()).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {
@@ -207,7 +208,7 @@ class Union() {
     
     class Sorted<out Elem>(Elem* them) 
             given Elem satisfies Comparable<Elem> {
-        shared Elem[] elements = them.sequence;
+        shared Elem[] elements = them.sequence();
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
     @type:"Sequential<Integer|String>" value elems = sorted.elements;
@@ -318,7 +319,7 @@ class Union1() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = InvariantSome<String>();
-    @error value ival = iall.val;
+    @type:"Union1.GenericAll<String|Integer>" value ival = iall.val;
     List<InvariantSome<String>>|List<InvariantNone<Integer>> ialls = [InvariantSome<String>()];
     @type:"Null|Union1.InvariantSome<String>|Union1.InvariantNone<Integer>" value ifirstAll = ialls.first;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
@@ -361,7 +362,7 @@ class Union2() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = nothing;
-    @error value ival = iall.val;
+    @type:"Union2.InvariantAll<out String|Integer>" value ival = iall.val;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
     Nothing ing1 = iall2;
     InvariantAll<String>&InvariantAll<Integer> iall5 = nothing;
@@ -389,4 +390,40 @@ class Union2() {
     Union2.ContravariantAll<String|Integer> cval2 = call2.val;
     Union2.ContravariantAll<String|Integer> call3 = call2;
     @type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
+}
+
+void disjointSequences(String[]|Integer[] x, 
+    [String]|[String,Integer]|[Integer,String]|[Integer+] y,
+    [String+]|[Integer+] z,
+    [String]|[String,Integer]|[Integer,String]|[Integer]|[String,String] w) {
+    switch (x)
+    case (is Empty) {}
+    case (is [String+]) {}
+    case (is [Integer+]) {}
+    switch (w)
+    case (is [String]) {}
+    case (is [String, Integer]) {}
+    case (is [Integer, String]) {}
+    case (is [Integer]) {}
+    case (is [String, String]) {}
+    switch (y)
+    case (is [String]) {}
+    case (is [String,Integer]) {}
+    case (is [Integer,String]) {}
+    case (is [Integer+]) {}
+    switch (z)
+    case (is [String+]) {}
+    case (is [Integer+]) {}
+}
+
+void isTest<Args>(Anything[] x, Args y) 
+        given Args satisfies Anything[] {
+    if (x is [String]) {}
+    if (is [String] x) {}
+    if (y is [String]) {}
+    if (is [String] y) {}
+    [Integer*] xs = [];
+    [Integer+] ys = [1];
+    if (is String[] xs) {}
+    @error if (is String[] ys) {}
 }

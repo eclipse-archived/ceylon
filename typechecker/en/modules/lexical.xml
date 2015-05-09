@@ -16,12 +16,12 @@
         <literal>FORM FEED (FF)</literal>, <literal>LINE FEED (LF)</literal> and 
         <literal>CARRIAGE RETURN (CR)</literal> characters.</para>
         
-        <synopsis>Whitespace: " " | Tab | Formfeed | Newline | Return</synopsis>
+        <synopsis>Whitespace: " " | Tab | Formfeed | Newline | CarriageReturn</synopsis>
         
         <synopsis>Tab: "\{CHARACTER TABULATION}"</synopsis>
         <synopsis>Formfeed: "\{FORM FEED (FF)}"</synopsis>
         <synopsis>Newline: "\{LINE FEED (LF)}"</synopsis>
-        <synopsis>Return: "\{CARRIAGE RETURN (CR)}"</synopsis>
+        <synopsis>CarriageReturn: "\{CARRIAGE RETURN (CR)}"</synopsis>
         
         <para>Outside of a comment, string literal, or single quoted literal,
         whitespace acts as a token separator and is immediately discarded by
@@ -67,11 +67,11 @@
         
         <para>Both kinds of comments can be nested.</para>
         
-        <synopsis>LineComment: ("//"|"#!") ~(Newline | Return)* (Return Newline | Return | Newline)?</synopsis>
+        <synopsis>LineComment: ("//"|"#!") ~(Newline | CarriageReturn)* (CarriageReturn Newline | CarriageReturn | Newline)?</synopsis>
         
-        <synopsis>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</synopsis>
+        <synopsis>MultilineComment: "/*" (MultilineCommentCharacter | MultilineComment)* "*/"</synopsis>
         
-        <synopsis>MultilineCommmentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</synopsis>
+        <synopsis>MultilineCommentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</synopsis>
         
         <para>The following examples are legal comments:</para>
         
@@ -93,22 +93,44 @@
     <section id="identifiersandkeywords">
         <title>Identifiers and keywords</title>
         
-        <para><emphasis>Identifiers</emphasis> may contain upper and lowercase letters, 
-        digits and underscores.</para>
+        <para><emphasis>Identifiers</emphasis> may contain letters, digits and 
+        underscores.</para>
         
-        <synopsis>LowercaseChar: LowercaseLetter | "_"</synopsis>
-        <synopsis>UppercaseChar: UppercaseLetter</synopsis>
-        <synopsis>IdentifierChar: LowercaseChar | UppercaseChar | Number</synopsis>
+        <synopsis>LowercaseCharacter: LowercaseLetter | "_"</synopsis>
+        <synopsis>UppercaseCharacter: UppercaseLetter</synopsis>
+        <synopsis>IdentifierCharacter: LowercaseCharacter | UppercaseCharacter | Number</synopsis>
         
         <para>The lexer classifies Unicode uppercase letters, lowercase letters, 
         and numeric characters depending on the general category of the character
-        as defined by the Unicode standard. A <literal>LowercaseLetter</literal> is 
-        any character whose general category is <literal>Ll</literal>. An 
-        <literal>UppercaseLetter</literal> is any character whose general category 
-        is <literal>Lu</literal>, <literal>Lt</literal>, or <literal>Lo</literal>. 
-        A <literal>Number</literal> is any character whose general category is 
-        <literal>Nd</literal>, <literal>Nl</literal>, or <literal>No</literal>.</para>
-            
+        as defined by the Unicode standard.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    A <literal>LowercaseLetter</literal> is any character whose 
+                    general category is <literal>Ll</literal> or any character whose 
+                    general category is <literal>Lo</literal> or <literal>Lm</literal> 
+                    which has the property <literal>Other_Lowercase</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    An <literal>UppercaseLetter</literal> is any character whose 
+                    general category is <literal>Lu</literal> or <literal>Lt</literal>, 
+                    or any character whose general category is <literal>Lo</literal> or 
+                    <literal>Lm</literal> which does not have the property
+                    <literal>Other_Lowercase</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    A <literal>Number</literal> is any character whose general 
+                    category is <literal>Nd</literal>, <literal>Nl</literal>, or 
+                    <literal>No</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
         
@@ -117,10 +139,10 @@
         character or underscore. Additionally, an identifier may be qualified using 
         the prefix <literal>\i</literal> or <literal>\I</literal> to disambiguate it 
         from a reserved word or to explicitly specify whether it should be considered
-        an uppercase or lowercase identifier.</para>
+        an initial uppercase or initial lowercase identifier.</para>
         
-        <synopsis>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</synopsis>
-        <synopsis>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</synopsis>
+        <synopsis>LIdentifier: LowercaseCharacter IdentifierCharacter* | "\i" IdentifierCharacter+</synopsis>
+        <synopsis>UIdentifier: UppercaseCharacter IdentifierCharacter* | "\I" IdentifierCharacter+</synopsis>
 
         <para>The following examples are legal identifiers:</para>
         
@@ -136,24 +158,28 @@
 
         <para>The prefix <literal>\I</literal> or <literal>\i</literal> is not 
         considered part of the identifier name. Therefore, <literal>\iperson</literal>
-        is just a lowercase identifier named <literal>person</literal> and
-        <literal>\Iperson</literal> is an <emphasis>uppercase</emphasis> identifier 
-        named <literal>person</literal>.</para>
+        is just an initial lowercase identifier named <literal>person</literal> and
+        <literal>\Iperson</literal> is an initial <emphasis>uppercase</emphasis> 
+        identifier named <literal>person</literal>.</para>
                         
         <para>The following reserved words are not legal identifier names unless they 
         appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
         
         <para><literal>
         assembly module package import
-        alias class interface object given value assign void function
+        alias class interface object given value assign void function new
         of extends satisfies abstracts
         in out
         return break continue throw
         assert dynamic
-        if else switch case for while try catch finally then
+        if else switch case for while try catch finally then let
         this outer super
         is exists nonempty
         </literal></para>
+        
+        <comment><para>Note: <literal>assembly</literal> and <literal>abstracts</literal>
+        are reserved for possible use in a future release of the language, for declaration
+        of assemblies and lower bound type constraints respectively.</para></comment>
         
     </section>
     
@@ -185,7 +211,7 @@
             <synopsis>BinLiteral: "$" BinDigits</synopsis>
             
             <para>A <emphasis>floating point literal</emphasis> is distinguished by the
-            prescence of a decimal point or fractional magnitude:</para>
+            presence of a decimal point or fractional magnitude:</para>
             
             <synopsis>FloatLiteral: NormalFloatLiteral | ShortcutFloatLiteral</synopsis>
             
@@ -302,7 +328,7 @@
             
             <synopsis>EscapeSequence: "\" (SingleCharacterEscape | "{" CharacterCode "}")</synopsis>
             
-            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`"</synopsis>
+            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "e" | "\" | "&quot;" | "'" | "`" | "0"</synopsis>
             
             <para>The single-character escape sequences have their traditional interpretations as
             Unicode characters:</para>
@@ -321,22 +347,28 @@
                     <para><literal>\f</literal> means <literal>FORM FEED (FF)</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>, 
-                    and</para>
+                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\e</literal> means <literal>ESCAPE</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>\\</literal>, <literal>\`</literal>, <literal>\'</literal>, 
                     and <literal>\&quot;</literal> mean <literal>REVERSE SOLIDUS</literal>, 
                     <literal>GRAVE ACCENT</literal>, <literal>APOSTROPHE</literal>, and 
-                    <literal>QUOTATION MARK</literal>, respectively.</para>
+                    <literal>QUOTATION MARK</literal>, respectively, and, finally</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\0</literal> means <literal>NULL</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
-            or a Unicode character name, surrounded by braces, and means the Unicode character
-            with the specified codepoint or character name.</para>
+            <para>A Unicode codepoint escape is a two-, four-, or six-digit hexadecimal literal 
+            representing an integer in the range 0 to 10FFFF, or a Unicode character name, 
+            surrounded by braces, and means the Unicode character with the specified codepoint or 
+            character name.</para>
             
-            <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharacterName</synopsis>
+            <synopsis>CharacterCode: "#" ( HexDigit{2} | HexDigit{4} | HexDigit{6} ) | UnicodeCharacterName</synopsis>
             
             <para>Legal Unicode character names are defined by the Unicode specification.</para>
                     
@@ -359,10 +391,16 @@
             
             <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
             
-            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</synopsis>
+            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence | EscapedBreak</synopsis>
             
             <para>A string literal may contain escape sequences. An escape sequence is 
             replaced by its corresponding Unicode character during lexical analysis.</para>
+            
+            <para>A line-terminating character sequence may be escaped with a backslash,
+            in which case the escaped line termination is removed from the string literal
+            during lexical analysis.</para>
+            
+            <synopsis>EscapedBreak: "\" (CarriageReturn Newline | CarriageReturn | Newline)</synopsis>
             
             <para>A sequence of two backticks is used to delimit an interpolated expression
             embedded in a string template.</para>
@@ -417,7 +455,7 @@
         ! &amp;&amp; ||
         ~ &amp; |
         === == != &lt; &gt; &lt;= &gt;= &lt;=&gt;
-        += -= /= *= %= |= &amp;= ^= ~= ||= &amp;&amp;=
+        += -= /= *= %= |= &amp;= ~= ||= &amp;&amp;=
         </literal></para>
         
         <para>Certain symbols serve dual or multiple purposes in the grammar.</para>

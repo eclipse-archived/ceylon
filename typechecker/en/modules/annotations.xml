@@ -29,9 +29,9 @@
         <programlisting>"The user login action"
 by ("Gavin King",
     "Andrew Haley")
-throws (`DatabaseException`,
+throws (`class DatabaseException`,
         "if database access fails")
-see (`LogoutAction.logout`)
+see (`function LogoutAction.logout`)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
@@ -48,11 +48,16 @@ shared deprecated</programlisting>
             resolved according to <xref linkend="unqualifiedreferenceresolution"/>.</para>
             
             <para>A list of annotations does not require punctuation between the 
-            individual annotations in the list. An annotation list may begin with a 
-            string literal, in which case it is interpreted as the argument of a 
+            individual annotations in the list. An annotation list may begin with 
+            a string literal, in which case it is interpreted as the argument of a 
             <literal>doc</literal> annotation.</para>
             
             <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
+            
+            <para>Every annotation is an invocation expression, as defined by
+            <xref linkend="invocationexpressions"/>, of an annotation constructor.
+            The annotation name is interpreted as a base expression, as defined in 
+            <xref linkend="baseexpressions"/>.</para>
             
         </section>
         
@@ -91,9 +96,6 @@ shared deprecated</programlisting>
             
             <para>A named argument to an annotation may not be an inline function, value,
             or anonymous class.</para>
-            
-            <para>Every annotation is an invocation expression, as defined by
-            <xref linkend="invocationexpressions"/>, of an annotation constructor.</para>
             
         </section>
         
@@ -138,10 +140,14 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
-                    <literal>ceylon.language.model.declaration</literal>,</para>
+                    <literal>ceylon.language.meta.declaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>an annotation type,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>T?</literal> where <literal>T</literal> is a legal 
+                    annotation constructor parameter type,</para>
                 </listitem>
                 <listitem>
                     <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
@@ -168,14 +174,14 @@ shared deprecated</programlisting>
             <para>A named argument appearing in the definition of an annotation constructor
             may not be an inline function, value, or anonymous class.</para>
             
-            <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
+            <programlisting>shared annotation Scope scope(ScopeType s) => Scope(s);</programlisting>
             <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
             
             <para>An annotation constructor parameter may have a default argument, which must
             be a legal annotation argument.</para>
             
             <para>The return type of an annotation constructor must be a constrained annotation 
-            type.</para>
+            type, as defined below in <xref linkend="constrainedannotationtypes"/>.</para>
             
             <para>A user-defined annotation constructor may not return the same annotation 
             type as one of the modifiers listed below in <xref linkend="declarationmodifiers"/>.</para>
@@ -211,10 +217,14 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
-                    <literal>ceylon.language.model.declaration</literal>,</para>
+                    <literal>ceylon.language.meta.declaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>an annotation type,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>T?</literal> where <literal>T</literal> is a legal 
+                    annotation parameter type,</para>
                 </listitem>
                 <listitem>
                     <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
@@ -231,13 +241,18 @@ shared deprecated</programlisting>
             <para>An initializer parameter of an annotation type may have a default argument, 
             which must be a legal annotation argument.</para>
             
-            <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
-            defined in the package <literal>ceylon.language.model</literal>.</para>
-            
+            <!--para>Every annotation type must be a subtype of <literal>Annotation</literal> 
+            defined in the package <literal>ceylon.language</literal>.</para-->
+        
+        </section>            
+        
+        <section id="constrainedannotationtypes">
+            <title>Constrained annotation types</title>
+                        
             <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
             that is a subtype of <literal>OptionalAnnotation</literal> or 
             <literal>SequencedAnnotation</literal> defined in the package 
-            <literal>ceylon.language.model</literal>.</para>
+            <literal>ceylon.language</literal>.</para>
             
             <itemizedlist>
                 <listitem>
@@ -257,17 +272,22 @@ shared deprecated</programlisting>
                     <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
                     or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
                     of annotation type <literal>A</literal> may not occur at a program 
-                    element whose metamodel expression type is not assignable to 
+                    element whose reference expression type, as defined in
+                    <xref linkend="typeofareferenceexpression"/>, is not assignable to 
                     <literal>P</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <programlisting><![CDATA[shared annotation class Scope()
-        of request | session | application
-        satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
+            <programlisting><![CDATA[shared final annotation class Scope(shared ScopeType scope)
+        satisfies OptionalAnnotation<Scope,ClassOrInterfaceDeclaration> {
+    string => (scope==request then "request")
+         else (scope==session then "session")
+         else (scope==application then "application")
+         else nothing;
+}]]></programlisting>
             
-            <programlisting><![CDATA[shared annotation class Todo(String text)
-        satisfies SequencedAnnotation<Todo,Annotated> {
+            <programlisting><![CDATA[shared final annotation class Todo(String text)
+        satisfies SequencedAnnotation<Todo> {
     string => text;
 }]]></programlisting>
             
@@ -283,13 +303,15 @@ shared deprecated</programlisting>
         
         <para>An <emphasis>annotation value</emphasis> is the value returned when an
         annotation constructor is invoked. We may obtain the annotation values of all 
-        annotations of a given annotation type that occur at a given program element by 
-        passing the annotation type and program element metamodel reference to the method
+        annotations of a given annotation type that occur at a given program element 
+        by passing the annotation type metamodel, as defined in 
+        <xref linkend="metamodelexpressions"/>, and program element reference, as 
+        defined in <xref linkend="referenceexpressions"/>, to the method
         <literal>annotations()</literal> defined in the package
-        <literal>ceylon.language.model</literal>.</para>
+        <literal>ceylon.language.meta.model</literal>.</para>
         
-        <programlisting>Scope scope = annotations(`Scope`, `Person`) ? request;</programlisting>
-        <programlisting>Todo[] todos = annotations(`Todo`, `method`);</programlisting>
+        <programlisting>Scope scope = annotations(`Scope`, `class Person`) else Scope(request);</programlisting>
+        <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
         
     </section>
     
@@ -314,7 +336,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>abstract</literal> specifies that a class
-                    cannot be instantiated.</para>
+                    cannot be instantiated, or that a constructor is a 
+                    partial constructor.</para>
                 </listitem>
                  <listitem>
                     <para><literal>formal</literal> specifies that a member 
@@ -355,17 +378,33 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>final</literal> specifies that a class may not 
-                    be extended.</para>
+                    be extended, and may not declare <literal>default</literal>
+                    members.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>sealed</literal> specifies that a class may not 
+                    be extended or instantiated outside the module in which it is
+                    defined, that an interface may not be satisfied by a class or 
+                    interface outside the module in which it is defined, or that
+                    a constructor may not be invoked outside the module in which 
+                    it is defined.</para>
                 </listitem>
                 <listitem>
                     <para><literal>annotation</literal> specifies that a class is
                     an annotation type, or that a toplevel function is an annotation
                     constructor.</para>
                 </listitem>
+                <listitem>
+                    <para><literal>suppressWarnings</literal> hides compilation
+                    warnings occurring at the annotated program element.</para>
+                </listitem>
             </itemizedlist>
             
-            <para>The following annotation is a hint to the compiler that lets 
-            the compiler optimize compiled bytecode for non-64 bit architectures:</para>
+            <comment><para>Note: annotation constraints ensure that these annotations 
+            do not occur at program elements to which they do not apply.</para></comment>
+            
+            <para>The following annotation is a hint to the compiler that lets the 
+            compiler optimize compiled bytecode for non-64 bit architectures:</para>
             
             <itemizedlist>
                 <listitem>
@@ -380,7 +419,7 @@ shared deprecated</programlisting>
             <xref linkend="numericoperations"/>.</para>
             
             <comment><para>Note that <literal>small</literal> is not yet supported 
-            in Ceylon 1.0.</para></comment>
+            in Ceylon 1.1.</para></comment>
             
             <!--
             <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
@@ -434,8 +473,8 @@ shared deprecated</programlisting>
             annotations are parsed by the documentation compiler as Markdown-format
             content.</para>
             
-            <para>These annotations are defined in the package 
-            <literal>ceylon.language.documentation</literal>.</para>
+            <para>These annotations are all defined in the package 
+            <literal>ceylon.language</literal>.</para>
            
         </section>
     

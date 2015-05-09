@@ -44,10 +44,10 @@ void test() {
     @type:"Null|Integer" value v3 = vartup[2];
     @type:"Null|Integer" value v4 = vartup[3];
     @type:"Null|Integer" value v5 = vartup[4];
-    [] emp1 = {};
+    @error {} emp1 = {};
     [] emp2 = [];
     Tuple<Integer|Float,Integer,Tuple<Float,Float,[]>> unsugared1 = Tuple(0,Tuple(1.0,[]));
-    Tuple<String,String,Tuple<String,String,[]>> unsugared2 = Tuple("hello",Tuple("goodbye",{}));
+    Tuple<String,String,Tuple<String,String,[]>> unsugared2 = Tuple("hello",Tuple("goodbye",[]));
     [Integer,Float] sugared1 = unsugared1;
     [String,String] sugared2 = unsugared2;
     
@@ -68,7 +68,7 @@ void test() {
     [Integer, Integer, String, Integer, Integer] t6 = 
             [1, 2, "", 4, 5][-2...];
     
-    @error interface R<Element> satisfies Ranged<Integer,Element[]> {
+    @error interface R<Element> satisfies Ranged<Integer,Element,Element[]> {
         shared actual Element[] spanTo(Integer to) {
             value end = to;
             return this[0:end+1];
@@ -186,3 +186,9 @@ void testRanges() {
     @type:"Sequential<Integer>" value t16 = possiblyEmpty[0...];
     @type:"Sequential<Integer>" value t17 = possiblyEmpty[1...];
 }
+
+void badTupleTypeExpressions(
+    @error [String, String=, String+] xx, 
+    @error [String=,String] yy, 
+    @error Anything(String=,String) zz, 
+    @error Anything(String,String=,String+) uu) {}

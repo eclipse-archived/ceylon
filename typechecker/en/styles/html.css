@@ -71,34 +71,24 @@ H3, H4, H5, H6 {
 }
 
 TT {
-    font-size: 85%;
-    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
     color: #000000;
 }
 
-PRE, div.syntaxhighlighter {
+PRE {
     padding: 5px !important;
 }
 
-PRE, .syntaxhighlighter .lines, 
+PRE, PRE SPAN,
 .synopsis span.emphasis, 
 .literal span.emphasis  {
-    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
-}
-
-.syntaxhighlighter .lines {
-    margin: 5px !important;
-    border-left: 5px solid #f0f0f0;
-}
-
-.brush, .screen, .synopsis {
-    font-size: 85%;
-    line-height: 1.4em;
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
+    line-height: normal; /* overriding 1.40em from another rule, see #1186 */
 }
 
 .screen, .synopsis {
-    border-left: none;
-    margin: 15px !important;
+    line-height: 1.4em;
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
 }
 
 HR  {

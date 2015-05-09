@@ -1,10 +1,11 @@
 "A file containing Ceylon source."
 ^(COMPILATION_UNIT
-    MODULE_DESCRIPTOR?
-    PACKAGE_DESCRIPTOR?
     COMPILER_ANNOTATION*
     IMPORT_LIST?
-    DECLARATION*)
+    MODULE_DESCRIPTOR*
+    PACKAGE_DESCRIPTOR*
+    DECLARATION*
+    boolean literalsProcessed;)
 
 "A module descriptor."
 ^(MODULE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
@@ -70,7 +71,7 @@
 "A declaration."
 ^(abstract DECLARATION:STATEMENT
     ANNOTATION_LIST?
-    IDENTIFIER
+    IDENTIFIER?
     abstract Declaration declarationModel;)
 
 ^(MISSING_DECLARATION:DECLARATION
@@ -97,15 +98,13 @@
 ^(SATISFIED_TYPES 
     STATIC_TYPE* type)
 ^(ABSTRACTED_TYPE 
-    SIMPLE_TYPE type)
-^(ADAPTED_TYPES 
-    SIMPLE_TYPE* type)
+    STATIC_TYPE type)
 ^(CASE_TYPES 
     STATIC_TYPE* type
     BASE_MEMBER_EXPRESSION*)
 ^(EXTENDED_TYPE 
-    SIMPLE_TYPE type
-    INVOCATION_EXPRESSION)
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
 
 "A list of constraints organized by parameter."
 ^(TYPE_CONSTRAINT_LIST 
@@ -119,17 +118,19 @@
 
 "An aliased type specified in a type or interface alias."
 ^(TYPE_SPECIFIER 
-    STATIC_TYPE type)
+    STATIC_TYPE? type)
 
+"A default type argument for a type parameter"
+^(DEFAULT_TYPE_ARGUMENT: TYPE_SPECIFIER)
+    
 "An aliased class specified in a class alias."
 ^(CLASS_SPECIFIER 
-    SIMPLE_TYPE type
-    INVOCATION_EXPRESSION)
-
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
 
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
-    PARAMETER_LIST
+    PARAMETER_LIST?
     EXTENDED_TYPE?
     Class declarationModel;)
 
@@ -137,9 +138,19 @@
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
+^(CONSTRUCTOR:DECLARATION
+    PARAMETER_LIST?
+    DELEGATED_CONSTRUCTOR?
+    BLOCK
+    Constructor declarationModel;)
+
+^(DELEGATED_CONSTRUCTOR
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION)
+
 "A class alias."
 ^(CLASS_DECLARATION:ANY_CLASS
-    CLASS_SPECIFIER)
+    CLASS_SPECIFIER?)
 
 "An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
@@ -147,8 +158,8 @@
 
 "An interface declaration."
 ^(INTERFACE_DEFINITION:ANY_INTERFACE
-    ADAPTED_TYPES?
-    INTERFACE_BODY)
+    INTERFACE_BODY
+    boolean dynamic;)
 
 "An interface alias."
 ^(INTERFACE_DECLARATION:ANY_INTERFACE
@@ -170,7 +181,7 @@
 "A value getter declaration."
 ^(ATTRIBUTE_GETTER_DEFINITION:ANY_ATTRIBUTE
     BLOCK
-    Getter declarationModel;)
+    Value declarationModel;)
 
 "An value setter declaration."
 ^(ATTRIBUTE_SETTER_DEFINITION:TYPED_DECLARATION
@@ -252,7 +263,11 @@
     ProducedType typeModel;)
 
 ^(abstract STATIC_TYPE:TYPE
+    TYPE_VARIANCE?
     boolean metamodel;)
+
+^(GROUPED_TYPE:STATIC_TYPE
+    STATIC_TYPE type)
 
 "A produced type."
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
@@ -261,7 +276,11 @@
     boolean typeConstructor;
     TypeDeclaration declarationModel;)
 
-^(BASE_TYPE: SIMPLE_TYPE)
+^(BASE_TYPE: SIMPLE_TYPE
+    boolean packageQualified;)
+
+^(QUALIFIED_TYPE: SIMPLE_TYPE
+    STATIC_TYPE outerType)
 
 ^(UNION_TYPE: STATIC_TYPE
     STATIC_TYPE*)
@@ -270,10 +289,11 @@
     STATIC_TYPE*)
 
 ^(SEQUENCE_TYPE: STATIC_TYPE
-    STATIC_TYPE elementType)
+    STATIC_TYPE elementType
+    NATURAL_LITERAL? length)
 
 ^(ITERABLE_TYPE: STATIC_TYPE
-    TYPE elementType)
+    TYPE? elementType)
 
 ^(OPTIONAL_TYPE: STATIC_TYPE
     STATIC_TYPE definiteType)
@@ -289,23 +309,39 @@
     STATIC_TYPE keyType
     STATIC_TYPE valueType)
 
-^(QUALIFIED_TYPE: SIMPLE_TYPE
-    STATIC_TYPE outerType)
-
 ^(SUPER_TYPE: STATIC_TYPE)
 
 ^(abstract META_LITERAL:PRIMARY
     boolean wantsDeclaration;
+    boolean broken;
     Declaration declaration;)
 
 ^(TYPE_LITERAL:META_LITERAL
-    STATIC_TYPE type)
+    STATIC_TYPE? type)
 
 ^(MEMBER_LITERAL:META_LITERAL
     STATIC_TYPE? type
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
+    boolean packageQualified;
     ProducedReference target;)
+
+^(CLASS_LITERAL:TYPE_LITERAL)
+^(NEW_LITERAL:TYPE_LITERAL)
+^(INTERFACE_LITERAL:TYPE_LITERAL)
+^(ALIAS_LITERAL:TYPE_LITERAL)
+^(TYPE_PARAMETER_LITERAL:TYPE_LITERAL)
+
+^(VALUE_LITERAL:MEMBER_LITERAL)
+^(FUNCTION_LITERAL:MEMBER_LITERAL)
+
+^(MODULE_LITERAL:META_LITERAL
+    IMPORT_PATH?)
+
+^(PACKAGE_LITERAL:META_LITERAL
+    IMPORT_PATH?)
+
+^(DYNAMIC_MODIFIER: TYPE)
 
 "Specifies that the type of a block local declaration should be inferred."
 ^(abstract LOCAL_MODIFIER: TYPE)
@@ -335,6 +371,9 @@
     boolean atLeastOne;)
 
 ^(DEFAULTED_TYPE:TYPE
+    TYPE)
+
+^(SPREAD_TYPE:TYPE
     TYPE)
 
 "A control directive."
@@ -369,11 +408,26 @@
     TERM baseMemberExpression
     SPECIFIER_EXPRESSION
     TypedDeclaration declaration;
-    boolean refinement;)
+    boolean refinement;
+    TypedDeclaration refined;)
 
 "An expression statement."
 ^(EXPRESSION_STATEMENT:EXECUTABLE_STATEMENT 
     EXPRESSION)
+
+^(abstract PATTERN)
+^(VARIABLE_PATTERN:PATTERN
+    VARIABLE)
+^(TUPLE_PATTERN:PATTERN
+    PATTERN*)
+^(KEY_VALUE_PATTERN:PATTERN
+    PATTERN key
+    PATTERN value)
+
+^(DESTRUCTURE:EXECUTABLE_STATEMENT
+    VALUE_MODIFIER? type
+    PATTERN
+    SPECIFIER_EXPRESSION)
 
 "A control structure."
 ^(CONTROL_STATEMENT:EXECUTABLE_STATEMENT)
@@ -383,28 +437,41 @@
 ^(DYNAMIC_STATEMENT:CONTROL_STATEMENT
     DYNAMIC_CLAUSE)
 ^(DYNAMIC_CLAUSE:CONTROL_CLAUSE 
-    BLOCK)
+    BLOCK?)
+
+^(LET_EXPRESSION:TERM
+    LET_CLAUSE)
+^(LET_CLAUSE:CONTROL_CLAUSE
+    STATEMENT* variable
+    EXPRESSION)
 
 ^(IF_STATEMENT:CONTROL_STATEMENT
     IF_CLAUSE
     ELSE_CLAUSE?)
 ^(IF_CLAUSE:CONTROL_CLAUSE
     CONDITION_LIST
-    BLOCK)
+    BLOCK?
+    EXPRESSION?)
 ^(ELSE_CLAUSE:CONTROL_CLAUSE
-    BLOCK)
+    VARIABLE?
+    BLOCK?
+    EXPRESSION?)
 
 ^(SWITCH_STATEMENT:CONTROL_STATEMENT
     SWITCH_CLAUSE
-    SWITCH_CASE_LIST)
+    SWITCH_CASE_LIST
+    ControlBlock controlBlock;)
 ^(SWITCH_CLAUSE
-    EXPRESSION)
+    SWITCHED)
+^(SWITCHED
+    VARIABLE? EXPRESSION?)
 ^(SWITCH_CASE_LIST 
     CASE_CLAUSE* 
     ELSE_CLAUSE?)
 ^(CASE_CLAUSE:CONTROL_CLAUSE
     CASE_ITEM
-    BLOCK)
+    BLOCK?
+    EXPRESSION?)
     
 ^(CASE_ITEM)
 ^(MATCH_CASE:CASE_ITEM
@@ -413,7 +480,7 @@
     TYPE
     VARIABLE?)
 ^(SATISFIES_CASE:CASE_ITEM
-    SIMPLE_TYPE type)
+    TYPE type)
 
 ^(TRY_CATCH_STATEMENT:CONTROL_STATEMENT
     TRY_CLAUSE
@@ -421,12 +488,12 @@
     FINALLY_CLAUSE?)
 ^(TRY_CLAUSE:CONTROL_CLAUSE
     RESOURCE_LIST?
-    BLOCK)
+    BLOCK?)
 ^(CATCH_CLAUSE:CONTROL_CLAUSE
     CATCH_VARIABLE 
-    BLOCK)
+    BLOCK?)
 ^(FINALLY_CLAUSE:CONTROL_CLAUSE
-    BLOCK)
+    BLOCK?)
 ^(RESOURCE_LIST
     RESOURCE*)
 ^(RESOURCE
@@ -440,20 +507,19 @@
     boolean exits;)
 ^(FOR_CLAUSE:CONTROL_CLAUSE
     FOR_ITERATOR
-    BLOCK)
+    BLOCK?)
 ^(FOR_ITERATOR:STATEMENT_OR_ARGUMENT
     SPECIFIER_EXPRESSION)
 ^(VALUE_ITERATOR:FOR_ITERATOR
     VARIABLE)
-^(KEY_VALUE_ITERATOR:FOR_ITERATOR
-    VARIABLE keyVariable
-    VARIABLE valueVariable)
+^(PATTERN_ITERATOR:FOR_ITERATOR
+    PATTERN pattern)
 
 ^(WHILE_STATEMENT:CONTROL_STATEMENT
     WHILE_CLAUSE)
 ^(WHILE_CLAUSE:CONTROL_CLAUSE
     CONDITION_LIST
-    BLOCK)
+    BLOCK?)
 
 ^(CONDITION_LIST
     CONDITION*)
@@ -462,18 +528,18 @@
 ^(BOOLEAN_CONDITION:CONDITION
     EXPRESSION)
 ^(abstract EXISTS_OR_NONEMPTY_CONDITION:CONDITION
-    VARIABLE
-    EXPRESSION?)
+    STATEMENT? variable
+    EXPRESSION? brokenExpression
+    boolean not;)
 ^(EXISTS_CONDITION:EXISTS_OR_NONEMPTY_CONDITION)
 ^(NONEMPTY_CONDITION:EXISTS_OR_NONEMPTY_CONDITION)
 ^(IS_CONDITION:CONDITION
     TYPE
     VARIABLE
-    EXPRESSION?
     boolean not;)
 ^(SATISFIES_CONDITION:CONDITION
-    TYPE leftType
-    TYPE rightType)
+    TYPE
+    IDENTIFIER)
 
 ^(VARIABLE:TYPED_DECLARATION
     PARAMETER_LIST*
@@ -483,7 +549,8 @@
 ^(abstract TERM
     ProducedType typeModel;
     boolean unboxed;
-    boolean typeErased;)
+    boolean typeErased;
+    boolean untrustedType;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
@@ -511,7 +578,6 @@
 ^(abstract BITWISE_ASSIGNMENT_OP: ASSIGNMENT_OP)
 ^(INTERSECT_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
 ^(UNION_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
-^(XOR_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
 ^(COMPLEMENT_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
 
 ^(abstract LOGICAL_ASSIGNMENT_OP: ASSIGNMENT_OP)
@@ -525,7 +591,6 @@
 ^(abstract BITWISE_OP: BINARY_OPERATOR_EXPRESSION)
 ^(INTERSECTION_OP: BITWISE_OP)
 ^(UNION_OP: BITWISE_OP)
-^(XOR_OP: BITWISE_OP)
 ^(COMPLEMENT_OP: BITWISE_OP)
 
 ^(abstract EQUALITY_OP: BINARY_OPERATOR_EXPRESSION)
@@ -604,7 +669,8 @@
 
 ^(PARAMETERIZED_EXPRESSION:PRIMARY
     PRIMARY
-    PARAMETER_LIST*)
+    PARAMETER_LIST*
+    boolean leftTerm;)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
     ProducedReference target;
@@ -620,7 +686,9 @@
 
 ^(abstract STATIC_MEMBER_OR_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION
     IDENTIFIER
-    TYPE_ARGUMENTS?)
+    TYPE_ARGUMENTS?
+    ProducedTypedReference targetParameter;
+    ProducedType parameterType;)
 
 ^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)
 
@@ -661,10 +729,12 @@
     EXPRESSION? length)
 
 "A reference to the outer containing instance."
-^(OUTER:ATOM)
+^(OUTER:ATOM
+   TypeDeclaration declarationModel;)
 
 "A reference to the containing package."
-^(PACKAGE:ATOM)
+^(PACKAGE:ATOM
+    boolean qualifier;)
 
 "A list of arguments in an invocation expression."
 ^(abstract ARGUMENT_LIST)
@@ -703,6 +773,23 @@
     BLOCK?
     Method declarationModel;)
 
+"An anonymous function."
+^(OBJECT_EXPRESSION:PRIMARY
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    CLASS_BODY
+    Class anonymousClass;)
+
+"An if/then/else conditional expression."
+^(IF_EXPRESSION:TERM
+    IF_CLAUSE
+    ELSE_CLAUSE)
+
+"A switch/case/else conditional expression."
+^(SWITCH_EXPRESSION:TERM
+    SWITCH_CLAUSE
+    SWITCH_CASE_LIST)
+
 "A named argument."
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
     IDENTIFIER?
@@ -726,7 +813,7 @@
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
     BLOCK? 
     SPECIFIER_EXPRESSION?
-    Getter declarationModel;)
+    Value declarationModel;)
 "An object declaration that occurs as a named argument."
 ^(OBJECT_ARGUMENT:TYPED_ARGUMENT
     EXTENDED_TYPE?
@@ -755,11 +842,20 @@
 ^(NATURAL_LITERAL:LITERAL)
 ^(FLOAT_LITERAL:LITERAL)
 ^(CHAR_LITERAL:LITERAL)
-^(STRING_LITERAL:LITERAL)
+^(STRING_LITERAL:LITERAL
+    DOC_LINK*)
 ^(QUOTED_LITERAL:LITERAL)
 
+"A wiki-style link in a documentation string"
+^(DOC_LINK
+   Module module;
+   Package pkg;
+   Declaration base;
+   List<Declaration> qualified;)
+
 "A reference to the current instance."
-^(abstract SELF_EXPRESSION:ATOM)
+^(abstract SELF_EXPRESSION:ATOM
+   TypeDeclaration declarationModel;)
 ^(THIS:SELF_EXPRESSION)
 ^(SUPER:SELF_EXPRESSION)
 
@@ -795,7 +891,7 @@
 
 "A comprehension."
 ^(COMPREHENSION:POSITIONAL_ARGUMENT
-    FOR_COMPREHENSION_CLAUSE)
+    INITIAL_COMPREHENSION_CLAUSE)
 
 "A single clause of comprehension"
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
@@ -803,16 +899,19 @@
     ProducedType firstTypeModel;
     boolean possiblyEmpty;)
 
+"A clause that can appear at the beginning of a comprehension."
+^(abstract INITIAL_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE)
+
 "The expression at the end of a comprehension."
 ^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     EXPRESSION)
 
 "A quantifier clause in a comprehension."
-^(FOR_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
+^(FOR_COMPREHENSION_CLAUSE:INITIAL_COMPREHENSION_CLAUSE
     FOR_ITERATOR
     COMPREHENSION_CLAUSE)
 
 "A filter clause in a comprehension."
-^(IF_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
+^(IF_COMPREHENSION_CLAUSE:INITIAL_COMPREHENSION_CLAUSE
     CONDITION_LIST
     COMPREHENSION_CLAUSE)

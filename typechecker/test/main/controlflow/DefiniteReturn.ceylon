@@ -208,7 +208,7 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
+        doNull();
     }
     
     void voidMethodWithReturnInForAndEmptyFail() {
@@ -229,7 +229,7 @@ interface DefiniteReturn {
         }
         else {
             @error doSomethingElse();
-            @error return;
+            return;
         }
     }
     
@@ -542,7 +542,7 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
+        doNull();
     }
     
     @error X methodWithReturnInEmptyFor2() {
@@ -576,8 +576,8 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
-        @error return X();
+        doNull();
+        return X();
     }
     
     X methodWithReturnInEmptyForAndFail() {
@@ -598,7 +598,7 @@ interface DefiniteReturn {
         }
         else {
             @error doSomethingElse();
-            @error return X();
+            return X();
         }
     }
     
@@ -826,7 +826,7 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
+        doNull();
     }
     
     @error X getterWithReturnInEmptyFor2 {
@@ -848,8 +848,8 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
-        @error return X();
+        doNull();
+        return X();
     }
     
     X getterWithReturnInEmptyFor3 {
@@ -882,7 +882,7 @@ interface DefiniteReturn {
         }
         else {
             @error doSomethingElse();
-            @error return X();
+            return X();
         }
     }
     
@@ -1110,7 +1110,7 @@ interface DefiniteReturn {
         else {
             @error doSomethingElse();
         }
-        @error doNull();
+        doNull();
     }
     
     assign getterWithReturnInEmptyFor2 {
@@ -1131,7 +1131,7 @@ interface DefiniteReturn {
         }
         else {
             @error doSomethingElse();
-            @error return;
+            return;
         }
     }
     
@@ -1438,6 +1438,30 @@ interface DefiniteReturn {
         else {
         }
         testSomething();
+    }
+    
+    @error Integer testNonemptyRangeFor1() {
+        for (i in 0:10) {
+            return i;
+        }
+    }
+    
+    Integer testNonemptyRangeFor2() {
+        for (i in 0..10) {
+            return i;
+        }
+    }
+    
+    Integer testWhileTrue() {
+        while (true) {
+            return 0;
+        }
+    }
+    
+    @error Integer testWhileFalse() {
+        while (false) {
+            return 0;
+        }
     }
     
 }

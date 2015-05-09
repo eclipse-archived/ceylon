@@ -7,40 +7,30 @@ String center(String content, Integer size) {
 }
 
 class Cell({String*} content) {
-    shared actual String string {
-        value result = StringBuilder();
-        for (s in content) {
-            result.append(s);
-        }
-        return result.string;
-    }
+    shared actual String string
+            => String(expand(content));
 }
 
 class Row({Cell*} cell) {
-    shared Cell[] cells = cell.sequence;
+    shared Cell[] cells = cell.sequence();
     shared actual String string {
-        value result = StringBuilder();
-        result.append("|");
-        for (cell in cells) {
-            result.append(center(cell.string, 20));
-            result.append("|");
-        }
-        return result.string;
+        return "| " + "|".join {
+            for (cell in cells) center(cell.string, 20)
+        } + "|";
     }
 }
 
 class Table(String title, Row header, {Row*} rows) {
     shared actual String string {
-        value result = StringBuilder();
         value size = header.cells.size*21+1;
-        result.append(center(title, size) + "\n");
-        result.append(center("-".repeat(title.size), size) + "\n");
-        result.append(header.string.replace("|", " ")+"\n");
-        result.append("-".repeat(size) + "\n");
-        for (row in rows) {
-            result.append(row.string+"\n");
-            result.append("-".repeat(row.cells.size*21+1) + "\n");
-        }
-        return result.string;
+        return "\n".join {
+            center(title, size),
+            center("-".repeat(title.size), size),
+            header.string.replace("|", " "),
+            "-".repeat(size),
+            for (row in rows) 
+                row.string + "\n" + 
+                "-".repeat(row.cells.size*21+1)
+        };
     }
 }

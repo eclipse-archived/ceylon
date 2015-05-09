@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import java.util.List;
+
 import org.antlr.runtime.Token;
 
 public class CustomTree extends Tree {
@@ -13,8 +15,9 @@ public class CustomTree extends Tree {
         public void visitChildren(Visitor visitor) {
             if (getType()!=null)
                 getType().visit(visitor);
-            for (ParameterList pl: getParameterLists())
-                pl.visit(visitor);
+            List<ParameterList> parameterLists = getParameterLists();
+            for (int i=0,l=parameterLists.size();i<l;i++)
+                parameterLists.get(i).visit(visitor);
             if (getExpression()!=null)
                 getExpression().visit(visitor);
             if (getBlock()!=null)
@@ -81,8 +84,9 @@ public class CustomTree extends Tree {
             }
             else {
                 Walker.walkTypedDeclaration(visitor, this);
-                for (Tree.ParameterList subnode: getParameterLists())
-                    subnode.visit(visitor);
+                List<ParameterList> parameterLists = getParameterLists();
+                for (int i=0,l=parameterLists.size();i<l;i++)
+                    parameterLists.get(i).visit(visitor);
             }
         }
         @Override public String getNodeType() {
@@ -101,9 +105,9 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
-//                if (getSpecifierExpression()!=null &&
-//                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
-//                    getSpecifierExpression().visit(visitor);
+                if (getSpecifierExpression()!=null &&
+                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
+                    getSpecifierExpression().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -118,10 +122,11 @@ public class CustomTree extends Tree {
                 if (getTypeConstraintList()!=null)
                     getTypeConstraintList().visit(visitor);
                 Walker.walkTypedDeclaration(visitor, this);
-                for (Tree.ParameterList subnode: getParameterLists())
-                    subnode.visit(visitor);
-//                if (getSpecifierExpression() instanceof LazySpecifierExpression)
-                if (getSpecifierExpression()!=null)
+                List<ParameterList> parameterLists = getParameterLists();
+                for (int i=0,l=parameterLists.size();i<l;i++)
+                    parameterLists.get(i).visit(visitor);
+                if (getSpecifierExpression() instanceof LazySpecifierExpression)
+//                if (getSpecifierExpression()!=null)
                 	getSpecifierExpression().visit(visitor);
             }
         }
@@ -148,8 +153,9 @@ public class CustomTree extends Tree {
                     getTypeConstraintList().visit(visitor);
                 if (getType()!=null)
                     getType().visit(visitor);
-                for (Tree.ParameterList subnode: getParameterLists())
-                    subnode.visit(visitor);
+                List<ParameterList> parameterLists = getParameterLists();
+                for (int i=0,l=parameterLists.size();i<l;i++)
+                    parameterLists.get(i).visit(visitor);
                 if (getBlock()!=null)
                     getBlock().visit(visitor);
             }
@@ -208,13 +214,18 @@ public class CustomTree extends Tree {
     
     public static class ExtendedTypeExpression 
             extends Tree.ExtendedTypeExpression {
+        private SimpleType type;
         public ExtendedTypeExpression(Token token) {
             super(token);
         }
         @Override public String getNodeType() {
             return ExtendedTypeExpression.class.getSimpleName();
         }
+        public SimpleType getType() {
+            return type;
+        }
         public void setExtendedType(SimpleType type) {
+            this.type = type;
             connect(type);
         }
     }

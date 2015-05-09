@@ -19,6 +19,7 @@ public class Generate {
         //builder(file);
         walker(file);
         visitor(file);
+        visitorAdaptor(file);
         validator(file);
     }
     
@@ -65,6 +66,18 @@ public class Generate {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         VisitorgenParser parser = new VisitorgenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Visitor.java" );
+        out.createNewFile();
+        Util.out=new PrintStream(out);
+        parser.nodeList();
+    }
+    
+    private static void visitorAdaptor(File file) throws Exception {
+        InputStream is = new FileInputStream( file );
+        ANTLRInputStream input = new ANTLRInputStream(is);
+        VisitorAdaptorgenLexer lexer = new VisitorAdaptorgenLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        VisitorAdaptorgenParser parser = new VisitorAdaptorgenParser(tokens);
+        File out = new File( GENERATED_PACKAGE_DIR + "VisitorAdaptor.java" );
         out.createNewFile();
         Util.out=new PrintStream(out);
         parser.nodeList();

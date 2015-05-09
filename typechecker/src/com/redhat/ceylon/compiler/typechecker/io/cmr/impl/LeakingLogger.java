@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.io.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

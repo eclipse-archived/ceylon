@@ -131,10 +131,14 @@ class Intersection() {
     @type:"Nothing" intersect(1, "hello");
     @type:"Nothing" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    String[] onestring = [String("hello")];
-    @type:"Intersection.Float&Sequential<Intersection.String>" intersect(Float(), onestring);
-    S[] ones = ["hello"];
-    @type:"Intersection.Float&Sequential<String>" intersect(Float(), ones);
+    String[] onestring1 = [String("hello")];
+    @type:"Nothing" intersect(Float(), onestring1);
+    S[] ones1 = ["hello"];
+    @type:"Nothing" intersect(Float(), ones1);
+    {String*} onestring2 = [String("hello")];
+    @type:"Intersection.Float&Iterable<Intersection.String,Null>" intersect(Float(), onestring2);
+    {S*} ones2 = ["hello"];
+    @type:"Intersection.Float&Iterable<String,Null>" intersect(Float(), ones2);
     @type:"Nothing" intersect(Float(), ["hello"]);
     @type:"Nothing" intersect(I({"hello"}), I({}));
     
@@ -147,11 +151,11 @@ class Intersection() {
     
     Integer m1 = max([1, 2, 3]);
     Null m2 = max([]);
-    Integer? m3 = max(join([],[1, 2, 3]));
+    Integer? m3 = max(concatenate([],[1, 2, 3]));
     Integer? m4 = max({1, 2, 3}.filter((Integer i) => i>0));
     @type:"Integer" max([1, 2, 3]);
     @type:"Null" max([]);
-    @type:"Null|Integer" max(join([],[1, 2, 3]));
+    @type:"Null|Integer" max(concatenate([],[1, 2, 3]));
     @type:"Null|Integer" max({1, 2, 3}.filter((Integer i) => i>0));
     
     interface Multi<out X, out Y> {}
@@ -176,4 +180,28 @@ interface IntersectionCanonicalization {
     interface D satisfies Contra<D> {}
     Inv<C&D&Contra<C|D>> foo2(Inv<C&D> inv) => inv;
 
+}
+
+interface MyMutableList<Element> satisfies List<Element> {}
+
+class Wrapper() {
+    
+    interface Interface of SubInterface {}
+    interface SubInterface satisfies Interface {}
+    
+    class SubImpl() satisfies SubInterface {}
+    
+    class OtherClass() {}
+    
+    alias Element => SubImpl|OtherClass;
+    
+    MyMutableList<Element> elements = nothing;
+    
+    void recurse(SubInterface&Element element) {
+        for (elem in elements.takeWhile((Element e) => true)) {
+            if (is SubInterface elem) {
+                recurse(elem);
+            }
+        }
+    }
 }

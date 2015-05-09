@@ -67,7 +67,7 @@
         <section id="classloaders">
             <title>Module isolation for the Java platform</title>
         
-            <para>In the JVM environment, Each version of each module is loaded 
+            <para>In the JVM environment, each version of each module is loaded 
             using a different class loader. Classes inside a module have access 
             to other classes in the same module and to classes belonging to 
             modules that are explicitly imported in the module descriptor. 
@@ -166,10 +166,14 @@
         <comment><para>Note: the default module is intended only as a 
         convenience for experimental code.</para></comment>
         
+        <para>A package or compilation unit may belong to only one module.
+        No more than one module descriptor may occur in the containing
+        directories of a compilation unit.</para> 
+        
         <para>Thus, the structure of the source directory containing the 
         module <literal>org.hello</literal> might be the following:</para>
         
-        <programlisting><![CDATA[source/
+        <screen><![CDATA[source/
     org/
         hello/
             module.ceylon      //the module descriptor
@@ -178,7 +182,7 @@
             default/
                 DefaultHello.ceylon
             personalized/
-                PersonalizedHello.ceylon]]></programlisting>
+                PersonalizedHello.ceylon]]></screen>
                 
         <para>The source code for multiple modules may be contained in a
         single source directory.</para>
@@ -212,8 +216,8 @@
         <itemizedlist>
             <listitem>
                 <para>the first element of the module name must be a top-level
-                internet domain name, and the second element of the module 
-                name must be a second-level domain of the given top-level domain 
+                internet domain name, and the second element of the module name 
+                must be a second-level domain of the given top-level domain 
                 owned by the organization distributing the module, and.</para>
             </listitem>
             <listitem>
@@ -232,7 +236,7 @@
             <title>Module names and version identifiers</title>
             
             <para>A module <emphasis>name</emphasis> is a period-separated
-            list of lowercase identifiers, for example:</para>
+            list of initial lowercase identifiers, for example:</para>
             
             <screen>ceylon.language</screen>
             <screen>org.hibernate</screen>
@@ -242,20 +246,27 @@
             this case, <literal>hibernate.org</literal>). The namespace
             <literal>ceylon</literal> is reserved for Ceylon SDK modules. The 
             namespace <literal>java</literal> is reserved for modules 
-            belonging to the Java SDK.</para>
+            belonging to the Java SDK. The namespace <literal>default</literal>
+            is reserved for the default module.</para>
             
             <para>It is highly recommended, but not required, that every 
             user-written module have at least three identifiers in its name. 
             Therefore, <literal>org.hibernate.orm</literal> is strongly
             preferred to <literal>org.hibernate</literal>.</para>
             
-            <para>Any package whose name begins with the module name belongs
-            to the module, for example, the packages:</para>
-    
+            <para>Modules may not be "nested". That is, the list of identifiers 
+            forming the name of a module may not be a prefix of the list of 
+            identifiers forming the name of another module.</para>
+            
+            <para>A package belongs to a module if the list of identifiers 
+            forming the name of the module is a prefix of the list of 
+            identifiers forming the name of the package. For example, the 
+            packages:</para>
+            
             <screen>ceylon.language</screen>
             <screen>ceylon.language.assertion</screen>
-            <screen>ceylon.language.model</screen>
-            <screen>ceylon.language.model.declaration</screen>
+            <screen>ceylon.language.meta</screen>
+            <screen>ceylon.language.meta.declaration</screen>
             
             <para>belong to the module <literal>ceylon.language</literal>. The 
             packages:</para>
@@ -295,7 +306,7 @@
             the module name and version identifier. A module archive name is of 
             the following standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</synopsis>
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</screen>
             
             <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
             is the full name of the module, and 
@@ -311,7 +322,7 @@
             <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
             following standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</synopsis>
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</screen>
             
             <para>For example:</para>
             
@@ -327,7 +338,7 @@
             from the module name and version identifier. A module script name is of 
             the following standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</synopsis>
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</screen>
             
             <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
             is the full name of the module, and 
@@ -347,7 +358,7 @@
             <para>A <emphasis>source archive name</emphasis> is of the following 
             standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</synopsis>
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</screen>
             
             <para>For example:</para>
             
@@ -364,14 +375,14 @@
             <para>A <emphasis>documentation archive name</emphasis> is of the following 
             standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.zip</synopsis>
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.doc.zip</screen>
             
             <para>For example:</para>
             
-            <screen>ceylon.language-1.0.1.zip</screen>
-            <screen>org.hibernate-3.0.0.beta.zip</screen>
+            <screen>ceylon.language-1.0.1.doc.zip</screen>
+            <screen>org.hibernate-3.0.0.beta.doc.zip</screen>
     
-            <para>The default module has no version, its documentation archive name is <literal>default.zip</literal></para>
+            <para>The default module has no version, its documentation archive name is <literal>default.doc.zip</literal></para>
             
         </section>
         
@@ -535,7 +546,7 @@
             <para>Thus, the structure of the documentation archive for the module
             <literal>org.hello</literal> might be the following:</para>
             
-            <screen><![CDATA[org.hello-1.0.0.zip
+            <screen><![CDATA[org.hello-1.0.0.doc.zip
     module-doc/
         .resources/
             ...
@@ -592,7 +603,7 @@
             source archives, and documentation archives. The address of an artifact 
             belonging to the repository adheres to the following standard form:</para>
             
-            <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></synopsis>
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></screen>
             
             <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
             is the filesystem path or URL of the repository,
@@ -604,7 +615,7 @@
             <para>The default module having no version, its access path does not 
             contain the version.</para>
     
-            <synopsis><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></synopsis>
+            <screen><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></screen>
             
             <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal>,
             module script, source archive <literal>ceylon.language-1.0.1.src</literal>,
@@ -614,7 +625,7 @@
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</screen>        
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.js</screen>
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.src</screen>
-            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.zip</screen>
+            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.doc.zip</screen>
             
             <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>,
             source archive <literal>org.hibernate-3.0.0.beta.src</literal>, and 
@@ -624,7 +635,7 @@
             
             <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.car</screen>
             <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.src</screen>
-            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.zip</screen>
+            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.doc.zip</screen>
             
             <para>The module archive <literal>org.h2-1.2.141.car</literal> and legacy 
             archive <literal>org.h2-1.2.141.jar</literal> belonging to the repository 
@@ -639,7 +650,7 @@
             of the archive. The address of a checksum file adheres to the following standard 
             form:</para>
             
-            <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</synopsis>
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</screen>
             
             <para>The compiler or module runtime verifies the checksum after downloading
             the archive from the module repository.</para>
@@ -649,7 +660,7 @@
             <emphasis>module documentation directory</emphasis>, a directory with address 
             adhering to the following standard form:</para>
             
-            <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/module-doc/</synopsis>
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/module-doc/</screen>
             
             <para>For example, the home page for the documentation of the module
             <literal>org.hibernate</literal> is:</para>
@@ -673,7 +684,7 @@
             <para>The package descriptor is optional for unshared packages.</para>
             
             <programlisting>"The typesafe query API."
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 shared package org.hibernate.query;</programlisting>
     
         </section>
@@ -705,6 +716,10 @@ shared package org.hibernate.query;</programlisting>
             
             <comment><para>Note: this enables interoperation with Maven.</para></comment>
             
+            <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
+            module <literal>ceylon.language</literal>. The language module is always
+            implicitly imported.</para></comment>
+            
             <para>The string literal after the imported module name specifies the version 
             of the imported module.</para>
             
@@ -730,14 +745,14 @@ shared package org.hibernate.query;</programlisting>
             module descriptor for <literal>x</literal> must be <literal>shared</literal>.</para>
             
             <programlisting>"The best-ever ORM solution!"
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 module org.hibernate "3.0.0.beta" {
     shared import ceylon.language "1.0.1";
     import javax.sql "4.0";
 }</programlisting>
             
             <programlisting>"The test suite for Hibernate"
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 module org.hibernate.test "3.0.0.beta" {
     import org.hibernate "3.0.0.beta";
     TestSuite().run();
@@ -827,7 +842,7 @@ module org.hibernate.test "3.0.0.beta" {
         <para>The command line tools expect the following format for a versioned
         module name:</para>
         
-        <programlisting><emphasis>&lt;module&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></programlisting>
+        <screen><emphasis>&lt;module&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></screen>
         
         <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
         is the full name of the module, and 
@@ -879,7 +894,7 @@ module org.hibernate.test "3.0.0.beta" {
         module that we are running.</para>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylon -rep http://jboss.org/ceylon/modules \
@@ -972,7 +987,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -1039,7 +1054,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonp org.hibernate/3.0.0.beta
@@ -1120,7 +1135,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -1192,7 +1207,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>. The default output
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output
         module repository is <literal>modules</literal>.</para>
         
         <programlisting>ceylonr org.hibernate/3.0.0.beta org.hibernate.test/3.0.0.beta org.hibernate.example/3.0.0.beta \
@@ -1235,7 +1250,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>. The default output 
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output 
         source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonf org.hibernate.example/3.0.0.beta \

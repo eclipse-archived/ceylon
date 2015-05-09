@@ -40,7 +40,7 @@ interface TypeInference {
         void m(){
             @type:"unknown" @error value n = test();
         }
-        @type:"unknown" function f() {
+        @type:"unknown" @error function f() {
             @error return test();
         }
         function test(){
@@ -68,27 +68,28 @@ interface TypeInference {
         
         @error @type:"unknown" value x = burp;
         
-        @type:"unknown" value y {
+        @type:"unknown" @error value y {
             @error return burp;
         }
         
-        @type:"unknown" function f() {
+        @type:"unknown" @error function f() {
             @error return burp;
         }
         
         @error @type:"unknown" function g() => burp;
         
-        @error @type:"unknown" value seq = [ @error burp ].sequence;
+        @error @type:"Sequence<unknown>" value seq = [ @error burp ].sequence();
         
-        @type:"unknown" function createSeq() {
-            @error @type:"unknown" return [ @error hi ].sequence;
+        @type:"Sequence<unknown>" @error function createSeq() {
+            @error @type:"unknown" return [ @error hi ].sequence();
         }
         
         Sequence<T> singleton<T>(T element) {
             return [element];
         }
         
-        @type:"unknown" @error value sing = singleton(hi);
+        @type:"Sequence<Nothing>" @error 
+        value sing = singleton(hi);
         
         value hi = "hi";
         
@@ -149,4 +150,15 @@ interface TypeInference {
         };
     }
 
+}
+
+void testObjectNarrowing<T>() {
+    object foo {}
+    if (is T foo) {
+        @type:"Basic&T" value f = foo;
+    }
+    @type:"Entry<Basic,Basic>" value entry = foo->foo;
+    @type:"Iterable<Basic,Nothing>" value iterable = {foo};
+    @type:"Tuple<Basic,Basic,Empty>" value tuple = [foo];
+    @error if (is Category foo) {}
 }

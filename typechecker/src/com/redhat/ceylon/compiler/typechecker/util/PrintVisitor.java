@@ -109,6 +109,18 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 print(" => " + d);
             }
         }
+        if (node instanceof Tree.Outer) {
+            Declaration d = ((Tree.Outer) node).getDeclarationModel();
+            if (d!=null) {
+                print(" => " + d);
+            }
+        }
+        if (node instanceof Tree.SelfExpression) {
+            Declaration d = ((Tree.SelfExpression) node).getDeclarationModel();
+            if (d!=null) {
+                print(" => " + d);
+            }
+        }
         if (node instanceof Tree.Declaration) {
             Declaration d = ((Tree.Declaration) node).getDeclarationModel();
             if (d!=null) {

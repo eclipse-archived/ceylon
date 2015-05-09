@@ -1,7 +1,7 @@
 class ControlStructures() {
     Object something = "hello";
     String? name = null;
-    String[] names = {};
+    String[] names = [];
     Entry<String,String>[] entries = [ "hello" -> "world" ];
     
     void print(String name) {}
@@ -16,12 +16,12 @@ class ControlStructures() {
     
     @error if (is Anything something) {}
     @error if (is Object something) {}
-    @error if (is String s = "hello") {}
-    @error if (is Object s = "hello") {}
+    @error if (is String sh = "hello") {}
+    @error if (is Object sh = "hello") {}
     
     variable String? var = "gavin"; 
     @error if (exists var) {}
-    if (exists v = var) {}
+    if (exists vv = var) {}
     
     if (nonempty names) {
         print(names.first);
@@ -37,7 +37,7 @@ class ControlStructures() {
         }
     }
     
-    variable String[] varseq = {};
+    variable String[] varseq = [];
     @error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}
     
@@ -60,6 +60,8 @@ class ControlStructures() {
         print(n);
     }
     
+    for (i in (0..10).by(3)) {}
+    
     /*for (value n in names) {
         print(n);
     }*/
@@ -76,36 +78,41 @@ class ControlStructures() {
         print(key + "->" + item);
     }*/
     
-    class Transaction() satisfies Closeable {
+    class Transaction() satisfies Obtainable {
         shared void rollbackOnly() {}
-        shared actual void open() {}
-        shared actual void close(Exception? e) {}
+        shared actual void obtain() {}
+        shared actual void release(Throwable? e) {}
     }
+    Transaction transaction() => Transaction();
+    
+    try (transaction()) {}
 
-    try (Transaction()) {}
-
-    try (tx = Transaction()) {
+    try (tx = transaction()) {
         tx.rollbackOnly();
     }
     
-    Transaction tx = Transaction();
-    function trans() { return tx; }
-    try (@error tx) {}
-    try (@error t = tx) {}
-    try (@error Transaction t = tx) {}
-    try (Transaction()) {}
-    try (t = Transaction()) {}
-    try (Transaction t = Transaction()) {}
-    try (@error trans()) {}
-    try (@error t = trans()) {}
-    try (@error Transaction t = trans()) {}
+    class FileHandle() satisfies Destroyable {
+        shared Integer tell() => nothing;
+        shared actual void destroy(Throwable? e) {}
+    }
+    FileHandle fh = FileHandle();
+    function file() { return fh; }
+    try (@error fh) {}
+    try (@error f = fh) {}
+    try (@error FileHandle f = fh) {}
+    try (FileHandle()) {}
+    try (f = FileHandle()) {}
+    try (FileHandle f = FileHandle()) {}
+    try (@error file()) {}
+    try (@error f = file()) {}
+    try (@error FileHandle f = file()) {}
     
     try {
         print("hello");
     }
     catch (e) {
         @type:"String" value msg = e.message;
-        @type:"Null|Exception" value cause = e.cause;
+        @type:"Null|Throwable" value cause = e.cause;
     }
 
     class Exception1() extends Exception() {}
@@ -116,9 +123,9 @@ class ControlStructures() {
     }
     catch (@type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
         @type:"String" value msg = e.message;
-        @type:"Null|Exception" value cause = e.cause;
+        @type:"Null|Throwable" value cause = e.cause;
     }
-    catch (@error String s) {
+    catch (@error String estr) {
         
     }
     
@@ -146,14 +153,14 @@ class ControlStructures() {
     
     @error try ("hello") {}
     @error try (Exception()) {}
-    try (@error s = "hello") {}
-    try (@error e = Exception()) {}
-    try (@error Object t = Transaction()) {}
+    try (@error s1 = "hello") {}
+    try (@error e1 = Exception()) {}
+    try (@error Object t1 = Transaction()) {}
     try (@error Transaction trx) {}
     
-    try (t = Transaction()) {
+    try (f = FileHandle()) {
     	//do something
-    	t.rollbackOnly();
+    	f.tell();
     }
     catch (Exception e) {
     	@error t.rollbackOnly();
@@ -167,11 +174,11 @@ class ControlStructures() {
     variable Transaction vtt = Transaction();
     try (@error vtt) {}
     
-    try (t1 = Transaction(), 
-         Transaction(), 
-         Transaction t2=Transaction()) {
-        Transaction t3 = t1;
-        Transaction t4 = t2;
+    try (t1 = FileHandle(), 
+        FileHandle(), 
+        FileHandle t2=FileHandle()) {
+        FileHandle t3 = t1;
+        FileHandle t4 = t2;
     }
     
     @error while ("hello") {}
@@ -293,4 +300,46 @@ void exy(EX val) {
     @error switch (val)
     case (ex) { print("x"); }
     case (ey) { print("y"); }
+}
+
+shared void unreachableif() {
+    while (true) {}
+    @error if (3==1) {} else {}
+}
+shared void reachableif() {
+    while (1==2) {}
+    if (3==1) {} else {}
+}
+shared void unreachablewhile() {
+    if (3==1) { throw; } else { return; }
+    @error while (true) {}    
+}
+shared void reachablewhile() {
+    if (3==1) { throw; } else {}
+    while (true) {}    
+}
+shared void unreachablefor() {
+    if (true) { return; }
+    @error for (c in "hello") {}    
+}
+shared void reachablefor() {
+    if (false) { /*@error*/ return; } //TODO?
+    for (c in "hello") {}    
+}
+
+void superfluousValue() {
+    class Transaction() satisfies Destroyable {
+        shared actual void destroy(Throwable? error) {}
+    }
+    if (exists value arg = process.arguments.first) {
+        for (a in arg) {}
+    }
+    try (value xxx = Transaction()) {
+        for (value s in "fsfgsdf") {
+            
+        }
+    }
+    catch (value e) {
+        e.printStackTrace();
+    }
 }

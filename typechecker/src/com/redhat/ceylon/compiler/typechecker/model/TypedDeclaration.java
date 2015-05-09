@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -17,9 +19,19 @@ public abstract class TypedDeclaration extends Declaration {
     private boolean uncheckedNullType = false;
     private Boolean unboxed;
     private boolean typeErased;
+    private boolean untrustedType;
+    private boolean dynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
     
+    public boolean isDynamicallyTyped() {
+        return dynamicallyTyped;
+    }
+    
+    public void setDynamicallyTyped(boolean isDynamicallyTyped) {
+        this.dynamicallyTyped = isDynamicallyTyped;
+    }
+        
     public TypeDeclaration getTypeDeclaration() {
     	if (type==null) {
     	    return null;
@@ -49,6 +61,11 @@ public abstract class TypedDeclaration extends Declaration {
         }
     }
 
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
+            List<ProducedType> typeArguments) {
+        return getProducedTypedReference(qualifyingType, typeArguments, false);
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments
@@ -62,14 +79,31 @@ public abstract class TypedDeclaration extends Declaration {
      * @param typeArguments arguments to the type
      *                      parameters of this 
      *                      declaration
+     * @param assignment the reference occurs on the
+     *                   LHS of an assignment
      */
     public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
-            List<ProducedType> typeArguments) {
-    	//TODO: take into account sequenced type arguments
-        ProducedTypedReference ptr = new ProducedTypedReference();
+            List<ProducedType> typeArguments, boolean assignment) {
+        ProducedTypedReference ptr = 
+                new ProducedTypedReference(!assignment, assignment);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
-        ptr.setTypeArguments(arguments(this, qualifyingType, typeArguments));
+        ptr.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
+        return ptr;
+    }
+    
+    /**
+     * The type of this declaration, as viewed from within
+     * itself.
+     */
+    public ProducedTypedReference getTypedReference() {
+    	ProducedTypedReference ptr = new ProducedTypedReference(true, false);
+        if (isMember()) {
+            ptr.setQualifyingType(((ClassOrInterface) getContainer()).getType());
+        }
+        ptr.setDeclaration(this);
+        ptr.setTypeArguments(getTypeArgumentMap(this, ptr.getQualifyingType(), 
+        		Collections.<ProducedType>emptyList()));
         return ptr;
     }
 
@@ -77,6 +111,11 @@ public abstract class TypedDeclaration extends Declaration {
     public ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments) {
         return getProducedTypedReference(pt, typeArguments);
+    }
+    
+    @Override
+    public ProducedReference getReference() {
+    	return getTypedReference();
     }
 
     @Override
@@ -116,6 +155,14 @@ public abstract class TypedDeclaration extends Declaration {
         this.typeErased = typeErased; 
     }
 
+    public Boolean getUntrustedType() { 
+        return untrustedType; 
+    }
+
+    public void setUntrustedType(Boolean untrustedType) { 
+        this.untrustedType = untrustedType; 
+    }
+
     public boolean hasUncheckedNullType() {
         return uncheckedNullType;
     }
@@ -123,5 +170,48 @@ public abstract class TypedDeclaration extends Declaration {
     public void setUncheckedNullType(boolean uncheckedNullType) {
         this.uncheckedNullType = uncheckedNullType;
     }
-    
+
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        Scope container = getContainer();
+        if (container instanceof Declaration) {
+            ret = (37 * ret) + ((Declaration) container).hashCodeForCache();
+        }
+        else {
+            ret = (37 * ret) + container.hashCode();
+        }
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        ret = (37 * ret) + Objects.hashCode(getName());
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if (o == null || o instanceof TypedDeclaration == false) {
+            return false;
+        }
+        TypedDeclaration b = (TypedDeclaration) o;
+        Scope container = getContainer();
+        if (container instanceof Declaration) {
+            if (!((Declaration) container).equalsForCache(b.getContainer())) {
+                return false;
+            }
+        }
+        else {
+            if (!container.equals(b.getContainer())) {
+                return false;
+            }
+        }
+        if (!Objects.equals(getQualifier(), b.getQualifier())) {
+            return false;
+        }
+        return Objects.equals(getName(), b.getName());
+    }
+
+    // implemented in Value
+    public boolean isSelfCaptured() {
+        return false;
+    }
 }

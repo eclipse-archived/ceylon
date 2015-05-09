@@ -4,8 +4,14 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrorOrWarning;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -17,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class UsageVisitor extends Visitor {
 	
-	private ReferenceCounter rc;
+    private ReferenceCounter rc;
 	
 	public UsageVisitor(ReferenceCounter rc) {
 		this.rc = rc;
@@ -27,8 +33,9 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         if (!referenced(that)) {
-    		that.addUsageWarning("import is never used: " + 
-    				that.getDeclarationModel().getName());
+            that.addUsageWarning(Warning.unusedImport,
+                "import is never used: '" + 
+                    that.getDeclarationModel().getName() + "'");
     	}
     }
 
@@ -36,12 +43,10 @@ public class UsageVisitor extends Visitor {
 		Declaration d = that.getDeclarationModel();
         boolean referenced=true;
         if (d!=null) {
-        	referenced = rc.referenced(d);
-        	if (d instanceof Functional) {
-        		if (((Functional) d).isAbstraction()) {
-        			for (Declaration od: ((Functional) d).getOverloads()) {
-        				referenced=referenced||rc.referenced(od);
-        			}
+        	referenced = rc.isReferenced(d);
+        	if (isAbstraction(d)) {
+        		for (Declaration od: ((Functional) d).getOverloads()) {
+        			referenced=referenced||rc.isReferenced(od);
         		}
         	}
         	ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
@@ -62,14 +67,28 @@ public class UsageVisitor extends Visitor {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
         if (declaration!=null && 
+                declaration.getName()!=null &&
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
-        		!rc.referenced(declaration) &&
+        		!rc.isReferenced(declaration) &&
         		!declaration.isParameter() &&
         		!(that instanceof Tree.Variable)) {
-            that.addUsageWarning("declaration is never used: " + 
-        		    declaration.getName());
+            that.addUsageWarning(Warning.unusedDeclaration,
+                    "declaration is never used: '" + 
+                        declaration.getName() + "'");
         }
+        
     }
 
+    @Override
+    public void visit(Tree.Term that) {
+        super.visit(that);
+        if (!hasErrorOrWarning(that)) {
+            ProducedType type = that.getTypeModel();
+            if (!isTypeUnknown(type) && type.isNothing()) {
+                that.addUsageWarning(Warning.expressionTypeNothing,
+                        "expression has type 'Nothing'");
+            }
+        }
+    }
 }

@@ -217,3 +217,114 @@ class SubWithAssignment()
     @error count2 = 10;
     @error count3 = 15;
 }
+
+abstract class WithInnerSubClass() {
+    shared formal String name;
+    class SubClass() extends WithInnerSubClass() {
+        name => "Gavin";
+    }
+}
+
+abstract class WithInnerSubClass2() {
+    shared variable default String name="";
+    class SubClass() extends WithInnerSubClass2() {
+        @error name = "Gavin";
+        @error name = "Tom";
+    }
+}
+
+abstract class WithInnerSubClass3() {
+    shared variable formal String name;
+    class SubClass() extends WithInnerSubClass2() {
+        @error name = "Gavin";
+        @error name = "Tom";
+    }
+}
+
+class Bug1(String s) {
+    equals = s.equals;
+    string=equals("Y") then "Yay!" else "Nay...";
+}
+
+class Bug2(String s) {
+    equals(Object that) => s.equals(that);
+    string=equals("Y") then "Yay!" else "Nay...";
+}
+
+class Bug3(String s) {
+    @error equals => s.equals;
+}
+
+
+abstract class Super0() {
+    shared formal String foo(String x)(Integer i);
+}
+class Mid1() extends Super0() {
+    shared actual default String foo(String x)(Integer i) => "";
+}
+class OkSub1() extends Super0() {
+    foo(String x)(Integer i) => x;
+}
+class OkSub2() extends Super0() {
+    foo(String x) => (Integer i) => x;
+}
+class OkSub3() extends Super0() {
+    foo = (String x)(Integer i) => x;
+}
+class OkSub4() extends Mid1() {
+    foo(String x)(Integer i) => x;
+}
+class OkSub5() extends Mid1() {
+    foo(String x) => (Integer i) => x;
+}
+class OkSub6() extends Mid1() {
+    foo = (String x)(Integer i) => x;
+}
+class BadSub1() extends Super0() {
+    @error foo(String x) => x;
+}
+class BadSub2() extends Mid1() {
+    @error foo(String x) => x;
+}
+class BadSub3() extends Super0() {
+    @error foo = (Integer i) => x;
+}
+class BadSub4() extends Mid1() {
+    @error foo = (Integer i) => x;
+}
+
+void moreRefinements() {
+    class X() {
+        shared default String foo()(String s) => s;
+    }
+    
+    class Y() extends X() {
+        @error shared actual String(String) foo() => (String s) => s;
+    }
+    
+    class Z() extends X() {
+        foo() => (String s) => s;
+    }
+    
+    class W() extends X() {
+        foo = ()(String s) => s;
+    }
+}
+
+void withQualifiedType() {
+    interface Foo {
+        shared class Bar() {}
+        shared formal Bar bar;
+    }
+    
+    class Baz() satisfies Foo {
+        Foo foo = nothing; 
+        bar => foo.bar;  
+    }
+}
+
+class WithConstructor 
+        satisfies Category<Boolean> {
+    shared new () {}
+    contains(Boolean element) => true;
+}

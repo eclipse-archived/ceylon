@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TupleType;
 
 /**
  * Detects recursive type aliases and eliminates the
@@ -22,22 +23,25 @@ public class AliasVisitor extends Visitor {
 
     private void check(Node that, ProducedType t, TypeDeclaration d) {
         if (t!=null) {
-            List<TypeDeclaration> l = t.isRecursiveTypeAliasDefinition(singleton(d));
-            if (!l.isEmpty()) {
-                that.addError("type alias is circular: definition of " + 
-                        d.getName() + " is recursive, involving " + typeList(l));
+            List<TypeDeclaration> list = 
+                    t.isRecursiveTypeAliasDefinition(singleton(d));
+            if (!list.isEmpty()) {
+                that.addError("type alias is circular: definition of '" + 
+                        d.getName() + 
+                        "' is recursive, involving " + 
+                        typeList(list));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
-                d.getBrokenSupertypes().add(t);
+                d.addBrokenSupertype(t);
             }
         }
     }
 
-    public static String typeList(List<TypeDeclaration> l) {
+    public static String typeList(List<TypeDeclaration> list) {
         StringBuffer sb = new StringBuffer();
-        for (TypeDeclaration td: l) {
-            sb.append(td.getName()).append(", ");
+        for (TypeDeclaration td: list) {
+            sb.append("'").append(td.getName()).append("', ");
         }
         sb.setLength(sb.length()-2);
         return sb.toString();
@@ -45,7 +49,6 @@ public class AliasVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -54,11 +57,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        super.visit(that);
         Tree.ClassSpecifier ts = that.getClassSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -67,11 +70,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -80,6 +83,25 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
-
+    
+    // Necessary in order to resolve a nasty bug #867 
+    // resulting from caching of type aliases:
+    
+    @Override
+    public void visit(TupleType that) {
+        super.visit(that);
+        that.setTypeModel(that.getTypeModel().resolveAliases());
+    }
+    
+    @Override
+    public void visit(Tree.FunctionType that) {
+        super.visit(that);
+        ProducedType rt = that.getTypeModel();
+        if (rt!=null) {
+            that.setTypeModel(rt.resolveAliases());
+        }
+    }
+    
 }

@@ -16,11 +16,13 @@ public class Package
 
     private List<String> name;
     private Module module;
-    private List<Unit> units = new ArrayList<Unit>();
+    private List<Unit> units = 
+            new ArrayList<Unit>();
     private boolean shared = false;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
+    private List<Annotation> annotations = 
+            new ArrayList<Annotation>();
     private Unit unit;
-    private String nameAsStringCache;
+    private String nameAsString;
     
     public Module getModule() {
         return module;
@@ -47,12 +49,14 @@ public class Package
     public void addUnit(Unit unit) {
         synchronized (units) {
             units.add(unit);
+            members=null;
         }
     }
     
     public void removeUnit(Unit unit) {
         synchronized (units) {
             units.remove(unit);
+            members=null;
         }
     }
     
@@ -64,10 +68,28 @@ public class Package
         this.shared = shared;
     }
     
+    private List<Declaration> members;
+    
     @Override
     public List<Declaration> getMembers() {
-        List<Declaration> result = new ArrayList<Declaration>();
-        for (Unit unit: getUnits()) {
+        synchronized (units) {
+            //return getMembersInternal();
+            if (members==null) {
+                members = getMembersInternal();
+            }
+            return members;
+        }
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        members=null;
+    }
+    
+    private List<Declaration> getMembersInternal() {
+        List<Declaration> result = 
+                new ArrayList<Declaration>();
+        for (Unit unit: units) {
             for (Declaration d: unit.getDeclarations()) {
                 if (d.getContainer().equals(this)) {
                     result.add(d);
@@ -88,48 +110,47 @@ public class Package
     }
 
     public String getNameAsString() {
-        if(nameAsStringCache == null){
-            nameAsStringCache = formatPath(name);
+        if (nameAsString == null){
+            nameAsString = formatPath(name);
         }
-        return nameAsStringCache;
+        return nameAsString;
     }
 
     @Override
     public String toString() {
         return "Package[" + getNameAsString() + "]";
     }
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return getName();
-    }
-
+    
     @Override
     public String getQualifiedNameString() {
         return getNameAsString();
     }
-
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis);
-    }
-
+    
     /**
      * Search only inside the package, ignoring imports
      */
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis);
+    public Declaration getDirectMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(getMembers(), 
+                name, signature, ellipsis);
     }
 
     @Override
     public ProducedType getDeclaringType(Declaration d) {
+        if (d.isClassMember()) {
+            Class containingAnonClass =
+                    (Class) d.getContainer();
+            if (containingAnonClass.isAnonymous()) {
+                return containingAnonClass.getType();
+            }
+        }
         return null;
     }
 
@@ -138,17 +159,19 @@ public class Package
      * imports
      */
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, 
+            String name, List<ProducedType> signature, 
+            boolean ellipsis) {
         //this implements the rule that imports hide 
         //toplevel members of a package
         //TODO: would it be better to look in the given unit 
         //      first, before checking imports?
-        Declaration d = unit.getImportedDeclaration(name, signature, ellipsis);
+        Declaration d = unit.getImportedDeclaration(name, 
+                signature, ellipsis);
         if (d!=null) {
             return d;
         }
-        d = getDirectMemberOrParameter(name, signature, ellipsis);
+        d = getDirectMember(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
@@ -166,33 +189,61 @@ public class Package
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d) ) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
-            }
-        }
+    public Map<String,DeclarationWithProximity> 
+    getMatchingDeclarations(Unit unit, String startingWith, 
+            int proximity) {
+        Map<String, DeclarationWithProximity> result = 
+                getMatchingDirectDeclarations(startingWith, proximity);
         if (unit!=null) {
-            result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
+            result.putAll(unit.getMatchingImportedDeclarations(startingWith, 
+                    proximity));
         }
+        Map<String,DeclarationWithProximity> importableDeclarations = 
+                getModule().getAvailableDeclarations(startingWith);
         for (Map.Entry<String, DeclarationWithProximity> e: 
-        	getModule().getAvailableDeclarations(startingWith).entrySet()) {
+        	    importableDeclarations.entrySet()) {
     		boolean already = false;
-        	for (DeclarationWithProximity dwp: result.values()) {
-        		if (dwp.getDeclaration().equals(e.getValue().getDeclaration())) {
+        	DeclarationWithProximity existing = e.getValue();
+            String name = e.getKey();
+            for (DeclarationWithProximity importable: result.values()) {
+        		if (importable.getDeclaration()
+        		        .equals(existing.getDeclaration())) {
         			already = true;
         			break;
         		}
         	}
-    		if (!already) result.put(e.getKey(), e.getValue());
+    		if (!already) {
+                result.put(name, existing);
+    		}
+        }
+        if ("Nothing".startsWith(startingWith)) {
+            result.put("Nothing", 
+                    new DeclarationWithProximity(new NothingType(unit), 
+                            proximity+100));
+        }
+        return result;
+    }
+
+    public Map<String, DeclarationWithProximity> getMatchingDirectDeclarations(
+            String startingWith, int proximity) {
+        Map<String,DeclarationWithProximity> result = 
+                new TreeMap<String,DeclarationWithProximity>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && 
+                    !isOverloadedVersion(d) && 
+                    isNameMatching(startingWith, d)) {
+                result.put(d.getName(unit), 
+                        new DeclarationWithProximity(d, 
+                                proximity+1));
+            }
         }
         return result;
     }
 
     public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, 
     		String startingWith, List<Import> imports, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		!isOverloadedVersion(d) &&
@@ -207,7 +258,8 @@ public class Package
                 }
                 if (!already) {
                     result.put(d.getName(), 
-                    		new DeclarationWithProximity(d, proximity));
+                    		new DeclarationWithProximity(d, 
+                    		        proximity));
                 }
             }
         }
@@ -221,13 +273,16 @@ public class Package
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        // use the cached version, profiling says 
+        // List.hashCode is expensive
+        return getNameAsString().hashCode();
     }
     
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Package) {
-            return ((Package) obj).getName().equals(getName());
+            return ((Package) obj).getNameAsString()
+                    .equals(getNameAsString());
         }
         else {
             return false;

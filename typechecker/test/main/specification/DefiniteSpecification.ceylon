@@ -48,7 +48,7 @@ interface DefiniteSpecification {
     
     void goodMethodWithRecursiveSpec() {
         X x {
-            return x;
+            @error return x;
         }
         doSomething();
         use(x);
@@ -663,4 +663,53 @@ interface DefiniteSpecification {
         String name = "gavin";
     }
 
+}
+
+void localFatArrows() {
+    @error Integer fi => foo;
+    Integer fo { @error return foo; }
+    @error Integer foo => foo;
+    Integer bar() => bar();
+    @error Integer baz = baz;
+    @error Integer qux() = qux();
+    Integer fee { @error return fee; }
+    Integer fum() { return fum(); }
+}
+class LocalFatArrows() {
+    @error Integer fi => foo;
+    Integer fo { @error return foo; }
+    @error Integer foo => foo;
+    Integer bar() => bar();
+    @error Integer baz = baz;
+    @error Integer qux() = qux();
+    Integer fee { @error return fee; }
+    Integer fum() { return fum(); }
+}
+
+void moreDefiniteSpec() {
+    class Count(shared Integer count){}
+    void fold2() {}
+    Integer integer=0;
+    @error integer++;
+    @error print(integer=10);
+    @error print++;
+    @error print=nothing;
+    @error print(print=nothing);
+    @error fold2++;
+    @error fold2=nothing;
+    @error print(fold2=nothing);
+    @error Count(12).count++;
+    @error Count(12).count=1;
+    @error print(Count(12).count=1);
+
+}
+
+class Trompon() {
+    shared String name;
+    this.name = "Trompon";
+    print(name);
+    print(this.name);
+    string=>name;
+    shared String getName();
+    this.getName() => name.uppercased;
 }

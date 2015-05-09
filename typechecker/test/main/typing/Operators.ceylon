@@ -1,4 +1,3 @@
-@error;
 class Operators() {
     
     class X() {}
@@ -44,7 +43,7 @@ class Operators() {
     
     @type:"Float" value x9 = 1 + 1.0;
     
-    @error value x10 = 1.0 * 2.5 ^ -0.5;
+    value x10 = 1.0 * 2.5 ^ (-0.5);
     
     @type:"Boolean" value x11 = !( true || false ) && true;
     
@@ -89,7 +88,8 @@ class Operators() {
     @type:"Operators.X" value x27item = x27.item;
     @type:"Integer" value x27key = x27.key;
     
-    @error value x28 = 0->none;
+    value x28k = 0->none;
+    @error value x28i = none->X();
     
     @type:"Boolean" value x29 = none exists;
     //@type:"Boolean" value x29n = exists none;
@@ -104,7 +104,7 @@ class Operators() {
     //@error @type:"Boolean" value x70n = nonempty {};
     @error @type:"Boolean" value x71 = {"hello"} nonempty;
     //@error @type:"Boolean" value x71n = nonempty {"hello"};
-    String[] strs = {};
+    String[] strs = [];
     @type:"Boolean" value x72 = strs nonempty;
     //@type:"Boolean" value x72n = nonempty strs;
     
@@ -137,7 +137,7 @@ class Operators() {
     
     X[] sequence = [X(), X()];
     String[]? noSequence = null;
-    String[] emp = {};
+    String[] emp = [];
     
     @type:"Null|Operators.X" value x38 = sequence[0];
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
@@ -147,8 +147,8 @@ class Operators() {
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
-    @error value x44 = sequence["hello"*];
-    @error value x44u = sequence[*"hello"];
+    //@error value x44 = sequence["hello"*];
+    //@error value x44u = sequence[*"hello"];
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
@@ -157,23 +157,23 @@ class Operators() {
     
     Sequence<String> helloworld = ["hello", "world"];
     @type:"Sequential<String>" value e45 = emp*.uppercased;
-    @type:"Sequence<Sequential<Character>>" value x46 = helloworld*.sequence;
+    @type:"Sequence<Sequential<Character>>" value x46 = helloworld*.sequence();
     @type:"Sequence<String>" value x47 = helloworld*.uppercased;
-    @type:"Null|Sequential<Character>" value x48 = helloworld[1]?.sequence;
-    @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.sequence;
+    @type:"Null|Sequential<Character>" value x48 = helloworld[1]?.sequence();
+    @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.sequence();
     @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[1]?.normalized;
-    @type:"Null|Iterable<String,Null>" value x512 = helloworld[1]?.split((Character c) => c==' ');
+    @type:"Null|Iterable<String,Nothing>" value x512 = helloworld[1]?.split((Character c) => c==' ');
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
-    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==' ');
+    @type:"Sequence<Iterable<String,Nothing>>" value x522 = helloworld*.split((Character c) => c==' ');
     //@type:"Null|String" value x53 = noSequence?[0]?.normalized;
     //@type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==' ');
     @type:"Sequence<Operators.X>" value x54 = [Operators()]*.X();
 
     {String*} onetwo = {"one", "two"};
     @type:"Sequential<String>" value x61 = onetwo*.uppercased;
-    @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.sequence;
-    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==' ');
+    @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.sequence();
+    @type:"Sequential<Iterable<String,Nothing>>" value x63 = onetwo*.split((Character c) => c==' ');
     
     @type:"Sequential<Operators.X>" value s1 = sequence[1...];
     @type:"Sequential<Operators.X>" value s2 = sequence[...2];
@@ -221,7 +221,7 @@ class Operators() {
     @error X()*.doIt();
     @error X()?.doIt();
     
-    @type:"Empty" value es = {};
+    @type:"Empty" value es = [];
     
     @type:"Null" value nnnn = es[0];
     Null nnnn2 = nnnn;
@@ -254,6 +254,9 @@ class Operators() {
     Integer|Float defaultIon2(Null|Integer|Float x) {
         return x else 0;
     }
+    
+    @type:"Null|Integer"
+    value rangeElement = (-3..10)[5];
 
     Boolean b1 = true;
     Boolean b2 = false;
@@ -267,14 +270,15 @@ class Operators() {
     @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = [esf];
     
     String->Object okEntry;   
-    @error String->Anything brokenEntry1;
+    String->Anything okEntry2;
+    @error Anything->String brokenEntry1;
     @error Null->String brokenEntry2;
     
-    @error value brokenEntry3 = "hello"->null;
-    @error value brokenEntry4 = null->"hello";
+    value okEntry3 = "hello"->null;
+    @error value brokenEntry3 = null->"hello";
     
     @type:"Entry<String,Float|Integer>" 
-    String->Float|Integer okEntry2 = "hello"->(true then 1.0 else 1);
+    String->Float|Integer okEntry4 = "hello"->(true then 1.0 else 1);
 
     Float x=1.0;
     Float result = x>0.0 then x else 0.0;
@@ -366,12 +370,17 @@ class Operators() {
     
     Integer bin1 = $1010_0101;
     Integer bin2 = $1111_0000;
-    Integer bin3 = bin1 and (bin1 not);
+    //Integer bin3 = bin1 and bin2;
+    //Integer bin4 = bin1 and (bin2 or bin1);
     
     Object set = nothing;
-    for (@error me in set) {}
+    @error for (me in set) {}
     {Object*} map = nothing;
-    for (@error k->v in map) {}
+    @error for (k->v in map) {}
+    
+    Cat cat_ = Cat();
+    Boolean incat1 = "" in cat_;
+    @error Boolean incat2 = 1 in cat_;
     
     [String+] strings1 = [""];
     @type:"Null" value null1 = strings1[-1];
@@ -401,3 +410,30 @@ void testScale() {
     @error value s3 = 2.0**"hello";
 }
 
+class Cat() satisfies Category<String> {
+    contains(String string) => !string.empty;
+}
+
+interface MySet<T> satisfies Set<T> given T satisfies Object {}
+void testSetOperators(variable MySet<String> myset, 
+    variable Set<Object> set, 
+    variable Set<Integer> yourset) {
+    @error myset &= myset;
+    @error myset ~= myset;
+    @error myset |= myset;
+    @error myset &= set;
+    @error myset ~= set;
+    @error myset |= set;
+    set &= myset;
+    set ~= myset;
+    set |= myset;
+    set &= set;
+    set ~= set;
+    set |= set;
+    set &= yourset;
+    set ~= yourset;
+    set |= yourset;
+    yourset &= set;
+    yourset ~= set;
+    @error yourset |= set;
+}

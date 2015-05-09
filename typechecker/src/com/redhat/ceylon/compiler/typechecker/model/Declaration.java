@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.erase;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static java.util.Collections.emptyList;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a named, annotated program element:
@@ -18,21 +20,22 @@ public abstract class Declaration
         implements Referenceable, Annotated {
 
 	private String name;
+	private String qualifier;
 	private boolean shared;
 	private boolean formal;
 	private boolean actual;
 	private boolean deprecated;
 	private boolean def;
 	private boolean annotation;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;
     private boolean protectedVisibility;
     private boolean packageVisibility;
     private String qualifiedNameAsStringCache;
-	private boolean nat;
+	private String nativeBackend;
 	private boolean otherInstanceAccess;
+    private DeclarationCompleter actualCompleter;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -70,19 +73,16 @@ public abstract class Declaration
 		this.deprecated = deprecated;
 	}
 
-    @Override
-    public List<Annotation> getAnnotations() {
-        return annotations;
-    }
-
     String toStringName() {
         Scope c = getContainer();
+        String name = getName();
+        if (name==null) name = "";
         if (c instanceof Declaration) {
             return ((Declaration)c).toStringName() + 
-                    "." + getName();
+                    "." + name;
         }
         else {
-            return getName();
+            return name;
         }
     }
     
@@ -91,12 +91,7 @@ public abstract class Declaration
         return getClass().getSimpleName() + 
                 "[" + toStringName() + "]";
     }
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return list(getContainer().getQualifiedName(), getName());
-    }
-
+    
     @Override
     public String getQualifiedNameString() {
         if(qualifiedNameAsStringCache == null){
@@ -124,6 +119,9 @@ public abstract class Declaration
     }
 
     public boolean isActual() {
+        if (actualCompleter != null) {
+            completeActual();
+        }
         return actual;
     }
 
@@ -140,11 +138,15 @@ public abstract class Declaration
     }
 
     public boolean isNative() {
-    	return nat;
+        return getNative() != null;
     }
     
-    public void setNative(boolean nat) {
-    	this.nat=nat;
+    public String getNative() {
+    	return nativeBackend;
+    }
+    
+    public void setNative(String backend) {
+    	this.nativeBackend=backend;
     }
 
     public boolean isDefault() {
@@ -156,9 +158,18 @@ public abstract class Declaration
     }
     
     public Declaration getRefinedDeclaration() {
+        if (actualCompleter != null) {
+            completeActual();
+        }
 		return refinedDeclaration;
 	}
     
+    private void completeActual() {
+        DeclarationCompleter completer = actualCompleter;
+        actualCompleter = null;
+        completer.completeActual(this);
+    }
+
     public void setRefinedDeclaration(Declaration refinedDeclaration) {
 		this.refinedDeclaration = refinedDeclaration;
 	}
@@ -232,6 +243,11 @@ public abstract class Declaration
     	return false;
     }
     
+    @Override
+    public List<Annotation> getAnnotations() {
+        return emptyList();
+    }
+    
     public boolean isStaticallyImportable() {
         return staticallyImportable;
     }
@@ -272,34 +288,135 @@ public abstract class Declaration
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
+    public abstract ProducedReference getReference();
+    
+    protected java.lang.Class<?> getModelClass() {
+        return getClass();
+    }
+    
     @Override
     public boolean equals(Object object) {
-        if(this == object)
+        if (this==object) {
             return true;
-        if(object == null || object.getClass() != getClass())
+        }
+        
+        if (object == null) {
             return false;
+        }
+        
         if (object instanceof Declaration) {
+            if (this.getModelClass() != ((Declaration) object).getModelClass()) {
+                return false;
+            }
             Declaration that = (Declaration) object;
-            String myName = getName();
-            String otherName = that.getName();
-            return myName != null && otherName != null &&
-                    myName.equals(otherName) &&
-                    that.getDeclarationKind()==getDeclarationKind() &&
-                    (getContainer()==null && that.getContainer()==null ||
-                    that.getContainer().equals(getContainer()));
+            String thisName = getName();
+            String thatName = that.getName();
+            if (!Objects.equals(getQualifier(), that.getQualifier())) {
+                return false;
+            }
+            Scope thisContainer = getAbstraction(getContainer());
+            Scope thatContainer = getAbstraction(that.getContainer());
+            if (thisName!=thatName && 
+                    (thisName==null || thatName==null || 
+                        !thisName.equals(thatName)) ||
+                that.getDeclarationKind()!=getDeclarationKind() ||
+                thisContainer==null || thatContainer==null ||
+                    !thisContainer.equals(thatContainer)) {
+                return false;
+            }
+            else if (this.isNative() != that.isNative() ||
+                    (this.isNative() && !this.getNative().equals(that.getNative()))) {
+                return false;
+            }
+            else if (this instanceof Functional && 
+                    that instanceof Functional) {
+                Functional thisFunction = (Functional) this;
+                Functional thatFunction = (Functional) that;
+                boolean thisIsAbstraction = thisFunction.isAbstraction();
+                boolean thatIsAbstraction = thatFunction.isAbstraction();
+                boolean thisIsOverloaded = thisFunction.isOverloaded();
+                boolean thatIsOverloaded = thatFunction.isOverloaded();
+                if (thisIsAbstraction!=thatIsAbstraction ||
+                    thisIsOverloaded!=thatIsOverloaded) {
+                    return false;
+                }
+                if (!thisIsOverloaded && !thatIsOverloaded) {
+                    return true;
+                }
+                if (thisIsAbstraction && thatIsAbstraction) {
+                    return true;
+                }
+                List<ParameterList> thisParamLists = thisFunction.getParameterLists();
+                List<ParameterList> thatParamLists = thatFunction.getParameterLists();
+                if (thisParamLists.size()!=thatParamLists.size()) {
+                    return false;
+                }
+                for (int i=0; i<thisParamLists.size(); i++) {
+                    List<Parameter> thisParams = thisParamLists.get(i).getParameters();
+                    List<Parameter> thatParams = thatParamLists.get(i).getParameters();
+                    if (thisParams.size()!=thatParams.size()) {
+                        return false;
+                    }
+                    for (int j=0; j<thisParams.size(); j++) {
+                        Parameter thisParam = thisParams.get(j);
+                        Parameter thatParam = thatParams.get(j);
+                        if (thisParam!=thatParam) {
+                            if (thisParam!=null && thatParam!=null) {
+                                ProducedType thisParamType = thisParam.getType();
+                                ProducedType thatParamType = thatParam.getType();
+                                if (thisParamType!=null && thatParamType!=null) {
+                                    if (!erase(thisParamType.getDeclaration())
+                                            .equals(erase(thatParamType.getDeclaration()))) {
+                                        return false;
+                                    }
+                                }
+                                else if (thisParamType!=thatParamType) {
+                                    return false;
+                                }
+                            }
+                            else if (thisParam!=thatParam) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else {
+                return true;
+            }
         }
         else {
             return false;
         }
     }
+
+    private Scope getAbstraction(Scope container) {
+        if (container instanceof Class && 
+                isOverloadedVersion((Class) container)) {
+            container = ((Class) container).getExtendedTypeDeclaration();
+        }
+        return container;
+    }
     
     @Override
     public int hashCode() {
-        return getName()==null ? 0 : getName().hashCode();
+        int ret = 17;
+        Scope container = getContainer();
+        ret = (37 * ret) + (container == null ? 0 : container.hashCode());
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        String name = getName();
+        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
+        // make sure we don't consider getter/setter or value/anonymous-type equal
+        ret = (37 * ret) + (isSetter() ? 0 : 1);
+        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
+        return ret;
     }
     
     /**
      * Does this declaration refine the given declaration?
+     * @deprecated does not take overloading into account
      */
     public boolean refines(Declaration other) {
         if (equals(other)) {
@@ -321,6 +438,23 @@ public abstract class Declaration
     }
     
     public boolean isAnonymous() {
+        return false;
+    }
+    
+    /**
+     * Return true if this declaration has a system-generated name, rather than a user-generated name.
+     * At the moment only object expressions and function expressions are not named. This is different from
+     * isAnonymous() because named object declarations are anonymous but named.
+     */
+    public boolean isNamed() {
+        return true;
+    }
+    
+    /**
+     * Return true IFF this is not a real type but a pseudo-type generated by the model loader to pretend that
+     * Java enum values have an anonymous type. This is overridden and implemented in Class.
+     */
+    public boolean isJavaEnum() {
         return false;
     }
     
@@ -347,4 +481,40 @@ public abstract class Declaration
 	    return false;
 	}
 
+    public boolean isSetter() {
+        return false;
+    }
+
+    public boolean isFunctional() {
+        return false;
+    }
+
+    protected abstract int hashCodeForCache();
+
+    protected abstract boolean equalsForCache(Object o);
+
+    public String getQualifier() {
+        return isParameter() ? null : qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+    
+    public String getPrefixedName(){
+        String qualifier = getQualifier();
+        return qualifier==null || isParameter() ? name : qualifier + name;
+    }
+
+    public boolean sameKind(Declaration m) {
+        return m!=null && m.getModelClass()==getModelClass();
+    }
+
+    public DeclarationCompleter getActualCompleter() {
+        return actualCompleter;
+    }
+
+    public void setActualCompleter(DeclarationCompleter actualCompleter) {
+        this.actualCompleter = actualCompleter;
+    }
 }

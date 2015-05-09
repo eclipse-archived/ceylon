@@ -1,5 +1,7 @@
 class Generics() {
     
+    @error String<> stringWith0Args;
+    
     class Holder<X>(X x) {
         shared X held = x;
         shared X add(X x, X y) {
@@ -91,17 +93,18 @@ class Generics() {
         shared class BadClass(@error X x) {}
         shared class GoodClass2(Y[] y) {}
         shared class BadClass2(@error X[] x) {}
+        @error: "sealed interface"
         shared class GoodClassInheritance() 
                 extends Object() 
                 satisfies Sequence<X> {
             //fake implementations
             shared actual Integer size = 1;
             shared actual Integer lastIndex = 0;
-            shared actual X[] rest = {};
-            shared actual GoodClassInheritance clone = GoodClassInheritance();
-            shared actual X? get(Integer key) { return null; }
+            shared actual X[] rest = [];
+            shared actual GoodClassInheritance clone() => GoodClassInheritance();
+            shared actual X? getFromFirst(Integer key) { return null; }
             shared actual Boolean contains(Object x) { return false; }
-            shared actual X[] segment(Integer from, Integer length) { return this; }
+            shared actual X[] measure(Integer from, Integer length) { return this; }
             shared actual X first { throw; }
             shared actual X last { throw; }
             shared actual Sequence<X> reversed { return this; }
@@ -216,6 +219,7 @@ class Generics() {
         }
     }
     
+    @error: "sealed interface"
     abstract class SortedList<T>(T* elements) 
         extends Object()
         satisfies Sequence<T> 
@@ -237,14 +241,16 @@ class Generics() {
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
+    @error: "sealed interface"
     interface SequenceSequence<out T, out X> 
             satisfies Sequence<T>
             given T satisfies Sequence<X> & Object
             given X satisfies Object {}
     
+	@error: "sealed interface" 
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Object
+	        given T satisfies Sequence<X> & Object
             @error given X satisfies Object {}
     
     class Upper<X>(X x)
@@ -379,7 +385,8 @@ class Generics() {
     P getFirst<P>(Sequence<P> list) {
         return list.first;
     } 
-    Number getFirstNumber(Sequence<Number> nums) {
+    Number<T> getFirstNumber<T>(Sequence<Number<T>> nums) 
+            given T satisfies Number<T> {
         return getFirst(nums);
     } 
     Object getFirstNonEmpty(Sequence<String> strs, Sequence<Object> obs) {
@@ -527,8 +534,13 @@ class Generics() {
     @type:"String" genericMethod2("hello");
     @type:"String" genericMethod2(true then "hello");
     
+    function coalesce<Element,Absent>(Iterable<Element,Absent> iterable) 
+            given Absent satisfies Null {
+        return iterable.coalesced;
+    }
+	    
     @type:"Iterable<String,Null>" coalesce{null, "hello"};
-    @type:"Sequential<String>" join({}, {"hello", "world"}, {"goodbye"});
+    @type:"Sequential<String>" concatenate({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
         class Inner<Y>(){
@@ -548,7 +560,7 @@ class Generics() {
     abstract class S(String s)=>String(s);
 
     void unsatisfiable1<T>() @error given T satisfies Null&String {}
-    void unsatisfiable2<T>() @error given T satisfies Null&Container<Anything> {}
+    void unsatisfiable2<T>() @error given T satisfies Null&Iterable<Anything> {}
     void unsatisfiable3<T>() @error given T satisfies Holder<String>&Holder<Integer> {}
     void unsatisfiable4<T>() @error given T satisfies Holder<Object>&Holder<T> {}
     void unsatisfiable5<T>() @error given T satisfies N&S {}
@@ -637,8 +649,15 @@ class MoreInvariance() {
         @error Num<Int>&Num<T> nn = m;
         @error Num<Int|T> mm = nn;
         @error Num<Int>&Num<T> nnn = mm;
+        @error value nx1 = n.X();
+        @error value nx2 = n.X;
         @error n.X();
+        @error print(n.X());
+        @error print(n.X);
     }
+    
+    @error value mii = MoreInvariance().Int;
+    @error value bi = Int;
 }
 
 void intersectionsAndExtension() {
@@ -672,4 +691,12 @@ class WithIntersectionArg() extends WithConstraint<Bound1&Bound2>() {}
 abstract class WithoutConstraint<in T>() 
         of WithAnythingArg {}
 class WithAnythingArg() extends WithoutConstraint<Anything>() {}
+
+class Covariant<out T>(T t) {
+    void f(T t) {}
+    f(t);
+    class Inner() {
+        outer.f(t);
+    }
+}
 

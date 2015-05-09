@@ -3,9 +3,7 @@
 class Complex(shared Float re, shared Float im) 
         satisfies Exponentiable<Complex,Integer> {
     
-    positiveValue => this;
-
-    negativeValue => Complex(-re,-im);
+    negated => Complex(-re,-im);
 
     plus(Complex other) => Complex(re+other.re, im+other.im);
 

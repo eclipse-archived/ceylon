@@ -57,7 +57,7 @@ class TypeArgInference() {
         return matrix.first.first;
     }
     
-    @type:"Sequence<Sequence<Integer>>" value ints = [[-1].sequence].sequence;
+    @type:"Sequence<Sequence<Integer>>" value ints = [[-1].sequence()].sequence();
     @type:"Integer" value i = corner(ints);
     @type:"Integer" value ii = corner { matrix = ints; };
     
@@ -67,18 +67,18 @@ class TypeArgInference() {
     @error:"String" method([]);
     
     T? firstElt<T>(T* args) {
-        return args.sequence.first;
+        return args.sequence().first;
     }
     T? firstElt0<T>({T*} args) {
-        return args.sequence.first;
+        return args.sequence().first;
     }
     @type:"Null|String" firstElt("hello", "world");
-    @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence);
+    @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence());
     @type:"Null|Tuple<String,String,Tuple<String,String,Empty>>" firstElt (["hello", "world"]);
     @type:"Null|String" firstElt(*["hello", "world"]);
     @type:"Null|String" firstElt0 { "hello", "world" };
-    @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence};
-    firstElt { args = "hello".sequence; @error args="world".sequence; };
+    @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence()};
+    firstElt { args = "hello".sequence(); @error args="world".sequence(); };
     @type:"Null|String" firstElt { args = ["hello","world"]; };
     @type:"Null|String" firstElt0 { args = {"hello", "world"}; };
     
@@ -122,18 +122,18 @@ class TypeArgInference() {
     
     object test0 satisfies One<A> & Two<B> {}
     object test1 satisfies One<Integer> & Two<Float> {}
-    object test2 satisfies One<Number> & Two<Integer&String> {}
+    object test2 satisfies One<Number<Integer>> & Two<Integer&String> {}
     
     T? acceptOneTwo<T>(One<T>&Two<T> arg) => null;
     T? acceptOneOrTwo<T>(One<T>|Two<T> arg) => null;
     
     @type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneTwo(test0);
     @type:"Null|Integer|Float" acceptOneTwo(test1);
-    @type:"Null|Number" acceptOneTwo(test2);
+    @type:"Null|Number<Integer>" acceptOneTwo(test2);
     
     @type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneOrTwo(test0);
     @type:"Null|Integer|Float" acceptOneOrTwo(test1);
-    @type:"Null|Number" acceptOneOrTwo(test2);
+    @type:"Null|Number<Integer>" acceptOneOrTwo(test2);
     
     void higherAnything<X>(void f(X x)) {}
     higherAnything((String x) => print(x));
@@ -147,15 +147,15 @@ class TypeArgInference() {
     
     @type:"Iterable<Integer,Nothing>" { "hello", "world" }.map((String s) => s.size);
     @type:"Iterable<String,Null>" { "hello", "world" }.filter((String s) => !s.empty);
-    @type:"String" { "hello", "world" }.fold("", (String result, String s) => result+" "+s);
+    @type:"String" { "hello", "world" }.fold("")((String result, String s) => result+" "+s);
     @type:"Null|String" { null, "hello", "world" }.find((String? s) => s exists);
 
     @type:"Iterable<Integer,Nothing>" { "hello", "world" }.map { function collecting(String s) => s.size; };
     @type:"Iterable<String,Null>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };
-    @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) => result+" "+s; };
+    @type:"String" { "hello", "world" }.fold { initial=""; }((String result, String s) => result+" "+s);
     @type:"Null|String" { null, "hello", "world" }.find { function selecting(String? s) => s exists; };
     
-    @type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, {});
+    @type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, []);
     @type:"Tuple<Integer|String|Float,Integer|String,Tuple<Float,Float,Empty>>" Tuple(true then "" else 1, [1.0]);
     
     class Something<X,Y,Z>(Y y, Z z) 
@@ -163,7 +163,12 @@ class TypeArgInference() {
             given Z satisfies X {}
     @type:"TypeArgInference.Something<String|Integer,String,Integer>" Something("",1); 
     @type:"TypeArgInference.Something<String|Float|Integer,String,Float|Integer>" Something("",true then 1 else 1.0); 
-    @type:"TypeArgInference.Something<String|Null|Float|Integer,String,Null|Float|Integer>" Something("",false then (true then 1 else 1.0)); 
+    @type:"TypeArgInference.Something<String|Null|Float|Integer,String,Null|Float|Integer>" Something("",false then (true then 1 else 1.0));
+    
+    @type:"Null" max {};
+    @type:"Null" max({});
+    @type:"Integer" max {1};
+    @type:"Integer" max({1});
 
 }
 
@@ -194,13 +199,26 @@ void issue() {
     @type:"Integer" t(true then 1);
 }
 
+class ArraySequence<X>({X*} xs) satisfies Iterable<X> {
+    iterator() => xs.iterator();
+}
+
 void folding() {
     
     {String+} s2 = { "Hello", "World" };
-    s2.fold(1, (Integer a, String b) => a+b.size);
+    s2.fold(1)((Integer a, String b) => a+b.size);
     
-    LazyMap<String,Integer> m = LazyMap({"a"->1, "b"->2, "c"->3});
-    m.fold(0, (Integer x, String->Integer e) => x+e.item);
+    ArraySequence<String->Integer> m = ArraySequence { "a"->1, "b"->2, "c"->3 };
+    m.fold(0)((Integer x, String->Integer e) => x+e.item);
+    
+    Map<String,Integer> m0 = nothing;
+    m0.fold(0)((Integer x, String->Integer e) => x+e.item);
+    
+    Integer hashes0(String* objects) =>
+            objects.fold(0)((Integer result, String obj) => result+obj.size);
+    
+    Integer hashes1(Object* objects) =>
+            objects.fold(0)((Integer result, Object obj) => result+obj.hash);
     
 }
 
@@ -224,4 +242,53 @@ void inferenceAndSequencedAliases() {
     @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
     @type:"Test1<Integer>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
     @type:"Test2<Integer>" value test2x = Test2 { x = [(Integer x) => x]; };
+}
+
+void inferenceAndVariance() {
+    class Consumer<in T>(void consume(T t)) {}
+    class Producer<out T>(T t) {}
+    class Inv<T>() {}
+    class Test<in X, out Y>(
+        Producer<X> px, Producer<Y> py, 
+        Consumer<X> cx, Consumer<Y> cy) {}
+    @type:"Test<Integer,Integer>" @error Test(Producer(1.0), Producer(1), 
+        Consumer(void (Integer t) {}), Consumer(void (Float t) {}));
+    class Test2<in X, out Y>(Inv<X> invx, Inv<Y> invy) {}
+    @type:"Test2<Integer,Integer>" Test2(Inv<Integer>(), Inv<Integer>());
+    class Weird<in T>(T t) {}
+    @type:"Weird<Anything>" Weird("");
+}
+
+void inferenceForRecursiveFuns() {
+    T? echo1<T>(T? val) => echo1(val);
+    T? echo2<T>(T? val) => echo2<T>(val);
+    T? echo3<T>(T? val) => echo2(val);
+    T? echo4<T>(T? val) {
+        if (exists val) {
+            return echo4(val);
+        } else {
+            return null;
+        }
+    }
+    class Foo<T>(shared T val) { }
+    T? extract1<T>(Foo<T>? foo) => extract1(foo);
+    T? extract2<T>(Foo<T>? foo) => extract1(foo);
+    String|T echoST<T>(String|T val) => echoST(val);
+}
+
+void higherOrderFun<Bar>(void func(Bar b)) {} 
+void testHigherOrderFun() {
+    higherOrderFun<String>(void(b){ @type:"String" value bb=b; });
+    higherOrderFun(void(String b){});
+    @error higherOrderFun(void(b){});
+}
+
+Bar anotherHigherOrderFun<Bar>(Bar b, void func(Bar b)){return b;}
+void testAnotherHigherOrderFun() {
+    Integer result1
+            = anotherHigherOrderFun(42, void(Integer b){});
+    Integer result2 
+            = anotherHigherOrderFun<Integer>(42, void(b){});
+    @error Integer result3
+            = anotherHigherOrderFun(42, void(b){});
 }

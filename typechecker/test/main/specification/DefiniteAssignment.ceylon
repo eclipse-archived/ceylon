@@ -621,4 +621,55 @@ interface DefiniteAssignment {
         @error value x = () => name;
     }
     
+    class TestNonemptyRangeFor1() {
+        @error shared variable Integer j;
+        for (i in 0:10) {
+            j = i;
+        }
+    }
+    
+    class TestNonemptyRangeFor2() {
+        shared variable Integer j;
+        for (i in 0..10) {
+            j = i;
+        }
+    }
+
+    class TestNonemptyRangeFor3() {
+        shared variable Integer j;
+        for (i in 0..10) {
+            if (1==1) {
+                j = i;
+            }
+            else {
+                @error return;
+            }
+        }
+    }
+    
+    class TestWhileTrue1() {
+        shared variable Integer j;
+        while (true) {
+            j = 0;
+        }
+    }
+    
+    class TestWhileTrue2() {
+        shared variable Integer j;
+        while (true) {
+            if (1==1) {
+                j = 0;
+            }
+            else {
+                @error return;
+            }
+        }
+    }
+    
+    class TestWhileFalse() {
+        @error shared variable Integer j;
+        while (false) {
+            j = 0;
+        }
+    }
 }

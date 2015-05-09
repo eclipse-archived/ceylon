@@ -1,14 +1,20 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -25,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -38,27 +45,37 @@ public class Util {
     
     static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
-        Declaration member = d.getMember(name, unit, signature, ellipsis);
-        if (member instanceof TypedDeclaration)
+        Declaration member = 
+                d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
-        else
+        }
+        else {
             return null;
+        }
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
             List<ProducedType> signature, boolean ellipsis, Unit unit) {
-        Declaration member = d.getMember(name, unit, signature, ellipsis);
-        if (member instanceof TypeDeclaration)
+        Declaration member = 
+                d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypeDeclaration) {
             return (TypeDeclaration) member;
-        else
+        }
+        else if (member instanceof TypedDeclaration) {
+            return anonymousType(name, member);
+        }
+        else {
             return null;
+        }
     }
 
     static TypedDeclaration getTypedDeclaration(Scope scope,
             String name, List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
-        Declaration result = scope.getMemberOrParameter(unit, 
-                name, signature, ellipsis);
+        Declaration result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -70,42 +87,119 @@ public class Util {
     static TypeDeclaration getTypeDeclaration(Scope scope,
             String name, List<ProducedType> signature, boolean ellipsis,
             Unit unit) {
-        Declaration result = scope.getMemberOrParameter(unit, 
-                name, signature, ellipsis);
+        Declaration result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
+        }
+        else if (result instanceof TypedDeclaration) {
+            return anonymousType(name, result);
         }
         else {
         	return null;
         }
     }
+
+    static TypedDeclaration getPackageTypedDeclaration(String name, 
+            List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = 
+                unit.getPackage().getMember(name, 
+                        signature, ellipsis);
+        if (result instanceof TypedDeclaration) {
+            return (TypedDeclaration) result;
+        }
+        else {
+            return null;
+        }
+    }
     
-    static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
+    static TypeDeclaration getPackageTypeDeclaration(String name, 
+            List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = 
+                unit.getPackage().getMember(name, 
+                        signature, ellipsis);
+        if (result instanceof TypeDeclaration) {
+            return (TypeDeclaration) result;
+        }
+        else if (result instanceof TypedDeclaration) {
+            return anonymousType(name, result);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static TypeDeclaration anonymousType(String name, 
+            Declaration result) {
+        ProducedType type = 
+                ((TypedDeclaration) result).getType();
+        if (type!=null) {
+            TypeDeclaration typeDeclaration = 
+                    type.getDeclaration();
+            if (typeDeclaration instanceof Class &&
+                    typeDeclaration.isAnonymous() &&
+                    isNamed(name,typeDeclaration)) {
+                return typeDeclaration;
+            }
+        }
+        return null;
+    }
+    
+    static List<ProducedType> getTypeArguments(Tree.TypeArguments tas,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        if (tal instanceof Tree.TypeArgumentList) {
-            Map<TypeParameter, ProducedType> typeArgMap = new HashMap<TypeParameter, ProducedType>();
+        if (tas instanceof Tree.TypeArgumentList) {
+            List<ProducedType> typeArguments = 
+                    new ArrayList<ProducedType>(typeParameters.size());
+            Map<TypeParameter, ProducedType> typeArgMap = 
+                    new HashMap<TypeParameter, ProducedType>();
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
-            List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
-            for (int i=0; i<types.size(); i++) {
-                ProducedType t = types.get(i).getTypeModel();
-                if (t==null) {
-                    typeArguments.add(null);
+            if (tas instanceof Tree.TypeArgumentList) {
+                TypeArgumentList tal = 
+                        (Tree.TypeArgumentList) tas;
+                List<Tree.Type> types = tal.getTypes();
+                for (int i=0; i<types.size(); i++) {
+                    ProducedType t = types.get(i).getTypeModel();
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
+                    }
                 }
-                else {
-                    typeArguments.add(t);
-                    if (i<typeParameters.size()) {
-                        typeArgMap.put(typeParameters.get(i), t);
+            }
+            else {
+                List<ProducedType> types = tas.getTypeModels();
+                for (int i=0; i<types.size(); i++) {
+                    ProducedType t = types.get(i);
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
                     }
                 }
             }
             for (int i=typeArguments.size(); 
-            		i<typeParameters.size(); i++) {
+            		i<typeParameters.size(); 
+                    i++) {
                 TypeParameter tp = typeParameters.get(i);
             	ProducedType dta = tp.getDefaultTypeArgument();
-            	if (dta==null) {
+            	if (dta==null || 
+            	        //necessary to prevent stack overflow
+            	        //for illegal recursively-defined
+            	        //default type argument
+            	        dta.containsDeclaration(tp.getDeclaration())) {
             		break;
             	}
             	else {
@@ -114,8 +208,11 @@ public class Util {
             		typeArgMap.put(tp, da);
             	}
             }
+            return typeArguments;
         }
-        return typeArguments;
+        else {
+            return Collections.<ProducedType>emptyList();
+        }
     }
     
     /*static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
@@ -139,8 +236,20 @@ public class Util {
         Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (isExecutableStatement(unit, s)) {
+            if (isExecutableStatement(unit, s) || 
+                    s instanceof Tree.Constructor) {
                 return s;
+            }
+        }
+        return null;
+    }
+
+    public static Tree.Constructor getLastConstructor(Tree.ClassBody that) {
+        List<Tree.Statement> statements = that.getStatements();
+        for (int i=statements.size()-1; i>=0; i--) {
+            Tree.Statement s = statements.get(i);
+            if (s instanceof Tree.Constructor) {
+                return (Tree.Constructor) s;
             }
         }
         return null;
@@ -148,29 +257,31 @@ public class Util {
 
     static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
         if (s instanceof Tree.SpecifierStatement) {
-        	//shortcut refinement statements with => aren't really "executable"
-        	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
-        	if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
-        			!ss.getRefinement()) {
-        		return true;
-        	}
+            //shortcut refinement statements with => aren't really "executable"
+            Tree.SpecifierStatement ss = 
+                    (Tree.SpecifierStatement) s;
+            return !(ss.getSpecifierExpression() 
+                    instanceof Tree.LazySpecifierExpression) || 
+                    !ss.getRefinement();
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
         }
         else {
             if (s instanceof Tree.AttributeDeclaration) {
-                Tree.SpecifierOrInitializerExpression sie = ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
-        		if (sie!=null && !(sie instanceof Tree.LazySpecifierExpression)) {
-                    return true;
-                }
+                Tree.AttributeDeclaration ad = 
+                        (Tree.AttributeDeclaration) s;
+                Tree.SpecifierOrInitializerExpression sie = 
+                        ad.getSpecifierOrInitializerExpression();
+        		return sie!=null && 
+        		        !(sie instanceof Tree.LazySpecifierExpression);
             }
-            /*if (s instanceof Tree.MethodDeclaration) {
+            /*else if (s instanceof Tree.MethodDeclaration) {
                 if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
                     return s;
                 }
             }*/
-            if (s instanceof Tree.ObjectDefinition) {
+            else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
                 if (o.getExtendedType()!=null) {
                     ProducedType et = o.getExtendedType().getType().getTypeModel();
@@ -185,50 +296,62 @@ public class Util {
                         return true;
                     }
                 }
+                return false;
+            }
+            else {
+                return false;
             }
         }
-        return false;
     }
     
-    private static String message(ProducedType type, String problem, ProducedType otherType, Unit unit) {
+    private static String message(ProducedType type, String problem, 
+            ProducedType otherType, Unit unit) {
+        String unknownTypeError = type.getFirstUnknownTypeError(true);
         String typeName = type.getProducedTypeName(unit);
         String otherTypeName = otherType.getProducedTypeName(unit);
         if (otherTypeName.equals(typeName)) {
             typeName = type.getProducedTypeQualifiedName();
             otherTypeName = otherType.getProducedTypeQualifiedName();
         }
-        return ": " + typeName + problem + otherTypeName;
+        return ": '" + typeName + "'" + problem + "'" + otherTypeName + "'"
+                + (unknownTypeError != null ? ": " + unknownTypeError : "");
     }
     
     private static String message(ProducedType type, String problem, Unit unit) {
         String typeName = type.getProducedTypeName(unit);
-        return ": " + typeName + problem;
+        return ": '" + typeName + "'" + problem;
     }
     
     static boolean checkCallable(ProducedType type, Node node, String message) {
         Unit unit = node.getUnit();
         if (isTypeUnknown(type)) {
-            addTypeUnknownError(node, message);
+            addTypeUnknownError(node, type, message);
             return false;
         }
         else if (!unit.isCallableType(type)) {
             if (!hasError(node)) {
-                String extra = message(type, " is not a subtype of Callable", unit);
+                String extra = 
+                        message(type, 
+                                " is not a subtype of 'Callable'", 
+                                unit);
                 if (node instanceof Tree.StaticMemberOrTypeExpression) {
-                    Declaration d = ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
+                    Tree.StaticMemberOrTypeExpression smte = 
+                            (Tree.StaticMemberOrTypeExpression) node;
+                    Declaration d = smte.getDeclaration();
+                    String name = d.getName();
                     if (d instanceof Interface) {
-                        extra = ": " + d.getName() + " is an interface";
+                        extra = ": '" + name + "' is an interface";
                     }
                     else if (d instanceof TypeAlias) {
-                        extra = ": " + d.getName() + " is a type alias";
+                        extra = ": '" + name + "' is a type alias";
                     }
                     else if (d instanceof TypeParameter) {
-                        extra = ": " + d.getName() + " is a type parameter";
+                        extra = ": '" + name + "' is a type parameter";
                     }
                     else if (d instanceof Value) {
-                        extra = ": value " + d.getName() + " has type " + 
+                        extra = ": value '" + name + "' has type '" + 
                                 type.getProducedTypeName(unit) + 
-                                " which is not a subtype of Callable";
+                                "' which is not a subtype of 'Callable'";
                     }
                 }
                 node.addError(message + extra);
@@ -240,59 +363,98 @@ public class Util {
         }
     }
 
-    static ProducedType checkSupertype(ProducedType pt, TypeDeclaration td, 
-            Node node, String message) {
-        if (isTypeUnknown(pt)) {
-            addTypeUnknownError(node, message);
+    static ProducedType checkSupertype(ProducedType type, 
+            TypeDeclaration td, Node node, String message) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
             return null;
         }
         else {
-            ProducedType supertype = pt.getSupertype(td);
+            ProducedType supertype = type.getSupertype(td);
             if (supertype==null) {
-                node.addError(message + message(pt, " is not a subtype of " + td.getName(), node.getUnit()));
+                node.addError(message + 
+                        message(type, 
+                                " is not a subtype of '" + 
+                                        td.getName() + "'", 
+                                node.getUnit()));
             }
             return supertype;
         }
     }
 
-    static void checkAssignable(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-        	addTypeUnknownError(node, message);
+    static void checkAssignable(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
+        if (isTypeUnknown(type)) {
+        	addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
+        	node.addError(message + 
+        	        message(type, 
+        	                " is not assignable to ", 
+        	                supertype, 
+        	                node.getUnit()));
         }
     }
 
-    static void checkAssignableWithWarning(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-        	addTypeUnknownError(node, message);
+    static void checkAssignableWithWarning(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addWarning(message + message(type, " is not assignable to ", supertype, node.getUnit()));
+        	node.addUnsupportedError(message + 
+        	        message(type, 
+        	                " is not assignable to ", 
+        	                supertype, 
+        	                node.getUnit()));
         }
     }
 
-    static void checkAssignableToOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
-            Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
-            addTypeUnknownError(node, message);
+    static void checkAssignableToOneOf(ProducedType type, 
+    		ProducedType supertype1, ProducedType supertype2, 
+            Node node, String message, int code) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype1)) {
+            addTypeUnknownError(node, supertype1, message);
+        }
+        else if (isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, supertype2, message);
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
-            node.addError(message + message(type, " is not assignable to ", supertype1, node.getUnit()));
+            node.addError(message + 
+                    message(type, 
+                            " is not assignable to ", 
+                            supertype1, 
+                            node.getUnit()), 
+                            code);
         }
     }
 
-    static void checkAssignable(ProducedType type, ProducedType supertype, 
-            Node node, String message, int code) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-            addTypeUnknownError(node, message);
+    static void checkAssignable(ProducedType type, 
+            ProducedType supertype, Node node, 
+            String message, int code) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()), code);
+            node.addError(message + 
+                    message(type, 
+                            " is not assignable to ", 
+                            supertype, 
+                            node.getUnit()), 
+                            code);
         }
     }
 
@@ -306,38 +468,78 @@ public class Util {
         }
     }*/
 
-    static void checkIsExactly(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
-            addTypeUnknownError(node, message);
+    static void checkIsExactly(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + message(type, " is not exactly ", supertype, node.getUnit()));
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype, node.getUnit()));
         }
     }
 
-    static void checkIsExactlyOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
+    static void checkIsExactly(ProducedType type, 
+            ProducedType supertype, Node node, String message, 
+            int code) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
+        }
+        else if (!type.isExactly(supertype)) {
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype, node.getUnit()), code);
+        }
+    }
+
+    static void checkIsExactlyOneOf(ProducedType type, 
+    		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
-            addTypeUnknownError(node, message);
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, type, message);
+        }
+        else if (isTypeUnknown(supertype1)) {
+            addTypeUnknownError(node, supertype1, message);
+        }
+        else if (isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, supertype2, message);
         }
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
-            node.addError(message + message(type, " is not exactly ", supertype1, node.getUnit()));
+            node.addError(message + 
+                    message(type, " is not exactly ", 
+                            supertype1, node.getUnit()));
         }
     }
+    
+    public static boolean hasErrorOrWarning(Node node) {
+        return hasError(node, true);
+    }
 
-    private static boolean hasError(Node node) {
-        // we use an exception to get out of the visitor as fast as possible
-        // when an error is found
+    public static boolean hasError(Node node) {
+        return hasError(node, false);
+    }
+
+    static boolean hasError(Node node, 
+            final boolean includeWarnings) {
+        // we use an exception to get out of the visitor 
+        // as fast as possible when an error is found
+        // TODO: wtf?! because it's the common case that
+        //       a node has an error? that's just silly
         @SuppressWarnings("serial")
-        class ErrorFoundException extends RuntimeException{}
+        class ErrorFoundException extends RuntimeException {}
         class ErrorVisitor extends Visitor {
             @Override
             public void handleException(Exception e, Node that) {
-                if(e instanceof ErrorFoundException){
-                    // rethrow
-                    throw (RuntimeException)e;
+                if (e instanceof ErrorFoundException) {
+                    throw (ErrorFoundException) e;
                 }
                 super.handleException(e, that);
             }
@@ -346,10 +548,13 @@ public class Util {
                 if (that.getErrors().isEmpty()) {
                     super.visitAny(that);
                 }
+                else if (includeWarnings) {
+                    throw new ErrorFoundException();
+                }
                 else {
                     // UsageWarning don't count as errors
-                    for(Message error : that.getErrors()){
-                        if(!(error instanceof UsageWarning)){
+                    for (Message error: that.getErrors()) {
+                        if (!(error instanceof UsageWarning)) {
                             // get out fast
                             throw new ErrorFoundException();
                         }
@@ -360,40 +565,71 @@ public class Util {
             }
         }
         ErrorVisitor ev = new ErrorVisitor();
-        try{
+        try {
             node.visit(ev);
             return false;
-        }catch(ErrorFoundException x){
+        }
+        catch (ErrorFoundException x) {
             return true;
         }
     }
 
-    private static void addTypeUnknownError(Node node, String message) {
+    private static void addTypeUnknownError(Node node, 
+            ProducedType type, String message) {
         if (!hasError(node)) {
-            node.addError(message + ": type cannot be determined");
+            node.addError(message + 
+                    ": type cannot be determined" +
+                    getTypeUnknownError(type));
+        }
+    }
+    
+    public static String getTypeUnknownError(ProducedType type) {
+        if (type == null) {
+            return "";
+        }
+        else {
+            String error = type.getFirstUnknownTypeError();
+            if (error != null) {
+                return ": " + error;
+            }
+            else {
+                return "";
+            }
         }
     }
 
-    static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
+    public static void buildAnnotations(Tree.AnnotationList al, 
+            List<Annotation> annotations) {
         if (al!=null) {
-            Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
+            Tree.AnonymousAnnotation aa = 
+                    al.getAnonymousAnnotation();
             if (aa!=null) {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
-                ann.addPositionalArgment(aa.getStringLiteral().getText());
+                String text = aa.getStringLiteral().getText();
+                ann.addPositionalArgment(text);
                 annotations.add(ann);
             }
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();
-                String name = ( (Tree.BaseMemberExpression) a.getPrimary() ).getIdentifier().getText();
+                Tree.BaseMemberExpression bma = 
+                        (Tree.BaseMemberExpression) a.getPrimary();
+                String name = bma.getIdentifier().getText();
                 ann.setName(name);
-                if (a.getNamedArgumentList()!=null) {
-                    for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
+                Tree.NamedArgumentList nal = 
+                        a.getNamedArgumentList();
+                if (nal!=null) {
+                    for (Tree.NamedArgument na: 
+                            nal.getNamedArguments()) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Tree.Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            Tree.SpecifiedArgument sa = 
+                                    (Tree.SpecifiedArgument) na;
+                            Tree.SpecifierExpression sie = 
+                                    sa.getSpecifierExpression();
+                            Tree.Expression e = sie.getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
-                                Parameter p = ((Tree.SpecifiedArgument) na).getParameter();
+                                Parameter p = sa.getParameter();
                                 if (p!=null) {
                                     String text = toString(t);
                                     if (text!=null) {
@@ -404,10 +640,15 @@ public class Util {
                         }                    
                     }
                 }
-                if (a.getPositionalArgumentList()!=null) {
-                    for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
+                Tree.PositionalArgumentList pal = 
+                        a.getPositionalArgumentList();
+                if (pal!=null) {
+                    for (Tree.PositionalArgument pa: 
+                            pal.getPositionalArguments()) {
                     	if (pa instanceof Tree.ListedArgument) {
-                    		Tree.Term t = ((Tree.ListedArgument) pa).getExpression().getTerm();
+                    		Tree.ListedArgument la = 
+                    		        (Tree.ListedArgument) pa;
+                            Tree.Term t = la.getExpression().getTerm();
                     		String text = toString(t);
                     		if (text!=null) {
                     			ann.addPositionalArgment(text);
@@ -425,12 +666,17 @@ public class Util {
     		return ((Tree.Literal) t).getText();
     	}
     	else if (t instanceof Tree.StaticMemberOrTypeExpression) {
-    		Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) t;
+    		Tree.StaticMemberOrTypeExpression mte = 
+    		        (Tree.StaticMemberOrTypeExpression) t;
     		String id = mte.getIdentifier().getText();
     		if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
-    			Tree.Primary p = ((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary();
+    			Tree.QualifiedMemberOrTypeExpression qmte = 
+    			        (Tree.QualifiedMemberOrTypeExpression) mte;
+                Tree.Primary p = qmte.getPrimary();
     			if (p instanceof Tree.StaticMemberOrTypeExpression) {
-    				return toString((Tree.StaticMemberOrTypeExpression) p) + '.' + id;
+    				Tree.StaticMemberOrTypeExpression smte = 
+    				        (Tree.StaticMemberOrTypeExpression) p;
+                    return toString(smte) + '.' + id;
     			}
     			return null;
     		}
@@ -439,57 +685,103 @@ public class Util {
     		}
     	}
     	else if (t instanceof Tree.TypeLiteral) {
-    	    Tree.TypeLiteral tl = (Tree.TypeLiteral) t;
-    	    if(tl.getType() != null)
-    	        return toString(tl.getType());
+    	    Tree.TypeLiteral tl = 
+    	            (Tree.TypeLiteral) t;
+    	    Tree.StaticType type = tl.getType();
+            if (type!=null) {
+    	        return toString(type);
+    	    }
     	    return null;
     	}
         else if (t instanceof Tree.MemberLiteral) {
-            Tree.MemberLiteral ml = (Tree.MemberLiteral) t;
-            if(ml.getType() != null){
-                String qualifier = toString(ml.getType());
-                if(qualifier != null)
-                    return qualifier + "." + ml.getIdentifier().getText();
+            Tree.MemberLiteral ml = 
+                    (Tree.MemberLiteral) t;
+            Tree.Identifier id = ml.getIdentifier();
+            Tree.StaticType type = ml.getType();
+            if (type!=null) {
+                String qualifier = toString(type);
+                if (qualifier!=null && id!=null) {
+                    return qualifier + "." + id.getText();
+                }
                 return null;
             }
-            return ml.getIdentifier().getText();
+            return id.getText();
+        }
+        else if (t instanceof Tree.ModuleLiteral) {
+            Tree.ModuleLiteral ml = (Tree.ModuleLiteral) t;
+            String importPath = toString(ml.getImportPath());
+            return importPath == null ? "module" : "module " + importPath;
+        }
+        else if (t instanceof Tree.PackageLiteral) {
+            Tree.PackageLiteral pl = (Tree.PackageLiteral) t;
+            String importPath = toString(pl.getImportPath());
+            return importPath == null ? "package" : "package " + importPath;
         }
     	else {
     		return null;
     	}
     }
+    
+    private static String toString(Tree.ImportPath importPath) {
+        if (importPath != null) {
+            StringBuilder sb = new StringBuilder();
+            if (importPath.getIdentifiers() != null) {
+                for (Tree.Identifier identifier : importPath.getIdentifiers()) {
+                    if (sb.length() != 0) {
+                        sb.append(".");
+                    }
+                    sb.append(identifier.getText());
+                }
+            }
+            return sb.toString();
+        }
+        return null;
+    }
 
     private static String toString(Tree.StaticType type) {
         // FIXME: we're discarding syntactic types and union/intersection types
-        if(type instanceof Tree.BaseType){
-            return ((Tree.BaseType) type).getIdentifier().getText();
-        }else if(type instanceof Tree.QualifiedType){
-            String qualifier = toString(((Tree.QualifiedType) type).getOuterType());
-            if(qualifier != null)
-                return qualifier + "." + ((Tree.SimpleType)type).getIdentifier().getText();
+        if (type instanceof Tree.BaseType){
+            Tree.BaseType bt = (Tree.BaseType) type;
+            return bt.getIdentifier().getText();
+        }
+        else if(type instanceof Tree.QualifiedType) {
+            Tree.QualifiedType qt = 
+                    (Tree.QualifiedType) type;
+            String qualifier = toString(qt.getOuterType());
+            if(qualifier != null) {
+                Tree.SimpleType st = (Tree.SimpleType) type;
+                return qualifier + "." + 
+                        st.getIdentifier().getText();
+            }
             return null;
         }
         return null;
     }
 
     static boolean inLanguageModule(Unit unit) {
-        return unit.getPackage().getQualifiedNameString()
+        return unit.getPackage()
+                .getQualifiedNameString()
                 .startsWith(Module.LANGUAGE_MODULE_NAME);
     }
 
     static String typeDescription(TypeDeclaration td, Unit unit) {
+        String name = td.getName();
         if (td instanceof TypeParameter) {
-            Declaration container = (Declaration) td.getContainer();
-            return "type parameter " + td.getName() + " of " + 
-                    container.getName(unit);
+            Declaration container = 
+                    (Declaration) td.getContainer();
+            return "type parameter '" + name + "' of '" + 
+                    container.getName(unit) + "'";
         }
         else {
-            return "type " + td.getName();
+            return "type '" + name + "'";
         }
     }
 
-    static StringBuilder typeNamesAsIntersection(
+    static String typeNamesAsIntersection(
             List<ProducedType> upperBounds, Unit unit) {
+        if (upperBounds.isEmpty()) {
+            return "Anything";
+        }
         StringBuilder sb = new StringBuilder();
         for (ProducedType st: upperBounds) {
             sb.append(st.getProducedTypeName(unit)).append(" & ");
@@ -497,33 +789,7 @@ public class Util {
         if (sb.toString().endsWith(" & ")) {
             sb.setLength(sb.length()-3);
         }
-        return sb;
-    }
-
-    public static ProducedType getParameterTypesAsTupleType(Unit unit, 
-            List<Parameter> params, ProducedReference pr) {
-        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
-        int max = params.size()-1;
-        int firstDefaulted = -1;
-        boolean sequenced = false;
-        boolean atLeastOne = false;
-        for (int i=0; i<=max; i++) {
-            Parameter p = params.get(i);
-            ProducedType ft = pr.getTypedParameter(p).getFullType();
-            if (firstDefaulted<0 && p.isDefaulted()) {
-                firstDefaulted = i;
-            }
-            if (i==max && p.isSequenced()) {
-                sequenced = true;
-                atLeastOne = p.isAtLeastOne();
-                if (ft!=null) {
-                    ft = unit.getIteratedType(ft);
-                }
-            }
-            paramTypes.add(ft);
-        }
-        return unit.getTupleType(paramTypes, sequenced, atLeastOne, 
-                firstDefaulted);
+        return sb.toString();
     }
 
     public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
@@ -543,13 +809,17 @@ public class Util {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
-                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                Tree.BooleanCondition bc = 
+                        (Tree.BooleanCondition) c;
+                Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
-                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) t;
+                        Declaration d = bme.getDeclaration();
                         if (isBooleanTrue(d)) {
                             continue;
                         }
@@ -575,17 +845,43 @@ public class Util {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
-                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                Tree.BooleanCondition bc = 
+                        (Tree.BooleanCondition) c;
+                Tree.Expression ex = 
+                        bc.getExpression();
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
-                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) t;
+                        Declaration d = bme.getDeclaration();
                         if (isBooleanFalse(d)) {
                             return true;
                         }
                     }
+                }
+            }
+        }
+        return false;
+    }
+    
+    static boolean isAtLeastOne(Tree.ForClause forClause) {
+        Tree.ForIterator fi = forClause.getForIterator();
+        if (fi!=null) {
+            Tree.SpecifierExpression se = 
+                    fi.getSpecifierExpression();
+            if (se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    Unit unit = forClause.getUnit();
+                    ProducedType at = 
+                            unit.getAnythingDeclaration().getType();
+                    ProducedType neit = 
+                            unit.getNonemptyIterableType(at);
+                    ProducedType t = e.getTypeModel();
+                    return t!=null && t.isSubtypeOf(neit);
                 }
             }
         }
@@ -604,19 +900,61 @@ public class Util {
     }
     
     public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
-        Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
+        return isIndirectInvocation(that.getPrimary());
+    }
+
+    private static boolean isIndirectInvocation(Tree.Primary primary) {
+        Tree.Term p = unwrapExpressionUntilTerm(primary);
         if (p instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
-            ProducedReference prf = mte.getTarget();
-            return mte.getStaticMethodReference() ||
-                    prf==null || 
-                    !prf.isFunctional() || 
-                    //type parameters are not really callable even though they are Functional
-                    prf.getDeclaration() instanceof TypeParameter;
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) p;
+            return isIndirectInvocation(mte);
         }
         else {
            return true;
         }
+    }
+
+    private static boolean isIndirectInvocation(Tree.MemberOrTypeExpression that) {
+        ProducedReference prf = that.getTarget();
+        if (prf==null) {
+            return true;
+        }
+        else {
+            Declaration d = prf.getDeclaration();
+            if (!prf.isFunctional() || 
+                    //type parameters are not really callable 
+                    //even though they are Functional
+                    d instanceof TypeParameter) {
+                return true;
+            }
+            if (that.getStaticMethodReference()) {
+                if (d.isStaticallyImportable() || 
+                        d instanceof Constructor) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) that;
+                    return isIndirectInvocation(qmte.getPrimary());
+                }
+                else {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    
+    public static boolean isInstantiationExpression(Tree.Expression e) {
+        Tree.Term term = e.getTerm();
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = 
+                    (Tree.InvocationExpression) term;
+            Tree.Primary p = ie.getPrimary();
+            if (p instanceof Tree.BaseTypeExpression || 
+                p instanceof Tree.QualifiedTypeExpression) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public static boolean hasErrors(Tree.Declaration d) {
@@ -632,7 +970,8 @@ public class Util {
             @Override
             public void visit(Tree.Body that) {}
         }
-        DeclarationErrorVisitor dev = new DeclarationErrorVisitor();
+        DeclarationErrorVisitor dev = 
+                new DeclarationErrorVisitor();
         d.visit(dev);
         return dev.foundError;
     }
@@ -650,7 +989,8 @@ public class Util {
             @Override
             public void visit(Tree.Body that) {}
         }
-        ArgErrorVisitor dev = new ArgErrorVisitor();
+        ArgErrorVisitor dev = 
+                new ArgErrorVisitor();
         d.visit(dev);
         return dev.foundError;
     }
@@ -668,9 +1008,180 @@ public class Util {
             @Override
             public void visit(Tree.Declaration that) {}
         }
-        BodyErrorVisitor bev = new BodyErrorVisitor();
+        BodyErrorVisitor bev = 
+                new BodyErrorVisitor();
         d.visit(bev);
         return bev.foundError;
     }
 
+    static String message(Declaration dec) {
+        String qualifier;
+        Scope container = dec.getContainer();
+        if (container instanceof Declaration) {
+            String name = ((Declaration) container).getName();
+            qualifier = " in '" + name + "'";
+        }
+        else {
+            qualifier = "";
+        }
+        return "'" + dec.getName() + "'" + qualifier;
+    }
+    
+    public static Node getParameterTypeErrorNode(Tree.Parameter p) {
+        if (p instanceof Tree.ParameterDeclaration) {
+            Tree.ParameterDeclaration pd = 
+                    (Tree.ParameterDeclaration) p;
+            return pd.getTypedDeclaration().getType();
+        }
+        else {
+            return p;
+        }
+    }
+    
+    public static Node getTypeErrorNode(Node that) {
+        if (that instanceof Tree.TypedDeclaration) {
+            Tree.TypedDeclaration td = 
+                    (Tree.TypedDeclaration) that;
+            Tree.Type type = td.getType();
+            if (type!=null) {
+                return type;
+            }
+        }
+        if (that instanceof Tree.TypedArgument) {
+            Tree.TypedArgument ta = 
+                    (Tree.TypedArgument) that;
+            Tree.Type type = ta.getType();
+            if (type!=null) {
+                return type;
+            }
+        }
+        if (that instanceof Tree.FunctionArgument) {
+            Tree.FunctionArgument fa = 
+                    (Tree.FunctionArgument) that;
+            Tree.Type type = fa.getType();
+            if (type!=null && type.getToken()!=null) {
+                return type;
+            }
+        }
+        return that;
+    }
+
+    static void checkIsExactlyForInterop(Unit unit, boolean isCeylon,  
+            ProducedType parameterType, ProducedType refinedParameterType, 
+            Node node, String message) {
+        if (isCeylon) {
+            // it must be a Ceylon method
+            checkIsExactly(parameterType, refinedParameterType, 
+                    node, message, 9200);
+        }
+        else {
+            // we're refining a Java method
+            ProducedType refinedDefiniteType = 
+                    unit.getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, 
+                    refinedParameterType, refinedDefiniteType, 
+            		node, message);
+        }
+    }
+
+    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, 
+            Unit unit, boolean requireSequential) {
+        ProducedType result = unit.getType(unit.getEmptyDeclaration());
+        ProducedType ut = unit.getNothingDeclaration().getType();
+        for (int i=es.size()-1; i>=0; i--) {
+            Tree.PositionalArgument a = es.get(i);
+            ProducedType t = a.getTypeModel();
+            if (t!=null) {
+                ProducedType et = t; //unit.denotableType(t);
+                if (a instanceof Tree.SpreadArgument) {
+                    /*if (requireSequential) { 
+                        checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
+                    }*/
+                    ut = unit.getIteratedType(et);
+                    result = spreadType(et, unit, requireSequential);
+                }
+                else if (a instanceof Tree.Comprehension) {
+                    ut = et;
+                    Tree.Comprehension c = (Tree.Comprehension) a;
+                    Tree.InitialComprehensionClause icc = 
+                            c.getInitialComprehensionClause();
+                    result = icc.getPossiblyEmpty() ? 
+                            unit.getSequentialType(et) : 
+                            unit.getSequenceType(et);
+                    if (!requireSequential) {
+                        ProducedType it = 
+                                producedType(unit.getIterableDeclaration(), 
+                                        et, icc.getFirstTypeModel());
+                        result = intersectionType(result, it, unit);
+                    }
+                }
+                else {
+                    ut = unionType(ut, et, unit);
+                    result = producedType(unit.getTupleDeclaration(), 
+                            ut, et, result);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static ProducedType spreadType(ProducedType et, Unit unit,
+            boolean requireSequential) {
+        if (et==null) return null;
+        if (requireSequential) {
+            if (unit.isSequentialType(et)) {
+                //if (et.getDeclaration() instanceof TypeParameter) {
+                    return et;
+                /*}
+                else {
+                    // if it's already a subtype of Sequential, erase 
+                    // out extraneous information, like that it is a
+                    // String, just keeping information about what
+                    // kind of tuple it is
+                    List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+                    boolean variadic = unit.isTupleLengthUnbounded(et);
+                    boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
+                    int minimumLength = unit.getTupleMinimumLength(et);
+                    if (variadic) {
+                        ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                        elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+                    }
+                    return unit.getTupleType(elementTypes, variadic, 
+                            atLeastOne, minimumLength);
+                }*/
+            }
+            else {
+                // transform any Iterable into a Sequence without
+                // losing the information that it is nonempty, in
+                // the case that we know that for sure
+                ProducedType it = unit.getIteratedType(et);
+                ProducedType st = 
+                        unit.isNonemptyIterableType(et) ?
+                                unit.getSequenceType(it) :
+                                unit.getSequentialType(it);
+                // unless this is a tuple constructor, remember
+                // the original Iterable type arguments, to
+                // account for the possibility that the argument
+                // to Absent is a type parameter
+                //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
+                // for now, just return the sequential type:
+                return st;
+            }
+        }
+        else {
+            return et;
+        }
+    }
+
+    static boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || 
+                that instanceof Tree.Outer;
+    }
+
+    static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
+        return term instanceof Tree.BaseMemberExpression ||
+                term instanceof Tree.QualifiedMemberExpression &&
+                isSelfReference(((Tree.QualifiedMemberExpression) term)
+                        .getPrimary());
+    }
 }

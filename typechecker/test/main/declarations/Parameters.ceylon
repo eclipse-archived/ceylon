@@ -25,7 +25,9 @@ class Parameters() {
     void d4(@error Integer count="World") {}
     void d5(String? name=null) {}
     void d6(String? name="World") {}
-    void d7(@error variable String s) {}
+    void d7(variable String s) {}
+    void d8(@error variable String s()) {}
+    void d9(variable String s="") {}
     
     void broken1(@error Unknown p) {}
     @error broken1("hello");
@@ -59,5 +61,25 @@ class Parameters() {
     @error value b1 = String({Character*} chars2);
     @error print(print(Any val1));
     @error value b2 = print(Any val2);
-
+    
+    void assigns1(
+            variable Integer i, 
+            @error Integer j=i++, 
+            @error Integer k=(--i)*2, 
+            @error Integer l=1+(i=0)) {}
+    
+    @error void assigns2(i, j=i++) {
+        variable Integer i; 
+        Integer j;
+    }
+    
+    @error void refsforward(i, j=k) {
+        variable Integer i; 
+        Integer j;
+        Integer k = 0;
+    }
+    
+    value anon1 = (@error value arg) => 0;
+    value anon2 = (@error function arg()) => 0;
+    
 }

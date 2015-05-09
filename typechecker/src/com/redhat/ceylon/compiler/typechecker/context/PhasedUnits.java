@@ -1,10 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
@@ -14,7 +13,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -27,12 +25,11 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class PhasedUnits {
-    private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new LinkedHashMap<VirtualFile, PhasedUnit>();
-    private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
+public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private final Context context;
     private final ModuleManager moduleManager;
     private List<String> moduleFilters;
+    private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
 
     public PhasedUnits(Context context) {
@@ -51,44 +48,20 @@ public class PhasedUnits {
         this.moduleManager.initCoreModules();
     }
     
+    public void setSourceFiles(List<VirtualFile> sourceFiles){
+        if (sourceFiles != null) {
+            this.sourceFiles.addAll(sourceFiles);
+        } else {
+            this.sourceFiles.clear();
+        }
+    }
+    
     public void setModuleFilters(List<String> moduleFilters){
         this.moduleFilters = moduleFilters;
     }
     
-    public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
-        this.phasedUnitPerFile.put(unitFile, phasedUnit);
-        this.phasedUnitPerRelativePath.put(phasedUnit.getPathRelativeToSrcDir(), phasedUnit);
-    }
-
-    public void removePhasedUnitForRelativePath(String relativePath) {
-        PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
-        Unit unit = phasedUnit.getUnit();
-        if (unit != null) {
-            unit.getPackage().removeUnit(unit);
-        }
-        this.phasedUnitPerRelativePath.remove(relativePath);
-        this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
-    }
-
     public ModuleManager getModuleManager() {
         return moduleManager;
-    }
-
-    public List<PhasedUnit> getPhasedUnits() {
-        List<PhasedUnit> list = new ArrayList<PhasedUnit>();
-        list.addAll(phasedUnitPerFile.values());
-        return list;
-    }
-
-    public PhasedUnit getPhasedUnit(VirtualFile file) {
-        return phasedUnitPerFile.get(file);
-    }
-
-    public PhasedUnit getPhasedUnitFromRelativePath(String relativePath) {
-        if (relativePath.startsWith("/")) {
-            relativePath = relativePath.substring(1);
-        }
-        return phasedUnitPerRelativePath.get(relativePath);
     }
 
     public void parseUnits(List<VirtualFile> srcDirectories) {
@@ -125,7 +98,7 @@ public class PhasedUnits {
     }
 
     protected void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if (file.getName().endsWith(".ceylon")) {
+        if (file.getName().endsWith(".ceylon") && (sourceFiles.isEmpty() || sourceFiles.contains(file))) {
 
             //System.out.println("Parsing " + file.getName());
             CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), getEncoding()));
@@ -161,19 +134,54 @@ public class PhasedUnits {
 	}
 
     private void parseFileOrDirectory(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if (file.isFolder()) {
-            processDirectory(file, srcDir);
-        }
-        else {
-            parseFile(file, srcDir);
+        if (checkModuleFiltersByName(file, srcDir)) {
+            if (file.isFolder()) {
+                processDirectory(file, srcDir);
+            }
+            else {
+                parseFile(file, srcDir);
+            }
         }
     }
 
+    private boolean checkModuleFiltersByName(VirtualFile file, VirtualFile srcDir) {
+        if (moduleFilters == null || moduleFilters.isEmpty()) {
+            return true;
+        }
+        
+        // Get the name of the folder or the file's parent folder
+        String folderName = file.getPath().substring(srcDir.getPath().length() + 1);
+        if (!file.isFolder()) {
+            folderName = folderName.substring(0, folderName.length() - file.getName().length());
+        }
+        
+        // Check if the (file's) folder is found in the module filters 
+        for (String module : moduleFilters) {
+            // If the "default" module is part of the filters we can't
+            // make any guesses if we should skip the current folder
+            // or not until much later, so we just accept it
+            if (module.equals(Module.DEFAULT_MODULE_NAME)){
+                return true;
+            }
+            
+            String modulePathEx = module.replace('.', '/') + "/";
+            String folderNameEx = folderName + "/";
+            if (folderNameEx.startsWith(modulePathEx)
+                    || modulePathEx.startsWith(folderNameEx)) {
+                // We have a match so we accept
+                return true;
+            }
+        }
+        
+        // We can safely skip this file or folder
+        return false;
+    }
+    
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
         moduleManager.push(dir.getName());
         
         // See if we're defining a new module
-        final List<VirtualFile> files = dir.getChildren();
+        final List<? extends VirtualFile> files = dir.getChildren();
         boolean definesModule = false;
         for (VirtualFile file : files) {
             if (ModuleManager.MODULE_FILE.equals(file.getName())) {
@@ -258,5 +266,15 @@ public class PhasedUnits {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    @Override
+    protected PhasedUnit toStoredType(PhasedUnit phasedUnit) {
+        return phasedUnit;
+    }
+
+    @Override
+    protected PhasedUnit fromStoredType(PhasedUnit storedValue, String path) {
+        return storedValue;
     }
 }

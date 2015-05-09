@@ -105,7 +105,7 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             to emit bytecode or compiled JavaScript that produces a new instance of certain 
             types in the module <literal>ceylon.language</literal> without execution of the 
             initializer of the class, whenever any expression is evaluated. These types are: 
-            any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Integer</literal>, <literal>Float</literal>, <literal>Character</literal>, 
             <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
             <literal>Array</literal>, and <literal>Tuple</literal>. Furthermore, it is permitted 
             to use such a newly-produced instance as the value of the expression, as long as the 
@@ -239,48 +239,105 @@ void run() {
         or when an exception is thrown by an evaluation, assignment, invocation, or 
         instantiation.</para>
         
-        <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
-        For each reference whose declaration directly occurs in the body, the frame
-        has a value, which may or may not be initialized. The value may be initialized
-        or assigned during execution of the body.</para>
+        <section>
+            <title>Frames</title>
         
-        <para>While a body is executing, all values held in the frame are considered 
-        accessible. An evaluation, assignment, invocation, or instantiation may result 
-        in a pause in execution of the body while the called getter, setter, function, 
-        or class is executed or instantiated. However, the frame associated with the 
-        calling body is retained and values held in the frame are still considered 
-        accessible. When execution of the body resumes, the frame is restored.</para>
+            <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
+            For each reference whose declaration directly occurs in the body, the frame
+            has a value, which may or may not be initialized. The value may be initialized
+            or assigned during execution of the body.</para>
+            
+            <para>We can visualize a frame as a list of reference declarations with optional
+            values. For example, a frame with an initialized reference named 
+            <literal>language</literal> and an uninitialized reference named 
+            <literal>count</literal> would be written like this:</para>
+            
+            <programlisting>{ String language = "ceylon"; Integer count; }</programlisting>
+            
+            <para>While a body is executing, all values held in the frame are considered 
+            accessible. An evaluation, assignment, invocation, or instantiation may result 
+            in a pause in execution of the body while the called getter, setter, function, 
+            or class is executed or instantiated. However, the frame associated with the 
+            calling body is retained and values held in the frame are still considered 
+            accessible. When execution of the body resumes, the frame is restored.</para>
+            
+            <para>When execution of a body terminates, the frame may or may not become
+            inaccessible. In the case of a class body, if the initializer terminates with
+            no thrown exception, the frame and its values become a new instance of the 
+            class, are associated with the newly created unique identifier, and remain 
+            accessible while this object is itself accessible. In the case of any other 
+            kind of body, or in the case that an initializer throws an exception, the 
+            frame and its values may remain accessible if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a reference to a function or class declared within the body is 
+                    accessible,</para> 
+                </listitem>
+                <listitem>
+                    <para>an instance of a class declared within the body is accessible, 
+                    or</para> 
+                </listitem>
+                <listitem>
+                    <para>an instance of a comprehension declared within the body is 
+                    accessible.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Otherwise, the frame becomes inaccessible and may be destroyed.</para>
+            
+            <para>The principle of <emphasis>closure</emphasis> states that a nested body
+            always has access to a frame for every containing body. The set of 
+            <emphasis>current instances</emphasis> of containing classes and 
+            <emphasis>current frames</emphasis> of containing blocks forms the closure of 
+            a nested declaration.</para>
         
-        <para>When execution of a body terminates, the frame may or may not become
-        inaccessible. In the case of a class body, if the initializer terminates with
-        no thrown exception, the frame and its values become a new instance of the 
-        class, are associated with the newly created unique identifier, and remain 
-        accessible while this object is itself accessible. In the case of any other 
-        kind of body, or in the case that an initializer throws an exception, the 
-        frame and its values may remain accessible if a reference to a function of 
-        class declared within the body is accessible, or if an instance of a class 
-        declared within the body is accessible. Otherwise, the frame becomes 
-        inaccessible and may be destroyed.</para>
+        </section>
         
-        <para>The principle of <emphasis>closure</emphasis> states that a nested body
-        always has access to a frame for every containing body. The set of 
-        <emphasis>current instances</emphasis> of containing classes and 
-        <emphasis>current frames</emphasis> of containing blocks forms the closure of a 
-        nested declaration.</para>
+        <section>
+            <title>Current instances and current frames</title>
+            
+            <para>A frame may be the <emphasis>current frame</emphasis> for a body. When the 
+            body is executing, the created frame is the current frame. When execution of the 
+            body terminates, the created frame is no longer the current frame. Invocation or 
+            evaluation of a member of a class or interface, invocation of a callable reference
+            or anonymous function, or evaluation of the values produced by a comprehension may 
+            result in the frame being restored as the current frame.</para> 
+            
+            <para>A class instance, callable reference, anonymous function reference, or 
+            comprehension instance packages a reference to a frame for each body containing 
+            the program element, as specified below. When a member of the class instance is
+            invoked or evaluated, when the callable reference or anonymous function is
+            invoked, or when the comprehension instance produces a value, these frames are
+            restored as the current frames of the associated bodies. When the invocation or
+            evaluation terminates, or when the comprehension value has been produced, these
+            frames are no longer current frames.</para>  
+            
+            <para>The value associated with a value reference in the current frame of the
+            body to which the value reference belongs is called the <emphasis>current 
+            value</emphasis> of the value reference.</para>
+            
+            <para>If a frame is the current frame for a class or interface body, we call it 
+            the <emphasis>current instance</emphasis> of the class or interface.</para>
+            
+            <comment><para>TODO: in the following two sections, account for callable references,
+            anonymous function references, and comprehension instances.</para></comment>
+            
+        </section>
         
-        <section id="closureofaclassorinterface">
-            <title>Closure of a class or interface</title>
+        <section id="currentinstanceofaclassorinterface">
+            <title>Current instance of a class or interface</title>
             
             <para>If a statement is occurs directly or indirectly inside a class or interface 
-            body, then there is always a <emphasis>current instance</emphasis> of the class or 
-            interface when the statement is executed. The current instance is determined as 
-            follows:</para>
+            body, then there is always a current instance of the class or interface when the 
+            statement is executed. The current instance is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>For a statement that occurs sequentially, as defined by 
-                    <xref linkend="blockstructure"/>, in the body of the class, the current 
-                    instance is the new instance being initialized.</para>
+                    <xref linkend="blockstructure"/>, in the body of the class or of a 
+                    constructor of the class, the current instance is the new instance 
+                    being initialized.</para>
                 </listitem>
                 <listitem>
                     <para>For a statement that occurs sequentially in the body of a member
@@ -314,18 +371,18 @@ innerObject.member();</programlisting>
             
         </section>
         
-        <section id="closureofablock">
-            <title>Closure of a block</title>
+        <section id="currentframeofablock">
+            <title>Current frame of a block</title>
             
             <para>If a statement occurs directly or indirectly inside a block, then there 
-            is always a <emphasis>current frame</emphasis> of the block when the statement 
-            is executed. The current frame is determined as follows:</para>
+            is always a current frame of the block when the statement is executed. The current 
+            frame is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>If the statement occurs sequentially, as defined by 
                     <xref linkend="blockstructure"/>, in the block, the current frame is the
-                    frame is the frame associated with the current execution of the block.</para>
+                    frame associated with the current execution of the block.</para>
                 </listitem>
                 <listitem>
                     <para>For a statement that occurs sequentially in the body of a nested 
@@ -372,7 +429,8 @@ String result = middleObject.string;</programlisting>
             <title>Initialization</title>
             
             <para>When an instance is instantiated, its initializer is executed, and the
-            initializer for every class it inherits is executed. For a class
+            initializer for every class it inherits is executed. If a class has
+            constructors, one of its constructors is also executed. For a class
             <literal>C</literal>:</para>
             
             <itemizedlist>
@@ -385,24 +443,30 @@ String result = middleObject.string;</programlisting>
                     <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
                     there is exactly one other superclass <literal>Y</literal> of 
                     <literal>C</literal> that directly extends <literal>X</literal>. When
-                    execution of the initializer of <literal>X</literal> terminates without
-                    a thrown exception, execution of the initializer of <literal>Y</literal>
-                    begins.</para>
+                    execution of the initializer of <literal>X</literal> terminates without 
+                    a thrown exception, execution of the initializer of <literal>Y</literal> 
+                    begins. When sequential execution of the initializer reaches the 
+                    declaration of the invoked or delegated constructor of <literal>Y</literal>, 
+                    if any, the constructor itself is executed. When execution of the 
+                    constructor terminates without a thrown exception, execution of the 
+                    initializer resumes at the next statement after the constructor 
+                    declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>Finally, when execution of the initializer of <literal>C</literal>
-                    terminates without a thrown exception, the new instance of <literal>C</literal>
-                    is fully-initialized and made accessible to the calling code.</para>
+                    <para>Finally, when execution of the initializer of <literal>C</literal>, 
+                     terminates without a thrown exception, the new instance of 
+                     <literal>C</literal> is fully-initialized and made accessible to the 
+                     calling code.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>If any initializer in the class heirarchy terminates with a thrown exception,
-            initialization terminates and the incompletely-initialized instance never becomes
-            accessible.</para>
+            <para>If any initializer or constructor in the class hierarchy terminates with 
+            a thrown exception, initialization terminates and the incompletely-initialized 
+            instance never becomes accessible.</para>
             
-            <para>Each initializer produces a frame containing values for each reference declared
-            be the corresponding class. These frames are aggregated together to form the new
-            instance of the class <literal>C</literal>.</para>
+            <para>Each initializer produces a frame containing initialized values for each 
+            reference declared by the corresponding class. These frames are aggregated together 
+            to form the new instance of the class <literal>C</literal>.</para>
             
             <comment><para>Note: since interfaces don't have initializers, the issue of 
             "linearization" of supertypes simply never arises in Ceylon. There is a natural,
@@ -422,6 +486,26 @@ String result = middleObject.string;</programlisting>
             <comment><para>This optimization is the only source of a distinction between a 
             "field" of a class and a "local variable" of its initializer. There is no way
             for a program to observe this distinction.</para></comment>
+            
+        </section>
+        
+        <section id="executionofexpressionandspecificationstatements">
+            <title>Execution of expression and specification statements</title>
+            
+            <para>When an expression statement is executed, the expression is evaluated.</para>
+            
+            <para>When a non-lazy specification statement is executed, the specified 
+            expression is evaluated, and the resulting value assigned to the specified
+            reference within the current frame or current instance associated with the 
+            body to which the specified reference belongs.</para>
+            
+            <para>When a lazy specification statement is executed, the specified
+            expression is associated with the specified reference within the current 
+            frame or current instance associated with the body to which the specified
+            reference belongs. Subsequent evaluation or invocation of the reference
+            for this current frame or current instance may result in evaluation of the 
+            specified expression, in which case the expression is evaluated within this 
+            current frame or current instance.</para>
             
         </section>
         
@@ -498,14 +582,30 @@ String result = middleObject.string;</programlisting>
             initialization of other toplevel references. Therefore, it is possible that
             a cycle could occur where evaluation of a toplevel reference occurs while
             evaluating its initializer expression. When this occurs, an 
-            <literal>InitializationException</literal> is thrown.</para>
+            <literal>InitializationError</literal> is thrown.</para>
+            
+        </section>
+        
+        <section if="lateinitialization">
+            <title>Initialization of late references</title>
+            
+            <para>A reference annotated <literal>late</literal> may be uninitialized in a 
+            given frame. The rules of the language do not guarantee that an uninitialized 
+            <literal>late</literal> reference is never evaluated at runtime. If a
+            <literal>late</literal> reference which is uninitialized in the current frame 
+            or current instance is evaluated, an <literal>InitializationError</literal>
+            is thrown.</para>
+            
+            <para>Likewise, if a non-<literal>variable</literal> <literal>late</literal> 
+            reference which is already initialized in the current frame or current instance
+            is assigned, an <literal>InitializationError</literal> is thrown.</para>
             
         </section>
         
    </section>
    
    <section id="executionofcontrolstructures">
-        <title>Execution of control structures, control directives, and assertions</title>
+        <title>Execution of control structures and assertions</title>
         
         <para>Control structures, as specified in <xref linkend="controlstructures"/>, are 
         used to organize conditional and repetitive code within a body. Assertions are 
@@ -568,10 +668,10 @@ String result = middleObject.string;</programlisting>
             
             <para>When an assertion, as specified in <xref linkend="assertions"/>, is 
             executed, its condition list is evaluated. If the condition list is not satisfied, 
-            an exception of type <literal>AssertionFailure</literal> in 
+            an exception of type <literal>AssertionError</literal> in 
             <literal>ceylon.language</literal> is thrown.</para>
             
-            <para>The information carried by the <literal>AssertionFailure</literal> includes:</para>
+            <para>The information carried by the <literal>AssertionError</literal> includes:</para>
             
             <itemizedlist>
                 <listitem>
@@ -679,7 +779,7 @@ String result = middleObject.string;</programlisting>
             directive. Otherwise, we say that the loop <emphasis>completes</emphasis> normally.</para>
              
             <para>If the loop completes normally, the <literal>else</literal> block is executed. 
-            Otherwise, if the loop exists early, the <literal>else</literal> block is not executed.</para>
+            Otherwise, if the loop exits early, the <literal>else</literal> block is not executed.</para>
                                  
         </section>
         
@@ -691,17 +791,21 @@ String result = middleObject.string;</programlisting>
              
              <itemizedlist>
                  <listitem>
-                     <para>the resource expression, if any, is evaluated, and then 
-                     <literal>open()</literal> is called on the resulting resource 
-                     instance, then</para>
+                     <para>the resource expressions, if any, are evaluated in the order
+                     they occur, and then <literal>obtain()</literal> is called on each 
+                     resulting resource instance of type <literal>Obtainable</literal>, 
+                     in the same order, then</para>
                  </listitem>
                  <listitem>
                      <para>the <literal>try</literal> block is executed, then</para>
                  </listitem>
                  <listitem>
-                     <para><literal>close()</literal> is called on the resource 
-                     instance, if any, with the exception that propagated out of 
-                     the <literal>try</literal> block, if any, then</para>
+                     <para><literal>destroy()</literal> is called on each resource instance
+                     of type <literal>Destroyable</literal>, and <literal>release()</literal> 
+                     is called on each resource instance of type <literal>Obtainable</literal>, 
+                     if any, in the reverse order that the resource expressions occur, 
+                     passing the exception that propagated out of the <literal>try</literal> 
+                     block, if any, then</para>
                  </listitem>
                  <listitem>
                      <para>if an exception did propagate out of the <literal>try</literal> 
@@ -710,13 +814,14 @@ String result = middleObject.string;</programlisting>
                      then</para>
                  </listitem>
                  <listitem>
-                     <para>the <literal>finally</literal> block, if any, is 
-                     executed.</para>
+                     <para>the <literal>finally</literal> block, if any, is executed, 
+                     even in the case where an exception propagates out of the whole
+                     construct.</para>
                  </listitem>
              </itemizedlist>
              
              <comment><para>TODO: Specify what happens if <literal>close()</literal> 
-             throws an exception? Same semantics as Java with "suppressed" exceptions.</para></comment>
+             throws an exception. (Same semantics as Java with "suppressed" exceptions.)</para></comment>
              
         </section>
                 
@@ -747,7 +852,7 @@ String result = middleObject.string;</programlisting>
             </itemizedlist>
             
             <para>Whenever such a condition is encountered at runtime, an 
-            <literal>AssertionException</literal> is immediately thrown.</para>
+            <literal>AssertionError</literal> is immediately thrown.</para>
             
             <comment><para>Note: in Ceylon 1.0, dynamic type checking is only supported
             on JavaScript virtual machines.</para></comment>
@@ -832,12 +937,12 @@ String result = middleObject.string;</programlisting>
                     from the receiving instance, or</para>
                 </listitem>
                 <listitem>
-                    <para>otherwise, execution of the calling context pauses while the body 
+                    <para>otherwise, execution of the calling body pauses while the body 
                     of its getter is executed by the receiving instance, then,</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the getter ends, execution of the 
-                    calling context resumes.</para>
+                    calling body resumes.</para>
                 </listitem>
             </itemizedlist>
             
@@ -857,13 +962,15 @@ String result = middleObject.string;</programlisting>
                     the runtime type of the receiving instance, if any, and then</para>
                 </listitem-->
                 <listitem>
-                    <para>the receiving instance and a reference to the declaration to be
-                    invoked are packaged together into an instance of 
-                    <literal>Callable</literal>.</para>
+                    <para>the receiving instance, a reference to the declaration to be
+                    invoked, or a reference to the current frame or instance of every body 
+                    that contains the referenced declaration are packaged together into an 
+                    instance of <literal>Callable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>The resulting value is the instance of <literal>Callable</literal>.</para>
+            <para>The resulting value is the instance of <literal>Callable</literal>. The 
+            concrete class of this instance is not specified here.</para>
             
         </section>
         
@@ -892,13 +999,13 @@ String result = middleObject.string;</programlisting>
                     the receiving instance, or</para>
                 </listitem>
                 <listitem>
-                    <para>otherwise, execution of the calling context pauses while the body 
+                    <para>otherwise, execution of the calling body pauses while the body 
                     of its setter is executed by the receiving instance with the assigned 
                     value, then,</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the setter ends, execution of the calling 
-                    context resumes.</para>
+                    body resumes.</para>
                 </listitem>
             </itemizedlist>
             
@@ -909,8 +1016,8 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an invocation expression, as defined in 
             <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
-            of a function, or <emphasis>instantiation</emphasis> of a class. Every invocation 
-            has a callable expression:</para>
+            of a function or constructor, or <emphasis>instantiation</emphasis> of a class. 
+            Every invocation has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>
@@ -937,60 +1044,116 @@ String result = middleObject.string;</programlisting>
                     instance, then</para>
                 </listitem>
                 <listitem>
-                    <para>each argument is evaluated in turn in the calling context, then</para>
+                    <para>each listed argument or spread argument is evaluated in turn in the 
+                    calling body, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a comprehension, a comprehension instance, 
+                    as defined in <xref linkend="comprehensionevaluation"/>, is obtained, 
+                    and then</para>
                 </listitem>
                 <listitem>
                     <para>the actual declaration to be invoked is determined by considering the 
                     runtime type of the receiving instance, if any, and then</para>
                 </listitem>
                 <listitem>
-                    <para>execution of the calling context pauses while the body of the function 
+                    <para>execution of the calling body pauses while the body of the function 
                     or initializer is executed by the receiving instance with the argument values, 
                     then</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the function or initializer ends, execution 
-                    of the calling context resumes.</para>
+                    of the calling body resumes.</para>
                 </listitem>
             </itemizedlist>
             
             <para>A function invocation evaluates to the return value of the function, as specified 
             by the <literal>return</literal> directive. The argument values are passed to the 
             parameters of the method, and the body of the method is executed.</para>
-                    
+            
             <para>A class instantiation evaluates to a new instance of the class. The argument 
             values are passed to the initializer parameters of the class, and the initializer
             is executed.</para>
                  
         </section>
         
-       <section id="enumerationevaluation">
+        <section id="anonymousfunctionevaluation">
+            <title>Evaluation of anonymous functions</title>
+            
+            <para>When an anonymous function expression, as defined in 
+            <xref linkend="anonymousfunctions"/>, is evaluated, a reference to the function and a
+            reference to the current frame or instance of every containing body are packaged into an 
+            instance of <literal>Callable</literal>. The instance of <literal>Callable</literal> is
+            the resulting value of the expression. The concrete class of this instance is not 
+            specified here.</para>
+            
+        </section>
+            
+        <section id="enumerationevaluation">
             <title>Evaluation of enumerations</title>
             
             <para>Evaluation of an enumeration expression, as defined in 
-            <xref linkend="enumeration"/>, results in creation of an iterable object or 
+            <xref linkend="enumeration"/>, results in creation of an iterable stream or 
             tuple.</para>
             
             <programlisting>{ "hello", "world" }</programlisting>
             <programlisting>[ new, *elements ]</programlisting>
             
-            <para>When an enumeration expression is executed:</para>
+            <para>When an iterable enumeration expression is executed, a reference to the
+            enumeration expression, together with a reference to the current frame or 
+            instance of every containing body, together with a comprehension instance, 
+            as defined in <xref linkend="comprehensionevaluation"/>, in the case that the 
+            enumeration expression has a comprehension, are packaged together into a stream. 
+            Evaluation of an expression occurring in the enumeration expression occurs in 
+            the context of the packaged framed associated with the stream. When the stream 
+            is iterated, it produces, in turn:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>one value for each listed argument, by evaluating the listed
+                    argument expression, and then</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a spread argument, each value produced 
+                    by the spread argument, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a comprehension, each value produced 
+                    by the comprehension instance, or</para>
+                </listitem>
+                <listitem>
+                    <para>if there are no arguments, and no comprehension, the 
+                    stream is empty and produces no values.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a tuple enumeration expression is executed:</para>
                 
             <itemizedlist>
                 <listitem>
-                    <para>first, each argument is evaluated in turn in the calling context, 
-                    then</para>
+                    <para>first, each listed argument or spread argument is evaluated in 
+                    turn in the calling body, and</para>
                 </listitem>
                 <listitem>
-                    <para>the resulting values are packaged into an instance of 
-                    <literal>Iterable</literal> or <literal>Sequence</literal> and this
-                    object is the resulting value, unless</para>
+                    <para>if the argument list has a comprehension, a comprehension instance, 
+                    as defined in <xref linkend="comprehensionevaluation"/>, is obtained, 
+                    and then</para>
                 </listitem>
                 <listitem>
-                    <para>there are no arguments, in which case the resulting value is
-                    the object <literal>empty</literal>.</para>
+                    <para>the resulting argument values are packaged into an instance of 
+                    <literal>Iterable</literal> or <literal>Sequence</literal>, and this 
+                    object is the resulting value of the enumeration expression, unless</para>
+                </listitem>
+                <listitem>
+                    <para>there are no  arguments, and no comprehension, in which case 
+                    the resulting value of the enumeration expression is the object 
+                    <literal>empty</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>In the case of an iterable enumeration, the concrete class of the resulting
+            value is not specified here. In the case of a tuple enumeration it is always
+            <literal>Tuple</literal>, <literal>Empty</literal>, or <literal>Sequence</literal>.</para>
             
         </section>
         
@@ -1017,7 +1180,7 @@ String result = middleObject.string;</programlisting>
             </itemizedlist>
             
             <para>On the other hand, when a spread argument expression type is not a subtype of 
-            <literal>Sequential</literal>, the behavior depends upon where spread argument
+            <literal>Sequential</literal>, the behavior depends upon where the spread argument
             occurs:</para>
             
             <itemizedlist>
@@ -1054,27 +1217,31 @@ String result = middleObject.string;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If it occurs as an argument to a variadic parameter in a positional
-                    argument list, the values produced by the comprehension are evaluated 
-                    immediately and packaged into an instance of <literal>Sequence</literal>
+                    argument list, the values produced by the comprehension instance are 
+                    evaluated immediately, packaged into an instance of <literal>Sequence</literal>,
                     and passed to the variadic parameter, unless there are no values, in 
                     which case the object <literal>empty</literal> is passed to the variadic 
                     parameter.</para>
                 </listitem>
                 <listitem>
                     <para>If it occurs as an argument to a parameter of type 
-                    <literal>Iterable</literal> at the end of a named argument list, an
-                    iterable object that produces the comprehension's values on demand is 
-                    passed directly to the parameter.</para>
+                    <literal>Iterable</literal> at the end of a named argument list, the 
+                    comprehension instance is packaged into an iterable object that produces 
+                    the values of the comprehension on demand, and this iterable object is 
+                    passed directly to the parameter. The concrete class of this object is 
+                    not specified here.</para>
                 </listitem>
                 <listitem>
                     <para>If it occurs in a tuple enumeration, the values produced by the 
-                    comprehension are evaluated immediately and packaged into an instance 
-                    of <literal>Sequence</literal> and appended to the resulting tuple.</para>
+                    comprehension instance are evaluated immediately, packaged into an instance 
+                    of <literal>Sequence</literal>, and appended to the resulting tuple.</para>
                 </listitem>
                 <listitem>
-                    <para>If it occurs in an iterable enumeration, an iterable object that 
-                    produces the comprehension's values on demand is chained directly to the 
-                    resulting iterable object.</para>
+                    <para>If it occurs in an iterable enumeration, the comprehension instance
+                    is packaged into an iterable object that produces the values of the 
+                    comprehension on demand, and this iterable object is chained directly to 
+                    the resulting iterable object. The concrete class of this object is not 
+                    specified here.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1100,9 +1267,9 @@ String result = middleObject.string;</programlisting>
             
             <para>As a special exception to the rules, the compiler is permitted to optimize 
             certain operations upon certain types in the module <literal>ceylon.language</literal>. 
-            These types are: any of the the built-in numeric types, <literal>Character</literal>, 
-            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
-            <literal>Array</literal>, and <literal>Tuple</literal>.</para>
+            These types are: <literal>Integer</literal>, <literal>Float</literal>, 
+            <literal>Character</literal>, <literal>Range</literal>, <literal>Entry</literal>, 
+            <literal>String</literal>, <literal>Array</literal>, and <literal>Tuple</literal>.</para>
             
             <para>Thus, the tables in the previous chapter define semantics only. The compiler 
             may emit bytecode or compiled JavaScript that produces the same value at runtime as 
@@ -1121,7 +1288,8 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
-                    operators <literal>..</literal> and <literal>-></literal>.</para>
+                    operators <literal>..</literal>, <literal>:</literal>, and 
+                    <literal>-></literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1162,10 +1330,8 @@ String result = middleObject.string;</programlisting>
                     according to the IEEE 754 specification, <emphasis>IEEE Standard 
                     for Binary Floating-Point Arithmetic</emphasis>, and floating point
                     numeric operations conform to this specification. Where possible,
-                    a double-precision 64-bit representation is used. Note that even 
-                    though <literal>Float</literal> has a 64-bit representation on 
-                    both Java and JavaScript virtual machines, the actual range of 
-                    representable values differs.</para>
+                    a double-precision 64-bit representation is used. It is possible on 
+                    both Java and JavaScript virtual machines.</para>
                 </listitem>
                 <listitem>
                     <para>Where possible, values of type <literal>Integer</literal> are 
@@ -1199,15 +1365,27 @@ String result = middleObject.string;</programlisting>
     <section id="comprehensionevaluation">
         <title>Evaluation of comprehensions</title>
         
-        <para>A comprehension, as specified in <xref linkend="comprehensions"/>, 
-        consists of a series of clauses. Each clause of a comprehension produces 
-        a stream of <emphasis>frames</emphasis>. A frame is a set of values for 
-        iteration variables and condition variables declared by the clause and its
-        parent clauses.</para>
+        <para>When a comprehension, as specified in <xref linkend="comprehensions"/>, 
+        is evaluated, a reference to the comprehension, together with a reference to 
+        the current frame or instance of every containing body, are packaged together 
+        into a <emphasis>comprehension instance</emphasis>. A comprehension instance 
+        is not considered a value in the sense of <xref linkend="objectinstancesidentity"/>. 
+        Instead, it is a stream of values, each produced by evaluating the expression 
+        clause of the comprehension.</para>
+        
+        <para>A comprehension consists of a series of clauses. Each clause of a 
+        comprehension, except for the expression clause that terminates the list of 
+        clauses, produces a stream of <emphasis>frames</emphasis>. A frame is a set 
+        of values for iteration variables and condition variables declared by the 
+        clause and its parent clauses.</para>
         
         <comment><para>Note: each child clause can be viewed as a body nested inside 
         the parent clause. The lifecycle of comprehension frames reflects this model.
         </para></comment>
+        
+        <para>Evaluation of an expression occurring in a comprehension clause occurs
+        in the context of the packaged frames associated with the comprehension
+        instance together with a comprehension frame associated with the clause.</para>
         
         <section id="forclause">
             <title><literal>for</literal> clause</title>
@@ -1215,7 +1393,7 @@ String result = middleObject.string;</programlisting>
             <para>The expression which produces the source stream for a child 
             <literal>for</literal> clause may refer to an iteration variable of a
             parent <literal>for</literal> clause. In this case the child clause is 
-            considered <emphasis>correlated</emphasis>. Otherwise it is considered a 
+            considered <emphasis>correlated</emphasis>. Otherwise it is considered 
             <emphasis>uncorrelated</emphasis>.</para>
             
             <para>In either case, the child clause produces a stream of frames. 
@@ -1261,10 +1439,10 @@ String result = middleObject.string;</programlisting>
         <section id="expressionclause">
             <title>Expression clause</title>
             
-            <para>An expression clause produces a single value for each frame 
-            produced by its parent clause, by evaluating the expression in the
-            frame. These resulting values are the values returned by the whole 
-            comprehension.</para>
+            <para>As specified in <xref linkend="comprehensions"/>, every comprehension ends 
+            in an expression clause. An expression clause produces a single value for each 
+            frame produced by its parent clause, by evaluating the expression in the frame. 
+            These resulting values are the values returned by the whole comprehension.</para>
         
         </section>
             

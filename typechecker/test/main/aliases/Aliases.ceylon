@@ -113,7 +113,9 @@ void testOpAliases() {
     
     Or<Integer,Float> ornum = 1;
     Integer|Float num = ornum;
-    Float ornumasfloat = ornum.float;
+    //Float ornumasfloat = ornum.float;
+    //Integer sign = ornum.sign;
+    String onstr = ornum.string;
     Or<Float,Integer> ornum2 = ornum;
 }
 
@@ -192,3 +194,94 @@ class MrX() extends P() {
     shared actual void x() {}
 }
 @error class MrY() extends P() {}
+
+void testMaybeNum() {
+    MaybeNum? val = null;
+    MaybeNum foo = val;
+}
+
+alias MaybeNum => Integer|Float|Null;
+
+alias Primitive => String|Float|Integer;
+alias PrimitiveOrIterable => Primitive|{Primitive*};
+
+void foo1(PrimitiveOrIterable bar) {
+    switch(bar)
+    case(is Primitive) {
+        print("primitve");
+    }
+    case(is {Primitive*}) { // Compile error
+        print("primitive iterable");
+    }
+    switch(bar)
+    case(is String) {
+        print("primitve");
+    }
+    case(is Float|Integer) {
+        print("primitve");
+    }
+    case(is {String|Float|Integer*}) { // Compile error
+        print("primitive iterable");
+    }
+}
+void foo2(String|Float|Integer|{String|Float|Integer*} bar) {
+    switch(bar)
+    case(is Primitive) {
+        print("primitve");
+    }
+    case(is {Primitive*}) { // Compile error
+        print("primitive iterable");
+    }
+    switch(bar)
+    case(is String) {
+        print("primitve");
+    }
+    case(is Float|Integer) {
+        print("primitve");
+    }
+    case(is {String|Float|Integer*}) { // Compile error
+        print("primitive iterable");
+    }
+}
+
+alias Value => Float|Integer;
+
+class Array() satisfies List<Value> {
+	
+	shared actual List<Value> clone() => nothing;
+	
+	shared actual Value? getFromFirst(Integer index) => nothing;
+	
+	shared actual Integer? lastIndex => nothing;
+	
+	shared actual Boolean equals(Object that) {
+		if (is Array that) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	shared actual Integer hash {
+		variable value hash = 1;
+		return hash;
+	}
+	
+	shared actual String string => super.string;
+	
+}
+
+abstract class Enum() of CaseAlias {}
+class CaseAlias() => Case();
+abstract class EnumAlias() => Enum();
+class Case() extends EnumAlias() {}
+
+@error abstract class Duped1() of dupe|dupe {}
+@error object dupe extends Duped1() {}
+@error abstract class Duped2() of Dupe|Dupe {}
+@error class Dupe() extends Duped2() {}
+
+@error alias RCA => RCA();
+@error interface RCI => RCI(RCI);
+

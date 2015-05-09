@@ -174,9 +174,9 @@ interface InitializerParams {
         Baz baz;
     }
     shared class BrokenVar<out T>() {
-        @error shared void method(t, lt) {
-            T t; 
-            List<T> lt;
+        shared void method(t, lt) {
+            @error T t; 
+            @error List<T> lt;
         }
     }
     class Superclass() {
@@ -192,4 +192,35 @@ interface InitializerParams {
     
     @error class XXXX(i=1.0) { Integer i; }
 
+}
+
+class WithGoodFunParam1(eq = (Object that) => true) {
+    Boolean eq(Object that);
+}
+class WithGoodFunParam2(Boolean eq(Object that) => true) {}
+
+
+@error class WithBadFunParam1(eq = (Object that) => 1) {
+    Boolean eq(Object that);
+}
+class WithBadFunParam2(@error Boolean eq(Object that) => 1) {}
+
+void runxxx(foo) {
+    @error void foo() {
+        print("foo");
+    }
+}
+
+void runyyy(foo) {
+    @error void foo() => print("foo");
+}
+
+void runzzzz(Bar b) {
+    @error shared class Bar() {}
+} 
+
+class FooSuper(){}
+
+@error class BarSub(foo){
+    shared object foo extends FooSuper(){}
 }

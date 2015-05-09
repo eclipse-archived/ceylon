@@ -1,5 +1,10 @@
 class Assignability() {
     
+    function entries<Element,Absent>(Iterable<Element,Absent> iterable) 
+            given Absent satisfies Null {
+        return iterable.indexed;
+    }
+	    
     class X() {
         shared String hello = "Hello";
     }
@@ -16,6 +21,10 @@ class Assignability() {
     method(X(),Y());
     
     method { arg1=X(); arg2=Y(); };
+    
+    method { X arg1=X(); Y arg2=Y(); };
+    
+    method { value arg1=X(); value arg2=Y(); };
     
     @error method(Y(), Y());
     @error method(X(), X());
@@ -212,13 +221,13 @@ class Assignability() {
     @error if (nonempty nat) {}
     
     void m<T>() {
-        T[] ts = {};
+        T[] ts = [];
         if (nonempty ts) {
             T t=ts.first;
         }
     }
     
-    String[] strngs = {};
+    String[] strngs = [];
     if (nonempty strngs) {
         String s=strngs.first;
     }
@@ -235,9 +244,9 @@ class Assignability() {
         print(y.name);
     }
     
-    for (@error X x in 46 ) {}
+    @error for (@error X x in 46) {}
     
-    for (@error Integer i in {}) {
+    @error for (Integer i in []) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {
@@ -252,7 +261,7 @@ class Assignability() {
         Integer i = ints.first;
     }
     
-    Integer[] noints = {};
+    Integer[] noints = [];
     if (nonempty noints) {}
     
     //for (@error x in 46) {}
@@ -265,7 +274,7 @@ class Assignability() {
         print(x.hello + " " + y.name);
     }
     
-    for (@error X x -> X y in {X()->Y(), X()->Y()}) {
+    for (X x -> @error X y in {X()->Y(), X()->Y()}) {
         print(x.hello);
     }
     
@@ -273,13 +282,13 @@ class Assignability() {
         print(y.name);
     }
     
-    for (@error X x -> Y y in 12) {}
+    @error for (X x -> Y y in 12) {}
     
-    for (Integer i->String s in entries<String>(["hello", "world", "!"])) {
+    for (Integer i->String s in entries<String,Nothing>(["hello", "world", "!"])) {
         print(i.string + ": " + s);
     }
     
-    for (Integer i->String s in entries<String>{"hello", "world", "!"}) {
+    for (Integer i->String s in entries<String,Nothing>{"hello", "world", "!"}) {
         print(i.string + ": " + s);
     }
     
@@ -405,9 +414,9 @@ class Assignability() {
     @type:"String" value so = o.hello;
     @error value soo = oo.hello;
     
-    object x extends X() {}
-    X xx = x;
-    @error X xxx = o;
+    object ox extends X() {}
+    X xxx1 = ox;
+    @error X xxx2 = o;
     
     Iterable<Entry<Integer,Integer>>? map = null;
     if (exists map) {
