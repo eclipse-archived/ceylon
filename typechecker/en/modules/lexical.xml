@@ -177,9 +177,9 @@
         is exists nonempty
         </literal></para>
         
-        <comment><para>Note: <literal>assembly</literal>, <literal>abstracts</literal>, 
-        <literal>new</literal>, and <literal>let</literal> are reserved for possible use 
-        in a future release of the language.</para></comment>
+        <comment><para>Note: <literal>assembly</literal> and <literal>abstracts</literal>
+        are reserved for possible use in a future release of the language, for declaration
+        of assemblies and lower bound type constraints respectively.</para></comment>
         
     </section>
     
@@ -328,7 +328,7 @@
             
             <synopsis>EscapeSequence: "\" (SingleCharacterEscape | "{" CharacterCode "}")</synopsis>
             
-            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`"</synopsis>
+            <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "e" | "\" | "&quot;" | "'" | "`" | "0"</synopsis>
             
             <para>The single-character escape sequences have their traditional interpretations as
             Unicode characters:</para>
@@ -347,22 +347,28 @@
                     <para><literal>\f</literal> means <literal>FORM FEED (FF)</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>, 
-                    and</para>
+                    <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\e</literal> means <literal>ESCAPE</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>\\</literal>, <literal>\`</literal>, <literal>\'</literal>, 
                     and <literal>\&quot;</literal> mean <literal>REVERSE SOLIDUS</literal>, 
                     <literal>GRAVE ACCENT</literal>, <literal>APOSTROPHE</literal>, and 
-                    <literal>QUOTATION MARK</literal>, respectively.</para>
+                    <literal>QUOTATION MARK</literal>, respectively, and, finally</para>
+                </listitem>
+                <listitem>
+                    <para><literal>\0</literal> means <literal>NULL</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
-            or a Unicode character name, surrounded by braces, and means the Unicode character
-            with the specified codepoint or character name.</para>
+            <para>A Unicode codepoint escape is a two-, four-, or six-digit hexadecimal literal 
+            representing an integer in the range 0 to 10FFFF, or a Unicode character name, 
+            surrounded by braces, and means the Unicode character with the specified codepoint or 
+            character name.</para>
             
-            <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharacterName</synopsis>
+            <synopsis>CharacterCode: "#" ( HexDigit{2} | HexDigit{4} | HexDigit{6} ) | UnicodeCharacterName</synopsis>
             
             <para>Legal Unicode character names are defined by the Unicode specification.</para>
                     
@@ -385,10 +391,16 @@
             
             <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
             
-            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</synopsis>
+            <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence | EscapedBreak</synopsis>
             
             <para>A string literal may contain escape sequences. An escape sequence is 
             replaced by its corresponding Unicode character during lexical analysis.</para>
+            
+            <para>A line-terminating character sequence may be escaped with a backslash,
+            in which case the escaped line termination is removed from the string literal
+            during lexical analysis.</para>
+            
+            <synopsis>EscapedBreak: "\" (CarriageReturn Newline | CarriageReturn | Newline)</synopsis>
             
             <para>A sequence of two backticks is used to delimit an interpolated expression
             embedded in a string template.</para>

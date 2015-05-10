@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -66,8 +68,7 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectDefinition that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = 
-                (Class) value.getType().getDeclaration();
+        Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
@@ -84,13 +85,28 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectArgument that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = 
-                (Class) value.getType().getDeclaration();
+        Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = 
-                sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+                sortDAGAndBuildMetadata(anonymousClass, that);
+        checkForFormalsNotImplemented(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceNotOverridden(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, 
+                orderedTypes, anonymousClass);
+    }
+
+    @Override
+    public void visit(Tree.ObjectExpression that) {
+        Class anonymousClass = that.getAnonymousClass();
+        validateMemberRefinement(that, anonymousClass);
+        super.visit(that);
+        //an object definition is always concrete
+        List<Type> orderedTypes = 
+                sortDAGAndBuildMetadata(anonymousClass, that);
         checkForFormalsNotImplemented(that, 
                 orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceNotOverridden(that, 
@@ -159,7 +175,7 @@ public class TypeHierarchyVisitor extends Visitor {
         }
     }
 
-    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.StatementOrArgument that, 
+    private void checkForDoubleMemberInheritanceWoCommonAncestor(Node that, 
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
         for(Type currentType: orderedTypes) {
@@ -205,7 +221,7 @@ public class TypeHierarchyVisitor extends Visitor {
         }
     }
 
-    private void checkForDoubleMemberInheritanceNotOverridden(Tree.StatementOrArgument that, 
+    private void checkForDoubleMemberInheritanceNotOverridden(Node that, 
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
@@ -335,7 +351,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
-    private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, 
+    private void checkForFormalsNotImplemented(Node that, 
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
@@ -528,6 +544,13 @@ public class TypeHierarchyVisitor extends Visitor {
                         isAbstraction(member)) {
                     continue;
                 }
+                if (declaration.isNative() && member.isNative()) {
+                    // Make sure we get the right member declaration (the one for the same backend as its container)
+                    member = getNativeDeclaration(member, Backend.fromAnnotation(declaration.getNative()));
+                    if (member == null) {
+                        continue;
+                    }
+                }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);
                 if (members==null) {
@@ -562,14 +585,13 @@ public class TypeHierarchyVisitor extends Visitor {
         return type;
     }
     
-    private void validateMemberRefinement(Tree.StatementOrArgument that, 
+    private void validateMemberRefinement(Node that, 
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
             Set<String> errors = new HashSet<String>();
             for (TypeDeclaration std: td.getSupertypeDeclarations()) {
                 if (td instanceof ClassOrInterface && 
-                        !((ClassOrInterface) td).isAbstract() &&
-                        !((ClassOrInterface) td).isAlias()) {
+                        !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
                         if (d.isShared() && 
                                 !isOverloadedVersion(d) && 

@@ -11,13 +11,15 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
+public class WarningSuppressionVisitor<E extends Enum<E>> 
+        extends Visitor implements NaturalVisitor {
 
     private Class<E> enumType;
     
@@ -107,7 +109,7 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
     }
 
     private EnumMap<E,Boolean> pre(AnnotationList al) {
-        EnumMap<E,Boolean> added = new EnumMap(enumType);
+        EnumMap<E,Boolean> added = new EnumMap<E,Boolean>(enumType);
         for (Map.Entry<E, Tree.StringLiteral> entry : getWarningNames(findSuppressWarnings(al), true).entrySet()) {
             E warning = entry.getKey();
             Boolean suppressedByAnnotation = this.suppressed.get(warning);
@@ -136,7 +138,9 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
                 after = 0;
             }
             if (after - before == 0) {
-                warningName.getValue().addUsageWarning(Warning.suppressesNothing, "suppresses no warnings");
+                if (suppressed.get(Warning.suppressesNothing) == null) {
+                    warningName.getValue().addUsageWarning(Warning.suppressesNothing, "suppresses no warnings");
+                }
             }
         }
         this.suppressed.putAll(added);
@@ -177,7 +181,8 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
                 String warningName = that.getText();
                 E warning = parseName(warningName);
                 if (warning == null) {
-                    if (warnAboutUnknownWarnings) {
+                    if (warnAboutUnknownWarnings && 
+                            suppressed.get(Warning.unknownWarning) == null) {
                         that.addUsageWarning(Warning.unknownWarning, "unknown warning: " + warningName);
                     }
                 } else {

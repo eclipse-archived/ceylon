@@ -244,9 +244,9 @@ class Assignability() {
         print(y.name);
     }
     
-    for (@error X x in 46 ) {}
+    @error for (@error X x in 46) {}
     
-    for (@error Integer i in []) {
+    @error for (Integer i in []) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {
@@ -274,7 +274,7 @@ class Assignability() {
         print(x.hello + " " + y.name);
     }
     
-    for (@error X x -> X y in {X()->Y(), X()->Y()}) {
+    for (X x -> @error X y in {X()->Y(), X()->Y()}) {
         print(x.hello);
     }
     
@@ -282,7 +282,7 @@ class Assignability() {
         print(y.name);
     }
     
-    for (@error X x -> Y y in 12) {}
+    @error for (X x -> Y y in 12) {}
     
     for (Integer i->String s in entries<String,Nothing>(["hello", "world", "!"])) {
         print(i.string + ": " + s);
@@ -414,9 +414,9 @@ class Assignability() {
     @type:"String" value so = o.hello;
     @error value soo = oo.hello;
     
-    object x extends X() {}
-    X xx = x;
-    @error X xxx = o;
+    object ox extends X() {}
+    X xxx1 = ox;
+    @error X xxx2 = o;
     
     Iterable<Entry<Integer,Integer>>? map = null;
     if (exists map) {

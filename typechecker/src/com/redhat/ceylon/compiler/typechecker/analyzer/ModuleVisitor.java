@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Arrays.asList;
@@ -12,12 +13,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -89,18 +92,22 @@ public class ModuleVisitor extends Visitor {
     }
 
     private static String getNameString(Tree.QuotedLiteral quoted) {
+        return getNameString(quoted, true);
+    }
+
+    private static String getNameString(Tree.QuotedLiteral quoted, boolean addErrorOnInvalidQuotes) {
         String nameString = quoted.getText();
         if (nameString.length()<2) {
             return "";
         }
         else {
-            if (nameString.charAt(0)=='\'') {
+            if (addErrorOnInvalidQuotes && nameString.charAt(0)=='\'') {
                 quoted.addError("module name should be double-quoted");
             }
             return nameString.substring(1, nameString.length()-1);
         }
     }
-    
+
     @Override
     public void visit(Tree.ModuleDescriptor that) {
         super.visit(that);
@@ -148,6 +155,7 @@ public class ModuleVisitor extends Visitor {
                         mainModule.setAvailable(true);
                         mainModule.getAnnotations().clear();
                         buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+                        mainModule.setNative(getNativeBackend(that.getAnnotationList(), that.getUnit()));
                     }
                 }
             }
@@ -160,6 +168,13 @@ public class ModuleVisitor extends Visitor {
                         String mp = formatPath(ip.getIdentifiers());
                         if (!set.add(mp)) {
                             ip.addError("duplicate module import: '" + mp + "'");
+                        }
+                    }
+                    QuotedLiteral ql = im.getQuotedLiteral();
+                    if(ql != null){
+                        String mp = getNameString(ql, false);
+                        if (!set.add(mp)) {
+                            ql.addError("duplicate module import: '" + mp + "'");
                         }
                     }
                 }
@@ -262,6 +277,15 @@ public class ModuleVisitor extends Visitor {
                 }
             }
             else {
+                Tree.AnnotationList al = that.getAnnotationList();
+                String be = getNativeBackend(al, unit.getUnit());
+                if (be != null) {
+                    Backend backend = Backend.fromAnnotation(be);
+                    if (backend == null) {
+                        node.addError("illegal native backend name: '\"" + 
+                                be + "\"', must be either '\"jvm\"' or '\"js\"'");
+                    }
+                }
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
                 if (that.getImportPath()!=null) {
                 	that.getImportPath().setModel(importedModule);
@@ -273,10 +297,15 @@ public class ModuleVisitor extends Visitor {
                         }
                         ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                         if (moduleImport == null) {
-                            Tree.AnnotationList al = that.getAnnotationList();
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
-                            moduleImport = new ModuleImport(importedModule, optional, export);
+                            if (be == null) {
+                                be = importedModule.getNative();
+                            } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
+                                node.addError("native backend name conflicts with imported module: '\"" + 
+                                        be + "\"' is not '\"" + importedModule.getNative() + "\"'");
+                            }
+                            moduleImport = new ModuleImport(importedModule, optional, export, be);
                             moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);

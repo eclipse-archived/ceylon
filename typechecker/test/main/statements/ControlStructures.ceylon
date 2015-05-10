@@ -16,12 +16,12 @@ class ControlStructures() {
     
     @error if (is Anything something) {}
     @error if (is Object something) {}
-    @error if (is String s = "hello") {}
-    @error if (is Object s = "hello") {}
+    @error if (is String sh = "hello") {}
+    @error if (is Object sh = "hello") {}
     
     variable String? var = "gavin"; 
     @error if (exists var) {}
-    if (exists v = var) {}
+    if (exists vv = var) {}
     
     if (nonempty names) {
         print(names.first);
@@ -125,7 +125,7 @@ class ControlStructures() {
         @type:"String" value msg = e.message;
         @type:"Null|Throwable" value cause = e.cause;
     }
-    catch (@error String s) {
+    catch (@error String estr) {
         
     }
     
@@ -153,9 +153,9 @@ class ControlStructures() {
     
     @error try ("hello") {}
     @error try (Exception()) {}
-    try (@error s = "hello") {}
-    try (@error e = Exception()) {}
-    try (@error Object t = Transaction()) {}
+    try (@error s1 = "hello") {}
+    try (@error e1 = Exception()) {}
+    try (@error Object t1 = Transaction()) {}
     try (@error Transaction trx) {}
     
     try (f = FileHandle()) {

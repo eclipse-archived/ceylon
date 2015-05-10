@@ -57,7 +57,8 @@
         <listitem>
             <para>An <emphasis>applied type</emphasis>, defined in 
             <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
-            generic type parameters of a parameterized type.</para>
+            generic type parameters of a parameterized type declaration, and is called an
+            <emphasis>instantiation</emphasis> of the parameterized type declaration.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
@@ -167,10 +168,10 @@
     <section id="identifiernaming">
         <title>Identifier naming</title>
 
-        <para>The Ceylon compiler enforces identifier naming conventions. Types must
-        be named with an initial uppercase letter. Methods, attributes, parameters, 
-        and locals must be named with an initial lowercase letter or underscore.
-        The grammar for identifiers is defined by 
+        <para>The Ceylon compiler enforces identifier naming conventions. Types 
+        and constructors must be named with an initial uppercase letter. Values, 
+        functions, and parameters must be named with an initial lowercase letter 
+        or underscore. The grammar for identifiers is defined by 
         <xref linkend="identifiersandkeywords"/>.</para>
         
         <synopsis>TypeName: UIdentifier</synopsis>
@@ -185,15 +186,15 @@
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces, type aliases, and type parameters share 
-                a single namespace,</para>
+                <para>classes, interfaces, type aliases, type parameters, and
+                constructors share a single namespace,</para>
             </listitem>
             <listitem>
-                <para>functions, values, and parameters share a single namespace, 
-                and</para>
+                <para>functions and values, including parameters, share a single 
+                namespace, and</para>
             </listitem>
             <listitem>
-                <para>packages have their own dedicated namespace.</para>
+                <para>packages and modules have their own dedicated namespace.</para>
             </listitem>
         </itemizedlist>
         
@@ -206,8 +207,8 @@
         uppercase letter may be forced into the namespace of methods and attributes
         by prefixing the identifier <literal>\i</literal>. A keyword may be used as 
         an identifier by prefixing the keyword with either <literal>\i</literal> or 
-        <literal>\I</literal>. This allows interoperation with languages like Java 
-        which do not enforce these naming conventions.</para>
+        <literal>\I</literal>. This allows interoperation with other languages like 
+        Java and JavaScript which do not enforce these naming conventions.</para>
         
     </section>
       
@@ -247,8 +248,12 @@
                 of one or more parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>class schema</emphasis> is a type schema with exactly
-                one parameter list.</para>
+                <para>A <emphasis>class schema</emphasis> is a type schema with either
+                one parameter list, or a list of constructor schemas.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>constructor schema</emphasis> is a name (an initial 
+                uppercase identifier) with exactly one parameter list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>parameter list</emphasis> is a list of names (initial 
@@ -267,8 +272,8 @@
         or <emphasis>toplevel value</emphasis>.</para>
         
         <para>A value schema, function schema, or parameter list with a missing type or types 
-        may be defined. A value schema, function schema, or parameter list with a missing type 
-        is called <emphasis>partially typed</emphasis>.</para>
+        may be defined. Any such schema, or parameter list with a missing type is called 
+        <emphasis>partially typed</emphasis>.</para>
         
         <para>Two signatures are considered identical if they have exactly the same types, at
         exactly the same positions, and missing types at exactly the same positions.</para> 
@@ -292,7 +297,12 @@
                     <para>two member classes with the same name.</para>
                 </listitem>
             </itemizedlist>
-        
+            
+            <comment><para>Note: the Ceylon compiler itself is able to represent type schemas 
+            with overloaded members and reason about overloading, and does so when compiling 
+            code that calls native Java types. However, this behavior is outside the scope of 
+            this specification.</para></comment>
+            
         </section>
         
         <section id="subtyping">
@@ -331,7 +341,7 @@
             <!--comment><para>Note: intersections and <literal>Nothing</literal> don't satisfy the last of 
             these rules.</para></comment-->
             
-            <para>Every interface type is a subtype of the class <literal>Object</literal> 
+            <para>Also, every interface type is a subtype of the class <literal>Object</literal> 
             defined in <literal>ceylon.language</literal>.</para>
             
             <para>If <literal>X</literal> is a subtype of <literal>Y</literal>, then:</para>
@@ -373,6 +383,9 @@
             of the types may be formed. A union type is a supertype of both of the given types 
             <literal>X</literal> and <literal>Y</literal>, and an instance of either type is an 
             instance of the union type.</para>
+            
+            <comment><para>Note: the type expression <literal>X|Y</literal> is pronounced
+            &#8220;x or y&#8221;.</para></comment>
             
             <para>The union type constructor <literal>|</literal> is associative, so the union 
             of three types, <literal>X</literal>, <literal>Y</literal>, and <literal>Z</literal>, 
@@ -469,6 +482,9 @@
             subtype of both of the given types <literal>X</literal> and <literal>Y</literal>, 
             and any object which is an instance of both types is an instance of the intersection 
             type.</para>
+            
+            <comment><para>Note: the type expression <literal>X&amp;Y</literal> is pronounced
+            &#8220;x and y&#8221;.</para></comment>
             
             <para>The intersection type constructor <literal>&amp;</literal> is associative, 
             so the intersection of three types, <literal>X</literal>, <literal>Y</literal>, 
@@ -675,7 +691,7 @@
             <xref linkend="realizations"/>.</para>
             
             <comment><para>Note: this is too heavy-handed. There is no reason to enforce 
-            types constraint in any place other than generic class instantiations, generic 
+            type constraints in any place other than generic class instantiations, generic 
             function invocations, <literal>extends</literal>, and <literal>satisfies</literal>. 
             However, this restriction makes interoperation with Java generics more 
             straightforward.</para></comment>
@@ -684,19 +700,25 @@
             class or interface, the type must be fully qualified by its containing types, 
             except when used inside the body of a containing type.</para>
             
-            <synopsis>BaseType: TypeNameWithArguments | GroupedType</synopsis>
+            <synopsis>BaseType: PackageQualifier? TypeNameWithArguments | GroupedType</synopsis>
             <synopsis>QualifiedType: BaseType ("." TypeNameWithArguments)*</synopsis>
             
             <para>If a type declaration is generic, a type argument list must be specified. 
             If a type declaration is not generic, no type argument list may be specified.</para>
             
-            <programlisting>BufferedReader.Buffer</programlisting>
-            <programlisting>Entry&lt;Integer,Element&gt;</programlisting>
+            <para>A base type may be qualified by the <literal>package</literal> keyword, allowing 
+            disambiguation of the type name, as defined in 
+            <xref linkend="unqualifiedreferenceresolution"/>.</para> 
+            
+            <synopsis>PackageQualifier: "package" "."</synopsis>
             
             <comment><para>Note: the name of a type may not be qualified by its package name.
             Alias imports, as defined in <xref linkend="aliasimports"/> may be used to 
             disambiguate type names.</para></comment>
         
+            <programlisting>BufferedReader.Buffer</programlisting>
+            <programlisting>Entry&lt;Integer,Element&gt;</programlisting>
+            
         </section>
         
         <section id="typenameabbreviations">
@@ -707,31 +729,62 @@
             <synopsis>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</synopsis>   
             <synopsis>AtomicType: QualifiedType | EmptyType | TupleType | IterableType</synopsis>
             
-            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
-            <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
+            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis> 
+            and <emphasis>sequence types</emphasis>.</para>
                     
             <synopsis>OptionalType: PrimaryType "?"</synopsis>
             <synopsis>SequenceType: PrimaryType "[" "]"</synopsis>
-            <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
+            
+            <para>For any type <literal>X</literal>:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>X?</literal> means <literal>Null|X</literal> for any 
-                    type <literal>X</literal>,</para>
+                    <para><literal>X?</literal> means 
+                    <literal>Null|X</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    <para><literal>X[]</literal> means 
+                    <literal>Sequential&lt;X&gt;</literal>.</para>
+                </listitem>
+           </itemizedlist>
+           
+           <comment><para>Note: the type expression <literal>X?</literal> is pronounced
+           as &#8220;maybe x&#8221;, and <literal>X[]</literal> as 
+           &#8220;sequence of x&#8221;.</para></comment>
+           
+           <para>Next, there are type abbreviations for <emphasis>callable types</emphasis>
+           which represent the types of functions.</para>
+           
+           <synopsis>CallableType: PrimaryType "(" (TypeList? | SpreadType) ")"</synopsis>
+           
+           <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
+            
+           <synopsis>DefaultedType: Type "="?</synopsis>
+            
+           <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
+           
+           <synopsis>SpreadType: "*" UnionType</synopsis>
+            
+           <para>For any type <literal>X</literal>:</para>
+           
+           <itemizedlist>
+                <listitem>
+                    <para><literal>X(Y,Z)</literal> means 
+                    <literal>Callable&lt;X,[Y,Z]&gt;</literal> where 
+                    <literal>Y,Z</literal> is a list of types of any length, 
+                    and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
-                    where <literal>Y,Z</literal> is a list of types of any length.</para>
+                    <para><literal>X(*Y)</literal> means 
+                    <literal>Callable&lt;X,Y&gt;</literal> for any subtype 
+                    <literal>Y</literal> of 
+                    <literal>Sequential&lt;Anything&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
             <para>More precisely, the type meant by a callable type abbreviation is
-            <literal>Callable&lt;X,T&gt;</literal> where <literal>X</literal> is the type 
-            outside the parentheses in the the callable type abbreviation, and 
+            <literal>Callable&lt;X,T&gt;</literal> where <literal>X</literal> is the 
+            type outside the parentheses in the the callable type abbreviation, and 
             <literal>T</literal> is the tuple type formed by the types listed inside the 
             parentheses.</para>
             
@@ -740,21 +793,22 @@
             
             <synopsis>IterableType: "{" UnionType ("*"|"+") "}"</synopsis>
             
+            <para>For any type <literal>X</literal>:</para>
+            
             <itemizedlist>
-                <!--listitem>
-                    <para><literal>{}</literal> means 
-                    <literal>Iterable&lt;Nothing,Null&gt;</literal>,</para>
-                    //causes ambiguity with syntax for annotation named args
-                </listitem-->
                 <listitem>
-                    <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    <para><literal>{X*}</literal> means 
+                    <literal>Iterable&lt;X,Null&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{X+}</literal> means <literal>Iterable&lt;X,Nothing&gt;</literal> 
-                    for any type <literal>X</literal>.</para>
+                    <para><literal>{X+}</literal> means 
+                    <literal>Iterable&lt;X,Nothing&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>Note: the type expression <literal>{X*}</literal> is pronounced
+            as &#8220;stream of x&#8221;, and <literal>{X+}</literal> as 
+            &#8220;nonempty stream of x&#8221;.</para></comment>
             
             <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
             <emphasis>tuple types</emphasis> may be written using brackets.</para>
@@ -762,12 +816,6 @@
             <synopsis>EmptyType: "[" "]"</synopsis>
             
             <synopsis>TupleType: "[" TypeList "]"</synopsis>
-            
-            <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
-            
-            <synopsis>DefaultedType: Type "="?</synopsis>
-            
-            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -951,8 +999,8 @@ Float|Integer num = one;</programlisting></comment>
             the types they alias. Thus, circular type alias definitions, as in the 
             following example, are illegal:</para>
             
-            <programlisting><![CDATA[alias X => List<Y>;
-alias Y => List<X>;]]></programlisting>
+            <programlisting><![CDATA[alias X => List<Y>;  //error: circular type alias definition
+alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <para>Replacement of type aliases with the types they alias occurs at 
             compile time, so type aliases are not reified types, as specified in 
@@ -992,25 +1040,31 @@ alias Y => List<X>;]]></programlisting>
             </listitem-->
         </itemizedlist>
         
-        <para>If a type declaration extends or satisfies a type, we say it 
-        <emphasis>inherits</emphasis> the type.</para>
+        <para>We say that a type declaration <literal>X</literal> <emphasis>inherits</emphasis> 
+        a type declaration <literal>Y</literal> if <literal>X</literal> extends or satisfies 
+        <literal>Y</literal>, or if a third type declaration <literal>Z</literal> inherits 
+        <literal>Y</literal> and <literal>X</literal> extends or satisfies <literal>Z</literal>.</para>
         
         <para>Inheritance relationships may not produce cycles, since that would violate
         the noncircularity rule for subtyping. Thus, a class, interface, or type parameter
         may not, directly or indirectly, inherit itself.</para>
         
+        <para>When a type declaration extends or satisfies a parameterized type declaration, 
+        it must specify type arguments for the type parameters of the generic declaration. 
+        Thus, whenever a type declaration inherits a parameterized type declaration, it also 
+        inherits an instantiation of the parameterized type declaration.</para>
+        
         <comment>
-        <para>Note: when a type declaration specifies a relationship to other types, 
-        Ceylon visually distinguishes between a list of types which conceptually 
-        represents a combination of (intersection of) the types, and a list of types 
-        which represents a choice between (union of) the types. For example, when a 
-        class <literal>C</literal> satisfies multiple interfaces, they are written as 
-        <literal>X&amp;Y&amp;Z</literal>. On the other hand, the cases of an 
-        enumerated class <literal>E</literal> are written as <literal>X|Y|Z</literal>.
-        This syntax emphasizes that <literal>C</literal> is also a subtype of the 
-        intersection type <literal>X&amp;Y&amp;Z</literal>, and that <literal>E</literal> 
-        may be narrowed to the union type <literal>X|Y|Z</literal> using a 
-        <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
+        <para>Note: when a type declaration specifies a relationship to other types, Ceylon 
+        visually distinguishes between a list of types which conceptually represents a 
+        combination of (intersection of) the types, and a list of types which represents a 
+        choice between (union of) the types. For example, when a class <literal>C</literal> 
+        satisfies multiple interfaces, they are written as <literal>X&amp;Y&amp;Z</literal>.
+        On the other hand, the cases of an enumerated class <literal>E</literal> are written 
+        as <literal>X|Y|Z</literal>. This syntax emphasizes that <literal>C</literal> is also 
+        a subtype of the intersection type <literal>X&amp;Y&amp;Z</literal>, and that 
+        <literal>E</literal> may be narrowed to the union type <literal>X|Y|Z</literal> using 
+        a <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
         </comment>
             
         <section id="inheritanceandsubtyping">
@@ -1021,8 +1075,9 @@ alias Y => List<X>;]]></programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
-                then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+                <para>If a type declaration <literal>X</literal> with no type parameters 
+                inherits a type <literal>Y</literal>, then <literal>X</literal> is a subtype 
+                of <literal>Y</literal>.</para>
             </listitem>
             <!--listitem>  
                 <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
@@ -1031,8 +1086,8 @@ alias Y => List<X>;]]></programlisting>
                 <literal>Y</literal>.</para>
             </listitem-->
             <listitem>
-                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
-                that might involve the type parameters of <literal>X</literal>, then for any 
+                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal>, 
+                which might involve the type parameters of <literal>X</literal>, then for any 
                 instantiation <literal>U</literal> of <literal>X</literal> we can construct 
                 a type <literal>V</literal> by, for every type parameter <literal>T</literal> 
                 of <literal>X</literal>, substituting the corresponding type argument of 
@@ -1047,27 +1102,78 @@ alias Y => List<X>;]]></programlisting>
         <section id="extendedclass">
             <title>Extension</title>
         
-            <para>A class may extend another class, in which case the first class is a subtype
-            of the second class and inherits its members.</para>
+            <para>A class may extend another class, in which case the first class is a 
+            subtype of the second class and inherits its members. A class which extends 
+            another class may have a constructor, as defined in <xref linkend="constructors"/>, 
+            which delegates to a constructor of the second class. Extension and constructor 
+            delegation is specified using the <literal>extends</literal> clause.</para>
             
-            <synopsis>ExtendedType: "extends" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
-        
-            <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
+            <para>The <literal>extends</literal> clause must specify exactly one class.</para>
+            
+            <para>An <literal>extends</literal> clause has a reference to a superclass or
+            superclass constructor, followed by an optional positional argument list, as
+            defined in <xref linkend="positionalarguments"/>.</para>
+            
+            <synopsis>ExtendedType: "extends" (Extension | SuperclassExtension) PositionalArguments?</synopsis>
+            
+            <synopsis>Extension: PackageQualifier? TypeNameWithArguments? TypeNameWithArguments</synopsis>
+            <synopsis>SuperclassExtension: "super" "." TypeNameWithArguments</synopsis>
+            
+            <para>The specification of the superclass or superclass constructor is treated 
+            as a value expression, not as a type expression.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the qualifier <literal>super</literal> occurs, the specification
+                    is treated as a member expression, as defined by 
+                    <xref linkend="memberexpressions"/>, where the qualifier 
+                    <literal>super</literal> is treated according to <xref linkend="super"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Ff a qualifying type occurs, the specification is treated as a 
+                    constructor expression, as defined by 
+                    <xref linkend="constructorexpressions"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, if no qualifier occurs, the specification is treated as 
+                    a base expression, as defined by <xref linkend="baseexpressions"/>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The type of the value expression is the inherited type.</para> 
+            
+            <para>The specification of the superclass or superclass constructor may have 
+            type arguments, and, additionally, the extends clause may have a positional 
+            argument list:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>If the superclass is a parameterized type, the <literal>extends</literal> 
-                    clause must also explicitly specify type arguments.</para>
+                    clause must also explicitly specify type arguments, and the resulting 
+                    applied type is inherited.</para>
                 </listitem>
                 <listitem>
-                    <para>The <literal>extends</literal> clause must specify arguments for the 
-                    initializer parameters of the superclass.</para>
+                    <para>If the <literal>extends</literal> clause belongs to a constructor or 
+                    to a class with an initializer parameter list, the <literal>extends</literal> 
+                    clause must specify arguments for the initializer parameters of the superclass
+                    or parameters of the superclass constructor.</para>
+                </listitem>
+                <listitem>
+                    <para>If the <literal>extends</literal> clause belongs to a class with no 
+                    initializer parameter list, the <literal>extends</literal> clause may not 
+                    specify arguments for the initializer parameters of the superclass, and the 
+                    <literal>extends</literal> clause may not refer to a constructor.</para>
                 </listitem>
             </itemizedlist>
             
             <para>The type arguments may <emphasis>not</emphasis> be inferred from the 
-            initializer arguments.</para>
+            positional arguments.</para>
             
+            <para>A type argument occurring in the <literal>extends</literal> clause may not 
+            involve variance annotations <literal>in</literal> or <literal>out</literal>,
+            defined below in <xref linkend="typeargumentvariance"/>.</para>
+            
+            <programlisting>extends Singleton&lt;String&gt;("")</programlisting>
             <programlisting>extends Person(name, org)</programlisting>
             
             <para>A member class annotated <literal>actual</literal> may use the qualifier 
@@ -1113,15 +1219,21 @@ alias Y => List<X>;]]></programlisting>
             in combination with other upper bounds. This restriction will likely be removed in
             future.</para></comment>
             
+            <para>The <literal>satisfies</literal> clause may specify multiple types.</para>
+            
             <synopsis>SatisfiedTypes: "satisfies" PrimaryType ("&amp;" PrimaryType)*</synopsis>
-        
-            <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
-            satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
-            must specify type arguments.</para>
             
-            <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
+            <para>If a satisfied class or interface is a parameterized type, the 
+            <literal>satisfies</literal> clause must explicitly specify type arguments, and 
+            the resulting applied type is inherited.</para>
             
-            <para>A <literal>satisfies</literal> clause may not contain two types produced from 
+            <para>A type occurring in the <literal>satisfies</literal> clause may not involve
+            variance annotations <literal>in</literal> or <literal>out</literal>, defined below 
+            in <xref linkend="typeargumentvariance"/>.</para>
+            
+            <programlisting>satisfies Correspondence&lt;Integer,Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
+            
+            <para>A <literal>satisfies</literal> clause may not contain two instantiations of 
             the same type declaration.</para>
             
         </section>
@@ -1215,7 +1327,7 @@ alias Y => List<X>;]]></programlisting>
             <para>Note: however, a type is <emphasis>not</emphasis> considered automatically 
             assignable to the union of its cases, or to its self type. Instead, the type
             must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, 
-            or to its self type, using either the <literal>of</literal> operator or the
+            nor to its self type, using either the <literal>of</literal> operator or the
             <literal>switch</literal> construct. This narrowing type conversion can be
             statically checked&mdash;if <literal>X</literal> covers <literal>Y</literal>
             then <literal>Y of X</literal> is guaranteed to succeed at runtime.
@@ -1237,6 +1349,10 @@ alias Y => List<X>;]]></programlisting>
             <synopsis>CaseTypes: "of" CaseType ("|" CaseType)*</synopsis>
             
             <synopsis>CaseType: MemberName | PrimaryType</synopsis>
+            
+            <para>A type occurring in the <literal>of</literal> clause may not involve
+            variance annotations <literal>in</literal> or <literal>out</literal>,
+            defined below in <xref linkend="typeargumentvariance"/>.</para>
                                
             <para>If an interface or <literal>abstract</literal> class with an 
             <literal>of</literal> clause has exactly one case, and it is a type parameter 
@@ -1307,7 +1423,7 @@ Item item = comp of Item;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>two types produced from the same type declaration, or</para>
+                    <para>two instantiations of the same type declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>two value references to a single toplevel anonymous class.</para>
@@ -1383,10 +1499,10 @@ interface Function<out Type>
         satisfies Expression<Type> { ... }
 
 interface StringLiteral
-        satisfies Expression<String> { ... }
+        satisfies Expression<String> { ... } //error String is not exactly Nothing
 
 interface NumberLiteral
-        satisfies Expression<Integer|Float> { ... }]]></programlisting>
+        satisfies Expression<Integer|Float> { ... } //error Integer|Float is not exactly Nothing]]></programlisting>
             
             <comment><para>Note: these rules could be relaxed to allow the definition of
             generic enumerated types where the list of cases of an instantiation of a 
@@ -1434,9 +1550,15 @@ interface NumberLiteral
                     disjoint,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X</literal> is an union type <literal>A|B</literal> and 
+                    <para><literal>X</literal> is a union type <literal>A|B</literal> and 
                     both <literal>Y</literal> and <literal>A</literal> are disjoint and 
                     <literal>Y</literal> and <literal>B</literal> are disjoint,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X</literal> is an enumerated type with cases 
+                    <literal>A1|A2|...</literal> and for every case <literal>Ai</literal>
+                    of <literal>X</literal>, <literal>Y</literal> and <literal>Ai</literal> 
+                    are disjoint,</para>
                 </listitem>
                 <listitem>
                     <para><literal>X</literal> is an intersection type <literal>A&amp;B</literal> 
@@ -1457,27 +1579,47 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>X</literal> is an invariant subtype of <literal>Sequence&lt;A&gt;</literal>, 
-                    <literal>Y</literal> is an invariant subtype of <literal>Sequence&lt;B&gt;</literal>,
+                    <para><literal>X</literal> is a subtype of some instantiation of
+                    <literal>Sequential</literal>, <literal>Y</literal> is an instantiation
+                    of a class or interface that is not a subtype of any instantiation of 
+                    <literal>Sequential</literal>, and <literal>Y</literal> is not an 
+                    instantiation of a class or interface that is inherited by 
+                    <literal>Sequential</literal>,</para>
+                </listitem>
+                <!--listitem>
+                    <para><literal>X</literal> is a subtype of <literal>Empty</literal>, and 
+                    <literal>Y</literal> is a subtype of <literal>Iterable&lt;Anything,Nothing&gt;</literal>,</para>
+                </listitem-->
+                <listitem>
+                    <para><literal>X</literal> has the principal supertype instantiation 
+                    <literal>Sequence&lt;A&gt;</literal>, 
+                    <literal>Y</literal> has the principal supertype instantiation 
+                    <literal>Sequential&lt;B&gt;</literal>,
                     and <literal>A</literal> and <literal>B</literal> are disjoint,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X</literal> is an invariant subtype of <literal>Sequential&lt;A&gt;</literal>, 
-                    <literal>Y</literal> is an invariant subtype of <literal>Tuple&lt;J,B,V&gt;</literal>,
-                    and <literal>A</literal> and <literal>B</literal> are disjoint or <literal>X</literal> and
-                    <literal>V</literal> are disjoint, or</para>
+                    <para><literal>X</literal> has the principal supertype instantiation 
+                    <literal>Sequential&lt;A&gt;</literal>, 
+                    <literal>Y</literal> has the principal supertype instantiation 
+                    <literal>Tuple&lt;J,B,V&gt;</literal>,
+                    and <literal>A</literal> and <literal>B</literal> are disjoint or 
+                    <literal>Sequential&lt;A&gt;</literal> and <literal>V</literal> are 
+                    disjoint, or</para>
                 </listitem>
                 <listitem>
-                    <para><literal>X</literal> is an invariant subtype of <literal>Tuple&lt;I,A,U&gt;</literal>,
-                    <literal>Y</literal> is an invariant subtype of <literal>Tuple&lt;J,B,V&gt;</literal>,
-                    and <literal>A</literal> and <literal>B</literal> are disjoint or <literal>U</literal> and
-                    <literal>C</literal> are disjoint.</para>
+                    <para><literal>X</literal> has the principal supertype instantiation 
+                    <literal>Tuple&lt;I,A,U&gt;</literal>,
+                    <literal>Y</literal> has the principal supertype instantiation 
+                    <literal>Tuple&lt;J,B,V&gt;</literal>,
+                    and <literal>A</literal> and <literal>B</literal> are disjoint 
+                    or <literal>U</literal> and <literal>C</literal> are disjoint.</para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note: the soundness of these rules is guaranteed by the implementations of the
-            <literal>sealed</literal> types <literal>Sequence</literal>, <literal>Sequential</literal>, and
-            <literal>Tuple</literal> in the module <literal>ceylon.language</literal>.</para></comment>
+            <comment><para>Note: the soundness of these rules is guaranteed by the 
+            implementations of the <literal>sealed</literal> types <literal>Sequence</literal>, 
+            <literal>Sequential</literal>, <literal>Range</literal>, and <literal>Tuple</literal>
+            in the module <literal>ceylon.language</literal>.</para></comment>
             
         </section>
         
@@ -1486,7 +1628,7 @@ interface NumberLiteral
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Function, class, and interface schemas may be parameterized by one or more 
+        <para>A function, class, or interface schema may be parameterized by one or more 
         generic type parameters. A parameterized type schema defines a type constructor, 
         a function that produces a type given a tuple of compatible type arguments. A 
         parameterized class or function schema defines a function that produces the 
@@ -1532,9 +1674,9 @@ interface NumberLiteral
         the body of the <literal>Entry</literal> class. The following identifier names 
         usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>,
         <literal>This</literal>, <literal>Value</literal>, <literal>Key</literal>, 
-        <literal>Item</literal>, <literal>Argument</literal>, <literal>Args</literal> and 
-        <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
-        and classes.</para></comment>
+        <literal>Item</literal>, <literal>Absent</literal>, <literal>Argument</literal>, 
+        <literal>Args</literal> and <literal>Result</literal>. Avoid, where reasonable, using 
+        these names for interfaces and classes.</para></comment>
         
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
@@ -1542,11 +1684,11 @@ interface NumberLiteral
             <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
             over a constrained set of types.</para>
             
-            <synopsis>TypeParameter: Variance? TypeName ("=" Type)</synopsis>
+            <synopsis>TypeParameter: Variance TypeName ("=" Type)?</synopsis>
             
             <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
             
-            <synopsis>Variance: "out" | "in"</synopsis>
+            <synopsis>Variance: ("out" | "in")?</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -1687,6 +1829,11 @@ interface NumberLiteral
                 <listitem>
                     <para>Any initializer parameter type of the class is a contravariant 
                     position.</para>
+                </listitem>
+                <listitem>
+                    <para>Any constructor parameter type of the class is an invariant 
+                    position of the immediately containing type, but a contravariant 
+                    position of any outer containing type.</para>
                 </listitem>
                 <listitem>
                     <para>Any upper bound of a type parameter of the class is a contravariant 
@@ -1868,26 +2015,21 @@ interface NumberLiteral
             <comment><para>Note: in Ceylon 1.0, a type parameter with multiple upper bounds may 
             not have an upper bound which is another type parameter.</para></comment>
             
-            <programlisting><![CDATA[given Value satisfies Ordinal & Comparable<Value>]]></programlisting>
-            
-            <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
+            <programlisting><![CDATA[given Value satisfies Ordinal<Value> & Comparable<Value>]]></programlisting>
             
             <programlisting><![CDATA[given Argument of String | Integer | Float]]></programlisting>
             
             <para>A type parameter is a subtype of its upper bounds.</para>
             
-            <programlisting><![CDATA[class Holder<Value>(shared Value value) 
-        extends Object
+            <programlisting><![CDATA[class Holder<Value>(shared Value element) 
+        extends Object()
         given Value satisfies Object {
     shared actual Boolean equals(Object that) {
-        if (is Holder<Value> that) {
-            return value==that.value;
-        }
-        else {
-            return false;
-        }
+        return if (is Holder<Value> that
+            then element==that.element
+            else false;
     }
-    shared actual Integer hash =>  value.hash;
+    shared actual Integer hash => element.hash;
 }]]></programlisting>
             
             <para>Every type parameter has an implicit upper bound of type 
@@ -1955,7 +2097,7 @@ interface NumberLiteral
             
             <para>is equivalent to a metatype bound of this form:</para>
             
-            <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
+            <programlisting>given X is X(A,B)</programlisting>
             
             <comment><para>Note: I suppose that types introduced to the metatype should 
             be considered to satisfy a metatype bound, allowing type class introduction.
@@ -1971,51 +2113,144 @@ interface NumberLiteral
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
         parameterized function schema. In the case of a type schema, this new schema is
-        the schema of an applied type.</para>
+        the schema of an applied type, and is called an instantiation of the parameterized 
+        type schema.</para>
         
-        <para>A type argument list is a list of types.</para>
+        <para>A type argument list is a list of type arguments.</para>
         
-        <synopsis>TypeArguments: "&lt;" (Type ",")* Type "&gt;"</synopsis>
+        <synopsis>TypeArguments: "&lt;" (TypeArgument ",")* TypeArgument "&gt;"</synopsis>
         
-        <para>A type argument may itself be an applied type, or type parameter,
-        or may involve unions and intersections.</para>
+        <para>A type argument is a type with a variance.</para>
+        
+        <synopsis>TypeArgument: Variance Type</synopsis>
+        
+        <para>A type argument may itself be an applied type, or type parameter, or may 
+        involve unions and intersections.</para>
         
         <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>&lt;String, Person?&gt;</programlisting>
-        <programlisting>&lt;String[], [{Object*}]&gt;</programlisting>
+        <programlisting>&lt;String[](Integer), [{Object*}]&gt;</programlisting>
+        <programlisting>&lt;out Object, in Nothing&gt;</programlisting>
         
         <para>Type arguments are assigned to type parameters according to the positions
         they occur in the list.</para>
-         
-        <para>Given the schema of a generic declaration, we form the new schema by 
-        <emphasis>type argument substitution</emphasis>. Each type argument is substituted 
-        for every appearance of the corresponding type parameter in the schema of the 
-        generic declaration, including:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>attribute types,</para>
-            </listitem>
-            <listitem>
-                <para>method return types,</para>
-            </listitem>
-            <listitem>
-                <para>method parameter types,</para>
-            </listitem>
-            <listitem>
-                <para>initializer parameter types, and</para>
-            </listitem>
-            <listitem>
-                <para>type arguments of extended classes and satisfied interfaces.</para>
-            </listitem>
-        </itemizedlist>
+        <section id="typeargumentvariance">
+            <title>Type arguments and variance</title>
         
-        <!--
-        <para>A dimension is substituted for every appearance of the corresponding 
-        dimensional type parameter in the schema of the parameterized declaration.
-        The dimension appears as a parenthesized expression in expressions involving
-        the dimensional type parameter.</para>
-        -->
+            <para>Every type argument has a variance:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the type argument is annotated <literal>out</literal>
+                    then it must be assigned to an invariant type parameter, and 
+                    it is <emphasis>covariant</emphasis>,</para>
+                </listitem>
+                <listitem>
+                    <para>if the type argument is annotated <literal>in</literal>
+                    then it must be assigned to an invariant type parameter, and 
+                    it is <emphasis>contravariant</emphasis>, or,</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, the type argument has the same variance 
+                    as the type parameter to which it is assigned.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>It is illegal for both the type parameter and its type argument
+            to have an explicit variance.</para>
+            
+        </section>
+        
+        <section id="typeargumentsubstitution">
+            <title>Type argument substitution</title>
+        
+            <para>Given the schema of a generic declaration, we form the new schema by 
+            <emphasis>type argument substitution</emphasis>. Each type argument is 
+            substituted for every appearance of the corresponding type parameter in the 
+            schema of the generic declaration, including:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>attribute types,</para>
+                </listitem>
+                <listitem>
+                    <para>function or method return types,</para>
+                </listitem>
+                <listitem>
+                    <para>function or method parameter types,</para>
+                </listitem>
+                <listitem>
+                    <para>class initializer and constructor parameter types, and</para>
+                </listitem>
+                <listitem>
+                    <para>type arguments of extended classes and satisfied interfaces.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a type argument <literal>A</literal> with no explicit variance 
+            annotation is substituted for a type parameter <literal>T</literal>, all
+            occurrences of <literal>T</literal> in the schema of the generic declaration
+            are replaced with <literal>A</literal>.</para>
+            
+            <para>For type arguments with explicit variance of a type parameter 
+            <literal>T</literal>, substitution of the type argument depends upon whether
+            an occurrence of <literal>T</literal> is a covariant or contravariant position
+            in the schema of the generic declaration, as defined above in 
+            <xref linkend="variancevalidation"/>.</para>
+            
+            <para>When a type argument <literal>out A</literal> explicitly marked 
+            covariant is substituted for a type parameter <literal>T</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a covariant position
+                    as a type argument of an invariant type parameter is replaced by 
+                    <literal>out A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every other occurrence of <literal>T</literal> in a covariant
+                    position is replaced by <literal>A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a contravariant
+                    position is replaced by <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every applied type expression <literal>E</literal> involving
+                    <literal>A</literal>, and occurring as a type argument of an 
+                    invariant type parameter, and which was replaced by <literal>F</literal>
+                    according to the previous rules is replaced by <literal>out F</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a type argument <literal>in A</literal> explicitly marked 
+            contravariant is substituted for a type parameter <literal>T</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a contravariant 
+                    position as a type argument of an invariant type parameter is 
+                    replaced by <literal>in A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every other occurrence of <literal>T</literal> in a 
+                    contravariant position is replaced by <literal>A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every occurrence of <literal>T</literal> in a covariant
+                    position is replaced by the intersection of the upper bound type
+                    constraints on <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Every applied type expression <literal>E</literal> involving
+                    <literal>A</literal>, and occurring as a type argument of an 
+                    invariant type parameter, and which was replaced by <literal>F</literal>
+                    according to the previous rules is replaced by <literal>out F</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
         
         <section id="typeargumentsandconstraints">
             <title>Type arguments and type constraints</title>
@@ -2035,10 +2270,11 @@ interface NumberLiteral
                 </listitem-->
                 <listitem>
                     <para>A type argument to a type parameter <literal>T</literal> with an 
-                    enumerated type bound must be a subtype of one of the enumerated types
-                    of <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
-                    with an enumerated type bound where every enumerated type of 
-                    <literal>A</literal> is also an enumerated type of <literal>T</literal>.</para>
+                    enumerated bound must be a subtype of one of the enumerated types of the
+                    bound on <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
+                    with an enumerated bound where every enumerated type of the bound on
+                    <literal>A</literal> is a subtype of one of the enumerated types of the 
+                    bound on <literal>T</literal>.</para>
                 </listitem>
                 <!--
                 <listitem>
@@ -2074,6 +2310,10 @@ interface NumberLiteral
             <para>There must be at least as many type parameters as type arguments. There must 
             be at least as many type arguments as type parameters without default values.</para>
             
+            <comment><para>TODO: Currently we enforce these restrictions in every type expression,
+            but in fact that is too heavy-handed. We only really need to enforce it for 
+            instantiations and supertypes.</para></comment>
+            
         </section>
         
         <section id="producedtypes">
@@ -2108,27 +2348,48 @@ interface NumberLiteral
             <itemizedlist>
                 <listitem>
                     <para>
-                        <literal>T</literal> is a covariant type parameter, and
-                        <literal>A</literal> is a subtype of <literal>B</literal>, or
+                        <literal>B</literal> is a covariant type argument, and
+                        the type <literal>B</literal> is the intersection of 
+                        all upper bounds on <literal>T</literal>, or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <literal>T</literal> is a contravariant type parameter, and
-                        <literal>B</literal> is a subtype of <literal>A</literal>, or
+                        <literal>B</literal> is a contravariant type argument, and
+                        the type <literal>B</literal> is precisely 
+                        <literal>Nothing</literal>, or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <literal>T</literal> is an invariant type parameter (neither 
-                        covariant nor contravariant), and <literal>A</literal> and
-                        <literal>B</literal> are exactly the same type.
+                        <literal>B</literal> is a covariant type argument, and
+                        <literal>A</literal> is not contravariant, and the type
+                        <literal>A</literal> is a subtype of the type 
+                        <literal>B</literal>,
+                        or
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <literal>B</literal> is a contravariant type argument, and
+                        <literal>A</literal> is not covariant, and the type
+                        <literal>B</literal> is a subtype of the type
+                        <literal>A</literal>, or
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <literal>B</literal> and <literal>A</literal> are both 
+                        invariant type arguments (neither covariant nor contravariant), 
+                        and <literal>A</literal> and <literal>B</literal> are exactly 
+                        the same type.
                     </para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note that if <literal>T</literal> is an invariant type parameter
-            of <literal>X&lt;T&gt;</literal>, then a type <literal>Z</literal> is a subtype 
+            <comment><para>Note that if <literal>A</literal> is an invariant type 
+            argument in the instantiation <literal>X&lt;A&gt;</literal> of a generic type 
+            <literal>X&lt;T&gt;</literal>, then a type <literal>Z</literal> is a subtype 
             of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> has the 
             principal instantiation <literal>X&lt;A&gt;</literal>.</para></comment>
             
@@ -2138,10 +2399,23 @@ interface NumberLiteral
             <title>Type argument inference</title>
         
             <para>When a direct invocation expression, as defined by 
-            <xref linkend="invocationexpressions"/>, for a generic function or a direct 
-            instantiation expression for a generic class does not explicitly specify type 
-            arguments, the type arguments are inferred from the argument expression types. 
-            The types of the argument expressions and the declared types of the corresponding 
+            <xref linkend="invocationexpressions"/>, does not explicitly specify type 
+            arguments, the type arguments are inferred from the argument expression types.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>In the case of a direct invocation of a function or class, type 
+                    arguments are inferred for the type parameters of the function or 
+                    class.</para>
+                </listitem>
+                <listitem>
+                    <para>In the case of a direct invocation of a constructor, type 
+                    arguments are inferred for the type parameters of the class to which
+                    the constructor belongs.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The types of the argument expressions and the declared types of the corresponding 
             parameters determine an <emphasis>inferred lower bound</emphasis> or 
             <emphasis>inferred upper bound</emphasis> for each type parameter.</para>
             
@@ -2461,6 +2735,11 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             <literal>Comparable</literal> and <literal>Numeric</literal>) or in which 
             another type parameter appears?</para></comment>
         
+            <para>An inferred type argument never involves an anonymous class, as defined 
+            in <xref linkend="anonymousclasses"/>. When an inferred type would involve an 
+            anonymous class type, the anonymous class is replaced by the intersection 
+            of the class type it extends with all interface types it satisfies.</para>
+            
         </section>
         
     </section>
@@ -2514,6 +2793,75 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
         </section>
         
+        <section id="typeargumentdistinctness">
+            <title>Type argument distinctness</title>
+            
+            <para>A pair of type arguments <literal>A</literal> and <literal>B</literal>
+            are considered:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>provably distinct</emphasis>, if neither 
+                    <literal>A</literal> nor <literal>B</literal> involves a type 
+                    parameter and either:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>both arguments are invariant, and are not 
+                            exactly the same type,</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is covariant and the other argument 
+                            is invariant and is not a subtype of the covariant 
+                            argument, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is contravariant and the other 
+                            argument is invariant and is not a supertype of the 
+                            contravariant argument,</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para><emphasis>provably not distinct</emphasis>, if either:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>both arguments are invariant, and are exactly 
+                            the same type,</para>
+                        </listitem>
+                        <listitem>
+                            <para>both arguments are covariant,</para>
+                        </listitem>
+                        <listitem>
+                            <para>both arguments are contravariant,</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is covariant and the other argument 
+                            is invariant and is a subtype of the covariant 
+                            argument, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>one argument is contravariant and the other 
+                            argument is invariant and is a supertype of the 
+                            contravariant argument,</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>otherwise, <emphasis>possibly distinct</emphasis>, if
+                    either <literal>A</literal> or <literal>B</literal> involves a 
+                    type parameter and <literal>A</literal> and <literal>B</literal> 
+                    are not provably not distinct, or if <literal>A</literal> and 
+                    <literal>B</literal> have opposite variances.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: the unfortunate case of possible distinctness is an
+            incompleteness in the type system arising from the fact that Ceylon does 
+            not currently allow a type argument with both an upper and a lower bound, 
+            that is, a type argument of form <literal>in X out Y</literal>.</para></comment>
+            
+        </section>
+        
         <section id="principalinstantiationinheritance">
             <title>Principal instantiation inheritance</title>
             
@@ -2546,48 +2894,64 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
                 <listitem>
                     <para>for some invariant type parameter <literal>T</literal> of 
+                    <literal>Y</literal>, the argument <literal>A</literal> of 
+                    <literal>T</literal> given in <literal>V</literal> and the argument
+                    <literal>B</literal> of <literal>T</literal> given in 
+                    <literal>W</literal> are provably distinct type arguments, and then 
+                    the type <literal>V&amp;W</literal> is the bottom type 
+                    <literal>Nothing</literal>, and we say that <literal>V</literal> and 
+                    <literal>W</literal> are <emphasis>disjoint instantiations</emphasis> 
+                    of <literal>Y</literal>, or</para>
+                </listitem>
+                
+                <listitem>
+                    <para>for some invariant type parameter <literal>T</literal> of 
                     <literal>Y</literal>, the argument of <literal>A</literal> of 
                     <literal>T</literal> given in <literal>V</literal> and the argument
                     <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal> are distinct types, and either <literal>A</literal>
-                    or <literal>B</literal> involves a type parameter, or</para>
+                    <literal>W</literal> are possibly distinct, and then we say that
+                    <literal>V</literal> and <literal>W</literal> are 
+                    <emphasis>irreconcilable instantiations</emphasis> 
+                    of <literal>Y</literal>, or</para>
                 </listitem>
                 
                 <listitem>
-                    <para>if, for some invariant type parameter <literal>T</literal> 
-                    of <literal>Y</literal>, the argument of <literal>A</literal> of 
-                    <literal>T</literal> given in <literal>V</literal> and the argument
-                    <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal> are distinct types, and neither <literal>A</literal>
-                    nor <literal>B</literal> involve a type parameter, then the type 
-                    <literal>V&amp;W</literal> is the bottom type <literal>Nothing</literal>, 
-                    and we say that <literal>V</literal> and <literal>W</literal> are 
-                    <emphasis>disjoint instantiations</emphasis> of <literal>Y</literal>, 
-                    or, otherwise,</para>
-                </listitem>
-                
-                <listitem>
-                    <para><literal>X</literal> must be a subtype of an instantiation 
-                    <literal>P</literal> of <literal>Y</literal> formed by taking each
-                    type parameter <literal>T</literal> of <literal>Y</literal>, and 
-                    constructing a type argument <literal>C</literal> for 
-                    <literal>T</literal> from the type arguments <literal>A</literal> 
-                    of <literal>T</literal> given in <literal>V</literal> and 
-                    <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal>:</para>
+                    <para>otherwise, <literal>X</literal> must be a subtype of an 
+                    instantiation <literal>P</literal> of <literal>Y</literal> formed 
+                    by taking each type parameter <literal>T</literal> of 
+                    <literal>Y</literal>, and constructing a type argument 
+                    <literal>C</literal> for <literal>T</literal> from the type 
+                    arguments <literal>A</literal> of <literal>T</literal> given in 
+                    <literal>V</literal> and <literal>B</literal> of <literal>T</literal> 
+                    given in <literal>W</literal>:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>if <literal>Y</literal> is invariant in <literal>T</literal>, 
-                            then <literal>C</literal> is the same type as <literal>A</literal>
-                            and <literal>B</literal>,</para>
+                            <para>if <literal>A</literal> and <literal>B</literal> are 
+                            both invariant, then they must be exactly the same type,
+                            and <literal>C</literal> is the same type as 
+                            <literal>A</literal> and <literal>B</literal>,</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>Y</literal> is covariant in <literal>T</literal>, 
-                            then <literal>C</literal> is <literal>A&amp;B</literal>, or</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are covariant, then <literal>C</literal> is 
+                            <literal>out A&amp;B</literal></para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>Y</literal> is contravariant in <literal>T</literal>,
-                            then <literal>C</literal> is <literal>A|B</literal>.</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are contravariant, then <literal>C</literal> is 
+                            <literal>in A|B</literal>,</para>
+                        </listitem>
+                        <listitem>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                             is covariant and the other is invariant, with exact type
+                             <literal>D</literal>, then <literal>C</literal> is just
+                             <literal>D</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is contravariant, and the other is invariant, with exact type 
+                            <literal>D</literal>, then <literal>C</literal> is just
+                            <literal>D</literal>.</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -2651,19 +3015,22 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     <literal>T</literal> given in <literal>V</literal>:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>if <literal>X</literal> is covariant in 
-                            <literal>T</literal>, then <literal>C</literal>
-                            is <literal>A|B</literal>,</para>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is covariant, and neither is contravariant, then 
+                            <literal>C</literal> is the covariant type argument 
+                            <literal>out A|B</literal>,</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>X</literal> is contravariant in 
-                            <literal>T</literal>, then <literal>C</literal>
-                            is <literal>A&amp;B</literal>, or</para>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is contravariant, and neither is covariant, then 
+                            <literal>C</literal> is the contravariant type argument 
+                            <literal>in A&amp;B</literal>, or</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>X</literal> is invariant in <literal>T</literal>, 
-                            and <literal>A</literal> and <literal>B</literal> are exactly 
-                            the same type, then <literal>C</literal> is this type.</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are invariant, and if <literal>A</literal> and 
+                            <literal>B</literal> are exactly the same type, then 
+                            <literal>C</literal> is this type.</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -2679,38 +3046,52 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     <literal>T</literal> given in <literal>V</literal>:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>if <literal>X</literal> is covariant in 
-                            <literal>T</literal>, then <literal>C</literal>
-                            is <literal>A&amp;B</literal>,</para>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is covariant, and neither is contravariant, then 
+                            <literal>C</literal> is the covariant type argument
+                            <literal>out A&amp;B</literal>,</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>X</literal> is contravariant in 
-                            <literal>T</literal>, then <literal>C</literal>
-                            is <literal>A|B</literal>, or</para>
+                            <para>if either <literal>A</literal> or <literal>B</literal> 
+                            is contravariant, and neither is covariant, then 
+                            <literal>C</literal> is the contravariant type argument
+                            <literal>in A|B</literal>,
+                            or</para>
                         </listitem>
                         <listitem>
-                            <para>if <literal>X</literal> is invariant in <literal>T</literal>, 
-                            and <literal>A</literal> and <literal>B</literal> are exactly 
-                            the same type, then <literal>C</literal> is this type.</para>
+                            <para>if both <literal>A</literal> and <literal>B</literal> 
+                            are invariant, and if <literal>A</literal> and 
+                            <literal>B</literal> are exactly the same type, then 
+                            <literal>C</literal> is this type.</para>
                         </listitem>
                     </itemizedlist>
                  </listitem>
                  <listitem>
-                    <para>Finally, the principal instantiation of a generic type 
-                    <literal>X</literal> for a type <literal>Y</literal> which
-                    has one or more inherited instantiations of <literal>X</literal> 
-                    is the principal instantiation of the intersection of all the
-                    inherited instantiations of <literal>X</literal>.</para>
+                    <para>Finally, the principal instantiation of a generic type <literal>X</literal> 
+                    for a type <literal>Y</literal> which has one or more inherited instantiations 
+                    of <literal>X</literal> is the principal instantiation of the intersection of 
+                    all the inherited instantiations of <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note: an intersection <literal>X&lt;A&gt;&amp;X&lt;P&gt;</literal> 
+            <comment><para>Note: since we do not support type arguments with both upper
+            and lower bounds, there are two cases where we cannot form a principal
+            instantiation for an intersection type.</para>  
+            <itemizedlist>
+            <listitem>
+            <para>Intersections such as <literal>X&lt;in A&gt; &amp; X&lt;out B&gt;</literal>, 
+            where the principal instantiation would be <literal>X&lt;in A out B&gt;</literal>.
+            </para>
+            </listitem>
+            <listitem>
+            <para>An intersection <literal>X&lt;A&gt; &amp; X&lt;P&gt;</literal> 
             of two instantiations of an invariant type, <literal>X&lt;T&gt;</literal> where 
-            one type argument <literal>P</literal> is a type parameter introduces a known 
-            hole in our type system. It is impossible to form a principal instantiation of 
-            <literal>X</literal> for this intersection type without resorting to use-site 
-            covariance, so we don't allow references to members of the intersection type.
-            </para></comment>
+            one type argument <literal>P</literal> is a type parameter. The principal
+            instantiation should be <literal>X&lt;in A|P out A&amp;P&gt;</literal>.</para> 
+            </listitem>
+            </itemizedlist>
+            <para>In these cases we simply disallow references to members of the intersection 
+            type.</para></comment>
             
         </section>
         

@@ -186,6 +186,14 @@
 interface Sink&lt;in Item&gt; { ... }</programlisting>
             
             <para>
+            In order to support interoperation with Java, Ceylon also features 
+            Java-style <emphasis>use-site variance</emphasis>, with a much cleaner syntax
+            than Java's. A type argument may be marked as covariant or contravariant.
+            </para>
+            
+            <programlisting>List&lt;out Element&gt; javaArrayList = ArrayList&lt;Element&gt;();</programlisting>
+            
+            <para>
             Ceylon has a somewhat more expressive system of generic type constraints with 
             a cleaner, more regular syntax. The syntax for declaring constraints on a type 
             parameter looks very similar to a class or interface declaration. A type 
@@ -340,10 +348,24 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             <title>Class initialization and instantiation</title>
             
             <para>
-            Ceylon does not feature any Java-like constructor declaration and so each 
-            Ceylon class has a parameter list, and exactly one 
-            <emphasis>initializer</emphasis>&mdash;the body of the class. This helps
-            reduce verbosity and results in a more regular block structure.
+            A Ceylon class may have one or more named constructors, declared
+            using the <literal>new</literal> keyword.
+            </para>
+            
+            <programlisting>class Point {
+    Float x; 
+    Float y;
+    new Point(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+    ...
+}</programlisting>
+            
+            <para>
+            However, since constructors are often unnecessarily verbose, it is more
+            common to define a Ceylon class with a parameter list, and exactly one 
+            <emphasis>initializer</emphasis>&mdash;the body of the class.
             </para>
             
             <programlisting>class Point(Float x, Float y) { ... }</programlisting>
@@ -465,9 +487,9 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             
             <para>
             The type of a function is expressed within the type system as an 
-            instantiation of the interface <literal>Callable</literal>. The parameter 
-            types are expressed as a tuple type. So the type of the function 
-            <literal>(String s) =&gt; s.size>1</literal> is 
+            instantiation of the interface <literal>Callable</literal>. The 
+            parameter types are expressed as a tuple type. So the type of the 
+            function <literal>(String s) =&gt; s.size>1</literal> is 
             <literal>Callable&lt;Boolean,[String]&gt;</literal>, which may be 
             abbreviated to <literal>Boolean(String)</literal>.
             </para>
@@ -728,6 +750,11 @@ Float? maxOfZeroOrMore = max(zeroOrMore); //might be null</programlisting>
 Float x = origin[0];
 Float y = origin[1];
 Null z = origin[2]; //only two elements!</programlisting>
+            
+            <para>Tuples and nonempty sequences support pattern-based 
+            <emphasis>destructuring</emphasis>.</para>
+            
+            <programlisting>value [x, y] = origin;</programlisting>
             
         </section>
         

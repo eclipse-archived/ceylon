@@ -16,6 +16,15 @@ public class ControlBlock extends Element implements Scope {
     
     private Set<Value> specifiedValues;
     private List<Declaration> members = new ArrayList<Declaration>(3);
+    private boolean let;
+    
+    public boolean isLet() {
+        return let;
+    }
+    
+    public void setLet(boolean let) {
+        this.let = let;
+    }
     
     @Override
     public List<Declaration> getMembers() {

@@ -23,10 +23,13 @@ public class AliasVisitor extends Visitor {
 
     private void check(Node that, ProducedType t, TypeDeclaration d) {
         if (t!=null) {
-            List<TypeDeclaration> l = t.isRecursiveTypeAliasDefinition(singleton(d));
-            if (!l.isEmpty()) {
+            List<TypeDeclaration> list = 
+                    t.isRecursiveTypeAliasDefinition(singleton(d));
+            if (!list.isEmpty()) {
                 that.addError("type alias is circular: definition of '" + 
-                        d.getName() + "' is recursive, involving " + typeList(l));
+                        d.getName() + 
+                        "' is recursive, involving " + 
+                        typeList(list));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
@@ -35,9 +38,9 @@ public class AliasVisitor extends Visitor {
         }
     }
 
-    public static String typeList(List<TypeDeclaration> l) {
+    public static String typeList(List<TypeDeclaration> list) {
         StringBuffer sb = new StringBuffer();
-        for (TypeDeclaration td: l) {
+        for (TypeDeclaration td: list) {
             sb.append("'").append(td.getName()).append("', ");
         }
         sb.setLength(sb.length()-2);
@@ -46,7 +49,6 @@ public class AliasVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -55,11 +57,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        super.visit(that);
         Tree.ClassSpecifier ts = that.getClassSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -68,11 +70,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        super.visit(that);
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType st = ts.getType();
@@ -81,7 +83,11 @@ public class AliasVisitor extends Visitor {
                         that.getDeclarationModel());
             }
         }
+        super.visit(that);
     }
+    
+    // Necessary in order to resolve a nasty bug #867 
+    // resulting from caching of type aliases:
     
     @Override
     public void visit(TupleType that) {
@@ -92,7 +98,10 @@ public class AliasVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        that.setTypeModel(that.getTypeModel().resolveAliases());
+        ProducedType rt = that.getTypeModel();
+        if (rt!=null) {
+            that.setTypeModel(rt.resolveAliases());
+        }
     }
     
 }

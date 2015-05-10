@@ -302,3 +302,47 @@ interface AbstractThing {
 @error class ConcreteThing() 
         satisfies AbstractThing {
 }
+
+void intermediateShortcutRefinement() {
+
+    interface Foo {
+        shared formal String? method1();
+        shared formal Integer|Float val1;
+        shared formal String? method2();
+        shared formal Integer|Float val2;
+    }
+    
+    interface Bar satisfies Foo {
+        shared actual default String method1() => "Bar";
+        shared actual default Integer val1 => 0;
+        shared actual String? method2() => "Bar";
+        shared actual Float val2 => 0.0;
+    }
+    
+    interface Baz satisfies Foo {
+        shared actual formal String? method1();
+        shared actual formal Float val1;
+        shared actual formal String? method2();
+        shared actual formal Float val2;
+    }
+    
+    class BarAndBaz() satisfies Bar, Baz {
+        @error method1() => null;
+        @error val1 = 2.3;
+        @error method2() => null;
+        @error val2 = 2.3;
+    }
+
+}
+
+class ABC() {
+    shared void mul() {
+        print("Yep");
+    }
+}
+
+class DEF() extends ABC() {
+    @error shared void mul(Integer hi) {
+        print("Nope");
+    }
+}

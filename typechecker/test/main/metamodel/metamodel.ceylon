@@ -279,11 +279,20 @@ class Foo<S>() {
     }
 }
 
+class Bar {
+    shared new () {}
+    shared new Baz(String string) {}
+}
+
+class Baz {
+    shared new Baz(String string) {}
+}
+
 void meta() {
     @type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
     value fd1 = `singletonList<String>`;
-    @type:"FunctionDeclaration" @error
-    value fd3 = `function singletonList<String>`;
+    //@type:"FunctionDeclaration" @error
+    //value fd3 = `function singletonList<String>`;
     @type:"FunctionDeclaration" 
     value fd2 = `function singletonList`;
     @error value ut1 = `List|String`; 
@@ -302,8 +311,8 @@ void meta() {
     value md1 = `function List.defines`;
     @type:"Method<List<Integer>,Boolean,Tuple<Integer,Integer,Empty>>" 
     value md2 = `List<Integer>.defines`; 
-    @type:"FunctionDeclaration" @error 
-    value md8 = `function List<Integer>.defines`; 
+    //@type:"FunctionDeclaration" @error 
+    //value md8 = `function List<Integer>.defines`; 
     @type:"ClassDeclaration"
     value cd1 = `class Foo.Bar`;
     @type:"FunctionDeclaration"
@@ -316,8 +325,8 @@ void meta() {
     value md6 = `Foo<Object>.Bar.x<Integer>`;
     @error
     value md7 = `Foo<Object>.Bar<String>.x<List>`;
-    @type:"ClassDeclaration" @error
-    value cd2 = `class Foo<List<String>>.Bar`;
+    //@type:"ClassDeclaration" @error
+    //value cd2 = `class Foo<List<String>>.Bar`;
     @type:"ClassDeclaration"
     value cd3 = `class Foo`;
     @type:"Class<Foo<Object>,Empty>"
@@ -331,11 +340,27 @@ void meta() {
     @error
     value cd8 = `Foo<Object>.Bar<List>`;
     
+    @type:"Attribute<String|Integer,String,Nothing>" 
+    value ctm1 = `<String|Integer>.string`;
+    
+    @type:"Attribute<Sequential<String>,Integer,Nothing>" 
+    value ctm2 = `String[].size`;
+    
     @type:"Value<Basic,Nothing>" value p = `process`; 
     
     @error value tparam = `given Map.Item`;
     @error see (`given Sequence.Element`);
     @error see (`value Map.key`);
+    
+    @type:"Class<Bar,Empty>" value cd15 = `Bar`;
+    @type:"Class<Baz,Nothing>" value cd16 = `Baz`;
+    @type:"ConstructorDeclaration" value cd9 = `new Bar`;
+    //@type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
+    @type:"ConstructorDeclaration" value cd10b = `new Bar.Baz`;
+    @error value cd11 = `class Bar.Baz`;
+    @error value cd12 = `interface Bar.Baz`;
+    @type:"Constructor<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.Baz`;
+    @error value cd14 = `new Foo`;
 }
 
 void testPackagesModules() {
@@ -358,8 +383,8 @@ void objectMemberRefs() {
     FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
     ValueDeclaration processArgumentsDec = `value process.arguments`;
     Value<Basic,Nothing> obj = `process`;
-    Function<Anything,[]|[String]> fun = `process.writeLine`;
-    Value<String[],Nothing> att = `process.arguments`;
+    Method<\Iprocess,Anything,[]|[String]> fun = `\Iprocess.writeLine`;
+    Attribute<\Iprocess,String[],Nothing> att = `\Iprocess.arguments`;
 }
 
 void testImplicitRefs() {
@@ -379,3 +404,72 @@ void testImplicitRefs() {
     @error value clazz = `class`; 
 }
 
+object foo {
+    shared object bar {
+        shared class Bar() {
+            shared String name = "Gavin";
+            shared class Baz<T>(T t) {}
+        }
+    }
+}
+
+object x { 
+    shared object y {}
+    shared class Y() {}
+    shared interface I {}
+    shared String name = ""; 
+    shared void do() {}
+}
+
+
+shared void testObjectMetamodelRefs() {
+    ClassDeclaration cd = `class foo.bar.Bar`;
+    ValueDeclaration vd = `value foo.bar.Bar.name`;
+    Attribute<\Ifoo,Basic,Nothing> vbn = `\Ifoo.bar`;
+    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = `\Ifoo.\Ibar.Bar.name`;
+    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = `\Ifoo.\Ibar.Bar`;
+    MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
+            = `\Ifoo.\Ibar.Bar.Baz<String>`;
+    @type:"Attribute<x,Basic,Nothing>"
+    value xy = `\Ix.y`;
+    @type:"MemberClass<x,x.Y,Empty>"
+    value xY = `\Ix.Y`;
+    @type:"MemberInterface<x,x.I>"
+    value xI = `\Ix.I`;
+    @type:"Attribute<x,String,Nothing>"
+    value xName = `\Ix.name`;
+    @type:"Method<x,Anything,Empty>"
+    value xDo = `\Ix.do`;
+    
+}
+
+String packageFun() => "hello";
+String packageValue => "hello";
+class PackageClass() {
+    shared String val => "hello";
+}
+interface PackageInterface {
+    shared String val => "hello";
+}
+
+shared void packageQualifiedMetamodel() {
+    void packageFun() {}
+    Integer packageValue => 0;
+    class PackageClass(Integer i) {}
+    interface PackageInterface {}
+    Function<String,[]> pf = `package.packageFun`;
+    Value<String> pv = `package.packageValue`;
+    Class<package.PackageClass,[]> pc = `package.PackageClass`;
+    Interface<package.PackageInterface> pi = `package.PackageInterface`;
+    Attribute<package.PackageClass,String> pca = `package.PackageClass.val`;
+    Attribute<package.PackageInterface,String> pci = `package.PackageInterface.val`;
+}
+
+class Bug() { shared object foo { shared object baz {} } }
+
+void bug() {
+    value bugo = `Bug.\Ifoo.baz`;
+    value bug1 = `Bug.\Ifoo.\Ibaz`;
+    value bug2 = `Bug[][].size`;
+    value bug3 = `<Bug[]|{Bug*}>.size`;
+}

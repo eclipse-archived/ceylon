@@ -23,6 +23,7 @@ public abstract class LazyProducedType extends ProducedType {
             else {
                 setDeclaration(td);
                 setTypeArguments(initTypeArguments());
+                setQualifyingType(initQualifyingType());
             }
         }
         return super.getDeclaration();
@@ -34,4 +35,7 @@ public abstract class LazyProducedType extends ProducedType {
     }
     public abstract Map<TypeParameter, ProducedType> initTypeArguments();
     public abstract TypeDeclaration initDeclaration();
+    public ProducedType initQualifyingType() {
+        return null;
+    }
 }

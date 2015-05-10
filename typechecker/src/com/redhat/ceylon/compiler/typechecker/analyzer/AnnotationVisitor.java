@@ -14,12 +14,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -213,7 +213,7 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getPackageDeclarationType(), null);
+                unit.getPackageDeclarationType());
     }
     
     @Override 
@@ -221,7 +221,7 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getModuleDeclarationType(), null);
+                unit.getModuleDeclarationType());
     }
     
     @Override 
@@ -229,7 +229,7 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getImportDeclarationType(), null);
+                unit.getImportDeclarationType());
     }
     
     @Override
@@ -240,31 +240,51 @@ public class AnnotationVisitor extends Visitor {
             checkAnnotationType(that, c);
         }
         
-        TypeDeclaration dm = that.getDeclarationModel();
+//        TypeDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getClassDeclarationType(),
-                unit.getClassMetatype(dm.getType()));
+                unit.getClassDeclarationType());
+//                unit.getClassMetatype(dm.getType()));
     }
 
     @Override 
     public void visit(Tree.AnyInterface that) {
         super.visit(that);
-        TypeDeclaration dm = that.getDeclarationModel();
+//        TypeDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getInterfaceDeclarationType(),
-                unit.getInterfaceMetatype(dm.getType()));
+                unit.getInterfaceDeclarationType());
+//                unit.getInterfaceMetatype(dm.getType()));
+    }
+    
+    @Override 
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+//        TypeDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getConstructorDeclarationType());
+//                unit.getConstructorMetatype(dm.getType()));
     }
     
     @Override
     public void visit(Tree.AnyAttribute that) {
         super.visit(that);
-        TypedDeclaration dm = that.getDeclarationModel();
+//        TypedDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getValueDeclarationType(dm),
-                unit.getValueMetatype(dm.getTypedReference()));
+                unit.getValueDeclarationType());
+//                unit.getValueMetatype(dm.getTypedReference()));
+    }
+
+    @Override
+    public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
+//        TypedDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getValueDeclarationType());
+//                unit.getValueMetatype(dm.getTypedReference()));
     }
 
     @Override
@@ -275,11 +295,11 @@ public class AnnotationVisitor extends Visitor {
             checkAnnotationConstructor(that, a);
         }
         
-        TypedDeclaration dm = that.getDeclarationModel();
+//        TypedDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getFunctionDeclarationType(),
-                unit.getFunctionMetatype(dm.getTypedReference()));
+                unit.getFunctionDeclarationType());
+//                unit.getFunctionMetatype(dm.getTypedReference()));
     }
 
     private void checkAnnotationType(Tree.AnyClass that, Class c) {
@@ -315,6 +335,9 @@ public class AnnotationVisitor extends Visitor {
             if (t!=null && t.getDeclaration()!=null) {
                 if (t.getDeclaration().isAnnotation()) {
                     TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
+                    if (t.getDeclaration() instanceof NothingType) {
+                        that.addError("annotation constructor may not return 'Nothing'");
+                    }
                     if (!t.getDeclaration().inherits(annotationDec)) {
                         that.addError("annotation constructor must return a subtype of 'Annotation'");
                     }
@@ -630,7 +653,7 @@ public class AnnotationVisitor extends Visitor {
     }
 
     private void checkAnnotations(AnnotationList annotationList,
-            ProducedType declarationType, ProducedType metatype) {
+            ProducedType declarationType/*, ProducedType metatype*/) {
         Unit unit = annotationList.getUnit();
         List<Annotation> anns = annotationList.getAnnotations();
         for (Annotation ann: anns) {

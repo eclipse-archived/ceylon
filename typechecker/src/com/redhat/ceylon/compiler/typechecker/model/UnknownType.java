@@ -3,7 +3,21 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 public class UnknownType extends TypeDeclaration {
 
-    private Runnable errorReporter;
+    private ErrorReporter errorReporter;
+    
+    public static class ErrorReporter {
+        private String message;
+        
+        public ErrorReporter(String message){
+            this.message = message;
+        }
+        
+        public String getMessage(){
+            return message;
+        }
+        
+        public void reportError(){}
+    }
     
     @Override
     public void addMember(Declaration declaration) {
@@ -49,17 +63,17 @@ public class UnknownType extends TypeDeclaration {
     	return System.identityHashCode(this);
     }
 
-    public void setErrorReporter(Runnable errorReporter) {
+    public void setErrorReporter(ErrorReporter errorReporter) {
         this.errorReporter = errorReporter;
     }
     
-    public Runnable getErrorReporter(){
+    public ErrorReporter getErrorReporter(){
         return errorReporter;
     }
 
     public void reportErrors() {
         if(errorReporter != null){
-            errorReporter.run();
+            errorReporter.reportError();
         }
     }
 

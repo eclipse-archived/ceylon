@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -31,7 +32,13 @@ public class InheritanceVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectArgument that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getAnonymousClass());
+        super.visit(that);
+    }
+
+    @Override public void visit(Tree.ObjectExpression that) {
+        validateSupertypes(that, 
+                that.getAnonymousClass());
         super.visit(that);
     }
 
@@ -40,7 +47,7 @@ public class InheritanceVisitor extends Visitor {
         validateUpperBounds(that, that.getDeclarationModel());
     }
 
-    private void validateSupertypes(Tree.StatementOrArgument that, 
+    private void validateSupertypes(Node that, 
             TypeDeclaration td) {
         if (!(td instanceof TypeAlias)) {
             List<ProducedType> supertypes = td.getType().getSupertypes();
@@ -53,7 +60,7 @@ public class InheritanceVisitor extends Visitor {
             }
         }
     }
-    private void checkSupertypeIntersection(Tree.StatementOrArgument that,
+    private void checkSupertypeIntersection(Node that,
             TypeDeclaration td, ProducedType st1, ProducedType st2) {
         if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
             Unit unit = that.getUnit();

@@ -335,8 +335,9 @@ void run() {
             <itemizedlist>
                 <listitem>
                     <para>For a statement that occurs sequentially, as defined by 
-                    <xref linkend="blockstructure"/>, in the body of the class, the current 
-                    instance is the new instance being initialized.</para>
+                    <xref linkend="blockstructure"/>, in the body of the class or of a 
+                    constructor of the class, the current instance is the new instance 
+                    being initialized.</para>
                 </listitem>
                 <listitem>
                     <para>For a statement that occurs sequentially in the body of a member
@@ -428,7 +429,8 @@ String result = middleObject.string;</programlisting>
             <title>Initialization</title>
             
             <para>When an instance is instantiated, its initializer is executed, and the
-            initializer for every class it inherits is executed. For a class
+            initializer for every class it inherits is executed. If a class has
+            constructors, one of its constructors is also executed. For a class
             <literal>C</literal>:</para>
             
             <itemizedlist>
@@ -441,20 +443,26 @@ String result = middleObject.string;</programlisting>
                     <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
                     there is exactly one other superclass <literal>Y</literal> of 
                     <literal>C</literal> that directly extends <literal>X</literal>. When
-                    execution of the initializer of <literal>X</literal> terminates without
-                    a thrown exception, execution of the initializer of <literal>Y</literal>
-                    begins.</para>
+                    execution of the initializer of <literal>X</literal> terminates without 
+                    a thrown exception, execution of the initializer of <literal>Y</literal> 
+                    begins. When sequential execution of the initializer reaches the 
+                    declaration of the invoked or delegated constructor of <literal>Y</literal>, 
+                    if any, the constructor itself is executed. When execution of the 
+                    constructor terminates without a thrown exception, execution of the 
+                    initializer resumes at the next statement after the constructor 
+                    declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>Finally, when execution of the initializer of <literal>C</literal>
-                    terminates without a thrown exception, the new instance of <literal>C</literal>
-                    is fully-initialized and made accessible to the calling code.</para>
+                    <para>Finally, when execution of the initializer of <literal>C</literal>, 
+                     terminates without a thrown exception, the new instance of 
+                     <literal>C</literal> is fully-initialized and made accessible to the 
+                     calling code.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>If any initializer in the class hierarchy terminates with a thrown exception,
-            initialization terminates and the incompletely-initialized instance never becomes
-            accessible.</para>
+            <para>If any initializer or constructor in the class hierarchy terminates with 
+            a thrown exception, initialization terminates and the incompletely-initialized 
+            instance never becomes accessible.</para>
             
             <para>Each initializer produces a frame containing initialized values for each 
             reference declared by the corresponding class. These frames are aggregated together 
@@ -588,7 +596,7 @@ String result = middleObject.string;</programlisting>
             or current instance is evaluated, an <literal>InitializationError</literal>
             is thrown.</para>
             
-            <para>Lifewise, if a non-<literal>variable</literal> <literal>late</literal> 
+            <para>Likewise, if a non-<literal>variable</literal> <literal>late</literal> 
             reference which is already initialized in the current frame or current instance
             is assigned, an <literal>InitializationError</literal> is thrown.</para>
             
@@ -1008,8 +1016,8 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an invocation expression, as defined in 
             <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
-            of a function, or <emphasis>instantiation</emphasis> of a class. Every invocation 
-            has a callable expression:</para>
+            of a function or constructor, or <emphasis>instantiation</emphasis> of a class. 
+            Every invocation has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1069,7 +1077,7 @@ String result = middleObject.string;</programlisting>
                  
         </section>
         
-       <section id="anonymousfunctionevaluation">
+        <section id="anonymousfunctionevaluation">
             <title>Evaluation of anonymous functions</title>
             
             <para>When an anonymous function expression, as defined in 
@@ -1079,9 +1087,9 @@ String result = middleObject.string;</programlisting>
             the resulting value of the expression. The concrete class of this instance is not 
             specified here.</para>
             
-       </section>
+        </section>
             
-       <section id="enumerationevaluation">
+        <section id="enumerationevaluation">
             <title>Evaluation of enumerations</title>
             
             <para>Evaluation of an enumeration expression, as defined in 

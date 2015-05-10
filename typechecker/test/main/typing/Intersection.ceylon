@@ -131,10 +131,14 @@ class Intersection() {
     @type:"Nothing" intersect(1, "hello");
     @type:"Nothing" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    String[] onestring = [String("hello")];
-    @type:"Intersection.Float&Sequential<Intersection.String>" intersect(Float(), onestring);
-    S[] ones = ["hello"];
-    @type:"Intersection.Float&Sequential<String>" intersect(Float(), ones);
+    String[] onestring1 = [String("hello")];
+    @type:"Nothing" intersect(Float(), onestring1);
+    S[] ones1 = ["hello"];
+    @type:"Nothing" intersect(Float(), ones1);
+    {String*} onestring2 = [String("hello")];
+    @type:"Intersection.Float&Iterable<Intersection.String,Null>" intersect(Float(), onestring2);
+    {S*} ones2 = ["hello"];
+    @type:"Intersection.Float&Iterable<String,Null>" intersect(Float(), ones2);
     @type:"Nothing" intersect(Float(), ["hello"]);
     @type:"Nothing" intersect(I({"hello"}), I({}));
     

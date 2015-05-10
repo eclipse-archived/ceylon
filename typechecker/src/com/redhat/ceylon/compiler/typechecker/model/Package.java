@@ -144,6 +144,13 @@ public class Package
 
     @Override
     public ProducedType getDeclaringType(Declaration d) {
+        if (d.isClassMember()) {
+            Class containingAnonClass =
+                    (Class) d.getContainer();
+            if (containingAnonClass.isAnonymous()) {
+                return containingAnonClass.getType();
+            }
+        }
         return null;
     }
 
@@ -185,17 +192,8 @@ public class Package
     public Map<String,DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity) {
-        Map<String,DeclarationWithProximity> result = 
-                new TreeMap<String,DeclarationWithProximity>();
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && 
-                    !isOverloadedVersion(d) && 
-                    isNameMatching(startingWith, d) ) {
-                result.put(d.getName(unit), 
-                        new DeclarationWithProximity(d, 
-                                proximity+1));
-            }
-        }
+        Map<String, DeclarationWithProximity> result = 
+                getMatchingDirectDeclarations(startingWith, proximity);
         if (unit!=null) {
             result.putAll(unit.getMatchingImportedDeclarations(startingWith, 
                     proximity));
@@ -222,6 +220,22 @@ public class Package
             result.put("Nothing", 
                     new DeclarationWithProximity(new NothingType(unit), 
                             proximity+100));
+        }
+        return result;
+    }
+
+    public Map<String, DeclarationWithProximity> getMatchingDirectDeclarations(
+            String startingWith, int proximity) {
+        Map<String,DeclarationWithProximity> result = 
+                new TreeMap<String,DeclarationWithProximity>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && 
+                    !isOverloadedVersion(d) && 
+                    isNameMatching(startingWith, d)) {
+                result.put(d.getName(unit), 
+                        new DeclarationWithProximity(d, 
+                                proximity+1));
+            }
         }
         return result;
     }

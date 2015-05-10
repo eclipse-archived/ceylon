@@ -8,7 +8,7 @@ grammar Validatorgen;
     package com.redhat.ceylon.compiler.typechecker.treegen; 
 }
 
-nodeList : { 
+nodeList : {
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.Package;\n");

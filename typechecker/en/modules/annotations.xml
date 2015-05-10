@@ -303,10 +303,12 @@ shared deprecated</programlisting>
         
         <para>An <emphasis>annotation value</emphasis> is the value returned when an
         annotation constructor is invoked. We may obtain the annotation values of all 
-        annotations of a given annotation type that occur at a given program element by 
-        passing the annotation type and program element metamodel reference to the method
+        annotations of a given annotation type that occur at a given program element 
+        by passing the annotation type metamodel, as defined in 
+        <xref linkend="metamodelexpressions"/>, and program element reference, as 
+        defined in <xref linkend="referenceexpressions"/>, to the method
         <literal>annotations()</literal> defined in the package
-        <literal>ceylon.language.model</literal>.</para>
+        <literal>ceylon.language.meta.model</literal>.</para>
         
         <programlisting>Scope scope = annotations(`Scope`, `class Person`) else Scope(request);</programlisting>
         <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
@@ -334,7 +336,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>abstract</literal> specifies that a class
-                    cannot be instantiated.</para>
+                    cannot be instantiated, or that a constructor is a 
+                    partial constructor.</para>
                 </listitem>
                  <listitem>
                     <para><literal>formal</literal> specifies that a member 
@@ -375,18 +378,25 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>final</literal> specifies that a class may not 
-                    be extended.</para>
+                    be extended, and may not declare <literal>default</literal>
+                    members.</para>
                 </listitem>
                 <listitem>
                     <para><literal>sealed</literal> specifies that a class may not 
                     be extended or instantiated outside the module in which it is
-                    defined, or that an interface may not be satisfied by a class
-                    or interface outside the module in which it is defined.</para>
+                    defined, that an interface may not be satisfied by a class or 
+                    interface outside the module in which it is defined, or that
+                    a constructor may not be invoked outside the module in which 
+                    it is defined.</para>
                 </listitem>
                 <listitem>
                     <para><literal>annotation</literal> specifies that a class is
                     an annotation type, or that a toplevel function is an annotation
                     constructor.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>suppressWarnings</literal> hides compilation
+                    warnings occurring at the annotated program element.</para>
                 </listitem>
             </itemizedlist>
             

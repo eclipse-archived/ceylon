@@ -15,6 +15,8 @@ void members() {
         @error dynamic entry = it->it;
         @error dynamic iter = { it, it };
         @error dynamic tuple = [it, it];
+        dynamic b1 = a.B();
+        dynamic b2 = A.B();        
     }
 }
 

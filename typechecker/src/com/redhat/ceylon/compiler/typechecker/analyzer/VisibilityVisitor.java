@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -43,10 +42,8 @@ public class VisibilityVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyClass that) {
         super.visit(that);
-        Class c = that.getDeclarationModel();
-        if (that.getParameterList()!=null) {
-            checkParameterVisibility(c, that.getParameterList());
-        }
+        checkParameterVisibility(that.getDeclarationModel(), 
+                that.getParameterList());
     }
 
     @Override
@@ -54,6 +51,13 @@ public class VisibilityVisitor extends Visitor {
         super.visit(that);
         checkParameterVisibility(that.getDeclarationModel(), 
                 that.getParameterLists());
+    }
+
+    @Override
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+        checkParameterVisibility(that.getDeclarationModel(), 
+                that.getParameterList());
     }
 
     @Override
@@ -80,11 +84,13 @@ public class VisibilityVisitor extends Visitor {
 
     private void checkParameterVisibility(Declaration m, 
             Tree.ParameterList list) {
-        for (Tree.Parameter tp: list.getParameters()) {
-            if (tp!=null) {
-                Parameter p = tp.getParameterModel();
-                if (p.getModel()!=null) {
-                    checkParameterVisibility(tp, m, p);
+        if (list!=null) {
+            for (Tree.Parameter tp: list.getParameters()) {
+                if (tp!=null) {
+                    Parameter p = tp.getParameterModel();
+                    if (p.getModel()!=null) {
+                        checkParameterVisibility(tp, m, p);
+                    }
                 }
             }
         }
@@ -97,18 +103,23 @@ public class VisibilityVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectDefinition that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 
-    private void validateSupertypes(Tree.StatementOrArgument that, 
-            TypeDeclaration td) {
+    @Override public void visit(Tree.ObjectExpression that) {
+        validateSupertypes(that, 
+                that.getAnonymousClass());
+        super.visit(that);
+    }
+
+    private void validateSupertypes(Node that, TypeDeclaration td) {
         if (td instanceof TypeAlias) {
             ProducedType at = td.getExtendedType();
             if (at!=null) {

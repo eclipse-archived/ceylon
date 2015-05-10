@@ -33,7 +33,7 @@ void thisSuperOuter() {
 abstract class LeaksThis() extends Exception() 
 satisfies Summable<LeaksThis>&Iterable<String> {
     
-    string => (super of Exception).string;
+    @error string => (super of Exception).string;
     
     @error value r2 = this;
     @error print(this);
@@ -46,14 +46,14 @@ satisfies Summable<LeaksThis>&Iterable<String> {
     value iterable2 = [@error this, this];
     value iterable4 = [@error *this];
     value iterable5 = [@error for (x in "") this];
-    value iterable6 = [@error for (@error x in this) this];
+    value iterable6 = [@error for (x in this) this];
     
     @error value f = () => this;
     @error function g() => this;
     function h() { @error return this of Object; }
     @error value z => (this);
     
-    @error value x = this+this;
+    @error value xx = this+this;
     
     @error value str = "``this``";
     
@@ -63,7 +63,7 @@ satisfies Summable<LeaksThis>&Iterable<String> {
 abstract class LeaksSuper() extends Exception() 
 satisfies Summable<LeaksSuper>&Iterable<String> {
     
-    string => (super of Exception).string;
+    @error string => (super of Exception).string;
     
     @error value r2 = super;
     @error print(super);
@@ -76,14 +76,14 @@ satisfies Summable<LeaksSuper>&Iterable<String> {
     value iterable2 = [@error super, super];
     value iterable4 = [@error *super];
     value iterable5 = [@error for (x in "") super];
-    value iterable6 = [@error for (@error x in super) super];
+    value iterable6 = [@error for (x in super) super];
     
     @error value f = () => super;
     @error function g() => super;
     function h() { @error return super of Object; }
     @error value z => (super);
     
-    @error value x = super+super;
+    @error value xx = super+super;
     
     @error value str = "``super``";
 

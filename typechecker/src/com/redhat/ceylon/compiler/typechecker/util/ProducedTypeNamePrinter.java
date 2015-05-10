@@ -21,7 +21,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 public class ProducedTypeNamePrinter {
 
     public static final ProducedTypeNamePrinter DEFAULT = 
-            new ProducedTypeNamePrinter(true, true, false, true);
+            new ProducedTypeNamePrinter(true, true, false, true, false);
+
+    public static final ProducedTypeNamePrinter ESCAPED = 
+            new ProducedTypeNamePrinter(true, true, false, true, true);
 
     private boolean printAbbreviated;
     private boolean printTypeParameters;
@@ -29,22 +32,24 @@ public class ProducedTypeNamePrinter {
     private boolean printQualifyingType;
     private boolean printQualifier;
     private boolean printFullyQualified;
+    private boolean escapeLowercased;
     
-    public ProducedTypeNamePrinter() {
-    }
+    public ProducedTypeNamePrinter() {}
 
     public ProducedTypeNamePrinter(boolean printAbbreviated) {
-        this(printAbbreviated, true, false, true);
+        this(printAbbreviated, true, false, true, false);
     }
 
     public ProducedTypeNamePrinter(boolean printAbbreviated, 
             boolean printTypeParameters, 
             boolean printTypeParameterDetail,
-            boolean printQualifyingType) {
+            boolean printQualifyingType,
+            boolean escapeLowercased) {
         this.printAbbreviated = printAbbreviated;
         this.printTypeParameters = printTypeParameters;
         this.printTypeParameterDetail = printTypeParameterDetail;
         this.printQualifyingType = printQualifyingType;
+        this.escapeLowercased = escapeLowercased;
     }
     
     protected boolean printAbbreviated() {
@@ -131,15 +136,15 @@ public class ProducedTypeNamePrinter {
                     if (it.isNothing() && !nt.isNothing()) {
                     	return "{}";
                     }
-                    String etn = getProducedTypeName(it, unit);
+                    String itn = getProducedTypeName(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
                             it.getDeclaration() instanceof UnionType ||
                             it.getDeclaration() instanceof IntersectionType) {
-                        return "{" + etn + many + "}";
+                        return "{" + itn + many + "}";
                     }
                     else {
-                        return "{" + lt() + etn + gt() + many + "}";
+                        return "{" + lt() + itn + gt() + many + "}";
                     }
                 }
                 if (abbreviateEntry(pt)) {
@@ -150,14 +155,28 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateCallable(pt)) {
                     List<ProducedType> tal = pt.getTypeArgumentList();
                     ProducedType rt = tal.get(0);
-                    String paramTypes = getTupleElementTypeNames(tal.get(1), unit);
-                    if (rt!=null && paramTypes!=null) {
-                        String rtn = getProducedTypeName(rt, unit);
-                        if (isPrimitiveAbbreviatedType(rt)) {
+                    ProducedType at = tal.get(1);
+                    if (abbreviateCallableArg(at)) {
+                        String paramTypes = getTupleElementTypeNames(at, unit);
+                        if (rt!=null && paramTypes!=null) {
+                            String rtn = getProducedTypeName(rt, unit);
+                            if (!isPrimitiveAbbreviatedType(rt)) {
+                                rtn = lt() + rtn + gt();
+                            }
                             return rtn + "(" + paramTypes + ")";
                         }
-                        else {
-                            return lt() + rtn + gt() + "(" + paramTypes + ")";
+                    }
+                    else {
+                        if (rt!=null && at!=null) {
+                            String rtn = getProducedTypeName(rt, unit);
+                            String atn = getProducedTypeName(at, unit);
+                            if (!isPrimitiveAbbreviatedType(at)) {
+                                atn = lt() + atn + gt();
+                            }
+                            if (!isPrimitiveAbbreviatedType(rt)) {
+                                rtn = lt() + rtn + gt();
+                            }
+                            return rtn + "(*" + atn + ")";
                         }
                     }
                 }
@@ -253,12 +272,17 @@ public class ProducedTypeNamePrinter {
 
     public static boolean abbreviateEntry(ProducedType pt) {
         Unit unit = pt.getDeclaration().getUnit();
+        Class ed = unit.getEntryDeclaration();
         if (pt.getDeclaration() instanceof Class &&
-                pt.getDeclaration().equals(unit.getEntryDeclaration()) &&
+                pt.getDeclaration().equals(ed) &&
                 pt.getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(pt);
             ProducedType vt = unit.getValueType(pt);
-            return kt!=null && vt!=null; /*&&
+            return kt!=null && vt!=null && 
+                    (!(kt.getDeclaration() instanceof Class) ||
+                            !kt.getDeclaration().equals(ed)) &&
+                    (!(vt.getDeclaration() instanceof Class) ||
+                            !vt.getDeclaration().equals(ed)); /*&&
                     kt.isPrimitiveAbbreviatedType() && 
                     vt.isPrimitiveAbbreviatedType();*/
         }
@@ -300,8 +324,8 @@ public class ProducedTypeNamePrinter {
             Interface callableDeclaration = pt.getDeclaration().getUnit().getCallableDeclaration();
             return  pt.getDeclaration().equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
-                    pt.getTypeArgumentList().get(0)!=null && 
-                    abbreviateCallableArg(pt.getTypeArgumentList().get(1));
+                    pt.getTypeArgumentList().get(0)!=null /*&& 
+                    abbreviateCallableArg(pt.getTypeArgumentList().get(1))*/;
         }
         else {
             return false;
@@ -548,19 +572,21 @@ public class ProducedTypeNamePrinter {
                     && container instanceof Declaration == false){
                 container = container.getContainer();
             }
-            if(container != null){
+            if (container != null) {
                 if(container instanceof Package){
                     String q = container.getQualifiedNameString();
-                    if(!q.isEmpty())
+                    if (!q.isEmpty()) {
                         ptn.append(q).append("::");
-                }else{
+                    }
+                }
+                else {
                     printDeclaration(ptn, (Declaration) container, 
                             fullyQualified, unit);
                     ptn.append(".");
                 }
             }
         }
-        if(printQualifier()){
+        if (printQualifier()) {
             String qualifier = declaration.getQualifier();
             if(qualifier != null)
                 ptn.append(qualifier);
@@ -570,7 +596,14 @@ public class ProducedTypeNamePrinter {
 
     protected String getSimpleDeclarationName(Declaration declaration, 
             Unit unit) {
-        return declaration.getName(unit);
+        String name = declaration.getName(unit);
+        if (escapeLowercased) {
+            int firstCodePoint = name.codePointAt(0);
+            if (!Character.isUpperCase(firstCodePoint)) {
+                name = "\\I" + name;
+            }
+        }
+        return name;
     }
 
 }

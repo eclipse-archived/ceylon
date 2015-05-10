@@ -2,10 +2,13 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 
 
 public class Util {
@@ -22,6 +25,10 @@ public class Util {
     }
 
     public static boolean hasAnnotation(Tree.AnnotationList al, String name, Unit unit) {
+        return getAnnotation(al, name, unit) != null;
+    }
+
+    public static Tree.Annotation getAnnotation(Tree.AnnotationList al, String name, Unit unit) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Tree.BaseMemberExpression p = 
@@ -31,14 +38,67 @@ public class Util {
                     String alias = unit==null ? name : //WTF?!
                         unit.getModifiers().get(name); 
                     if (an.equals(alias)) {
-                        return true;
+                        return a;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
+    public static String getAnnotationArgument(Tree.Annotation a, String def) {
+        String result = def;
+        Tree.Expression expression = null;
+        if (a.getPositionalArgumentList() != null && a.getPositionalArgumentList().getPositionalArguments().size() > 0) {
+            Tree.PositionalArgument arg = a.getPositionalArgumentList().getPositionalArguments().get(0);
+            if (arg instanceof Tree.ListedArgument) {
+                expression = ((Tree.ListedArgument) arg).getExpression();
+            }
+        } else if (a.getNamedArgumentList() != null && a.getNamedArgumentList().getNamedArguments().size() > 0) {
+            Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)a.getNamedArgumentList().getNamedArguments().get(0);
+            expression = arg.getSpecifierExpression().getExpression();
+        }
+        if (expression != null) {
+            Tree.Literal literal = (Tree.Literal)expression.getTerm();
+            result = literal.getText();
+            if (result.startsWith("\"") && result.endsWith("\"")) {
+                result = result.substring(1, result.length() - 1);
+            }
+        }
+        return result;
+    }
+    
+    public static boolean isForBackend(Tree.AnnotationList al, Backend forBackend, Unit unit) {
+        return isForBackend(al, forBackend.backendSupport, unit);
+    }
+    
+    public static boolean isForBackend(Tree.AnnotationList al, BackendSupport backendSupport, Unit unit) {
+        String be = getNativeBackend(al, unit);
+        return isForBackend(be, backendSupport);
+    }
+    
+    public static boolean isForBackend(String backendName, Backend forBackend) {
+        return isForBackend(backendName, forBackend.backendSupport);
+    }
+    
+    public static boolean isForBackend(String backendName, BackendSupport backendSupport) {
+        if (backendName != null) {
+            Backend backend = Backend.fromAnnotation(backendName);
+            if (backend == null || !backendSupport.supportsBackend(backend)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String getNativeBackend(Tree.AnnotationList al, Unit unit) {
+        Annotation a = getAnnotation(al, "native", unit);
+        if (a != null) {
+            return getAnnotationArgument(a, "");
+        }
+        return null;
+    }
+    
     public static boolean hasUncheckedNulls(Tree.Term term) {
         return hasUncheckedNulls(term, false);
     }

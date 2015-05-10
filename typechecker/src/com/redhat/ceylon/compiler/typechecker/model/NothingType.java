@@ -43,6 +43,11 @@ public class NothingType extends TypeDeclaration {
     }
     
     @Override
+    public boolean inherits(TypeDeclaration dec) {
+        return true;
+    }
+    
+    @Override
     public boolean equals(Object object) {
     	return object instanceof NothingType;
     }
@@ -61,4 +66,5 @@ public class NothingType extends TypeDeclaration {
     protected boolean needsSatisfiedTypes() {
         return false;
     }
+    
 }

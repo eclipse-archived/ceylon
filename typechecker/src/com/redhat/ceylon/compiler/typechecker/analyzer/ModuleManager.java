@@ -18,6 +18,9 @@ import java.util.WeakHashMap;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -34,7 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleManager {
+public class ModuleManager implements BackendSupport {
     public static class ModuleDependencyAnalysisError extends AnalysisError {
     
         public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
@@ -295,6 +298,19 @@ public class ModuleManager {
         }
     }
 
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addWarningToModule(Module module, Warning warningType, String error) {
+        Node node = moduleToNode.get(module);
+        if (node != null) {
+            node.addUsageWarning(warningType, error);
+        }
+        else {
+            //might happen if the faulty module is a compiled module
+            System.err.println("This is a type checker bug, please report. " +
+                    "\nExpecting to add error on non present module node: " + module.toString() + ". Error " + error);
+        }
+    }
+
     //only used if we really don't know the version
     protected void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
@@ -347,16 +363,38 @@ public class ModuleManager {
         return null;
     }
 
+    public boolean similarForModules(Module left, Module right) {
+        if (left == right) return true;
+        String leftName = ModuleUtil.toCeylonModuleName(left.getNameAsString());
+        String rightName = ModuleUtil.toCeylonModuleName(right.getNameAsString());
+        return leftName.equals(rightName);
+    }
+
+    /**
+     * This treats Maven and Ceylon modules as similar: com:foo and com.foo will match
+     */
+    public Module findSimilarModule(Module module, List<Module> listOfModules) {
+        for(Module current : listOfModules) {
+            if (similarForModules(module, current)) return current;
+        }
+        return null;
+    }
+
     public Module findLoadedModule(String moduleName, String searchedVersion) {
         return findLoadedModule(moduleName, searchedVersion, modules);
     }
     
+    /**
+     * @Deprecated This looks fishy: why would we have an extra Modules parameter?
+     */
+    @Deprecated
     public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+        if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
+            return modules.getDefaultModule();
         for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(moduleName)) {
-                if (searchedVersion != null && searchedVersion.equals(module.getVersion())){
-                    return module;
-                }
+            if(module.getNameAsString().equals(moduleName)
+                    && compareVersions(module, searchedVersion, module.getVersion())){
+                return module;
             }
         }
         return null;
@@ -412,6 +450,11 @@ public class ModuleManager {
         return Arrays.asList("src");
     }
 
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return backend != Backend.None;
+    }
+
     public static List<String> splitModuleName(String moduleName) {
         return Arrays.asList(moduleName.split("[\\.]"));
     }
@@ -433,5 +476,20 @@ public class ModuleManager {
 
     public void visitedModule(Module module, boolean forCompiledModule) {
         // to be overridden by subclasses
+    }
+
+    protected Module overridesModule(ArtifactResult artifact,
+            Module module, ModuleImport moduleImport) {
+        String realName = artifact.name();
+        String realVersion = artifact.version();
+        if (! realName.equals(module.getNameAsString()) ||
+            ! realVersion.equals(module.getVersion())) {
+            if (module != module.getLanguageModule()) {
+                Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
+                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport(), moduleImport.getNative()));
+                return realModule;
+            }
+        }
+        return null;
     }
 }

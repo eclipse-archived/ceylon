@@ -67,6 +67,7 @@ public class UsageVisitor extends Visitor {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
         if (declaration!=null && 
+                declaration.getName()!=null &&
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
         		!rc.isReferenced(declaration) &&

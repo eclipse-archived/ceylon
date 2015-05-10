@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -61,12 +61,12 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 
     @Override
     public boolean isOverloaded() {
-    	return overloaded;
+        return overloaded;
     }
     
     public void setOverloaded(boolean overloaded) {
-		this.overloaded = overloaded;
-	}
+        this.overloaded = overloaded;
+    }
     
     public void setAbstraction(boolean abstraction) {
         this.abstraction = abstraction;
@@ -105,7 +105,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && isNamed(name, d)) {
+            if (d.isParameter() && Util.isNamed(name, d)) {
                 return ((MethodOrValue) d).getInitializerParameter();
             }
         }
@@ -124,5 +124,13 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     @Override
     public boolean isAnonymous() {
         return anonymous;
+    }
+    
+    /**
+     * Returns true if this method is anonymous.
+     */
+    @Override
+    public boolean isNamed() {
+        return !anonymous;
     }
 }

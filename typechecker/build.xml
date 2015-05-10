@@ -8,8 +8,11 @@
    language, compared with the English reference.
 -->
 <project name="Ceylon Language Specification" default="doc" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
     <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties"/>
+
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
@@ -357,7 +360,10 @@
                 destdir="${build.classes}"
                 debug="true"
                 encoding="UTF-8"
-                classpath="${antlr.lib}">
+                classpath="${antlr.lib}"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
         </javac>
     </target>
@@ -381,7 +387,10 @@
                 destdir="${build.classes}"
                 debug="true"
                 encoding="UTF-8"
-                classpathref="classpath">
+                classpathref="classpath"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java"/>
         </javac>
     </target>
@@ -424,7 +433,7 @@
         </manifest>
     </target>
 
-    <target name="dist" depends="compile">
+    <target name="typechecker.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
@@ -441,6 +450,12 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
         </antcall>
+    </target>
+
+    <target name="build" depends="typechecker.jar">
+    </target>
+
+    <target name="dist" depends="build">
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"

@@ -7,6 +7,7 @@ public class ParameterList {
     
     private List<Parameter> parameters = new ArrayList<Parameter>(2);
     private boolean supportsNamedParameters = true;
+    private boolean supportsPositionalParameters = true;
     private boolean first;
     
     public List<Parameter> getParameters() {
@@ -26,6 +27,14 @@ public class ParameterList {
         this.supportsNamedParameters = supportsNamedParameters;
     }
     
+    public boolean isPositionalParametersSupported() {
+        return supportsPositionalParameters;
+    }
+
+    public void setPositionalParametersSupported(boolean supportsPositionalParameters) {
+        this.supportsPositionalParameters = supportsPositionalParameters;
+    }
+
     public boolean hasSequencedParameter() {
         return !parameters.isEmpty() && 
                 parameters.get(parameters.size()-1).isSequenced();

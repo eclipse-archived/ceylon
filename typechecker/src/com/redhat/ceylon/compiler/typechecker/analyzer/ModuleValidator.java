@@ -12,6 +12,8 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -173,6 +175,10 @@ public class ModuleValidator {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
+            if (moduleImport.isNative() && !moduleManager.supportsBackend(Backend.fromAnnotation(moduleImport.getNative()))) {
+                //import is not for this backend
+                continue;
+            }
             Module module = moduleImport.getModule();
             if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency: stop right here
@@ -207,6 +213,14 @@ public class ModuleValidator {
                 if (artifact != null) {
                     //parse module units and build module dependency and carry on
                     listener.resolvingModuleArtifact(module, artifact);
+                    Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
+                    if (moduleOverride != null) {
+                        module = moduleOverride;
+                        if (importDepth.equals(ImportDepth.First)) {
+                            moduleManager.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
+                                    "The module import should not be overriden, since it is explicitely imported by a project source module");
+                        }
+                    }
                     moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
@@ -244,13 +258,34 @@ public class ModuleValidator {
     
     private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
         Module dupe = moduleManager.findModule(module, dependencies, false);
+        boolean isDupe = dupe != null;
+        if(dupe == null)
+            dupe = moduleManager.findSimilarModule(module, dependencies);
         if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
-            StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency '");
-            error.append(module.getNameAsString()).append("': ");
-            String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
-            error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
-            moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+            if(isDupe){
+                StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency '");
+                error.append(module.getNameAsString()).append("': ");
+                String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
+                error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
+                moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+            }else {
+                // just possibly a dupe
+                String moduleA;
+                String moduleB;
+                String moduleName = module.getNameAsString();
+                String duplicateModuleName = dupe.getNameAsString();
+                if(duplicateModuleName.compareTo(moduleName) < 0){
+                    moduleA = ModuleUtil.makeModuleName(duplicateModuleName, dupe.getVersion());
+                    moduleB = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                }else{
+                    moduleA = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                    moduleB = ModuleUtil.makeModuleName(duplicateModuleName, dupe.getVersion());
+                }
+                String error = "module (transitively) imports conflicting versions of similar dependencies '" + 
+                        moduleA + "' and '"+ moduleB + "'";
+                moduleManager.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
+            }
         }
         else {
             dependencies.add(module);

@@ -10,6 +10,8 @@ class Person(shared String name)
     Person.Address(String,String,String)(Person) addy = Person.Address;
 }
 
+alias IntegerOrFloat => Integer|Float;
+
 void funrefs<T>(T t) given T satisfies Category {
     value person = Person("Gavin");
     String(Person) nameFun = Person.name;
@@ -22,9 +24,9 @@ void funrefs<T>(T t) given T satisfies Category {
     @error Person.say.equals("");
     @error value hash = person.say.hash;
     @type:"Null|Character" List<Character>.get("hello")(1);
-    @error List.get("hello")(1);
+    @type:"Null|Character" List.get("hello")(1);
     @type:"Boolean" Category<Character>.contains("hello")('l');
-    @error @type:"Boolean" T.contains(t)('l');
+    @type:"Boolean" T.contains(t)('l');
     String(Singleton<String>) firstFun = Singleton<String>.first;
     @type:"String" value first = Singleton<String>.first(Singleton(""));
     String?(Integer)(Singleton<String>) get = Singleton<String>.get;
@@ -33,6 +35,10 @@ void funrefs<T>(T t) given T satisfies Category {
     String()(Person.Address) formatfun = Person.Address.format;
     String() format = Person.Address.format(person.Address("","", ""));
     @error String()(Person.Address) broke = person.Address.format;
+    Comparison(Nothing)(IntegerOrFloat) compare = IntegerOrFloat.compare;
+    Boolean(Object)(T) contains = T.contains;
+    @error value fold1 = Iterable.fold;
+    String(String(String, String))(String)({String*}) fold2 = Iterable<String>.fold<String>;
 }
 
 interface AB<T> { 
@@ -69,4 +75,31 @@ void testCallableMembers() {
     value ok2 = Identifiable.equals;
     @error value alsoOk2 = (Identifiable).equals;
     //@error value bad2 = Identifiable equals;
+}
+
+void testStaticRefTypeInference() {
+    @type:"XXXX<Integer>" value xx = XXXX(1);
+    @type:"XXXX<Integer>" value x = XXXX.YYYY(1);
+    
+    @type:"ZZZZ<String>.XXXX<Integer>" value z = ZZZZ("").XXXX.YYYY(1,"");
+    
+    @type:"WWWW<Integer>.XXXX<Float>" value uv = WWWW.XXXX<Float>(WWWW<Integer>())(1, 0.0);
+    
+    @type:"Null|Character" value ggg = List.get("hello")(1);
+}
+
+class ZZZZ<U>(U u) {
+    shared class XXXX<T> {
+        shared new YYYY(T t, U u) {}
+    }
+}
+
+class XXXX<T> {
+    shared new (T t) {}
+    shared new YYYY(T t) {}
+}
+
+
+class WWWW<U>() {
+    shared class XXXX<V>(U u, V v) {}
 }

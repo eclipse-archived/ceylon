@@ -6,26 +6,33 @@ interface Sized satisfies Emptyish&Category {
     shared formal Integer elementCount;
 }
 
+interface Seq1<T> {
+    shared formal T? first;
+}
+interface Seq2<T> satisfies Seq1<T> {
+    shared actual formal T first;
+}
+
 class Is() {
     
     interface SimpleContainer<T> 
         given T satisfies Number<T> {}
     
-    String[]&Sized strings = nothing;
+    Seq1<String>&Sized strings = nothing;
     
-    if (is Sequence<String> strings) {
-        print(strings.first);
+    if (is Seq2<String> strings) {
+        String s = strings.first;
     }
-    @error if (is Sequence strings) {}
+    @error if (is Seq2 strings) {}
     if (is SimpleContainer<String> strings) {}
     @error if (is Is.SimpleContainer strings) {}
     if (is Is.SimpleContainer<String> strings) {}
     @error if (is Is.SimpleContainer<String,Integer> strings) {}
 
-    if (strings is Sequence<String>) {
-        //print(strings.first);
+    if (strings is Seq2<String>) {
+        @error String s = strings.first;
     }
-    @error if (strings is Sequence) {}
+    @error if (strings is Seq2) {}
     @error if (strings is SimpleContainer<String>) {}
     @error if (strings is Is.SimpleContainer) {}
     @error if (strings is Is.SimpleContainer<String>) {}
@@ -36,7 +43,7 @@ class Is() {
         if (strings is T) {}
     }
     
-    Correspondence<Integer,String> c = strings;
+    Correspondence<Integer,String> c = nothing;
     if (is Sized c) {
         String? s = c[0];
         Integer elementCount = c.elementCount;
@@ -45,7 +52,7 @@ class Is() {
         //@error for (String str in c) {}
         @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
-    Correspondence<Integer,String> d = strings;
+    Correspondence<Integer,String> d = nothing;
     if (is Sized&Container<Anything> d) {
         String? s = d[0];
         @error Object? f1 = d.first;
@@ -81,7 +88,7 @@ class Is() {
         @type:"Correspondence<Integer,String>&Sized" value dd = d;
     }
     
-    Correspondence<Integer,String> e = strings;
+    Correspondence<Integer,String> e = nothing;
     if (is Sized&Iterable<String> e) {
         String? s = e[0];
         Integer elementCount = e.elementCount;
@@ -143,17 +150,17 @@ class Is() {
     @error Boolean c10 = e is String?;
     Boolean c11 = e is <Sized|Category>;
     
-    String? s = null;
+    String? ss = null;
     
-    switch (s)
+    switch (ss)
     case (is String) {
-        process.writeLine(s);
+        process.writeLine(ss);
     }
     case (null) {}
 
-    switch (s)
+    switch (ss)
     case (is String) {
-        process.writeLine(s);
+        process.writeLine(ss);
     }
     else {}
     

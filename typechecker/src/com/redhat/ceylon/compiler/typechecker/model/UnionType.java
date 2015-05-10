@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,6 @@ public class UnionType extends TypeDeclaration {
     @Override
     public Map<String, DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity) {
-    	//TODO: this can result in the wrong parameter types, and the
-    	//      same bug also affects intersection types
     	Map<String, DeclarationWithProximity> result = 
     	        super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity);
 		TypeDeclaration d = getCaseTypes().get(0).getDeclaration();
@@ -72,8 +71,10 @@ public class UnionType extends TypeDeclaration {
 		                .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = iter.next();
-		    if (getMember(e.getKey(), null, false)!=null) {
-		        result.put(e.getKey(), e.getValue());
+		    Declaration member = getMember(e.getKey(), null, false);
+            if (member!=null) {
+		        result.put(e.getKey(), 
+		                new DeclarationWithProximity(member, e.getValue()));
 		    }
 		}
     	return result;
@@ -82,6 +83,36 @@ public class UnionType extends TypeDeclaration {
     @Override
     public DeclarationKind getDeclarationKind() {
         return null;
+    }
+    
+    @Override
+    public List<TypeDeclaration> getSupertypeDeclarations() {
+        List<TypeDeclaration> ctds = getCaseTypeDeclarations();
+        List<TypeDeclaration> result =
+                new ArrayList<TypeDeclaration>(ctds.size());
+        ProducedType type = getType();
+        for (int i=0, l=ctds.size(); i<l; i++) {
+            //actually the loop is unnecessary, we
+            //only need to consider the first case
+            TypeDeclaration ctd = ctds.get(i);
+            List<TypeDeclaration> ctsts = ctd.getSupertypeDeclarations();
+            for (int j=0; j<ctsts.size(); j++) {
+                TypeDeclaration std = ctsts.get(j);
+                ProducedType st = type.getSupertype(std);
+                if (st!=null && !st.isNothing()) {
+                    if (!result.contains(std)) {
+                        result.add(std);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        ProducedType st = getType().getSupertype(dec);
+        return st!=null && !st.isNothing();
     }
     
     @Override

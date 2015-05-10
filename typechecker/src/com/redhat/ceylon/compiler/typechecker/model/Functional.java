@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public interface Functional {
+public interface Functional extends Overloadable {
 
     public List<ParameterList> getParameterLists();
 
@@ -28,12 +28,6 @@ public interface Functional {
     public Parameter getParameter(String name);
 
     public List<TypeParameter> getTypeParameters();
-    
-    public boolean isOverloaded();
-    
-    public boolean isAbstraction();
-    
-    public List<Declaration> getOverloads();
     
     public boolean isDeclaredVoid();
 

@@ -38,5 +38,5 @@ public interface VirtualFile {
     /**
      * Unmodifiable list of folder children
      */
-    List<VirtualFile> getChildren();
+    List<? extends VirtualFile> getChildren();
 }

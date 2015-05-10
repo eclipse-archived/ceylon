@@ -258,3 +258,37 @@ void inferenceAndVariance() {
     class Weird<in T>(T t) {}
     @type:"Weird<Anything>" Weird("");
 }
+
+void inferenceForRecursiveFuns() {
+    T? echo1<T>(T? val) => echo1(val);
+    T? echo2<T>(T? val) => echo2<T>(val);
+    T? echo3<T>(T? val) => echo2(val);
+    T? echo4<T>(T? val) {
+        if (exists val) {
+            return echo4(val);
+        } else {
+            return null;
+        }
+    }
+    class Foo<T>(shared T val) { }
+    T? extract1<T>(Foo<T>? foo) => extract1(foo);
+    T? extract2<T>(Foo<T>? foo) => extract1(foo);
+    String|T echoST<T>(String|T val) => echoST(val);
+}
+
+void higherOrderFun<Bar>(void func(Bar b)) {} 
+void testHigherOrderFun() {
+    higherOrderFun<String>(void(b){ @type:"String" value bb=b; });
+    higherOrderFun(void(String b){});
+    @error higherOrderFun(void(b){});
+}
+
+Bar anotherHigherOrderFun<Bar>(Bar b, void func(Bar b)){return b;}
+void testAnotherHigherOrderFun() {
+    Integer result1
+            = anotherHigherOrderFun(42, void(Integer b){});
+    Integer result2 
+            = anotherHigherOrderFun<Integer>(42, void(b){});
+    @error Integer result3
+            = anotherHigherOrderFun(42, void(b){});
+}

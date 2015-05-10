@@ -8,7 +8,7 @@ grammar VisitorAdaptorgen;
     package com.redhat.ceylon.compiler.typechecker.treegen; 
 }
 
-nodeList : { 
+nodeList : {
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.Package;\n");
@@ -39,7 +39,7 @@ node : '^' '('
        ')'
      ;
 
-subnode : n=NODE_NAME '?'? f=FIELD_NAME? 
+subnode : n=NODE_NAME '?'? f=FIELD_NAME?
         | mn=NODE_NAME '*' f=FIELD_NAME?
         ;
 

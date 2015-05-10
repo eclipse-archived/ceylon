@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -34,7 +35,9 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = dec.getDeclaration();
             flip();
             if (that.getSatisfiedTypes()!=null) {
-                for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
+                for (Tree.Type type: 
+                        that.getSatisfiedTypes().getTypes()) {
+                    //TODO: is "null" really correct here?!
                     check(type, false, null);
                 }
             }
@@ -51,11 +54,15 @@ public class TypeArgumentVisitor extends Visitor {
         }
         if (dec.isParameter()) {
         	flip();
-            boolean topLevel = parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
+            boolean topLevel = 
+                    parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
-            	parameterizedDeclaration = ((MethodOrValue) dec).getInitializerParameter().getDeclaration();
+            	parameterizedDeclaration = 
+            	        ((MethodOrValue) dec).getInitializerParameter()
+            	                .getDeclaration();
             }
-			check(that.getType(), false, parameterizedDeclaration);
+			check(that.getType(), false, 
+			        parameterizedDeclaration);
 			super.visit(that);
 			if (topLevel) {
 				parameterizedDeclaration = null;
@@ -67,8 +74,9 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
-            for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                check(type, false, null);
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, that.getDeclarationModel());
             }
         }
     }
@@ -76,67 +84,119 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         if (that.getClassSpecifier()!=null) {
-            check(that.getClassSpecifier().getType(), false, null);
+            check(that.getClassSpecifier().getType(), false, 
+                    that.getDeclarationModel());
         }
     }
     
     @Override public void visit(Tree.InterfaceDeclaration that) {
         super.visit(that);
         if (that.getTypeSpecifier()!=null) {
-            check(that.getTypeSpecifier().getType(), false, null);
+            check(that.getTypeSpecifier().getType(), false, 
+                    that.getDeclarationModel());
         }
     }
     
     @Override public void visit(Tree.TypeAliasDeclaration that) {
         super.visit(that);
         if (that.getTypeSpecifier()!=null) {
-            check(that.getTypeSpecifier().getType(), false, null);
+            check(that.getTypeSpecifier().getType(), false, 
+                    that.getDeclarationModel());
         }
     }
     
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
         if (that.getExtendedType()!=null) {
-            check(that.getExtendedType().getType(), false, null);
+            check(that.getExtendedType().getType(), false, 
+                    that.getDeclarationModel());
         }
     }
     
-    @Override public void visit(Tree.FunctionArgument that) {}
+    @Override public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType(), false, 
+                    that.getDeclarationModel());
+        }
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, that.getDeclarationModel());
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.ObjectExpression that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType(), false, 
+                    that.getAnonymousClass());
+        }
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, that.getAnonymousClass());
+            }
+        }
+    }
+    
+    private ClassOrInterface constructorClass;
+    
+    @Override public void visit(Tree.Constructor that) {
+        ClassOrInterface occ = constructorClass;
+        constructorClass = 
+                that.getDeclarationModel()
+                    .getExtendedTypeDeclaration();
+        super.visit(that);
+        constructorClass = occ;
+    }
+    
+//    @Override public void visit(Tree.FunctionArgument that) {}
 
-    private void check(Tree.Type that, boolean variable, Declaration d) {
+    private void check(Tree.Type that, boolean variable, 
+            Declaration d) {
         if (that!=null) {
             check(that.getTypeModel(), variable, d, that);
         }
     }
 
-    private void check(ProducedType type, boolean variable, Declaration d, Node that) {
-        if (d==null || d.isShared() || d.getOtherInstanceAccess()) {
-            if (type!=null) {
-                List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
-                        contravariant && !variable, parameterizedDeclaration);
-                displayErrors(that, type, errors);
-            }
+    private void check(ProducedType type, boolean variable, 
+            Declaration d, Node that) {
+        if (type!=null) {
+            List<TypeParameter> errors = 
+                    type.checkVariance(!contravariant && !variable, 
+                            contravariant && !variable, 
+                            parameterizedDeclaration);
+            displayErrors(that, type, errors, d);
         }
     }
 
     private void displayErrors(Node that, ProducedType type,
-            List<TypeParameter> errors) {
+            List<TypeParameter> errors, Declaration d) {
         for (TypeParameter tp: errors) {
-            String var; String loc;
-            if (tp.isContravariant()) {
-                var = "contravariant (in)";
-                loc = "covariant or invariant";
+            Declaration declaration = tp.getDeclaration();
+            if (d==null || d.isShared() || d.getOtherInstanceAccess() 
+                    || declaration.equals(d))
+            if (constructorClass==null ||
+                    !declaration.equals(constructorClass)) {
+                String var; String loc;
+                if (tp.isContravariant()) {
+                    var = "contravariant ('in')";
+                    loc = "covariant or invariant";
+                }
+                else if (tp.isCovariant()) {
+                    var = "covariant ('out')";
+                    loc = "contravariant or invariant";
+                }
+                else {
+                    throw new RuntimeException();
+                }
+                that.addError(var + " type parameter '" + tp.getName() + 
+                        "' of '" + declaration.getName() +
+                        "' appears in " + loc + " location in type: '" + 
+                        type.getProducedTypeName(that.getUnit()) + "'");
             }
-            else if (tp.isCovariant()) {
-                var = "covariant (out)";
-                loc = "contravariant or invariant";
-            }
-            else {
-                throw new RuntimeException();
-            }
-            that.addError(var + " type parameter '" + tp.getName() + 
-                    "' appears in " + loc + " location in type: '" + 
-                    type.getProducedTypeName(that.getUnit()) + "'");
         }
     }
     

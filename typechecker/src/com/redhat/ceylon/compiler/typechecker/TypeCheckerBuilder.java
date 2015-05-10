@@ -28,6 +28,7 @@ public class TypeCheckerBuilder {
     private boolean statistics = false;
     private String encoding;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
+    private List<VirtualFile> srcFiles = null;
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
@@ -58,13 +59,26 @@ public class TypeCheckerBuilder {
         return this;
     }
 
-    public void setRepositoryManager(RepositoryManager repositoryManager) {
+    public TypeCheckerBuilder setRepositoryManager(RepositoryManager repositoryManager) {
         this.repositoryManager = repositoryManager;
+        return this;
     }
 
     public TypeCheckerBuilder setModuleFilters(List<String> moduleFilters){
         this.moduleFilters.clear();
         this.moduleFilters.addAll(moduleFilters);
+        return this;
+    }
+
+    public TypeCheckerBuilder setSourceFiles(List<File> srcFiles){
+        if (srcFiles != null) {
+            this.srcFiles = new ArrayList<VirtualFile>();
+            for (File src : srcFiles) {
+                this.srcFiles.add(vfs.getFromFile(src));
+            }
+        } else {
+            this.srcFiles = null;
+        }
         return this;
     }
     
@@ -133,7 +147,7 @@ public class TypeCheckerBuilder {
                     .buildManager();
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor,
-                moduleManagerFactory, verbose, statistics, moduleFilters, encoding);
+                moduleManagerFactory, verbose, statistics, moduleFilters, srcFiles, encoding);
     }
 
 }

@@ -27,6 +27,7 @@ public class ControlFlowVisitor extends Visitor {
     private boolean canReturn = false;
     private boolean canExecute = true;
     private Boolean possiblyBreaks = null;
+    private boolean unreachabilityReported = false;
     
     boolean beginDefiniteReturnScope() {
         boolean dr = definitelyReturns;
@@ -40,6 +41,7 @@ public class ControlFlowVisitor extends Visitor {
     
     void endDefiniteReturnScope(boolean dr) {
         definitelyReturns = dr;
+        unreachabilityReported = false;
     }
     
     void exit() {
@@ -231,6 +233,16 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Constructor that) {
+        checkReachable(that);
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
+    }
+    
+    @Override
     public void visit(Tree.ClassDefinition that) {
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
@@ -267,8 +279,24 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectExpression that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
+    }
+    
+    @Override
     public void visit(Tree.Body that) {
         boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
+        super.visit(that);
+        endStatementScope(e);
+    }
+    
+    @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        boolean e = beginStatementScope(true);
         super.visit(that);
         endStatementScope(e);
     }
@@ -364,7 +392,10 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkReachable(Tree.Statement that) {
         if (definitelyReturns || definitelyBreaksOrContinues) {
-            that.addError("unreachable code");
+            if (!unreachabilityReported) {
+                that.addError("unreachable code");
+                unreachabilityReported = true;
+            }
         }
     }
     
