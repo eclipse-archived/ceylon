@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1092,8 +1093,9 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
+        Type type = that.getType();
         TypedDeclaration dec = that.getDeclarationModel();
-        setType(that, that.getType(), dec);
+        setType(that, type, dec);
         if (dec instanceof MethodOrValue) {
             MethodOrValue mv = (MethodOrValue) dec;
             if (dec.isLate() && 
@@ -1101,7 +1103,13 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter may not be annotated late");
             }
         }
+        if (type instanceof Tree.SimpleType && 
+                ((Tree.SimpleType) type).getTypeConstructor()) {
+            type.addError("type constructor may not occur as the type of a declaration");
+        }
+        super.visit(that);
     }
+    
 
     @Override 
     public void visit(Tree.TypedArgument that) {
@@ -1538,36 +1546,41 @@ public class TypeVisitor extends Visitor {
 //                that.addError("malformed extended type");
             }
             else {
-                ProducedType type = et.getTypeModel();
-                if (type!=null) {
-                    TypeDeclaration etd = et.getDeclarationModel();
-                    if (etd!=null) {
-                        if (etd instanceof Constructor) {
-                            type = type.getExtendedType();
-                            etd = etd.getExtendedTypeDeclaration();
-                        }
-                        if (etd==td) {
-                            //unnecessary, handled by SupertypeVisitor
-//                            et.addError("directly extends itself: '" + 
-//                                    td.getName() + "'");
-                        }
-                        else if (etd instanceof TypeParameter) {
-                            et.addError("directly extends a type parameter: '" + 
-                                    type.getDeclaration().getName(unit) + 
-                                    "'");
-                        }
-                        else if (etd instanceof Interface) {
-                            et.addError("extends an interface: '" + 
-                                    type.getDeclaration().getName(unit) + 
-                                    "'");
-                        }
-                        else if (etd instanceof TypeAlias) {
-                            et.addError("extends a type alias: '" + 
-                                    type.getDeclaration().getName(unit) + 
-                                    "'");
-                        }
-                        else {
-                            td.setExtendedType(type);
+                if (et.getTypeConstructor()) {
+                    et.addError("type constructor may not occur as extended type");
+                }
+                else {
+                    ProducedType type = et.getTypeModel();
+                    if (type!=null) {
+                        TypeDeclaration etd = et.getDeclarationModel();
+                        if (etd!=null) {
+                            if (etd instanceof Constructor) {
+                                type = type.getExtendedType();
+                                etd = etd.getExtendedTypeDeclaration();
+                            }
+                            if (etd==td) {
+                                //unnecessary, handled by SupertypeVisitor
+//                              et.addError("directly extends itself: '" + 
+//                                      td.getName() + "'");
+                            }
+                            else if (etd instanceof TypeParameter) {
+                                et.addError("directly extends a type parameter: '" + 
+                                        type.getDeclaration().getName(unit) + 
+                                        "'");
+                            }
+                            else if (etd instanceof Interface) {
+                                et.addError("extends an interface: '" + 
+                                        type.getDeclaration().getName(unit) + 
+                                        "'");
+                            }
+                            else if (etd instanceof TypeAlias) {
+                                et.addError("extends a type alias: '" + 
+                                        type.getDeclaration().getName(unit) + 
+                                        "'");
+                            }
+                            else {
+                                td.setExtendedType(type);
+                            }
                         }
                     }
                 }
@@ -1593,75 +1606,80 @@ public class TypeVisitor extends Visitor {
         boolean foundClass = false;
         boolean foundInterface = false;
         for (Tree.StaticType st: that.getTypes()) {
-            ProducedType type = st.getTypeModel();
-            if (type!=null) {
-                TypeDeclaration std = type.getDeclaration();
-                if (std!=null && 
-                        !(std instanceof UnknownType)) {
-                    if (std==td) {
-                      //unnecessary, handled by SupertypeVisitor
-//                        st.addError("directly extends itself: '" + 
-//                                td.getName() + 
-//                                "'");
-                        continue;
-                    }
-                    if (std instanceof TypeAlias) {
-                        st.addError("satisfies a type alias: '" + 
-                                type.getDeclaration().getName(unit) + 
-                                "'");
-                        continue;
-                    }
-                    if (std instanceof Constructor) {
-                        continue;
-                    }
-                    if (td instanceof TypeParameter) {
-                        if (foundTypeParam) {
-                            st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+            if (st instanceof Tree.SimpleType &&
+                    ((Tree.SimpleType) st).getTypeConstructor()) {
+                st.addError("type constructor may not occur as satisfied type");
+            }
+            else {
+                ProducedType type = st.getTypeModel();
+                if (type!=null) {
+                    TypeDeclaration std = type.getDeclaration();
+                    if (std!=null && 
+                            !(std instanceof UnknownType)) {
+                        if (std==td) {
+                            //unnecessary, handled by SupertypeVisitor
+//                          st.addError("directly extends itself: '" + 
+//                                  td.getName() + "'");
+                            continue;
                         }
-                        else if (std instanceof TypeParameter) {
-                            if (foundClass||foundInterface) {
+                        if (std instanceof TypeAlias) {
+                            st.addError("satisfies a type alias: '" + 
+                                    type.getDeclaration().getName(unit) + 
+                                    "'");
+                            continue;
+                        }
+                        if (std instanceof Constructor) {
+                            continue;
+                        }
+                        if (td instanceof TypeParameter) {
+                            if (foundTypeParam) {
                                 st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
                             }
-                            foundTypeParam = true;
-                        }
-                        else if (std instanceof Class) {
-                            if (foundClass) {
-                                st.addUnsupportedError("multiple class upper bounds are not yet supported");
+                            else if (std instanceof TypeParameter) {
+                                if (foundClass||foundInterface) {
+                                    st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+                                }
+                                foundTypeParam = true;
                             }
-                            foundClass = true;
-                        }
-                        else if (std instanceof Interface) {
-                            foundInterface = true;
-                        }
+                            else if (std instanceof Class) {
+                                if (foundClass) {
+                                    st.addUnsupportedError("multiple class upper bounds are not yet supported");
+                                }
+                                foundClass = true;
+                            }
+                            else if (std instanceof Interface) {
+                                foundInterface = true;
+                            }
+                            else {
+                                st.addError("upper bound must be a class, interface, or type parameter");
+                                continue;
+                            }
+                        } 
                         else {
-                            st.addError("upper bound must be a class, interface, or type parameter");
-                            continue;
-                        }
-                    } 
-                    else {
-                        if (std instanceof TypeParameter) {
-                            st.addError("directly satisfies type parameter: '" + 
-                                    std.getName(unit) + "'");
-                            continue;
-                        }
-                        else if (std instanceof Class) {
-                            st.addError("satisfies a class: '" + 
-                                    std.getName(unit) + "'");
-                            continue;
-                        }
-                        else if (std instanceof Interface) {
-                            if (td.isDynamic() && 
-                                    !std.isDynamic()) {
-                                st.addError("dynamic interface satisfies a non-dynamic interface: '" + 
+                            if (std instanceof TypeParameter) {
+                                st.addError("directly satisfies type parameter: '" + 
                                         std.getName(unit) + "'");
+                                continue;
+                            }
+                            else if (std instanceof Class) {
+                                st.addError("satisfies a class: '" + 
+                                        std.getName(unit) + "'");
+                                continue;
+                            }
+                            else if (std instanceof Interface) {
+                                if (td.isDynamic() && 
+                                        !std.isDynamic()) {
+                                    st.addError("dynamic interface satisfies a non-dynamic interface: '" + 
+                                            std.getName(unit) + "'");
+                                }
+                            }
+                            else {
+                                st.addError("satisfied type must be an interface");
+                                continue;
                             }
                         }
-                        else {
-                            st.addError("satisfied type must be an interface");
-                            continue;
-                        }
+                        list.add(type);
                     }
-                    list.add(type);
                 }
             }
         }
@@ -1716,57 +1734,63 @@ public class TypeVisitor extends Visitor {
             }
         }
         for (Tree.StaticType st: cts) {
-            ProducedType type = st.getTypeModel();
-            if (type!=null) {
-                TypeDeclaration ctd = type.getDeclaration();
-                if (ctd!=null) {
-                    if (ctd instanceof UnionType || 
-                        ctd instanceof IntersectionType) {
-                        //union/intersection types don't have equals()
-                        if (td instanceof TypeParameter) {
-                            st.addError("enumerated bound must be a class or interface type");
-                        }
-                        else {
-                            st.addError("case type must be a class, interface, or self type");
-                        }
-                    }
-                    else if (ctd.equals(td)) {
-                        st.addError("directly enumerates itself: '" + 
-                                td.getName() + "'");
-                        continue;
-                    }
-                    else if (ctd instanceof TypeParameter) {
-                        if (!(td instanceof TypeParameter)) {
-                            TypeParameter tp = 
-                                    (TypeParameter) ctd;
-                            td.setSelfType(type);
-                            if (tp.isSelfType()) {
-                                st.addError("type parameter may not act as self type for two different types");
+            if (st instanceof Tree.SimpleType &&
+                    ((Tree.SimpleType) st).getTypeConstructor()) {
+                st.addError("type constructor may not occur as case type");
+            }
+            else {
+                ProducedType type = st.getTypeModel();
+                if (type!=null) {
+                    TypeDeclaration ctd = type.getDeclaration();
+                    if (ctd!=null) {
+                        if (ctd instanceof UnionType || 
+                            ctd instanceof IntersectionType) {
+                            //union/intersection types don't have equals()
+                            if (td instanceof TypeParameter) {
+                                st.addError("enumerated bound must be a class or interface type");
                             }
                             else {
-                                tp.setSelfTypedDeclaration(td);
-                            }
-                            if (cts.size()>1) {
-                                st.addError("a type may not have more than one self type");
+                                st.addError("case type must be a class, interface, or self type");
                             }
                         }
+                        else if (ctd.equals(td)) {
+                            st.addError("directly enumerates itself: '" + 
+                                    td.getName() + "'");
+                            continue;
+                        }
+                        else if (ctd instanceof TypeParameter) {
+                            if (!(td instanceof TypeParameter)) {
+                                TypeParameter tp = 
+                                        (TypeParameter) ctd;
+                                td.setSelfType(type);
+                                if (tp.isSelfType()) {
+                                    st.addError("type parameter may not act as self type for two different types");
+                                }
+                                else {
+                                    tp.setSelfTypedDeclaration(td);
+                                }
+                                if (cts.size()>1) {
+                                    st.addError("a type may not have more than one self type");
+                                }
+                            }
+                            else {
+                                //TODO: error?!
+                            }
+                        }
+                        else if (ctd instanceof ClassOrInterface) {
+                            //nothing special to do
+                        }
                         else {
-                            //TODO: error?!
+                            if (td instanceof TypeParameter) {
+                                st.addError("enumerated bound must be a class or interface type");
+                            }
+                            else {
+                                st.addError("case type must be a class, interface, or self type");
+                            }
+                            continue;
                         }
+                        list.add(type);
                     }
-                    else if (ctd instanceof ClassOrInterface) {
-                        //nothing special to do
-                    }
-                    else {
-                        if (td instanceof TypeParameter) {
-                            st.addError("enumerated bound must be a class or interface type");
-                        }
-                        else {
-                            st.addError("case type must be a class, interface, or self type");
-                        }
-                        continue;
-                    }
-                    list.add(type);
                 }
             }
         }
