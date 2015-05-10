@@ -1112,7 +1112,6 @@ public class TypeVisitor extends Visitor {
         }
         super.visit(that);
     }
-    
 
     @Override 
     public void visit(Tree.TypedArgument that) {
