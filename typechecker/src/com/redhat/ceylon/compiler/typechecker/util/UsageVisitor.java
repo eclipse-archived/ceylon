@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -72,7 +73,10 @@ public class UsageVisitor extends Visitor {
         		!declaration.isToplevel() && 
         		!rc.isReferenced(declaration) &&
         		!declaration.isParameter() &&
-        		!(that instanceof Tree.Variable)) {
+        		!(that instanceof Tree.Variable) &&
+        		!(declaration instanceof TypeParameter &&
+        		    ((TypeParameter) declaration).getDeclaration() 
+        		            instanceof TypeParameter)) {
             that.addUsageWarning(Warning.unusedDeclaration,
                     "declaration is never used: '" + 
                         declaration.getName() + "'");
