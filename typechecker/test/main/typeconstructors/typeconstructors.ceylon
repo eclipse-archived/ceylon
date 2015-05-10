@@ -58,14 +58,25 @@ void test() {
     @error X<Singleton> xs2 = X<@List>();
 }
 
-//NOT YET IMPLEMENTED:
-
-void fun<@X>(X<String> strings) 
-        given X<T> satisfies Iterable<T> 
-        given T satisfies Object {
+void fun<@X>
+        (X<String> strings) 
+        given X<T> satisfies {T*} 
+            given T satisfies Object {
     for (s in strings) {}
+    @error X<Null> nulls;
 }
+        
+class Blah<Element>() 
+        satisfies Iterable<Element>
+        given Element satisfies String {
+    iterator() => nothing;
+}
+
+class Meh<Element>() {}
 
 void testfun() {
     fun<@List>(["", "", ""]);
+    @error fun<@Meh>(Meh());
+    @error fun<@Integer>(["", "", ""]);
+    @error fun<@Blah>(Blah());
 }

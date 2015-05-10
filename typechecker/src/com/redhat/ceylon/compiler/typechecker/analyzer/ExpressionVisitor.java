@@ -7924,12 +7924,19 @@ public class ExpressionVisitor extends Visitor {
                                 st.getProducedType(receiver, 
                                         dec, typeArguments);
                         if (argType!=null) {
+                            ProducedType at =
+                                argType.isTypeConstructor() ?
+                                    argType.getDeclaration()
+                                        .getProducedType(null, 
+                                            param.getType()
+                                                .getTypeArgumentList()) :
+                                argType;
                             if (!isCondition && 
-                                    !argType.isSubtypeOf(sts)) {
+                                    !at.isSubtypeOf(sts)) {
                                 if (argTypeMeaningful) {
                                     if (tal instanceof Tree.InferredTypeArguments) {
                                         parent.addError("inferred type argument '" 
-                                                + argType.getProducedTypeName(unit)
+                                                + at.getProducedTypeName(unit)
                                                 + "' to type parameter '" + param.getName()
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' is not assignable to upper bound '" 
@@ -7940,7 +7947,7 @@ public class ExpressionVisitor extends Visitor {
                                         ((Tree.TypeArgumentList) tal).getTypes()
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
-                                                        + "' has argument '" + argType.getProducedTypeName(unit) 
+                                                        + "' has argument '" + at.getProducedTypeName(unit) 
                                                         + "' which is not assignable to upper bound '" 
                                                         + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
