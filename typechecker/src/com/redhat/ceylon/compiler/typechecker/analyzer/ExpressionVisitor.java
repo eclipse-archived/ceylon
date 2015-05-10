@@ -7999,50 +7999,56 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkTypeConstructorParam(Node parent, 
             TypeParameter param, ProducedType argType) {
-        TypeDeclaration atd = 
-                argType.getDeclaration();
-        if (atd instanceof UnionType) {
-            for (ProducedType ct: atd.getCaseTypes()) {
-                checkTypeConstructorParam(parent, param, ct);
-            }
-        }
-        else if (atd instanceof IntersectionType) {
-            for (ProducedType st: atd.getSatisfiedTypes()) {
-                checkTypeConstructorParam(parent, param, st);
-            }
+        if (!argType.isTypeConstructor()) {
+            parent.addError("not a type constructor: '" +
+                    argType.getProducedTypeName(unit) + "'");
         }
         else {
-            List<TypeParameter> argTypeParams = 
-                    atd.getTypeParameters();
-            int allowed = argTypeParams.size();
-            int required = 0;
-            for (TypeParameter tp: argTypeParams) {
-                if (tp.isDefaulted()) break;
-                required++;
+            TypeDeclaration atd = 
+                    argType.getDeclaration();
+            if (atd instanceof UnionType) {
+                for (ProducedType ct: atd.getCaseTypes()) {
+                    checkTypeConstructorParam(parent, param, ct);
+                }
             }
-            List<TypeParameter> paramTypeParams = 
-                    param.getTypeParameters();
-            int size = paramTypeParams.size();
-            if (allowed<size || required>size) {
-                parent.addError("argument type constructor has wrong number of type parameters: argument '@" +
-                        atd.getName(unit) + "' has " + 
-                        allowed + " type parameters " +
-                        "but parameter '@" + 
-                        param.getName(unit) + "' has " + 
-                        size + " type parameters");
+            else if (atd instanceof IntersectionType) {
+                for (ProducedType st: atd.getSatisfiedTypes()) {
+                    checkTypeConstructorParam(parent, param, st);
+                }
             }
-            for (int j=0; j<size && j<allowed; j++) {
-                TypeParameter paramParam = 
-                        paramTypeParams.get(j);
-                TypeParameter argParam = 
-                        argTypeParams.get(j);
-                if (!intersectionOfSupertypes(paramParam)
-                        .isSubtypeOf(intersectionOfSupertypes(argParam))) {
-                    parent.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
-                            argParam.getName() + "' of '@" + atd.getName(unit) + 
-                            "' does accept all type arguments accepted by '" + 
-                            paramParam.getName() + "' of '@" + param.getName(unit) + 
-                            "'");
+            else {
+                List<TypeParameter> argTypeParams = 
+                        atd.getTypeParameters();
+                int allowed = argTypeParams.size();
+                int required = 0;
+                for (TypeParameter tp: argTypeParams) {
+                    if (tp.isDefaulted()) break;
+                    required++;
+                }
+                List<TypeParameter> paramTypeParams = 
+                        param.getTypeParameters();
+                int size = paramTypeParams.size();
+                if (allowed<size || required>size) {
+                    parent.addError("argument type constructor has wrong number of type parameters: argument '@" +
+                            atd.getName(unit) + "' has " + 
+                            allowed + " type parameters " +
+                            "but parameter '@" + 
+                            param.getName(unit) + "' has " + 
+                            size + " type parameters");
+                }
+                for (int j=0; j<size && j<allowed; j++) {
+                    TypeParameter paramParam = 
+                            paramTypeParams.get(j);
+                    TypeParameter argParam = 
+                            argTypeParams.get(j);
+                    if (!intersectionOfSupertypes(paramParam)
+                            .isSubtypeOf(intersectionOfSupertypes(argParam))) {
+                        parent.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
+                                argParam.getName() + "' of '@" + atd.getName(unit) + 
+                                "' does accept all type arguments accepted by '" + 
+                                paramParam.getName() + "' of '@" + param.getName(unit) + 
+                                "'");
+                    }
                 }
             }
         }
