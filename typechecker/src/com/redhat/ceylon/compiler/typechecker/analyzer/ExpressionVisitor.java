@@ -3313,9 +3313,17 @@ public class ExpressionVisitor extends Visitor {
                         new ArrayList<ProducedType>();
                 for (TypeParameter tp: 
                         generic.getTypeParameters()) {
-                    ProducedType pt = 
-                            that.getPrimary()
-                                .getTypeModel();
+                    Tree.Primary primary = that.getPrimary();
+                    ProducedType pt;
+                    if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
+                        Tree.QualifiedMemberOrTypeExpression qmte = 
+                                (Tree.QualifiedMemberOrTypeExpression) primary;
+                        pt = qmte.getPrimary().getTypeModel();
+                    }
+                    else {
+                        //TODO: wouldn't null be more correct?!
+                        pt = new UnknownType(unit).getType();
+                    }
                     ProducedType it = 
                             inferTypeArgument(that, pt, tp, 
                                     parameters.get(0));
@@ -3400,7 +3408,7 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType inferTypeArgument(
             Tree.InvocationExpression that,
-            ProducedReference pr, TypeParameter tp, 
+            ProducedType qt, TypeParameter tp, 
             ParameterList parameters) {
         List<ProducedType> inferredTypes = 
                 new ArrayList<ProducedType>();
@@ -3410,11 +3418,11 @@ public class ExpressionVisitor extends Visitor {
                 that.getNamedArgumentList();
         if (pal!=null) {
             inferTypeArgumentFromPositionalArgs(tp, 
-                    parameters, pr, pal, inferredTypes);
+                    parameters, qt, pal, inferredTypes);
         }
         else if (nal!=null) {
             inferTypeArgumentFromNamedArgs(tp, parameters, 
-                    pr, nal, inferredTypes);
+                    qt, nal, inferredTypes);
         }
         return formUnionOrIntersection(tp, inferredTypes);
     }
@@ -3505,7 +3513,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferTypeArgumentFromPositionalArgs(TypeParameter tp, 
-            ParameterList parameters, ProducedReference pr, 
+            ParameterList parameters, ProducedType qt, 
             Tree.PositionalArgumentList pal, 
             List<ProducedType> inferredTypes) {
         List<Parameter> params = parameters.getParameters();
@@ -3521,7 +3529,7 @@ public class ExpressionVisitor extends Visitor {
                     List<Parameter> subList = 
                             params.subList(i, params.size());
                     ProducedType ptt = 
-                            unit.getParameterTypesAsTupleType(subList, pr);
+                            unit.getParameterTypesAsTupleType(subList, qt);
                     addToUnionOrIntersection(tp, inferredTypes, 
                             inferTypeArg(tp, ptt, at, true, false, 
                                     new ArrayList<TypeParameter>(),
@@ -3545,7 +3553,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         ProducedType pt = 
-                                pr.getTypedParameter(parameter)
+                                qt.getTypedParameter(parameter)
                                   .getFullType();
                         addToUnionOrIntersection(tp, inferredTypes,
                                 inferTypeArg(tp, pt, at, true, false,
@@ -3677,7 +3685,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration atd = argType.getDeclaration();
             if (paramTypeDec instanceof TypeParameter &&
                     paramTypeDec.equals(tp)) {
-                if (tp0.isTypeConstructor()) { 
+                if (tp0.isTypeConstructor()) {
                     if (argType.isTypeConstructor()) {
                         return argType;
                     }

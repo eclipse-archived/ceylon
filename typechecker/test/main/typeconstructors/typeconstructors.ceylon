@@ -80,3 +80,10 @@ void testfun() {
     @error fun<@Integer>(["", "", ""]);
     @error fun<@Blah>(Blah());
 }
+
+class Dummy<@X>() given X<T> {
+    shared Element foo<Element>(X<Element> ds) => nothing;
+}
+void testDummy() {
+    @type:"Integer" Dummy<@List>().foo([1, 2, 3]);
+}
