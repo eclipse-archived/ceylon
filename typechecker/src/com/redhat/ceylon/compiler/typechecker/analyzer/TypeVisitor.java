@@ -1095,8 +1095,12 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.TypedDeclaration that) {
-        super.visit(that);
         Type type = that.getType();
+        if (type instanceof Tree.SimpleType && 
+                ((Tree.SimpleType) type).getTypeConstructor()) {
+            type.addError("type constructor may not occur as the type of a declaration");
+        }
+        super.visit(that);
         TypedDeclaration dec = that.getDeclarationModel();
         setType(that, type, dec);
         if (dec instanceof MethodOrValue) {
@@ -1106,11 +1110,6 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter may not be annotated late");
             }
         }
-        if (type instanceof Tree.SimpleType && 
-                ((Tree.SimpleType) type).getTypeConstructor()) {
-            type.addError("type constructor may not occur as the type of a declaration");
-        }
-        super.visit(that);
     }
 
     @Override 
