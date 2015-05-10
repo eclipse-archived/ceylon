@@ -7875,25 +7875,45 @@ public class ExpressionVisitor extends Visitor {
                         }
                         else if (!argType.isTypeConstructor() && 
                                 param.isTypeConstructor()) {
-                            parent.addError("type argument must be a type constructor: parameter '" + 
+                            parent.addError("type argument must be a type constructor: parameter '@" + 
                                     param.getName() + 
                                     "' is a type constructor");
                         }
                         else if (param.isTypeConstructor()) {
+                            TypeDeclaration atd = 
+                                    argType.getDeclaration();
                             List<TypeParameter> argTypeParams = 
-                                    argType.getDeclaration()
-                                        .getTypeParameters();
+                                    atd.getTypeParameters();
                             int allowed = argTypeParams.size();
                             int required = 0;
                             for (TypeParameter tp: argTypeParams) {
                                 if (tp.isDefaulted()) break;
                                 required++;
                             }
-                            int size = param.getTypeParameters().size();
+                            List<TypeParameter> paramTypeParams = 
+                                    param.getTypeParameters();
+                            int size = paramTypeParams.size();
                             if (allowed<size || required>size) {
-                                parent.addError("type constructor must has wrong number of type parameters: parameter '" + 
-                                        param.getName() + "' has '" + 
-                                        size + "' type parameters");
+                                parent.addError("argument type constructor has wrong number of type parameters: argument '@" +
+                                        atd.getName(unit) + "' has " + 
+                                        allowed + " type parameters " +
+                                        "but parameter '@" + 
+                                        param.getName(unit) + "' has " + 
+                                        size + " type parameters");
+                            }
+                            for (int j=0; j<size && j<allowed; j++) {
+                                TypeParameter paramParam = 
+                                        paramTypeParams.get(j);
+                                TypeParameter argParam = 
+                                        argTypeParams.get(j);
+                                if (!intersectionOfSupertypes(paramParam)
+                                        .isSubtypeOf(intersectionOfSupertypes(argParam))) {
+                                    parent.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
+                                            argParam.getName() + "' of '@" + atd.getName(unit) + 
+                                            "' does accept all type arguments accepted by '" + 
+                                            paramParam.getName() + "' of '@" + param.getName(unit) + 
+                                            "'");
+                                }
                             }
                         }
                     }
@@ -7921,7 +7941,7 @@ public class ExpressionVisitor extends Visitor {
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
                                                         + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                        + "' is not assignable to upper bound '" 
+                                                        + "' which is not assignable to upper bound '" 
                                                         + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
                                     }

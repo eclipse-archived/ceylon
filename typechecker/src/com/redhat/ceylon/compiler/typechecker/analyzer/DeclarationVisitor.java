@@ -1633,6 +1633,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         String name = name(that.getIdentifier());
         TypeParameter p = (TypeParameter) 
                 scope.getDirectMember(name, null, false);
+        if (p==null && scope instanceof Generic) {
+            //TODO: just look at the most recent
+            for (TypeParameter tp:
+                    ((Generic) scope).getTypeParameters()) {
+                if (tp.isTypeConstructor()) {
+                    p = (TypeParameter) 
+                            tp.getDirectMember(name, null, false);
+                    if (p!=null) break;
+                }
+            }
+        }
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
