@@ -1984,37 +1984,48 @@ public class ProducedType extends ProducedReference {
                             for (ProducedType ta: tal) {
                                 sta.add(ta.substitute(substitutions));
                             }
-                            if (sub.getDeclaration() instanceof UnionType) {
-                                List<ProducedType> list =
-                                        new ArrayList<ProducedType>();
-                                for (TypeDeclaration td: 
-                                    sub.getDeclaration().getCaseTypeDeclarations()) {
-                                    addToUnion(list, td.getProducedType(null, sta));
-                                }
-                                UnionType ut = new UnionType(ptd.getUnit());
-                                ut.setCaseTypes(list);
-                                return ut.getType();
-                            }
-                            if (sub.getDeclaration() instanceof IntersectionType) {
-                                List<ProducedType> list =
-                                        new ArrayList<ProducedType>();
-                                for (TypeDeclaration td: 
-                                    sub.getDeclaration().getSatisfiedTypeDeclarations()) {
-                                    addToIntersection(list, td.getProducedType(null, sta),
-                                            ptd.getUnit());
-                                }
-                                IntersectionType ut = new IntersectionType(ptd.getUnit());
-                                ut.setCaseTypes(list);
-                                return ut.canonicalize().getType();
-                            }
-                            return sub.getDeclaration()
-                                    .getProducedType(null, sta);
+                            return substituteIntoTypeConstructors(sub, 
+                                    sta, ptd.getUnit());
                         }
                     }
                 }
                 dec = ptd;
             }
             return substitutedType(dec, pt, substitutions);
+        }
+
+        private ProducedType substituteIntoTypeConstructors(
+                ProducedType sub, List<ProducedType> sta,
+                Unit unit) {
+            TypeDeclaration sd = sub.getDeclaration();
+            if (sd instanceof UnionType) {
+                List<ProducedType> list =
+                        new ArrayList<ProducedType>();
+                for (ProducedType ct: sd.getCaseTypes()) {
+                    addToUnion(list, 
+                            substituteIntoTypeConstructors(ct,sta,unit));
+                }
+                UnionType ut = 
+                        new UnionType(unit);
+                ut.setCaseTypes(list);
+                return ut.getType();
+            }
+            else if (sd instanceof IntersectionType) {
+                List<ProducedType> list =
+                        new ArrayList<ProducedType>();
+                for (ProducedType st: sd.getSatisfiedTypes()) {
+                    addToIntersection(list, 
+                            substituteIntoTypeConstructors(st,sta,unit),
+                            unit);
+                }
+                IntersectionType ut = 
+                        new IntersectionType(unit);
+                ut.setCaseTypes(list);
+                return ut.canonicalize().getType();
+            }
+            else {
+                return sd.getProducedType(null, sta);
+            }
         }
 
         void addTypeToUnion(ProducedType ct, 
