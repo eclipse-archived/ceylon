@@ -1,4 +1,4 @@
-shared interface Functor<Element,@Container> 
+shared interface Functor<out Element,@Container> 
         given Container<Element> {
     shared formal 
     Container<Result> fmap<Result>

@@ -20,4 +20,11 @@ void testAdvancedStuff() {
     @error List<String>&Set<String> yfmap1 = yfun.fmap(Object.string);
     Functor<Integer, out @List&@Set> yf = yfun;
     List<String>&Set<String> yfmap2 = yf.fmap(Object.string);
+    
+    Functor<Float,@List> | Functor<Float,@Sequence> f = nothing;
+    @type:"List<String>" value result1 = f.fmap(Object.string);
+    
+    Functor<Float,@List> | Functor<Integer,@Sequence> g = nothing;
+    @type:"List<String>" value result2 = g.fmap(Object.string);
+    Functor<Float|Integer, out @List|@Sequence> gg = g;
 }
