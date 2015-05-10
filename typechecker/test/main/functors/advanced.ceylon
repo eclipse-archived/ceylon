@@ -27,4 +27,8 @@ void testAdvancedStuff() {
     Functor<Float,@List> | Functor<Integer,@Sequence> g = nothing;
     @type:"List<String>" value result2 = g.fmap(Object.string);
     Functor<Float|Integer, out @List|@Sequence> gg = g;
+    
+    Functor<Float,out @List> & Functor<Integer,out @Sequence> h = nothing;
+    @type:"Sequence<String>" value result3 = h.fmap(Object.string);
+    Functor<Float|Integer, out @List&@Sequence> hh = h;
 }
