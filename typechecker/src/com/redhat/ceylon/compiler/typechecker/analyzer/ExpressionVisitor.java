@@ -7861,15 +7861,15 @@ public class ExpressionVisitor extends Visitor {
                     if (argTypeMeaningful) {
                         if (argType.isTypeConstructor() && 
                                 !param.isTypeConstructor()) {
-                            parent.addError("type argument must be a regular type: parameter " + 
+                            parent.addError("type argument must be a regular type: parameter '" + 
                                     param.getName() + 
-                                    " is not a type constructor");
+                                    "' is not a type constructor");
                         }
                         else if (!argType.isTypeConstructor() && 
                                 param.isTypeConstructor()) {
-                            parent.addError("type argument must be a type constructor: parameter " + 
+                            parent.addError("type argument must be a type constructor: parameter '" + 
                                     param.getName() + 
-                                    " is a type constructor");
+                                    "' is a type constructor");
                         }
                         else if (param.isTypeConstructor()) {
                             List<TypeParameter> argTypeParams = 
@@ -7883,9 +7883,9 @@ public class ExpressionVisitor extends Visitor {
                             }
                             int size = param.getTypeParameters().size();
                             if (allowed<size || required>size) {
-                                parent.addError("type constructor must has wrong number of type parameters: parameter " + 
-                                        param.getName() + " has " + 
-                                        size + " type parameters");
+                                parent.addError("type constructor must has wrong number of type parameters: parameter '" + 
+                                        param.getName() + "' has '" + 
+                                        size + "' type parameters");
                             }
                         }
                     }
