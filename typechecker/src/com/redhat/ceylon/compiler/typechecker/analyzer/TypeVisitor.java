@@ -1132,6 +1132,12 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter may not be annotated late");
             }
         }
+        if (type instanceof Tree.IntersectionType || 
+            type instanceof Tree.UnionType) {
+            if (type.getTypeModel().isTypeConstructor()) {
+                type.addError("type constructor may not occur as the type of a declaration");
+            }
+        }
     }
 
     @Override 
