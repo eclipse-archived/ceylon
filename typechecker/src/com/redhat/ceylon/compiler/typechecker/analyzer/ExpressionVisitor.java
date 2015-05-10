@@ -3677,13 +3677,16 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration atd = argType.getDeclaration();
             if (paramTypeDec instanceof TypeParameter &&
                     paramTypeDec.equals(tp)) {
-                if (tp0.isTypeConstructor()) {
-                    ProducedType tct = atd.getType();
-                    tct.setTypeConstructor(true);
-                    return tct;
+                if (tp0.isTypeConstructor()) { 
+                    if (argType.isTypeConstructor()) {
+                        return argType;
+                    }
+                    else {
+                        return null;
+                    }
                 }
-                if (tp0.isContravariant() && covariant ||
-                    tp0.isCovariant() && contravariant) {
+                else if (tp0.isContravariant() && covariant ||
+                         tp0.isCovariant() && contravariant) {
                     return null;
                 }
                 else if (argType.isUnknown()) {
