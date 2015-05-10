@@ -2021,10 +2021,10 @@ public class ProducedType extends ProducedReference {
                                     sta, substitutions, unit),
                             unit);
                 }
-                IntersectionType ut = 
+                IntersectionType it = 
                         new IntersectionType(unit);
-                ut.setCaseTypes(list);
-                return ut.canonicalize().getType();
+                it.setSatisfiedTypes(list);
+                return it.canonicalize().getType();
             }
             else {
                 ProducedType sqt = sub.getQualifyingType();
