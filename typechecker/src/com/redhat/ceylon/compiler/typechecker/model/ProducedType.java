@@ -1339,6 +1339,9 @@ public class ProducedType extends ProducedReference {
                     //      here instead
                 }
             }
+            if (tp.isTypeConstructor()) {
+                result.setTypeConstructor(true);
+            }
             args.add(result);
         }
         //check that the unioned type args
@@ -1980,6 +1983,29 @@ public class ProducedType extends ProducedReference {
                                         (tal.size());
                             for (ProducedType ta: tal) {
                                 sta.add(ta.substitute(substitutions));
+                            }
+                            if (sub.getDeclaration() instanceof UnionType) {
+                                List<ProducedType> list =
+                                        new ArrayList<ProducedType>();
+                                for (TypeDeclaration td: 
+                                    sub.getDeclaration().getCaseTypeDeclarations()) {
+                                    addToUnion(list, td.getProducedType(null, sta));
+                                }
+                                UnionType ut = new UnionType(ptd.getUnit());
+                                ut.setCaseTypes(list);
+                                return ut.getType();
+                            }
+                            if (sub.getDeclaration() instanceof IntersectionType) {
+                                List<ProducedType> list =
+                                        new ArrayList<ProducedType>();
+                                for (TypeDeclaration td: 
+                                    sub.getDeclaration().getSatisfiedTypeDeclarations()) {
+                                    addToIntersection(list, td.getProducedType(null, sta),
+                                            ptd.getUnit());
+                                }
+                                IntersectionType ut = new IntersectionType(ptd.getUnit());
+                                ut.setCaseTypes(list);
+                                return ut.canonicalize().getType();
                             }
                             return sub.getDeclaration()
                                     .getProducedType(null, sta);
