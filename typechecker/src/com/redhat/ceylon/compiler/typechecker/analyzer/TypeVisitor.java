@@ -1017,6 +1017,9 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = dec.getProducedType(ot, ta);
         //dec = pt.getDeclaration();
         if (tal!=null) {
+            if (that.getTypeConstructor()) {
+                tal.addError("type constructor may not specify type arguments");
+            }
             tal.setTypeModels(ta);
             //TODO: dupe of logic in ExpressionVisitor
             List<Tree.Type> args = tal.getTypes();
