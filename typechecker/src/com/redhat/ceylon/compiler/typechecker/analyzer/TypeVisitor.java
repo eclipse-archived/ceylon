@@ -1556,7 +1556,8 @@ public class TypeVisitor extends Visitor {
                     ProducedType type = et.getTypeModel();
                     if (type!=null) {
                         TypeDeclaration etd = et.getDeclarationModel();
-                        if (etd!=null) {
+                        if (etd!=null && 
+                                !(etd instanceof UnknownType)) {
                             if (etd instanceof Constructor) {
                                 type = type.getExtendedType();
                                 etd = etd.getExtendedTypeDeclaration();
@@ -1736,28 +1737,29 @@ public class TypeVisitor extends Visitor {
                 }
             }
         }
-        for (Tree.StaticType st: cts) {
-            if (st instanceof Tree.SimpleType &&
-                    ((Tree.SimpleType) st).getTypeConstructor()) {
-                st.addError("type constructor may not occur as case type");
+        for (Tree.StaticType ct: cts) {
+            if (ct instanceof Tree.SimpleType &&
+                    ((Tree.SimpleType) ct).getTypeConstructor()) {
+                ct.addError("type constructor may not occur as case type");
             }
             else {
-                ProducedType type = st.getTypeModel();
+                ProducedType type = ct.getTypeModel();
                 if (type!=null) {
                     TypeDeclaration ctd = type.getDeclaration();
-                    if (ctd!=null) {
+                    if (ctd!=null && 
+                            !(ctd instanceof UnknownType)) {
                         if (ctd instanceof UnionType || 
                             ctd instanceof IntersectionType) {
                             //union/intersection types don't have equals()
                             if (td instanceof TypeParameter) {
-                                st.addError("enumerated bound must be a class or interface type");
+                                ct.addError("enumerated bound must be a class or interface type");
                             }
                             else {
-                                st.addError("case type must be a class, interface, or self type");
+                                ct.addError("case type must be a class, interface, or self type");
                             }
                         }
                         else if (ctd.equals(td)) {
-                            st.addError("directly enumerates itself: '" + 
+                            ct.addError("directly enumerates itself: '" + 
                                     td.getName() + "'");
                             continue;
                         }
@@ -1767,13 +1769,13 @@ public class TypeVisitor extends Visitor {
                                         (TypeParameter) ctd;
                                 td.setSelfType(type);
                                 if (tp.isSelfType()) {
-                                    st.addError("type parameter may not act as self type for two different types");
+                                    ct.addError("type parameter may not act as self type for two different types");
                                 }
                                 else {
                                     tp.setSelfTypedDeclaration(td);
                                 }
                                 if (cts.size()>1) {
-                                    st.addError("a type may not have more than one self type");
+                                    ct.addError("a type may not have more than one self type");
                                 }
                             }
                             else {
@@ -1785,10 +1787,10 @@ public class TypeVisitor extends Visitor {
                         }
                         else {
                             if (td instanceof TypeParameter) {
-                                st.addError("enumerated bound must be a class or interface type");
+                                ct.addError("enumerated bound must be a class or interface type");
                             }
                             else {
-                                st.addError("case type must be a class, interface, or self type");
+                                ct.addError("case type must be a class, interface, or self type");
                             }
                             continue;
                         }
