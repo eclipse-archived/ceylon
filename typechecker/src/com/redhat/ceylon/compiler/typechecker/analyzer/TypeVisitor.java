@@ -624,15 +624,23 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = 
                 new ArrayList<ProducedType>
                     (sts.size());
+        boolean typeConstructor = false;
         for (Tree.StaticType st: sts) {
             //addToUnion( types, st.getTypeModel() );
             ProducedType t = st.getTypeModel();
-            if (t!=null) types.add(t);
+            if (t!=null) {
+                types.add(t);
+                if (t.isTypeConstructor()) {
+                    typeConstructor = true;
+                }
+            }
         }
         UnionType ut = 
                 new UnionType(unit);
         ut.setCaseTypes(types);
-        that.setTypeModel(ut.getType());
+        ProducedType type = ut.getType();
+        type.setTypeConstructor(typeConstructor);
+        that.setTypeModel(type);
         //that.setTarget(pt);
     }
     
@@ -644,15 +652,23 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = 
                 new ArrayList<ProducedType>
                     (sts.size());
+        boolean typeConstructor = false;
         for (Tree.StaticType st: sts) {
             //addToIntersection(types, st.getTypeModel(), unit);
             ProducedType t = st.getTypeModel();
-            if (t!=null) types.add(t);
+            if (t!=null) {
+                types.add(t);
+                if (t.isTypeConstructor()) {
+                    typeConstructor = true;
+                }
+            }
         }
         IntersectionType it = 
                 new IntersectionType(unit);
         it.setSatisfiedTypes(types);
-        that.setTypeModel(it.getType());
+        ProducedType type = it.getType();
+        type.setTypeConstructor(typeConstructor);
+        that.setTypeModel(type);
         //that.setTarget(pt);
     }
     
@@ -939,6 +955,12 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.QualifiedType that) {
+        Tree.StaticType ot = that.getOuterType();
+        if (ot instanceof Tree.SimpleType &&
+                ((Tree.SimpleType) ot).getTypeConstructor()) {
+            ot.addError("qualifying type may not be a type constructor");
+        }
+        
         boolean onl = inTypeLiteral;
         boolean oiea = inExtendsOrClassAlias;
         boolean oidc = inDelegatedConstructor;
@@ -950,7 +972,7 @@ public class TypeVisitor extends Visitor {
         inDelegatedConstructor = oidc;
         inTypeLiteral = onl;
         
-        ProducedType pt = that.getOuterType().getTypeModel();
+        ProducedType pt = ot.getTypeModel();
         if (pt!=null) {
             if (that.getMetamodel() && 
                     that.getTypeArgumentList()!=null &&

@@ -1985,7 +1985,7 @@ public class ProducedType extends ProducedReference {
                                 sta.add(ta.substitute(substitutions));
                             }
                             return substituteIntoTypeConstructors(sub, 
-                                    sta, ptd.getUnit());
+                                    sta, substitutions, ptd.getUnit());
                         }
                     }
                 }
@@ -1996,6 +1996,7 @@ public class ProducedType extends ProducedReference {
 
         private ProducedType substituteIntoTypeConstructors(
                 ProducedType sub, List<ProducedType> sta,
+                Map<TypeParameter, ProducedType> substitutions,
                 Unit unit) {
             TypeDeclaration sd = sub.getDeclaration();
             if (sd instanceof UnionType) {
@@ -2003,7 +2004,8 @@ public class ProducedType extends ProducedReference {
                         new ArrayList<ProducedType>();
                 for (ProducedType ct: sd.getCaseTypes()) {
                     addToUnion(list, 
-                            substituteIntoTypeConstructors(ct,sta,unit));
+                            substituteIntoTypeConstructors(ct,
+                                    sta, substitutions, unit));
                 }
                 UnionType ut = 
                         new UnionType(unit);
@@ -2015,7 +2017,8 @@ public class ProducedType extends ProducedReference {
                         new ArrayList<ProducedType>();
                 for (ProducedType st: sd.getSatisfiedTypes()) {
                     addToIntersection(list, 
-                            substituteIntoTypeConstructors(st,sta,unit),
+                            substituteIntoTypeConstructors(st,
+                                    sta, substitutions, unit),
                             unit);
                 }
                 IntersectionType ut = 
@@ -2024,7 +2027,11 @@ public class ProducedType extends ProducedReference {
                 return ut.canonicalize().getType();
             }
             else {
-                return sd.getProducedType(null, sta);
+                ProducedType sqt = sub.getQualifyingType();
+                ProducedType qt = 
+                        sqt==null ? null : 
+                        substitute(sqt, substitutions);
+                return sd.getProducedType(qt, sta);
             }
         }
 
@@ -2476,11 +2483,15 @@ public class ProducedType extends ProducedReference {
     		ut.setSatisfiedTypes(list);
     		return ut.canonicalize().getType();
     	}
+        ProducedType qt = getQualifyingType();
+        ProducedType aliasedQualifyingType = qt==null ? 
+                null : qt.resolveAliases();
     	if (isTypeConstructor()) {
     	    TypeDeclaration ud = 
     	            d.isAlias() ? d.getExtendedTypeDeclaration() : d;
     	    ProducedType rt = ud.getType();
-    	    //TODO: qualifying type!!!
+    	    
+    	    rt.setQualifyingType(aliasedQualifyingType);
     	    rt.setTypeConstructor(true);
     	    return rt;
     	}
@@ -2492,9 +2503,6 @@ public class ProducedType extends ProducedReference {
         	for (ProducedType arg: args) {
         		aliasedArgs.add(arg==null ? null : arg.resolveAliases());
         	}
-        	ProducedType qt = getQualifyingType();
-        	ProducedType aliasedQualifyingType = qt==null ? 
-        			null : qt.resolveAliases();
         	if (d.isAlias()) {
         		ProducedType et = d.getExtendedType();
     			if (et == null) {

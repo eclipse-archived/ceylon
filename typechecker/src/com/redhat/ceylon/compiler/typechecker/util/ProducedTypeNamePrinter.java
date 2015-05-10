@@ -525,13 +525,18 @@ public class ProducedTypeNamePrinter {
             }
         }
         
-        if (pt.isTypeConstructor()) ptn.append("@");
-
-        printDeclaration(ptn, pt.getDeclaration(), 
-                fullyQualified, unit);
-
+        TypeDeclaration ptd = pt.getDeclaration();
+        
+        if (pt.isTypeConstructor() && 
+                !(ptd instanceof UnionType) && 
+                !(ptd instanceof IntersectionType)) {
+            ptn.append("@");
+        }
+        
+        printDeclaration(ptn, ptd, fullyQualified, unit);
+        
         List<ProducedType> args = pt.getTypeArgumentList();
-        List<TypeParameter> params = pt.getDeclaration().getTypeParameters();
+        List<TypeParameter> params = ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
                 printTypeParameters() && 
                 !args.isEmpty()) {
