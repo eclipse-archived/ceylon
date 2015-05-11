@@ -7841,8 +7841,10 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, List<ProducedType> typeArguments, 
             Tree.TypeArguments tal, Node parent,
             boolean metamodel) {
-        if (dec==null) return false;
-        if (isGeneric(dec)) {
+        if (dec==null) {
+            return false;
+        }
+        else if (isGeneric(dec)) {
             List<TypeParameter> params = 
                     ((Generic) dec).getTypeParameters();
             int min = 0;
@@ -7861,7 +7863,6 @@ public class ExpressionVisitor extends Visitor {
                     TypeParameter param = params.get(i);
                     ProducedType argType = 
                             typeArguments.get(i);
-                    //Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
                     boolean argTypeMeaningful = 
                             argType!=null && 
                             !(argType.getDeclaration() 
@@ -7890,7 +7891,7 @@ public class ExpressionVisitor extends Visitor {
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
                                                         + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                        + "' is not assignable to upper bound '" 
+                                                        + "' which is not assignable to upper bound '" 
                                                         + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
                                     }

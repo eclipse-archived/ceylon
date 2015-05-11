@@ -626,7 +626,9 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType st: sts) {
             //addToUnion( types, st.getTypeModel() );
             ProducedType t = st.getTypeModel();
-            if (t!=null) types.add(t);
+            if (t!=null) {
+                types.add(t);
+            }
         }
         UnionType ut = 
                 new UnionType(unit);
@@ -646,7 +648,9 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType st: sts) {
             //addToIntersection(types, st.getTypeModel(), unit);
             ProducedType t = st.getTypeModel();
-            if (t!=null) types.add(t);
+            if (t!=null) {
+                types.add(t);
+            }
         }
         IntersectionType it = 
                 new IntersectionType(unit);

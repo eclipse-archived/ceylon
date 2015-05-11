@@ -16,6 +16,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgu
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
@@ -806,7 +807,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             m.setDynamicallyTyped(true);
         }
     }
-
+    
     private static void setParameterLists(Method m, List<Tree.ParameterList> paramLists, 
             Node that) {
         if (m!=null) {
@@ -1358,11 +1359,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
     
     private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
-        List<TypeParameter> typeParameters = Collections.emptyList();
+        List<TypeParameter> typeParameters = emptyList();
         if (tpl!=null) {
             boolean foundDefaulted=false;
-            List<Tree.TypeParameterDeclaration> tpds = tpl.getTypeParameterDeclarations();
-            typeParameters = new ArrayList<TypeParameter>(tpds.size());
+            List<Tree.TypeParameterDeclaration> tpds = 
+                    tpl.getTypeParameterDeclarations();
+            typeParameters = 
+                    new ArrayList<TypeParameter>(tpds.size());
             for (Tree.TypeParameterDeclaration tp: tpds) {
                 typeParameters.add(tp.getDeclarationModel());
                 if (tp.getTypeSpecifier()==null) {
