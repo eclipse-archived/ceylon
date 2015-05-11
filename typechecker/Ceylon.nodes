@@ -240,7 +240,6 @@
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
     TYPE_SPECIFIER?
-    boolean typeConstructor;
     TypeParameter declarationModel;)
 "The variance of a type parameter."
 ^(TYPE_VARIANCE)
@@ -273,7 +272,6 @@
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
     IDENTIFIER 
     TYPE_ARGUMENT_LIST?
-    boolean typeConstructor;
     TypeDeclaration declarationModel;)
 
 ^(BASE_TYPE: SIMPLE_TYPE

@@ -527,12 +527,6 @@ public class ProducedTypeNamePrinter {
         
         TypeDeclaration ptd = pt.getDeclaration();
         
-        if (pt.isTypeConstructor() && 
-                !(ptd instanceof UnionType) && 
-                !(ptd instanceof IntersectionType)) {
-            ptn.append("@");
-        }
-        
         printDeclaration(ptn, ptd, fullyQualified, unit);
         
         List<ProducedType> args = pt.getTypeArgumentList();

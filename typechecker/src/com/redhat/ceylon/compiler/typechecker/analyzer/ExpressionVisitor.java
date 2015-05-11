@@ -26,8 +26,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
-import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
-import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
@@ -6340,8 +6338,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, member, 
-                typeArgs, tal, that, false)) {
+        if (acceptsTypeArguments(receiverType, member, typeArgs, 
+                tal, that)) {
             ProducedTypedReference ptr = 
                     receiverType.getTypedMember(member, typeArgs, 
                             that.getAssigned());
@@ -6483,7 +6481,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that, 
             TypedDeclaration member, List<ProducedType> typeArgs, 
             Tree.TypeArguments tal) {
-        if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
+        if (acceptsTypeArguments(member, typeArgs, tal, that)) {
             ProducedType outerType = 
                     that.getScope().getDeclaringType(member);
             ProducedTypedReference pr = 
@@ -6925,28 +6923,31 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> ta = 
                         getTypeArguments(tal, params, 
                                 pt.getQualifyingType());
-                acceptsTypeArguments(type, ta, tal, that, 
-                        that.getMetamodel() ||
-                        that.getTypeConstructor());
+                acceptsTypeArguments(type, ta, tal, that);
                 //the type has already been set by TypeVisitor
                 if (tal!=null) {
+                    //TODO: dupe of logic in TypeVisitor!!!!
                     List<Tree.Type> args = tal.getTypes();
                     for (int i = 0; i<args.size(); i++) {
                         Tree.Type t = args.get(i);
                         if (t instanceof Tree.StaticType) {
+                            TypeParameter p = params.get(i);
+//                            if (p.isTypeConstructor()) {
+//                                setTypeConstructor(t);
+//                            }
                             Tree.StaticType st = 
                                     (Tree.StaticType) t;
                             Tree.TypeVariance variance = 
                                     st.getTypeVariance();
                             if (variance!=null) {
-                                TypeParameter p = params.get(i);
                                 if (p.isInvariant()) {
-                                    if (variance.getText().equals("out")) {
-                                        pt.setVariance(p, OUT);
-                                    }
-                                    else if (variance.getText().equals("in")) {
-                                        pt.setVariance(p, IN);
-                                    }
+//                                    String var = variance.getText();
+//                                    if (var.equals("out")) {
+//                                        pt.setVariance(p, OUT);
+//                                    }
+//                                    else if (var.equals("in")) {
+//                                        pt.setVariance(p, IN);
+//                                    }
                                 }
                                 else {
                                     variance.addError("type parameter is not declared invariant: '" + 
@@ -6977,7 +6978,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, memberType, typeArgs, tal, that, false)) {
+        if (acceptsTypeArguments(receiverType, memberType, typeArgs, 
+                tal, that)) {
             ProducedType type = 
                     receiverType.getTypeMember(memberType, typeArgs);
             that.setTarget(type);
@@ -7009,7 +7011,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that, 
             TypeDeclaration baseType, List<ProducedType> typeArgs, 
             Tree.TypeArguments tal, ProducedType qt) {
-        if (acceptsTypeArguments(baseType, typeArgs, tal, that, false)) {
+        if (acceptsTypeArguments(baseType, typeArgs, tal, that)) {
             ProducedType outerType = 
                     that.getScope().getDeclaringType(baseType);
             if (outerType==null) {
@@ -7835,10 +7837,9 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean acceptsTypeArguments(Declaration member, 
             List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent, 
-            boolean metamodel) {
+            Tree.TypeArguments tal, Node parent) {
         return acceptsTypeArguments(null, member, 
-                typeArguments, tal, parent, metamodel);
+                typeArguments, tal, parent);
     }
     
     private static boolean isGeneric(Declaration member) {
@@ -7848,8 +7849,7 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean acceptsTypeArguments(ProducedType receiver, 
             Declaration dec, List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent,
-            boolean metamodel) {
+            Tree.TypeArguments tal, Node parent) {
         if (dec==null) {
             return false;
         }
@@ -7885,15 +7885,16 @@ public class ExpressionVisitor extends Visitor {
                         }
                         else if (!argType.isTypeConstructor() && 
                                 param.isTypeConstructor()) {
-                            parent.addError("type argument must be a type constructor: parameter '@" + 
+                            parent.addError("type argument must be a type constructor: parameter '" + 
                                     param.getName() + 
                                     "' is a type constructor");
                         }
                         else if (param.isTypeConstructor()) {
                             Node argNode;
                             if (tal instanceof Tree.TypeArgumentList) {
-                                argNode = ((Tree.TypeArgumentList) tal)
-                                        .getTypes().get(i);
+                                Tree.TypeArgumentList tl = 
+                                        (Tree.TypeArgumentList) tal;
+                                argNode = tl.getTypes().get(i);
                             }
                             else {
                                 argNode = parent;
@@ -7971,11 +7972,12 @@ public class ExpressionVisitor extends Visitor {
             else {
                 if (tal==null || 
                         tal instanceof Tree.InferredTypeArguments) {
-                    if (!metamodel) {
-                        parent.addError("missing type arguments to generic type: '" + 
-                                dec.getName(unit) + 
-                                "' declares type parameters");
-                    }
+                    //Now handled in TypeArgumentVisitor
+//                    if (!metamodel) {
+//                        parent.addError("missing type arguments to generic type: '" + 
+//                                dec.getName(unit) + 
+//                                "' declares type parameters");
+//                    }
                 }
                 else {
                     String help;
@@ -8043,10 +8045,10 @@ public class ExpressionVisitor extends Visitor {
                         param.getTypeParameters();
                 int size = paramTypeParams.size();
                 if (allowed<size || required>size) {
-                    argNode.addError("argument type constructor has wrong number of type parameters: argument '@" +
+                    argNode.addError("argument type constructor has wrong number of type parameters: argument '" +
                             atd.getName(unit) + "' has " + 
                             allowed + " type parameters " +
-                            "but parameter '@" + 
+                            "but parameter '" + 
                             param.getName(unit) + "' has " + 
                             size + " type parameters");
                 }
@@ -8058,9 +8060,9 @@ public class ExpressionVisitor extends Visitor {
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
                         argNode.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
-                                argParam.getName() + "' of '@" + atd.getName(unit) + 
+                                argParam.getName() + "' of '" + atd.getName(unit) + 
                                 "' does accept all type arguments accepted by '" + 
-                                paramParam.getName() + "' of '@" + param.getName(unit) + 
+                                paramParam.getName() + "' of '" + param.getName(unit) + 
                                 "'");
                     }
                 }
@@ -9194,8 +9196,8 @@ public class ExpressionVisitor extends Visitor {
                     if (tal != null) {
                         tal.setTypeModels(ta);
                     }
-                    if (acceptsTypeArguments(outerType, 
-                            method, ta, tal, that, false)) {
+                    if (acceptsTypeArguments(outerType, method, 
+                            ta, tal, that)) {
                         ProducedTypedReference pr = 
                                 outerType==null ? 
                                         method.getProducedTypedReference(null, ta) : 

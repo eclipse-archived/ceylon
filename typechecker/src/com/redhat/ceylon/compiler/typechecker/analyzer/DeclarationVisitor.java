@@ -436,7 +436,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     // and the found member is native return the proper backend declaration
     private static Declaration getDirectMember(Scope scope, String name, String backend) {
         Declaration member = scope.getDirectMember(name, null, false);
-        if (member.isNative() && backend != null) {
+        if (member!=null && member.isNative() && backend != null) {
             Declaration m = null;
             for (Declaration o : ((Overloadable)member).getOverloads()) {
                 if (backend.equals(o.getNative())) {
@@ -777,7 +777,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             p.setCovariant("out".equals(v));
             p.setContravariant("in".equals(v));
         }
-        p.setTypeConstructor(that.getTypeConstructor());
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
@@ -1653,6 +1652,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             visitDeclaration(that, p);
         }
         else {
+            if (that.getTypeParameterList()!=null) {
+                p.setTypeConstructor(true);
+            }
         	if (p.isConstrained()) {
         		that.addError("duplicate constraint list for type parameter: '" +
         				name + "'");
@@ -1672,18 +1674,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             that.addUnsupportedError("parameter bounds are not yet supported");
             pl.getModel().setFirst(true);
             p.addParameterList(pl.getModel());
-        }
-        //TODO: we need to check this somewhere else, since not
-        //      every type parameter has a constraint
-        if (p.isTypeConstructor() && 
-                that.getTypeParameterList()==null) {
-            that.addError("type constructor must declare type parameters: " + 
-                    name);
-        }
-        if (!p.isTypeConstructor() && 
-                that.getTypeParameterList()!=null) {
-            that.getTypeParameterList()
-                    .addError("not a type constructor: " + name);
         }
     }
     

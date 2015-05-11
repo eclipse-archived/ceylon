@@ -997,7 +997,6 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
           { if ($t1.identifier!=null) {
               bt.setEndToken(null);
               bt.setIdentifier($t1.identifier);
-              bt.setTypeConstructor($t1.typeConstructor);
             }
             if ($t1.typeArgumentList!=null)
                 bt.setTypeArgumentList($t1.typeArgumentList);
@@ -1013,7 +1012,6 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
             { if ($t2.identifier!=null) {
                 qt.setEndToken(null);
                 qt.setIdentifier($t2.identifier);
-                qt.setTypeConstructor($t2.typeConstructor);
               }
               if ($t2.typeArgumentList!=null)
                 qt.setTypeArgumentList($t2.typeArgumentList);
@@ -1030,7 +1028,6 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
     : t0=typeNameWithArguments
       { bt = new BaseType(null);
         bt.setIdentifier($t0.identifier);
-        bt.setTypeConstructor($t0.typeConstructor);
         if ($t0.typeArgumentList!=null)
             bt.setTypeArgumentList($t0.typeArgumentList);
         $type=bt; 
@@ -1047,7 +1044,6 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           { if ($t3.identifier!=null) {
               qt.setEndToken(null);
               qt.setIdentifier($t3.identifier);
-              qt.setTypeConstructor($t3.typeConstructor);
             }
             if ($t3.typeArgumentList!=null)
                 qt.setTypeArgumentList($t3.typeArgumentList);
@@ -1071,7 +1067,6 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
         { if ($t4.identifier!=null) {
             qt.setEndToken(null);
             qt.setIdentifier($t4.identifier);
-            qt.setTypeConstructor($t4.typeConstructor);
           }
           if ($t4.typeArgumentList!=null)
             qt.setTypeArgumentList($t4.typeArgumentList);
@@ -1305,10 +1300,6 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       ( 
         variance 
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
-      )?
-      (
-        '@'
-        { $typeParameter.setTypeConstructor(true); }
       )?
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); }
@@ -3348,7 +3339,6 @@ baseType returns [StaticType type]
     : 
       tna1=typeNameWithArguments
       { BaseType bt = new BaseType(null);
-        bt.setTypeConstructor($tna1.typeConstructor);
         bt.setIdentifier($tna1.identifier);
         if ($tna1.typeArgumentList!=null)
             bt.setTypeArgumentList($tna1.typeArgumentList);
@@ -3365,7 +3355,6 @@ baseType returns [StaticType type]
       tna2=typeNameWithArguments
       { pt.setEndToken(null);
         pt.setIdentifier($tna2.identifier);
-        pt.setTypeConstructor($tna2.typeConstructor);
         if ($tna2.typeArgumentList!=null)
             pt.setTypeArgumentList($tna2.typeArgumentList); }
     ;
@@ -3377,7 +3366,6 @@ qualifiedType returns [StaticType type]
         MEMBER_OP
         it=typeNameWithArguments
         { QualifiedType qt = new QualifiedType($MEMBER_OP);
-          qt.setTypeConstructor($it.typeConstructor);
           qt.setIdentifier($it.identifier);
           if ($it.typeArgumentList!=null)
               qt.setTypeArgumentList($it.typeArgumentList);
@@ -3387,14 +3375,8 @@ qualifiedType returns [StaticType type]
     ;
 
 typeNameWithArguments returns [Identifier identifier, 
-                               TypeArgumentList typeArgumentList,
-                               boolean typeConstructor]
-    @init { $typeConstructor = false; }
-    : (
-        '@'
-        { $typeConstructor = true; }
-      )?
-      typeName
+                               TypeArgumentList typeArgumentList]
+    : typeName
       { $identifier = $typeName.identifier; } 
       (
         typeArguments
@@ -4003,7 +3985,7 @@ resources returns [ResourceList resources]
 resource returns [Resource resource]
     @init { $resource = new Resource(null); }
     : 
-      (COMPILER_ANNOTATION LIDENTIFIER|declarationStart|specificationStart) => 
+      (COMPILER_ANNOTATION|declarationStart|specificationStart) => 
       specifiedVariable
       { $resource.setVariable($specifiedVariable.variable); }
     | 
