@@ -1029,6 +1029,10 @@ public class TypeVisitor extends Visitor {
                     dec.getName(unit) + "'");
         }
         
+        if (dec.isAlias() && that.getTypeConstructor()) {
+            that.addUnsupportedError("type constructor reference to type alias not yet supported");
+        }
+        
         Tree.TypeArgumentList tal = 
                 that.getTypeArgumentList();
         List<TypeParameter> params = 
