@@ -38,5 +38,9 @@ void testAdvancedStuff() {
                 => nothing;
     };
     Functor<Integer, out Iterable> funn = funny;
+    
+    Functor<String,Sequence> seqfun = nothing;
+    @error Functor<String,List> listfun = seqfun;
+    Functor<String,out List> wildlistfun = seqfun;
 
 }
