@@ -488,6 +488,8 @@ public class ProducedType extends ProducedReference {
                         required>orequired) {
                         return false;
                     }
+                    List<ProducedType> paramsAsArgs =
+                            new ArrayList<ProducedType>(oallowed);
                     for (int i=0; i<allowed && i<oallowed; i++) {
                         TypeParameter param = params.get(i);
                         TypeParameter otherParam = otherParams.get(i);
@@ -495,8 +497,15 @@ public class ProducedType extends ProducedReference {
                                 .isSubtypeOf(intersectionOfSupertypes(param))) {
                             return false;
                         }
+                        paramsAsArgs.add(otherParam.getType());
                     }
-                    return true;
+                    ProducedType resultType = 
+                            dec.getProducedType(getQualifyingType(), 
+                                paramsAsArgs);
+                    ProducedType otherResultType = 
+                            otherDec.getProducedType(type.getQualifyingType(), 
+                                    paramsAsArgs);
+                    return resultType.isSubtypeOf(otherResultType);
                 }
                 else {
                     return false;

@@ -93,16 +93,19 @@ interface U<X> given X satisfies Object {}
 interface V<X> satisfies U<X> given X satisfies Object {}
 interface W<X> satisfies U<X> given X satisfies String {}
 interface T<X> given X satisfies Object {}
+interface S<X> satisfies U<String> given X satisfies Object {}
 
 void testSubtyping(High<U> h1, 
         High<V> h2, 
         High<W> h3, 
         High<U|V> h4, 
-        High<T> h5) {
+        High<T> h5, 
+        High<S> h6) {
     High<U> ha = h1;
     High<U> hb = h2;
     @error High<U> hc = h3;
     High<U> hd = h4;
     @error High<U> he = h5;
     @error High<V> h = h1;
+    @error High<U> hf = h6;
 }
