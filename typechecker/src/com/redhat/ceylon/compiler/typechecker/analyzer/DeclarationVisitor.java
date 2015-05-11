@@ -16,11 +16,11 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgu
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1359,8 +1359,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
     
     private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
-        List<TypeParameter> typeParameters = 
-                Collections.emptyList();
+        List<TypeParameter> typeParameters = emptyList();
         if (tpl!=null) {
             boolean foundDefaulted=false;
             List<Tree.TypeParameterDeclaration> tpds = 
