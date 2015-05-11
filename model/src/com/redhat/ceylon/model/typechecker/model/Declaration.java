@@ -324,6 +324,10 @@ public abstract class Declaration
                     !thisContainer.equals(thatContainer)) {
                 return false;
             }
+            else if (this.isNative() != that.isNative() ||
+                    (this.isNative() && !this.getNative().equals(that.getNative()))) {
+                return false;
+            }
             else if (this instanceof Functional && 
                     that instanceof Functional) {
                 Functional thisFunction = (Functional) this;

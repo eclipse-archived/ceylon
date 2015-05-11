@@ -35,6 +35,7 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -487,14 +488,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", "1.3.3.Final"), false, false));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", "1.0.3.Final"), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", "1.3.3.Final"), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", "1.0.3.Final"), false, false, Backend.Java));
         
         return languageModule;
     }
@@ -1720,6 +1721,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // this attribute to false by default, so it should work
             if (isJdk && module instanceof LazyModule) {
                 ((LazyModule)module).setJava(true);
+                module.setNative(Backend.Java.nativeAnnotation);
             }
 
             // FIXME: this can't be that easy.
@@ -1795,11 +1797,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
                     Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
+                    String backend = null; // TODO (String) importAttribute.getValue("native");
+
                     ModuleImport moduleImport = moduleManager.findImport(module, dependency);
                     if (moduleImport == null) {
                         boolean optional = optionalVal != null && optionalVal;
                         boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export);
+                        moduleImport = new ModuleImport(dependency, optional, export, backend);
                         module.addImport(moduleImport);
                     }
                 }
@@ -2347,24 +2351,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 
             }
         }
+
+        boolean hasCeylonDeprecated = false;
+        for(Annotation a : decl.getAnnotations()) {
+            if (a.getName().equals("deprecated")) {
+                hasCeylonDeprecated = true;
+                break;
+            }
+        }
+
         // Add a ceylon deprecated("") if it's annotated with java.lang.Deprecated
         // and doesn't already have the ceylon annotation
         if (classMirror.getAnnotation(JAVA_DEPRECATED_ANNOTATION) != null) {
-            boolean hasCeylonDeprecated = false;
-            for(Annotation a : decl.getAnnotations()) {
-                if (a.getName().equals("deprecated")) {
-                    hasCeylonDeprecated = true;
-                    break;
-                }
-            }
             if (!hasCeylonDeprecated) {
                 Annotation modelAnnotation = new Annotation();
                 modelAnnotation.setName("deprecated");
                 modelAnnotation.getPositionalArguments().add("");
                 decl.getAnnotations().add(modelAnnotation);
-                decl.setDeprecated(true);
+                hasCeylonDeprecated = true;
             }
         }
+        
+        if (hasCeylonDeprecated) {
+            decl.setDeprecated(true);
+        }
+
         // Set "native" annotation
         decl.setNative(getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend"));
     }
@@ -4590,7 +4601,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronized(getLock()){
             for(LazyPackage pkg : modulelessPackages.values()){
                 String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkg.getQualifiedNameString());
-                packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+                if (pkg.getModule() != null) {
+                    packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+                }
             }
             modulelessPackages.clear();
         }

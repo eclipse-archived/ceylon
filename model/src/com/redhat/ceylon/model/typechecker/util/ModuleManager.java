@@ -186,11 +186,6 @@ public class ModuleManager implements BackendSupport {
         return Arrays.asList("src");
     }
 
-    @Override
-    public boolean supportsBackend(Backend backend) {
-        return true;
-    }
-
     public static List<String> splitModuleName(String moduleName) {
         return Arrays.asList(moduleName.split("[\\.]"));
     }
@@ -227,5 +222,10 @@ public class ModuleManager implements BackendSupport {
     
     public Modules getModules(){
         return modules;
+    }
+
+    @Override
+    public boolean supportsBackend(Backend backend) {
+        return backend != Backend.None;
     }
 }
