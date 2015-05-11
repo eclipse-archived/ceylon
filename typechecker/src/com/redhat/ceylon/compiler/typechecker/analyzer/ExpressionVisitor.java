@@ -36,6 +36,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefinements;
+import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
@@ -87,7 +88,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
-import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
