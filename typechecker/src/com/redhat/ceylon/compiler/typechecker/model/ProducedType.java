@@ -453,14 +453,6 @@ public class ProducedType extends ProducedReference {
                         return true;
                     }
                 }
-                if (isTypeConstructor() && 
-                        type.isTypeConstructor()) {
-                    return getDeclaration().equals(type.getDeclaration());
-                }
-                else if (isTypeConstructor() || 
-                        type.isTypeConstructor()) {
-                    return false;
-                }
                 for (ProducedType ct: 
                         getInternalSatisfiedTypes()) {
                     if (ct==null || 
@@ -468,6 +460,50 @@ public class ProducedType extends ProducedReference {
                         return true;
                     }
                 }
+                return false;
+            }
+            else if (isTypeConstructor() && 
+                    type.isTypeConstructor()) {
+                if (dec.equals(otherDec)) {
+                    return true;
+                }
+                else if (dec.inherits(otherDec)) {
+                    List<TypeParameter> params = 
+                            dec.getTypeParameters();
+                    int allowed = params.size();
+                    int required = 0;
+                    for (TypeParameter tp: params) {
+                        if (tp.isDefaulted()) break;
+                        required++;
+                    }
+                    List<TypeParameter> otherParams = 
+                            otherDec.getTypeParameters();
+                    int oallowed = otherParams.size();
+                    int orequired = 0;
+                    for (TypeParameter tp: otherParams) {
+                        if (tp.isDefaulted()) break;
+                        orequired++;
+                    }
+                    if (allowed<oallowed || 
+                        required>orequired) {
+                        return false;
+                    }
+                    for (int i=0; i<allowed && i<oallowed; i++) {
+                        TypeParameter param = params.get(i);
+                        TypeParameter otherParam = otherParams.get(i);
+                        if (!intersectionOfSupertypes(otherParam)
+                                .isSubtypeOf(intersectionOfSupertypes(param))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (isTypeConstructor() || 
+                    type.isTypeConstructor()) {
                 return false;
             }
             else {
@@ -521,7 +557,8 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                     }
-                    for (TypeParameter p: otherDec.getTypeParameters()) {
+                    for (TypeParameter p: 
+                            otherDec.getTypeParameters()) {
                         ProducedType arg = 
                                 supertype.getTypeArguments()
                                     .get(p);

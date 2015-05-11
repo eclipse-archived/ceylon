@@ -87,3 +87,22 @@ class Dummy<X>() given X<T> {
 void testDummy() {
     @type:"Integer" Dummy<List>().foo([1, 2, 3]);
 }
+
+interface High<out T> given T<X> given X satisfies String {}
+interface U<X> given X satisfies Object {}
+interface V<X> satisfies U<X> given X satisfies Object {}
+interface W<X> satisfies U<X> given X satisfies String {}
+interface T<X> given X satisfies Object {}
+
+void testSubtyping(High<U> h1, 
+        High<V> h2, 
+        High<W> h3, 
+        High<U|V> h4, 
+        High<T> h5) {
+    High<U> ha = h1;
+    High<U> hb = h2;
+    @error High<U> hc = h3;
+    High<U> hd = h4;
+    @error High<U> he = h5;
+    @error High<V> h = h1;
+}
