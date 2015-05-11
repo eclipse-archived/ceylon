@@ -20,13 +20,14 @@ package ceylon.modules.jboss.runtime;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.Resource;
+
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Load modules on demand.

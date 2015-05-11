@@ -22,9 +22,9 @@ import org.jboss.modules.filter.PathFilter;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 class CMRPathFilter implements PathFilter {
-    com.redhat.ceylon.cmr.api.PathFilter filter;
+    com.redhat.ceylon.model.cmr.PathFilter filter;
 
-    public CMRPathFilter(com.redhat.ceylon.cmr.api.PathFilter filter) {
+    public CMRPathFilter(com.redhat.ceylon.model.cmr.PathFilter filter) {
         this.filter = filter;
     }
 

@@ -26,4 +26,17 @@
     <resources>
         <resource-root path="com.redhat.ceylon.model-@ceylon-version@.jar"/>
     </resources>
+    <dependencies>
+        <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
+        <system export="true">
+            <paths>
+                <path name="javax/tools"/>
+                <path name="javax/lang/model"/>
+                <path name="javax/lang/model/element"/>
+                <path name="javax/lang/model/type"/>
+                <path name="javax/lang/model/util"/>
+            </paths>
+        </system>
+    </dependencies>
 </module>

@@ -29,6 +29,7 @@
 
     <dependencies>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
         <module name="org.jboss.jandex" slot="1.0.3.Final"/>
         <module name="org.jboss.modules" slot="1.3.3.Final"/>
         <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>

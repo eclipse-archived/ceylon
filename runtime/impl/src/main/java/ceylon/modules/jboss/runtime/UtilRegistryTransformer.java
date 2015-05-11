@@ -20,9 +20,10 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleIdentifier;
+
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Per module Util registry.

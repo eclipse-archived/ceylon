@@ -2,8 +2,8 @@ package ceylon.modules.api.runtime;
 
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * This allows for external checkers to replace current log module dependency.
