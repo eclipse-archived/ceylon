@@ -8367,21 +8367,21 @@ public class ExpressionVisitor extends Visitor {
         else {
             Set<TypeDeclaration> typeSet = 
                     new HashSet<TypeDeclaration>();
-            for (Tree.StaticType st: that.getTypes()) {
-                ProducedType type = st.getTypeModel();
+            for (Tree.StaticType ct: that.getTypes()) {
+                ProducedType type = ct.getTypeModel();
                 if (type!=null && type.getDeclaration()!=null) {
                     type = type.resolveAliases();
                     TypeDeclaration ctd = type.getDeclaration();
                     if (!typeSet.add(ctd)) {
                         //this error is not really truly necessary
-                        st.addError("duplicate case type: '" + 
+                        ct.addError("duplicate case type: '" + 
                                 ctd.getName(unit) + "' of '" + 
                                 td.getName() + "'");
                     }
                     if (!(ctd instanceof TypeParameter)) {
                         //it's not a self type
-                        if (checkDirectSubtype(td, st, type)) {
-                            checkAssignable(type, td.getType(), st,
+                        if (checkDirectSubtype(td, ct, type)) {
+                            checkAssignable(type, td.getType(), ct,
                                     getCaseTypeExplanation(td, type));
                         }
                         //note: this is a better, faster way to call 
@@ -8393,9 +8393,9 @@ public class ExpressionVisitor extends Visitor {
                         validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
                     }
                     if (ctd instanceof ClassOrInterface && 
-                            st instanceof Tree.SimpleType) {
+                            ct instanceof Tree.SimpleType) {
                         Tree.SimpleType s = 
-                                (Tree.SimpleType) st;
+                                (Tree.SimpleType) ct;
                         Tree.TypeArgumentList tal = 
                                 s.getTypeArgumentList();
                         if (tal!=null) {
