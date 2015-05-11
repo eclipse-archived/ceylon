@@ -28,7 +28,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
@@ -38,18 +38,18 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Abstract repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractRepository implements Repository {
+public abstract class AbstractRepository implements CmrRepository {
 
     private static final Comparator<? super Node> AlphabeticalNodeComparator = new Comparator<Node>() {
         @Override
@@ -132,10 +132,10 @@ public abstract class AbstractRepository implements Repository {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Repository == false)
+        if (obj instanceof CmrRepository == false)
             return false;
 
-        final Repository daca = (Repository) obj;
+        final CmrRepository daca = (CmrRepository) obj;
         return root.equals(daca.getRoot());
     }
 

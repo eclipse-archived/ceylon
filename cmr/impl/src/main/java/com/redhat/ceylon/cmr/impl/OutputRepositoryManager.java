@@ -16,13 +16,22 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.common.log.Logger;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Output manager.
@@ -59,8 +68,8 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
 
     @Override
-    public List<Repository> getRepositories() {
-        List<Repository> repos = new ArrayList<>();
+    public List<CmrRepository> getRepositories() {
+        List<CmrRepository> repos = new ArrayList<>();
         repos.addAll(output.getRepositories());
         repos.addAll(manager.getRepositories());
         return repos;

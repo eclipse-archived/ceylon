@@ -12,11 +12,11 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactCreator;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.ArtifactCreator;
-import com.redhat.ceylon.cmr.util.JarUtils;
 
 /** Creates a .src archive in the specified location, containing the
  * specified source files, avoiding duplicates.

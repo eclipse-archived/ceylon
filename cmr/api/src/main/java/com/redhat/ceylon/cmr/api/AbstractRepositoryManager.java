@@ -17,7 +17,6 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +26,8 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Abstract repository manager.

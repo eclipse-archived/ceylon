@@ -30,21 +30,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -57,10 +57,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected static final String ORIGIN = ".origin";
     protected static final String MISSING = ".missing";
 
-    private List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
-    private List<Repository> allRoots;
+    private List<CmrRepository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
+    private List<CmrRepository> allRoots;
 
-    protected Repository cache; // cache root
+    protected CmrRepository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
 
     public AbstractNodeRepositoryManager(Logger log, Overrides overrides) {
@@ -82,7 +82,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return cache.getRoot();
     }
 
-    protected synchronized void setCache(Repository cache) {
+    protected synchronized void setCache(CmrRepository cache) {
         if (this.cache != null && addCacheAsRoot){
             roots.remove(this.cache);
         }
@@ -97,32 +97,32 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             setupOverrides(cache);
     }
 
-    private void setupOverrides(Repository repo) {
+    private void setupOverrides(CmrRepository repo) {
         repo.getRoot().addService(Overrides.class, overrides);
     }
 
-    protected synchronized void addRepository(Repository external) {
+    protected synchronized void addRepository(CmrRepository external) {
         roots.add(external);
         setupOverrides(external);
         allRoots = null;
     }
 
-    protected synchronized void removeRepository(Repository external) {
+    protected synchronized void removeRepository(CmrRepository external) {
         roots.remove(external);
         allRoots = null;
     }
 
     protected ArtifactResult toArtifactResult(Node node) {
-        final Repository adapter = NodeUtils.getRepository(node);
+        final CmrRepository adapter = NodeUtils.getRepository(node);
         return adapter.getArtifactResult(this, node);
     }
 
     @Override
-    public synchronized List<Repository> getRepositories() {
+    public synchronized List<CmrRepository> getRepositories() {
         if (allRoots == null) {
             allRoots = new ArrayList<>();
             boolean cacheAdded = false;
-            for (Repository root : roots) {
+            for (CmrRepository root : roots) {
                 if (!addCacheAsRoot
                         && cache != null
                         && !cacheAdded 
@@ -141,9 +141,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return allRoots;
     }
     
-    private List<Repository> getRepositoriesForContext(ArtifactContext context) {
-        List<Repository> reps = getRepositories();
-        Repository rep = context.getSearchRepository();
+    private List<CmrRepository> getRepositoriesForContext(ArtifactContext context) {
+        List<CmrRepository> reps = getRepositories();
+        CmrRepository rep = (CmrRepository) context.getSearchRepository();
         if (rep != null) {
             if (reps.contains(rep)) {
                 return Collections.singletonList(rep);
@@ -156,7 +156,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     
     public List<String> getRepositoriesDisplayString() {
         final List<String> displayStrings = new ArrayList<>();
-        for (Repository root : getRepositories()) {
+        for (CmrRepository root : getRepositories()) {
             displayStrings.add(root.getDisplayString());
         }
         return displayStrings;
@@ -310,7 +310,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return canHandleFolders(cache);
     }
 
-    private boolean canHandleFolders(Repository repo) {
+    private boolean canHandleFolders(CmrRepository repo) {
         ContentStore cs = repo.getRoot().getService(ContentStore.class);
         return cs != null && cs.canHandleFolders();
     }
@@ -459,10 +459,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     /**
      * Cache is only used for remote repos; see issue #47.
      */
-    private Node fromRepositories(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
+    private Node fromRepositories(Iterable<CmrRepository> repositories, ArtifactContext context, boolean addLeaf) {
         log.debug("Looking for " + context);
 
-        for (Repository repository : repositories) {
+        for (CmrRepository repository : repositories) {
             if(context.isMaven() && !repository.isMaven()){
                 log.debug("  -> Skipping non-Maven repo for Maven lookup");
                 continue;
@@ -482,7 +482,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return null;
     }
 
-    protected Node fromRepository(Repository repository, ArtifactContext context, boolean addLeaf) {
+    protected Node fromRepository(CmrRepository repository, ArtifactContext context, boolean addLeaf) {
         log.debug(" Trying repository " + repository.getDisplayString());
         Node node = repository.findParent(context);
         if (node != null) {
@@ -514,7 +514,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     @Override
     public ModuleSearchResult completeModules(ModuleQuery query) {
         ModuleSearchResult result = new ModuleSearchResult();
-        for (Repository root : getRepositories()) {
+        for (CmrRepository root : getRepositories()) {
             root.completeModules(query, result);
         }
         return result;
@@ -523,7 +523,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     @Override
     public ModuleVersionResult completeVersions(ModuleVersionQuery query) {
         ModuleVersionResult result = new ModuleVersionResult(query.getName());
-        for (Repository root : getRepositories()) {
+        for (CmrRepository root : getRepositories()) {
             root.completeVersions(query, result);
         }
         return result;
@@ -534,13 +534,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         if (!query.isPaging()) {
             // that's pretty simple
             ModuleSearchResult result = new ModuleSearchResult();
-            for (Repository root : getRepositories()) {
+            for (CmrRepository root : getRepositories()) {
                 root.searchModules(query, result);
             }
             return result;
         } else {
             // we need to merge manually
-            List<Repository> repos = getRepositories();
+            List<CmrRepository> repos = getRepositories();
             ModuleSearchResult[] results = new ModuleSearchResult[repos.size()];
             // keep an overall module name ordering
             SortedSet<String> names = new TreeSet<>();
@@ -552,7 +552,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                     throw new IllegalArgumentException("Paging info is not the same size as roots, it must have come from a different RepositoryManager");
             }
             Long start = query.getStart();
-            for (Repository root : repos) {
+            for (CmrRepository root : repos) {
                 ModuleSearchResult result = new ModuleSearchResult();
                 // adapt the start index if required
                 if (pagingInfo != null)
@@ -625,7 +625,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     
     @Override
     public void refresh(boolean recurse) {
-        for (Repository root : getRepositories()) {
+        for (CmrRepository root : getRepositories()) {
             root.refresh(recurse);
         }
     }

@@ -29,5 +29,5 @@ public interface RepositoryBuilder {
      * @return repository
      * @throws Exception for any error
      */
-    Repository buildRepository(String token) throws Exception;
+    CmrRepository buildRepository(String token) throws Exception;
 }

@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+
 
 /**
  * Abstract dependency resolver.

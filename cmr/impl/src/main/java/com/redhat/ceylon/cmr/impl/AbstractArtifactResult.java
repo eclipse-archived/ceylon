@@ -19,13 +19,13 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.Repository;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.VisibilityType;
 
 /**
  * Abstract artifact result.

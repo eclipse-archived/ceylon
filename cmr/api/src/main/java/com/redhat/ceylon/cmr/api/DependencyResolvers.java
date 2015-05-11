@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Plugable dependencies utils mechanism.

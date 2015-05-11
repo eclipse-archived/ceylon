@@ -18,6 +18,8 @@ package com.redhat.ceylon.cmr.api;
 
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.Repository;
 
 /**
  * Repository -- prepare artifact context per custom repo.
@@ -25,7 +27,7 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository extends ContentFinder {
+public interface CmrRepository extends Repository, ContentFinder {
 
     /**
      * Get root node.
@@ -68,17 +70,7 @@ public interface Repository extends ContentFinder {
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
 
     /**
-     * Returns a display string that represents this Repository
-     */
-    String getDisplayString();
-
-    /**
      * Makes sure that content cached as "unavailable" is reasessed
      */
     void refresh(boolean recurse);
-
-    /**
-     * Return true if this is a Maven repo
-     */
-    boolean isMaven();
 }

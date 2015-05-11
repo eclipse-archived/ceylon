@@ -19,7 +19,7 @@ package com.redhat.ceylon.test.maven.test;
 import java.io.File;
 import java.net.URL;
 
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.common.log.Logger;
@@ -32,7 +32,7 @@ import com.redhat.ceylon.common.log.Logger;
 public abstract class AbstractAetherTest {
     protected static final Logger log = new CMRJULLogger();
 
-    protected Repository createAetherRepository() throws Exception {
+    protected CmrRepository createAetherRepository() throws Exception {
         URL settingsURL = getClass().getClassLoader().getResource("maven-settings/settings.xml");
         String settingsXml = new File(settingsURL.toURI()).getPath();
         return AetherRepository.createRepository(log, settingsXml, false, 60000);

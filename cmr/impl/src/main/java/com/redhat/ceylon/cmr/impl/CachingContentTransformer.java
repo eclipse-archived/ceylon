@@ -17,12 +17,12 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
 
 /**
  * Caching content transformer.

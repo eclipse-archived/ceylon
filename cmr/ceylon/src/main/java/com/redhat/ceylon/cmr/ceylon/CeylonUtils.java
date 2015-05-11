@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
@@ -438,7 +438,7 @@ public class CeylonUtils {
                 // finally add the Aether repo if we don't have one already
                 if(!builder.hasMavenRepository() && !avoidRepository("aether:")){
                     try {
-                        Repository repo = builder.repositoryBuilder().buildRepository("aether:");
+                        CmrRepository repo = builder.repositoryBuilder().buildRepository("aether:");
                         builder.addRepository(repo);
                     } catch (Exception e) {
                         log.debug("Failed to add Maven (aether) repository as input repository: " + e.getMessage());
@@ -539,7 +539,7 @@ public class CeylonUtils {
                 try {
                     String path = absolute(repoInfo.getUrl());
                     if(!avoidRepository(path)){
-                        Repository repo = builder.repositoryBuilder().buildRepository(path);
+                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
                         builder.addRepository(repo);
                     }
                 } catch (Exception e) {
@@ -577,7 +577,7 @@ public class CeylonUtils {
                 }
                 String path = absolute(repoUrl);
                 if(!avoidRepository(path)){
-                    Repository repo = builder.repositoryBuilder().buildRepository(path);
+                    CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
                     builder.addRepository(repo);
                 }
             } catch (Exception e) {

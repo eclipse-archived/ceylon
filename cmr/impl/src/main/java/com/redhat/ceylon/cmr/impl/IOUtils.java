@@ -41,7 +41,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+
 
 /**
  * I/O utils.

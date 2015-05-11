@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/shrinkwrap-maven-uberjar-2.2.0-beta-1.jar"/>
 	<classpathentry kind="lib" path="lib/modules-1.3.3.Final.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.6.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

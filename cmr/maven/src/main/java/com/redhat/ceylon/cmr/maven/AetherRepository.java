@@ -19,16 +19,16 @@ package com.redhat.ceylon.cmr.maven;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Aether repository.
@@ -43,11 +43,11 @@ public class AetherRepository extends MavenRepository {
         utils = acs.getUtils();
     }
 
-    public static Repository createRepository(Logger log, boolean offline, int timeout) {
+    public static CmrRepository createRepository(Logger log, boolean offline, int timeout) {
         return createRepository(log, null, offline, timeout);
     }
 
-    public static Repository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
+    public static CmrRepository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
         AetherContentStore acs = new AetherContentStore(log, offline, timeout);
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);

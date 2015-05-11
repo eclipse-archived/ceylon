@@ -22,8 +22,7 @@ import java.net.URL;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
@@ -31,6 +30,7 @@ import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testSimpleTest() throws Throwable {
         StructureBuilder structureBuilder = new AetherContentStore(log, false, 60000);
-        Repository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
+        CmrRepository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         File artifact = manager.getArtifact("org.slf4j.slf4j-api", "1.6.4");
         boolean exists = false;
@@ -61,7 +61,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testAether() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false, 60000);
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
@@ -82,7 +82,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testWithSources() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false, 60000);
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j.slf4j-api", "1.6.4", ArtifactContext.MAVEN_SRC));
         Assert.assertNotNull(result);
@@ -101,7 +101,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testScopes() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false, 60000);
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult artifact = manager.getArtifactResult("org.jboss.xnio:xnio-api", "3.1.0.Beta7");
         File file = null;
@@ -121,7 +121,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testAetherWithExternalSettings() throws Throwable {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
@@ -146,7 +146,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testAetherWithSemiColonModule() throws Throwable {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);
@@ -175,7 +175,7 @@ public class AetherTestCase extends AbstractAetherTest {
     
     @Test
     public void testAddRemoveOverrides() throws Throwable {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);
@@ -199,7 +199,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testReplaceOverrides() throws Throwable {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
@@ -221,7 +221,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testFilterOverrides() throws Throwable {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log, RepositoryManagerBuilder.parseOverrides(getOverridesFileName()));
         ArtifactResult result = manager.getArtifactResult("org.osgi:org.osgi.core", "4.0.0");
         Assert.assertNotNull(result);

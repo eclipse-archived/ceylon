@@ -28,15 +28,15 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactCallback;
 import com.redhat.ceylon.cmr.api.ArtifactCallbackStream;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Root node -- main entry point into Ceylon repositories.
@@ -65,7 +65,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
             }
             this.fileContentStore = new FileContentStore(rootDir);
-            final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
+            final CmrRepository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
             setCache(aaca);
         }else{
             this.fileContentStore = null;
@@ -116,7 +116,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     protected ArtifactResult artifactNotFound(ArtifactContext context) throws RepositoryException {
         boolean hasRemote = false;
         StringBuilder reps = new StringBuilder();
-        for (Repository rep : getRepositories()) {
+        for (CmrRepository rep : getRepositories()) {
             if (rep.getRoot().isRemote() && !isOffline(rep)) {
                 hasRemote = true;
                 reps.append(rep.getDisplayString());
@@ -159,7 +159,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return super.artifactNotFound(context);
     }
     
-    private boolean isOffline(Repository repo) {
+    private boolean isOffline(CmrRepository repo) {
         ContentStore cs = repo.getRoot().getService(ContentStore.class);
         return cs != null && cs.isOffline();
     }
@@ -330,7 +330,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     public boolean hasMavenRepository() {
-        for(Repository root : getRepositories()){
+        for(CmrRepository root : getRepositories()){
             if(root.isMaven())
                 return true;
         }

@@ -21,15 +21,15 @@ import java.io.File;
 import java.net.Proxy;
 import java.util.List;
 
-import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Root repository builder.
@@ -99,7 +99,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         return this;
     }
 
-    public RepositoryManagerBuilderImpl addRepository(Repository externalRoot) {
+    public RepositoryManagerBuilderImpl addRepository(CmrRepository externalRoot) {
         repository.addRepository(externalRoot);
         return this;
     }

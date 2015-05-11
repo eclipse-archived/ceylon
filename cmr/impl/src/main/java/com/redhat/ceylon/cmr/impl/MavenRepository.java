@@ -24,13 +24,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Maven repository.
@@ -64,7 +64,7 @@ public class MavenRepository extends AbstractRepository {
     private static class MavenArtifactResult extends AbstractCeylonArtifactResult {
         private Node node;
 
-        private MavenArtifactResult(Repository repository, RepositoryManager manager, String name, String version, Node node) {
+        private MavenArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version, Node node) {
             super(repository, manager, name, version);
             this.node = node;
         }

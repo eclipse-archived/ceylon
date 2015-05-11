@@ -24,7 +24,7 @@ import com.redhat.ceylon.cmr.api.ArtifactCallbackStream;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
@@ -79,7 +79,7 @@ public class CallbackTestCase extends AbstractTest {
 
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
         RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false, 60000, java.net.Proxy.NO_PROXY);
-        Repository repo = new DefaultRepository(rcs.createRoot());
+        CmrRepository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
         try {

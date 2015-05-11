@@ -16,11 +16,12 @@
 
 package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.spi.Node;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Helper class.

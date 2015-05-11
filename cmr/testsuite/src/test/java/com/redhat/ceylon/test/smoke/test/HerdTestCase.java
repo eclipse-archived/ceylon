@@ -30,7 +30,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
@@ -71,7 +71,7 @@ public class HerdTestCase extends AbstractTest {
     private RepositoryManager getRepositoryManager(File root, boolean offline, int timeout, String apiVersion) throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline, timeout, java.net.Proxy.NO_PROXY);
         WebDAVContentStore rcs = new WebDAVContentStore(HERD_URL , log, false, 60000, java.net.Proxy.NO_PROXY, apiVersion);
-        Repository repo = new DefaultRepository(rcs.createRoot());
+        CmrRepository repo = new DefaultRepository(rcs.createRoot());
         return builder.addRepository(repo).buildRepository();
     }
 

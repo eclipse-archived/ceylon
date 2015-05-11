@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+
 /**
  * RepositoryManager API.
  *
@@ -171,7 +174,7 @@ public interface RepositoryManager {
      *
      * @return the repositories
      */
-    List<Repository> getRepositories();
+    List<CmrRepository> getRepositories();
 
     /**
      * Gather repositories display strings.

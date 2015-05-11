@@ -22,14 +22,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
@@ -56,6 +55,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
@@ -430,9 +430,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         String outRepo = DefaultToolOptions.getCompilerOutputRepo();
         if(outRepo != null){
             File outDir = new File(outRepo);
-            Repository rep = null;
-            List<Repository> repositories = repoMgr.getRepositories();
-            for(Repository repository : repositories){
+            CmrRepository rep = null;
+            List<CmrRepository> repositories = repoMgr.getRepositories();
+            for(CmrRepository repository : repositories){
                 OpenNode root = repository.getRoot();
                 // it has binaries if it is not a folder
                 if(root.isRemote() || root.hasBinaries())
@@ -468,7 +468,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         err.append(Messages.msg(bundle, "module.not.found", name, version));
         err.append("\n");
         boolean fullySearchable = true;
-        for (Repository repo : repoMgr.getRepositories()) {
+        for (CmrRepository repo : repoMgr.getRepositories()) {
             if (version != null || repo.isSearchable()) {
                 err.append("    ");
                 err.append(repo.getDisplayString());

@@ -19,23 +19,20 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ArtifactOverrides;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.DependencyOverride;
-import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.Repository;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Abstract, use Jandex to read off Module info.
@@ -58,7 +55,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
     protected ModuleInfo resolve(){
         if(!resolved){
-            Overrides overrides = repository().getRoot().getService(Overrides.class);
+            Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
             this.infos = Configuration.getResolvers(manager).resolve(this, overrides);
             resolved = true;
         }

@@ -16,13 +16,13 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
 import java.io.File;
 import java.net.Proxy;
+
+import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Maven repository helper.
@@ -46,19 +46,19 @@ public class MavenRepositoryHelper {
         throw new IllegalArgumentException("No Maven repository found!");
     }
 
-    public static Repository getMavenRepository() {
+    public static CmrRepository getMavenRepository() {
         return new MavenRepository(new MavenContentStore().createRoot());
     }
 
-    public static Repository getMavenRepository(File mvnRepository) {
+    public static CmrRepository getMavenRepository(File mvnRepository) {
         return new MavenRepository(new MavenContentStore(mvnRepository).createRoot());
     }
 
-    public static Repository getMavenRepository(String repositoryURL, Logger log, boolean offline, int timeout, Proxy proxy) {
+    public static CmrRepository getMavenRepository(String repositoryURL, Logger log, boolean offline, int timeout, Proxy proxy) {
         return new MavenRepository(new RemoteContentStore(repositoryURL, log, offline, timeout, proxy).createRoot());
     }
 
-    public static Repository getMavenRepository(StructureBuilder structureBuilder) {
+    public static CmrRepository getMavenRepository(StructureBuilder structureBuilder) {
         return new MavenRepository(structureBuilder.createRoot());
     }
 

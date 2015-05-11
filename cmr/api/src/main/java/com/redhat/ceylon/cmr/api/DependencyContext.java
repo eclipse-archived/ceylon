@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */

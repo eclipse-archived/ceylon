@@ -22,13 +22,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Repository which looks modules up from a flat repository.
@@ -54,7 +54,7 @@ public class FlatRepository extends DefaultRepository {
     
     protected static class FlatArtifactResult extends DefaultArtifactResult {
 
-        public FlatArtifactResult(Repository repository, RepositoryManager manager, Node node) {
+        public FlatArtifactResult(CmrRepository repository, RepositoryManager manager, Node node) {
             super(repository, manager, node);
         }
         
@@ -63,7 +63,7 @@ public class FlatRepository extends DefaultRepository {
             ModuleInfo dependencies = super.resolve();
             if(dependencies == null){
                 // try to resolve them from other flat repos
-                for(Repository repo : getManager().getRepositories()){
+                for(CmrRepository repo : getManager().getRepositories()){
                     if(repo instanceof FlatRepository){
                         dependencies = getExternalDescriptor(repo, XmlDependencyResolver.INSTANCE);
                         if(dependencies == null)
@@ -77,7 +77,7 @@ public class FlatRepository extends DefaultRepository {
             return dependencies;
         }
 
-        private ModuleInfo getExternalDescriptor(Repository repo, ModulesDependencyResolver resolver) {
+        private ModuleInfo getExternalDescriptor(CmrRepository repo, ModulesDependencyResolver resolver) {
             String moduleXml = resolver.getQualifiedToplevelDescriptorName(name(), version());
             Overrides overrides = repo.getRoot().getService(Overrides.class);
             Node moduleXmlNode = repo.getRoot().getChild(moduleXml);

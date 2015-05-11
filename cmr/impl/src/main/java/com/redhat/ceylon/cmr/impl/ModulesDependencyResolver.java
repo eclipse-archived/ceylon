@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Read module info from module.xml.

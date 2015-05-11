@@ -29,13 +29,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import com.redhat.ceylon.cmr.api.PathFilter;
-
 import org.jboss.modules.filter.MultiplePathFilterBuilder;
 import org.jboss.modules.filter.PathFilters;
 import org.jboss.modules.xml.MXParser;
 import org.jboss.modules.xml.XmlPullParser;
 import org.w3c.dom.Node;
+
+import com.redhat.ceylon.model.cmr.PathFilter;
 
 import static org.jboss.modules.xml.XmlPullParser.FEATURE_PROCESS_NAMESPACES;
 

@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Caching / tmp repository.
@@ -51,7 +51,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
         this.cachingDir = cachingDir;
     }
 
-    public CachingRepositoryManager(Repository root, File cachingDir, Logger log) {
+    public CachingRepositoryManager(CmrRepository root, File cachingDir, Logger log) {
         super(log, null);
         if (root == null)
             throw new IllegalArgumentException("Null root!");

@@ -17,11 +17,11 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Abstract content store.

@@ -131,7 +131,7 @@ public class RepositoryManagerBuilder {
         return this;
     }
 
-    public RepositoryManagerBuilder addRepository(Repository external) {
+    public RepositoryManagerBuilder addRepository(CmrRepository external) {
         getDelegate().addRepository(external);
         return this;
     }

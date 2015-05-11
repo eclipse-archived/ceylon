@@ -46,6 +46,10 @@
     <property name="module.common.dir" value="com/redhat/ceylon/common"/>
     <property name="module.common.name" value="com.redhat.ceylon.common"/>
 
+    <!-- ceylon.model -->
+    <property name="module.model.dir" value="com/redhat/ceylon/model"/>
+    <property name="module.model.name" value="com.redhat.ceylon.model"/>
+
     <!-- module archives -->
     <property name="ceylon.module-resolver.dir"
               value="${module.module-resolver.dir}/${module.com.redhat.ceylon.module-resolver.version}"/>
@@ -66,8 +70,15 @@
               value="${ceylon.common.dir}/${module.common.name}-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" value="${ceylon.repo.dir}/${ceylon.common.jar}"/>
 
+    <property name="ceylon.model.dir"
+              value="${module.model.dir}/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar"
+              value="${ceylon.model.dir}/${module.model.name}-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" value="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${jandex.lib}"/>
         <pathelement path="${modules.lib}"/>
         <pathelement path="${sardine.lib}"/>

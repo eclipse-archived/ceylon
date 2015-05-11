@@ -18,9 +18,10 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.model.cmr.Repository;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Existing file.

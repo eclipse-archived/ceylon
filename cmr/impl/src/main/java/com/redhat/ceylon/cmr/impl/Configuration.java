@@ -18,9 +18,9 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.util.logging.Logger;
 
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyResolvers;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 
 /**
@@ -53,7 +53,7 @@ public class Configuration {
 
     private static boolean usesMaven(RepositoryManager manager) {
         if (manager != null) {
-            for (Repository repo : manager.getRepositories()) {
+            for (CmrRepository repo : manager.getRepositories()) {
                 if (repo instanceof MavenRepository) {
                     return true;
                 }

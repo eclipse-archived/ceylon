@@ -36,8 +36,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
@@ -47,7 +45,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
@@ -59,6 +57,8 @@ import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 /**
@@ -85,7 +85,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testGetMultiple() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        Repository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        CmrRepository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
 
@@ -101,7 +101,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testGetMultipleCached() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        Repository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        CmrRepository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
 
@@ -192,7 +192,7 @@ public class SmokeTestCase extends AbstractTest {
 
         InMemoryContentStore imcs = new InMemoryContentStore();
         OpenNode root = imcs.createRoot();
-        Repository repo = new DefaultRepository(root);
+        CmrRepository repo = new DefaultRepository(root);
         RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
         // a few impl details, feel free to remove/ignore this test
@@ -247,7 +247,7 @@ public class SmokeTestCase extends AbstractTest {
 
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
         RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false, 60000, java.net.Proxy.NO_PROXY);
-        Repository repo = new DefaultRepository(rcs.createRoot());
+        CmrRepository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
         String name = "com.redhat.fizbiz";
@@ -289,7 +289,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testMavenRemote() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000, java.net.Proxy.NO_PROXY);
+        CmrRepository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss:jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
@@ -498,7 +498,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testPropertiesGet() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
         RepositoryBuilder rb = builder.repositoryBuilder();
-        Repository repository = rb.buildRepository(Constants.REPO_URL_CEYLON);
+        CmrRepository repository = rb.buildRepository(Constants.REPO_URL_CEYLON);
         builder.addRepository(repository);
         RepositoryManager manager = builder.buildRepository();
 

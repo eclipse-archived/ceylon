@@ -23,15 +23,15 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.MavenDependencyResolver;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -41,7 +41,7 @@ public class ResolverTestCase extends AbstractAetherTest {
     public void testMavenDependecyResolver() throws Exception {
         final MavenDependencyResolver resolver = new MavenDependencyResolver();
         doTest(new Tester() {
-            public void run(Repository repository, final File artifact) {
+            public void run(CmrRepository repository, final File artifact) {
                 ModuleInfo infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel.camel-core", "2.9.2", artifact), null);
                 Assert.assertNotNull(infos);
                 Assert.assertEquals(String.valueOf(infos), 3, infos.getDependencies().size());
@@ -50,7 +50,7 @@ public class ResolverTestCase extends AbstractAetherTest {
     }
 
     private void doTest(Tester tester) throws Exception {
-        Repository repository = createAetherRepository();
+        CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
@@ -71,13 +71,13 @@ public class ResolverTestCase extends AbstractAetherTest {
     }
 
     private static interface Tester {
-        void run(Repository repository, File artifact);
+        void run(CmrRepository repository, File artifact);
     }
 
     private static class TestArtifactResult extends AbstractArtifactResult {
         private final File artifact;
 
-        private TestArtifactResult(Repository repository, String name, String version, File artifact) {
+        private TestArtifactResult(CmrRepository repository, String name, String version, File artifact) {
             super(repository, name, version);
             this.artifact = artifact;
         }

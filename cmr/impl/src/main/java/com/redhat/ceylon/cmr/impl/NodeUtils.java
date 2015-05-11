@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -143,7 +143,7 @@ public final class NodeUtils {
      * @param node       the node
      * @param repository the repository
      */
-    public static void keepRepository(Node node, Repository repository) {
+    public static void keepRepository(Node node, CmrRepository repository) {
         if (node instanceof OpenNode) {
             final OpenNode on = (OpenNode) node;
             on.addNode(INFO, repository);
@@ -156,11 +156,11 @@ public final class NodeUtils {
      * @param node the node
      * @return repository info
      */
-    public static Repository getRepository(Node node) {
+    public static CmrRepository getRepository(Node node) {
         if (node instanceof OpenNode) {
             final OpenNode on = (OpenNode) node;
             final Node info = on.peekChild(INFO);
-            return (info != null) ? info.getValue(Repository.class) : null;
+            return (info != null) ? info.getValue(CmrRepository.class) : null;
         }
         return null;
     }
@@ -174,7 +174,7 @@ public final class NodeUtils {
      * @return repository display string
      */
     public static String getRepositoryDisplayString(Node node) {
-        Repository repo = getRepository(node);
+        CmrRepository repo = getRepository(node);
         return repo != null ? repo.getDisplayString() : UNKNOWN_REPOSITORY;
     }
 

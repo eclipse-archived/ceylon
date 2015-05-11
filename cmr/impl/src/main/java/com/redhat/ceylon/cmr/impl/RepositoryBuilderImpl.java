@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 import java.net.Proxy;
 import java.net.URI;
 
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.common.log.Logger;
@@ -46,7 +46,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         this.proxy = proxy;
     }
 
-    public Repository buildRepository(String token) throws Exception {
+    public CmrRepository buildRepository(String token) throws Exception {
         if (token == null)
             throw new IllegalArgumentException("Null repository");
 
@@ -63,7 +63,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-            return (Repository) createRepository.invoke(null, log, null, offline, timeout);
+            return (CmrRepository) createRepository.invoke(null, log, null, offline, timeout);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
@@ -89,7 +89,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         return new DefaultRepository(structureBuilder.createRoot());
     }
 
-    protected Repository createMavenRepository(String token, String prefix) throws Exception {
+    protected CmrRepository createMavenRepository(String token, String prefix) throws Exception {
         String config = token.substring(prefix.length());
         // backwards compat: ignore overrides from here, previously located after | symbol
         int p = config.indexOf("|");
@@ -101,6 +101,6 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         }
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-        return (Repository) createRepository.invoke(null, log, settingsXml, offline, timeout);
+        return (CmrRepository) createRepository.invoke(null, log, settingsXml, offline, timeout);
     }
 }

@@ -18,18 +18,16 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Default.
@@ -50,7 +48,7 @@ public class DefaultRepository extends AbstractRepository {
 
         private Node node;
 
-        protected DefaultArtifactResult(Repository repository, RepositoryManager manager, Node node) {
+        protected DefaultArtifactResult(CmrRepository repository, RepositoryManager manager, Node node) {
             super(repository, manager, ArtifactContext.fromNode(node).getName(), ArtifactContext.fromNode(node).getVersion());
             this.node = node;
         }
