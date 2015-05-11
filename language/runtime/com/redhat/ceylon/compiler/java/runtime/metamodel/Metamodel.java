@@ -18,9 +18,6 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
 import ceylon.language.Annotated;
-
-import java.lang.annotation.Annotation;
-
 import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Callable;
@@ -42,9 +39,6 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
@@ -70,27 +64,28 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionMethod;
-import com.redhat.ceylon.compiler.loader.model.AnnotationProxyClass;
-import com.redhat.ceylon.compiler.loader.model.FunctionOrValueInterface;
-import com.redhat.ceylon.compiler.loader.model.JavaMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyClass;
-import com.redhat.ceylon.compiler.loader.model.LazyClassAlias;
-import com.redhat.ceylon.compiler.loader.model.LazyElement;
-import com.redhat.ceylon.compiler.loader.model.LazyInterface;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyPackage;
-import com.redhat.ceylon.compiler.loader.model.LazyTypeAlias;
-import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
-import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
+import com.redhat.ceylon.model.loader.model.JavaMethod;
+import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyClassAlias;
+import com.redhat.ceylon.model.loader.model.LazyElement;
+import com.redhat.ceylon.model.loader.model.LazyInterface;
+import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
+import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
@@ -156,11 +151,8 @@ public class Metamodel {
             }
             
         }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT, java.net.Proxy.NO_PROXY);
-        RepositoryManager repoManager = builder.buildRepository();
-        VFS vfs = new VFS();
-        Context context = new Context(repoManager, vfs);
-        moduleManager = new RuntimeModuleManager(context);
-        moduleManager.initCoreModules();
+        moduleManager = new RuntimeModuleManager();
+        moduleManager.initCoreModules(null);
         moduleManager.prepareForTypeChecking();
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
@@ -1130,7 +1122,7 @@ public class Metamodel {
     
     public static Sequential<? extends ceylon.language.meta.declaration.Module> getModuleList() {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
-        Set<com.redhat.ceylon.model.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();
+        Set<com.redhat.ceylon.model.typechecker.model.Module> modules = moduleManager.getModules().getListOfModules();
         com.redhat.ceylon.model.typechecker.model.Module[] view = new com.redhat.ceylon.model.typechecker.model.Module[modules.size()];
         modules.toArray(view);
         ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
@@ -1160,7 +1152,7 @@ public class Metamodel {
      * Used by c.l.meta.modules.find, which accepts null
      */
     public static Module getDefaultModule() {
-        com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.getContext().getModules().getDefaultModule();
+        com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.getModules().getDefaultModule();
         // consider it optional to get null rather than exception
         return module != null ? getOrCreateMetamodel(module, null, true) : null;
     }

@@ -22,7 +22,6 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -30,6 +29,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.

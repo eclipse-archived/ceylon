@@ -9,15 +9,15 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.VisibilityType;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
@@ -168,7 +168,7 @@ public class Launcher {
             }
 
             @Override
-            public Repository repository() {
+            public CmrRepository repository() {
                 // TODO Auto-generated method stub
                 return null;
             }

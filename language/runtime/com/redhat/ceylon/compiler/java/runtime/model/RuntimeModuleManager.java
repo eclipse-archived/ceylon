@@ -5,15 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.redhat.ceylon.compiler.loader.model.LazyPackage;
-import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
+import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
+import com.redhat.ceylon.model.loader.model.LazyModule;
+import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -23,12 +22,12 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class RuntimeModuleManager extends ReflectionModuleManager {
 
-    public RuntimeModuleManager(Context context) {
-        super(context);
+    public RuntimeModuleManager() {
+        super();
     }
 
     @Override
-    protected boolean isModuleLoadedFromSource(String moduleName) {
+    public boolean isModuleLoadedFromSource(String moduleName) {
         return false;
     }
     
@@ -38,7 +37,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
 
     @Override
-    protected Package createPackage(String pkgName, Module module) {
+    public Package createPackage(String pkgName, Module module) {
         final Package pkg = new LazyPackage(getModelLoader());
         List<String> name = pkgName.isEmpty() ? 
         		Collections.<String>emptyList() : 

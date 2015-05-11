@@ -1193,7 +1193,6 @@ public abstract class AppliedClassOrInterface<Type>
     //
     // Used for member lookup
     
-    @Ignore
     static class MemberLookup<T, Container>{
         public final T declaration;
         public final ProducedType qualifyingType;

@@ -7,23 +7,28 @@ import java.util.Map;
 
 import org.jboss.modules.ModuleClassLoader;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
-import com.redhat.ceylon.compiler.loader.LoaderJULLogger;
-import com.redhat.ceylon.compiler.loader.ModelResolutionException;
-import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
-import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionUtils;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.LoaderJULLogger;
+import com.redhat.ceylon.model.loader.ModelResolutionException;
+import com.redhat.ceylon.model.loader.impl.reflect.CachedTOCJars;
+import com.redhat.ceylon.model.loader.impl.reflect.ReflectionModelLoader;
+import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionUtils;
+import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType.ErrorReporter;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
 
@@ -204,5 +209,15 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                 throw new ModelResolutionException(message);
             }
         };
+    }
+
+    @Override
+    protected void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+        // no code needed
+    }
+
+    @Override
+    protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
+        // no code needed
     }
 }
