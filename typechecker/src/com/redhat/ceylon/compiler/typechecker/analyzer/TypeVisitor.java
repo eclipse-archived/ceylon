@@ -624,22 +624,17 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = 
                 new ArrayList<ProducedType>
                     (sts.size());
-        boolean typeConstructor = false;
         for (Tree.StaticType st: sts) {
             //addToUnion( types, st.getTypeModel() );
             ProducedType t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
-                if (t.isTypeConstructor()) {
-                    typeConstructor = true;
-                }
             }
         }
         UnionType ut = 
                 new UnionType(unit);
         ut.setCaseTypes(types);
         ProducedType type = ut.getType();
-        type.setTypeConstructor(typeConstructor);
         that.setTypeModel(type);
         //that.setTarget(pt);
     }
@@ -652,22 +647,17 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = 
                 new ArrayList<ProducedType>
                     (sts.size());
-        boolean typeConstructor = false;
         for (Tree.StaticType st: sts) {
             //addToIntersection(types, st.getTypeModel(), unit);
             ProducedType t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
-                if (t.isTypeConstructor()) {
-                    typeConstructor = true;
-                }
             }
         }
         IntersectionType it = 
                 new IntersectionType(unit);
         it.setSatisfiedTypes(types);
         ProducedType type = it.getType();
-        type.setTypeConstructor(typeConstructor);
         that.setTypeModel(type);
         //that.setTarget(pt);
     }

@@ -6932,26 +6932,15 @@ public class ExpressionVisitor extends Visitor {
                         Tree.Type t = args.get(i);
                         if (t instanceof Tree.StaticType) {
                             TypeParameter p = params.get(i);
-//                            if (p.isTypeConstructor()) {
-//                                setTypeConstructor(t);
-//                            }
                             Tree.StaticType st = 
                                     (Tree.StaticType) t;
                             Tree.TypeVariance variance = 
                                     st.getTypeVariance();
                             if (variance!=null) {
-                                if (p.isInvariant()) {
-//                                    String var = variance.getText();
-//                                    if (var.equals("out")) {
-//                                        pt.setVariance(p, OUT);
-//                                    }
-//                                    else if (var.equals("in")) {
-//                                        pt.setVariance(p, IN);
-//                                    }
-                                }
-                                else {
+                                if (!p.isInvariant()) {
                                     variance.addError("type parameter is not declared invariant: '" + 
-                                            p.getName() + "' of '" + type.getName(unit) + "'");
+                                            p.getName() + "' of '" + 
+                                            type.getName(unit) + "'");
                                 }
                             }
                         }
