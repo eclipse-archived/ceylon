@@ -1037,16 +1037,26 @@ public class TypeVisitor extends Visitor {
                 that.getTypeArgumentList();
         List<TypeParameter> params = 
                 dec.getTypeParameters();
-        List<ProducedType> ta = 
+        List<ProducedType> typeArgs = 
                 getTypeArguments(tal, params, ot);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
-        ProducedType pt = dec.getProducedType(ot, ta);
+        ProducedType pt = dec.getProducedType(ot, typeArgs);
         //dec = pt.getDeclaration();
+        if (tal==null && !params.isEmpty()) {
+            that.addUsageWarning(Warning.syntaxDeprecation,
+                    "implicit use of default type arguments is deprecated (change to '" + 
+                            dec.getName(unit) + "<>')");
+        }
         if (tal!=null) {
             if (that.getTypeConstructor()) {
                 tal.addError("type constructor may not specify type arguments");
             }
-            tal.setTypeModels(ta);
+            if (params.isEmpty()) {
+                that.addError("does not accept type arguments: '" + 
+                        dec.getName(unit) + 
+                        "' is not a generic type");
+            }
+            tal.setTypeModels(typeArgs);
             //TODO: dupe of logic in ExpressionVisitor
             List<Tree.Type> args = tal.getTypes();
             for (int i = 0; i<args.size(); i++) {

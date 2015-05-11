@@ -3428,14 +3428,14 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferTypeArgumentFromNamedArgs(TypeParameter tp, 
-            ParameterList parameters, ProducedReference pr, 
+            ParameterList parameters, ProducedType qt, 
             Tree.NamedArgumentList args, 
             List<ProducedType> inferredTypes) {
         Set<Parameter> foundParameters = 
                 new HashSet<Parameter>();
         for (Tree.NamedArgument arg: 
                 args.getNamedArguments()) {
-            inferTypeArgFromNamedArg(arg, tp, pr, parameters, 
+            inferTypeArgFromNamedArg(arg, tp, qt, parameters, 
                     inferredTypes, foundParameters);
         }
         Parameter sp = 
@@ -3471,7 +3471,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferTypeArgFromNamedArg(
             Tree.NamedArgument arg, 
-            TypeParameter tp, ProducedReference pr, 
+            TypeParameter tp, ProducedType qt, 
             ParameterList parameters, 
             List<ProducedType> inferredTypes, 
             Set<Parameter> foundParameters) {
@@ -3501,7 +3501,7 @@ public class ExpressionVisitor extends Visitor {
             if (parameter!=null) {
                 foundParameters.add(parameter);
                 ProducedType pt = 
-                        pr.getTypedParameter(parameter)
+                        qt.getTypedParameter(parameter)
                             .getFullType();
 //              if (parameter.isSequenced()) pt = unit.getIteratedType(pt);
                 addToUnionOrIntersection(tp,inferredTypes,
@@ -7998,9 +7998,11 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             boolean empty = typeArguments.isEmpty();
-            if (!empty) {
+            if (!empty || 
+                    tal instanceof Tree.TypeArgumentList) {
                 tal.addError("does not accept type arguments: '" + 
-                        dec.getName(unit) + "'");
+                        dec.getName(unit) + 
+                        "' is not a generic declaration");
             }
             return empty;
         }
@@ -9212,7 +9214,7 @@ public class ExpressionVisitor extends Visitor {
             Value value = (Value) result;
             if (that.getTypeArgumentList() != null) {
                 that.addError("does not accept type arguments: '" + 
-                        result.getName(unit) + "'");
+                        result.getName(unit) + "' is a value");
             }
             else {
                 ProducedTypedReference pr = 

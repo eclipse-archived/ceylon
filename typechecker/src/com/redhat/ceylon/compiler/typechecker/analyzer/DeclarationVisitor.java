@@ -1757,9 +1757,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.TypeArgumentList that) {
         super.visit(that);
-        if (that.getTypes().isEmpty()) {
-            that.addError("type argument list must have at least one type");
-        }
     }
     
     @Override

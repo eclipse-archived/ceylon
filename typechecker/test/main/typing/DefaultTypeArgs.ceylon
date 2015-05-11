@@ -33,4 +33,15 @@ class DefaultTypeArgs() {
     
     class G1<X,@error N=G1<Y>>() {}
     class G2<@error N=G2<>>() {}
+
+    class Wraps<T=Anything>(T t) {}
+    
+    @error String<> stringWith0Args;
+    @type:"Category<Object>" Category<> categoryWith0Args;
+    @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<> wrapsWith0Args;
+    
+    @error String<>("");
+    @error Singleton<>(1);
+    @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<>(1.0);
+    
 }
