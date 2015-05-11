@@ -7890,7 +7890,16 @@ public class ExpressionVisitor extends Visitor {
                                     "' is a type constructor");
                         }
                         else if (param.isTypeConstructor()) {
-                            checkTypeConstructorParam(parent, param, argType);
+                            Node argNode;
+                            if (tal instanceof Tree.TypeArgumentList) {
+                                argNode = ((Tree.TypeArgumentList) tal)
+                                        .getTypes().get(i);
+                            }
+                            else {
+                                argNode = parent;
+                            }
+                            checkTypeConstructorParam(param, 
+                                    argType, argNode);
                         }
                     }
                     for (ProducedType st: 
@@ -7997,10 +8006,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkTypeConstructorParam(Node parent, 
-            TypeParameter param, ProducedType argType) {
+    private void checkTypeConstructorParam(TypeParameter param, 
+            ProducedType argType, Node argNode) {
         if (!argType.isTypeConstructor()) {
-            parent.addError("not a type constructor: '" +
+            argNode.addError("not a type constructor: '" +
                     argType.getProducedTypeName(unit) + "'");
         }
         else {
@@ -8008,13 +8017,16 @@ public class ExpressionVisitor extends Visitor {
                     argType.getDeclaration();
             if (atd instanceof UnionType) {
                 for (ProducedType ct: atd.getCaseTypes()) {
-                    checkTypeConstructorParam(parent, param, ct);
+                    checkTypeConstructorParam(param, ct, argNode);
                 }
             }
             else if (atd instanceof IntersectionType) {
                 for (ProducedType st: atd.getSatisfiedTypes()) {
-                    checkTypeConstructorParam(parent, param, st);
+                    checkTypeConstructorParam(param, st, argNode);
                 }
+            }
+            else if (atd instanceof NothingType) {
+                //just let it through?!
             }
             else {
                 List<TypeParameter> argTypeParams = 
@@ -8029,7 +8041,7 @@ public class ExpressionVisitor extends Visitor {
                         param.getTypeParameters();
                 int size = paramTypeParams.size();
                 if (allowed<size || required>size) {
-                    parent.addError("argument type constructor has wrong number of type parameters: argument '@" +
+                    argNode.addError("argument type constructor has wrong number of type parameters: argument '@" +
                             atd.getName(unit) + "' has " + 
                             allowed + " type parameters " +
                             "but parameter '@" + 
@@ -8043,7 +8055,7 @@ public class ExpressionVisitor extends Visitor {
                             argTypeParams.get(j);
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
-                        parent.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
+                        argNode.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
                                 argParam.getName() + "' of '@" + atd.getName(unit) + 
                                 "' does accept all type arguments accepted by '" + 
                                 paramParam.getName() + "' of '@" + param.getName(unit) + 
