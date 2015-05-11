@@ -289,7 +289,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testMavenRemote() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        CmrRepository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000);
+        CmrRepository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000, java.net.Proxy.NO_PROXY);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss:jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
