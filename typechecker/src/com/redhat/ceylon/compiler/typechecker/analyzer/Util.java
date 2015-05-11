@@ -1228,9 +1228,6 @@ public class Util {
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
                     pt.setTypeConstructor(true);
-                    if (pt.getDeclaration().isAlias()) {
-                        s.addUnsupportedError("type constructor reference to type alias not yet supported");
-                    }
                 }
             }
             return pt.isTypeConstructor();
