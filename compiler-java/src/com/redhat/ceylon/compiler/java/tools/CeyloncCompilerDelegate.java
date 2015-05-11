@@ -2,14 +2,15 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import com.redhat.ceylon.compiler.java.loader.UnknownTypeCollector;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
+import com.redhat.ceylon.compiler.java.loader.model.LazyModuleSourceMapper;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.CompilerDelegate;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
@@ -19,18 +20,28 @@ public final class CeyloncCompilerDelegate implements
         CompilerDelegate {
     private final Context context;
     private CompilerModuleManager moduleManager;
+    private LazyModuleSourceMapper moduleSourceMapper;
 
     public CeyloncCompilerDelegate(Context context) {
         this.context = context;
     }
 
     @Override
-    public ModuleManager getModuleManager() {
+    public CompilerModuleManager getModuleManager() {
         if(moduleManager == null){
             com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
             moduleManager = new CompilerModuleManager(ceylonContext, context);
         }
         return moduleManager;
+    }
+
+    @Override
+    public ModuleSourceMapper getModuleSourceMapper() {
+        if(moduleSourceMapper == null){
+            com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+            moduleSourceMapper = new LazyModuleSourceMapper(ceylonContext, getModuleManager());
+        }
+        return moduleSourceMapper;
     }
 
     @Override
@@ -101,5 +112,4 @@ public final class CeyloncCompilerDelegate implements
         }
         modelLoader.loadStandardModules();
     }
-    
 }

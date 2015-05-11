@@ -30,10 +30,11 @@ import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
-import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
+import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -80,14 +81,6 @@ public class Util {
         return Naming.stripLeadingDollar(str);
     }
 
-    public static String strip(String name, boolean isCeylon, boolean isShared) {
-        String stripped = strip(name);
-        String privSuffix = Naming.Suffix.$priv$.name();
-        if(isCeylon && !isShared && name.endsWith(privSuffix))
-            return stripped.substring(0, stripped.length() - privSuffix.length());
-        return stripped;
-    }
-
     public static String capitalize(String str){
         return Naming.capitalize(str);
     }
@@ -130,14 +123,7 @@ public class Util {
 
     // Used by the IDE
     public static String getName(List<String> parts){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < parts.size(); i++) {
-            sb.append(parts.get(i));
-            if (i < parts.size() - 1) {
-                sb.append('.');
-            }
-        }
-        return sb.toString();
+        return JvmBackendUtil.getName(parts);
     }
 
     public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -149,11 +135,6 @@ public class Util {
         outputStream.flush();
     }
 
-    public static boolean isSubPackage(String moduleName, String pkgName) {
-        return pkgName.equals(moduleName)
-                || pkgName.startsWith(moduleName+".");
-    }
-    
     /**
      * Is the declaration a method declared to return {@code void} 
      * (as opposed to a {@code Anything})
@@ -178,51 +159,5 @@ public class Util {
             return classSymbol.sourcefile.getKind() != Kind.CLASS;
         // we don't know but it's probably not
         return false;
-    }
-    
-    public static String getMirrorName(AnnotatedMirror mirror) {
-        String name;
-        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_NAME_ANNOTATION);
-        if (annot != null) {
-            name = (String)annot.getValue();
-        } else {
-            name = mirror.getName();
-            name = name.isEmpty() ? name : Naming.stripLeadingDollar(name);
-            if (mirror instanceof ClassMirror
-                    && Util.isInitialLowerCase(name)
-                    && name.endsWith("_")
-                    && mirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null) {
-                name = name.substring(0, name.length()-1);
-            }
-        }
-        return name;
-    }
-
-    public static boolean isInitialLowerCase(String name) {
-        return !name.isEmpty() && isLowerCase(name.codePointAt(0));
-    }
-
-    public static boolean isLowerCase(int codepoint) {
-        return Character.isLowerCase(codepoint) || codepoint == '_';
-    }
-
-    /**
-     * Removes the given character from the given string. More efficient than using String.replace
-     * which uses regexes.
-     */
-    public static String removeChar(char c, String string) {
-        int nextChar = string.indexOf(c);
-        if(nextChar == -1)
-            return string;
-        int start = 0;
-        StringBuilder ret = new StringBuilder(string.length()-1);// we remove at least one
-        while(nextChar != -1){
-            ret.append(string, start, nextChar);
-            start = nextChar+1;
-            nextChar = string.indexOf(c, start);
-        }
-        // don't forget the end part
-        ret.append(string, start, string.length());
-        return ret.toString();
     }
 }

@@ -28,10 +28,10 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.Assert;
 
-import com.redhat.ceylon.compiler.loader.ModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelResolutionException;
-import com.redhat.ceylon.compiler.loader.TypeParser;
-import com.redhat.ceylon.compiler.loader.TypeParserException;
+import com.redhat.ceylon.model.loader.ModelLoader;
+import com.redhat.ceylon.model.loader.ModelResolutionException;
+import com.redhat.ceylon.model.loader.TypeParser;
+import com.redhat.ceylon.model.loader.TypeParserException;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;

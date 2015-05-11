@@ -19,18 +19,16 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
-import java.io.File;
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
 public class IssuesTests_1000_1499 extends CompilerTests {

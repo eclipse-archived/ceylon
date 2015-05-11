@@ -24,6 +24,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -253,16 +254,9 @@ class Strategy {
      */
     static boolean createMethod(Parameter parameter) {
         MethodOrValue model = parameter.getModel();
-        return createMethod(model);
+        return JvmBackendUtil.createMethod(model);
     }
 
-    static boolean createMethod(MethodOrValue model) {
-        return model instanceof Method
-                && model.isParameter()
-                && model.isClassMember()
-                && (model.isShared() || model.isCaptured());
-    }
-    
     /**
      * Non-{@code shared} concrete interface members are 
      * only defined/declared on the companion class, not on the transformed 

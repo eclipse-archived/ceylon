@@ -191,7 +191,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         PhasedUnits pus = tc.getPhasedUnits();
         pus.visitModules();
         
-        ArrayList<Module> moduleList = new ArrayList<Module>(pus.getModuleManager().getCompiledModules());
+        ArrayList<Module> moduleList = new ArrayList<Module>(pus.getModuleSourceMapper().getCompiledModules());
         Collections.sort(moduleList, new Comparator<Module>() {
             @Override
             public int compare(Module m1, Module m2) {

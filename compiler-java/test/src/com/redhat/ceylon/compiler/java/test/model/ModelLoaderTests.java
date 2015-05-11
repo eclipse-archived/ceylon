@@ -25,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -50,7 +49,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.Versions;
@@ -68,17 +66,18 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionUtils;
-import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.ModelLoader;
+import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionUtils;
+import com.redhat.ceylon.model.loader.model.LazyElement;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -217,7 +216,7 @@ public class ModelLoaderTests extends CompilerTests {
             try{
                 RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
                 RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
-                Modules modules = moduleManager.getContext().getModules();
+                Modules modules = moduleManager.getModules();
                 // now see if we can find our declarations
                 compareDeclarations(modelCompare, decls, modelLoader, modules);
             }finally{
@@ -302,8 +301,8 @@ public class ModelLoaderTests extends CompilerTests {
                 .buildManager();
         VFS vfs = new VFS();
         com.redhat.ceylon.compiler.typechecker.context.Context context = new com.redhat.ceylon.compiler.typechecker.context.Context(repoManager, vfs);
-        RuntimeModuleManager moduleManager = new RuntimeModuleManager(context);
-        moduleManager.initCoreModules();
+        RuntimeModuleManager moduleManager = new RuntimeModuleManager();
+        context.setModules(moduleManager.initCoreModules(null));
         moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
                 getClass().getClassLoader());
         RuntimeModelLoader modelLoader = moduleManager.getModelLoader();

@@ -24,12 +24,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.common.config.DefaultToolOptions;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 class ModuleDescriptorReader {
     
@@ -72,6 +73,7 @@ class ModuleDescriptorReader {
         Context context = new Context(repoManager, vfs);
         PhasedUnits pus = new PhasedUnits(context);
         List<String> name = ModuleManager.splitModuleName(moduleName);
+        ModuleSourceMapper moduleSourceMapper = pus.getModuleSourceMapper();
         ModuleManager moduleManager = pus.getModuleManager();
         if(Module.DEFAULT_MODULE_NAME.equals(moduleName)){
             // visit every folder and skip modules
@@ -79,7 +81,7 @@ class ModuleDescriptorReader {
             if(!exists)
                 throw new NoSuchModuleException("No source found for default module");
         }else{
-            visitModule(vfs, pus, name, srcDir, vfs.getFromFile(srcDir), moduleManager);
+            visitModule(vfs, pus, name, srcDir, vfs.getFromFile(srcDir), moduleSourceMapper);
         }
         for (PhasedUnit pu : pus.getPhasedUnits()) {
             pu.visitSrcModulePhase();
@@ -90,11 +92,11 @@ class ModuleDescriptorReader {
         this.moduleDescriptor = moduleManager.getOrCreateModule(name, null);
     }
     
-    private void visitModule(VFS vfs, PhasedUnits pus, List<String> name, File srcDir, VirtualFile virtualSourceDirectory, ModuleManager moduleManager) throws NoSuchModuleException {
+    private void visitModule(VFS vfs, PhasedUnits pus, List<String> name, File srcDir, VirtualFile virtualSourceDirectory, ModuleSourceMapper moduleSourceMapper) throws NoSuchModuleException {
         for(String part : name){
             File child = new File(srcDir, part);
             if(child.exists() && child.isDirectory()){
-                moduleManager.push(part);
+                moduleSourceMapper.push(part);
                 srcDir = child;
             }else{
                 throw new NoSuchModuleException("Failed to find module name part "+part+" of "+name+" in "+srcDir);
@@ -102,7 +104,7 @@ class ModuleDescriptorReader {
         }
         File moduleFile = new File(srcDir, ModuleManager.MODULE_FILE);
         if(moduleFile.exists()){
-            moduleManager.visitModuleFile();
+            moduleSourceMapper.visitModuleFile();
             pus.parseUnit(vfs.getFromFile(moduleFile), virtualSourceDirectory);
         }else{
             throw new NoSuchModuleException("No module file in "+srcDir);

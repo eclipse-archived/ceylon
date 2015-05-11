@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -197,7 +198,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // functional parameter return values are always boxed if we're not creating a method for them
         if(declaration instanceof Method 
                 && ((Method)declaration).isParameter()
-                && !Strategy.createMethod((Method)declaration)){
+                && !JvmBackendUtil.createMethod((Method)declaration)){
             declaration.setUnboxed(false);
             return;
         }
@@ -223,7 +224,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             declaration.setUnboxed(unbox);
         } else if (Decl.isValueParameter(declaration)
                 && CodegenUtil.isContainerFunctionalParameter(declaration)
-                && Strategy.createMethod((MethodOrValue)declaration.getContainer())) {
+                && JvmBackendUtil.createMethod((MethodOrValue)declaration.getContainer())) {
             Method functionalParameter = (Method)declaration.getContainer();
             TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
             if (Decl.equal(refinedFrom, functionalParameter) ) {

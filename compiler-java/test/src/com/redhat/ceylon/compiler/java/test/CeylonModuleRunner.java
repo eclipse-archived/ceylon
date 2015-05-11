@@ -54,16 +54,13 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.runtime.Main;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -73,6 +70,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 import com.sun.tools.javac.util.Context;
@@ -446,6 +445,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.resetModuleManager();
                 Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
                 Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
+                Metamodel.loadModule("com.redhat.ceylon.model", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/model/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.model-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTests.makeArtifactResult(null), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTests.makeArtifactResult(carFile), cl);
                 // dependencies

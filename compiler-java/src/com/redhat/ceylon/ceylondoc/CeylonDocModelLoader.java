@@ -25,14 +25,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.compiler.loader.LoaderJULLogger;
-import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.LoaderJULLogger;
+import com.redhat.ceylon.model.loader.impl.reflect.ReflectionModelLoader;
+import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.model.UnknownType.ErrorReporter;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * A model loader which uses Java reflection.
@@ -44,9 +52,11 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     ModulesClassLoader classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader());
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
+    private CeylonDocTool tool;
 
-    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules){
+    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, CeylonDocTool tool){
         super(moduleManager, modules, new LoaderJULLogger());
+        this.tool = tool;
     }
 
     @Override
@@ -94,5 +104,37 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     protected Module findModuleForClassMirror(ClassMirror classMirror) {
         String pkgName = getPackageNameForQualifiedClassName(classMirror);
         return lookupModuleByPackageName(pkgName);
+    }
+
+    @Override
+    protected ErrorReporter makeModelErrorReporter(Module module, String message) {
+        return new ModuleErrorAttacherRunnable(tool.getModuleSourceMapper(), module, message);
+    }
+
+    public static class ModuleErrorAttacherRunnable extends UnknownType.ErrorReporter {
+
+        private Module module;
+        private ModuleSourceMapper moduleSourceMapper;
+
+        public ModuleErrorAttacherRunnable(ModuleSourceMapper moduleSourceMapper, Module module, String message) {
+            super(message);
+            this.moduleSourceMapper = moduleSourceMapper;
+            this.module = module;
+        }
+
+        @Override
+        public void reportError() {
+            moduleSourceMapper.attachErrorToOriginalModuleImport(module, getMessage());
+        }
+    }
+
+    @Override
+    protected void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+        // nothing to do
+    }
+
+    @Override
+    protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
+        // nothing to do
     }
 }

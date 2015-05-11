@@ -21,8 +21,8 @@
 package com.redhat.ceylon.compiler.java.loader.model;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.sun.tools.javac.util.Context;
 
 public class CompilerModule extends LazyModule {

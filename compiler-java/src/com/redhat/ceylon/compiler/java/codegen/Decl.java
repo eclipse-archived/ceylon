@@ -24,11 +24,12 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.model.FieldValue;
-import com.redhat.ceylon.compiler.loader.model.LazyClass;
-import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.model.FieldValue;
+import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -42,6 +43,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -63,36 +65,24 @@ public class Decl {
     private Decl() {
     }
 
-    private static boolean eq(Object decl, Object other) {
-        if (decl == null) {
-            return other == null;
-        } else {
-            return decl.equals(other);
-        }
-    }
-    
     public static boolean equal(Declaration decl, Declaration other) {
-        if (decl instanceof UnionType || decl instanceof IntersectionType
-                || other instanceof UnionType || other instanceof IntersectionType) {
-            return false;
-        }
-        return eq(decl, other);
+        return ModelUtil.equal(decl, other);
     }
-    
+
     public static boolean equal(Parameter decl, Parameter other) {
-        return eq(decl, other);
+        return ModelUtil.eq(decl, other);
     }
     
     public static boolean equalScopes(Scope scope, Scope other) {
-        return eq(scope, other);
+        return ModelUtil.eq(scope, other);
     }
     
     public static boolean equalScopeDecl(Scope scope, Declaration other) {
-        return eq(scope, other);
+        return ModelUtil.eq(scope, other);
     }
     
     public static boolean equalModules(Module scope, Module other) {
-        return eq(scope, other);
+        return ModelUtil.equalModules(scope, other);
     }
     
     /**
@@ -126,8 +116,7 @@ public class Decl {
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
-        return (decl instanceof Value)
-                && !((Value)decl).isTransient();
+        return ModelUtil.isNonTransientValue(decl);
     }
     
     public static boolean isSharedParameter(Declaration decl) {
@@ -144,9 +133,7 @@ public class Decl {
      * @return true if the declaration is a value
      */
     public static boolean isValue(Declaration decl) {
-        return (decl instanceof Value)
-                && !((Value)decl).isParameter()
-                && !((Value)decl).isTransient();
+        return JvmBackendUtil.isValue(decl);
     }
 
     /**
@@ -179,8 +166,7 @@ public class Decl {
      * @return true if the declaration is a method
      */
     public static boolean isMethod(Declaration decl) {
-        return (decl instanceof Method)
-                && !((Method)decl).isParameter();
+        return JvmBackendUtil.isMethod(decl);
     }
 
     /**
@@ -257,7 +243,7 @@ public class Decl {
     }
     
     public static boolean withinClass(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Class;
+        return ModelUtil.withinClass(decl);
     }
     
     /**
@@ -288,7 +274,7 @@ public class Decl {
      * @return true if the declaration is within a class or interface
      */
     public static boolean withinClassOrInterface(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+        return ModelUtil.withinClassOrInterface(decl);
     }
     
     public static boolean isShared(Tree.Declaration decl) {
@@ -304,8 +290,7 @@ public class Decl {
     }
     
     public static boolean isCaptured(Declaration decl) {
-        // Shared elements are implicitely captured although the typechecker doesn't mark them that way
-        return decl.isCaptured() || decl.isShared();
+        return ModelUtil.isCaptured(decl);
     }
 
     public static boolean isAbstract(Tree.ClassOrInterface decl) {
@@ -420,7 +405,7 @@ public class Decl {
      * @return true if the declaration is local
      */
     public static boolean isLocalNotInitializer(Declaration decl) {
-        return isLocalNotInitializerScope(decl.getContainer());
+        return ModelUtil.isLocalNotInitializer(decl);
     }
     
     /**
@@ -447,11 +432,7 @@ public class Decl {
      * Is the given scope a local scope but not an initializer scope?
      */
     public static boolean isLocalNotInitializerScope(Scope scope) {
-        return scope instanceof MethodOrValue 
-                || scope instanceof Constructor
-                || scope instanceof ControlBlock
-                || scope instanceof NamedArgumentList
-                || scope instanceof Specification;
+        return ModelUtil.isLocalNotInitializerScope(scope);
     }
     
     /**
@@ -501,7 +482,7 @@ public class Decl {
     }
     
     public static boolean isLocalToInitializer(Declaration decl) {
-        return withinClass(decl) && !Decl.isCaptured(decl);
+        return ModelUtil.isLocalToInitializer(decl);
     }
     
     public static boolean isOverloaded(Declaration decl) {
@@ -526,14 +507,7 @@ public class Decl {
     }
 
     public static boolean isCeylon(TypeDeclaration declaration) {
-        if(declaration instanceof LazyClass){
-            return ((LazyClass)declaration).isCeylon();
-        }
-        if(declaration instanceof LazyInterface){
-            return ((LazyInterface)declaration).isCeylon();
-        }
-        // if it's not one of those it must be from source (Ceylon)
-        return true;
+        return JvmBackendUtil.isCeylon(declaration);
     }
 
     /**
@@ -549,55 +523,27 @@ public class Decl {
     }
     
     public static ClassOrInterface getClassOrInterfaceContainer(Element decl){
-        return getClassOrInterfaceContainer(decl, true);
+        return ModelUtil.getClassOrInterfaceContainer(decl);
     }
     
     public static ClassOrInterface getClassOrInterfaceContainer(Element decl, boolean includingDecl){
-        if (!includingDecl) {
-            decl = (Element) decl.getContainer();
-        }
-        // stop when null or when it's a ClassOrInterface
-        while(decl != null
-                && !(decl instanceof ClassOrInterface)){
-            // stop if the container is not an Element
-            if(!(decl.getContainer() instanceof Element))
-                return null;
-            decl = (Element) decl.getContainer();
-        }
-        return (ClassOrInterface) decl;
+        return ModelUtil.getClassOrInterfaceContainer(decl, includingDecl);
     }
 
     public static Package getPackage(Declaration decl){
-        if (decl instanceof Scope) {
-            return getPackageContainer((Scope)decl);
-        } else {
-            return getPackageContainer(decl.getContainer());
-        }
+        return ModelUtil.getPackage(decl);
     }
 
     public static Package getPackageContainer(Scope scope){
-        // stop when null or when it's a Package
-        while(scope != null
-                && !(scope instanceof Package)){
-            // stop if the container is not a Scope
-            if(!(scope.getContainer() instanceof Scope))
-                return null;
-            scope = (Scope) scope.getContainer();
-        }
-        return (Package) scope;
+        return ModelUtil.getPackageContainer(scope);
     }
 
     public static Module getModule(Declaration decl){
-        if (decl instanceof Scope) {
-            return getModuleContainer((Scope)decl);
-        } else {
-            return getModuleContainer(decl.getContainer());
-        }
+        return ModelUtil.getModule(decl);
     }
 
     public static Module getModuleContainer(Scope scope) {
-        Package pkg = Decl.getPackageContainer(scope);
-        return pkg != null ? pkg.getModule() : null;
+        return ModelUtil.getModuleContainer(scope);
     }
 
     public static boolean isValueTypeDecl(Tree.Term decl) {
@@ -663,11 +609,7 @@ public class Decl {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return isNonTransientValue(attr)
-                && isLocalNotInitializer(attr)
-                && ((attr.isVariable() && attr.isCaptured())
-                        // self-captured objects must also be boxed like variables
-                        || attr.isSelfCaptured());
+        return JvmBackendUtil.isBoxedVariable(attr);
     }
 
     public static boolean isObjectValue(TypedDeclaration attr) {
@@ -722,19 +664,7 @@ public class Decl {
     }
     
     public static boolean isJavaArray(TypeDeclaration decl) {
-        if(decl instanceof Class == false)
-            return false;
-        Class c = (Class) decl;
-        String name = c.getQualifiedNameString();
-        return name.equals("java.lang::ObjectArray")
-                || name.equals("java.lang::ByteArray")
-                || name.equals("java.lang::ShortArray")
-                || name.equals("java.lang::IntArray")
-                || name.equals("java.lang::LongArray")
-                || name.equals("java.lang::FloatArray")
-                || name.equals("java.lang::DoubleArray")
-                || name.equals("java.lang::BooleanArray")
-                || name.equals("java.lang::CharArray");
+        return JvmBackendUtil.isJavaArray(decl);
     }
 
     public static boolean isJavaObjectArray(TypeDeclaration decl) {

@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
@@ -33,6 +32,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 @Summary("Manages Ceylon command-line plugins")

@@ -42,7 +42,6 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.EnvironmentException;
@@ -51,6 +50,7 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Timer;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.Target;

@@ -32,9 +32,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
-import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
-import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
@@ -44,9 +42,6 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarDefBuilder;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
-import com.redhat.ceylon.compiler.loader.model.FieldValue;
-import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -54,6 +49,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Prefix;
+import com.redhat.ceylon.model.loader.NamingBase.Suffix;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
+import com.redhat.ceylon.model.loader.model.FieldValue;
+import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -4705,7 +4706,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!functionalParameter.isParameter()) {
             throw new BugException();
         }
-        boolean hasMethod = Strategy.createMethod(functionalParameter);
+        boolean hasMethod = JvmBackendUtil.createMethod(functionalParameter);
         if (!hasMethod) {
             // A functional parameter that's not method wrapped will already be Callable-wrapped
             return false;
@@ -5945,23 +5946,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.Declaration annotated) {
         EnumSet<OutputElement> outputs;
         if (annotated instanceof Tree.AnyClass) {
-            outputs = OutputElement.outputs((Tree.AnyClass)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AnyClass)annotated);
         } else if (annotated instanceof Tree.AnyInterface) {
-            outputs = OutputElement.outputs((Tree.AnyInterface)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AnyInterface)annotated);
         } else if (annotated instanceof Tree.TypeAliasDeclaration) {
-            outputs = OutputElement.outputs((Tree.TypeAliasDeclaration)annotated);
+            outputs = AnnotationUtil.outputs((Tree.TypeAliasDeclaration)annotated);
         } else if (annotated instanceof Tree.Constructor) {
-            outputs = OutputElement.outputs((Tree.Constructor)annotated);
+            outputs = AnnotationUtil.outputs((Tree.Constructor)annotated);
         } else if (annotated instanceof Tree.AnyMethod) {
-            outputs = OutputElement.outputs((Tree.AnyMethod)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AnyMethod)annotated);
         } else if (annotated instanceof Tree.AttributeDeclaration) {
-            outputs = OutputElement.outputs((Tree.AttributeDeclaration)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AttributeDeclaration)annotated);
         } else if (annotated instanceof Tree.AttributeGetterDefinition) {
-            outputs = OutputElement.outputs((Tree.AttributeGetterDefinition)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AttributeGetterDefinition)annotated);
         } else if (annotated instanceof Tree.AttributeSetterDefinition) {
-            outputs = OutputElement.outputs((Tree.AttributeSetterDefinition)annotated);
+            outputs = AnnotationUtil.outputs((Tree.AttributeSetterDefinition)annotated);
         } else if (annotated instanceof Tree.ObjectDefinition) {
-            outputs = OutputElement.outputs((Tree.ObjectDefinition)annotated);
+            outputs = AnnotationUtil.outputs((Tree.ObjectDefinition)annotated);
         } else {
             throw BugException.unhandledNodeCase(annotated);
         }
@@ -5974,7 +5975,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public List<JCAnnotation> transformAnnotations(boolean nat,
             OutputElement target, 
             Tree.PackageDescriptor annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), OutputElement.outputs((Tree.PackageDescriptor)annotated));
+        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.PackageDescriptor)annotated));
     }
     /** 
      * Transform the annotations on the given module import declaration for 
@@ -5983,7 +5984,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public List<JCAnnotation> transformAnnotations(boolean nat,
             OutputElement target, 
             Tree.ImportModule annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), OutputElement.outputs((Tree.ImportModule)annotated));
+        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ImportModule)annotated));
     }
     /** 
      * Transform the annotations on the given module declaration for inclusion 
@@ -5992,7 +5993,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public List<JCAnnotation> transformAnnotations(boolean nat,
             OutputElement target, 
             Tree.ModuleDescriptor annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), OutputElement.outputs((Tree.ModuleDescriptor)annotated));
+        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ModuleDescriptor)annotated));
     }
     private List<JCAnnotation> transform(boolean nat, 
             OutputElement target, 
@@ -6011,7 +6012,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-                    EnumSet<OutputElement> possibleTargets = AnnotationTarget.interopAnnotationTargeting(outputs, annotation, false);
+                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false);
                     if ((nat
                             && possibleTargets == null)
                             || 

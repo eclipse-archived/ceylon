@@ -27,12 +27,13 @@ import java.util.Map;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
-import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -243,110 +244,11 @@ public class CodegenUtil {
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
-        return getTopmostRefinedDeclaration(decl, null);
+        return JvmBackendUtil.getTopmostRefinedDeclaration(decl);
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Method, Method> methodOverrides){
-        if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()
-                && decl.getContainer() instanceof Class) {
-            // Parameters in a refined class are not considered refinements themselves
-            // We have in find the refined attribute
-            Class c = (Class)decl.getContainer();
-            boolean isAlias = c.isAlias();
-            boolean isActual = c.isActual();
-            // aliases and actual classes actually do refine their extended type parameters so the same rules apply wrt
-            // boxing and stuff
-            if (isAlias || isActual) {
-                Functional ctor = null;
-                int index = c.getParameterList().getParameters().indexOf(findParamForDecl(((TypedDeclaration)decl)));
-                // ATM we only consider aliases if we're looking at aliases, and same for actual, not mixing the two.
-                // Note(Stef): not entirely sure about that one, what about aliases of actual classes?
-                while ((isAlias && c.isAlias())
-                        || (isActual && c.isActual())) {
-                    ctor = (isAlias && c.isAlias()) ? (Functional)((ClassAlias)c).getConstructor() : c;
-                    c = c.getExtendedTypeDeclaration();
-                    // handle compile errors
-                    if(c == null)
-                        return null;
-                }
-                if (isActual) {
-                    ctor = c;
-                }
-                // be safe
-                if(ctor == null 
-                        || ctor.getParameterLists() == null
-                        || ctor.getParameterLists().isEmpty()
-                        || ctor.getParameterLists().get(0) == null
-                        || ctor.getParameterLists().get(0).getParameters() == null
-                        || ctor.getParameterLists().get(0).getParameters().size() <= index)
-                    return null;
-                decl = ctor.getParameterLists().get(0).getParameters().get(index).getModel();
-            }
-            if (decl.isShared()) {
-                Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??
-                if(refinedDecl != null && !Decl.equal(refinedDecl, decl)) {
-                    return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
-                }
-            }
-            return decl;
-        } else if(decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter() // a parameter
-                && ((decl.getContainer() instanceof Method && !(((Method)decl.getContainer()).isParameter())) // that's not parameter of a functional parameter 
-                        || decl.getContainer() instanceof Specification // or is a parameter in a specification
-                        || (decl.getContainer() instanceof Method  
-                            && ((Method)decl.getContainer()).isParameter() 
-                            && Strategy.createMethod((Method)decl.getContainer())))) {// or is a class functional parameter
-            // Parameters in a refined method are not considered refinements themselves
-            // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func = (Functional)getParameterized((MethodOrValue)decl);
-            if(func == null)
-                return decl;
-            Declaration kk = getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
-            // error recovery
-            if(kk instanceof Functional == false)
-                return decl;
-            Functional refinedFunc = (Functional) kk;
-            // shortcut if the functional doesn't override anything
-            if (Decl.equal((Declaration)refinedFunc, (Declaration)func)) {
-                return decl;
-            }
-            if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
-                // invalid input
-                return decl;
-            }
-            for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
-                if (func.getParameterLists().get(ii).getParameters().size() != refinedFunc.getParameterLists().get(ii).getParameters().size()) {
-                    // invalid input
-                    return decl;
-                }
-                // find the index of the parameter in the declaration
-                int index = 0;
-                for (Parameter px : func.getParameterLists().get(ii).getParameters()) {
-                    if (px.getModel() == null || px.getModel().equals(decl)) {
-                        // And return the corresponding parameter from the refined declaration
-                        return refinedFunc.getParameterLists().get(ii).getParameters().get(index).getModel();
-                    }
-                    index++;
-                }
-                continue;
-            }
-        }else if(methodOverrides != null
-                && decl instanceof Method
-                && Decl.equal(decl.getRefinedDeclaration(), decl)
-                && decl.getContainer() instanceof Specification
-                && ((Specification)decl.getContainer()).getDeclaration() instanceof Method
-                && ((Method) ((Specification)decl.getContainer()).getDeclaration()).isShortcutRefinement()
-                // we do all the previous ones first because they are likely to filter out false positives cheaper than the
-                // hash lookup we do next to make sure it is really one of those cases
-                && methodOverrides.containsKey(decl)){
-            // special case for class X() extends T(){ m = function() => e; } which we inline
-            decl = methodOverrides.get(decl);
-        }
-        Declaration refinedDecl = decl.getRefinedDeclaration();
-        if(refinedDecl != null && !Decl.equal(refinedDecl, decl))
-            return getTopmostRefinedDeclaration(refinedDecl);
-        return decl;
+        return JvmBackendUtil.getTopmostRefinedDeclaration(decl, methodOverrides);
     }
     
     static Parameter findParamForDecl(Tree.TypedDeclaration decl) {
@@ -355,17 +257,11 @@ public class CodegenUtil {
     }
     
     static Parameter findParamForDecl(TypedDeclaration decl) {
-        String attrName = decl.getName();
-        return findParamForDecl(attrName, decl);
+        return JvmBackendUtil.findParamForDecl(decl);
     }
     
     static Parameter findParamForDecl(String attrName, TypedDeclaration decl) {
-        Parameter result = null;
-        if (decl.getContainer() instanceof Functional) {
-            Functional f = (Functional)decl.getContainer();
-            result = f.getParameter(attrName);
-        }
-        return result;
+        return JvmBackendUtil.findParamForDecl(attrName, decl);
     }
     
     static MethodOrValue findMethodOrValueForParam(Parameter param) {
@@ -405,16 +301,7 @@ public class CodegenUtil {
     }
     
     public static Declaration getParameterized(MethodOrValue methodOrValue) {
-        if (!methodOrValue.isParameter()) {
-            throw new BugException("required method or value to be a parameter");
-        }
-        Scope scope = methodOrValue.getContainer();
-        if (scope instanceof Specification) {
-            return ((Specification)scope).getDeclaration();
-        } else if (scope instanceof Declaration) {
-            return (Declaration)scope;
-        } 
-        throw new BugException();
+        return JvmBackendUtil.getParameterized(methodOrValue);
     }
     
     public static boolean isContainerFunctionalParameter(Declaration declaration) {
@@ -527,55 +414,5 @@ public class CodegenUtil {
             throw new RuntimeException();
         }
         return result;
-    }
-
-    /**
-     * Turns:
-     * - UrlDecoder -> urlDecoder
-     * - URLDecoder -> urlDecoder
-     * - urlDecoder -> urlDecoder
-     * - URL -> url
-     */
-    public static String getJavaBeanName(String name) {
-        // See https://github.com/ceylon/ceylon-compiler/issues/340
-        // make it lowercase until the first non-uppercase
-        
-        int[] newName = new int[name.codePointCount(0, name.length())];
-        // fill the code point array; String has no getCodePointArray()
-        for(int charIndex=0,codePointIndex=0;charIndex<name.length();){
-            int c = name.codePointAt(charIndex);
-            newName[codePointIndex++] = c;
-            charIndex += Character.charCount(c);
-        }
-        
-        for(int i=0;i<newName.length;i++){
-            int codepoint = newName[i];
-            if(Character.isLowerCase(codepoint)){
-                // if we had more than one upper-case, we leave the last uppercase: getURLDecoder -> urlDecoder
-                if(i > 1){
-                    newName[i-1] = Character.toUpperCase(newName[i-1]);
-                }
-                break;
-            }
-            newName[i] = Character.toLowerCase(codepoint);
-        }
-        return new String(newName, 0, newName.length);
-    }
-
-    /**
-     * Turns:
-     * - urlDecoder -> URLDecoder
-     * - url -> URL
-     */
-    public static String getReverseJavaBeanName(String name){
-        // turns urlDecoder -> URLDecoder
-        for(int i=0; i<name.length(); i+= Character.isSurrogate(name.charAt(i)) ? 2 : 1){
-            if(Character.isUpperCase(name.codePointAt(i))){
-                // make everything before the upper case into upper case
-                return name.substring(0, i).toUpperCase() + name.substring(i);
-            }
-        }
-        // we did not find a single upper case, just make it all upper case
-        return name.toUpperCase();
     }
 }

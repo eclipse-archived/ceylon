@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;

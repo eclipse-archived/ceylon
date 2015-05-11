@@ -3,7 +3,6 @@ package com.redhat.ceylon.tools.classpath;
 import java.io.File;
 import java.util.SortedSet;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -12,6 +11,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Prints a classpath suitable for passing to Java tools to run a given Ceylon module")

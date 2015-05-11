@@ -32,9 +32,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
-import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
-import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -46,6 +43,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -307,7 +306,7 @@ abstract class Invocation {
                 }
             } else if ((getPrimaryDeclaration() instanceof Method
                             && ((Method)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
-                            && (!Strategy.createMethod((Method)getPrimaryDeclaration())) // not class member, or not shared/captured
+                            && (!JvmBackendUtil.createMethod((Method)getPrimaryDeclaration())) // not class member, or not shared/captured
                             // we may create a method, but if we're accessing it from a default parameter expression
                             // we need to access the Callable parameter, no the member method
                         || gen.expressionGen().isWithinDefaultParameterExpression(getPrimaryDeclaration().getContainer()))) {

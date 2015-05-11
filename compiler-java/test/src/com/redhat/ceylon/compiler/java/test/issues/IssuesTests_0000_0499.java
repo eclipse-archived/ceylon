@@ -30,8 +30,8 @@ import org.junit.Test;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 
 public class IssuesTests_0000_0499 extends CompilerTests {
 

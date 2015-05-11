@@ -27,12 +27,12 @@ import java.util.Map;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
-import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
-import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
+import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.model.loader.mirror.VariableMirror;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;

@@ -63,11 +63,10 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -79,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -99,6 +99,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 @Summary("Generates Ceylon API documentation from Ceylon source files")
 @Description("The default module repositories are `modules` and `" +
@@ -389,6 +390,11 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             @Override
             public ModuleManager createModuleManager(Context context) {
                 return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, log);
+            }
+
+            @Override
+            public ModuleSourceMapper createModuleManagerUtil(Context context, ModuleManager moduleManager) {
+                return new CeylonDocModuleSourceMapper(context, (CeylonDocModuleManager) moduleManager, CeylonDocTool.this);
             }
         });
         
@@ -1332,6 +1338,10 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             return "(" + node.getUnit().getFilename() + ":" + node.getToken().getLine() + ")";
         }
         return "";
+    }
+
+    public ModuleSourceMapper getModuleSourceMapper() {
+        return typeChecker.getPhasedUnits().getModuleSourceMapper();
     }
     
 }

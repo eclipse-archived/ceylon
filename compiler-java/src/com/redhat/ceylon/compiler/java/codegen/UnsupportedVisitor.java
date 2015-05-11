@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.EnumSet;
 
-import com.redhat.ceylon.compiler.loader.model.AnnotationProxyClass;
-import com.redhat.ceylon.compiler.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.compiler.loader.model.AnnotationTarget;
-import com.redhat.ceylon.compiler.loader.model.OutputElement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
+import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class UnsupportedVisitor extends Visitor {
@@ -81,56 +81,56 @@ public class UnsupportedVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
         if (!Decl.isForBackend(that))
             return;
-        interopAnnotationTargeting(OutputElement.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     private void interopAnnotationTargeting(EnumSet<OutputElement> outputs,
             Tree.AnnotationList annotationList) {
         for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-            AnnotationTarget.interopAnnotationTargeting(outputs, annotation, true);
+            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true);
         }
     }
 

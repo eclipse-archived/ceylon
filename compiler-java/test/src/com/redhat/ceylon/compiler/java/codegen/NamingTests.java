@@ -83,7 +83,7 @@ public class NamingTests {
         PhasedUnits pus = new PhasedUnits(context);
         // Make the module manager think we're looking at this package
         // even though there's no module descriptor
-        pus.getModuleManager().push(PKGNAME);
+        pus.getModuleSourceMapper().push(PKGNAME);
         pus.parseUnit(vfs.getFromFile(file), vfs.getFromFile(new File("test-src")));
         final java.util.List<PhasedUnit> listOfUnits = pus.getPhasedUnits();
         

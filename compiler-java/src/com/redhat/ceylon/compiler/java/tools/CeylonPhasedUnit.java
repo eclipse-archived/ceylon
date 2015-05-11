@@ -22,12 +22,13 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import javax.tools.JavaFileObject;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 import com.sun.tools.javac.util.Position.LineMap;
 
 public class CeylonPhasedUnit extends PhasedUnit {
@@ -37,8 +38,9 @@ public class CeylonPhasedUnit extends PhasedUnit {
 
     public CeylonPhasedUnit(VirtualFile unitFile, VirtualFile srcDir,
             CompilationUnit cu, Package p, ModuleManager moduleManager,
+            ModuleSourceMapper moduleSourceMapper,
             Context context, JavaFileObject fileObject, LineMap map) {
-        super(unitFile, srcDir, cu, p, moduleManager, context, null);
+        super(unitFile, srcDir, cu, p, moduleManager, moduleSourceMapper, context, null);
         this.fileObject = fileObject;
         this.lineMap = map;
     }

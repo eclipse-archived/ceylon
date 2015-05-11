@@ -22,15 +22,13 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.tools.Diagnostic.Kind;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 public class IssuesTests_0500_0999 extends CompilerTests {
 

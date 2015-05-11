@@ -1,6 +1,6 @@
 package com.redhat.ceylon.tools.info;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 public interface DependencyFilter {
     boolean output(ArtifactResult dep);

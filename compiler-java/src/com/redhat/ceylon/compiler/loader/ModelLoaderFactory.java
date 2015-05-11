@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.sun.tools.javac.util.Context;
 
 public interface ModelLoaderFactory {

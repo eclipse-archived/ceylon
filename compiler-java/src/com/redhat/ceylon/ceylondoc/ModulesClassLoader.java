@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**

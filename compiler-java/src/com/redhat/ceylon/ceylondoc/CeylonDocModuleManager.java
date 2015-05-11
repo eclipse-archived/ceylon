@@ -23,21 +23,18 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
+import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
+import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.model.LazyModule;
+import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -49,14 +46,14 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     private RepositoryManager outputRepositoryManager;
 
     public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, Logger log) {
-        super(context);
+        super();
         this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
         this.tool = tool;
     }
 
     @Override
-    protected boolean isModuleLoadedFromSource(String moduleName) {
+    public boolean isModuleLoadedFromSource(String moduleName) {
         for(ModuleSpec spec : modulesSpecs){
             if(spec.getName().equals(moduleName))
                 return true;
@@ -66,7 +63,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
-        return new CeylonDocModelLoader(this, modules){
+        return new CeylonDocModelLoader(this, modules, tool){
             @Override
             protected boolean isLoadedFromSource(String className) {
                 return tool.getCompiledClasses().contains(className);
@@ -97,7 +94,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
 
     @Override
-    protected Package createPackage(String pkgName, Module module) {
+    public Package createPackage(String pkgName, Module module) {
         // never create a lazy package for ceylon.language when we're documenting it
         if((pkgName.equals(AbstractModelLoader.CEYLON_LANGUAGE)
                 || pkgName.startsWith(AbstractModelLoader.CEYLON_LANGUAGE+"."))
@@ -134,7 +131,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     public void modulesVisited() {
         // this is very important!
         super.modulesVisited();
-        for(Module module : getContext().getModules().getListOfModules()){
+        for(Module module : getModules().getListOfModules()){
             if(isModuleLoadedFromSource(module.getNameAsString())){
                 addOutputModuleToClassPath(module);
             }
@@ -146,18 +143,5 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         ArtifactResult result = outputRepositoryManager.getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);
-    }
-    
-    @Override
-    protected PhasedUnits createPhasedUnits() {
-        PhasedUnits units = super.createPhasedUnits();
-        String fileEncoding  = tool.getEncoding();
-        if (fileEncoding == null) {
-            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
-        }
-        if (fileEncoding != null) {
-            units.setEncoding(fileEncoding);
-        }
-        return units;
     }
 }

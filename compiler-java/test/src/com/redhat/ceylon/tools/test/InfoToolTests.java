@@ -25,10 +25,10 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.JDKUtils.JDK;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class InfoToolTests extends AbstractToolTests {

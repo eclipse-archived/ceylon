@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
@@ -18,6 +17,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Fetches source archives from a repository and extracts their contents into a source directory")
 @Description("Fetches any sources, resources, documentation and scripts " +

@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;

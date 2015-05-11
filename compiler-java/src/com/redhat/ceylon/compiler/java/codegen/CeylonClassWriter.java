@@ -27,7 +27,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;

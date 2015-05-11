@@ -22,7 +22,14 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,8 +43,11 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Package;
 
 public class JarEntryManifestFileObject implements JavaFileObject {
 

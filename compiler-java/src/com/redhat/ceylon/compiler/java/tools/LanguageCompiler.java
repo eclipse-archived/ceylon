@@ -68,9 +68,7 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.util.Timer;
-import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -87,9 +85,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
@@ -156,6 +157,12 @@ public class LanguageCompiler extends JavaCompiler {
                     CompilerDelegate phasedUnitsManager = getCompilerDelegate(context);
                     return phasedUnitsManager.getModuleManager();
                 }
+
+                @Override
+                public ModuleSourceMapper createModuleManagerUtil(com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext, ModuleManager moduleManager) {
+                    CompilerDelegate phasedUnitsManager = getCompilerDelegate(context);
+                    return phasedUnitsManager.getModuleSourceMapper();
+                }
             });
             context.put(phasedUnitsKey, phasedUnits);
         }
@@ -165,7 +172,8 @@ public class LanguageCompiler extends JavaCompiler {
     public static CompilerDelegate getCompilerDelegate(final Context context) {
         CompilerDelegate compilerDelegate = context.get(compilerDelegateKey);
         if (compilerDelegate == null) {
-            return new CeyloncCompilerDelegate(context);
+            compilerDelegate = new CeyloncCompilerDelegate(context);
+            context.put(compilerDelegateKey, compilerDelegate);
         }
         return compilerDelegate;
     }
@@ -358,6 +366,7 @@ public class LanguageCompiler extends JavaCompiler {
     public static interface CompilerDelegate {
         
         ModuleManager getModuleManager();
+        ModuleSourceMapper getModuleSourceMapper();
         PhasedUnit getExternalSourcePhasedUnit(VirtualFile srcDir, VirtualFile file);
         void typeCheck(java.util.List<PhasedUnit> listOfUnits);
         void visitModules(PhasedUnits phasedUnits);
@@ -380,6 +389,7 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RunTwiceException("Trying to load new source file after CeylonEnter has been called: "+filename);
         try {
             ModuleManager moduleManager = phasedUnits.getModuleManager();
+            ModuleSourceMapper moduleSourceMapper = phasedUnits.getModuleSourceMapper();
             File sourceFile = new File(filename.getName());
             // FIXME: temporary solution
             VirtualFile file = vfs.getFromFile(sourceFile);
@@ -453,7 +463,7 @@ public class LanguageCompiler extends JavaCompiler {
                      * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
                      */
                     com.redhat.ceylon.model.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
-                    phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
+                    phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, moduleSourceMapper, ceylonContext, filename, map);
                     phasedUnit.setSuppressedWarnings(suppressedWarnings);
                     phasedUnits.addPhasedUnit(file, phasedUnit);
                     gen.setMap(map);
@@ -575,7 +585,7 @@ public class LanguageCompiler extends JavaCompiler {
             module = modules.getDefaultModule();
         else{
             for(Module m : modulesLoadedFromSource){
-                if(Util.isSubPackage(m.getNameAsString(), pkgName)){
+                if(JvmBackendUtil.isSubPackage(m.getNameAsString(), pkgName)){
                     module = m;
                     break;
                 }

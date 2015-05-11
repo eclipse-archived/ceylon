@@ -51,13 +51,6 @@ import javax.tools.JavaFileObject;
 import org.junit.Assert;
 import org.junit.Before;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
@@ -70,10 +63,17 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.java.util.RepositoryLister;
-import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.launcher.Launcher;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.Repository;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.VisibilityType;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
@@ -693,11 +693,11 @@ public abstract class CompilerTests {
                 loader = getClassLoader(main, modules);
                 String mainClass = main;
                 String mainMethod = main.replaceAll("^.*\\.", "");
-                if (Util.isInitialLowerCase(mainMethod)) {
+                if (JvmBackendUtil.isInitialLowerCase(mainMethod)) {
                     mainClass = main + "_";
                 }
                 java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
-                if (Util.isInitialLowerCase(mainMethod)) {
+                if (JvmBackendUtil.isInitialLowerCase(mainMethod)) {
                     // A method, we need to quote the name though
                     if ("main".equals(mainMethod)
                             || "finalize".equals(mainMethod)) {

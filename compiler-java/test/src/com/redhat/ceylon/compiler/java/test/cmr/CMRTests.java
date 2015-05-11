@@ -65,11 +65,10 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assume;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.Repositories;
@@ -81,6 +80,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
