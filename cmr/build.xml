@@ -161,9 +161,6 @@
             <fileset dir="${cmr-api.src}">
                 <include name="**/*.java"/>
             </fileset>
-            <fileset dir="${cmr-api.resources}">
-                <include name="**"/>
-            </fileset>
             <fileset dir="${cmr-impl.src}">
                 <include name="**/*.java"/>
             </fileset>
@@ -245,11 +242,6 @@
                source="${compile.java.source}"
                bootclasspath="${compile.java.bootclasspath}"
                includeantruntime="false"/>
-        <copy todir="${build.classes}">
-            <fileset dir="${cmr-api.resources}">
-                <include name="**"/>
-            </fileset>
-        </copy>
     </target>
     
     <!-- Rule to build module-resolver classes from their Java sources -->
