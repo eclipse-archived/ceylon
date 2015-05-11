@@ -12,9 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -30,7 +29,8 @@ import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
-import com.redhat.ceylon.compiler.loader.JsModuleManager;
+import com.redhat.ceylon.compiler.loader.JsModuleSourceMapper;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -373,7 +373,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private List<Object> getDependencies(File jsmod) throws IOException {
-        final Map<String,Object> model = JsModuleManager.loadJsonModel(jsmod);
+        final Map<String,Object> model = JsModuleSourceMapper.loadJsonModel(jsmod);
         if (model == null) {
             return Collections.emptyList();
         }
@@ -455,7 +455,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         List<File> localRepos = new ArrayList<>();
-        for (Repository r : getRepositoryManager().getRepositories()) {
+        for (CmrRepository r : getRepositoryManager().getRepositories()) {
             if (!r.getRoot().isRemote()) {
                 File f = new File(r.getDisplayString());
                 if (!localRepos.contains(f)) {

@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.loader;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /** ModuleManagerFactory for the JsModuleManager.
  * 
@@ -27,6 +28,11 @@ public class JsModuleManagerFactory implements ModuleManagerFactory {
     }
     public static boolean isVerbose() {
         return verbose;
+    }
+
+    @Override
+    public ModuleSourceMapper createModuleManagerUtil(Context context, ModuleManager moduleManager) {
+        return new JsModuleSourceMapper(context, moduleManager, encoding);
     }
 
 }
