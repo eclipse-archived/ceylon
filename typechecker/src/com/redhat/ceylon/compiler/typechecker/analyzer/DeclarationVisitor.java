@@ -48,6 +48,7 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Overloadable;
@@ -1556,37 +1557,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
 
     public static void setVisibleScope(Declaration model) {
-        Scope s=model.getContainer();
-        while (s!=null) {
-            if (s instanceof Declaration) {
-                if (model.isShared()) {
-                    if (!((Declaration) s).isShared()) {
-                        model.setVisibleScope(s.getContainer());
-                        break;
-                    }
-                }
-                else {
-                    model.setVisibleScope(s);
-                    break;
-                }
-            }
-            else if (s instanceof Package) {
-                //TODO: unshared packages!
-                /*if (!((Package) s).isShared()) {
-                    model.setVisibleScope(s);
-                }*/
-                if (!model.isShared()) {
-                    model.setVisibleScope(s);
-                }
-                //null visible scope means visible everywhere
-                break;
-            }
-            else {
-                model.setVisibleScope(s);
-                break;
-            }    
-            s = s.getContainer();
-        }
+        ModelUtil.setVisibleScope(model);
     }
 
     private static void checkFormalMember(Tree.Declaration that, Declaration d) {

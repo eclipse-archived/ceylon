@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.Backend;
@@ -17,8 +16,10 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * Validate module dependency:
@@ -32,6 +33,7 @@ public class ModuleValidator {
     private final Context context;
     private List<PhasedUnits> phasedUnitsOfDependencies;
     private final ModuleManager moduleManager;
+    private final ModuleSourceMapper moduleManagerUtil;
     private Map<Module, ArtifactResult> searchedArtifacts = new HashMap<Module, ArtifactResult>();
 
     public static interface ProgressListener {
@@ -53,6 +55,7 @@ public class ModuleValidator {
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;
         this.moduleManager = phasedUnits.getModuleManager();
+        this.moduleManagerUtil = phasedUnits.getModuleSourceMapper();
     }
 
     public void setListener (ProgressListener listener) {
@@ -75,7 +78,7 @@ public class ModuleValidator {
         phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
         LinkedList<Module> dependencyTree = new LinkedList<Module>();
         // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
-        Set<Module> compiledModules = moduleManager.getCompiledModules();
+        Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
         List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
         // we must resolve the language module first because it contains definitions that must be in the classpath
         // before any other JVM class is loaded, including the module descriptor annotations themselves
@@ -205,7 +208,7 @@ public class ModuleValidator {
                     }
                     if (artifact == null) {
                         //not there => error
-                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManager);
+                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
                     }
                     alreadySearchedArtifacts.put(module, artifact);
                 }
@@ -217,11 +220,11 @@ public class ModuleValidator {
                     if (moduleOverride != null) {
                         module = moduleOverride;
                         if (importDepth.equals(ImportDepth.First)) {
-                            moduleManager.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
+                            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
                                     "The module import should not be overriden, since it is explicitely imported by a project source module");
                         }
                     }
-                    moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
+                    moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
             moduleManager.visitedModule(module, forCompiledModule);
@@ -268,7 +271,7 @@ public class ModuleValidator {
                 error.append(module.getNameAsString()).append("': ");
                 String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
                 error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
-                moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+                moduleManagerUtil.addErrorToModule(dependencyTree.getFirst(), error.toString());
             }else {
                 // just possibly a dupe
                 String moduleA;
@@ -284,7 +287,7 @@ public class ModuleValidator {
                 }
                 String error = "module (transitively) imports conflicting versions of similar dependencies '" + 
                         moduleA + "' and '"+ moduleB + "'";
-                moduleManager.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
+                moduleManagerUtil.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
             }
         }
         else {

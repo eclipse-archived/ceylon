@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager.MODULE_FILE;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager.PACKAGE_FILE;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 
 import java.lang.ref.WeakReference;
@@ -19,13 +17,13 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LocalDeclarationVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SupertypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.VisibilityVisitor;
@@ -51,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -65,6 +64,7 @@ public class PhasedUnit {
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
+    private WeakReference<ModuleSourceMapper> moduleManagerUtilRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
@@ -92,6 +92,7 @@ public class PhasedUnit {
             Tree.CompilationUnit rootNode, 
             Package p, 
             ModuleManager moduleManager, 
+            ModuleSourceMapper moduleManagerUtil, 
             Context context, 
             List<CommonToken> tokenStream) {
         this.rootNode = rootNode;
@@ -104,6 +105,9 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (moduleManager);
+        this.moduleManagerUtilRef = 
+                new WeakReference<ModuleSourceMapper>
+                    (moduleManagerUtil);
         this.tokens = tokenStream;
         unit = createUnit();
         unit.setFilename(fileName);
@@ -123,6 +127,9 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (other.moduleManagerRef.get());
+        this.moduleManagerUtilRef = 
+                new WeakReference<ModuleSourceMapper>
+                    (other.moduleManagerUtilRef.get());
         this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
         this.unitFile = other.unitFile;
         this.tokens = other.tokens;
@@ -161,7 +168,7 @@ public class PhasedUnit {
                 moduleVisited = true;
                 processLiterals();
                 moduleVisitor = 
-                        new ModuleVisitor(moduleManagerRef.get(), 
+                        new ModuleVisitor(moduleManagerRef.get(), moduleManagerUtilRef.get(), 
                                 pkg);
                 moduleVisitor.setCompleteOnlyAST(reuseExistingDescriptorModels());
                 rootNode.visit(moduleVisitor);
@@ -255,8 +262,8 @@ public class PhasedUnit {
                                 "identical source files: " +
                                 unit.getFullPath() + " and " + 
                                 u.getFullPath();
-                        if (u.getFilename().equals(MODULE_FILE) ||
-                            u.getFilename().equals(PACKAGE_FILE)) {
+                        if (u.getFilename().equals(ModuleManager.MODULE_FILE) ||
+                            u.getFilename().equals(ModuleManager.PACKAGE_FILE)) {
                             errorMessage += " (a module/package descriptor should be defined only once, even in case of multiple source directories)";
                         }
                         rootNode.addError(errorMessage);                        
@@ -280,11 +287,11 @@ public class PhasedUnit {
                     if (importPath != null) {
                         String moduleName = 
                                 formatPath(importPath.getIdentifiers());
-                        ModuleManager moduleManager = 
-                                moduleManagerRef.get();
-                        if (moduleManager != null) {
+                        ModuleSourceMapper moduleManagerUtil = 
+                                moduleManagerUtilRef.get();
+                        if (moduleManagerUtil != null) {
                             for (Module otherModule: 
-                                    moduleManager.getCompiledModules()) {
+                                    moduleManagerUtil.getCompiledModules()) {
                                 String otherModuleName = 
                                         otherModule.getNameAsString();
                                 if (moduleName.startsWith(otherModuleName + ".") || 

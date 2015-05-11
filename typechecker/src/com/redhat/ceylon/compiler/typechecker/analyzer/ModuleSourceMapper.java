@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.model.typechecker.model.Util.formatPath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,30 +14,23 @@ import java.util.TreeMap;
 import java.util.WeakHashMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
-/**
- * Manager modules and packages (build, retrieve, handle errors etc)
- *
- * @author Emmanuel Bernard <emmanuel@hibernate.org>
- */
-public class ModuleManager implements BackendSupport {
+public class ModuleSourceMapper {
+
     public static class ModuleDependencyAnalysisError extends AnalysisError {
-    
+        
         public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
             super(treeNode, message, code);
         }
@@ -49,78 +40,24 @@ public class ModuleManager implements BackendSupport {
         }
     }
 
-    public static final String MODULE_FILE = "module.ceylon";
-    public static final String PACKAGE_FILE = "package.ceylon";
-    private final Context context;
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
-    private Modules modules;
-    private static Object PRESENT = new Object();
     private final Map<ModuleImport,WeakHashMap<Node, Object>> moduleImportToNode = new HashMap<ModuleImport, WeakHashMap<Node, Object>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
     private Map<Module, Node> moduleToNode = new TreeMap<Module, Node>();
+    private ModuleManager moduleManager;
+    private Context context;
+    private Modules modules;
+    private static Object PRESENT = new Object();
 
-    public ModuleManager(Context context) {
+    public ModuleSourceMapper(Context context, ModuleManager moduleManager) {
         this.context = context;
-    }
-    
-    protected Package createPackage(String pkgName, Module module) {
-        final Package pkg = new Package();
-        List<String> name = pkgName.isEmpty() ? Arrays.asList("") : splitModuleName(pkgName); 
-        pkg.setName(name);
-        if (module != null) {
-            module.getPackages().add(pkg);
-            pkg.setModule(module);
-        }
-        return pkg;
+        this.moduleManager = moduleManager;
+        this.modules = context.getModules();
+        packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
     }
 
-    public void initCoreModules() {
-        packageStack.clear();
-        currentModule = null;
-        
-        modules = context.getModules();
-        if ( modules == null ) {
-            modules = new Modules();
-            context.setModules(modules);
-            //build empty package
-            final Package emptyPackage = createPackage("", null);
-            packageStack.addLast(emptyPackage);
-
-            //build default module (module in which packages belong to when not explicitly under a module
-            final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
-            final Module defaultModule = createModule(defaultModuleName, "unversioned");
-            defaultModule.setDefault(true);
-            defaultModule.setAvailable(true);
-            bindPackageToModule(emptyPackage, defaultModule);
-            modules.getListOfModules().add(defaultModule);
-            modules.setDefaultModule(defaultModule);
-
-            //create language module and add it as a dependency of defaultModule
-            //since packages outside a module cannot declare dependencies
-            final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = createModule(languageName, TypeChecker.LANGUAGE_MODULE_VERSION);
-            languageModule.setLanguageModule(languageModule);
-            languageModule.setAvailable(false); //not available yet
-            modules.setLanguageModule(languageModule);
-            modules.getListOfModules().add(languageModule);
-            defaultModule.addImport(new ModuleImport(languageModule, false, false));
-            defaultModule.setLanguageModule(languageModule);
-        }
-        else {
-            modules = context.getModules();
-            packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
-        }
-    }
-
-    protected Module createModule(List<String> moduleName, String version) {
-		Module module = new Module();
-		module.setName(moduleName);
-		module.setVersion(version);
-		return module;
-	}
-
-	public void push(String path) {
+    public void push(String path) {
         createPackageAndAddToModule(path);
     }
 
@@ -132,49 +69,18 @@ public class ModuleManager implements BackendSupport {
         return packageStack.peekLast();
     }
 
-    /**
-     * Get or create a module.
-     * version == null is considered equal to any version.
-     * Likewise a module with no version will match any version passed
-     */
-    public Module getOrCreateModule(List<String> moduleName, String version) {
-        if (moduleName.size() == 0) {
-            return null;
-        }
-        Module module = null;
-        final Set<Module> moduleList = context.getModules().getListOfModules();
-        for (Module current : moduleList) {
-            final List<String> names = current.getName();
-            if (moduleName.equals(names)
-                    && compareVersions(current, version, current.getVersion())) {
-                module = current;
-                break;
-            }
-        }
-        if (module == null) {
-            module = createModule(moduleName, version);
-            module.setLanguageModule(modules.getLanguageModule());
-            moduleList.add(module);
-        }
-        return module;
-    }
-
-    protected boolean compareVersions(Module current, String version, String currentVersion) {
-        return currentVersion == null || version == null || currentVersion.equals(version);
-    }
-
     public void visitModuleFile() {
         if ( currentModule == null ) {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
             //we don't know the version at this stage, will be filled later
-            currentModule = getOrCreateModule(moduleName, null);
+            currentModule = moduleManager.getOrCreateModule(moduleName, null);
             if ( currentModule != null ) {
                 currentModule.setAvailable(true); // TODO : not necessary anymore ? the phasedUnit will be added. And the buildModuleImport()
                                                   //        function (which calls module.setAvailable()) will be called by the typeChecker
                                                   //        BEFORE the ModuleValidator.verifyModuleDependencyTree() call that uses 
                                                   //        isAvailable()
-                bindPackageToModule(currentPkg, currentModule);
+                moduleManager.bindPackageToModule(currentPkg, currentModule);
             }
             else {
                 addErrorToModule(new ArrayList<String>(), 
@@ -199,7 +105,7 @@ public class ModuleManager implements BackendSupport {
         name.addAll(parentName);
         name.add(path);
         
-        Package pkg = createPackage(formatPath(name), 
+        Package pkg = moduleManager.createPackage(formatPath(name), 
                 currentModule != null ? currentModule : modules.getDefaultModule());
         packageStack.addLast(pkg);
     }
@@ -211,16 +117,6 @@ public class ModuleManager implements BackendSupport {
         if (moveAboveModuleLevel) {
             currentModule = null;
         }
-    }
-
-    private void bindPackageToModule(Package pkg, Module module) {
-        //undo nomodule setting if necessary
-        if (pkg.getModule() != null) {
-            pkg.getModule().getPackages().remove(pkg);
-            pkg.setModule(null);
-        }
-        module.getPackages().add(pkg);
-        pkg.setModule(module);
     }
 
     public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
@@ -336,70 +232,7 @@ public class ModuleManager implements BackendSupport {
     public Set<Module> getCompiledModules(){
         return moduleToNode.keySet();
     }
-
-    public ModuleImport findImport(Module owner, Module dependency) {
-        for (ModuleImport modImprt : owner.getImports()) {
-            if (equalsForModules(modImprt.getModule(), dependency, true)) return modImprt;
-        }
-        return null;
-    }
-
-    public boolean equalsForModules(Module left, Module right, boolean exactVersionMatch) {
-        if (left == right) return true;
-        List<String> leftName = left.getName();
-        List<String> rightName = right.getName();
-        if (leftName.size() != rightName.size()) return false;
-        for(int index = 0 ; index < leftName.size(); index++) {
-            if (!leftName.get(index).equals(rightName.get(index))) return false;
-        }
-        if (exactVersionMatch && !left.getVersion().equals(right.getVersion())) return false;
-        return true;
-    }
-
-    public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
-        for(Module current : listOfModules) {
-            if (equalsForModules(module, current, exactVersionMatch)) return current;
-        }
-        return null;
-    }
-
-    public boolean similarForModules(Module left, Module right) {
-        if (left == right) return true;
-        String leftName = ModuleUtil.toCeylonModuleName(left.getNameAsString());
-        String rightName = ModuleUtil.toCeylonModuleName(right.getNameAsString());
-        return leftName.equals(rightName);
-    }
-
-    /**
-     * This treats Maven and Ceylon modules as similar: com:foo and com.foo will match
-     */
-    public Module findSimilarModule(Module module, List<Module> listOfModules) {
-        for(Module current : listOfModules) {
-            if (similarForModules(module, current)) return current;
-        }
-        return null;
-    }
-
-    public Module findLoadedModule(String moduleName, String searchedVersion) {
-        return findLoadedModule(moduleName, searchedVersion, modules);
-    }
     
-    /**
-     * @Deprecated This looks fishy: why would we have an extra Modules parameter?
-     */
-    @Deprecated
-    public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
-        if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
-            return modules.getDefaultModule();
-        for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(moduleName)
-                    && compareVersions(module, searchedVersion, module.getVersion())){
-                return module;
-            }
-        }
-        return null;
-    }
-
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         //This implementation relies on the ability to read the model from source
         //the compiler for example subclasses this to read lazily and from the compiled model
@@ -443,53 +276,14 @@ public class ModuleManager implements BackendSupport {
     }
     
     protected PhasedUnits createPhasedUnits() {
-        return new PhasedUnits(getContext());
+        return new PhasedUnits(context);
     }
-
-    public Iterable<String> getSearchedArtifactExtensions() {
-        return Arrays.asList("src");
+    
+    protected ModuleManager getModuleManager(){
+        return moduleManager;
     }
-
-    @Override
-    public boolean supportsBackend(Backend backend) {
-        return backend != Backend.None;
-    }
-
-    public static List<String> splitModuleName(String moduleName) {
-        return Arrays.asList(moduleName.split("[\\.]"));
-    }
-
-    public Context getContext(){
+    
+    protected Context getContext(){
         return context;
-    }
-
-    public void prepareForTypeChecking() {
-        // to be overridden by subclasses
-    }
-
-    public void addImplicitImports() {
-    }
-
-    public void modulesVisited() {
-        // to be overridden by subclasses
-    }
-
-    public void visitedModule(Module module, boolean forCompiledModule) {
-        // to be overridden by subclasses
-    }
-
-    protected Module overridesModule(ArtifactResult artifact,
-            Module module, ModuleImport moduleImport) {
-        String realName = artifact.name();
-        String realVersion = artifact.version();
-        if (! realName.equals(module.getNameAsString()) ||
-            ! realVersion.equals(module.getVersion())) {
-            if (module != module.getLanguageModule()) {
-                Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
-                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport(), moduleImport.getNative()));
-                return realModule;
-            }
-        }
-        return null;
     }
 }

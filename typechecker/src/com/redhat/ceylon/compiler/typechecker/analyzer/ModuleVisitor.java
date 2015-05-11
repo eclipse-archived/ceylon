@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * Detect and populate the list of imports for modules.
@@ -44,6 +45,7 @@ public class ModuleVisitor extends Visitor {
      */
     private Module mainModule;
     private final ModuleManager moduleManager;
+    private final ModuleSourceMapper moduleManagerUtil;
     private final Package pkg;
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
@@ -57,8 +59,9 @@ public class ModuleVisitor extends Visitor {
         return completeOnlyAST;
     }
 
-    public ModuleVisitor(ModuleManager moduleManager, Package pkg) {
+    public ModuleVisitor(ModuleManager moduleManager, ModuleSourceMapper moduleManagerUtil, Package pkg) {
         this.moduleManager = moduleManager;
+        this.moduleManagerUtil = moduleManagerUtil;
         this.pkg = pkg;
     }
 
@@ -151,7 +154,7 @@ public class ModuleVisitor extends Visitor {
                             		8000);
                     }
                     if (!completeOnlyAST) {
-                        moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
+                        moduleManagerUtil.addLinkBetweenModuleAndNode(mainModule, that);
                         mainModule.setAvailable(true);
                         mainModule.getAnnotations().clear();
                         buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
@@ -310,7 +313,7 @@ public class ModuleVisitor extends Visitor {
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);
                         }
-                        moduleManager.addModuleDependencyDefinition(moduleImport, that);
+                        moduleManagerUtil.addModuleDependencyDefinition(moduleImport, that);
                     }
                 }
             }

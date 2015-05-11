@@ -9,7 +9,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * Contains phased units
@@ -28,24 +29,29 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private final Context context;
     private final ModuleManager moduleManager;
+    private final ModuleSourceMapper moduleSourceMapper;
     private List<String> moduleFilters;
     private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
 
     public PhasedUnits(Context context) {
         this.context = context;
-        this.moduleManager = new ModuleManager(context);
-        this.moduleManager.initCoreModules();
+        this.moduleManager = new ModuleManager();
+        context.setModules(this.moduleManager.initCoreModules(context.getModules()));
+        this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
     }
 
     public PhasedUnits(Context context, ModuleManagerFactory moduleManagerFactory) {
         this.context = context;
         if(moduleManagerFactory != null){
             this.moduleManager = moduleManagerFactory.createModuleManager(context);
+            context.setModules(this.moduleManager.initCoreModules(context.getModules()));
+            this.moduleSourceMapper = moduleManagerFactory.createModuleManagerUtil(context, this.moduleManager);
         }else{
-            this.moduleManager = new ModuleManager(context);
+            this.moduleManager = new ModuleManager();
+            context.setModules(this.moduleManager.initCoreModules(context.getModules()));
+            this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
         }
-        this.moduleManager.initCoreModules();
     }
     
     public void setSourceFiles(List<VirtualFile> sourceFiles){
@@ -62,6 +68,10 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     
     public ModuleManager getModuleManager() {
         return moduleManager;
+    }
+
+    public ModuleSourceMapper getModuleSourceMapper() {
+        return moduleSourceMapper;
     }
 
     public void parseUnits(List<VirtualFile> srcDirectories) {
@@ -108,7 +118,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             List<CommonToken> tokens = new ArrayList<CommonToken>(tokenStream.getTokens().size()); 
             tokens.addAll(tokenStream.getTokens());
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
-                    moduleManager.getCurrentPackage(), moduleManager,
+                    moduleSourceMapper.getCurrentPackage(), moduleManager, moduleSourceMapper,
                     context, tokens);
             addPhasedUnit(file, phasedUnit);
 
@@ -178,7 +188,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     }
     
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
-        moduleManager.push(dir.getName());
+        moduleSourceMapper.push(dir.getName());
         
         // See if we're defining a new module
         final List<? extends VirtualFile> files = dir.getChildren();
@@ -192,18 +202,18 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
 
         if(checkModuleFilters(definesModule)){
             if(definesModule)
-                moduleManager.visitModuleFile();
+                moduleSourceMapper.visitModuleFile();
             for (VirtualFile file : files) {
                 parseFileOrDirectory(file, srcDir);
             }
         }
-        moduleManager.pop();
+        moduleSourceMapper.pop();
     }
     
     private boolean checkModuleFilters(boolean definesModule) {
         if(moduleFilters == null || moduleFilters.isEmpty())
             return true;
-        Package pkg = moduleManager.getCurrentPackage();
+        Package pkg = moduleSourceMapper.getCurrentPackage();
         String pkgName = pkg.getNameAsString();
         /*
             ; filter example syntax:
