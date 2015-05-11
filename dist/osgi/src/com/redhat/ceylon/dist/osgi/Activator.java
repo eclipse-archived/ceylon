@@ -22,15 +22,15 @@ import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.PathFilter;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.VisibilityType;
-import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.VisibilityType;
+import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
+import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
 
 public class Activator implements BundleActivator {
 

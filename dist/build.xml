@@ -422,7 +422,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-model" depends="install-model-nodeps" />
+    <target name="install-model" depends="install-common,install-model-nodeps" />
     <target name="install-model-nodeps">
         <ant antfile="${ceylon-model.dir}/build.xml" target="publish" dir="${ceylon-model.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -431,7 +431,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-common,install-cmr-nodeps" />
+    <target name="install-cmr" depends="install-model,install-cmr-nodeps" />
     <target name="install-cmr-nodeps">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
