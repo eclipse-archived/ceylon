@@ -7947,9 +7947,11 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             boolean empty = typeArguments.isEmpty();
-            if (!empty) {
+            if (!empty || 
+                    tal instanceof Tree.TypeArgumentList) {
                 tal.addError("does not accept type arguments: '" + 
-                        dec.getName(unit) + "'");
+                        dec.getName(unit) + 
+                        "' is not a generic declaration");
             }
             return empty;
         }
@@ -9102,7 +9104,7 @@ public class ExpressionVisitor extends Visitor {
             Value value = (Value) result;
             if (that.getTypeArgumentList() != null) {
                 that.addError("does not accept type arguments: '" + 
-                        result.getName(unit) + "'");
+                        result.getName(unit) + "' is a value");
             }
             else {
                 ProducedTypedReference pr = 

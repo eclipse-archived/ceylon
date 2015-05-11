@@ -5,9 +5,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,10 +151,11 @@ public class Util {
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tas,
     		List<TypeParameter> typeParameters, ProducedType qt) {
         if (tas instanceof Tree.TypeArgumentList) {
+            int size = typeParameters.size();
             List<ProducedType> typeArguments = 
-                    new ArrayList<ProducedType>(typeParameters.size());
-            Map<TypeParameter, ProducedType> typeArgMap = 
-                    new HashMap<TypeParameter, ProducedType>();
+                    new ArrayList<ProducedType>(size);
+            Map<TypeParameter,ProducedType> typeArgMap = 
+                    new HashMap<TypeParameter,ProducedType>();
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
@@ -162,39 +163,46 @@ public class Util {
                 TypeArgumentList tal = 
                         (Tree.TypeArgumentList) tas;
                 List<Tree.Type> types = tal.getTypes();
-                for (int i=0; i<types.size(); i++) {
-                    ProducedType t = types.get(i).getTypeModel();
+                int count = types.size();
+                for (int i=0; i<count; i++) {
+                    ProducedType t = 
+                            types.get(i).getTypeModel();
                     if (t==null) {
                         typeArguments.add(null);
                     }
                     else {
                         typeArguments.add(t);
-                        if (i<typeParameters.size()) {
-                            typeArgMap.put(typeParameters.get(i), t);
+                        if (i<size) {
+                            TypeParameter tp = 
+                                    typeParameters.get(i);
+                            typeArgMap.put(tp, t);
                         }
                     }
                 }
             }
             else {
-                List<ProducedType> types = tas.getTypeModels();
-                for (int i=0; i<types.size(); i++) {
+                List<ProducedType> types = 
+                        tas.getTypeModels();
+                int count = types.size();
+                for (int i=0; i<count; i++) {
                     ProducedType t = types.get(i);
                     if (t==null) {
                         typeArguments.add(null);
                     }
                     else {
                         typeArguments.add(t);
-                        if (i<typeParameters.size()) {
-                            typeArgMap.put(typeParameters.get(i), t);
+                        if (i<size) {
+                            TypeParameter tp = 
+                                    typeParameters.get(i);
+                            typeArgMap.put(tp, t);
                         }
                     }
                 }
             }
-            for (int i=typeArguments.size(); 
-            		i<typeParameters.size(); 
-                    i++) {
+            for (int i=typeArguments.size(); i<size; i++) {
                 TypeParameter tp = typeParameters.get(i);
-            	ProducedType dta = tp.getDefaultTypeArgument();
+            	ProducedType dta = 
+            	        tp.getDefaultTypeArgument();
             	if (dta==null || 
             	        //necessary to prevent stack overflow
             	        //for illegal recursively-defined
@@ -203,7 +211,8 @@ public class Util {
             		break;
             	}
             	else {
-            	    ProducedType da = dta.substitute(typeArgMap);
+            	    ProducedType da = 
+            	            dta.substitute(typeArgMap);
             		typeArguments.add(da);
             		typeArgMap.put(tp, da);
             	}
@@ -211,7 +220,7 @@ public class Util {
             return typeArguments;
         }
         else {
-            return Collections.<ProducedType>emptyList();
+            return emptyList();
         }
     }
     
