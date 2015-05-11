@@ -1,5 +1,5 @@
-Ceylon common
-=============
+Ceylon model
+============
 
 License
 -------
@@ -13,8 +13,7 @@ agree to license your contribution under the license mentioned above.
 Directory structure
 -------------------
 
-* `src`       - the Ceylon common module sources
-* `test-src`  - the Ceylon common module unit tests
+* `src`       - the Ceylon model module sources
 
 Build the module
 ----------------
@@ -32,5 +31,5 @@ And to run the tests type
 
 Once built, the module lives in this jar:
 
-    ~/.ceylon/repo/com/redhat/ceylon/common/0.2/com.redhat.ceylon.common-0.2.jar
+    ~/.ceylon/repo/com/redhat/ceylon/model/0.2/com.redhat.ceylon.model-0.2.jar
 
