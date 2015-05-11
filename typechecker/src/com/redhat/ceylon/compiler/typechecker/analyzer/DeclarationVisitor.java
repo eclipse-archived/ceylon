@@ -1663,6 +1663,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Scope o = enterScope(p);
         super.visit(that);
         exitScope(o);
+        
         if (that.getAbstractedType()!=null) {
             that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
