@@ -8046,6 +8046,22 @@ public class ExpressionVisitor extends Visitor {
                             paramTypeParams.get(j);
                     TypeParameter argParam = 
                             argTypeParams.get(j);
+                    if (paramParam.isCovariant() &&
+                            !argParam.isCovariant()) {
+                        argNode.addError("argument type constructor is not covariant: '" +
+                                argParam.getName() + "' of '" + atd.getName(unit) + 
+                                "' must have the same variance as '" +
+                                paramParam.getName() + "' of '" + param.getName(unit) + 
+                                "'");
+                    }
+                    else if (paramParam.isContravariant() &&
+                            !argParam.isContravariant()) {
+                        argNode.addError("argument type constructor is not contravariant: '" +
+                                argParam.getName() + "' of '" + atd.getName(unit) + 
+                                "' must have the same variance as '" +
+                                paramParam.getName() + "' of '" + param.getName(unit) + 
+                                "'");
+                    }
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
                         argNode.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
