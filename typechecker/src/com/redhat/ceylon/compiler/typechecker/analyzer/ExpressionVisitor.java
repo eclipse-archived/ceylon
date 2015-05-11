@@ -8361,10 +8361,9 @@ public class ExpressionVisitor extends Visitor {
                     new HashSet<TypeDeclaration>();
             for (Tree.StaticType st: that.getTypes()) {
                 ProducedType type = st.getTypeModel();
-                TypeDeclaration ctd = type.getDeclaration();
-                if (type!=null && ctd!=null) {
+                if (type!=null && type.getDeclaration()!=null) {
                     type = type.resolveAliases();
-                    ctd = type.getDeclaration();
+                    TypeDeclaration ctd = type.getDeclaration();
                     if (!typeSet.add(ctd)) {
                         //this error is not really truly necessary
                         st.addError("duplicate case type: '" + 
