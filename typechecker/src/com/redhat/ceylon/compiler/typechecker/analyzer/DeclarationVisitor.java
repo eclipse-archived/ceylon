@@ -21,7 +21,6 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

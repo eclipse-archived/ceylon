@@ -281,7 +281,7 @@ public class ProducedType extends ProducedReference {
                         if(!tqt.isExactly(qt))
                             return false;
                     }
-                    else {                            
+                    else {
                         TypeDeclaration totd = 
                                 (TypeDeclaration) td.getContainer();
                         ProducedType tqts = 
