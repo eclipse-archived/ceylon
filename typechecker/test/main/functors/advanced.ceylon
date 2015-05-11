@@ -31,4 +31,12 @@ void testAdvancedStuff() {
     Functor<Float,out @List> & Functor<Integer,out @Sequence> h = nothing;
     @type:"Sequence<String>" value result3 = h.fmap(Object.string);
     Functor<Float|Integer, out @List&@Sequence> hh = h;
+    
+    Functor<Integer, @Nothing> funny = 
+            object satisfies Functor<Integer, @Nothing> {
+        shared actual Nothing fmap<Result>(Result(Integer) fun)
+                => nothing;
+    };
+    Functor<Integer, out @Iterable> funn = funny;
+
 }
