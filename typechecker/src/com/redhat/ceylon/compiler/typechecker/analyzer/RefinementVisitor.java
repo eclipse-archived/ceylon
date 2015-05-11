@@ -750,12 +750,12 @@ public class RefinementVisitor extends Visitor {
                     }
                 }
                 if (!ok) {
-                    that.addUnsupportedError("refined member type parameter " + 
+                    that.addUnsupportedError("refined member type parameter '" + 
                             refinedTypeParam.getName() + 
-                            " of " + message(refined) +
-                            " with upper bound which member type parameter " + 
+                            "' of " + message(refined) +
+                            " with upper bound which member type parameter '" + 
                             refiningTypeParam.getName() + 
-                            " does not satisfy not yet supported: '" + 
+                            "' does not satisfy not yet supported: '" + 
                             st.getProducedTypeName(that.getUnit()) + "'");
                 }
             }
