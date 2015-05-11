@@ -1016,7 +1016,7 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = dec.getProducedType(ot, typeArgs);
         //dec = pt.getDeclaration();
         if (tal==null && !params.isEmpty()) {
-            that.addUsageWarning(Warning.deprecation,
+            that.addUsageWarning(Warning.syntaxDeprecation,
                     "implicit use of default type arguments is deprecated (change to '" + 
                             dec.getName(unit) + "<>')");
         }

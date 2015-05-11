@@ -17,5 +17,6 @@ public enum Warning {
     ambiguousAnnotation,
     similarModule,
     importsOtherJdk,
-    javaAnnotationElement
+    javaAnnotationElement,
+    syntaxDeprecation
 }
