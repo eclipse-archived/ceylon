@@ -50,6 +50,11 @@ public class FreeValue
     }
 
     @Override
+    public boolean getLate(){
+        return ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) declaration).isLate();
+    }
+    
+    @Override
     public boolean getVariable(){
         return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isVariable();
     }

@@ -41,6 +41,9 @@ import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, Incomp
 shared sealed interface ValueDeclaration
         satisfies FunctionOrValueDeclaration {
     
+    "True if this declaration is annotated with [[late|ceylon.language::late]]."
+    shared formal Boolean late;
+    
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."
     shared formal Boolean variable;
 
