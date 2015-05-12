@@ -1045,6 +1045,7 @@ public class Unit {
                                     typeArguments);
                     dt.setUnderlyingType(pt.getUnderlyingType());
                     dt.setVarianceOverrides(pt.getVarianceOverrides());
+                    dt.setTypeConstructor(pt.getTypeConstructorParameter());
                     dt.setRaw(pt.isRaw());
                     return dt;
                 }
