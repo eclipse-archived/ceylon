@@ -1879,6 +1879,7 @@ public class Util {
                     second.getTypeArguments().get(tp);
             if (firstArg==null || secondArg==null) {
                 arg = new UnknownType(unit).getType();
+                continue;
             }
             boolean firstCo = first.isCovariant(tp);
             boolean secondCo = second.isCovariant(tp);
