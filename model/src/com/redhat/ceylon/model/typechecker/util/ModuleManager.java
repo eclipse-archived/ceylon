@@ -40,10 +40,9 @@ public class ModuleManager implements BackendSupport {
         return pkg;
     }
 
-    public Modules initCoreModules(Modules initialModules) {
+    public void initCoreModules(Modules initialModules) {
         modules = initialModules;
-        if ( modules == null ) {
-            modules = new Modules();
+        if ( modules.getLanguageModule() == null ) {
             //build empty package
             final Package emptyPackage = createPackage("", null);
 
@@ -67,7 +66,6 @@ public class ModuleManager implements BackendSupport {
             defaultModule.addImport(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
         }
-        return modules;
     }
 
     public void bindPackageToModule(Package pkg, Module module) {

@@ -39,14 +39,13 @@ public abstract class ReflectionModuleManager extends LazyModuleManager {
     }
 
     @Override
-    public Modules initCoreModules(Modules modules) {
-        modules = super.initCoreModules(modules);
+    public void initCoreModules(Modules modules) {
+        super.initCoreModules(modules);
         // FIXME: this should go away somewhere else, but we need it to be set otherwise
         // when we load the module from compiled sources, ModuleManager.getOrCreateModule() will not
         // return the language module because its version is null
         Module languageModule = modules.getLanguageModule();
         languageModule.setVersion(Versions.CEYLON_VERSION_NUMBER);
-        return modules;
     }
     
     @Override
