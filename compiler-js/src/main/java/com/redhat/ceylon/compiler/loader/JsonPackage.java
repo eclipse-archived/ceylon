@@ -778,7 +778,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                         }
                     }
                 }
-                if (td == null) {
+                if (td == null && typeParams != null) {
                     for (TypeParameter typeParam : typeParams) {
                         if (typeParam.getName().equals(tname)) {
                             td = typeParam;
@@ -869,7 +869,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                         variances.put(_cparm, SiteVariance.values()[(int)ptparm.get(MetamodelGenerator.KEY_US_VARIANCE)]);
                     }
                     concretes.put(_cparm, _pt);
-                } else if (ptparm.containsKey(MetamodelGenerator.KEY_NAME)) {
+                } else if (ptparm.containsKey(MetamodelGenerator.KEY_NAME) && typeParams != null) {
                     //Look for type parameter with same name
                     for (TypeParameter typeParam : typeParams) {
                         if (typeParam.getName().equals(ptparm.get(MetamodelGenerator.KEY_NAME))) {
