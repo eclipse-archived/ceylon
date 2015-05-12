@@ -42,13 +42,13 @@ import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.loader.NamingBase;
 
 /**
  * <p>
@@ -460,7 +460,7 @@ public class Main {
             ZipFile zipFile = new ZipFile(file);
             try{
                 // Try Ceylon module first
-                List<ZipEntry> moduleDescriptors = findEntries(zipFile, "", Naming.MODULE_DESCRIPTOR_CLASS_NAME+".class");
+                List<ZipEntry> moduleDescriptors = findEntries(zipFile, "", NamingBase.MODULE_DESCRIPTOR_CLASS_NAME+".class");
                 if(moduleDescriptors.size() == 1) {
                     try {
                         return loadCeylonModuleCar(file, zipFile, moduleDescriptors.get(0), null, null);
@@ -530,7 +530,7 @@ public class Main {
                 
                 // Try Ceylon module first
                 String ceylonPath = name.replace('.', '/');
-                ZipEntry moduleDescriptor = zipFile.getEntry(ceylonPath+"/"+Naming.MODULE_DESCRIPTOR_CLASS_NAME+".class");
+                ZipEntry moduleDescriptor = zipFile.getEntry(ceylonPath+"/"+NamingBase.MODULE_DESCRIPTOR_CLASS_NAME+".class");
                 if(moduleDescriptor != null)
                     return loadCeylonModuleCar(file, zipFile, moduleDescriptor, name, version);
                 

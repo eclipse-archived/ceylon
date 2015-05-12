@@ -10,7 +10,6 @@ import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
 
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -19,6 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -245,7 +245,7 @@ public class FreeValue
         }else{
             Class<?> javaClass = Metamodel.getJavaClass(declaration);
             // FIXME: pretty sure this doesn't work with interop and fields
-            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration));
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
             if (declaredGetter != null) {
                 return declaredGetter.getAnnotations();
             } else {
@@ -268,7 +268,7 @@ public class FreeValue
         }else{
             Class<?> javaClass = Metamodel.getJavaClass(declaration);
             // FIXME: pretty sure this doesn't work with interop and fields
-            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration));
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
             return declaredGetter != null ? declaredGetter.isAnnotationPresent(annotationType) : false;
         }
     }

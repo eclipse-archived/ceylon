@@ -14,7 +14,6 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.MutationException;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -24,6 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
@@ -116,7 +116,7 @@ public class AppliedValue<Get, Set>
             LazyValue lazyDecl = (LazyValue) decl;
             java.lang.Class<?> javaClass = ((ReflectionClass)lazyDecl.classMirror).klass;
             // FIXME: we should really save the getter name in the LazyDecl
-            String getterName = Naming.getGetterName(lazyDecl);
+            String getterName = NamingBase.getGetterName(lazyDecl);
             try {
                 // toplevels don't have inheritance
                 Method m = javaClass.getDeclaredMethod(getterName);
@@ -190,7 +190,7 @@ public class AppliedValue<Get, Set>
             }
         }else if(decl instanceof LazyValue){
             // FIXME: we should really save the getter name in the LazyDecl
-            String setterName = Naming.getSetterName(decl);
+            String setterName = NamingBase.getSetterName(decl);
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 m.setAccessible(true);

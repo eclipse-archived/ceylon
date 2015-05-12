@@ -9,12 +9,12 @@ import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.SetterDeclaration$impl;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.loader.NamingBase;
 
 @Ceylon(major = 8)
 @Class
@@ -42,7 +42,7 @@ public class FreeSetter
                     com.redhat.ceylon.model.typechecker.model.Setter setter = ((com.redhat.ceylon.model.typechecker.model.Setter)declaration);
                     this.value = (FreeValue) Metamodel.getOrCreateMetamodel(setter.getGetter());
                     java.lang.Class<?> javaClass = Metamodel.getJavaClass(value.declaration);
-                    String setterName = Naming.getSetterName(value.declaration);
+                    String setterName = NamingBase.getSetterName(value.declaration);
                     this.declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
                 }
             }

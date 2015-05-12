@@ -39,11 +39,8 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
 
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
 import com.redhat.ceylon.compiler.java.language.CharArray;
@@ -64,10 +61,10 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
@@ -84,6 +81,7 @@ import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
@@ -128,29 +126,6 @@ public class Metamodel {
     }
     
     public static void resetModuleManager() {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new Logger(){
-
-            @Override
-            public void error(String str) {
-                System.err.println("ERROR: "+str);
-            }
-
-            @Override
-            public void warning(String str) {
-                System.err.println("WARN: "+str);
-            }
-
-            @Override
-            public void info(String str) {
-                System.err.println("INFO: "+str);
-            }
-
-            @Override
-            public void debug(String str) {
-                System.err.println("DEBUG: "+str);
-            }
-            
-        }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT, java.net.Proxy.NO_PROXY);
         moduleManager = new RuntimeModuleManager();
         moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
@@ -602,14 +577,14 @@ public class Metamodel {
     }
 
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.model.typechecker.model.Module module) {
-        String className = module.getNameAsString() + "." + Naming.MODULE_DESCRIPTOR_CLASS_NAME;
+        String className = module.getNameAsString() + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
         ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(module, className);
         return classMirror.klass;
         
     }
     
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.model.typechecker.model.Package pkg) {
-        String className = ((LazyPackage) pkg).getNameAsString()+ "." + Naming.PACKAGE_DESCRIPTOR_CLASS_NAME;
+        String className = ((LazyPackage) pkg).getNameAsString()+ "." + NamingBase.PACKAGE_DESCRIPTOR_CLASS_NAME;
         ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(pkg.getModule(), className);
         return classMirror != null ? classMirror.klass : null;
     }
@@ -1258,7 +1233,7 @@ public class Metamodel {
     @SuppressWarnings("unchecked")
     public static <T> T parseEnumerationReference(java.lang.Class<T> klass) {
         FreeClassOrInterface decl = (FreeClassOrInterface)getOrCreateMetamodel(klass);
-        String getterName = Naming.getGetterName(decl.declaration);
+        String getterName = NamingBase.getGetterName(decl.declaration);
         try {
             java.lang.reflect.Method method = klass.getDeclaredMethod(getterName);
             method.setAccessible(true);
@@ -1433,7 +1408,7 @@ public class Metamodel {
                                 +" of type parameter "+typeParameter.getQualifiedNameString());
                     }
                 }
-                if(!ExpressionVisitor.argumentSatisfiesEnumeratedConstraint(qualifyingType, declaration, typeArguments, typeArgument, typeParameter)){
+                if(!ModelUtil.argumentSatisfiesEnumeratedConstraint(qualifyingType, declaration, typeArguments, typeArgument, typeParameter)){
                     throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
                             +" does not conform to enumerated constraints "
                             +" of type parameter "+typeParameter.getQualifiedNameString());

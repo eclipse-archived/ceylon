@@ -9,13 +9,12 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.CmrRepository;
-import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.cmr.VisibilityType;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -158,7 +157,7 @@ public class Launcher {
 
             @Override
             public String repositoryDisplayString() {
-                return NodeUtils.UNKNOWN_REPOSITORY;
+                return "Unknown repository";
             }
 
             @Override
@@ -168,7 +167,7 @@ public class Launcher {
             }
 
             @Override
-            public CmrRepository repository() {
+            public Repository repository() {
                 // TODO Auto-generated method stub
                 return null;
             }
