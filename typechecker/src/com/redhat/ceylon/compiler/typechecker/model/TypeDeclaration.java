@@ -271,7 +271,7 @@ public abstract class TypeDeclaration extends Declaration
             for (TypeParameter p: typeParameters) {
                 ProducedType pta = new ProducedType();
                 if (p.isTypeConstructor()) {
-                    pta.setTypeConstructor(true);
+                    pta.setTypeConstructor(p);
                 }
                 pta.setDeclaration(p);
                 map.put(p, pta);

@@ -178,7 +178,7 @@ public class Util {
                             TypeParameter tp = 
                                     typeParameters.get(i);
                             if (tp.isTypeConstructor()) {
-                                setTypeConstructor(type);
+                                setTypeConstructor(type,tp);
                             }
                             typeArgMap.put(tp, t);
                         }
@@ -1199,7 +1199,8 @@ public class Util {
                         .getPrimary());
     }
 
-    static boolean setTypeConstructor(Tree.Type t) {
+    static boolean setTypeConstructor(Tree.Type t,
+            TypeParameter typeParam) {
         ProducedType pt = t.getTypeModel();
         if (pt == null) {
             return false;
@@ -1209,8 +1210,8 @@ public class Util {
                 Tree.IntersectionType it = 
                         (Tree.IntersectionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
-                    if (setTypeConstructor(st)) {
-                        pt.setTypeConstructor(true);
+                    if (setTypeConstructor(st,typeParam)) {
+                        pt.setTypeConstructor(typeParam);
                     }
                 }
             }
@@ -1218,8 +1219,8 @@ public class Util {
                 Tree.UnionType it = 
                         (Tree.UnionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
-                    if (setTypeConstructor(st)) {
-                        pt.setTypeConstructor(true);
+                    if (setTypeConstructor(st,typeParam)) {
+                        pt.setTypeConstructor(typeParam);
                     }
                 }
             }
@@ -1227,7 +1228,7 @@ public class Util {
                 Tree.SimpleType s = 
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
-                    pt.setTypeConstructor(true);
+                    pt.setTypeConstructor(typeParam);
                 }
             }
             return pt.isTypeConstructor();

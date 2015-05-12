@@ -89,23 +89,35 @@ void testDummy() {
 }
 
 interface High<out T> given T<X> given X satisfies String {}
+interface Low<out T> satisfies High<T> given T<X> given X satisfies Object {}
 interface U<X> given X satisfies Object {}
 interface V<X> satisfies U<X> given X satisfies Object {}
 interface W<X> satisfies U<X> given X satisfies String {}
 interface T<X> given X satisfies Object {}
 interface S<X> satisfies U<String> given X satisfies Object {}
+interface N<X,in Y=Object> {}
+interface M<X,Y=Object> satisfies N<Y,X> {}
+interface L<A,B=Anything> satisfies N<A,B> {}
 
 void testSubtyping(High<U> h1, 
         High<V> h2, 
         High<W> h3, 
         High<U|V> h4, 
         High<T> h5, 
-        High<S> h6) {
+        High<S> h6,
+        High<M> h7,
+        High<L> h8,
+        Low<L> l1,
+        Low<S> l2) {
     High<U> ha = h1;
     High<U> hb = h2;
-    @error High<U> hc = h3;
+    High<U> hc = h3;
     High<U> hd = h4;
     @error High<U> he = h5;
-    @error High<V> h = h1;
-    @error High<U> hf = h6;
+    @error High<V> hf = h1;
+    @error High<U> hg = h6;
+    @error High<N> hh = h7;
+    High<N> hi = h8;
+    High<N> hj = l1;
+    @error High<N> hk = l2;
 }
