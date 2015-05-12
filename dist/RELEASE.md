@@ -16,6 +16,8 @@ complies and runs OK.
 1. Make sure the following projects are up-to-date or at the proper version
   - ceylon-spec
   - ceylon-compiler
+  - ceylon-common
+  - ceylon-model
   - ceylon-js
   - ceylon.language
   - ceylon-module-resolver
