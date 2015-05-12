@@ -124,7 +124,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     }
 
     @Override
-    protected Module findModuleForClassMirror(ClassMirror classMirror) {
+    public Module findModuleForClassMirror(ClassMirror classMirror) {
         Class<?> klass = ((ReflectionClass)classMirror).klass;
         Module ret = findModuleForClass(klass);
         if(ret == null)

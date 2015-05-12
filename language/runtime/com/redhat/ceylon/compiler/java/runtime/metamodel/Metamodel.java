@@ -152,7 +152,7 @@ public class Metamodel {
             
         }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT, java.net.Proxy.NO_PROXY);
         moduleManager = new RuntimeModuleManager();
-        moduleManager.initCoreModules(null);
+        moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
