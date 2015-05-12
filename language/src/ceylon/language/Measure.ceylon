@@ -94,7 +94,7 @@ class Measure<Element>(first, size)
             => 0 <= x.offset(first) < size;
     
     shared actual 
-    Boolean includes(List<Anything> sublist) {
+    Boolean includes(List<> sublist) {
         if (sublist.empty) {
             return true;
         } else if (is Range<Element> sublist) {

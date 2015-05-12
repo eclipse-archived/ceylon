@@ -178,7 +178,7 @@ class Span<Element>(first, last)
     }
     
     shared actual 
-    Boolean includes(List<Anything> sublist) {
+    Boolean includes(List<> sublist) {
         if (sublist.empty) {
             return true;
         } else if (is Range<Element> sublist) {

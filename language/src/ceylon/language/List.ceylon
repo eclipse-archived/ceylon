@@ -189,7 +189,7 @@ shared interface List<out Element>
         if (is String that) {
             return false;
         }
-        if (is List<Anything> that) {
+        if (is List<> that) {
             if (that.size==size) {
                 for (index in 0:size) {
                     value x = getFromFirst(index);
@@ -350,14 +350,14 @@ shared interface List<out Element>
      start of this list."
     see (`function endsWith`)
     shared default 
-    Boolean startsWith(List<Anything> sublist)
+    Boolean startsWith(List<> sublist)
             => includesAt(0, sublist);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
     see (`function startsWith`)
     shared default 
-    Boolean endsWith(List<Anything> sublist)
+    Boolean endsWith(List<> sublist)
             => includesAt(size-sublist.size, sublist);
     
     "Determine if the given [[list|sublist]] occurs as a 
@@ -366,7 +366,7 @@ shared interface List<out Element>
     Boolean includesAt(
             "The index at which the [[sublist]] might occur."
             Integer index, 
-            List<Anything> sublist) {
+            List<> sublist) {
         if (sublist.size>size-index) {
             return false;
         }
@@ -395,7 +395,7 @@ shared interface List<out Element>
     "Determine if the given [[list|sublist]] occurs as a 
      sublist at some index in this list."
     shared default 
-    Boolean includes(List<Anything> sublist) {
+    Boolean includes(List<> sublist) {
         if (sublist.empty) {
             return true;
         }
@@ -410,14 +410,14 @@ shared interface List<out Element>
     "The indexes in this list at which the given 
      [[list|sublist]] occurs as a sublist."
     shared default 
-    {Integer*} inclusions(List<Anything> sublist) 
+    {Integer*} inclusions(List<> sublist) 
             => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
     "The first index in this list at which the given 
      [[list|sublist]] occurs as a sublist."
     shared default 
-    Integer? firstInclusion(List<Anything> sublist) {
+    Integer? firstInclusion(List<> sublist) {
         for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -431,7 +431,7 @@ shared interface List<out Element>
     "The last index in this list at which the given 
      [[list|sublist]] occurs as a sublist."
     shared default 
-    Integer? lastInclusion(List<Anything> sublist) {
+    Integer? lastInclusion(List<> sublist) {
         for (index in (0:size-sublist.size+1).reversed) {
             if (includesAt(index,sublist)) {
                 return index;

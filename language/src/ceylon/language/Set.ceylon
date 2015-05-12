@@ -27,7 +27,7 @@ shared interface Set<out Element>
     "Determines if this set is a superset of the given 
      `Set`, that is, if this set contains all of the 
      elements in the given set."
-    shared default Boolean superset(Set<Object> set) {
+    shared default Boolean superset(Set<> set) {
         for (element in set) {
             if (!contains(element)) {
                 return false;
@@ -41,7 +41,7 @@ shared interface Set<out Element>
     "Determines if this set is a subset of the given `Set`, 
      that is, if the given set contains all of the elements 
      in this set."
-    shared default Boolean subset(Set<Object> set) {
+    shared default Boolean subset(Set<> set) {
         for (element in this) {
             if (!element in set) {
                 return false;
@@ -59,7 +59,7 @@ shared interface Set<out Element>
      set if it is both a subset and a superset of the second
      set."
     shared actual default Boolean equals(Object that) {
-        if (is Set<Object> that,
+        if (is Set<> that,
                 that.size==size) {
             for (element in this) {
                 if (!element in that) {
@@ -133,8 +133,8 @@ shared object emptySet
             given Other satisfies Object
             => this;
     
-    subset(Set<Object> set) => true;
-    superset(Set<Object> set) => set.empty;
+    subset(Set<> set) => true;
+    superset(Set<> set) => set.empty;
     
     clone() => this;
     iterator() => emptyIterator;

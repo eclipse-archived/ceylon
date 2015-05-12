@@ -117,7 +117,7 @@
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
-        satisfies Category
+        satisfies Category<>
         given Absent satisfies Null {
     
     "An iterator for the elements belonging to this stream."
