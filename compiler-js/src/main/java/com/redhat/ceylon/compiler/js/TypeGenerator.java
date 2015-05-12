@@ -451,9 +451,13 @@ public class TypeGenerator {
             }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                extendedType.getTypeArgumentList().getTypeModels();
-                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getTypeArgumentList().getTypeModels()), gen, false, null);
+                List<ProducedType> typeArgs = null;
+                if (extendedType.getTypeArgumentList() != null) {
+                    typeArgs = extendedType.getTypeArgumentList().getTypeModels();
+                }
+                TypeUtils.printTypeArguments(that,
+                        TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(), typeArgs),
+                        gen, false, null);
                 gen.out(",");
             }
             gen.out(gen.getNames().self(d), ")");
