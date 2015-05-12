@@ -8,7 +8,9 @@ shared final annotation class TestAnnotation()
 @test
 shared void bug347() {
     for (value m in modules.list) {
-        if(m.name.startsWith("org.apache")){
+        if(m.name.startsWith("org.apache") 
+            || m.name.startsWith("com.redhat.ceylon.maven-support")
+            || m.name.startsWith("org.jboss.jandex")){
             continue;
         }
         for (value member in m.members) {
