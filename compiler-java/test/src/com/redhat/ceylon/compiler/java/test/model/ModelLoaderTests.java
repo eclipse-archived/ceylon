@@ -302,7 +302,8 @@ public class ModelLoaderTests extends CompilerTests {
         VFS vfs = new VFS();
         com.redhat.ceylon.compiler.typechecker.context.Context context = new com.redhat.ceylon.compiler.typechecker.context.Context(repoManager, vfs);
         RuntimeModuleManager moduleManager = new RuntimeModuleManager();
-        context.setModules(moduleManager.initCoreModules(null));
+        context.setModules(new Modules());
+        moduleManager.initCoreModules(null);
         moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
                 getClass().getClassLoader());
         RuntimeModelLoader modelLoader = moduleManager.getModelLoader();

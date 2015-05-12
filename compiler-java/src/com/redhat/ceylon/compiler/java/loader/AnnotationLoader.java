@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.java.codegen.ObjectLiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.StringLiteralAnnotationTerm;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
-import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
@@ -51,22 +50,13 @@ import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.loader.model.JavaMethod;
-import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyMethod;
-import com.redhat.ceylon.model.loader.model.OutputElement;
-import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  *
@@ -74,10 +64,10 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class AnnotationLoader {
 
-    private CeylonModelLoader modelLoader;
+    private AbstractModelLoader modelLoader;
     private Unit typeFactory;
 
-    public AnnotationLoader(CeylonModelLoader modelLoader, Unit unit) {
+    public AnnotationLoader(AbstractModelLoader modelLoader, Unit unit) {
         this.modelLoader = modelLoader;
         this.typeFactory = unit;
     }
