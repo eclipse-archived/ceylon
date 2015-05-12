@@ -1084,8 +1084,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             comprehension is considered a child of the clause that immediately precedes 
             it.</para>
             
-            <synopsis>Comprehension: InitialComprehensionClause</synopsis>
-            <synopsis>InitialComprehensionClause: ForComprehensionClause | IfComprehensionClause</synopsis>
+            <synopsis>Comprehension: ForComprehensionClause | IfComprehensionClause</synopsis>
             <synopsis>ForComprehensionClause: "for" ForIterator ComprehensionClause</synopsis>
             <synopsis>IfComprehensionClause: "if" ConditionList ComprehensionClause</synopsis>
             <synopsis>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</synopsis>
