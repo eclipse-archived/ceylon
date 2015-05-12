@@ -6,7 +6,6 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build" />
-    <property name="build.bin" value="${build.dir}/bin" />
     <property name="build.dist" value="${build.dir}/dist" />
     <property name="build.dist.repo" value="${build.dist}/repo" />
     <property name="build.classes" location="${build.dir}/classes" />
@@ -17,7 +16,6 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
-    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
@@ -67,7 +65,6 @@
 
     <target name="ceylon-model.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.model.dir}"/>
-        <mkdir dir="${build.bin.repo}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>    	
@@ -85,14 +82,6 @@
     </target>
 
     <target name="build" depends="ceylon-model.jar">
-        <mkdir dir="${build.bin}" />
-        <copy todir="${build.bin}">
-            <fileset dir="${basedir}/bin">
-            </fileset>
-            <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
-            </filterset>
-        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
@@ -143,9 +132,6 @@
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist.repo}" />
-        </copy>
-        <copy todir="${ceylon.bin.dir}" overwrite="true">
-            <fileset dir="${build.bin}" />
         </copy>
     </target>
 
