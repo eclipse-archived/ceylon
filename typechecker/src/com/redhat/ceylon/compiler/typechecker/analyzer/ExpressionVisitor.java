@@ -1551,13 +1551,15 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
-        TypeParameter tpd = that.getDeclarationModel();
-        ProducedType dta = tpd.getDefaultTypeArgument();
-        if (dta!=null) {
-            for (ProducedType st: tpd.getSatisfiedTypes()) {
-                checkAssignable(dta, st, 
-                        that.getTypeSpecifier().getType(), 
-                        "default type argument does not satisfy type constraint");
+        Tree.TypeSpecifier ts = that.getTypeSpecifier();
+        if (ts!=null) {
+            TypeParameter tpd = that.getDeclarationModel();
+            ProducedType dta = tpd.getDefaultTypeArgument();
+            if (dta!=null) {
+                for (ProducedType st: tpd.getSatisfiedTypes()) {
+                    checkAssignable(dta, st, ts.getType(),
+                            "default type argument does not satisfy type constraint");
+                }
             }
         }
     }
@@ -2967,8 +2969,20 @@ public class ExpressionVisitor extends Visitor {
             return ((TypeDeclaration) dec).getType();
         }
         else {
-            return dec.getProducedReference(qt,
-                    Collections.<ProducedType>emptyList());
+            List<ProducedType> list;
+            if (dec instanceof Generic) {
+                list = new ArrayList<ProducedType>();
+                List<TypeParameter> tps = 
+                        ((Generic) dec).getTypeParameters();
+                for (TypeParameter tp: tps) {
+                    list.add(tp.getType());
+                }
+                
+            }
+            else {
+                list = Collections.<ProducedType>emptyList();
+            }
+            return dec.getProducedReference(qt,list);
         }
     }
 
@@ -6709,7 +6723,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Term p = that.getPrimary();
         while (p instanceof Tree.Expression &&
                 p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
-            p = ((Tree.Expression) p).getTerm();
+            Tree.Expression e = (Tree.Expression) p;
+            p = e.getTerm();
         }
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
