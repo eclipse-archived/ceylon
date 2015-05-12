@@ -393,13 +393,30 @@ public class TypeUtils {
         return null;
     }
 
-    public static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
-        if (params != null && targs != null && params.size() == targs.size()) {
-            HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
-            for (int i = 0; i < targs.size(); i++) {
-                r.put(params.get(i), targs.get(i));
+    public static List<ProducedType> getDefaultTypeArguments(List<TypeParameter> tparms) {
+        final ArrayList<ProducedType> targs = new ArrayList<>(tparms.size());
+        for (TypeParameter tp : tparms) {
+            ProducedType t = tp.getDefaultTypeArgument();
+            if (t == null) {
+                t = tp.getUnit().getAnythingDeclaration().getType();
             }
-            return r;
+            targs.add(t);
+        }
+        return targs;
+    }
+
+    public static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
+        if (params != null) {
+            if (targs == null) {
+                targs = getDefaultTypeArguments(params);
+            }
+            if (params.size() == targs.size()) {
+                HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+                for (int i = 0; i < targs.size(); i++) {
+                    r.put(params.get(i), targs.get(i));
+                }
+                return r;
+            }
         }
         return null;
     }
