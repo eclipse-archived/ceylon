@@ -71,6 +71,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -8099,53 +8100,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType receiver, Declaration member, 
             List<ProducedType> typeArguments, ProducedType argType,
             TypeParameter param) {
-        
-        List<ProducedType> caseTypes = param.getCaseTypes();
-        if (caseTypes==null || caseTypes.isEmpty()) {
-            //no enumerated constraint
-            return true;
-        }
-        
-        //if the type argument is a subtype of one of the cases
-        //of the type parameter then the constraint is satisfied
-        for (ProducedType ct: caseTypes) {
-            ProducedType cts = 
-                    ct.getProducedType(receiver, 
-                            member, typeArguments);
-            if (argType.isSubtypeOf(cts)) {
-                return true;
-            }
-        }
-
-        //if the type argument is itself a type parameter with
-        //an enumerated constraint, and every enumerated case
-        //is a subtype of one of the cases of the type parameter,
-        //then the constraint is satisfied
-        if (argType.getDeclaration() instanceof TypeParameter) {
-            List<ProducedType> argCaseTypes = 
-                    argType.getDeclaration().getCaseTypes();
-            if (argCaseTypes!=null && 
-                    !argCaseTypes.isEmpty()) {
-                for (ProducedType act: argCaseTypes) {
-                    boolean foundCase = false;
-                    for (ProducedType ct: caseTypes) {
-                        ProducedType cts = 
-                                ct.getProducedType(receiver, 
-                                        member, typeArguments);
-                        if (act.isSubtypeOf(cts)) {
-                            foundCase = true;
-                            break;
-                        }
-                    }
-                    if (!foundCase) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-
-        return false;
+        // Moved there because used in the metamodel
+        return ModelUtil.argumentSatisfiesEnumeratedConstraint(receiver, member, typeArguments, argType, param);
     }
 
     private void visitExtendedOrAliasedType(Tree.SimpleType et,
