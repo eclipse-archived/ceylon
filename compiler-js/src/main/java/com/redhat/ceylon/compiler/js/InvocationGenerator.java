@@ -38,6 +38,26 @@ public class InvocationGenerator {
         retainedVars = rv;
     }
 
+    private Map<TypeParameter,ProducedType> getTypeArguments(Tree.Primary typeArgSource) {
+        if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
+            if (smote.getDeclaration() instanceof Constructor &&
+                    !((Functional)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
+                return smote.getTarget().getTypeArguments();
+            } else if (smote.getDeclaration() instanceof Functional) {
+                Map<TypeParameter,ProducedType> targs = TypeUtils.matchTypeParametersWithArguments(
+                        ((Functional)smote.getDeclaration()).getTypeParameters(),
+                        smote.getTypeArguments() == null ? null :
+                        smote.getTypeArguments().getTypeModels());
+                if (targs == null) {
+                    gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
+                }
+                return targs;
+            }
+        }
+        return null;
+    }
+
     public void generateInvocation(Tree.InvocationExpression that) {
         final Tree.Primary typeArgSource = that.getPrimary();
         if (that.getNamedArgumentList()!=null) {
@@ -71,10 +91,7 @@ public class InvocationGenerator {
                     Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) typeArgSource;
                     if (mte.getDeclaration() instanceof Functional) {
                         Functional f = (Functional) mte.getDeclaration();
-                        Tree.TypeArguments targs = null;
-                        if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
-                            targs = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments();
-                        }
+                        Map<TypeParameter, ProducedType> targs = getTypeArguments(typeArgSource);
                         applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
                     }
                 }
@@ -83,25 +100,7 @@ public class InvocationGenerator {
         }
         else {
             final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            final Map<TypeParameter, ProducedType> targs;
-            if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
-                Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
-                if (smote.getDeclaration() instanceof Constructor &&
-                        !((Functional)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
-                    targs = smote.getTarget().getTypeArguments();
-                } else if (smote.getDeclaration() instanceof Functional) {
-                    targs = TypeUtils.matchTypeParametersWithArguments(
-                            ((Functional)smote.getDeclaration()).getTypeParameters(),
-                            smote.getTypeArguments().getTypeModels());
-                    if (targs == null) {
-                        gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
-                    }
-                } else {
-                    targs = null;
-                }
-            } else {
-                targs = null;
-            }
+            final Map<TypeParameter, ProducedType> targs = getTypeArguments(typeArgSource);
             if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
                     && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
                 gen.out("(");
@@ -304,7 +303,7 @@ public class InvocationGenerator {
     }
 
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames, boolean superAccess, Tree.TypeArguments targs) {
+                Map<String, String> argVarNames, boolean superAccess, Map<TypeParameter, ProducedType> targs) {
         final ParameterList plist = func.getParameterLists().get(0);
         boolean first=true;
         if (superAccess) {
@@ -328,13 +327,11 @@ public class InvocationGenerator {
             }
             first = false;
         }
-        if (targs != null && !targs.getTypeModels().isEmpty()) {
-            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                    func.getTypeParameters(), targs.getTypeModels());
+        if (targs != null && !targs.isEmpty()) {
             if (!first){
                 gen.out(",");
             }
-            TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
+            TypeUtils.printTypeArguments(argList, targs, gen, false, null);
         }
         gen.out(")");
     }
