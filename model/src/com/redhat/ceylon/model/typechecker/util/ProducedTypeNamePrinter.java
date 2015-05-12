@@ -525,12 +525,13 @@ public class ProducedTypeNamePrinter {
             }
         }
 
-        printDeclaration(ptn, pt.getDeclaration(), 
-                fullyQualified, unit);
+        TypeDeclaration ptd = pt.getDeclaration();
+        printDeclaration(ptn, ptd, fullyQualified, unit);
 
         List<ProducedType> args = pt.getTypeArgumentList();
-        List<TypeParameter> params = pt.getDeclaration().getTypeParameters();
-        if (printTypeParameters() && 
+        List<TypeParameter> params = ptd.getTypeParameters();
+        if (!pt.isTypeConstructor() && 
+                printTypeParameters() && 
                 !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;

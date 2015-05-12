@@ -270,6 +270,9 @@ public abstract class TypeDeclaration extends Declaration
             		new HashMap<TypeParameter,ProducedType>();
             for (TypeParameter p: typeParameters) {
                 ProducedType pta = new ProducedType();
+                if (p.isTypeConstructor()) {
+                    pta.setTypeConstructor(p);
+                }
                 pta.setDeclaration(p);
                 map.put(p, pta);
             }

@@ -14,6 +14,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
+    private boolean typeConstructor;
     private Boolean hasNonErasedBounds;
     private List<Declaration> members = new ArrayList<Declaration>(0);
     private boolean captured;
@@ -47,7 +48,15 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setContravariant(boolean contravariant) {
         this.contravariant = contravariant;
     }
-        
+    
+    public boolean isTypeConstructor() {
+        return typeConstructor;
+    }
+    
+    public void setTypeConstructor(boolean typeConstructor) {
+        this.typeConstructor = typeConstructor;
+    }
+    
     @Override
     public boolean isOverloaded() {
     	return false;
