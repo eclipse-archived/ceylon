@@ -3708,7 +3708,8 @@ public class ExpressionVisitor extends Visitor {
                     return unit.denotableType(argType);
                 }
             }
-            else if (paramTypeDec instanceof TypeParameter) {
+            else if (paramTypeDec instanceof TypeParameter &&
+                    !paramTypeDec.isParameterized()) {
                 TypeParameter tp2 = 
                         (TypeParameter) paramTypeDec;
                 if (!visited.contains(tp2)) {
