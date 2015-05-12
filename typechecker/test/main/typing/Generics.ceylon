@@ -239,6 +239,8 @@ class Generics() {
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
+    interface WithInvariant<X> {}
+    
     @error: "sealed interface"
     interface SequenceSequence<out T, out X> 
             satisfies Sequence<T>
@@ -334,10 +336,20 @@ class Generics() {
     @error Generics.Producer<Holder> ghp = Generics.Producer<Holder>();
     @error Generics.Producer<Holder>? gohp = null;
     
-    @error object wc satisfies WithCovariant {}
-    @error object wch satisfies WithCovariant<Holder> {}
-    @error object gwc satisfies Generics.WithCovariant {}
-    @error object gwch satisfies Generics.WithCovariant<Holder> {}
+    @error object wc satisfies WithInvariant {}
+    @error object wch satisfies WithInvariant<Holder> {}
+    @error object gwc satisfies Generics.WithInvariant {}
+    @error object gwch satisfies Generics.WithInvariant<Holder> {}
+    
+    object wco satisfies WithCovariant {}
+    @error object wcho satisfies WithCovariant<Holder> {}
+    object gwco satisfies Generics.WithCovariant {}
+    @error object gwcho satisfies Generics.WithCovariant<Holder> {}
+    
+    object wci satisfies WithContravariant {}
+    @error object wchi satisfies WithContravariant<Holder> {}
+    object gwci satisfies Generics.WithContravariant {}
+    @error object gwchi satisfies Generics.WithContravariant<Holder> {}
     
     @error method<Holder>();
     @error this.method<Holder>();

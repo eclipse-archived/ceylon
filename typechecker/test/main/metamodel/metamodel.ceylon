@@ -1,6 +1,12 @@
 import ceylon.language.meta.model {...}
 import ceylon.language.meta.declaration {...}
 
+interface List<Element> 
+        satisfies {Element*} & 
+            Correspondence<Integer,Element> {
+    defines(Integer i) => nothing;
+}
+
 void test<T>() {
     @type:"ClassDeclaration" 
     value noParamsClass = `class NoParams`;

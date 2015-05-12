@@ -217,7 +217,7 @@ void method() {
     value temp = sqrt;
     Float root(Float x) => temp(x);
     
-    @error Callable<Anything> reallyBroken(void foo()) {
+    Callable<Anything> reallyBroken(void foo()) {
         /*@error*/ return foo;
     }
     

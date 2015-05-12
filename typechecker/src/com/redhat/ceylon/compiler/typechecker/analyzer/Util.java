@@ -204,23 +204,25 @@ public class Util {
                     }
                 }
             }
-            for (int i=typeArguments.size(); i<size; i++) {
-                TypeParameter tp = typeParameters.get(i);
-            	ProducedType dta = 
-            	        tp.getDefaultTypeArgument();
-            	if (dta==null || 
-            	        //necessary to prevent stack overflow
-            	        //for illegal recursively-defined
-            	        //default type argument
-            	        dta.containsDeclaration(tp.getDeclaration())) {
-            		break;
-            	}
-            	else {
-            	    ProducedType da = 
-            	            dta.substitute(typeArgMap);
-            		typeArguments.add(da);
-            		typeArgMap.put(tp, da);
-            	}
+            if (!(tas instanceof Tree.InferredTypeArguments)) {
+                for (int i=typeArguments.size(); i<size; i++) {
+                    TypeParameter tp = typeParameters.get(i);
+                	ProducedType dta = 
+                	        tp.getDefaultTypeArgument();
+                	if (dta==null || 
+                	        //necessary to prevent stack overflow
+                	        //for illegal recursively-defined
+                	        //default type argument
+                	        dta.containsDeclaration(tp.getDeclaration())) {
+                		break;
+                	}
+                	else {
+                	    ProducedType da = 
+                	            dta.substitute(typeArgMap);
+                		typeArguments.add(da);
+                		typeArgMap.put(tp, da);
+                	}
+                }
             }
             return typeArguments;
         }

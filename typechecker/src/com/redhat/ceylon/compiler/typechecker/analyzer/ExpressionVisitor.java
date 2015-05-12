@@ -2916,12 +2916,16 @@ public class ExpressionVisitor extends Visitor {
                     if (unit.isCallableType(paramType)) {
                         ProducedType template;
                         if (smte.getStaticMethodReferencePrimary()) {
-                            template = producedType(unit.getTupleDeclaration(), 
-                                    arg.getType(), arg.getType(), 
-                                    unit.getType(unit.getEmptyDeclaration()));
+                            ProducedType type = arg.getType();
+                            ProducedType et = 
+                                    unit.getType(unit.getEmptyDeclaration());
+                            template = 
+                                    producedType(unit.getTupleDeclaration(), 
+                                            type, type, et);
                         }
                         else {
-                            template = unit.getCallableTuple(arg.getFullType());
+                            template = 
+                                    unit.getCallableTuple(arg.getFullType());
                         }
                         ProducedType type = 
                                 unit.getCallableTuple(paramType);
@@ -6950,7 +6954,10 @@ public class ExpressionVisitor extends Visitor {
                 if (tal!=null) {
                     //TODO: dupe of logic in TypeVisitor!!!!
                     List<Tree.Type> args = tal.getTypes();
-                    for (int i = 0; i<args.size(); i++) {
+                    for (int i = 0; 
+                            i<args.size() && 
+                            i<params.size(); 
+                            i++) {
                         Tree.Type t = args.get(i);
                         if (t instanceof Tree.StaticType) {
                             TypeParameter p = params.get(i);

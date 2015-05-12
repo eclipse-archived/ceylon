@@ -40,8 +40,15 @@ class DefaultTypeArgs() {
     @type:"Category<Object>" Category<> categoryWith0Args;
     @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<> wrapsWith0Args;
     
+    class Singleton<T>(T t) {}
+    
     @error String<>("");
     @error Singleton<>(1);
     @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<>(1.0);
+    
+    @type:"List<Anything>" List<> list1 = [1,2];
+    @type:"List<Anything>" List list2 = ["",""];
+    @type:"Comparable<Nothing>" Comparable<> comp1 = 1;
+    @type:"Comparable<Nothing>" Comparable comp2 = 1;
     
 }

@@ -11,12 +11,12 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgu
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.util.Collections.emptyList;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.Util.isNativeNoImpl;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
@@ -770,10 +770,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.TypeParameterDeclaration that) {
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         Tree.TypeVariance tv = that.getTypeVariance();
-        TypeParameter p = new TypeParameter();
+        final TypeParameter p = new TypeParameter();
         defaultExtendedToAnything(p);
         p.setDeclaration(declaration);
-        p.setDefaulted(ts!=null);
         if (tv!=null) {
             String v = tv.getText();
             p.setCovariant("out".equals(v));
@@ -781,13 +780,43 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
+        
         super.visit(that);
+        
+        ProducedType dta = null;
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                p.setDefaultTypeArgument(type.getTypeModel());
+                dta = type.getTypeModel();
             }
         }
+        else {
+            if (p.isCovariant()) {
+                dta = new LazyProducedType(unit) {
+                    ProducedType get() {
+                        ProducedType result = 
+                                intersectionOfSupertypes(p);
+                        return result.containsTypeParameters() ?
+                                null : result;
+                    }
+                    @Override
+                    public Map<TypeParameter, ProducedType> 
+                    initTypeArguments() {
+                        return get().getTypeArguments();
+                    }
+                    @Override
+                    public TypeDeclaration initDeclaration() {
+                        return get().getDeclaration();
+                    }
+                };
+            }
+            else if (p.isContravariant()) {
+                dta = unit.getNothingDeclaration()
+                        .getType();
+            }
+        }
+        p.setDefaultTypeArgument(dta);
+        p.setDefaulted(dta!=null);
     }
     
     @Override

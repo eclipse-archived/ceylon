@@ -1034,7 +1034,10 @@ public class TypeVisitor extends Visitor {
             tal.setTypeModels(typeArgs);
             //TODO: dupe of logic in ExpressionVisitor
             List<Tree.Type> args = tal.getTypes();
-            for (int i = 0; i<args.size(); i++) {
+            for (int i = 0; 
+                    i<args.size() && 
+                    i<params.size(); 
+                    i++) {
                 Tree.Type t = args.get(i);
                 if (t instanceof Tree.StaticType) {
                     Tree.StaticType st = 
@@ -1223,32 +1226,51 @@ public class TypeVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        TypeParameter tpd = that.getDeclarationModel();
-        tpd.setExtendedType(null);
-        tpd.getSatisfiedTypes().clear();
+        final TypeParameter p = that.getDeclarationModel();
+        p.setExtendedType(null);
+        p.getSatisfiedTypes().clear();
         Class vd = unit.getAnythingDeclaration();
         if (vd!=null) {
-            tpd.setExtendedType(vd.getType());
+            p.setExtendedType(vd.getType());
         }
+        
         super.visit(that);
+        
+        ProducedType dta = null;
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                ProducedType dta = type.getTypeModel();
+                dta = type.getTypeModel();
                 if (dta!=null && 
-                        dta.containsDeclaration(tpd.getDeclaration())) {
-                    type.addError("default type argument involves parameterized type");
+                        dta.containsDeclaration(p.getDeclaration())) {
+                    type.addError("default type argument involves parameterized type: '" + 
+                            dta.getProducedTypeName(unit) + "' involves '" + 
+                            p.getDeclaration().getName(unit) + "'");
+                    dta = null;
                 }
-                /*else if (t.containsTypeParameters()) {
+                /*else if (dta.containsTypeParameters()) {
                     type.addError("default type argument involves type parameters: " + 
-                    t.getProducedTypeName());
+                            dta.getProducedTypeName(unit));
+                    dta = null;
                 }*/
-                else {
-                    tpd.setDefaultTypeArgument(dta);
-                }
             }
         }
+        else {
+            if (p.isCovariant()) {
+                ProducedType result = 
+                        intersectionOfSupertypes(p);
+                if (!result.containsTypeParameters()) {
+                    dta = result;
+                }
+            }
+            else if (p.isContravariant()) {
+                dta = unit.getNothingDeclaration()
+                        .getType();
+            }
+        }
+        p.setDefaultTypeArgument(dta);
+        
     }
     
     @Override
@@ -1264,10 +1286,11 @@ public class TypeVisitor extends Visitor {
             if (tpd!=null) {
                 TypeParameter tp = 
                         tpd.getDeclarationModel();
-                if (tp.getDefaultTypeArgument()!=null) {
+                ProducedType dta = 
+                        tp.getDefaultTypeArgument();
+                if (dta!=null) {
                     params.add(tp);
-                    if (tp.getDefaultTypeArgument()
-                            .containsTypeParameters(params)) {
+                    if (dta.containsTypeParameters(params)) {
                         tpd.getTypeSpecifier()
                             .addError("default type argument involves a type parameter not yet declared");
                     }
