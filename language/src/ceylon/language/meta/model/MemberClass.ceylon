@@ -18,7 +18,7 @@
            print(c().hello);
        }
  """
-shared sealed interface MemberClass<in Container, out Type=Anything, in Arguments=Nothing>
+shared sealed interface MemberClass<in Container, out Type, in Arguments>
         satisfies ClassModel<Type, Arguments> & Member<Container, Class<Type, Arguments>>
         given Arguments satisfies Anything[] {
     

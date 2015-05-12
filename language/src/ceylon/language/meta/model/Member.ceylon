@@ -22,7 +22,7 @@ shared sealed interface Member<in Container, out Kind>
         given Kind satisfies Model {
     
     "The declaring closed type. This is the type that declared this member."
-    shared formal AppliedType<Anything> declaringType;
+    shared formal AppliedType<> declaringType;
     
     /*"Type-unsafe container binding, to be used when the container type is unknown until runtime.
      

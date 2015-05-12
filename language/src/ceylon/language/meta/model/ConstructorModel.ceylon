@@ -4,7 +4,7 @@
  A constructor model can be either a [[Constructor]] (when for a toplevel [[Class]]) 
  or a member [[MemberClassConstructor]] (when for a [[MemberClass]]).
  "
-shared sealed interface ConstructorModel<out Type=Anything,in Arguments=Nothing>
+shared sealed interface ConstructorModel<out Type,in Arguments>
         satisfies Functional & Declared 
         given Arguments satisfies Anything[] {
     

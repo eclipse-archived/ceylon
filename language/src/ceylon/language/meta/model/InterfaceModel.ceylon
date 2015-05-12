@@ -6,7 +6,7 @@ import ceylon.language.meta.declaration {
  
  An interface model can be either a toplevel [[Interface]] or a member [[MemberInterface]].
  "
-shared sealed interface InterfaceModel<out Type=Anything>
+shared sealed interface InterfaceModel<out Type>
     satisfies ClassOrInterface<Type> {
     
     shared formal actual InterfaceDeclaration declaration;

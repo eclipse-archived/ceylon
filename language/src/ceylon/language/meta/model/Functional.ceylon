@@ -7,6 +7,6 @@ import ceylon.language.meta.model {
  [[ClassModel]]s, [[ConstructorModel]]s and [[FunctionModel]]s."
 shared sealed interface Functional /*satisfies Applicable<Anything,Arguments>*/{
     "The parameter types"
-    shared formal ClosedType<Anything>[] parameterTypes;
+    shared formal ClosedType<>[] parameterTypes;
 }
 

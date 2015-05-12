@@ -9,7 +9,7 @@ import ceylon.language.meta.model {
  
  A class model can be either a toplevel [[Class]] or a member [[MemberClass]].
  "
-shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
+shared sealed interface ClassModel<out Type, in Arguments>
     satisfies ClassOrInterface<Type> & Functional
     given Arguments satisfies Anything[] {
     

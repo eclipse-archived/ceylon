@@ -12,7 +12,7 @@
            print(f("Stef"));
        }
  """
-shared sealed interface Function<out Type=Anything, in Arguments=Nothing>
-        satisfies FunctionModel<Type, Arguments> & Applicable<Type,Arguments>
+shared sealed interface Function<out Type, in Arguments>
+        satisfies FunctionModel<Type, Arguments> & Applicable<Type, Arguments>
         given Arguments satisfies Anything[] {
 }

@@ -53,23 +53,23 @@ shared sealed interface FunctionDeclaration
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Return` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
-    shared formal Function<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(Type<Anything>* typeArguments)
+    shared formal Function<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(Type<>* typeArguments)
         given Arguments satisfies Anything[];
 
     "Applies the given closed container type and type arguments to this method declaration in order to obtain a method model. 
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Return` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Object> containerType, Type<Anything>* typeArguments)
+    shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Object> containerType, Type<>* typeArguments)
         given Arguments satisfies Anything[];
     
     "Invokes the underlying toplevel function, by applying the specified type arguments and value arguments."
     throws(`class IncompatibleTypeException`, "If the specified type or value arguments are not compatible with this toplevel function.")
-    shared default Anything invoke(Type<Anything>[] typeArguments = [], Anything* arguments)
+    shared default Anything invoke(Type<>[] typeArguments = [], Anything* arguments)
         => apply<Anything, Nothing>(*typeArguments).apply(*arguments);
 
     "Invokes the underlying method, by applying the specified type arguments and value arguments."
     throws(`class IncompatibleTypeException`, "If the specified container, type or value arguments are not compatible with this method.")
-    shared default Anything memberInvoke(Object container, Type<Anything>[] typeArguments = [], Anything* arguments)
+    shared default Anything memberInvoke(Object container, Type<>[] typeArguments = [], Anything* arguments)
         => memberApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
 }

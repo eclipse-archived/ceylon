@@ -9,7 +9,7 @@ import ceylon.language.meta.model {
    
    A function model can be either a toplevel [[Function]] or a member [[Method]].
  """
-shared sealed interface FunctionModel<out Type=Anything, in Arguments=Nothing>
+shared sealed interface FunctionModel<out Type, in Arguments>
         satisfies Model & Generic & Functional
         given Arguments satisfies Anything[] {
 

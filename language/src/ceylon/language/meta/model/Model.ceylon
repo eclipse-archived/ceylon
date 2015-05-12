@@ -9,13 +9,14 @@ import ceylon.language.meta.declaration {
  - [[FunctionModel]]
  - [[ValueModel]]
  "
-shared sealed interface Model of ClassOrInterface<Anything>
-                        | FunctionModel<Anything, Nothing> 
-                        | ValueModel<Anything> 
+shared sealed interface Model 
+            of ClassOrInterface<>
+             | FunctionModel<> 
+             | ValueModel<> 
         satisfies Declared {
     
     "The container type of this model, or `null` if this is a toplevel model."
-    shared actual formal Type<Anything>? container;
+    shared actual formal Type<>? container;
     
     "The declaration for this model."
     shared actual formal NestableDeclaration declaration;
