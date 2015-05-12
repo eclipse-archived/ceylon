@@ -3773,11 +3773,13 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType pt = paramType;
                 ProducedType apt = argType;
                 if (atd instanceof UnionType) {
+                    Map<TypeParameter, ProducedType> args = 
+                            argType.getTypeArguments();
                     for (ProducedType act: atd.getCaseTypes()) {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
                         if (!act.containsDeclaration(tp) && //in a recursive generic function, T can get assigned to T
-                                act.substitute(argType.getTypeArguments())
+                                act.substitute(args)
                                     .isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);
                             apt = apt.shallowMinus(act);
@@ -3795,11 +3797,13 @@ public class ExpressionVisitor extends Visitor {
                 		}
                 	}
                 	//just one type parameter left in the union
+                    Map<TypeParameter, ProducedType> args = 
+                            pt.getTypeArguments();
                     for (ProducedType ct: 
                             ptd.getCaseTypes()) {
-                    	addToUnionOrIntersection(tp, list, 
+                        addToUnionOrIntersection(tp, list, 
                     	        inferTypeArg(tp, 
-                    	                ct.substitute(pt.getTypeArguments()), 
+                    	                ct.substitute(args), 
                     	                apt,
                     	                covariant, contravariant,
                     	                visited, argNode));
