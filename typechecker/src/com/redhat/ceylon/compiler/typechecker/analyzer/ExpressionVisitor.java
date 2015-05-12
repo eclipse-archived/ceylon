@@ -88,6 +88,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
