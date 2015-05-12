@@ -1301,7 +1301,7 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       ( 
         variance 
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
-      )? 
+      )?
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); }
       (
@@ -1326,6 +1326,10 @@ typeConstraint returns [TypeConstraint typeConstraint]
       (
         typeNameDeclaration 
         { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
+      )?
+      (
+        typeParameters
+         { $typeConstraint.setTypeParameterList($typeParameters.typeParameterList); }
       )?
       (
         parameters
@@ -3374,7 +3378,8 @@ qualifiedType returns [StaticType type]
       )*
     ;
 
-typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgumentList]
+typeNameWithArguments returns [Identifier identifier, 
+                               TypeArgumentList typeArgumentList]
     : typeName
       { $identifier = $typeName.identifier; } 
       (

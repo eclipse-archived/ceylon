@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -634,7 +635,8 @@ public class TypeVisitor extends Visitor {
         UnionType ut = 
                 new UnionType(unit);
         ut.setCaseTypes(types);
-        that.setTypeModel(ut.getType());
+        ProducedType type = ut.getType();
+        that.setTypeModel(type);
         //that.setTarget(pt);
     }
     
@@ -656,7 +658,8 @@ public class TypeVisitor extends Visitor {
         IntersectionType it = 
                 new IntersectionType(unit);
         it.setSatisfiedTypes(types);
-        that.setTypeModel(it.getType());
+        ProducedType type = it.getType();
+        that.setTypeModel(type);
         //that.setTarget(pt);
     }
     
@@ -954,8 +957,12 @@ public class TypeVisitor extends Visitor {
         inDelegatedConstructor = oidc;
         inTypeLiteral = onl;
         
-        ProducedType pt = that.getOuterType().getTypeModel();
+        Tree.StaticType ot = that.getOuterType();        
+        ProducedType pt = ot.getTypeModel();
         if (pt!=null) {
+//            if (pt.isTypeConstructor()) {
+//                ot.addError("qualifying type may not be a type constructor");
+//            }
             if (that.getMetamodel() && 
                     that.getTypeArgumentList()!=null &&
                     isTypeUnknown(pt) && !pt.isUnknown()) {
@@ -1017,14 +1024,7 @@ public class TypeVisitor extends Visitor {
                 dec.getTypeParameters();
         List<ProducedType> typeArgs = 
                 getTypeArguments(tal, params, ot);
-        //if (acceptsTypeArguments(dec, ta, tal, that)) {
         ProducedType pt = dec.getProducedType(ot, typeArgs);
-        //dec = pt.getDeclaration();
-        if (tal==null && !params.isEmpty()) {
-            that.addUsageWarning(Warning.syntaxDeprecation,
-                    "implicit use of default type arguments is deprecated (change to '" + 
-                            dec.getName(unit) + "<>')");
-        }
         if (tal!=null) {
             if (params.isEmpty()) {
                 that.addError("does not accept type arguments: '" + 
@@ -1059,7 +1059,7 @@ public class TypeVisitor extends Visitor {
         that.setTypeModel(pt);
         that.setDeclarationModel(dec);
     }
-    
+
     @Override 
     public void visit(Tree.VoidModifier that) {
         Class vtd = unit.getAnythingDeclaration();
@@ -1106,8 +1106,9 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
+        Type type = that.getType();
         TypedDeclaration dec = that.getDeclarationModel();
-        setType(that, that.getType(), dec);
+        setType(that, type, dec);
         if (dec instanceof MethodOrValue) {
             MethodOrValue mv = (MethodOrValue) dec;
             if (dec.isLate() && 
@@ -1115,6 +1116,9 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter may not be annotated late");
             }
         }
+//        if (type.getTypeModel().isTypeConstructor()) {
+//            type.addError("type constructor may not occur as the type of a declaration");
+//        }
     }
 
     @Override 
@@ -1554,8 +1558,12 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
+//                    if (type.isTypeConstructor()) {
+//                        et.addError("type constructor may not occur as extended type");
+//                    }
+//                    else {
                     TypeDeclaration etd = et.getDeclarationModel();
-                    if (etd!=null &&
+                    if (etd!=null && 
                             !(etd instanceof UnknownType)) {
                         if (etd instanceof Constructor) {
                             type = type.getExtendedType();
@@ -1563,8 +1571,8 @@ public class TypeVisitor extends Visitor {
                         }
                         if (etd==td) {
                             //unnecessary, handled by SupertypeVisitor
-//                            et.addError("directly extends itself: '" + 
-//                                    td.getName() + "'");
+//                          et.addError("directly extends itself: '" + 
+//                                  td.getName() + "'");
                         }
                         else if (etd instanceof TypeParameter) {
                             et.addError("directly extends a type parameter: '" + 
@@ -1584,6 +1592,7 @@ public class TypeVisitor extends Visitor {
                         else {
                             td.setExtendedType(type);
                         }
+//                        }
                     }
                 }
             }
@@ -1610,14 +1619,17 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType st: that.getTypes()) {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
+//                if (type.isTypeConstructor()) {
+//                    st.addError("type constructor may not occur as satisfied type");
+//                }
+//                else {
                 TypeDeclaration std = type.getDeclaration();
                 if (std!=null && 
                         !(std instanceof UnknownType)) {
                     if (std==td) {
-                      //unnecessary, handled by SupertypeVisitor
-//                        st.addError("directly extends itself: '" + 
-//                                td.getName() + 
-//                                "'");
+                        //unnecessary, handled by SupertypeVisitor
+//                      st.addError("directly extends itself: '" + 
+//                              td.getName() + "'");
                         continue;
                     }
                     if (std instanceof TypeAlias) {
@@ -1677,6 +1689,7 @@ public class TypeVisitor extends Visitor {
                         }
                     }
                     list.add(type);
+//                    }
                 }
             }
         }
@@ -1733,8 +1746,12 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType ct: cts) {
             ProducedType type = ct.getTypeModel();
             if (type!=null) {
+//                if (type.isTypeConstructor()) {
+//                    ct.addError("type constructor may not occur as case type");
+//                }
+//                else {
                 TypeDeclaration ctd = type.getDeclaration();
-                if (ctd!=null &&
+                if (ctd!=null && 
                         !(ctd instanceof UnknownType)) {
                     if (ctd instanceof UnionType || 
                         ctd instanceof IntersectionType) {
@@ -1783,6 +1800,7 @@ public class TypeVisitor extends Visitor {
                         continue;
                     }
                     list.add(type);
+//                    }
                 }
             }
         }

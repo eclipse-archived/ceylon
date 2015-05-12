@@ -15,6 +15,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -165,8 +166,9 @@ public class Util {
                 List<Tree.Type> types = tal.getTypes();
                 int count = types.size();
                 for (int i=0; i<count; i++) {
+                    Type type = types.get(i);
                     ProducedType t = 
-                            types.get(i).getTypeModel();
+                            type.getTypeModel();
                     if (t==null) {
                         typeArguments.add(null);
                     }
@@ -175,6 +177,9 @@ public class Util {
                         if (i<size) {
                             TypeParameter tp = 
                                     typeParameters.get(i);
+                            if (tp.isTypeConstructor()) {
+                                setTypeConstructor(type,tp);
+                            }
                             typeArgMap.put(tp, t);
                         }
                     }
@@ -1192,5 +1197,41 @@ public class Util {
                 term instanceof Tree.QualifiedMemberExpression &&
                 isSelfReference(((Tree.QualifiedMemberExpression) term)
                         .getPrimary());
+    }
+
+    static boolean setTypeConstructor(Tree.Type t,
+            TypeParameter typeParam) {
+        ProducedType pt = t.getTypeModel();
+        if (pt == null) {
+            return false;
+        }
+        else {
+            if (t instanceof Tree.IntersectionType) {
+                Tree.IntersectionType it = 
+                        (Tree.IntersectionType) t;
+                for (Tree.StaticType st: it.getStaticTypes()) {
+                    if (setTypeConstructor(st,typeParam)) {
+                        pt.setTypeConstructor(typeParam);
+                    }
+                }
+            }
+            else if (t instanceof Tree.UnionType) {
+                Tree.UnionType it = 
+                        (Tree.UnionType) t;
+                for (Tree.StaticType st: it.getStaticTypes()) {
+                    if (setTypeConstructor(st,typeParam)) {
+                        pt.setTypeConstructor(typeParam);
+                    }
+                }
+            }
+            else if (t instanceof Tree.SimpleType) {
+                Tree.SimpleType s = 
+                        (Tree.SimpleType) t;
+                if (s.getTypeArgumentList()==null) {
+                    pt.setTypeConstructor(typeParam);
+                }
+            }
+            return pt.isTypeConstructor();
+        }
     }
 }

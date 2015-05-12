@@ -362,7 +362,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 do {
                     Declaration member = 
                             scope.getDirectMember(name, null, false);
-                    if (member!=null) {
+                    if (member!=null && member!=model) {
                         boolean dup = false;
                         boolean memberCanBeNative = 
                                 member instanceof Method || 
@@ -438,7 +438,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     // and the found member is native return the proper backend declaration
     private static Declaration getDirectMember(Scope scope, String name, String backend) {
         Declaration member = scope.getDirectMember(name, null, false);
-        if (member.isNative() && backend != null) {
+        if (member!=null && member.isNative() && backend != null) {
             Declaration m = null;
             for (Declaration o : ((Overloadable)member).getOverloads()) {
                 if (backend.equals(o.getNative())) {
@@ -1603,6 +1603,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         String name = name(that.getIdentifier());
         TypeParameter p = (TypeParameter) 
                 scope.getDirectMember(name, null, false);
+        if (p==null && scope instanceof Generic) {
+            //TODO: just look at the most recent
+            for (TypeParameter tp:
+                    ((Generic) scope).getTypeParameters()) {
+                if (tp.isTypeConstructor()) {
+                    p = (TypeParameter) 
+                            tp.getDirectMember(name, null, false);
+                    if (p!=null) break;
+                }
+            }
+        }
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
@@ -1613,6 +1624,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             visitDeclaration(that, p);
         }
         else {
+            if (that.getTypeParameterList()!=null) {
+                p.setTypeConstructor(true);
+            }
         	if (p.isConstrained()) {
         		that.addError("duplicate constraint list for type parameter: '" +
         				name + "'");

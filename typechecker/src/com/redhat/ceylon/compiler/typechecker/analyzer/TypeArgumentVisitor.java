@@ -9,6 +9,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
@@ -196,6 +197,38 @@ public class TypeArgumentVisitor extends Visitor {
                         "' of '" + declaration.getName() +
                         "' appears in " + loc + " location in type: '" + 
                         type.getProducedTypeName(that.getUnit()) + "'");
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.SimpleType that) {
+        super.visit(that);
+        Tree.TypeArgumentList tal = 
+                that.getTypeArgumentList();
+        TypeDeclaration dec = that.getDeclarationModel();
+        ProducedType type = that.getTypeModel();
+        if (dec!=null && type!=null) {
+            List<TypeParameter> params = 
+                    dec.getTypeParameters();
+            if (tal==null && 
+                    !params.isEmpty() && 
+                    !type.isTypeConstructor() &&
+                    !that.getMetamodel()) {
+                if (!params.get(0).isDefaulted()) {
+                  that.addError("missing type arguments to generic type: '" + 
+                          dec.getName(that.getUnit()) + 
+                          "' declares required type parameters");
+
+                }
+                else {
+                    that.addUsageWarning(Warning.syntaxDeprecation,
+                            "implicit use of default type arguments is deprecated (change to '" + 
+                            dec.getName(that.getUnit()) + "<>')");
+                }
+            }
+            if (type.isTypeConstructor() && dec.isAlias()) {
+                that.addUnsupportedError("type constructor reference to type alias not yet supported");
             }
         }
     }
