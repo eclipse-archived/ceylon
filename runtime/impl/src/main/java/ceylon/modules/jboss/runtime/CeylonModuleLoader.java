@@ -164,7 +164,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         // implementation contains types from these modules
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
         for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, MODEL, TYPECHECKER, COMPILER, CMR,
-            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
+            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE, JANDEX, LOGMANAGER, RUNTIME, MAVEN)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);
