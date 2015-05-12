@@ -1919,6 +1919,28 @@ public class GenerateJsVisitor extends Visitor
             generateThrow(null, "Undefined type " + id, that);
             out(":", id, ")");
         } else {
+            boolean wrap = false;
+            String pname = null;
+            List<com.redhat.ceylon.model.typechecker.model.Parameter> params = null;
+            TypeDeclaration td = null;
+            if (!that.getDirectlyInvoked() && d instanceof TypeDeclaration) {
+                td = (TypeDeclaration)d;
+                if (td.getTypeParameters() != null && td.getTypeParameters().size() > 0) {
+                    wrap = true;
+                    pname = names.createTempVariable();
+                    out("function(");
+                    if (td instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                        params = ((com.redhat.ceylon.model.typechecker.model.Class)td).getParameterList().getParameters();
+                    } else if (td instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                        params = ((com.redhat.ceylon.model.typechecker.model.Constructor)td).getParameterLists().get(0).getParameters();
+                    }
+                    for (int i=0;i<params.size(); i++) {
+                        if (i>0)out(",");
+                        out(pname, "$", Integer.toString(i));
+                    }
+                    out("){return ");
+                }
+            }
             if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                 //This is an ugly-ass hack for when the typechecker incorrectly reports
                 //the declaration as the constructor instead of the class;
@@ -1932,6 +1954,17 @@ public class GenerateJsVisitor extends Visitor
                 qualify(that, d);
             }
             out(names.name(d));
+            if (wrap) {
+                out("(");
+                for (int i=0;i<params.size(); i++) {
+                    out(pname, "$", Integer.toString(i), ",");
+                }
+                List<ProducedType> targs = that.getTypeArguments() == null ? null :
+                    that.getTypeArguments().getTypeModels();
+                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
+                        td.getTypeParameters(), targs), this, false, null);
+                out(");}");
+            }
         }
     }
 
