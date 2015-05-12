@@ -453,7 +453,7 @@ public class PhasedUnit {
         return pkg;
     }
     
-    public Unit getUnit() {
+    public TypecheckerUnit getUnit() {
         return unit;
     }
 

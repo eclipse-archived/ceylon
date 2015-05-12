@@ -54,9 +54,13 @@ public class ModuleSourceMapper {
         this.context = context;
         this.moduleManager = moduleManager;
         this.modules = context.getModules();
-        packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
     }
 
+    public void initCoreModules(){
+        moduleManager.initCoreModules(modules);
+        packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
+    }
+    
     public void push(String path) {
         createPackageAndAddToModule(path);
     }

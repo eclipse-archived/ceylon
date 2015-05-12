@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
@@ -36,22 +37,25 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
 
     public PhasedUnits(Context context) {
         this.context = context;
+        if(context.getModules() == null)
+            context.setModules(new Modules());
         this.moduleManager = new ModuleManager();
-        context.setModules(this.moduleManager.initCoreModules(context.getModules()));
         this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
+        this.moduleSourceMapper.initCoreModules();
     }
 
     public PhasedUnits(Context context, ModuleManagerFactory moduleManagerFactory) {
         this.context = context;
+        if(context.getModules() == null)
+            context.setModules(new Modules());
         if(moduleManagerFactory != null){
             this.moduleManager = moduleManagerFactory.createModuleManager(context);
-            context.setModules(this.moduleManager.initCoreModules(context.getModules()));
             this.moduleSourceMapper = moduleManagerFactory.createModuleManagerUtil(context, this.moduleManager);
         }else{
             this.moduleManager = new ModuleManager();
-            context.setModules(this.moduleManager.initCoreModules(context.getModules()));
             this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
         }
+        this.moduleSourceMapper.initCoreModules();
     }
     
     public void setSourceFiles(List<VirtualFile> sourceFiles){
