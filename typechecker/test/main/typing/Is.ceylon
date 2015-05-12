@@ -2,7 +2,7 @@ interface Emptyish {
     shared formal Boolean isEmpty;
 }
 
-interface Sized satisfies Emptyish&Category { 
+interface Sized satisfies Emptyish&Category<> { 
     shared formal Integer elementCount;
 }
 

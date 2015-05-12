@@ -46,6 +46,7 @@ import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -1226,7 +1227,7 @@ public class TypeVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        final TypeParameter p = that.getDeclarationModel();
+        TypeParameter p = that.getDeclarationModel();
         p.setExtendedType(null);
         p.getSatisfiedTypes().clear();
         Class vd = unit.getAnythingDeclaration();
@@ -1255,22 +1256,19 @@ public class TypeVisitor extends Visitor {
                     dta = null;
                 }*/
             }
+            p.setDefaultTypeArgument(dta);
         }
-        else {
-            if (p.isCovariant()) {
-                ProducedType result = 
-                        intersectionOfSupertypes(p);
-                if (!result.containsTypeParameters()) {
-                    dta = result;
-                }
-            }
-            else if (p.isContravariant()) {
-                dta = unit.getNothingDeclaration()
-                        .getType();
-            }
-        }
-        p.setDefaultTypeArgument(dta);
         
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        TypeParameter p = that.getDeclarationModel();
+        ProducedType dta = p.getDefaultTypeArgument();
+        if (dta instanceof LazyProducedType) {
+            p.setDefaultTypeArgument(intersectionOfSupertypes(p));
+        }
     }
     
     @Override

@@ -50,5 +50,7 @@ class DefaultTypeArgs() {
     @type:"List<Anything>" List list2 = ["",""];
     @type:"Comparable<Nothing>" Comparable<> comp1 = 1;
     @type:"Comparable<Nothing>" Comparable comp2 = 1;
+    @type:"Set<Object>" Set<> set1 = nothing;
+    @type:"Set<Object>" Set set2 = nothing;
     
 }
