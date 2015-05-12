@@ -8,6 +8,7 @@ options {
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser;
                   import com.redhat.ceylon.compiler.typechecker.tree.MissingToken;
                   import com.redhat.ceylon.compiler.typechecker.tree.Node;
+                  import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
                   import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*;
                   import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.Package; }
 @lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
@@ -1826,7 +1827,10 @@ valueCaseList returns [ExpressionList expressionList]
       ( 
         (
           c=COMMA 
-          { $expressionList.setEndToken($c); }
+          { $expressionList.setEndToken($c);
+            if ($expressionList.getErrors().isEmpty())
+                $expressionList.addUsageWarning(Warning.syntaxDeprecation,
+                    "use of ',' in case conditions is deprecated (change to '|')"); }
         | u=UNION_OP
           { $expressionList.setEndToken($u); }
         )
