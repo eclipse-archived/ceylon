@@ -4555,7 +4555,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return modules.getDefaultModule();
     }
 
-    protected abstract Module findModuleForClassMirror(ClassMirror classMirror);
+    public abstract Module findModuleForClassMirror(ClassMirror classMirror);
     
     protected boolean isTypeHidden(Module module, String qualifiedName){
         return module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
