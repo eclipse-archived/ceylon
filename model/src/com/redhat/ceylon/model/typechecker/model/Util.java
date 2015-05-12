@@ -1879,102 +1879,103 @@ public class Util {
                     second.getTypeArguments().get(tp);
             if (firstArg==null || secondArg==null) {
                 arg = new UnknownType(unit).getType();
-                continue;
-            }
-            boolean firstCo = first.isCovariant(tp);
-            boolean secondCo = second.isCovariant(tp);
-            boolean firstContra = first.isContravariant(tp);
-            boolean secondContra = second.isContravariant(tp);
-            boolean firstInv = !firstCo && !firstContra;
-            boolean secondInv = !secondCo && !secondContra;
-            boolean parameterized = 
-                    firstArg.containsTypeParameters() ||
-                    secondArg.containsTypeParameters();
-            if (firstContra && secondContra) {
-                arg = unionType(firstArg,secondArg,unit);
-                if (!tp.isContravariant()) {
-                    varianceOverrides.put(tp, IN);
-                }
-            }
-            else if (firstCo && secondCo) {
-                arg = intersectionType(firstArg,secondArg,unit);
-                if (!tp.isCovariant()) {
-                    varianceOverrides.put(tp, OUT);
-                }
-            }
-            else if (firstContra && secondInv) {
-                if (firstArg.isSubtypeOf(secondArg)) {
-                    arg = secondArg;
-                }
-                else if (parameterized) {
-                   //irreconcilable instantiations
-                   arg = new UnknownType(unit).getType();
-                }
-                else {
-                    return unit.getNothingDeclaration().getType();
-                }
-            }
-            else if (firstCo && secondInv) {
-                if (secondArg.isSubtypeOf(firstArg)) {
-                    arg = secondArg;
-                }
-                else if (parameterized) {
-                   //irreconcilable instantiations
-                   arg = new UnknownType(unit).getType();
-                }
-                else {
-                    return unit.getNothingDeclaration().getType();
-                }
-            }
-            else if (secondCo && firstInv) {
-               if (firstArg.isSubtypeOf(secondArg)) {
-                   arg = firstArg;
-               }
-               else if (parameterized) {
-                  //irreconcilable instantiations
-                  arg = new UnknownType(unit).getType();
-               }
-               else {
-                   return unit.getNothingDeclaration().getType();
-               }
-           }
-           else if (secondContra && firstInv) {
-               if (secondArg.isSubtypeOf(firstArg)) {
-                   arg = firstArg;
-               }
-               else if (parameterized) {
-                  //irreconcilable instantiations
-                  arg = new UnknownType(unit).getType();
-               }
-               else {
-                   return unit.getNothingDeclaration().getType();
-               }
-           }
-            else if (firstInv && secondInv) {
-                if (firstArg.isExactly(secondArg)) {
-                    arg = firstArg;
-                }
-                else if (parameterized) {
-                    //type parameters that might represent 
-                    //equivalent types at runtime, 
-                    //irreconcilable instantiations
-                    //TODO: detect cases where we know for
-                    //      sure that the types are disjoint
-                    //      because the type parameters only
-                    //      occur as type args
-                    arg = new UnknownType(unit).getType();
-                }
-                else {
-                    //the type arguments are distinct, and the
-                    //intersection is Nothing, so there is
-                    //no reasonable principal instantiation
-                    return unit.getNothingDeclaration().getType();
-                }
             }
             else {
-                //opposite variances
-                //irreconcilable instantiations
-                arg = new UnknownType(unit).getType();
+                boolean firstCo = first.isCovariant(tp);
+                boolean secondCo = second.isCovariant(tp);
+                boolean firstContra = first.isContravariant(tp);
+                boolean secondContra = second.isContravariant(tp);
+                boolean firstInv = !firstCo && !firstContra;
+                boolean secondInv = !secondCo && !secondContra;
+                boolean parameterized = 
+                        firstArg.containsTypeParameters() ||
+                        secondArg.containsTypeParameters();
+                if (firstContra && secondContra) {
+                    arg = unionType(firstArg,secondArg,unit);
+                    if (!tp.isContravariant()) {
+                        varianceOverrides.put(tp, IN);
+                    }
+                }
+                else if (firstCo && secondCo) {
+                    arg = intersectionType(firstArg,secondArg,unit);
+                    if (!tp.isCovariant()) {
+                        varianceOverrides.put(tp, OUT);
+                    }
+                }
+                else if (firstContra && secondInv) {
+                    if (firstArg.isSubtypeOf(secondArg)) {
+                        arg = secondArg;
+                    }
+                    else if (parameterized) {
+                       //irreconcilable instantiations
+                       arg = new UnknownType(unit).getType();
+                    }
+                    else {
+                        return unit.getNothingDeclaration().getType();
+                    }
+                }
+                else if (firstCo && secondInv) {
+                    if (secondArg.isSubtypeOf(firstArg)) {
+                        arg = secondArg;
+                    }
+                    else if (parameterized) {
+                       //irreconcilable instantiations
+                       arg = new UnknownType(unit).getType();
+                    }
+                    else {
+                        return unit.getNothingDeclaration().getType();
+                    }
+                }
+                else if (secondCo && firstInv) {
+                   if (firstArg.isSubtypeOf(secondArg)) {
+                       arg = firstArg;
+                   }
+                   else if (parameterized) {
+                      //irreconcilable instantiations
+                      arg = new UnknownType(unit).getType();
+                   }
+                   else {
+                       return unit.getNothingDeclaration().getType();
+                   }
+                }
+                else if (secondContra && firstInv) {
+                    if (secondArg.isSubtypeOf(firstArg)) {
+                        arg = firstArg;
+                    }
+                    else if (parameterized) {
+                        //irreconcilable instantiations
+                        arg = new UnknownType(unit).getType();
+                    }
+                    else {
+                        return unit.getNothingDeclaration().getType();
+                    }
+                }
+                else if (firstInv && secondInv) {
+                    if (firstArg.isExactly(secondArg)) {
+                        arg = firstArg;
+                    }
+                    else if (parameterized) {
+                        //type parameters that might represent 
+                        //equivalent types at runtime, 
+                        //irreconcilable instantiations
+                        //TODO: detect cases where we know for
+                        //      sure that the types are disjoint
+                        //      because the type parameters only
+                        //      occur as type args
+                        arg = new UnknownType(unit).getType();
+                    }
+                    else {
+                        //the type arguments are distinct, and the
+                        //intersection is Nothing, so there is
+                        //no reasonable principal instantiation
+                        return unit.getNothingDeclaration().getType();
+                    }
+                }
+                else {
+                    //opposite variances
+                    //irreconcilable instantiations
+                    arg = new UnknownType(unit).getType();
+                }
             }
             args.add(arg);
         }
