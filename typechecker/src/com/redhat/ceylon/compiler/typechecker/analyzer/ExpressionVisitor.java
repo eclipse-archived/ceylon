@@ -7288,7 +7288,8 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.MatchCase that) {
         super.visit(that);
-        for (Tree.Expression e: that.getExpressionList().getExpressions()) {
+        for (Tree.Expression e: 
+                that.getExpressionList().getExpressions()) {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
@@ -7300,67 +7301,61 @@ public class ExpressionVisitor extends Visitor {
                                     switched.getExpression();
                             Tree.Variable switchVariable = 
                                     switched.getVariable();
-                            if (switchVariable!=null) {
-                                ProducedType st = 
-                                        switchVariable.getType()
-                                            .getTypeModel();
-                                if (!isTypeUnknown(st)) {
-                                    checkAssignable(t, st, e, 
-                                            "case must be assignable to switch variable type");
-                                }
-                            }
-                            else if (switchExpression!=null) {
-                                ProducedType st = 
-                                        switchExpression.getTypeModel();
-                                if (!isTypeUnknown(st)) {
-                                    if (!hasUncheckedNulls(switchExpression.getTerm()) || 
-                                            !isNullCase(t)) {
-                                        checkAssignable(t, st, e, 
-                                                "case must be assignable to switch expression type");
-                                    }
+                            ProducedType st = 
+                                    getSwitchType(switchExpression,
+                                            switchVariable);
+                            if (st!=null) {
+                                ProducedType it = 
+                                        intersectionType(t, st, unit);
+                                if (it.isNothing() &&
+                                        mayNotBeNothing(switchExpression, 
+                                                switchVariable, t)) {
+                                    e.addError("value is not a case of the switched type: '" +
+                                                t.getProducedTypeName(unit) +
+                                                "' is not a case of the type '" +
+                                                st.getProducedTypeName(unit) + "'");
                                 }
                             }
                         }
                     }
-                    Tree.Term term = e.getTerm();
-                    if (term instanceof Tree.NegativeOp) {
-                        Tree.NegativeOp no = 
-                                (Tree.NegativeOp) term;
-                        term = no.getTerm();
-                    }
-                    if (term instanceof Tree.Literal) {
-                        if (term instanceof Tree.FloatLiteral) {
-                            e.addError("literal case may not be a 'Float' literal");
-                        }
-                    }
-                    else if (term instanceof Tree.MemberOrTypeExpression) {
-                        ProducedType ut = 
-                                unionType(unit.getType(unit.getNullDeclaration()), 
-                                        unit.getType(unit.getIdentifiableDeclaration()), 
-                                        unit);
-                        TypeDeclaration dec = t.getDeclaration();
-                        if ((!dec.isToplevel() && 
-                                    !dec.isStaticallyImportable()) || 
-                                !dec.isAnonymous()) {
-                            e.addError("case must refer to a toplevel object declaration or literal value");
-                        }
-                        else {
-                            checkAssignable(t, ut, e, 
-                                    "case must be identifiable or null");
-                        }
-                    }
-                    else if (term!=null) {
-                        e.addError("case must be a literal value or refer to a toplevel object declaration");
-                    }
+                    checkValueCase(e);
                 }
             }
         }
     }
-    
-    @Override
-    public void visit(Tree.SatisfiesCase that) {
-        super.visit(that);
-        that.addUnsupportedError("satisfies cases are not yet supported");
+
+    private void checkValueCase(Tree.Expression e) {
+        Tree.Term term = e.getTerm();
+        ProducedType t = e.getTypeModel();
+        if (term instanceof Tree.NegativeOp) {
+            Tree.NegativeOp no = 
+                    (Tree.NegativeOp) term;
+            term = no.getTerm();
+        }
+        if (term instanceof Tree.Literal) {
+            if (term instanceof Tree.FloatLiteral) {
+                e.addError("literal case may not be a 'Float' literal");
+            }
+        }
+        else if (term instanceof Tree.MemberOrTypeExpression) {
+            ProducedType ut = 
+                    unionType(unit.getType(unit.getNullDeclaration()), 
+                            unit.getType(unit.getIdentifiableDeclaration()), 
+                            unit);
+            TypeDeclaration dec = t.getDeclaration();
+            if ((!dec.isToplevel() && 
+                        !dec.isStaticallyImportable()) || 
+                    !dec.isAnonymous()) {
+                e.addError("case must refer to a toplevel object declaration or literal value");
+            }
+            else {
+                checkAssignable(t, ut, e, 
+                        "case must be identifiable or null");
+            }
+        }
+        else if (term!=null) {
+            e.addError("case must be a literal value or refer to a toplevel object declaration");
+        }
     }
     
     @Override
@@ -7377,50 +7372,68 @@ public class ExpressionVisitor extends Visitor {
                         switched.getExpression();
                 Tree.Variable switchVariable = 
                         switched.getVariable();
-                ProducedType st;
-                if (switchVariable!=null) {
-                    st = switchVariable.getType().getTypeModel();
-                }
-                else if (switchExpression!=null) {
-                    st = switchExpression.getTypeModel();
-                }
-                else {
-                    //NOTE: early exit!
-                    return;
-                }
                 Tree.Variable v = that.getVariable();
-                if (v!=null) {
-                    if (dynamic || isNativeForWrongBackend() || 
-                            !isTypeUnknown(st)) { //eliminate dupe errors
-                        v.visit(this);
+                ProducedType st = 
+                        getSwitchType(switchExpression,
+                                switchVariable);
+                if (st!=null) {
+                    if (v!=null) {
+                        if (dynamic || 
+                                isNativeForWrongBackend() || 
+                                !isTypeUnknown(st)) { //eliminate dupe errors
+                            v.visit(this);
+                        }
+                        initOriginalDeclaration(v);
                     }
-                    initOriginalDeclaration(v);
-                }
-                if (t!=null) {
-                    ProducedType pt = t.getTypeModel();
-                    ProducedType it = intersectionType(pt, st, unit);
-                    if (switchVariable!=null) {
-                        if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                            that.addError("narrows to Nothing type: '" + 
-                                    pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                    if (t!=null) {
+                        ProducedType pt = t.getTypeModel();
+//                        if (!isTypeUnknown(pt)) {
+                        ProducedType it = 
+                                intersectionType(pt, st, unit);
+                        if (it.isNothing() &&
+                                mayNotBeNothing(switchExpression, 
+                                        switchVariable, pt)) {
+                            that.addError("narrows to bottom type 'Nothing': '" + 
+                                    pt.getProducedTypeName(unit) + 
+                                    "' has empty intersection with '" + 
                                     st.getProducedTypeName(unit) + "'");
                         }
-                    }
-                    else if (switchExpression!=null) {
-                        if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
-                            if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                                that.addError("narrows to bottom type 'Nothing': '" + 
-                                        pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
-                                        st.getProducedTypeName(unit) + "'");
-                            }
+                        if (v!=null) {
+                            v.getType().setTypeModel(it);
+                            v.getDeclarationModel().setType(it);
                         }
-                    }
-                    if (v!=null) {
-                        v.getType().setTypeModel(it);
-                        v.getDeclarationModel().setType(it);
+//                        }
                     }
                 }
             }
+        }
+    }
+
+    private static boolean mayNotBeNothing(Tree.Expression switchExpression,
+            Tree.Variable switchVariable, ProducedType pt) {
+        return switchVariable!=null || 
+                switchExpression!=null &&
+                (!hasUncheckedNulls(switchExpression.getTerm()) || 
+                        !isNullCase(pt));
+    }
+
+    @Override
+    public void visit(Tree.SatisfiesCase that) {
+        super.visit(that);
+        that.addUnsupportedError("satisfies cases are not yet supported");
+    }
+    
+    private static ProducedType getSwitchType(
+            Tree.Expression switchExpression,
+            Tree.Variable switchVariable) {
+        if (switchVariable!=null) {
+            return switchVariable.getType().getTypeModel();
+        }
+        else if (switchExpression!=null) {
+            return switchExpression.getTypeModel();
+        }
+        else {
+            return null;
         }
     }
     
@@ -7705,8 +7718,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean isNullCase(ProducedType ct) {
+    private static boolean isNullCase(ProducedType ct) {
         TypeDeclaration d = ct.getDeclaration();
+        Unit unit = d.getUnit();
         return d!=null && d instanceof Class &&
                 d.equals(unit.getNullDeclaration());
     }

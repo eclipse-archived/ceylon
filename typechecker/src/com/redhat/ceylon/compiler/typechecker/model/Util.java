@@ -1439,8 +1439,9 @@ public class Util {
             Unit unit) {
         ProducedType simpleIntersection = 
                 getSimpleIntersection(lhst, rhst);
-        if(simpleIntersection != null)
+        if (simpleIntersection != null) {
             return simpleIntersection;
+        }
         List<ProducedType> list = 
                 new ArrayList<ProducedType>(2);
         addToIntersection(list, rhst, unit);
