@@ -1489,10 +1489,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (model.isClassOrInterfaceMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) model.getContainer();
-            if (container.isFinal()) {
-                if (model.isDefault()) {
-                    that.addError("member of final class may not be annotated default", 1350);
-                }
+            if (container.isFinal() && model.isDefault()) {
+                that.addError("member of final class may not be annotated default", 1350);
             }
         }
         if (model.isToplevel()) {
@@ -1709,8 +1707,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         that.setDeclarationModel(p);
-        Tree.ParameterList pl = 
-                that.getParameterList();
         if (p==null) {
             that.addError("no matching type parameter for constraint: '" + 
                     name + "'", 2500);
@@ -1720,7 +1716,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             visitDeclaration(that, p);
         }
         else {
-            if (pl!=null) {
+            if (that.getTypeParameterList()!=null) {
                 p.setTypeConstructor(true);
             }
         	if (p.isConstrained()) {
@@ -1737,10 +1733,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (that.getAbstractedType()!=null) {
             that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
+        Tree.ParameterList pl = 
+                that.getParameterList();
         if (pl!=null) {
             that.addUnsupportedError("parameter bounds are not yet supported");
-            pl.getModel().setFirst(true);
-            p.addParameterList(pl.getModel());
+            ParameterList model = pl.getModel();
+            model.setFirst(true);
+            p.addParameterList(model);
         }
     }
     
