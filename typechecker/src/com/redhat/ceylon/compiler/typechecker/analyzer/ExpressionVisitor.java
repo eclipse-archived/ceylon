@@ -7992,7 +7992,7 @@ public class ExpressionVisitor extends Visitor {
                                         .get(i).addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                + "' is not one of the enumerated cases of '" 
+                                                + "' which is not one of the enumerated cases of '" 
                                                 + param.getName() + "'");
                             }
                         }

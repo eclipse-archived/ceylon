@@ -237,7 +237,9 @@ public class LiteralVisitor extends Visitor {
             }
             result.append("\n");
         }
-        result.setLength(result.length()-1);
+        if (result.length()>0) {
+            result.setLength(result.length()-1);
+        }
         return correctlyIndented;
     }
     
