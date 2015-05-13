@@ -4194,7 +4194,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!dynamic && !isNativeForWrongBackend() &&
                     isTypeUnknown(sp.getType())) {
-                sa.addError("parameter type could not be determined: '" + 
+                sa.addError("parameter type could not be determined: " + 
                         paramdesc(sp) +
                         getTypeUnknownError(sp.getType()));
             }
@@ -4426,7 +4426,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument a = args.get(i);
                 if (!dynamic && !isNativeForWrongBackend() &&
                         isTypeUnknown(p.getType())) {
-                    a.addError("parameter type could not be determined: '" + 
+                    a.addError("parameter type could not be determined: " + 
                             paramdesc(p) +
                             getTypeUnknownError(p.getType()));
                 }
