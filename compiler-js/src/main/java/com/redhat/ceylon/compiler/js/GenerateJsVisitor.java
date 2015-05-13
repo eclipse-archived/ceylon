@@ -242,15 +242,40 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.CompilationUnit that) {
         root = that;
         if (!that.getModuleDescriptors().isEmpty()) {
-            ModuleDescriptor md = that.getModuleDescriptors().get(0);
+            final ModuleDescriptor md = that.getModuleDescriptors().get(0);
             out("ex$.$mod$ans$=");
-            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), null, this);
+            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), new TypeUtils.AnnotationFunctionHelper() {
+                @Override
+                public String getPathToModelDoc() {
+                    return "''";
+                }
+                @Override
+                public String getPackedAnnotationsKey() {
+                    return null;
+                }
+                @Override
+                public String getAnnotationsKey() {
+                    return null;
+                }
+                @Override
+                public List<com.redhat.ceylon.model.typechecker.model.Annotation> getAnnotations() {
+                    return md.getUnit().getPackage().getModule().getAnnotations();
+                }
+                @Override
+                public Object getAnnotationSource() {
+                    return md.getUnit().getPackage().getModule();
+                }
+                @Override
+                public String getAnPath() {
+                    return "'$mod-anns'";
+                }
+            }, this);
             endLine(true);
             if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
                 out("ex$.$mod$imps=function(){return{");
                 if (!opts.isMinify())endLine();
                 boolean first=true;
-                for (ImportModule im : md.getImportModuleList().getImportModules()) {
+                for (final ImportModule im : md.getImportModuleList().getImportModules()) {
                     final StringBuilder path=new StringBuilder("'");
                     if (im.getImportPath()==null) {
                         if (im.getQuotedLiteral()==null) {
@@ -269,7 +294,36 @@ public class GenerateJsVisitor extends Visitor
                     path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
                     if (first)first=false;else{out(",");endLine();}
                     out(path.toString(), ":");
-                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), null, this);
+                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), 
+                            new TypeUtils.AnnotationFunctionHelper(){
+                        @Override
+                        public String getPathToModelDoc() {
+                            return null;
+                        }
+                        @Override
+                        public String getPackedAnnotationsKey() {
+                            return null;
+                        }
+                        @Override
+                        public String getAnnotationsKey() {
+                            return null;
+                        }
+                        @Override
+                        public List<com.redhat.ceylon.model.typechecker.model.Annotation> getAnnotations() {
+                            if (im.getImportPath().getModel() instanceof Module) {
+                                return ((Module)im.getImportPath().getModel()).getAnnotations();
+                            }
+                            return null;
+                        }
+                        @Override
+                        public Object getAnnotationSource() {
+                            return im;
+                        }
+                        @Override
+                        public String getAnPath() {
+                            return null;
+                        }
+                    }, this);
                 }
                 if (!opts.isMinify())endLine();
                 out("};};");
@@ -279,7 +333,33 @@ public class GenerateJsVisitor extends Visitor
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
             out("ex$.$pkg$ans$", pknm, "=");
-            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(), null, this);
+            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(),
+                    new TypeUtils.AnnotationFunctionHelper(){
+                @Override
+                public String getPathToModelDoc() {
+                    return "'" + that.getUnit().getPackage().getQualifiedNameString() + "'";
+                }
+                @Override
+                public String getPackedAnnotationsKey() {
+                    return null;
+                }
+                @Override
+                public String getAnnotationsKey() {
+                    return null;
+                }
+                @Override
+                public List<com.redhat.ceylon.model.typechecker.model.Annotation> getAnnotations() {
+                    return that.getUnit().getPackage().getAnnotations();
+                }
+                @Override
+                public Object getAnnotationSource() {
+                    return that.getUnit().getPackage();
+                }
+                @Override
+                public String getAnPath() {
+                    return "'$pkg-anns'";
+                }
+            }, this);
             endLine(true);
         }
 
