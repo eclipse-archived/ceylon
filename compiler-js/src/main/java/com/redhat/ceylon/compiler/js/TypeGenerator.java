@@ -768,6 +768,7 @@ public class TypeGenerator {
             final String me = gen.getNames().self(container);
             gen.beginBlock();
             if (forceAbstract) {
+                gen.initParameters(that.getParameterList(), container, null);
                 if (that.getDelegatedConstructor() != null) {
                     final TypeDeclaration superdec = that.getDelegatedConstructor().getType().getDeclarationModel();
                     ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
@@ -791,6 +792,7 @@ public class TypeGenerator {
                 gen.referenceOuter(container);
             }
             boolean pseudoAbstract = false;
+            gen.initParameters(that.getParameterList(), container, null);
             if (forceAbstract) {
                 gen.out(fullName, "$$a");
                 generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
@@ -815,7 +817,6 @@ public class TypeGenerator {
                 gen.out(me, ");");
                 gen.endLine();
             }
-            gen.initParameters(that.getParameterList(), container, null);
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
             }
