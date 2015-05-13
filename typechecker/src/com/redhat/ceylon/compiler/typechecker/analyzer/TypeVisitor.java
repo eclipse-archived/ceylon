@@ -1572,16 +1572,9 @@ public class TypeVisitor extends Visitor {
                 (TypeDeclaration) that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();
-            if (et==null) {
-//                that.addError("malformed extended type");
-            }
-            else {
+            if (et!=null) {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-//                    if (type.isTypeConstructor()) {
-//                        et.addError("type constructor may not occur as extended type");
-//                    }
-//                    else {
                     TypeDeclaration etd = et.getDeclarationModel();
                     if (etd!=null && 
                             !(etd instanceof UnknownType)) {
@@ -1612,7 +1605,6 @@ public class TypeVisitor extends Visitor {
                         else {
                             td.setExtendedType(type);
                         }
-//                        }
                     }
                 }
             }
@@ -1639,10 +1631,6 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType st: that.getTypes()) {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
-//                if (type.isTypeConstructor()) {
-//                    st.addError("type constructor may not occur as satisfied type");
-//                }
-//                else {
                 TypeDeclaration std = type.getDeclaration();
                 if (std!=null && 
                         !(std instanceof UnknownType)) {
@@ -1709,7 +1697,6 @@ public class TypeVisitor extends Visitor {
                         }
                     }
                     list.add(type);
-//                    }
                 }
             }
         }
@@ -1766,10 +1753,6 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType ct: cts) {
             ProducedType type = ct.getTypeModel();
             if (type!=null) {
-//                if (type.isTypeConstructor()) {
-//                    ct.addError("type constructor may not occur as case type");
-//                }
-//                else {
                 TypeDeclaration ctd = type.getDeclaration();
                 if (ctd!=null && 
                         !(ctd instanceof UnknownType)) {
@@ -1820,7 +1803,6 @@ public class TypeVisitor extends Visitor {
                         continue;
                     }
                     list.add(type);
-//                    }
                 }
             }
         }
