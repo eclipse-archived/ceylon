@@ -2358,8 +2358,44 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
 
         // Set "native" annotation
-        decl.setNative(getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend"));
+        String nativeBackend = getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
+        decl.setNative(nativeBackend);
+        if (nativeBackend != null) {
+            
+            List<Declaration> al = getOverloads(decl);
+            if (al == null) {
+                al = new ArrayList<Declaration>(3);
+                al.add(decl);
+                setOverloads(decl, al);
+            }
+        }
     }
+
+    public static List<Declaration> getOverloads(Declaration decl) {
+        if (decl instanceof Method) {
+            return ((Method)decl).getOverloads();
+        }
+        else if (decl instanceof Value) {
+            return ((Value)decl).getOverloads();
+        }
+        else if (decl instanceof Class) {
+            return ((Class)decl).getOverloads();
+        }
+        return Collections.emptyList();
+    }
+    
+    public static void setOverloads(Declaration decl, List<Declaration> overloads) {
+        if (decl instanceof Method) {
+            ((Method)decl).setOverloads(overloads);
+        }
+        else if (decl instanceof Value) {
+            ((Value)decl).setOverloads(overloads);
+        }
+        else if (decl instanceof Class) {
+            ((Class)decl).setOverloads(overloads);
+        }
+    }
+
 
     private Annotation readModelAnnotation(AnnotationMirror annotation) {
         Annotation modelAnnotation = new Annotation();
