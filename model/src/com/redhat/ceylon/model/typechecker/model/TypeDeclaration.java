@@ -113,8 +113,8 @@ public abstract class TypeDeclaration extends Declaration
 		else {
 		    TypeDeclaration td = et.getDeclaration();
 		    if (td instanceof ClassOrInterface) {
-		        return (ClassOrInterface) et.getDeclaration();
-
+		        return (ClassOrInterface) 
+		                et.getDeclaration();
 		    }
 		    else {
 		        return null;
@@ -123,6 +123,15 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public ProducedType getExtendedType() {
+        if (extendedType!=null) {
+            TypeDeclaration etd = 
+                    extendedType.getDeclaration();
+            if (etd==this ||
+                    etd instanceof TypeAlias && 
+                    !(this instanceof TypeAlias)) {
+                return null;
+            }
+        }
         return extendedType;
     }
 
@@ -135,16 +144,32 @@ public abstract class TypeDeclaration extends Declaration
         List<TypeDeclaration> list = 
                 new ArrayList<TypeDeclaration>
                     (sts.size());
-        // cheaper iteration
         for (int i=0, l=sts.size(); i<l; i++) {
             ProducedType pt = sts.get(i);
-            list.add(pt==null ? null : 
-                pt.getDeclaration());
+            list.add(pt==null ? null : pt.getDeclaration());
         }
         return list;
     }
-
+    
     public List<ProducedType> getSatisfiedTypes() {
+        if (!(this instanceof TypeParameter)) { //don't ask me why, but this is necessary!
+            for (int i=0, size=satisfiedTypes.size(); 
+                    i<size; i++) {
+                ProducedType st = satisfiedTypes.get(i);
+                if (st!=null) {
+                    TypeDeclaration std = st.getDeclaration();
+                    if (std==this || 
+                            std instanceof TypeAlias && 
+                            !(this instanceof IntersectionType)) {
+                        satisfiedTypes = 
+                                new ArrayList<ProducedType>
+                                    (satisfiedTypes);
+                        satisfiedTypes.remove(i);
+                        i--; size--;
+                    }
+                }
+            }
+        }
         return satisfiedTypes;
     }
 
@@ -159,17 +184,37 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             List<TypeDeclaration> list = 
-                    new ArrayList<TypeDeclaration>(cts.size());
+                    new ArrayList<TypeDeclaration>
+                        (cts.size());
             for (int i=0, l=cts.size(); i<l; i++) {
                 ProducedType pt = cts.get(i);
-                list.add(pt==null ? null : 
-                    pt.getDeclaration());
+                list.add(pt==null ? null : pt.getDeclaration());
             }
             return list;
         }
     }
 
     public List<ProducedType> getCaseTypes() {
+        if (caseTypes!=null) {
+            if (!(this instanceof TypeParameter)) {
+                for (int i=0, size=caseTypes.size(); 
+                        i<size; i++) {
+                    ProducedType ct = caseTypes.get(i);
+                    if (ct!=null) {
+                        TypeDeclaration ctd = ct.getDeclaration();
+                        if (ctd==this || 
+                                ctd instanceof TypeAlias && 
+                                !(this instanceof UnionType)) {
+                            caseTypes = 
+                                    new ArrayList<ProducedType>
+                                        (caseTypes);
+                            caseTypes.remove(i);
+                            i--; size--;
+                        }
+                    }
+                }
+            }
+        }
         return caseTypes;
     }
 
@@ -917,13 +962,16 @@ public abstract class TypeDeclaration extends Declaration
 
     private void mergeMembers(Map<String,DeclarationWithProximity> result,
             Map<String,DeclarationWithProximity> etm) {
-        for (Map.Entry<String,DeclarationWithProximity> e: etm.entrySet()) {
+        for (Map.Entry<String,DeclarationWithProximity> e: 
+                etm.entrySet()) {
             String name = e.getKey();
-            DeclarationWithProximity current = e.getValue();
-            DeclarationWithProximity existing = result.get(name);
+            DeclarationWithProximity current = 
+                    e.getValue();
+            DeclarationWithProximity existing = 
+                    result.get(name);
             if (existing==null || 
                     !existing.getDeclaration()
-                            .refines(current.getDeclaration())) {
+                        .refines(current.getDeclaration())) {
                 result.put(name, current);
             }
         }
@@ -940,9 +988,9 @@ public abstract class TypeDeclaration extends Declaration
         if (etd!=null) {
             List<TypeDeclaration> etsts = 
                     etd.getSupertypeDeclarations();
-            int capacity = etsts.size() + stds.size()*2;
-            result = new ArrayList<TypeDeclaration>(capacity);
-            for (int j=0; j<etsts.size(); j++) {
+            result = new ArrayList<TypeDeclaration>
+                        (etsts.size() + stds.size()*2);
+            for (int j=0, s=etsts.size(); j<s; j++) {
                 TypeDeclaration st = etsts.get(j);
                 if (!result.contains(st)) {
                     result.add(st);
@@ -950,15 +998,14 @@ public abstract class TypeDeclaration extends Declaration
             }
         }
         else {
-            int capacity = stds.size()*2;
-            result = new ArrayList<TypeDeclaration>(capacity);
+            result = new ArrayList<TypeDeclaration>
+                        (stds.size()*2);
         }
-        // cheaper c-for than foreach
         for (int i=0, l=stds.size(); i<l; i++) {
             TypeDeclaration std = stds.get(i);
             List<TypeDeclaration> ststs = 
                     std.getSupertypeDeclarations();
-            for (int j=0; j<ststs.size(); j++) {
+            for (int j=0, s=ststs.size(); j<s; j++) {
                 TypeDeclaration st = ststs.get(j);
                 if (!result.contains(st)) {
                     result.add(st);
