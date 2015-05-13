@@ -20,7 +20,7 @@ see (`interface Map`,
      `interface List`, 
      `interface Category`)
 by ("Gavin")
-shared interface Correspondence<in Key, out Item>
+shared interface Correspondence<in Key, out Item=Anything>
         given Key satisfies Object {
     
     "Returns the value defined for the given key, or `null` 

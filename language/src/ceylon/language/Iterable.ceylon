@@ -116,7 +116,8 @@
    is extremely fragile and strongly discouraged."""
 see (`interface Collection`)
 by ("Gavin")
-shared interface Iterable<out Element, out Absent>
+shared interface Iterable<out Element=Anything, 
+                          out Absent=Null>
         satisfies Category<>
         given Absent satisfies Null {
     

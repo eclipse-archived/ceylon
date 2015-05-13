@@ -44,7 +44,7 @@
        String[] allLabels = point[2...];"""
 by ("Gavin")
 shared final serializable
-native class Tuple<out Element,out First,out Rest = []>
+native class Tuple<out Element, out First, out Rest = []>
         (first, rest)
         extends Object()
         satisfies [Element+]

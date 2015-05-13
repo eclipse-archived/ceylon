@@ -21,7 +21,7 @@
  Equality for `Map`s and `Set`s has a quite different
  definition to equality for `List`s."
 see (`interface List`, `interface Map`, `interface Set`)
-shared interface Collection<out Element>
+shared interface Collection<out Element=Anything>
         satisfies {Element*} {
     
     "A shallow copy of this collection, that is, a 

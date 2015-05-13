@@ -52,7 +52,7 @@
 see (`interface Sequence`, 
      `interface Empty`, 
      `class Array`)
-shared interface List<out Element>
+shared interface List<out Element=Anything>
         satisfies Collection<Element> &
                   Correspondence<Integer,Element> &
                   Ranged<Integer,Element,List<Element>> {

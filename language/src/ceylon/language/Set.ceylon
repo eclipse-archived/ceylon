@@ -10,7 +10,7 @@
  Elements are compared for equality using [[Object.equals]] 
  or [[Comparable.compare]]. An element may occur at most 
  once in a set."
-shared interface Set<out Element>
+shared interface Set<out Element=Object>
         satisfies Collection<Element>
         given Element satisfies Object {
     

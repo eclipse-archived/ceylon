@@ -25,7 +25,7 @@
 see (`class Entry`, 
      `function forKey`, `function forItem`, 
      `function byItem`, `function byKey`)
-shared interface Map<out Key,out Item>
+shared interface Map<out Key=Object, out Item=Anything>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item>
         given Key satisfies Object {

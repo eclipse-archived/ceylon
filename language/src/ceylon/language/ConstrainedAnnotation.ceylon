@@ -5,8 +5,8 @@
  Instead either [[OptionalAnnotation]] or [[SequencedAnnotation]] 
  should be satisfied."
 see(`interface Annotation`)
-shared interface ConstrainedAnnotation
-        <out Value, out Values, in ProgramElement> 
+shared interface ConstrainedAnnotation<out Value=Annotation, 
+            out Values=Anything, in ProgramElement=Nothing> 
         of Value
         //Note: adding the following constraint would
         //      make ConstrainedAnnotation a GADT, which
