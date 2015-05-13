@@ -808,7 +808,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        Tree.TypeSpecifier ts = that.getTypeSpecifier();
         Tree.TypeVariance tv = that.getTypeVariance();
         final TypeParameter p = new TypeParameter();
         defaultExtendedToAnything(p);
@@ -823,40 +822,15 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         
         super.visit(that);
         
-        ProducedType dta = null;
+        Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                dta = type.getTypeModel();
+                ProducedType dta = type.getTypeModel();
+                p.setDefaultTypeArgument(dta);
+                p.setDefaulted(dta!=null);
             }
         }
-        else {
-            if (p.isCovariant()) {
-                dta = new LazyProducedType(unit) {
-                    ProducedType get() {
-                        ProducedType result = 
-                                intersectionOfSupertypes(p);
-                        return result.containsTypeParameters() ?
-                                null : result;
-                    }
-                    @Override
-                    public Map<TypeParameter, ProducedType> 
-                    initTypeArguments() {
-                        return get().getTypeArguments();
-                    }
-                    @Override
-                    public TypeDeclaration initDeclaration() {
-                        return get().getDeclaration();
-                    }
-                };
-            }
-            else if (p.isContravariant()) {
-                dta = unit.getNothingDeclaration()
-                        .getType();
-            }
-        }
-        p.setDefaultTypeArgument(dta);
-        p.setDefaulted(dta!=null);
     }
     
     @Override

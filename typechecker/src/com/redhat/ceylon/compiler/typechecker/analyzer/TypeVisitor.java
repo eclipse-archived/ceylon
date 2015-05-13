@@ -46,7 +46,6 @@ import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -1237,17 +1236,18 @@ public class TypeVisitor extends Visitor {
         
         super.visit(that);
         
-        ProducedType dta = null;
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                dta = type.getTypeModel();
+                ProducedType dta = type.getTypeModel();
+                Declaration dec = p.getDeclaration();
                 if (dta!=null && 
-                        dta.containsDeclaration(p.getDeclaration())) {
+                        dta.containsDeclaration(dec)) {
                     type.addError("default type argument involves parameterized type: '" + 
-                            dta.getProducedTypeName(unit) + "' involves '" + 
-                            p.getDeclaration().getName(unit) + "'");
+                            dta.getProducedTypeName(unit) + 
+                            "' involves '" + dec.getName(unit) + 
+                            "'");
                     dta = null;
                 }
                 /*else if (dta.containsTypeParameters()) {
@@ -1255,20 +1255,11 @@ public class TypeVisitor extends Visitor {
                             dta.getProducedTypeName(unit));
                     dta = null;
                 }*/
+                p.setDefaultTypeArgument(dta);
+                p.setDefaulted(dta!=null);
             }
-            p.setDefaultTypeArgument(dta);
         }
         
-    }
-    
-    @Override
-    public void visit(Tree.TypeConstraint that) {
-        super.visit(that);
-        TypeParameter p = that.getDeclarationModel();
-        ProducedType dta = p.getDefaultTypeArgument();
-        if (dta instanceof LazyProducedType) {
-            p.setDefaultTypeArgument(intersectionOfSupertypes(p));
-        }
     }
     
     @Override
