@@ -69,3 +69,39 @@ void testSwitch(Integer i, String s, Character c, String? ss) {
     else {}
     
 }
+
+void fun0<X>(X x) {
+    switch (x)
+    case (null) {
+        print(x);
+    }
+    else {
+        print(x.string);
+    }
+}
+
+void fun1<X>(X&Boolean x) {
+    switch (x)
+    //@error case (null) {
+    //    print(x);
+    //}
+    case (true) {}
+    case (false) {}
+    else {
+        @error print(x.string);
+    }
+}
+
+void fun2<X>(X x) {
+    switch (x)
+    case (true) {
+        print("T");
+    }
+    case (false) {
+        print("F");
+    }
+    else {
+        @error print(x.string);
+    }
+}
+
