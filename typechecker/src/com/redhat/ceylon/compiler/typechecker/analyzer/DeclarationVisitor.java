@@ -1320,8 +1320,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Tree.Expression be = that.getBrokenExpression();
         if (be!=null) {
             be.addError("incorrect syntax: " + op + 
-                    " conditions do not apply to arbitrary expressions, try using postfix " + 
-                    op + " operator", 3100);
+                    " conditions do not apply to arbitrary expressions, try using postfix '" + 
+                    op + "' operator", 3100);
         }
         else if (that.getVariable()==null) {
             that.addError("missing variable or immutable value reference: " + op + 
@@ -1344,11 +1344,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         nal.setId(id++);
         for (Tree.NamedArgument na: 
                 that.getNamedArguments()) {
-            Tree.Identifier identifier = 
-                    na.getIdentifier();
-            if (identifier!=null) {
+            Tree.Identifier id = na.getIdentifier();
+            if (id!=null) {
                 nal.getArgumentNames()
-                    .add(identifier.getText());
+                    .add(id.getText());
             }
         }
         that.setNamedArgumentList(nal);
@@ -1364,9 +1363,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 that.getSpecifierExpression();
         if (se!=null) {
             Scope s = scope;
-            if (scope instanceof ControlBlock &&
-                    !((ControlBlock) scope).isLet()) {
-                scope = scope.getContainer();
+            if (scope instanceof ControlBlock) {
+                ControlBlock block = (ControlBlock) scope;
+                if (!block.isLet()) {
+                    scope = scope.getContainer();
+                }
             }
             se.visit(this);
             scope = s;
