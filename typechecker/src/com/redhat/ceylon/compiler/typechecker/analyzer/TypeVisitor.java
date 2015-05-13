@@ -244,7 +244,8 @@ public class TypeVisitor extends Visitor {
         return null;
     }
     
-    public static Package getPackage(Tree.ImportPath path, BackendSupport backendSupport) {
+    public static Package getPackage(Tree.ImportPath path, 
+            BackendSupport backendSupport) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -274,21 +275,25 @@ public class TypeVisitor extends Visitor {
                 //all modules in the same source dir
                 Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
-                    if (findModuleInTransitiveImports(mi.getModule(), 
-                            pkg.getModule(), visited)) {
+                    if (findModuleInTransitiveImports(
+                            mi.getModule(), pkg.getModule(), 
+                            visited)) {
                         return pkg; 
                     }
                 }
             } else {
                 for (ModuleImport mi: module.getImports()) {
                     if (mi.isNative()) {
-                        if (!backendSupport.supportsBackend(Backend.fromAnnotation(mi.getNative()))
-                                && nameToImport.startsWith(mi.getModule().getNameAsString())) {
+                        Backend backend = 
+                                Backend.fromAnnotation(mi.getNative());
+                        String name = mi.getModule().getNameAsString();
+                        if (!backendSupport.supportsBackend(backend)
+                                && nameToImport.startsWith(name)) {
                             return null;
                         }
-                        if (!backendSupport.supportsBackend(Backend.Java)
-                                && (JDKUtils.isJDKAnyPackage(nameToImport)
-                                        || JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
+                        if (!backendSupport.supportsBackend(Backend.Java) && 
+                                (JDKUtils.isJDKAnyPackage(nameToImport) || 
+                                 JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
                             return null;
                         }
                     }
@@ -308,19 +313,23 @@ public class TypeVisitor extends Visitor {
     
     private static boolean findModuleInTransitiveImports(Module moduleToVisit, 
             Module moduleToFind, Set<Module> visited) {
-        if (!visited.add(moduleToVisit))
+        if (!visited.add(moduleToVisit)) {
             return false;
-        if (moduleToVisit.equals(moduleToFind))
-            return true;
-        for (ModuleImport imp : moduleToVisit.getImports()) {
-            // skip non-exported modules
-            if (!imp.isExport())
-                continue;
-            if (findModuleInTransitiveImports(imp.getModule(), 
-                    moduleToFind, visited))
-                return true;
         }
-        return false;
+        else if (moduleToVisit.equals(moduleToFind)) {
+            return true;
+        }
+        else {
+            for (ModuleImport imp: moduleToVisit.getImports()) {
+                // skip non-exported modules
+                if (imp.isExport() &&
+                        findModuleInTransitiveImports(imp.getModule(), 
+                                moduleToFind, visited)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     private boolean hidesToplevel(Declaration dec) {
