@@ -49,7 +49,8 @@ import ceylon.language.meta.model {
            print(boundMemberClassModel());
        }
    """
-shared sealed interface ClassDeclaration
+shared sealed interface ClassDeclaration 
+        of ClassWithInitializerDeclaration | ClassWithConstructorsDeclaration
         satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
@@ -107,4 +108,23 @@ shared sealed interface ClassDeclaration
      given `Annotation` type argument. This includes unshared constructors."
     shared formal ConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType;
+}
+
+shared sealed interface ClassWithInitializerDeclaration 
+        satisfies ClassDeclaration {
+    shared actual default [] constructorDeclarations() => [];
+    shared actual default Null defaultConstructorDeclaration => null;
+    shared actual default Null getConstructorDeclaration(String name) => null;
+    shared actual default [] annotatedConstructorDeclarations<Annotation>()
+            given Annotation satisfies AnnotationType => [];
+}
+
+shared sealed interface ClassWithConstructorsDeclaration 
+        satisfies ClassDeclaration {
+    shared actual default Nothing instantiate(AppliedType<>[] typeArguments, Anything* arguments) {
+        throw IncompatibleTypeException("class has constructors");
+    }
+    shared actual default Nothing memberInstantiate(Object container, AppliedType<>[] typeArguments, Anything* arguments) {
+        throw IncompatibleTypeException("class has constructors");
+    }
 }
