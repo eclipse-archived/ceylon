@@ -1265,7 +1265,6 @@ public class TypeVisitor extends Visitor {
                     dta = null;
                 }*/
                 p.setDefaultTypeArgument(dta);
-                p.setDefaulted(dta!=null);
             }
         }
         

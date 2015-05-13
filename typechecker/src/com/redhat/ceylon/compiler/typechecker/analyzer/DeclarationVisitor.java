@@ -824,11 +824,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
+            p.setDefaulted(true);
             Tree.StaticType type = ts.getType();
             if (type!=null) {
                 ProducedType dta = type.getTypeModel();
                 p.setDefaultTypeArgument(dta);
-                p.setDefaulted(dta!=null);
             }
         }
     }
