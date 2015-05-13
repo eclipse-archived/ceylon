@@ -88,29 +88,7 @@ public class MetamodelGenerator {
         model.put("$mod-name", module.getNameAsString());
         model.put("$mod-version", module.getVersion());
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
-        if (module.getAnnotations() != null && !module.getAnnotations().isEmpty()) {
-            HashMap<String, Object> anns = new HashMap<String, Object>();
-            int bits = 0;
-            for (Annotation a : module.getAnnotations()) {
-                String name = a.getName();
-                int idx = annotationBits.indexOf(name);
-                if (idx >= 0) {
-                    bits |= (1 << idx);
-                } else {
-                    List<String> args = a.getPositionalArguments();
-                    if (args == null) {
-                        args = Collections.emptyList();
-                    }
-                    anns.put(name, args);
-                }
-            }
-            if (bits > 0) {
-                model.put("$mod-pa", bits);
-            }
-            if (anns != null && !anns.isEmpty()) {
-                model.put("$mod-anns", anns);
-            }
-        }
+        encodeAnnotations(module.getAnnotations(), module, model);
         if (!module.getImports().isEmpty()) {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
@@ -377,7 +355,7 @@ public class MetamodelGenerator {
                     //This could be compiled to JS...
                     pm.put(ANN_DEFAULT, parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }*/
-                encodeAnnotations(parm.getModel(), pm);
+                encodeAnnotations(parm.getModel().getAnnotations(), parm.getModel(), pm);
                 p.add(pm);
             }
             return p;
@@ -408,7 +386,7 @@ public class MetamodelGenerator {
         }
 
         //Annotations
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         Map<String, Object> parent= findParent(d);
         if (parent != null) {
             if (!d.isToplevel()) {
@@ -456,7 +434,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getCaseTypes(), m, "of", d);
 
         //Annotations
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         if (d.isAnonymous()) {
             m.put("$anon", 1);
         }
@@ -491,7 +469,7 @@ public class MetamodelGenerator {
         if (!plist.getParameters().isEmpty()) {
             m.put(KEY_PARAMS, parameterListMap(plist, d));
         }
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         if (c.get(KEY_CONSTRUCTORS) == null) {
             c.put(KEY_CONSTRUCTORS, new HashMap<>());
         }
@@ -524,7 +502,7 @@ public class MetamodelGenerator {
         //Case types
         encodeTypes(d.getCaseTypes(), m, "of", d);
         //Annotations
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         if (d.isAlias()) {
             m.put("$alias", typeMap(d.getExtendedType(), d));
         }
@@ -559,7 +537,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, KEY_SATISFIES, d);
 
         //Certain annotations
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         parent.put(TypeUtils.modelName(d.getTypeDeclaration()), m);
     }
 
@@ -592,14 +570,14 @@ public class MetamodelGenerator {
         m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType(), d));
         parent.put(mname, m);
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         if (d instanceof Value && ((Value) d).getSetter() != null) {
             Map<String,Object> smap = (Map<String,Object>)m.get("$set");
             if (smap==null) {
                 smap = new HashMap<>();
                 m.put("$set", smap);
                 smap.put(KEY_METATYPE, METATYPE_SETTER);
-                encodeAnnotations(((Value)d).getSetter(), smap);
+                encodeAnnotations(((Value)d).getSetter().getAnnotations(), ((Value)d).getSetter(), smap);
             }
         }
         return m;
@@ -636,7 +614,7 @@ public class MetamodelGenerator {
         m.put("$alias", typeMap(d.getExtendedType(), d));
         encodeTypes(d.getCaseTypes(), m, "of", d);
         encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
-        encodeAnnotations(d, m);
+        encodeAnnotations(d.getAnnotations(), d, m);
         parent.put(TypeUtils.modelName(d), m);
         return m;
     }
@@ -655,10 +633,10 @@ public class MetamodelGenerator {
      * {@link #KEY_ANNOTATIONS} key in the specified map.
      * If the map is null, only the bitset annotations are calculated and returned.
      * @return The bitmask for the bitset annotations. */
-    public static int encodeAnnotations(Declaration d, Map<String, Object> m) {
+    public static int encodeAnnotations(List<Annotation> annotations, Object d, Map<String, Object> m) {
         HashMap<String, Object> anns = m == null ? null : new HashMap<String, Object>();
         int bits = 0;
-        for (Annotation a : d.getAnnotations()) {
+        for (Annotation a : annotations) {
             String name = a.getName();
             int idx = annotationBits.indexOf(name);
             if (idx >= 0) {
@@ -676,10 +654,14 @@ public class MetamodelGenerator {
             bits |= (1 << annotationBits.indexOf("variable"));
         }
         if (bits > 0 && m != null) {
-            m.put(KEY_PACKED_ANNS, bits);
+            String key = d instanceof Module ? "$mod-pa" :
+                d instanceof com.redhat.ceylon.model.typechecker.model.Package ? "$pkg-pa" : KEY_PACKED_ANNS;
+            m.put(key, bits);
         }
         if (anns != null && m != null && !anns.isEmpty()) {
-            m.put(KEY_ANNOTATIONS, anns);
+            String key = d instanceof Module ? "$mod-anns" :
+                d instanceof com.redhat.ceylon.model.typechecker.model.Package ? "$pkg-anns" : KEY_ANNOTATIONS;
+            m.put(key, anns);
         }
         return bits;
     }
@@ -710,6 +692,7 @@ public class MetamodelGenerator {
             if (p.isShared()) {
                 pkgmap.put("$pkg-shared", 1);
             }
+            encodeAnnotations(p.getAnnotations(), p, pkgmap);
             model.put(p.getNameAsString(), pkgmap);
         }
         return pkgmap;

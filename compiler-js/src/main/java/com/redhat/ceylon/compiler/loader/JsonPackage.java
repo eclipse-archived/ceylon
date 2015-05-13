@@ -48,7 +48,6 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
     private final static Map<String,Object> objclass = new HashMap<String, Object>();
     //This is for type parameters
     private final static Map<String,Object> voidclass = new HashMap<String, Object>();
-    private List<String> docs;
     private Map<String,Object> model;
     private final String pkgname;
     private boolean loaded = false;
@@ -75,9 +74,6 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
     public void setModule(com.redhat.ceylon.model.typechecker.model.Module module) {
         if (module instanceof JsonModule && model == null) {
             model = ((JsonModule)module).getModelForPackage(getNameAsString());
-            if (model != null) {
-                docs = ((JsonModule)module).getDocs();
-            }
             u2.setPackage(this);
             u2.setFilename("");
             u2.setFullPath("");
@@ -969,12 +965,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             String name = e.getKey();
             Annotation ann = new Annotation();
             ann.setName(name);
-            if ("doc".equals(name) && e.getValue() instanceof Integer) {
-                ann.addPositionalArgment(docs.get((Integer)e.getValue()));
-            } else {
-                for (String arg : (List<String>)e.getValue()) {
-                    ann.addPositionalArgment(arg);
-                }
+            for (String arg : (List<String>)e.getValue()) {
+                ann.addPositionalArgment(arg);
             }
             d.getAnnotations().add(ann);
         }

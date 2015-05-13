@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -30,13 +31,26 @@ public class JsonModule extends Module {
         final int dotidx = binVersion.indexOf('.');
         setMajor(Integer.parseInt((String)binVersion.substring(0,dotidx), 10));
         setMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
+        if (model.get("$mod-pa") != null) {
+            int bits = (int)model.get("$mod-pa");
+            setNative(JsonPackage.hasAnnotationBit(bits, "native") ? "js" : null);
+        }
+        @SuppressWarnings("unchecked")
+        Map<String,Object> moduleAnns = (Map<String,Object>)model.get("$mod-anns");
+        if (moduleAnns != null) {
+            for (Map.Entry<String, Object> e : moduleAnns.entrySet()) {
+                String name = e.getKey();
+                Annotation ann = new Annotation();
+                ann.setName(name);
+                for (String arg : (List<String>)e.getValue()) {
+                    ann.addPositionalArgment(arg);
+                }
+                getAnnotations().add(ann);
+            }
+        }
     }
     public Map<String, Object> getModel() {
         return model;
-    }
-    @SuppressWarnings("unchecked")
-    public List<String> getDocs() {
-        return (List<String>)model.get("$mod-DOC$");
     }
 
     void loadDeclarations() {
