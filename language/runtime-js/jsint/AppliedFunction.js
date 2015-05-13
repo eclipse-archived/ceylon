@@ -62,6 +62,9 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   atr$(f,'container',function(){
     return _proto.$prop$getContainer.get.call(f);
   },undefined,_proto.$prop$getContainer.$crtmm$);
+  atr$(f,'type',function(){
+    return _proto.$prop$getType.get.call(f);
+  },undefined,_proto.$prop$getType.$crtmm$);
   f.$_apply=_proto.$_apply;
   f.namedApply=_proto.namedApply;
   return f;
