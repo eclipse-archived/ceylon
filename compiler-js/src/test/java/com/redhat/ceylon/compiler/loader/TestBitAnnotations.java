@@ -11,16 +11,16 @@ public class TestBitAnnotations {
     @Test
     public void testEncode() {
         final Value v = new Value();
-        int b = MetamodelGenerator.encodeAnnotations(v, null);
+        int b = MetamodelGenerator.encodeAnnotations(v.getAnnotations(), v, null);
         Assert.assertEquals(0, b);
         v.getAnnotations().add(new Annotation("shared"));
-        b = MetamodelGenerator.encodeAnnotations(v, null);
+        b = MetamodelGenerator.encodeAnnotations(v.getAnnotations(), v, null);
         Assert.assertEquals(1, b);
         v.getAnnotations().add(new Annotation("actual"));
-        b = MetamodelGenerator.encodeAnnotations(v, null);
+        b = MetamodelGenerator.encodeAnnotations(v.getAnnotations(), v, null);
         Assert.assertEquals(3, b);
         v.getAnnotations().add(new Annotation("default"));
-        b = MetamodelGenerator.encodeAnnotations(v, null);
+        b = MetamodelGenerator.encodeAnnotations(v.getAnnotations(), v, null);
         Assert.assertEquals(11, b);
     }
 
