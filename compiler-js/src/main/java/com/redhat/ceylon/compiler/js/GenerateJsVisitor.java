@@ -667,7 +667,9 @@ public class GenerateJsVisitor extends Visitor
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
             out("$$targs$$,");
         }
-        out(names.self(d), "){return ");
+        out(names.self(d), "){");
+        initSelf(that);
+        out("return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         final String aliasedName;
         if (aliased instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
@@ -676,7 +678,18 @@ public class GenerateJsVisitor extends Visitor
             aliasedName = names.name(aliased);
         }
         qualify(that, aliased);
-        out(aliasedName, "(");
+        Scope superscope = getSuperMemberScope(ext.getType());
+        if (superscope != null) {
+            out("getT$all()['");
+            if (superscope instanceof Declaration) {
+                out(TypeUtils.qualifiedNameSkippingMethods((Declaration)superscope));
+            } else {
+                out(superscope.getQualifiedNameString());
+            }
+            out("'].$$.prototype.", aliasedName, ".call(", names.self(prototypeOwner), ",");
+        } else {
+            out(aliasedName, "(");
+        }
         if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
             ext.getInvocationExpression().getPositionalArgumentList().visit(this);
             if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
@@ -1844,6 +1857,7 @@ public class GenerateJsVisitor extends Visitor
     String memberAccessBase(Node node, Declaration decl, boolean setter,
                 String lhs) {
         final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
+        final boolean isConstructor = decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
         if (sb.length() > 0) {
             if (node instanceof BaseMemberOrTypeExpression) {
                 Declaration bmd = ((BaseMemberOrTypeExpression)node).getDeclaration();
@@ -1851,12 +1865,11 @@ public class GenerateJsVisitor extends Visitor
                     return sb.toString();
                 }
             }
-            sb.append(decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor ? '_':'.');
+            sb.append(isConstructor ? '_':'.');
         }
-        Scope scope = getSuperMemberScope(node);
         boolean metaGetter = false;
-        if (opts.isOptimize() && (scope != null) &&
-                decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor == false) {
+        Scope scope = getSuperMemberScope(node);
+        if (opts.isOptimize() && (scope != null) && !isConstructor) {
             sb.append("getT$all()['");
             if (scope instanceof Declaration) {
                 sb.append(TypeUtils.qualifiedNameSkippingMethods((Declaration)scope));
