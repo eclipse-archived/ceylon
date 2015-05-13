@@ -21,12 +21,14 @@ public abstract class ProducedReference {
     
     ProducedReference() {}
 
-    private Map<TypeParameter, ProducedType> typeArguments = emptyMap();
+    private Map<TypeParameter, ProducedType> typeArguments = 
+            emptyMap();
     private Declaration declaration;
     private ProducedType qualifyingType;
     
     //cache
-    private Map<TypeParameter, ProducedType> typeArgumentsWithDefaults;
+    private Map<TypeParameter, ProducedType> 
+    typeArgumentsWithDefaults;
     
     public ProducedType getQualifyingType() {
         return qualifyingType;
@@ -69,31 +71,36 @@ public abstract class ProducedReference {
         }
     }
 
-    private static Map<TypeParameter, ProducedType> fillInDefaultTypeArguments(
-            Declaration declaration,
+    private static Map<TypeParameter, ProducedType> 
+    fillInDefaultTypeArguments(Declaration declaration,
             Map<TypeParameter, ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> result = typeArguments;
+        Map<TypeParameter, ProducedType> result = 
+                typeArguments;
+        Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
-                ((Generic) declaration).getTypeParameters();
-        for (int i=0, l=typeParameters.size(); i<l; i++) {
+                g.getTypeParameters();
+        for (int i=0, l=typeParameters.size(); 
+                i<l; i++) {
             TypeParameter pt = typeParameters.get(i);
             ProducedType dta = pt.getDefaultTypeArgument();
-            if (dta!=null) {
-                if (!typeArguments.containsKey(pt)) {
-                    // only make a copy of typeArguments if required
-                    if (typeArguments == result) {
-                        // make a copy big enough to fit every type parameter
-                        result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
-                        result.putAll(typeArguments);
-                    }
-                    result.put(pt, dta.substitute(result));
+            if (dta!=null &&
+                    !typeArguments.containsKey(pt)) {
+                // only make a copy of typeArguments if required
+                if (typeArguments == result) {
+                    // make a copy big enough to fit every type parameter
+                    result = new HashMap
+                            <TypeParameter,ProducedType>
+                            (typeParameters.size());
+                    result.putAll(typeArguments);
                 }
+                result.put(pt, dta.substitute(result));
             }
         }
         return result;
     }
     
-    void setTypeArguments(Map<TypeParameter,ProducedType> typeArguments) {
+    void setTypeArguments
+        (Map<TypeParameter,ProducedType> typeArguments) {
         this.typeArguments = typeArguments;
     }
         
@@ -109,19 +116,21 @@ public abstract class ProducedReference {
      *                    T?, [T*], or [T+]
      */
     public ProducedType getFullType(ProducedType wrappedType) {
+        //don't use this, because it is refined by ProducedType
+        //Declaration declaration = getDeclaration();
         if (declaration instanceof Functional) {
+            Unit unit = declaration.getUnit();
             if (isAbstraction(declaration)) {
-                Unit unit = declaration.getUnit();
                 //for an unresolved overloaded method we don't 
                 //know the parameter types, but we do know that
                 //there is only one parameter list
-                return producedType(unit.getCallableDeclaration(), 
-                        wrappedType,
+                return producedType(
+                        unit.getCallableDeclaration(), 
+                        wrappedType, 
                         new UnknownType(unit).getType());
             }
             else {
-                return getDeclaration().getUnit()
-                        .getCallableType(this, wrappedType);
+                return unit.getCallableType(this, wrappedType);
             }
         }
         else {
@@ -138,9 +147,11 @@ public abstract class ProducedReference {
      * type arguments.
      */
     public ProducedTypedReference getTypedParameter(Parameter p) {
-        ProducedTypedReference ptr = new ProducedTypedReference(false, true);
-        if (p.getModel() != null) {
-            ptr.setDeclaration(p.getModel());
+        ProducedTypedReference ptr = 
+                new ProducedTypedReference(false, true);
+        MethodOrValue model = p.getModel();
+        if (model!=null) {
+            ptr.setDeclaration(model);
         }
         ptr.setQualifyingType(getQualifyingType());
         ptr.setTypeArguments(getTypeArguments());

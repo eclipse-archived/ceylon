@@ -2030,9 +2030,8 @@ public class ProducedType extends ProducedReference {
     }
     
     private List<ProducedType> getInternalSatisfiedTypes() {
-        List<ProducedType> sts = 
-                getDeclaration()
-                    .getSatisfiedTypes();
+        TypeDeclaration dec = getDeclaration();
+        List<ProducedType> sts = dec.getSatisfiedTypes();
         Map<TypeParameter, ProducedType> args = 
                 getTypeArguments();
         if (args.isEmpty()) {
@@ -2053,29 +2052,27 @@ public class ProducedType extends ProducedReference {
     }
 
     private ProducedType getInternalExtendedType() {
-        ProducedType extendedType = 
-                getDeclaration()
-                    .getExtendedType();
-        Map<TypeParameter, ProducedType> args = 
-                getTypeArguments();
-        if (args.isEmpty()) {
-            return extendedType;
-        }
-        if (extendedType==null) {
+        TypeDeclaration dec = getDeclaration();
+        ProducedType et = dec.getExtendedType();
+        if (et==null) {
             return null;
         }
         else {
+            Map<TypeParameter, ProducedType> args = 
+                    getTypeArguments();
+            if (args.isEmpty()) {
+                return et;
+            }
             Map<TypeParameter, SiteVariance> vos = 
                     getVarianceOverrides();
-            return extendedType.withVarianceOverrides(vos)
+            return et.withVarianceOverrides(vos)
                     .substituteInternal(args);
         }
     }
 
     private List<ProducedType> getInternalCaseTypes() {
-        List<ProducedType> cts = 
-                getDeclaration()
-                    .getCaseTypes();
+        TypeDeclaration dec = getDeclaration();
+        List<ProducedType> cts = dec.getCaseTypes();
         if (cts==null) {
             return null;
         }
@@ -2101,11 +2098,10 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getSatisfiedTypes() {
+        TypeDeclaration dec = getDeclaration();
+        List<ProducedType> sts = dec.getSatisfiedTypes();
         Map<TypeParameter,ProducedType> args = 
                 getTypeArguments();
-        List<ProducedType> sts = 
-                getDeclaration()
-                    .getSatisfiedTypes();
         if (args.isEmpty()) {
             return sts; 
         }
@@ -2125,9 +2121,8 @@ public class ProducedType extends ProducedReference {
     }
 
     public ProducedType getExtendedType() {
-        ProducedType et = 
-                getDeclaration()
-                    .getExtendedType();
+        TypeDeclaration dec = getDeclaration();
+        ProducedType et = dec.getExtendedType();
         if (et==null) {
             return null;
         }
@@ -2147,9 +2142,8 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getCaseTypes() {
-        List<ProducedType> cts = 
-                getDeclaration()
-                    .getCaseTypes();
+        TypeDeclaration dec = getDeclaration();
+        List<ProducedType> cts = dec.getCaseTypes();
         if (cts==null) {
             return null;
         }
