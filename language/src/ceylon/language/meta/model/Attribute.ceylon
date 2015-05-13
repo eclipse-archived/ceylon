@@ -16,7 +16,7 @@
            print(boundAttribute.get());
        }
  """
-shared sealed interface Attribute<in Container, out Get, in Set>
+shared sealed interface Attribute<in Container=Nothing, out Get=Anything, in Set=Nothing>
         satisfies ValueModel<Get,Set> & Member<Container, Value<Get,Set>> {
     shared actual formal Value<Get,Set> bind(Object container);
 }

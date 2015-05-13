@@ -17,7 +17,7 @@ import ceylon.language.meta.model { AppliedType = Type }
            print(c().hello);
        }
    """
-shared sealed interface Member<in Container, out Kind>
+shared sealed interface Member<in Container=Nothing, out Kind=Model>
         satisfies Qualified<Kind,Container> 
         given Kind satisfies Model {
     

@@ -13,10 +13,10 @@ import ceylon.language.meta.model { AppliedType = Type }
  - [[nothingType]]
 "
 shared sealed
-interface Type<out Target> /* of ClassOrInterface
-                               | UnionType
-                               | IntersectionType
-                               | nothingType */ {
+interface Type<out Target=Anything> /* of ClassOrInterface
+                                        | UnionType
+                                        | IntersectionType
+                                        | nothingType */ {
     
     "True if the given instance is of this type, or is of a subtype of this type."
     shared formal Boolean typeOf(Anything instance);

@@ -12,7 +12,7 @@
            print(val.get());
        }
  """
-shared sealed interface Value<out Get, in Set>
+shared sealed interface Value<out Get=Anything, in Set=Nothing>
         satisfies ValueModel<Get, Set> {
 
     "Reads the current value for this value binding. Note that in the case of getter

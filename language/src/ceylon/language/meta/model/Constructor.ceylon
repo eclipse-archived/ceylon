@@ -8,7 +8,7 @@ import ceylon.language.meta.model {
    a constructor of a top level Ceylon [[Class]] that 
    you can instantiate and inspect.
    """
-shared sealed interface Constructor<out Type, in Arguments> 
+shared sealed interface Constructor<out Type=Anything, in Arguments=Nothing> 
         satisfies ConstructorModel<Type,Arguments>
             & Applicable<Type, Arguments>  
         given Arguments satisfies Anything[] {

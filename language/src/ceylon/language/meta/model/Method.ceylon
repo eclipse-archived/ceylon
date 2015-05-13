@@ -17,7 +17,7 @@
            print(f("Stef"));
        }
  """
-shared sealed interface Method<in Container, out Type, in Arguments>
+shared sealed interface Method<in Container=Nothing, out Type=Anything, in Arguments=Nothing>
         satisfies FunctionModel<Type, Arguments> & Member<Container, Function<Type, Arguments>>
         given Arguments satisfies Anything[] {
 
