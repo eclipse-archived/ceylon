@@ -2156,19 +2156,28 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>The type of every case condition must be a subtype of the 
-            switched type, as defined below in <xref linkend="switchcaseelse"/>.</para>
+            <!--para>The type of every case condition must be a subtype of the switched type.</para-->
             
             <para>For a value case, each value reference must be to an anonymous class that
             is a subtype of <literal>Identifiable|Null</literal>.</para>
             
-            <para>For a type case of type <literal>U</literal>, and a switched type 
-            <literal>V</literal>, the intersection type <literal>V&amp;U</literal> must not 
-            be exactly <literal>Nothing</literal>. Then the <literal>switch</literal> 
-            variable or, if there is no inline variable declared by the <literal>switch</literal>, 
-            the value referred by the <literal>switch</literal> expression, will be treated 
-            by the compiler as having the type <literal>V&amp;U</literal> inside the 
-            <literal>case</literal> block.</para>
+            <para>For a case of type <literal>U</literal> of a <literal>switch</literal> with 
+            switched type <literal>V</literal>, as defined below in 
+            <xref linkend="switchcaseelse"/>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the intersection type <literal>V&amp;U</literal> must not be exactly 
+                    <literal>Nothing</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the case is a type case, the <literal>switch</literal> variable, 
+                    or, if there is no inline variable declared by the <literal>switch</literal>, 
+                    the value referred by the <literal>switch</literal> expression, will be 
+                    treated by the compiler as having the type <literal>V&amp;U</literal> inside 
+                    the <literal>case</literal> block.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>As a special exception to the above, if a <literal>switch</literal> occurs 
             in a <literal>dynamic</literal> block, and there is no switched type, the 
