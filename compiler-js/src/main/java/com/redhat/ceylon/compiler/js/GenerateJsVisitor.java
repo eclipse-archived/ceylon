@@ -1853,21 +1853,26 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name) {
+        final Declaration d = that.getDeclaration();
         if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //it's a static method ref
             if (name == null) {
                 name = memberAccess(that, "");
             }
-            out("function(x){return ");
-            if (BmeGenerator.hasTypeParameters(that)) {
-                BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
+            if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                qualify(that, d);
+                out(names.name(d));
             } else {
-                out(getClAlias(), "JsCallable(x,x.", name, ")");
+                out("function(x){return ");
+                if (BmeGenerator.hasTypeParameters(that)) {
+                    BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
+                } else {
+                    out(getClAlias(), "JsCallable(x,x.", name, ")");
+                }
+                out(";}");
             }
-            out(";}");
             return;
         }
-        final Declaration d = that.getDeclaration();
         if (d.isToplevel() && d instanceof Method) {
             //Just output the name
             out(names.name(d));
