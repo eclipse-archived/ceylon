@@ -51,7 +51,7 @@ public class FreeValue
 
     @Override
     public boolean getLate(){
-        return ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) declaration).isLate();
+        return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isLate();
     }
     
     @Override

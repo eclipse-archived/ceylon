@@ -179,7 +179,7 @@ public class AppliedValue<Get, Set>
                 && !decl.isLate())
             return;
         if(decl instanceof JavaBeanValue){
-            String setterName = decl.isLate() ? Naming.getSetterName(decl) : ((JavaBeanValue) decl).getSetterName();
+            String setterName = ((JavaBeanValue) decl).getSetterName();
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 m.setAccessible(true);
