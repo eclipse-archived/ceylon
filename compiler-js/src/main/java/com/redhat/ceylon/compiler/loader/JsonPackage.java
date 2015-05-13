@@ -79,6 +79,26 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             u2.setFullPath("");
             u2.setRelativePath("");
             addUnit(u2);
+            //Annotations
+            if (model != null) {
+                if (model.get("$pkg-pa") != null) {
+                    int bits = (int)model.remove("$pkg-pa");
+                    setShared(hasAnnotationBit(bits, "shared"));
+                }
+                @SuppressWarnings("unchecked")
+                Map<String,Object> pkgAnns = (Map<String,Object>)model.remove("$pkg-anns");
+                if (pkgAnns != null) {
+                    for (Map.Entry<String, Object> e : pkgAnns.entrySet()) {
+                        String name = e.getKey();
+                        Annotation ann = new Annotation();
+                        ann.setName(name);
+                        for (String arg : (List<String>)e.getValue()) {
+                            ann.addPositionalArgment(arg);
+                        }
+                        getAnnotations().add(ann);
+                    }
+                }
+            }
         }
         super.setModule(module);
     };
@@ -94,7 +114,9 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         //Ugly ass hack - add Nothing to the model
         nothing.setContainer(this);
         nothing.setUnit(u2);
-        setShared(model.remove("$pkg-shared") != null);
+        if (!isShared()) {
+            setShared(model.remove("$pkg-shared") != null);
+        }
         for (Map.Entry<String,Object> e : model.entrySet()) {
             String k = e.getKey();
             if (!k.startsWith("$pkg-")) {

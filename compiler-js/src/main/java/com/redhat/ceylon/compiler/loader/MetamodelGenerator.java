@@ -689,9 +689,6 @@ public class MetamodelGenerator {
         Map<String,Object> pkgmap = (Map<String,Object>)model.get(p.getNameAsString());
         if (pkgmap == null) {
             pkgmap = new HashMap<>();
-            if (p.isShared()) {
-                pkgmap.put("$pkg-shared", 1);
-            }
             encodeAnnotations(p.getAnnotations(), p, pkgmap);
             model.put(p.getNameAsString(), pkgmap);
         }
