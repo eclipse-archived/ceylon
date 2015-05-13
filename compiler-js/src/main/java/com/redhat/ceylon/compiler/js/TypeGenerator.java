@@ -759,7 +759,7 @@ public class TypeGenerator {
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
             gen.out("function ", fullName);
-            boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
+            boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors) || d.isAbstract();
             if (forceAbstract) {
                 gen.out("$$a");
             }
