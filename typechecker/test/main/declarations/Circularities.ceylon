@@ -39,3 +39,11 @@ class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,
 @error class Circ satisfies Circ {
     shared new Circ() {}  
 }
+
+alias Stt<T> => Sett<T>;
+
+@error interface Sett<T> satisfies List&Stt&Sett {}
+
+void withSet(Sett<Object> set) {
+    List list = set;
+}
