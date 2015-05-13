@@ -643,9 +643,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
-        String name = name(that.getIdentifier());
         String pname = 
-                unit.getPackage().getQualifiedNameString();
+                unit.getPackage()
+                    .getQualifiedNameString();
+        String name = name(that.getIdentifier());
         if (!"ceylon.language".equals(pname) ||
             !"Anything".equalsIgnoreCase(name)) {
             defaultExtendedToBasic(c);
