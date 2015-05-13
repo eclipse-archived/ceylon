@@ -8,6 +8,9 @@
 }
 @error interface CB satisfies CA {}
 
+class WithCircularTypeParam<T>() 
+    @error given T satisfies T {}
+
 class WithCircularTypeParams<S,T>()
     @error given S satisfies T
     @error given T satisfies S {}
@@ -17,6 +20,15 @@ class WithCircularTypeParams2<S,T>()
     @error given S satisfies T & WithCircularTypeParams2<S,T>
     @error given T satisfies S & WithCircularTypeParams2<S,T> {}
 
+class Crazy1<T>() 
+    @error given T satisfies X {
+    alias X => T;
+}
+interface Silly<T> {}
+class Crazy2<T>() 
+        given T satisfies Silly<X> {
+    alias X => T;
+}
 
 void testMemberResolutionOnCircular() {
     @error String hi = CY().hello;
