@@ -2118,7 +2118,7 @@ interface NumberLiteral
         
         <para>A type argument list is a list of type arguments.</para>
         
-        <synopsis>TypeArguments: "&lt;" (TypeArgument ",")* TypeArgument "&gt;"</synopsis>
+        <synopsis>TypeArguments: "&lt;" ((TypeArgument ",")* TypeArgument)? "&gt;"</synopsis>
         
         <para>A type argument is a type with a variance.</para>
         
