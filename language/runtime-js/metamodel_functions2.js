@@ -118,6 +118,7 @@ function convert$params(mm,a,$$targs$$) {
     return [];
   }
   if (a===undefined)a=[];
+  else if (a.nativeArray)a=a.nativeArray();
   var fa=[];
   var sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
