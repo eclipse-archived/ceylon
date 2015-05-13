@@ -982,17 +982,36 @@ public class TypeUtils {
         return sb.toString();
     }
 
+    /** Helper interface for generating annotations function. */
+    public static interface AnnotationFunctionHelper {
+        /** Get the key for packed annotations */
+        String getPackedAnnotationsKey();
+        /** Get the key for regular annotations */
+        String getAnnotationsKey();
+        /** Get the annotation source (the declaration) */
+        Object getAnnotationSource();
+        /** Get the annotations from the declaration */
+        List<Annotation> getAnnotations();
+        /** Get the path to the declaration in the model that holds the doc text */
+        String getPathToModelDoc();
+        /** Get the key to the third-to-last part of the doc path, if other than 'an'.
+         * (it's usually 'an.doc[0]') */
+        String getAnPath();
+    }
+
     /** Outputs a function that returns the specified annotations, so that they can be loaded lazily.
      * @param annotations The annotations to be output.
      * @param d The declaration to which the annotations belong.
      * @param gen The generator to use for output. */
-    public static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
-            final GenerateJsVisitor gen) {
+    public static void outputAnnotationsFunction(final Tree.AnnotationList annotations,
+            final AnnotationFunctionHelper helper, final GenerateJsVisitor gen) {
         List<Tree.Annotation> anns = annotations == null ? null : annotations.getAnnotations();
-        if (d != null) {
-            int mask = MetamodelGenerator.encodeAnnotations(d, null);
+        int mask = 0;
+        if (helper.getPackedAnnotationsKey() != null) {
+            mask = MetamodelGenerator.encodeAnnotations(helper.getAnnotations(),
+                    helper.getAnnotationSource(), null);
             if (mask > 0) {
-                gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(mask));
+                gen.out(",", helper.getPackedAnnotationsKey(), ":", Integer.toString(mask));
             }
             if (annotations == null || (anns.isEmpty() && annotations.getAnonymousAnnotation() == null)) {
                 return;
@@ -1008,7 +1027,9 @@ public class TypeUtils {
             if (anns.isEmpty() && annotations.getAnonymousAnnotation() == null) {
                 return;
             }
-            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+        }
+        if (helper.getAnnotationsKey() != null) {
+            gen.out(",", helper.getAnnotationsKey(), ":");
         }
         if (annotations == null || (anns.isEmpty() && annotations.getAnonymousAnnotation()==null)) {
             gen.out("[]");
@@ -1019,9 +1040,12 @@ public class TypeUtils {
             if (annotations.getAnonymousAnnotation() != null) {
                 first = false;
                 final Tree.StringLiteral lit = annotations.getAnonymousAnnotation().getStringLiteral();
-                final String ptmd = pathToModelDoc(d);
+                final String ptmd = helper.getPathToModelDoc();
                 if (ptmd != null && ptmd.length() < lit.getText().length()) {
                     gen.out(gen.getClAlias(), "doc$($CCMM$,", ptmd);
+                    if (helper.getAnPath() != null) {
+                        gen.out(",", helper.getAnPath());
+                    }
                 } else {
                     gen.out(gen.getClAlias(), "doc(");
                     lit.visit(gen);
@@ -1034,6 +1058,40 @@ public class TypeUtils {
             }
             gen.out("];}");
         }
+    }
+
+    /** Outputs a function that returns the specified annotations, so that they can be loaded lazily.
+     * @param annotations The annotations to be output.
+     * @param d The declaration to which the annotations belong.
+     * @param gen The generator to use for output. */
+    public static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
+            final GenerateJsVisitor gen) {
+        outputAnnotationsFunction(annotations, new AnnotationFunctionHelper() {
+            @Override
+            public String getPathToModelDoc() {
+                return pathToModelDoc(d);
+            }
+            @Override
+            public String getPackedAnnotationsKey() {
+                return MetamodelGenerator.KEY_PACKED_ANNS;
+            }
+            @Override
+            public String getAnnotationsKey() {
+                return MetamodelGenerator.KEY_ANNOTATIONS;
+            }
+            @Override
+            public List<Annotation> getAnnotations() {
+                return d.getAnnotations();
+            }
+            @Override
+            public Object getAnnotationSource() {
+                return d;
+            }
+            @Override
+            public String getAnPath() {
+                return null;
+            }
+        }, gen);
     }
 
     /** Abstraction for a callback that generates the runtime annotations list as part of the metamodel. */
@@ -1052,7 +1110,7 @@ public class TypeUtils {
         }
         @Override public void generateAnnotations() {
             List<Annotation> anns = d.getAnnotations();
-            final int bits = MetamodelGenerator.encodeAnnotations(d, null);
+            final int bits = MetamodelGenerator.encodeAnnotations(anns, d, null);
             if (bits > 0) {
                 gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(bits));
                 //Remove these annotations from the list
