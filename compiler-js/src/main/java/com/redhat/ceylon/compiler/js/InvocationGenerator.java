@@ -147,7 +147,7 @@ public class InvocationGenerator {
                 }
 
                 if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
-                    gen.out(".call(this");
+                    gen.out(".call(", names.self(Util.getContainingClassOrInterface(typeArgSource.getScope())));
                     if (!argList.getPositionalArguments().isEmpty()) {
                         gen.out(",");
                     }
