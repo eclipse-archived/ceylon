@@ -69,7 +69,8 @@ public abstract class Node {
     		return token.getText();
     	}
     	else {
-    		return token.getText() + endToken.getText();
+    		return token.getText() + 
+    		        endToken.getText();
     	}
     }
     
@@ -114,7 +115,8 @@ public abstract class Node {
     		return null;
     	}
     	else {
-    		return ((CommonToken) token).getStartIndex();
+    		CommonToken ct = (CommonToken) token;
+            return ct.getStartIndex();
     	}
     }
 
@@ -127,7 +129,8 @@ public abstract class Node {
     		return null;
     	}
     	else {
-    		return ((CommonToken) token).getStopIndex();
+    		CommonToken ct = (CommonToken) token;
+            return ct.getStopIndex();
     	}
     }
 
@@ -198,12 +201,14 @@ public abstract class Node {
      * The compilation errors belonging to this node.
      */
     public List<Message> getErrors() {
-        return errors != null ? errors : Collections.<Message>emptyList();
+        return errors != null ? 
+                errors : Collections.<Message>emptyList();
     }
     
     public void addError(Message error){
-        if(errors == null)
+        if (errors == null) {
             errors = new ArrayList<Message>(2);
+        }
         errors.add(error);
     }
     
@@ -223,8 +228,10 @@ public abstract class Node {
         addError( new UnsupportedError(this, message) );
     }
     
-    public <E extends Enum<E>> void addUsageWarning(E warningName, String message) {
-        addError( new UsageWarning(this, message, warningName.toString()) );
+    public <E extends Enum<E>> void addUsageWarning
+            (E warningName, String message) {
+        addError( new UsageWarning(this, message, 
+                warningName.toString()) );
     }
     
     public void addParseError(ParseError error) {
@@ -253,7 +260,7 @@ public abstract class Node {
     }
     
     public void handleException(Exception e, Visitor visitor) {
-	    addError(getMessage(e, visitor));
+        addUnexpectedError(getMessage(e, visitor));
     }
 
     public String getMessage(Exception e, Visitor visitor) {
