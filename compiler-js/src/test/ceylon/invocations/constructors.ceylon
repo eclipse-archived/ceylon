@@ -54,6 +54,15 @@ class Test528Default {
     string => sb.string;
 }
 
+class Test538 {
+  Integer x;
+  shared new Foo(Integer a, Integer b) {
+    x=a+b;
+    check(a==1 && b==2, "#538.1");
+  }
+  hash => x;
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -75,4 +84,5 @@ void testConstructors() {
   check(Test528Default().string=="1, 1.5, 2, 3, 4", "#536.1");
   check(Test528Default.C2().string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
   check(Test528Default.C3().string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
+  check(curry(Test538.Foo)(1)(2).hash == 3, "#538.2");
 }
