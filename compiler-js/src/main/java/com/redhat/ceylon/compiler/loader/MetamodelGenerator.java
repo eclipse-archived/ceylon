@@ -88,6 +88,29 @@ public class MetamodelGenerator {
         model.put("$mod-name", module.getNameAsString());
         model.put("$mod-version", module.getVersion());
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
+        if (module.getAnnotations() != null && !module.getAnnotations().isEmpty()) {
+            HashMap<String, Object> anns = new HashMap<String, Object>();
+            int bits = 0;
+            for (Annotation a : module.getAnnotations()) {
+                String name = a.getName();
+                int idx = annotationBits.indexOf(name);
+                if (idx >= 0) {
+                    bits |= (1 << idx);
+                } else {
+                    List<String> args = a.getPositionalArguments();
+                    if (args == null) {
+                        args = Collections.emptyList();
+                    }
+                    anns.put(name, args);
+                }
+            }
+            if (bits > 0) {
+                model.put("$mod-pa", bits);
+            }
+            if (anns != null && !anns.isEmpty()) {
+                model.put("$mod-anns", anns);
+            }
+        }
         if (!module.getImports().isEmpty()) {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
