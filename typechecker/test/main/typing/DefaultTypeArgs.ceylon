@@ -46,10 +46,12 @@ class DefaultTypeArgs() {
     @error Singleton<>(1);
     @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<>(1.0);
     
+    @type:"Category<Object>" Category<> cat1 = [1,2];
+    @type:"Category<Object>" Category cat2 = ["",""];
     @type:"List<Anything>" List<> list1 = [1,2];
     @type:"List<Anything>" List list2 = ["",""];
-    @type:"Comparable<Nothing>" Comparable<> comp1 = 1;
-    @type:"Comparable<Nothing>" Comparable comp2 = 1;
+    @error @type:"Comparable<unknown>" Comparable<> comp1 = 1;
+    @error @type:"Comparable<unknown>" Comparable comp2 = 1;
     @type:"Set<Object>" Set<> set1 = nothing;
     @type:"Set<Object>" Set set2 = nothing;
     

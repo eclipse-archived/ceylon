@@ -225,14 +225,14 @@ class Generics() {
         shared actual formal String string;
     }
     
-    interface WithCovariant<out X> {}
+    interface WithCovariant<out X=Anything> {}
     class Good1<T>() satisfies WithCovariant<T> {}
     class Good2<out T>() satisfies WithCovariant<Producer<T>> {}
     class Good3<in T>() satisfies WithCovariant<Consumer<T>> {}
     @error class Bad1<in T>() satisfies WithCovariant<T> {}
     @error class Bad2<out T>() satisfies WithCovariant<Consumer<T>> {}
     
-    interface WithContravariant<in X> {}
+    interface WithContravariant<in X=Nothing> {}
     class Good4<T>() satisfies WithContravariant<T> {}
     class Good5<in T>() satisfies WithContravariant<Producer<T>> {}
     @error class Bad6<out T>() satisfies WithContravariant<Consumer<T>> {}
