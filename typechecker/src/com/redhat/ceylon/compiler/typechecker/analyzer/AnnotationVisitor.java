@@ -23,7 +23,6 @@ import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -262,7 +261,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getPackageDeclarationType(), 
-                null, null);
+                null, null, null);
     }
     
     @Override 
@@ -271,7 +270,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getModuleDeclarationType(), 
-                null, null);
+                null, null, null);
     }
     
     @Override 
@@ -280,7 +279,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getImportDeclarationType(), 
-                null, null);
+                null, null, null);
     }
     
     @Override
@@ -292,14 +291,17 @@ public class AnnotationVisitor extends Visitor {
         }
         
         Unit unit = that.getUnit();
-        ProducedType t = c.getType();
+        ProducedType meta = 
+                unit.getClassMetatype(c.getType());
         ProducedType mt = 
-                unit.getClassMetatype(t)
-                    .getSupertype(unit.getClassModelDeclaration());
+                meta.getSupertype(unit.getClassModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(),
                 unit.getClassDeclarationType(c),
                 mt.getTypeArgumentList().get(0),
-                mt.getTypeArgumentList().get(1));
+                mt.getTypeArgumentList().get(1),
+                ct);
     }
 
     @Override 
@@ -307,14 +309,17 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration i = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        ProducedType t = i.getType();
+        ProducedType meta = 
+                unit.getInterfaceMetatype(i.getType());
         ProducedType mt = 
-                unit.getInterfaceMetatype(t)
-                    .getSupertype(unit.getInterfaceModelDeclaration());
+                meta.getSupertype(unit.getInterfaceModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(),
                 unit.getInterfaceDeclarationType(),
                 mt.getTypeArgumentList().get(0),
-                unit.getNothingDeclaration().getType());
+                unit.getNothingDeclaration().getType(),
+                ct);
     }
     
     @Override 
@@ -322,14 +327,17 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration c = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        ProducedType t = c.getType();
+        ProducedType meta = 
+                unit.getConstructorMetatype(c.getType());
         ProducedType mt = 
-                unit.getConstructorMetatype(t)
-                    .getSupertype(unit.getConstructorModelDeclaration());
+                meta.getSupertype(unit.getConstructorModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(),
                 unit.getConstructorDeclarationType(),
                 mt.getTypeArgumentList().get(0),
-                mt.getTypeArgumentList().get(1));
+                mt.getTypeArgumentList().get(1),
+                ct);
     }
     
     @Override
@@ -337,14 +345,17 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration a = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        ProducedTypedReference pr = a.getTypedReference();
+        ProducedType meta = 
+                unit.getValueMetatype(a.getTypedReference());
         ProducedType mt = 
-                unit.getValueMetatype(pr)
-                    .getSupertype(unit.getValueModelDeclaration());
+                meta.getSupertype(unit.getValueModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(), 
                 unit.getValueDeclarationType(),
                 mt.getTypeArgumentList().get(0),
-                unit.getNothingDeclaration().getType());
+                unit.getNothingDeclaration().getType(),
+                ct);
     }
 
     @Override
@@ -352,14 +363,17 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration o = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        ProducedTypedReference pr = o.getTypedReference();
+        ProducedType meta = 
+                unit.getValueMetatype(o.getTypedReference());
         ProducedType mt = 
-                unit.getValueMetatype(pr)
-                    .getSupertype(unit.getValueModelDeclaration());
+                meta.getSupertype(unit.getValueModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(), 
                 unit.getValueDeclarationType(),
                 mt.getTypeArgumentList().get(0),
-                unit.getNothingDeclaration().getType());
+                unit.getNothingDeclaration().getType(),
+                ct);
     }
 
     @Override
@@ -372,14 +386,17 @@ public class AnnotationVisitor extends Visitor {
         
         TypedDeclaration m = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        ProducedTypedReference pr = m.getTypedReference();
+        ProducedType meta = 
+                unit.getFunctionMetatype(m.getTypedReference());
         ProducedType mt = 
-                unit.getFunctionMetatype(pr)
-                    .getSupertype(unit.getFunctionModelDeclaration());
+                meta.getSupertype(unit.getFunctionModelDeclaration());
+        ProducedType ct = 
+                meta.getSupertype(unit.getMemberModelDeclaration());
         checkAnnotations(that.getAnnotationList(),
                 unit.getFunctionDeclarationType(),
                 mt.getTypeArgumentList().get(0),
-                mt.getTypeArgumentList().get(1));
+                mt.getTypeArgumentList().get(1),
+                ct);
     }
 
     private void checkAnnotationType(Tree.AnyClass that, Class c) {
@@ -836,7 +853,8 @@ public class AnnotationVisitor extends Visitor {
             Tree.AnnotationList annotationList,
             ProducedType declarationType, 
             ProducedType returnType,
-            ProducedType parameterTypes) {
+            ProducedType parameterTypes,
+            ProducedType containerType) {
         Unit unit = annotationList.getUnit();
         List<Tree.Annotation> annotations = 
                 annotationList.getAnnotations();
@@ -860,7 +878,7 @@ public class AnnotationVisitor extends Visitor {
                         if (!constraint.isAnything()) {
                             checkAssignable(returnType, 
                                     constraint, annotation, 
-                                    "annotated program element does not satisfy annotation constraints");
+                                    "annotated program element does not satisfy annotation type constraint");
                         }
                     }
                     if (args.size()>4) {
@@ -868,7 +886,28 @@ public class AnnotationVisitor extends Visitor {
                         if (!constraint.isNothing()) {
                             checkAssignable(constraint, 
                                     parameterTypes, annotation, 
-                                    "annotated program element does not satisfy annotation constraints");
+                                    "annotated program element does not satisfy annotation parameter constraints");
+                        }
+                    }
+                    if (args.size()>5) {
+                        ProducedType constraint = args.get(5);
+                        if (!constraint.isAnything()) {
+                            if (containerType==null) {
+                                if (!unit.getNullValueDeclaration()
+                                        .getType()
+                                        .isSubtypeOf(constraint)) {
+                                    annotation.addError("annotation program element does not satisfy annotation container constraint: " +
+                                            " program element is not a member");
+                                }
+                            }
+                            else {
+                                ProducedType container = 
+                                        containerType.getTypeArgumentList()
+                                            .get(0);
+                                checkAssignable(container, 
+                                        constraint, annotation, 
+                                        "annotated program element does not satisfy annotation container constraint");
+                            }
                         }
                     }
                 }
