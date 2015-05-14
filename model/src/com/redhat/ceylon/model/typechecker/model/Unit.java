@@ -1719,6 +1719,12 @@ public class Unit {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration"));
     }
     
+    public ProducedType getClassDeclarationType(Class clazz) {
+        return clazz.hasConstructors() ?
+                getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithConstructorsDeclaration")) :
+                getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithInitializerDeclaration"));
+    }
+    
     public ProducedType getConstructorDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ConstructorDeclaration"));
     }
