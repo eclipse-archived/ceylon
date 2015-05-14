@@ -178,6 +178,12 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
+    public boolean hasConstructors() {
+        load();
+        return super.hasConstructors();
+    }
+    
+    @Override
     public ProducedType getDeclaringType(Declaration d) {
         load();
         return super.getDeclaringType(d);
