@@ -10,34 +10,24 @@
  type and its constraints:
  
   - [[Value]] represents the type of the annotation itself, 
-  - [[ProgramElement]] represents a constraint on the type 
-    of the annotated program element _reference expression 
-    type_, for example, 
+  - [[ProgramElement]] represents a constraint on the  
+    _reference expression type_ of the annotated program 
+    element, for example, 
     [[ceylon.language.meta.declaration::ClassDeclaration]] 
     or [[ceylon.language.meta.declaration::Module]], where
-    [[Annotated]] means there is no constraint,
-  - [[Type]] is a constraint on the type or return type of
-    the annotated program element, where `Anything` means
-    there is no constraint, and that the program element
-    need not have a type,
-  - [[Arguments]] is a constraint on the parameter types of
-    the annotated program element (encoded as a tuple type), 
-    where `Nothing` means there is no constraint, and that
-    the program element need not accept arguments, and
-  - [[Container]] is a constraint on the type of which the
-    the annotated program element is a member, where 
-    `Anything` means there is no constraint, and that the
-    program element need not be a member of a type, `Object` 
-    means that the program element must be a member of some 
-    type, and `Null` means the program element may not be
-    a member of a type."
+    [[Annotated]] means there is no constraint, and
+  - [[Type]] is a constraint on the metamodel type of the 
+    annotated program element, for example, 
+    [[`Function<Float,[Float,Float]>`
+     |ceylon.language.meta.model::Function]], 
+    where `Anything` means there is no constraint, and that 
+    the program element need not have a metamodel type."
 see (`interface Annotation`,
      `interface OptionalAnnotation`,
      `interface SequencedAnnotation`)
 shared interface ConstrainedAnnotation<out Value=Annotation, 
             out Values=Anything, in ProgramElement=Nothing,
-            out Type=Anything, in Arguments=Nothing,
-            out Container=Anything> 
+            out Type=Anything> 
         of Value
         //Note: adding the following constraint would
         //      make ConstrainedAnnotation a GADT, which
@@ -46,7 +36,6 @@ shared interface ConstrainedAnnotation<out Value=Annotation,
         //   SequencedAnnotation<Value,ProgramElement>
         satisfies Annotation
         given Value satisfies Annotation
-        given ProgramElement satisfies Annotated
-        given Arguments satisfies Anything[] {
+        given ProgramElement satisfies Annotated {
 
 }
