@@ -1,18 +1,16 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -25,8 +23,10 @@ import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -44,7 +44,8 @@ public class AnnotationVisitor extends Visitor {
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
         if (pt!=null) {
             TypeDeclaration ptd = pt.getDeclaration();
-            if (ptd instanceof IntersectionType || ptd instanceof UnionType) {
+            if (ptd instanceof IntersectionType || 
+                ptd instanceof UnionType) {
                 return true;
             }
             Unit unit = pt.getDeclaration().getUnit();
@@ -70,72 +71,105 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private static boolean isEnum(TypeDeclaration ptd) {
-        List<TypeDeclaration> ctds = ptd.getCaseTypeDeclarations();
+        List<TypeDeclaration> ctds = 
+                ptd.getCaseTypeDeclarations();
         if (ctds==null) {
             return false;
         }
         else {
             for (TypeDeclaration td: ctds) {
-                if (!td.isAnonymous()) return false;
+                if (!td.isAnonymous()) {
+                    return false;
+                }
             }
             return true;
         }
     }
     
-    private void checkAnnotationParameter(Functional a, Tree.Parameter pn) {
+    private void checkAnnotationParameter(Functional a, 
+            Tree.Parameter pn) {
         Parameter p = pn.getParameterModel();
     	if (!(p.getModel() instanceof Value)) {
     		pn.addError("annotations may not have callable parameters");
     	}
     	else {
     		ProducedType pt = p.getType();
-    		if (pt!=null && isIllegalAnnotationParameterType(pt)) {
-    			Node errorNode = pn instanceof Tree.ValueParameterDeclaration ?
-    					((Tree.ValueParameterDeclaration) pn).getTypedDeclaration().getType() : pn;
+    		if (pt!=null && 
+    		        isIllegalAnnotationParameterType(pt)) {
+    			Node errorNode;
+                if (pn instanceof Tree.ValueParameterDeclaration) {
+                    Tree.ValueParameterDeclaration vpd = 
+                            (Tree.ValueParameterDeclaration) pn;
+                    errorNode = 
+                            vpd.getTypedDeclaration()
+                               .getType();
+                }
+                else {
+                    errorNode = pn;
+                }
     			errorNode.addError("illegal annotation parameter type: '" + 
     					pt.getProducedTypeName() + "'");
     		}
     		Tree.SpecifierOrInitializerExpression se = null;
     		if (pn instanceof Tree.InitializerParameter) {
-    			se = ((Tree.InitializerParameter) pn).getSpecifierExpression();
+    		    Tree.InitializerParameter ip = 
+    		            (Tree.InitializerParameter) pn;
+                se = ip.getSpecifierExpression();
     		}
     		else if (pn instanceof Tree.ParameterDeclaration) {
-    			Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) pn).getTypedDeclaration();
+    		    Tree.ParameterDeclaration pd = 
+    		            (Tree.ParameterDeclaration) pn;
+                Tree.TypedDeclaration td = 
+                        pd.getTypedDeclaration();
     			if (td instanceof Tree.MethodDeclaration) {
-    				se = ((Tree.MethodDeclaration) td).getSpecifierExpression();
+    			    Tree.MethodDeclaration md = 
+    			            (Tree.MethodDeclaration) td;
+                    se = md.getSpecifierExpression();
     			}
     			else if (td instanceof Tree.AttributeDeclaration) {
-    				se = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+    			    Tree.AttributeDeclaration ad = 
+    			            (Tree.AttributeDeclaration) td;
+                    se = ad.getSpecifierOrInitializerExpression();
     			}
     		}
     		if (se!=null) {
-    			checkAnnotationArgument(a, se.getExpression(), pt);
+    			checkAnnotationArgument(a, 
+    			        se.getExpression(), pt);
     		}
     	}
     }
     
-    private void checkAnnotationArgument(Functional a, Tree.Expression e, ProducedType pt) {
+    private void checkAnnotationArgument(Functional a, 
+            Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
                 //ok
             }
             else if (term instanceof Tree.NegativeOp && 
-                    ((Tree.NegativeOp) term).getTerm() instanceof Tree.Literal) {
+                    ((Tree.NegativeOp) term).getTerm() 
+                        instanceof Tree.Literal) {
                 //ok
             }
             else if (term instanceof Tree.MetaLiteral) {
                 //ok
             }
             else if (term instanceof Tree.Tuple) {
+                Tree.Tuple tuple = (Tree.Tuple) term;
                 Tree.SequencedArgument sa = 
-                        ((Tree.Tuple) term).getSequencedArgument();
+                        tuple.getSequencedArgument();
                 if (sa!=null) {
-                    for (PositionalArgument arg: sa.getPositionalArguments()) {
-                        if (arg instanceof Tree.ListedArgument){
-                            Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
+                    for (Tree.PositionalArgument arg: 
+                            sa.getPositionalArguments()) {
+                        if (arg instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument la = 
+                                    (Tree.ListedArgument) arg;
+                            Tree.Expression expression = 
+                                    la.getExpression();
                             if (expression!=null) {
-                                checkAnnotationArgument(a, expression, arg.getTypeModel());
+                                checkAnnotationArgument(a, 
+                                        expression, 
+                                        arg.getTypeModel());
                             }
                         }
                         else {
@@ -145,15 +179,22 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.SequenceEnumeration) {
+                Tree.SequenceEnumeration se = 
+                        (Tree.SequenceEnumeration) term;
                 Tree.SequencedArgument sa = 
-                        ((Tree.SequenceEnumeration) term).getSequencedArgument();
+                        se.getSequencedArgument();
                 if (sa!=null) {
-                    for (Tree.PositionalArgument arg: sa.getPositionalArguments()){
-                        if (arg instanceof Tree.ListedArgument){
+                    for (Tree.PositionalArgument arg: 
+                            sa.getPositionalArguments()){
+                        if (arg instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument la = 
+                                    (Tree.ListedArgument) arg;
                             Tree.Expression expression = 
-                                    ((Tree.ListedArgument) arg).getExpression();
+                                    la.getExpression();
                             if (expression!=null) {
-                                checkAnnotationArgument(a, expression, arg.getTypeModel());
+                                checkAnnotationArgument(a, 
+                                        expression, 
+                                        arg.getTypeModel());
                             }
                         }
                         else {
@@ -166,16 +207,20 @@ public class AnnotationVisitor extends Visitor {
                 checkAnnotationInstantiation(a, e, pt);
             }
             else if (term instanceof Tree.BaseMemberExpression) {
-                Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) term;
+                Tree.BaseMemberExpression bme = 
+                        (Tree.BaseMemberExpression) term;
                 Declaration d = bme.getDeclaration();
                 if (a!=null && d!=null && d.isParameter()) {
-                    Parameter p = ((MethodOrValue) d).getInitializerParameter();
+                    MethodOrValue mv = (MethodOrValue) d;
+                    Parameter p = 
+                            mv.getInitializerParameter();
                     if (!p.getDeclaration().equals(a)) {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
                 else if (d instanceof Value &&
-                        (((Value) d).isEnumValue() || ((Value) d).getTypeDeclaration().isAnonymous())) {
+                        (((Value) d).isEnumValue() || 
+                         ((Value) d).getTypeDeclaration().isAnonymous())) {
                     //ok
                 }
                 else {
@@ -183,7 +228,8 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+                Tree.QualifiedMemberExpression qme = 
+                        (Tree.QualifiedMemberExpression) term;
                 Declaration d = qme.getDeclaration();
                 if (d!=null && !d.isStaticallyImportable()) {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
@@ -193,7 +239,9 @@ public class AnnotationVisitor extends Visitor {
                     Tree.Primary p = qme.getPrimary();
                     while (!(p instanceof Tree.BaseTypeExpression)) {
                         if (p instanceof Tree.QualifiedTypeExpression) {
-                            p = ((Tree.QualifiedTypeExpression) p).getPrimary();
+                            Tree.QualifiedTypeExpression qte = 
+                                    (Tree.QualifiedTypeExpression) p;
+                            p = qte.getPrimary();
                         }
                         else {
                             e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
@@ -213,7 +261,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getPackageDeclarationType());
+                unit.getPackageDeclarationType(), 
+                null, null);
     }
     
     @Override 
@@ -221,7 +270,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getModuleDeclarationType());
+                unit.getModuleDeclarationType(), 
+                null, null);
     }
     
     @Override 
@@ -229,7 +279,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getImportDeclarationType());
+                unit.getImportDeclarationType(), 
+                null, null);
     }
     
     @Override
@@ -240,51 +291,75 @@ public class AnnotationVisitor extends Visitor {
             checkAnnotationType(that, c);
         }
         
-//        TypeDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        checkAnnotations(that.getAnnotationList(), 
-                unit.getClassDeclarationType(c));
-//                unit.getClassMetatype(dm.getType()));
+        ProducedType t = c.getType();
+        ProducedType mt = 
+                unit.getClassMetatype(t)
+                    .getSupertype(unit.getClassModelDeclaration());
+        checkAnnotations(that.getAnnotationList(),
+                unit.getClassDeclarationType(c),
+                mt.getTypeArgumentList().get(0),
+                mt.getTypeArgumentList().get(1));
     }
 
     @Override 
     public void visit(Tree.AnyInterface that) {
         super.visit(that);
-//        TypeDeclaration dm = that.getDeclarationModel();
+        TypeDeclaration i = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        checkAnnotations(that.getAnnotationList(), 
-                unit.getInterfaceDeclarationType());
-//                unit.getInterfaceMetatype(dm.getType()));
+        ProducedType t = i.getType();
+        ProducedType mt = 
+                unit.getInterfaceMetatype(t)
+                    .getSupertype(unit.getInterfaceModelDeclaration());
+        checkAnnotations(that.getAnnotationList(),
+                unit.getInterfaceDeclarationType(),
+                mt.getTypeArgumentList().get(0),
+                unit.getNothingDeclaration().getType());
     }
     
     @Override 
     public void visit(Tree.Constructor that) {
         super.visit(that);
-//        TypeDeclaration dm = that.getDeclarationModel();
+        TypeDeclaration c = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        checkAnnotations(that.getAnnotationList(), 
-                unit.getConstructorDeclarationType());
-//                unit.getConstructorMetatype(dm.getType()));
+        ProducedType t = c.getType();
+        ProducedType mt = 
+                unit.getConstructorMetatype(t)
+                    .getSupertype(unit.getConstructorModelDeclaration());
+        checkAnnotations(that.getAnnotationList(),
+                unit.getConstructorDeclarationType(),
+                mt.getTypeArgumentList().get(0),
+                mt.getTypeArgumentList().get(1));
     }
     
     @Override
     public void visit(Tree.AnyAttribute that) {
         super.visit(that);
-//        TypedDeclaration dm = that.getDeclarationModel();
+        TypedDeclaration a = that.getDeclarationModel();
         Unit unit = that.getUnit();
+        ProducedTypedReference pr = a.getTypedReference();
+        ProducedType mt = 
+                unit.getValueMetatype(pr)
+                    .getSupertype(unit.getValueModelDeclaration());
         checkAnnotations(that.getAnnotationList(), 
-                unit.getValueDeclarationType());
-//                unit.getValueMetatype(dm.getTypedReference()));
+                unit.getValueDeclarationType(),
+                mt.getTypeArgumentList().get(0),
+                unit.getNothingDeclaration().getType());
     }
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
         super.visit(that);
-//        TypedDeclaration dm = that.getDeclarationModel();
+        TypedDeclaration o = that.getDeclarationModel();
         Unit unit = that.getUnit();
+        ProducedTypedReference pr = o.getTypedReference();
+        ProducedType mt = 
+                unit.getValueMetatype(pr)
+                    .getSupertype(unit.getValueModelDeclaration());
         checkAnnotations(that.getAnnotationList(), 
-                unit.getValueDeclarationType());
-//                unit.getValueMetatype(dm.getTypedReference()));
+                unit.getValueDeclarationType(),
+                mt.getTypeArgumentList().get(0),
+                unit.getNothingDeclaration().getType());
     }
 
     @Override
@@ -295,11 +370,16 @@ public class AnnotationVisitor extends Visitor {
             checkAnnotationConstructor(that, a);
         }
         
-//        TypedDeclaration dm = that.getDeclarationModel();
+        TypedDeclaration m = that.getDeclarationModel();
         Unit unit = that.getUnit();
-        checkAnnotations(that.getAnnotationList(), 
-                unit.getFunctionDeclarationType());
-//                unit.getFunctionMetatype(dm.getTypedReference()));
+        ProducedTypedReference pr = m.getTypedReference();
+        ProducedType mt = 
+                unit.getFunctionMetatype(pr)
+                    .getSupertype(unit.getFunctionModelDeclaration());
+        checkAnnotations(that.getAnnotationList(),
+                unit.getFunctionDeclarationType(),
+                mt.getTypeArgumentList().get(0),
+                mt.getTypeArgumentList().get(1));
     }
 
     private void checkAnnotationType(Tree.AnyClass that, Class c) {
@@ -312,17 +392,22 @@ public class AnnotationVisitor extends Visitor {
         if (!c.isFinal()) {
             that.addError("annotation class must be final");
         }
-        if (c.getExtendedTypeDeclaration() != null
-                && !c.getExtendedTypeDeclaration()
-                .equals(that.getUnit().getBasicDeclaration())) {
+        Class etd = c.getExtendedTypeDeclaration();
+        Class bd = that.getUnit().getBasicDeclaration();
+        if (etd!=null && !etd.equals(bd)) {
             that.addError("annotation class must directly extend 'Basic'");
         }
-        for (Tree.Parameter pn: that.getParameterList().getParameters()) {
+        for (Tree.Parameter pn: 
+                that.getParameterList().getParameters()) {
             checkAnnotationParameter(c, pn);
         }
         if (that instanceof Tree.ClassDefinition) {
-            Tree.ClassBody body = ((Tree.ClassDefinition) that).getClassBody();
-            if (body!=null && getExecutableStatements(body).size()>0) {
+            Tree.ClassDefinition cd = 
+                    (Tree.ClassDefinition) that;
+            Tree.ClassBody body = cd.getClassBody();
+            if (body!=null && 
+                    !getExecutableStatements(body)
+                        .isEmpty()) {
                 that.addError("annotation class body may not contain executable statements");
             }
         }
@@ -332,44 +417,54 @@ public class AnnotationVisitor extends Visitor {
         Tree.Type type = that.getType();
         if (type!=null) {
             ProducedType t = type.getTypeModel();
-            if (t!=null && t.getDeclaration()!=null) {
-                if (t.getDeclaration().isAnnotation()) {
-                    TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
-                    if (t.getDeclaration() instanceof NothingType) {
-                        that.addError("annotation constructor may not return 'Nothing'");
-                    }
-                    if (!t.getDeclaration().inherits(annotationDec)) {
-                        that.addError("annotation constructor must return a subtype of 'Annotation'");
-                    }
-                    if (!that.getUnit().getPackage().getQualifiedNameString()
-                            .equals(LANGUAGE_MODULE_NAME)) {
-                        String packageName = t.getDeclaration()
-                                .getUnit().getPackage().getQualifiedNameString();
-                        String typeName = t.getDeclaration().getName();
-                        if (packageName.equals(LANGUAGE_MODULE_NAME) && 
-                                (typeName.equals("Shared") ||
-                                typeName.equals("Abstract") || 
-                                typeName.equals("Default") ||
-                                typeName.equals("Formal") ||
-                                typeName.equals("Actual") ||
-                                typeName.equals("Final") ||
-                                typeName.equals("Variable") ||
-                                typeName.equals("Late") ||
-                                typeName.equals("Native") ||
-                                typeName.equals("Deprecated") ||
-                                typeName.equals("Annotation"))) {
-                            type.addError("annotation constructor may not return modifier annotation type");
+            if (t!=null) {
+                TypeDeclaration td = t.getDeclaration();
+                if (td!=null) {
+                    if (td.isAnnotation()) {
+                        TypecheckerUnit unit = that.getUnit();
+                        TypeDeclaration annotationDec = 
+                                unit.getAnnotationDeclaration();
+                        if (td instanceof NothingType) {
+                            that.addError("annotation constructor may not return 'Nothing'");
                         }
+                        if (!td.inherits(annotationDec)) {
+                            that.addError("annotation constructor must return a subtype of 'Annotation'");
+                        }
+                        if (!unit.getPackage()
+                                .getQualifiedNameString()
+                                .equals(LANGUAGE_MODULE_NAME)) {
+                            String packageName = 
+                                    td.getUnit()
+                                      .getPackage()
+                                      .getQualifiedNameString();
+                            String typeName = td.getName();
+                            if (packageName.equals(LANGUAGE_MODULE_NAME) && 
+                                    (typeName.equals("Shared") ||
+                                    typeName.equals("Abstract") || 
+                                    typeName.equals("Default") ||
+                                    typeName.equals("Formal") ||
+                                    typeName.equals("Actual") ||
+                                    typeName.equals("Final") ||
+                                    typeName.equals("Variable") ||
+                                    typeName.equals("Late") ||
+                                    typeName.equals("Native") ||
+                                    typeName.equals("Deprecated") ||
+                                    typeName.equals("Annotation"))) {
+                                type.addError("annotation constructor may not return modifier annotation type");
+                            }
+                        }
+                    } 
+                    else {
+                        type.addError("annotation constructor must return an annotation type");
                     }
-                } 
-                else {
-                    type.addError("annotation constructor must return an annotation type");
                 }
             }
         }
-        List<Tree.ParameterList> pls = that.getParameterLists();
+        List<Tree.ParameterList> pls = 
+                that.getParameterLists();
         if (pls.size() == 1) {
-            for (Tree.Parameter pn: pls.get(0).getParameters()) {
+            for (Tree.Parameter pn: 
+                    pls.get(0).getParameters()) {
                 checkAnnotationParameter(a, pn);
             }
         }
@@ -377,14 +472,20 @@ public class AnnotationVisitor extends Visitor {
             that.addError("annotation constructor must have exactly one parameter list");
         }
         if (that instanceof Tree.MethodDefinition) {
-            Tree.Block block = ((Tree.MethodDefinition) that).getBlock();
+            Tree.MethodDefinition md = 
+                    (Tree.MethodDefinition) that;
+            Tree.Block block = md.getBlock();
             if (block!=null) {
-                List<Tree.Statement> list = getExecutableStatements(block);
+                List<Tree.Statement> list = 
+                        getExecutableStatements(block);
                 if (list.size()==1) {
                     Tree.Statement s = list.get(0);
                     if (s instanceof Tree.Return) {
-                        Tree.Expression e = ((Tree.Return) s).getExpression();
-                        checkAnnotationInstantiation(a, e, a.getType());
+                        Tree.Return r = (Tree.Return) s;
+                        Tree.Expression e = 
+                                r.getExpression();
+                        checkAnnotationInstantiation(a, e, 
+                                a.getType());
                     }
                     else {
                         s.addError("annotation constructor body must return an annotation instance");
@@ -396,35 +497,45 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         else {
-            Tree.SpecifierExpression se = ((Tree.MethodDeclaration) that).getSpecifierExpression();
+            Tree.MethodDeclaration md = 
+                    (Tree.MethodDeclaration) that;
+            Tree.SpecifierExpression se = 
+                    md.getSpecifierExpression();
             if (se!=null) {
-                checkAnnotationInstantiation(a, se.getExpression(), a.getType());
+                checkAnnotationInstantiation(a, 
+                        se.getExpression(), 
+                        a.getType());
             }
         }
     }
     
-    private static List<Tree.Statement> getExecutableStatements(Tree.Body block) {
-        List<Tree.Statement> list = new ArrayList<Tree.Statement>();
+    private static List<Tree.Statement> 
+    getExecutableStatements(Tree.Body block) {
+        List<Tree.Statement> list = 
+                new ArrayList<Tree.Statement>();
+        Unit unit = block.getUnit();
         for (Tree.Statement s: block.getStatements()) {
-            if (Util.isExecutableStatement(block.getUnit(), s)) {
+            if (isExecutableStatement(unit, s)) {
                 list.add(s);
             }
         }
         return list;
     }
     
-    private void checkAnnotationInstantiation(Functional a, Tree.Expression e, ProducedType pt) {
+    private void checkAnnotationInstantiation(Functional a, 
+            Tree.Expression e, ProducedType pt) {
         if (e!=null) {
-            Term term = e.getTerm();
+            Tree.Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
-                Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+                Tree.InvocationExpression ie = 
+                        (Tree.InvocationExpression) term;
                 /*if (!ie.getTypeModel().isExactly(pt)) {
                     ie.addError("annotation constructor must return exactly the annotation type");
                 }*/
                 Tree.Primary primary = ie.getPrimary();
-                if (!(primary instanceof Tree.BaseTypeExpression)
-                        && (!(primary instanceof Tree.BaseMemberExpression)
-                                || !((Tree.BaseMemberExpression)primary).getDeclaration().isAnnotation())) {
+                if (!(primary instanceof Tree.BaseTypeExpression) && 
+                    (!(primary instanceof Tree.BaseMemberExpression)
+                            || !((Tree.BaseMemberExpression) primary).getDeclaration().isAnnotation())) {
                     term.addError("annotation constructor must return a newly-instantiated annotation");
                 }
                 checkAnnotationArguments(a, ie);
@@ -435,29 +546,41 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkAnnotationArguments(Functional a, Tree.InvocationExpression ie) {
-        Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
-        Tree.NamedArgumentList nal = ie.getNamedArgumentList();
+    private void checkAnnotationArguments(Functional a, 
+            Tree.InvocationExpression ie) {
+        Tree.PositionalArgumentList pal = 
+                ie.getPositionalArgumentList();
+        Tree.NamedArgumentList nal = 
+                ie.getNamedArgumentList();
         if (pal!=null) {
-            checkPositionalArguments(a, pal.getPositionalArguments());
+            checkPositionalArguments(a, 
+                    pal.getPositionalArguments());
         }
         if (nal!=null) {
             checkNamedArguments(a, nal);
-            if (nal.getSequencedArgument()!=null) {
-                nal.getSequencedArgument().addError("illegal annotation argument");
+            Tree.SequencedArgument sa = 
+                    nal.getSequencedArgument();
+            if (sa!=null) {
+                sa.addError("illegal annotation argument");
 //                checkPositionlArgument(a, nal.getSequencedArgument().getPositionalArguments());
             }
         }
     }
 
-    private void checkNamedArguments(Functional a, Tree.NamedArgumentList nal) {
+    private void checkNamedArguments(Functional a, 
+            Tree.NamedArgumentList nal) {
         for (Tree.NamedArgument na: nal.getNamedArguments()) {
             if (na!=null) {
                 if (na instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
-                    if (se!=null && na.getParameter()!=null) {
-                        checkAnnotationArgument(a, se.getExpression(),
-                                na.getParameter().getType());
+                    Tree.SpecifiedArgument sa = 
+                            (Tree.SpecifiedArgument) na;
+                    Tree.SpecifierExpression se = 
+                            sa.getSpecifierExpression();
+                    Parameter p = na.getParameter();
+                    if (se!=null && p!=null) {
+                        checkAnnotationArgument(a, 
+                                se.getExpression(),
+                                p.getType());
                     }
                 }
                 else {
@@ -467,19 +590,29 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkPositionalArguments(Functional a, List<Tree.PositionalArgument> pal) {
+    private void checkPositionalArguments(Functional a, 
+            List<Tree.PositionalArgument> pal) {
         for (Tree.PositionalArgument pa: pal) {
-            if (pa!=null && pa.getParameter()!=null) {
-                if (pa instanceof Tree.ListedArgument) {
-                    checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
-                            pa.getParameter().getType());
-                }
-                else if (pa instanceof Tree.SpreadArgument) {
-                    checkAnnotationArgument(a, ((Tree.SpreadArgument) pa).getExpression(),
-                            pa.getParameter().getType());
-                }
-                else {
-                    pa.addError("illegal annotation argument");
+            if (pa!=null) {
+                Parameter p = pa.getParameter();
+                if (p!=null) {
+                    if (pa instanceof Tree.ListedArgument) {
+                        Tree.ListedArgument la = 
+                                (Tree.ListedArgument) pa;
+                        checkAnnotationArgument(a, 
+                                la.getExpression(),
+                                p.getType());
+                    }
+                    else if (pa instanceof Tree.SpreadArgument) {
+                        Tree.SpreadArgument sa = 
+                                (Tree.SpreadArgument) pa;
+                        checkAnnotationArgument(a, 
+                                sa.getExpression(),
+                                p.getType());
+                    }
+                    else {
+                        pa.addError("illegal annotation argument");
+                    }
                 }
             }
         }
@@ -528,49 +661,65 @@ public class AnnotationVisitor extends Visitor {
         int scopeIndex = text.indexOf("::");
         
         String packageName;
-        if (DOC_LINK_MODULE.equals(kind) || DOC_LINK_PACKAGE.equals(kind)) {
+        if (DOC_LINK_MODULE.equals(kind) || 
+            DOC_LINK_PACKAGE.equals(kind)) {
             packageName = text;
         } else {
-            packageName = scopeIndex < 0 ? null : text.substring(0, scopeIndex);
+            packageName = scopeIndex < 0 ? 
+                    null : text.substring(0, scopeIndex);
         }
                 
-        String path = scopeIndex < 0 ? text : text.substring(scopeIndex + 2);
-        String[] names = path.isEmpty() ? new String[0] : path.split("\\.");
+        String path = scopeIndex < 0 ? 
+                text : text.substring(scopeIndex + 2);
+        String[] names = path.isEmpty() ? 
+                new String[0] : path.split("\\.");
         Declaration base = null;
         if (packageName==null) {
             if (names.length > 0) {
-                base = that.getScope().getMemberOrParameter(that.getUnit(), 
-                    names[0], null, false);
+                base = that.getScope()
+                        .getMemberOrParameter(that.getUnit(), 
+                                names[0], null, false);
             }
         }
         else {
-            Package pack = that.getUnit().getPackage().getModule().getPackage(packageName);
+            Package pack = 
+                    that.getUnit()
+                        .getPackage()
+                        .getModule()
+                        .getPackage(packageName);
             if (pack == null) {
                 if (DOC_LINK_MODULE.equals(kind)) {
                     that.addUsageWarning(Warning.doclink, 
-                                "module does not exist: '" + packageName + "'");
+                                "module does not exist: '" + 
+                                        packageName + "'");
                 } else {
                     that.addUsageWarning(Warning.doclink, 
-                                "package does not exist: '" + packageName + "'");
+                                "package does not exist: '" + 
+                                        packageName + "'");
                 }
             }
             else {
                 that.setPkg(pack);
                 if (DOC_LINK_MODULE.equals(kind)) {
-                    Package rootPack = pack.getModule().getRootPackage();
+                    Package rootPack = 
+                            pack.getModule()
+                                .getRootPackage();
                     if (pack.equals(rootPack)) {
                         that.setModule(pack.getModule());
                     } else {
                         that.addUsageWarning(Warning.doclink,
-                                    "module does not exist: '" + packageName + "'");
+                                    "module does not exist: '" + 
+                                            packageName + "'");
                     }
                 }
                 if (names.length > 0) {
-                    base = pack.getDirectMember(names[0], null, false);
+                    base = pack.getDirectMember(names[0], 
+                            null, false);
                 }
             }
             
-            if (DOC_LINK_MODULE.equals(kind) || DOC_LINK_PACKAGE.equals(kind)) {
+            if (DOC_LINK_MODULE.equals(kind) || 
+                DOC_LINK_PACKAGE.equals(kind)) {
                 return;
             }
         }
@@ -590,15 +739,19 @@ public class AnnotationVisitor extends Visitor {
                     if (!value.isParameter()
                             && !value.isTransient()
                             && value.getTypeDeclaration() != null
-                            && value.getTypeDeclaration().isAnonymous()) {
+                            && value.getTypeDeclaration()
+                                    .isAnonymous()) {
                         base = value.getTypeDeclaration();
                     }
                 }
-                if (base instanceof TypeDeclaration || base instanceof Functional) {
-                    Declaration qualified = base.getMember(names[i], null, false);
+                if (base instanceof TypeDeclaration || 
+                    base instanceof Functional) {
+                    Declaration qualified = 
+                            base.getMember(names[i], null, false);
                     if (qualified==null) {
                         that.addUsageWarning(Warning.doclink,
-                                    "member declaration or parameter does not exist: '" + names[i] + "'");
+                                    "member declaration or parameter does not exist: '" + 
+                                            names[i] + "'");
                         break;
                     }
                     else {
@@ -608,28 +761,51 @@ public class AnnotationVisitor extends Visitor {
                 }
                 else {
                     that.addUsageWarning(Warning.doclink,
-                                "not a type or functional declaration: '" + base.getName() + "'");
+                                "not a type or functional declaration: '" + 
+                                        base.getName() + "'");
                     break;
                 }
             }
         }
         
-        if( base != null ) {
-            if (kind != null && (names.length == 1 || names.length == that.getQualified().size() + 1)) {
-                if (DOC_LINK_CLASS.equals(kind) && !(base instanceof Class)) {
-                    that.addUsageWarning(Warning.doclink, "linked declaration is not a class: '" + base.getName() + "'");
-                } else if (DOC_LINK_INTERFACE.equals(kind) && !(base instanceof Interface)) {
-                    that.addUsageWarning(Warning.doclink, "linked declaration is not an interface: '" + base.getName() + "'");
-                } else if (DOC_LINK_ALIAS.equals(kind) && !(base instanceof TypeAlias)) {
-                    that.addUsageWarning(Warning.doclink, "linked declaration is not a type alias: '" + base.getName() + "'");
-                } else if (DOC_LINK_FUNCTION.equals(kind) && !(base instanceof Method)) {
-                    that.addUsageWarning(Warning.doclink, "linked declaration is not a function: '" + base.getName() + "'");
-                } else if (DOC_LINK_VALUE.equals(kind) && !(base instanceof Value)) {
-                    that.addUsageWarning(Warning.doclink, "linked declaration is not a value: '" + base.getName() + "'");
+        if (base != null) {
+            if (kind != null && 
+                    (names.length == 1 || 
+                     names.length == that.getQualified().size() + 1)) {
+                if (DOC_LINK_CLASS.equals(kind) && 
+                        !(base instanceof Class)) {
+                    that.addUsageWarning(Warning.doclink, 
+                            "linked declaration is not a class: '" + 
+                                    base.getName() + "'");
+                }
+                else if (DOC_LINK_INTERFACE.equals(kind) && 
+                        !(base instanceof Interface)) {
+                    that.addUsageWarning(Warning.doclink, 
+                            "linked declaration is not an interface: '" + 
+                                    base.getName() + "'");
+                }
+                else if (DOC_LINK_ALIAS.equals(kind) && 
+                        !(base instanceof TypeAlias)) {
+                    that.addUsageWarning(Warning.doclink, 
+                            "linked declaration is not a type alias: '" + 
+                                    base.getName() + "'");
+                } else if (DOC_LINK_FUNCTION.equals(kind) && 
+                        !(base instanceof Method)) {
+                    that.addUsageWarning(Warning.doclink, 
+                            "linked declaration is not a function: '" + 
+                                    base.getName() + "'");
+                } else if (DOC_LINK_VALUE.equals(kind) && 
+                        !(base instanceof Value)) {
+                    that.addUsageWarning(Warning.doclink, 
+                            "linked declaration is not a value: '" + 
+                                    base.getName() + "'");
                 }
             }
-            if( parentheses && !(base instanceof Functional) ) {
-                that.addUsageWarning(Warning.doclink, "linked declaration is not a function: '" + base.getName() + "'");
+            if( parentheses && 
+                    !(base instanceof Functional) ) {
+                that.addUsageWarning(Warning.doclink, 
+                        "linked declaration is not a function: '" + 
+                                base.getName() + "'");
             }
         }
 
@@ -638,45 +814,88 @@ public class AnnotationVisitor extends Visitor {
     @Override 
     public void visit(Tree.Annotation that) {
         super.visit(that);
-        Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+        Tree.MemberOrTypeExpression primary = 
+                (Tree.MemberOrTypeExpression) 
+                    that.getPrimary();
+        Declaration dec = primary.getDeclaration();
         /*if (dec!=null && !dec.isToplevel()) {
             that.getPrimary().addError("annotation must be a toplevel function reference");
         }*/
         if (dec!=null) {
             if (!dec.isAnnotation()) {
-                that.getPrimary().addError("not an annotation constructor");
+                primary.addError("not an annotation constructor");
             }
             else {
-                checkAnnotationArguments(null, (Tree.InvocationExpression) that);
+                checkAnnotationArguments(null, 
+                        (Tree.InvocationExpression) that);
             }
         }
     }
 
-    private void checkAnnotations(AnnotationList annotationList,
-            ProducedType declarationType/*, ProducedType metatype*/) {
+    private void checkAnnotations(
+            Tree.AnnotationList annotationList,
+            ProducedType declarationType, 
+            ProducedType returnType,
+            ProducedType parameterTypes) {
         Unit unit = annotationList.getUnit();
-        List<Annotation> anns = annotationList.getAnnotations();
-        for (Annotation ann: anns) {
-            ProducedType t = ann.getTypeModel();
+        List<Tree.Annotation> annotations = 
+                annotationList.getAnnotations();
+        for (Tree.Annotation annotation: annotations) {
+            ProducedType t = annotation.getTypeModel();
             if (t!=null) {
-                ProducedType pet = t.getSupertype(unit.getConstrainedAnnotationDeclaration());
-                if (pet!=null && pet.getTypeArgumentList().size()>2) {
-                    ProducedType ct = pet.getTypeArgumentList().get(2);
-                    ProducedType mt = declarationType; //intersectionType(declarationType,metatype, unit);
-                    checkAssignable(mt, ct, ann, 
-                            "annotated program element does not satisfy annotation constraints");
+                TypeDeclaration cad = 
+                        unit.getConstrainedAnnotationDeclaration();
+                ProducedType cat = t.getSupertype(cad);
+                if (cat!=null) {
+                    List<ProducedType> args = 
+                            cat.getTypeArgumentList();
+                    if (args.size()>2) {
+                        ProducedType constraint = args.get(2);
+                        checkAssignable(declarationType, 
+                                constraint, annotation, 
+                                "annotated program element does not satisfy annotation constraints");
+                    }
+                    if (args.size()>3) {
+                        ProducedType constraint = args.get(3);
+                        if (!constraint.isAnything()) {
+                            checkAssignable(returnType, 
+                                    constraint, annotation, 
+                                    "annotated program element does not satisfy annotation constraints");
+                        }
+                    }
+                    if (args.size()>4) {
+                        ProducedType constraint = args.get(4);
+                        if (!constraint.isNothing()) {
+                            checkAssignable(constraint, 
+                                    parameterTypes, annotation, 
+                                    "annotated program element does not satisfy annotation constraints");
+                        }
+                    }
                 }
             }
         }
-        for (int i=0; i<anns.size(); i++) {
-            ProducedType t = anns.get(i).getTypeModel();
-            if (t!=null && t.getDeclaration().inherits(unit.getOptionalAnnotationDeclaration())) {
-                for (int j=0; j<i; j++) {
-                    ProducedType ot = anns.get(j).getTypeModel();
-                    if (ot!=null && ot.getDeclaration().equals(t.getDeclaration())) {
-                        anns.get(i).addError("duplicate annotation: there are multiple annotations of type '" + 
-                                t.getDeclaration().getName() + "'");
-                        break;
+        TypeDeclaration od = 
+                unit.getOptionalAnnotationDeclaration();
+        for (int i=0; i<annotations.size(); i++) {
+            Tree.Annotation ann = annotations.get(i);
+            ProducedType t = ann.getTypeModel();
+            if (t!=null) {
+                TypeDeclaration td = t.getDeclaration();
+                if (td.inherits(od)) {
+                    for (int j=0; j<i; j++) {
+                        Tree.Annotation other = 
+                                annotations.get(j);
+                        ProducedType ot = 
+                                other.getTypeModel();
+                        if (ot!=null) {
+                            TypeDeclaration otd = 
+                                    ot.getDeclaration();
+                            if (otd.equals(td)) {
+                                ann.addError("duplicate annotation: there are multiple annotations of type '" + 
+                                        td.getName() + "'");
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -694,22 +913,24 @@ public class AnnotationVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            if (that.getStaticMethodReference() && !dec.isStaticallyImportable()) {
+            TypecheckerUnit unit = that.getUnit();
+            if (that.getStaticMethodReference() && 
+                    !dec.isStaticallyImportable()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +
-                        dec.getName(that.getUnit()) + "' is overloaded");
+                        dec.getName(unit) + "' is overloaded");
             }
             else {
                 List<ProducedType> sig = that.getSignature();
                 if (sig==null) {
                     that.addError("ambiguous callable reference to overloaded method or class: '" +
-                            dec.getName(that.getUnit()) + "' is overloaded");
+                            dec.getName(unit) + "' is overloaded");
                 }
                 else {
                     StringBuilder sb = new StringBuilder();
                     sb.append(" '");
                     for (ProducedType pt: sig) {
                         if (pt!=null) {
-                            sb.append(pt.getProducedTypeName(that.getUnit()));
+                            sb.append(pt.getProducedTypeName(unit));
                         }
                         sb.append(", ");
                     }
@@ -719,7 +940,7 @@ public class AnnotationVisitor extends Visitor {
                     sb.append("'");
                     that.addError("ambiguous invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of '" + 
-                            dec.getName(that.getUnit()) + 
+                            dec.getName(unit) + 
                             "' that accepts the given argument types" + sb);
                 }
             }
