@@ -17,13 +17,11 @@
 //#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,sort,and,or,not,arrayOfSize
 //#metamodel
 //#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
-//#COMPILE modules.js,meta/
-//#COMPILE meta/model/ValueModel,meta/model/ClassOrInterface,ClassOrInterface_addons.js,meta/model/ClassModel,meta/model/Class,meta/model/FunctionModel,meta/model/Function,meta/model/Method,meta/model/InterfaceModel,meta/model/Interface,meta/model/IntersectionType,meta/model/Member,Member_addons.js,meta/model/MemberClass,meta/model/MemberInterface,meta/model/Attribute,meta/model/Model,meta/model/Type,meta/model/UnionType,meta/model/Value,meta/model/nothingType,meta/model/TypeApplicationException,meta/model/InvocationException,meta/model/MutationException,meta/model/IncompatibleTypeException,meta/model/Generic,meta/model/Applicable
-//#COMPILE meta/model/Constructor,meta/model/ConstructorModel,meta/model/Qualified,meta/model/Declared,meta/model/Functional,meta/model/MemberClassConstructor
+//#COMPILE modules.js,meta/,meta/model/,ClassOrInterface_addons.js,Member_addons.js
 //#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ReferenceDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ConstructorDeclaration,meta/declaration/Contained
 //#COMPILE annotations
 //#COMPILE Boolean.js,tuples.js,metamodel_functions_core.js,metamodel_functions2.js,AppliedAttribute.js,metamodel_functions3.js,metamodel_functions_ocoi.js,OpenSetter.js,FunParamDecl.js,ValParamDecl.js,metamodel_functions5.js,metamodel_functions_coi.js,metamodel_functions_funs.js,metamodel_functions_anns.js
-//#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
+//#COMPILE module,package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 //Serialization
 //#COMPILE serialization/,jsint/
