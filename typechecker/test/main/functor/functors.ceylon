@@ -74,6 +74,20 @@ shared class MaybeFunctor<out Val>(Val? val)
                     else null);
 }
 
+shared class MapFunctor<out Key, out Item>
+        (Map<Key, Item> map) 
+        satisfies Functor<Item, Mapish>
+        given Key satisfies Object {
+    shared alias Mapish<E> => Map<Key, E>;
+    get => map;
+    shared actual 
+    MapFunctor<Key, Result> fmap<Result>
+            (Result(Item) fun)
+            given Result satisfies Object
+            =>  MapFunctor(map.mapItems((k,i) => fun(i)));
+}
+
+
 //prove that it all works
 
 void tryit(Map<Integer,Integer> map, Float float, Float? x,
@@ -83,12 +97,15 @@ void tryit(Map<Integer,Integer> map, Float float, Float? x,
     
     String? maybe = toString(MaybeFunctor(x));
     
+    Map<Integer,String> res = toString(MapFunctor(map));
+    
     @type:"Listish<String>"
     value listish = toString(ListishFunctor(map));
     
     Map<Integer,String>|List<String> mapOrList 
             = toString(ListishFunctor(map));
     
-    String|List<String>? result 
+    String|List<String>? result
+            //TODO: improve type inference here!
             = toString<Object,Maybe|List>(functor);
 }
