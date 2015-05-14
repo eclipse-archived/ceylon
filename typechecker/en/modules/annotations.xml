@@ -269,12 +269,20 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>If <literal>A</literal> is a subtype of 
-                    <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
-                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
-                    of annotation type <literal>A</literal> may not occur at a program 
-                    element whose reference expression type, as defined in
+                    <literal>ConstrainedAnnotation&lt;A,B,P,T&gt;</literal>, then an 
+                    annotation of annotation type <literal>A</literal> may not occur 
+                    at a program element whose reference expression type, as defined in
                     <xref linkend="typeofareferenceexpression"/>, is not assignable to 
                     <literal>P</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>ConstrainedAnnotation&lt;A,B,P,T&gt;</literal> where
+                    <literal>T</literal> is not exactly <literal>Anything</literal>, 
+                    then an annotation of annotation type <literal>A</literal> may not 
+                    occur at a program element whose metamodel type, as defined in
+                    <xref linkend="typeofametamodelexpression"/>, is not assignable to 
+                    <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
             
