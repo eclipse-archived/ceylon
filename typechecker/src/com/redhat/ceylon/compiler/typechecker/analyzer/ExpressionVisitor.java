@@ -9130,7 +9130,7 @@ public class ExpressionVisitor extends Visitor {
                               "use the value keyword to refer to anonymous class declarations");
             }
             that.setWantsDeclaration(true);
-            that.setTypeModel(unit.getValueDeclarationType());
+            that.setTypeModel(unit.getValueDeclarationType(result));
         }
         else if (that instanceof Tree.FunctionLiteral) {
             if (result instanceof Method) {

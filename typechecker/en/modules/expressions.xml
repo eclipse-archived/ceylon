@@ -3447,7 +3447,11 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>Package</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a value, the type is 
+                    <para>for a reference, the type is 
+                    <literal>ReferenceDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for any other value, the type is 
                     <literal>ValueDeclaration</literal>,</para>
                 </listitem>
                 <listitem>

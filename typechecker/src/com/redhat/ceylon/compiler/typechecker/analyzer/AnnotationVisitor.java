@@ -319,7 +319,7 @@ public class AnnotationVisitor extends Visitor {
         TypedDeclaration a = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getValueDeclarationType(),
+                unit.getValueDeclarationType(a),
                 unit.getValueMetatype(a.getTypedReference()));
     }
 
