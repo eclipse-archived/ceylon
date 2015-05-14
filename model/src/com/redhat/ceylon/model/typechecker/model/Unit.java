@@ -1768,30 +1768,6 @@ public class Unit {
     public TypeDeclaration getDeclarationDeclaration() {
         return getLanguageModuleDeclarationTypeDeclaration("Declaration");
     }
-
-    public TypeDeclaration getMemberModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("Member");
-    }
-    
-    public TypeDeclaration getClassModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("ClassModel");
-    }
-    
-    public TypeDeclaration getInterfaceModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("InterfaceModel");
-    }
-    
-    public TypeDeclaration getFunctionModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("FunctionModel");
-    }
-    
-    public TypeDeclaration getValueModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("ValueModel");
-    }
-    
-    public TypeDeclaration getConstructorModelDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("ConstructorModel");
-    }
     
     public ProducedTypeCache getCache() {
         Module module = getPackage().getModule();
