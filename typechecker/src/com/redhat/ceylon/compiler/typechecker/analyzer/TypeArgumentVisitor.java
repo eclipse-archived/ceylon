@@ -227,9 +227,6 @@ public class TypeArgumentVisitor extends Visitor {
                             dec.getName(that.getUnit()) + "<>')");
                 }
             }
-            if (type.isTypeConstructor() && dec.isAlias()) {
-                that.addUnsupportedError("type constructor reference to type alias not yet supported");
-            }
         }
     }
     
