@@ -1656,7 +1656,9 @@ public class ProducedType extends ProducedReference {
                 if (!covariant && tp.isContravariant()) {
                     //a type with contravariant parameters appears at
                     //a contravariant location in satisfies / extends
-                    errors.add(declaration);
+                    if (!errors.contains(declaration)) {
+                        errors.add(declaration);
+                    }
                 }
                 ProducedType pt = 
                         getTypeArguments().get(tp);
