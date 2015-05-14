@@ -32,6 +32,6 @@ function memberDeclaringType$($$member){
   var mm = getrtmm$$($$member.tipo);
   var m2 = get_model(mm);
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
-  return (m2['mt']==='c'?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), $$member.tipo);
+  return (m2['mt']==='c'?openClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), $$member.tipo);
 }
 

@@ -7,7 +7,7 @@ if (mm && mm.d) {
     var _mod = modules$meta().find(_m['$mod-name'],_m['$mod-version']);
     var pkg=_mod.findPackage(mm.d[0]);
     if (mdl.mt==='i')return OpenInterface$jsint(pkg,this.cntnr);
-    if (mdl.mt==='c')return OpenClass$jsint(pkg,this.cntnr);
+    if (mdl.mt==='c')return openClass$jsint(pkg,this.cntnr);
     if (mdl.mt==='m')return OpenFunction$jsint(pkg,this.cntnr);
   }
 }

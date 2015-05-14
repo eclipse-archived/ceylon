@@ -8,7 +8,7 @@ function getMember(name$3,$$$mptypes){
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
       return OpenFunction$jsint(this, m);
     } else if (mt==='c'&&(extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration}))){
-      return OpenClass$jsint(this, m);
+      return openClass$jsint(this, m);
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration})){
       return OpenInterface$jsint(this, m);
     } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){
@@ -17,7 +17,7 @@ function getMember(name$3,$$$mptypes){
       if (extendsType($$$mptypes.Kind$getMember,{t:ValueDeclaration$meta$declaration})) {
         return OpenValue$jsint(this, m);
       } else if (extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration})) {
-        return OpenClass$jsint(this, m);
+        return openClass$jsint(this, m);
       }
     }
     console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $$$mptypes.Kind$getMember);

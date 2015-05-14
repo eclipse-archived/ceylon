@@ -58,7 +58,7 @@ function typeLiteral$meta($$targs$$,targ$2) {
     var _mod = modules$meta().find(_m['$mod-name'],_m['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl.mt==='c' || mdl.mt==='o') {
-      return OpenClass$jsint(_pkg, t);
+      return openClass$jsint(_pkg, t);
     } else if (mdl['mt'] === 'i') {
       return OpenInterface$jsint(_pkg, t);
     } else if (mdl['mt'] === 'm') {

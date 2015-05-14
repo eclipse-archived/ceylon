@@ -75,7 +75,7 @@ function coimoddcl$(ifc) {
   var mm = getrtmm$$(ifc.tipo);
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
   var cls = is$(ifc,{t:ClassModel$meta$model});
-  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), ifc.tipo);
+  ifc._decl = (cls?openClass$jsint:OpenInterface$jsint)(fmp$(_m['$mod-name'],_m['$mod-version'],mm.d[0]), ifc.tipo);
   return ifc._decl;
 }
 //Class.parameterTypes (works also for constructors)

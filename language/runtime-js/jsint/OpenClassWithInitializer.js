@@ -1,7 +1,7 @@
-function OpenClass$jsint(pkg, meta, that){
+function OpenClassWithInitializer$jsint(pkg, meta, that){
     if (meta===undefined)throw new Error("Class reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-    $init$OpenClass$jsint();
-    if (that===undefined)that=new OpenClass$jsint.$$;
+    $init$OpenClassWithInitializer$jsint();
+    if (that===undefined)that=new OpenClassWithInitializer$jsint.$$;
     that.pkg_ = pkg;
     var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
@@ -20,6 +20,6 @@ function OpenClass$jsint(pkg, meta, that){
     }
     that.name_=nm;
     that.toplevel_=_mm.$cont===undefined;
-    ClassDeclaration$meta$declaration(that);
+    ClassWithInitializerDeclaration$meta$declaration(that);
     return that;
 }

@@ -1,5 +1,5 @@
 function(other) {
-  if (is$(other, {t:OpenClass$jsint})) {
+  if (is$(other, {t:OpenClassWithInitializer$jsint})) {
     if (other.tipo===this.tipo)return true;
     if (this.anonymous && other.anonymous) {
       //Anonymous classes sometimes have a ref to the class constructor
