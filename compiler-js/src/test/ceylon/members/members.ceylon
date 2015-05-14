@@ -140,5 +140,13 @@ shared void test() {
     objectTest();
     TestConstructor().test();
     check(2==Test509(1).Inner(2).a, "#509");
+
+    class Foo551(){ 
+        shared class Bar(){}
+        shared object b extends Bar(){}
+    }
+    Object test551 = Foo551().b;
+    check(test551 is Foo551.Bar, "#551");
+
     results();
 }
