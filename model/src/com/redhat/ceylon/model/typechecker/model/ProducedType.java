@@ -921,6 +921,9 @@ public class ProducedType extends ProducedReference {
     }
     
     private ProducedType getSupertypeInternal(TypeDeclaration dec) {
+        if (dec==null) {
+            return null;
+        }
         boolean complexType = 
                 dec instanceof UnionType || 
                 dec instanceof IntersectionType;
@@ -984,7 +987,7 @@ public class ProducedType extends ProducedReference {
             TypeDeclaration supertype) {
         // fail-fast: there are only two classes that can 
         // be supertypes of an interface
-        if(declaration instanceof Interface && 
+        if (declaration instanceof Interface && 
                 supertype instanceof Class) {
             String supertypeName = 
                     supertype.getQualifiedNameString();
@@ -1006,22 +1009,23 @@ public class ProducedType extends ProducedReference {
             if (declaration.equals(supertype)) {
                 return SupertypeCheck.YES;
             }
-            if (declaration.getExtendedTypeDeclaration() != null) {
+            ClassOrInterface etd = 
+                    declaration.getExtendedTypeDeclaration();
+            if (etd!=null) {
                 SupertypeCheck extended = 
-                        checkSupertype(
-                                declaration.getExtendedTypeDeclaration(), 
-                                supertype);
+                        checkSupertype(etd, supertype);
                 if (extended == SupertypeCheck.YES) {
                     return extended;
                 }
                 // keep looking
             }
-            for (ProducedType satisfiedType: 
-                    declaration.getSatisfiedTypes()) {
+            List<ProducedType> sts = 
+                    declaration.getSatisfiedTypes();
+            for (ProducedType satisfiedType: sts) {
+                TypeDeclaration std = 
+                        satisfiedType.getDeclaration();
                 SupertypeCheck satisfied = 
-                        checkSupertype(
-                                satisfiedType.getDeclaration(), 
-                                supertype);
+                        checkSupertype(std, supertype);
                 if (satisfied == SupertypeCheck.YES) {
                     return satisfied;
                 }
@@ -1031,16 +1035,17 @@ public class ProducedType extends ProducedReference {
             return SupertypeCheck.NO;
         }
         if (declaration instanceof UnionType) {
-            if (declaration.getCaseTypes().isEmpty()) {
+            List<ProducedType> cts = 
+                    declaration.getCaseTypes();
+            if (cts.isEmpty()) {
                 return SupertypeCheck.NO;
             }
             // every case must have that supertype
-            for (ProducedType caseType: 
-                    declaration.getCaseTypes()) {
+            for (ProducedType caseType: cts) {
+                TypeDeclaration ctd = 
+                        caseType.getDeclaration();
                 SupertypeCheck satisfied = 
-                        checkSupertype(
-                                caseType.getDeclaration(), 
-                                supertype);
+                        checkSupertype(ctd, supertype);
                 if (satisfied != SupertypeCheck.YES) {
                     return satisfied;
                 }
@@ -1050,17 +1055,18 @@ public class ProducedType extends ProducedReference {
             return SupertypeCheck.YES;
         }
         if (declaration instanceof IntersectionType) {
-            if (declaration.getSatisfiedTypes().isEmpty()) {
+            List<ProducedType> sts = 
+                    declaration.getSatisfiedTypes();
+            if (sts.isEmpty()) {
                 return SupertypeCheck.NO;
             }
             boolean perhaps = false;
             // any satisfied type will do
-            for (ProducedType satisfiedType: 
-                    declaration.getSatisfiedTypes()) {
+            for (ProducedType satisfiedType: sts) {
+                TypeDeclaration std = 
+                        satisfiedType.getDeclaration();
                 SupertypeCheck satisfied = 
-                        checkSupertype(
-                                satisfiedType.getDeclaration(), 
-                                supertype);
+                        checkSupertype(std, supertype);
                 if (satisfied == SupertypeCheck.YES) {
                     return satisfied;
                 }
