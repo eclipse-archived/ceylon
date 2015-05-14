@@ -66,6 +66,10 @@ void testIssues() {
     check(func459(1.0)[1](func459("x")[0]()) == 1, "#459.2 func<String>.Inner IS NOT func<Integer>.Inner");
     check(D511().foo=="2", "#511.1 expected 2 got ``D511().foo``");
     check(D511().bar()=="2", "#511.2 expected 2 got ``D511().bar()``");
+    interface Foo549<T> {}
+    interface Bar549<T> satisfies Foo549<T> {}
+    Object bar = object satisfies Bar549<String> {};
+    check(bar is Foo549<String>, "#549");
 }
 
 class Issue231_1(shared actual String string) {}
