@@ -13,6 +13,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -86,16 +87,22 @@ public class Stitcher {
         //Compile these files
         final List<File> includes = new ArrayList<File>();
         for (String filename : line.split(",")) {
-            final boolean isJsSrc = filename.trim().endsWith(".js");
+            filename = filename.trim();
+            final boolean isJsSrc = filename.endsWith(".js");
+            final boolean isDir = filename.endsWith("/");
             final File src = new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
-                    isJsSrc ? filename.trim() :
-                    String.format("%s.ceylon", filename.trim()));
+                    isJsSrc || isDir ? filename :
+                    String.format("%s.ceylon", filename));
             if (src.exists() && src.isFile() && src.canRead()) {
                 includes.add(src);
+            } else if (src.exists() && src.isDirectory()) {
+                includes.addAll(Arrays.asList(src.listFiles()));
             } else {
-                final File src2 = new File(LANGMOD_JS_SRC2, String.format("%s.ceylon", filename.trim()));
+                final File src2 = new File(LANGMOD_JS_SRC2, isDir ? filename : String.format("%s.ceylon", filename));
                 if (src2.exists() && src2.isFile() && src2.canRead()) {
                     includes.add(src2);
+                } else if (src2.exists() && src2.isDirectory()) {
+                    includes.addAll(Arrays.asList(src2.listFiles()));
                 } else {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
                 }
