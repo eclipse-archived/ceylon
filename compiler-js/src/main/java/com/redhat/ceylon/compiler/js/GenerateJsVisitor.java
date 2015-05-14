@@ -415,10 +415,18 @@ public class GenerateJsVisitor extends Visitor
         if (cnstr == null) {
             visitStatements(cdef.getClassBody().getStatements());
         } else if (cnstr.getDeclarationModel().isAbstract()) {
+            ReturnConstructorVisitor rcv = new ReturnConstructorVisitor(cnstr);
+            if (rcv.isReturns()) {
+                out("(function(){");
+            }
             for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
+                //Ignore return statements directly in main constructor scope
                 s2.visit(this);
                 if (!opts.isMinify())beginNewLine();
                 retainedVars.emitRetainedVars(this);
+            }
+            if (rcv.isReturns()) {
+                out("}())");
             }
         } else {
             List<String> oldRetainedVars = retainedVars.reset(null);
@@ -430,14 +438,23 @@ public class GenerateJsVisitor extends Visitor
                     if (filter == 2 && st == cnstr) {
                         go=true;
                     } else {
+                        ReturnConstructorVisitor rcv = new ReturnConstructorVisitor(cnstr);
+                        if (rcv.isReturns()) {
+                            out("(function(){");
+                        }
                         for (Tree.Statement s2 : ((Tree.Constructor)st).getBlock().getStatements()) {
+                            //Ignore return statements directly in main constructor scope
                             s2.visit(this);
                             if (!opts.isMinify())beginNewLine();
                             retainedVars.emitRetainedVars(this);
                         }
                         go=filter!=1;
+                        if (rcv.isReturns()) {
+                            out("}());");
+                        }
                     }
                 } else if (st instanceof Tree.Constructor == false && go) {
+                    //Ignore return statements directly in main constructor scope
                     st.visit(this);
                     if (!opts.isMinify())beginNewLine();
                     retainedVars.emitRetainedVars(this);
@@ -2612,12 +2629,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.Return that) {
-        out("return");
         if (that.getExpression() == null) {
-            endLine(true);
+            out("return;");
+            endLine();
             return;
         }
-        out(" ");
+        out("return ");
         if (dynblock > 0 && Util.isTypeUnknown(that.getExpression().getTypeModel())) {
             Scope cont = Util.getRealScope(that.getScope()).getScope();
             if (cont instanceof Declaration) {
