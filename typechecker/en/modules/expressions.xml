@@ -3468,8 +3468,15 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>AliasDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a class or class alias, the type is 
-                    <literal>ClassDeclaration</literal>, and</para>
+                    <para>for a class with an initializer parameter list,
+                    or for any class alias, the type is 
+                    <literal>ClassWithInitializerDeclaration</literal>,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>for a class with constructors, the type is 
+                    <literal>ClassWithConstructorsDeclaration</literal>, 
+                    and</para>
                 </listitem>
                 <listitem>
                     <para>for an interface or interface alias, the type 
