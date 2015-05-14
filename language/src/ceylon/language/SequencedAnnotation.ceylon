@@ -20,10 +20,11 @@
 see(`interface Annotation`)
 shared interface SequencedAnnotation<out Value, 
             in ProgramElement=Annotated,
-            out Type=Anything, in Arguments=Nothing>
+            out Type=Anything, in Arguments=Nothing,
+            out Container=Anything>
         of Value
         satisfies ConstrainedAnnotation
-            <Value,Value[],ProgramElement,Type,Arguments>
+            <Value,Value[],ProgramElement,Type,Arguments,Container>
         given Value satisfies SequencedAnnotation
             <Value,ProgramElement,Type,Arguments>
         given ProgramElement satisfies Annotated
