@@ -146,14 +146,14 @@ public class ProducedType extends ProducedReference {
         }
         depth.set(depth.get()+1);
         try {
-            TypeDeclaration d = getDeclaration();
-            TypeDeclaration td = type.getDeclaration();
-            if (d instanceof NothingType) {
+            TypeDeclaration dec = getDeclaration();
+            TypeDeclaration otherDec = type.getDeclaration();
+            if (dec instanceof NothingType) {
                 return type.isNothing();
             }
-            else if (d instanceof UnionType) {
+            else if (dec instanceof UnionType) {
                 List<ProducedType> cases = getCaseTypes();
-                if (td instanceof UnionType) {
+                if (otherDec instanceof UnionType) {
                     List<ProducedType> otherCases = 
                             type.getCaseTypes();
                     if (cases.size()!=otherCases.size()) {
@@ -183,9 +183,9 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
             }
-            else if (d instanceof IntersectionType) {
+            else if (dec instanceof IntersectionType) {
                 List<ProducedType> types = getSatisfiedTypes();
-                if (td instanceof IntersectionType) {
+                if (otherDec instanceof IntersectionType) {
                     List<ProducedType> otherTypes = 
                             type.getSatisfiedTypes();
                     if (types.size()!=otherTypes.size()) {
@@ -235,7 +235,7 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
             }
-            else if (td instanceof UnionType) {
+            else if (otherDec instanceof UnionType) {
                 List<ProducedType> otherCases = 
                         type.getCaseTypes();
                 if (otherCases.size()==1) {
@@ -246,7 +246,7 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
             }
-            else if (td instanceof IntersectionType) {
+            else if (otherDec instanceof IntersectionType) {
                 List<ProducedType> otherTypes = 
                         type.getSatisfiedTypes();
                 if (otherTypes.size()==1) {
@@ -257,19 +257,43 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
             }
+            else if (isTypeConstructor() && 
+                    type.isTypeConstructor()) {
+                if (dec.equals(otherDec)) {
+                    return true;
+                }
+                else {
+                    List<ProducedType> paramsAsArgs = 
+                            toTypeArgs(getTypeConstructorParameter());
+                    ProducedType rt = 
+                            dec.getProducedType(
+                                    getQualifyingType(), 
+                                    paramsAsArgs);
+                    ProducedType ort = 
+                            otherDec.getProducedType(
+                                    type.getQualifyingType(), 
+                                    paramsAsArgs);
+                    //resolves aliases:
+                    return rt.isExactly(ort);
+                }
+            }
+            else if (isTypeConstructor() ||
+                    type.isTypeConstructor()) {
+                return false;
+            }
             else {
-                if (!td.equals(d)) {
+                if (!otherDec.equals(dec)) {
                     return false;
                 }
                 else {
                     //for Java's static inner types, ignore the
                     //qualifying type
                     ProducedType qt = 
-                            d.isStaticallyImportable() ?
+                            dec.isStaticallyImportable() ?
                                     null : 
                                     getQualifyingType();
                     ProducedType tqt = 
-                            td.isStaticallyImportable() ? 
+                            otherDec.isStaticallyImportable() ? 
                                     null : 
                                     type.getQualifyingType();
                     if (qt==null || tqt==null) {
@@ -277,49 +301,46 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                     }
-                    else if (!(td.getContainer() 
-                                    instanceof TypeDeclaration)
-                             || !(d.getContainer() 
-                                    instanceof TypeDeclaration)) {
-                        // one of the two must be a local type, they should both be
-                        if (td.getContainer() 
-                                    instanceof TypeDeclaration
-                            || d.getContainer() 
-                                    instanceof TypeDeclaration)
-                            return false;
-                        // must be the same container
-                        if(!td.getContainer().equals(d.getContainer()))
-                            return false;
-                        // just delegate equality
-                        if(!tqt.isExactly(qt))
-                            return false;
-                    }
                     else {
-                        TypeDeclaration totd = 
-                                (TypeDeclaration) td.getContainer();
-                        ProducedType tqts = 
-                                tqt.getSupertypeInternal(totd);
-                        TypeDeclaration otd = 
-                                (TypeDeclaration) d.getContainer();
-                        ProducedType qts = 
-                                qt.getSupertypeInternal(otd);
-                        if (!qts.isExactlyInternal(tqts)) {
-                            return false;
+                        Scope odc = otherDec.getContainer();
+                        Scope dc = dec.getContainer();
+                        if (!(odc instanceof TypeDeclaration) || 
+                            !(dc instanceof TypeDeclaration)) {
+                            // one of the two must be a local type, they should both be
+                            if (odc instanceof TypeDeclaration || 
+                                dc instanceof TypeDeclaration)
+                                return false;
+                            // must be the same container
+                            if (!odc.equals(dc)) {
+                                return false;
+                            }
+                            // just delegate equality
+                            if (!tqt.isExactly(qt)) {
+                                return false;
+                            }
+                        }
+                        else {
+                            TypeDeclaration totd = 
+                                    (TypeDeclaration) odc;
+                            ProducedType tqts = 
+                                    tqt.getSupertypeInternal(totd);
+                            TypeDeclaration otd = 
+                                    (TypeDeclaration) dc;
+                            ProducedType qts = 
+                                    qt.getSupertypeInternal(otd);
+                            if (!qts.isExactlyInternal(tqts)) {
+                                return false;
+                            }
                         }
                     }
-                    if (isTypeConstructor() &&
-                            type.isTypeConstructor()) {
-                        return true;
-                    }
-                    else if (isTypeConstructor() ||
-                            type.isTypeConstructor()) {
-                        return false;
-                    }
-                    for (TypeParameter p: d.getTypeParameters()) {
+                    for (TypeParameter p: 
+                            dec.getTypeParameters()) {
                         ProducedType arg = 
-                                getTypeArguments().get(p);
+                                getTypeArguments()
+                                    .get(p);
                         ProducedType otherArg = 
-                                type.getTypeArguments().get(p);
+                                type.getTypeArguments()
+                                    .get(p);
                         if (arg==null || otherArg==null) {
                             return false;
                         }
@@ -329,13 +350,15 @@ public class ProducedType extends ProducedReference {
                             boolean covariant = 
                                     isCovariant(p);
                             boolean invariant = 
-                                    !covariant && !contravariant;
+                                    !covariant && 
+                                    !contravariant;
                             boolean otherCovariant = 
                                     type.isCovariant(p);
                             boolean otherContravariant = 
                                     type.isContravariant(p);
                             boolean otherInvariant = 
-                                    !otherCovariant && !otherContravariant;
+                                    !otherCovariant && 
+                                    !otherContravariant;
                             if (contravariant && otherCovariant) {
                                 //Inv<in Nothing> == Inv<out Anything> 
                                 if (!arg.isNothing() ||
@@ -383,6 +406,19 @@ public class ProducedType extends ProducedReference {
         finally {
             depth.set(depth.get()-1);
         }
+    }
+
+    private static List<ProducedType> toTypeArgs(Generic dec) {
+        List<TypeParameter> params = 
+                dec.getTypeParameters();
+        int size = params.size();
+        List<ProducedType> paramsAsArgs =
+                new ArrayList<ProducedType>(size);
+        for (int i=0; i<size; i++) {
+            TypeParameter param = params.get(i);
+            paramsAsArgs.add(param.getType());
+        }
+        return paramsAsArgs;
     }
 
     /**
@@ -471,18 +507,9 @@ public class ProducedType extends ProducedReference {
                 if (dec.equals(otherDec)) {
                     return true;
                 }
-                else if (dec.inherits(otherDec)) {
-                    List<TypeParameter> params = 
-                            getTypeConstructorParameter()
-                                .getTypeParameters();
-                    int size = params.size();
-                    List<ProducedType> paramsAsArgs =
-                            new ArrayList<ProducedType>
-                                (size);
-                    for (int i=0; i<size; i++) {
-                        TypeParameter param = params.get(i);
-                        paramsAsArgs.add(param.getType());
-                    }
+                else {
+                    List<ProducedType> paramsAsArgs = 
+                            toTypeArgs(getTypeConstructorParameter());
                     ProducedType qt = 
                             getQualifyingType();
                     ProducedType oqt = 
@@ -493,10 +520,8 @@ public class ProducedType extends ProducedReference {
                     ProducedType ort = 
                             otherDec.getProducedType(oqt, 
                                     paramsAsArgs);
+                    //resolves aliases:
                     return rt.isSubtypeOf(ort);
-                }
-                else {
-                    return false;
                 }
             }
             else if (isTypeConstructor() || 
@@ -2702,6 +2727,9 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType resolveAliases() {
+        if (isTypeConstructor()) {
+            return this;
+        }
         // cache the resolved version
         if (resolvedAliases == null) {
             // really compute it
