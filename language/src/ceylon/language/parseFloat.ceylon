@@ -17,10 +17,12 @@ shared Float? parseFloat(String string) {
     if (string.startsWith("-")) {
         sign = -1;
         unsignedPart = string[1...];
-    } else if (string.startsWith("+")) {
+    }
+    else if (string.startsWith("+")) {
         sign = +1;
         unsignedPart = string[1...];
-    } else {
+    }
+    else {
         sign = +1;
         unsignedPart = string;
     }
