@@ -1749,6 +1749,12 @@ public class Unit {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ValueDeclaration"));
     }
     
+    public ProducedType getValueDeclarationType(TypedDeclaration value) {
+        return !(value instanceof Value) || ((Value) value).isTransient() ? 
+                getValueDeclarationType() :
+                getType(getLanguageModuleDeclarationTypeDeclaration("ReferenceDeclaration"));
+    }
+    
     public TypeDeclaration getAnnotationDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Annotation");
     }
