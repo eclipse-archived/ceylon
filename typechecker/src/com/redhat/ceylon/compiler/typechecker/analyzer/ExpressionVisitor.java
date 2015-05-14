@@ -8975,8 +8975,12 @@ public class ExpressionVisitor extends Visitor {
                         errorNode.addError("referenced declaration is not a class" +
                                 getDeclarationReferenceSuggestion(d));
                     }
+                    that.setTypeModel(unit.getClassDeclarationType());
                 }
-                that.setTypeModel(unit.getClassDeclarationType());
+                else {
+                    that.setTypeModel(unit.getClassDeclarationType((Class) d));
+
+                }
             }
             else if (that instanceof Tree.NewLiteral) {
                 if (d instanceof Class) {

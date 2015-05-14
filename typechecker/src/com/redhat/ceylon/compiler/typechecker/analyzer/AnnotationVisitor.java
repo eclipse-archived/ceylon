@@ -243,7 +243,7 @@ public class AnnotationVisitor extends Visitor {
 //        TypeDeclaration dm = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getClassDeclarationType());
+                unit.getClassDeclarationType(c));
 //                unit.getClassMetatype(dm.getType()));
     }
 
