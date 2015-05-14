@@ -28,25 +28,25 @@ public class MetamodelHelper {
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (JsCompiler.isCompilingLanguageModule()) {
-                gen.out("$init$Open");
+                gen.out("$init$");
             } else {
-                gen.out(gen.getClAlias(), "Open");
+                gen.out(gen.getClAlias());
             }
         }
         if (d instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
-            gen.out("Interface$jsint");
+            gen.out("OpenInterface$jsint");
         } else if (isConstructor) {
-            gen.out("Constructor$jsint");
+            gen.out("OpenConstructor$jsint");
         } else if (d instanceof Class) {
-            gen.out("Class$jsint");
+            gen.out("openClass$jsint");
         } else if (d instanceof Method) {
-            gen.out("Function$jsint");
+            gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
-            gen.out("Value$jsint");
+            gen.out("OpenValue$jsint");
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.IntersectionType) {
-            gen.out("Intersection");
+            gen.out("OpenIntersection");
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.UnionType) {
-            gen.out("Union");
+            gen.out("OpenUnion");
         } else if (d instanceof TypeParameter) {
             generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen);
             gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
@@ -54,7 +54,7 @@ public class MetamodelHelper {
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
-            gen.out("Alias$jsint(");
+            gen.out("OpenAlias$jsint(");
             if (JsCompiler.isCompilingLanguageModule()) {
                 gen.out(")(");
             }
