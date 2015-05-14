@@ -1769,6 +1769,10 @@ public class Unit {
         return getLanguageModuleDeclarationTypeDeclaration("Declaration");
     }
 
+    public TypeDeclaration getMemberModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("Member");
+    }
+    
     public TypeDeclaration getClassModelDeclaration() {
         return getLanguageModuleModelTypeDeclaration("ClassModel");
     }
