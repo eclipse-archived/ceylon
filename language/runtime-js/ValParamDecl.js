@@ -77,10 +77,12 @@ $$valParamDecl.equals=function(o){
 };$$valParamDecl.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{nm:'other',mt:'prm',$t:{t:$_Object}}],$cont:ValParamDecl,pa:3,d:['$','Object','$m','equals']};};
 atr$($$valParamDecl,'string',function(){return 'value '+this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},pa:3,d:['$','Object','$at','string']};});
 $$valParamDecl.annotated=function($mpt){
-  var x=AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.call(this,{Annotation$annotations:$mpt.Annotation$annotated});
+  var x=annd$annotations(this,{Annotation$annotations:$mpt.Annotation$annotated});
   return x&&x.size>0;
 }
 $$valParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:ValParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','annotated']};};
+$$valParamDecl.annotations=function($mpt){return annd$annotations(this,$mpt);};
+$$valParamDecl.annotations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation$annotations'}},ps:[],$cont:ValParamDecl,tp:{Annotation$annotations:{dv:'out',sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.jsint','ValueDeclaration','$m','annotations']};};
     })(ValParamDecl.$$.prototype);
   }
   return ValParamDecl;

@@ -328,3 +328,15 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedDeclaredMembe
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedDeclaredMemberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:ClassOrInterfaceDeclaration$meta$declarationl,tp:{Kind:{sts:[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','annotatedDeclaredMemberDeclarations']};};
 
+//Add-on to AnnotatedDeclaration
+function annd$annotations(that,$$$mptypes) {
+  var mdl = getrtmm$$(that.tipo)||that.meta;
+  var _ans = allann$(mdl);
+  var ans=[];
+  for (var i=0; i<_ans.length;i++) {
+    if (is$(_ans[i], $$$mptypes.Annotation$annotations)) {
+      ans.push(_ans[i]);
+    }
+  }
+  return ans.length == 0 ? empty() : ArraySequence(ans,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
+}

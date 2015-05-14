@@ -1,3 +1,3 @@
 function(m){
-  return AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.call(this,m);
+  return annd$annotations(this,m);
 }
