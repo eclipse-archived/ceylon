@@ -18,8 +18,13 @@
    a certain type using [[ceylon.language.meta::annotations]] 
    or [[ceylon.language.meta::sequencedAnnotations]]."""
 see(`interface Annotation`)
-shared interface SequencedAnnotation<out Value, in ProgramElement=Annotated>
+shared interface SequencedAnnotation<out Value, 
+            in ProgramElement=Annotated,
+            out Type=Anything, in Arguments=Nothing>
         of Value
-        satisfies ConstrainedAnnotation<Value,Value[],ProgramElement>
-        given Value satisfies SequencedAnnotation<Value,ProgramElement>
-        given ProgramElement satisfies Annotated {}
+        satisfies ConstrainedAnnotation
+            <Value,Value[],ProgramElement,Type,Arguments>
+        given Value satisfies SequencedAnnotation
+            <Value,ProgramElement,Type,Arguments>
+        given ProgramElement satisfies Annotated
+        given Arguments satisfies Anything[] {}

@@ -1,4 +1,4 @@
-import ceylon.language.meta{
+import ceylon.language.meta {
     annotations, 
     optionalAnnotation, 
     sequencedAnnotations

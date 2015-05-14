@@ -14,9 +14,14 @@
  certain type using [[ceylon.language.meta::annotations]] or 
  [[ceylon.language.meta::optionalAnnotation]]."
 see(`interface Annotation`)
-shared interface OptionalAnnotation<out Value, in ProgramElement=Annotated>
+shared interface OptionalAnnotation<out Value, 
+            in ProgramElement=Annotated,
+            out Type=Anything, in Arguments=Nothing>
         of Value
-        satisfies ConstrainedAnnotation<Value,Value?,ProgramElement>
-        given Value satisfies OptionalAnnotation<Value,ProgramElement>
-        given ProgramElement satisfies Annotated {}
+        satisfies ConstrainedAnnotation
+            <Value,Value?,ProgramElement,Type,Arguments>
+        given Value satisfies OptionalAnnotation
+            <Value,ProgramElement,Type,Arguments>
+        given ProgramElement satisfies Annotated
+        given Arguments satisfies Anything[] {}
 
