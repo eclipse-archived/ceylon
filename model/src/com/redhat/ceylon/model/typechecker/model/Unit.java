@@ -1756,11 +1756,11 @@ public class Unit {
     public TypeDeclaration getConstrainedAnnotationDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("ConstrainedAnnotation");
     }
-
+    
     public TypeDeclaration getSequencedAnnotationDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("SequencedAnnotation");
     }
-
+    
     public TypeDeclaration getOptionalAnnotationDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("OptionalAnnotation");
     }
@@ -1769,6 +1769,26 @@ public class Unit {
         return getLanguageModuleDeclarationTypeDeclaration("Declaration");
     }
 
+    public TypeDeclaration getClassModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("ClassModel");
+    }
+    
+    public TypeDeclaration getInterfaceModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("InterfaceModel");
+    }
+    
+    public TypeDeclaration getFunctionModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("FunctionModel");
+    }
+    
+    public TypeDeclaration getValueModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("ValueModel");
+    }
+    
+    public TypeDeclaration getConstructorModelDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("ConstructorModel");
+    }
+    
     public ProducedTypeCache getCache() {
         Module module = getPackage().getModule();
         return module != null ? module.getCache() : null;
