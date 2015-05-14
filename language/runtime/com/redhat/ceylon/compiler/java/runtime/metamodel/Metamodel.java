@@ -341,7 +341,7 @@ public class Metamodel {
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Value){
                     com.redhat.ceylon.model.typechecker.model.Value value = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
-                    ret = new FreeValue(value);
+                    ret = value.isTransient() ? new FreeValue(value) : new FreeReference(value);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Setter){
                     com.redhat.ceylon.model.typechecker.model.Setter value = (com.redhat.ceylon.model.typechecker.model.Setter)declaration;
                     ret = new FreeSetter(value);
