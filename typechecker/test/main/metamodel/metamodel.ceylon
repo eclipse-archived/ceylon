@@ -8,7 +8,7 @@ interface List<Element>
 }
 
 void test<T>() {
-    @type:"ClassDeclaration" 
+    @type:"ClassWithInitializerDeclaration" 
     value noParamsClass = `class NoParams`;
     @type:"Class<NoParams,Empty>" 
     value noParamsType = `NoParams`;
@@ -16,7 +16,7 @@ void test<T>() {
     value paramsType = `Params`;
     @type:"Class<ParameterisedClass<Integer>,Empty>" 
     value parameterisedType = `ParameterisedClass<Integer>`;
-    @type:"ClassDeclaration" 
+    @type:"ClassWithInitializerDeclaration" 
     value parameterisedTypeDeclClass = `class ParameterisedClass`;
     @error
     value parameterisedTypeDecl = `ParameterisedClass`;
@@ -46,7 +46,7 @@ void test<T>() {
     value aliasType = `Alias`;
     
     // members
-    @type:"ClassDeclaration"
+    @type:"ClassWithInitializerDeclaration"
     value memberClassTypeClass = `class Container.InnerClass`;
     @type:"MemberClass<Container,Container.InnerClass,Empty>"
     value memberClassType = `Container.InnerClass`;
@@ -319,7 +319,7 @@ void meta() {
     value md2 = `List<Integer>.defines`; 
     //@type:"FunctionDeclaration" @error 
     //value md8 = `function List<Integer>.defines`; 
-    @type:"ClassDeclaration"
+    @type:"ClassWithInitializerDeclaration"
     value cd1 = `class Foo.Bar`;
     @type:"FunctionDeclaration"
     value md3 = `function Foo.Bar.x`;
@@ -333,7 +333,7 @@ void meta() {
     value md7 = `Foo<Object>.Bar<String>.x<List>`;
     //@type:"ClassDeclaration" @error
     //value cd2 = `class Foo<List<String>>.Bar`;
-    @type:"ClassDeclaration"
+    @type:"ClassWithInitializerDeclaration"
     value cd3 = `class Foo`;
     @type:"Class<Foo<Object>,Empty>"
     value cd4 = `Foo<Object>`;
