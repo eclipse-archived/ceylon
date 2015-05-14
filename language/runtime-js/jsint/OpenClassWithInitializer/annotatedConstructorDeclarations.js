@@ -1,0 +1,3 @@
+function($mpt) {
+  return empty();
+}
