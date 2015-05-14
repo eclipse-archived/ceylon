@@ -169,6 +169,25 @@ public class ModuleSourceMapper {
         return false;
     }
 
+    public Iterable<ModuleImport> retrieveModuleImports(Module module) {
+        List<ModuleImport> imports = new ArrayList<>();
+        for (ModuleImport imp : moduleImportToNode.keySet()) {
+            if (imp.getModule() == module) {
+                imports.add(imp);
+            }
+        }
+        return imports;
+    }
+    
+    public void attachErrorToModuleImport(ModuleImport moduleImport, String error){
+        WeakHashMap<Node, Object> errors = moduleImportToNode.get(moduleImport);
+        if(errors != null){
+            for ( Node definition :  errors.keySet() ) {
+                definition.addError(new ModuleDependencyAnalysisError(definition, error));
+            }
+        }
+    }
+
     public void attachErrorToOriginalModuleImport(Module module, String error){
         if(getCompiledModules().contains(module)){
             // we're compiling it, just add it to the module node then
