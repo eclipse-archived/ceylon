@@ -226,7 +226,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 getOverloads(member);
-                        if (hasOverload(overloads, backend)) {
+                        if (hasOverload(overloads, backend, model)) {
                             if (backend.isEmpty()) {
                                 that.addError("duplicate native header: '" + 
                                         name + "'");
@@ -236,7 +236,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                         name + "'");
                             }
                         }
-                        overloads.add(model);
+                        if (!hasModelInOverloads(overloads, model)) {
+                            overloads.add(model);
+                        }
                         setOverloads(model, overloads);
                     }
                     else {
@@ -316,16 +318,31 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
 
     private static boolean hasOverload
-            (List<Declaration> overloads, String backend) {
+            (List<Declaration> overloads, String backend, Declaration overloadToIgnore) {
         if (overloads!=null) {
             for (Declaration d: overloads) {
-                if (backend.equals(d.getNative())) {
+                if (backend.equals(d.getNative()) 
+                        && !d.equals(overloadToIgnore)) {
                     return true;
                 }
             }
         }
         return false;
     }
+
+    private static boolean hasModelInOverloads
+            (List<Declaration> overloads, Declaration model) {
+        if (overloads!=null) {
+            for (Declaration d: overloads) {
+                if (d.equals(model)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
