@@ -850,13 +850,18 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns the name of the type or its $init$ function if it's local. */
-    String typeFunctionName(final Tree.StaticType type, boolean removeAlias) {
+    String typeFunctionName(final Tree.StaticType type, boolean removeAlias, final ClassOrInterface coi) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
         if ((removeAlias && d.isAlias()) || d instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
             d = d.getExtendedTypeDeclaration();
         }
-        boolean inProto = opts.isOptimize()
+        final boolean inProto = opts.isOptimize()
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
+        if (inProto && coi.isMember() && !d.isAlias() && coi.getContainer() == Util.getContainingDeclaration(d)) {
+            //A member class that extends or satisfies another member of its same container,
+            //use its $init$ function
+            return "$init$" +  names.name(d) + "()";
+        }
         String tfn = memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
         if (removeAlias && !isImported(type.getUnit().getPackage(), d)) {
             int idx = tfn.lastIndexOf('.');

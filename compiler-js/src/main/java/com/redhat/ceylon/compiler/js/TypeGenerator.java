@@ -118,7 +118,7 @@ public class TypeGenerator {
             if (extendedType != null) {
                 if (satisfiedTypes == null) {
                     String fname = gen.typeFunctionName(extendedType.getType(),
-                            !extendedType.getType().getDeclarationModel().isMember());
+                            !extendedType.getType().getDeclarationModel().isMember(), d);
                     gen.out(",", fname);
                 } else {
                     supers.add(extendedType.getType());
@@ -130,7 +130,7 @@ public class TypeGenerator {
                 supers.addAll(satisfiedTypes.getTypes());
                 Collections.sort(supers, new StaticTypeComparator());
                 for (Tree.StaticType satType : supers) {
-                    String fname = gen.typeFunctionName(satType, true);
+                    String fname = gen.typeFunctionName(satType, true, d);
                     gen.out(",", fname);
                 }
             }
