@@ -186,12 +186,12 @@ public class TypeGenerator {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
-        callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
                     ",$$targs$$,", gen.getNames().name(d), ")");
             gen.endLine(true);
         }
+        callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes,",
                     gen.getNames().name(d), ")");
