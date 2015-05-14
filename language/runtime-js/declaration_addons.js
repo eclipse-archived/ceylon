@@ -13,7 +13,7 @@ function openClass$jsint(pkg,meta,that) {
     tipo=meta;
     meta_=get_model(_mm);
   }
-  return (meta_&&meta_.$cn?OpenClassWithInitializer$jsint:OpenClassWithConstructors$jsint)(pkg,meta,that);
+  return (meta_&&meta_.$cn?OpenClassWithConstructors$jsint:OpenClassWithInitializer$jsint)(pkg,meta,that);
 }
 ex$.openClass$jsint=openClass$jsint;
 function $init$openClass$jsint(){
