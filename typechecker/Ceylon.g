@@ -3218,6 +3218,12 @@ type returns [StaticType type]
       COMPUTE 
       entryType
       { ct.setType($entryType.type); }
+      (
+        SMALLER_OP
+        typeConstraints
+        { ct.setTypeConstraintList($typeConstraints.typeConstraintList); }
+        LARGER_OP
+      )?
     | entryType
       { $type=$entryType.type; }
     ;
