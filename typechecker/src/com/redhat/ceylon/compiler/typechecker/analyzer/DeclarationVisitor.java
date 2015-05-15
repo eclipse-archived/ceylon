@@ -297,28 +297,33 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     }
 
     private static void setOverloads
-            (Declaration decl, List<Declaration> overloads) {
-        if (decl instanceof Method) {
-            ((Method) decl).setOverloads(overloads);
+            (Declaration dec, List<Declaration> overloads) {
+        if (dec instanceof Method) {
+            Method m = (Method) dec;
+            m.setOverloads(overloads);
         }
-        else if (decl instanceof Value) {
-            ((Value) decl).setOverloads(overloads);
+        else if (dec instanceof Value) {
+            Value v = (Value) dec;
+            v.setOverloads(overloads);
         }
-        else if (decl instanceof Class) {
-            ((Class) decl).setOverloads(overloads);
+        else if (dec instanceof Class) {
+            Class c = (Class) dec;
+            c.setOverloads(overloads);
         }
     }
 
     private static List<Declaration> getOverloads
-            (Declaration decl) {
-        if (decl instanceof Overloadable) {
-            return ((Overloadable) decl).getOverloads();
+            (Declaration dec) {
+        if (dec instanceof Overloadable) {
+            Overloadable overloadable = (Overloadable) dec;
+            return overloadable.getOverloads();
         }
         return null;
     }
 
     private static boolean hasOverload
-            (List<Declaration> overloads, String backend, Declaration overloadToIgnore) {
+            (List<Declaration> overloads, String backend, 
+                    Declaration overloadToIgnore) {
         if (overloads!=null) {
             for (Declaration d: overloads) {
                 if (backend.equals(d.getNative()) 
@@ -344,9 +349,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 
 
     
-    private static void checkForDuplicateDeclaration(
-            Tree.Declaration that, 
-            Declaration model, Scope scope) {
+    private static void checkForDuplicateDeclaration
+            (Tree.Declaration that, Declaration model, Scope scope) {
         String name = model.getName();
         Unit unit = model.getUnit();
         if (name!=null) {

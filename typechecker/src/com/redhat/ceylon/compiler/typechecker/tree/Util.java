@@ -8,12 +8,12 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 
 
 public class Util {
     
-    public static final String MISSING_NAME = "program element with missing name";
+    public static final String MISSING_NAME = 
+            "program element with missing name";
 
     public static String name(Tree.Identifier id) {
         if (id==null) {
@@ -24,15 +24,18 @@ public class Util {
         }
     }
 
-    public static boolean hasAnnotation(Tree.AnnotationList al, String name, Unit unit) {
+    public static boolean hasAnnotation(Tree.AnnotationList al, 
+            String name, Unit unit) {
         return getAnnotation(al, name, unit) != null;
     }
 
-    public static Tree.Annotation getAnnotation(Tree.AnnotationList al, String name, Unit unit) {
+    public static Tree.Annotation getAnnotation(Tree.AnnotationList al, 
+            String name, Unit unit) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Tree.BaseMemberExpression p = 
-                        (Tree.BaseMemberExpression) a.getPrimary();
+                        (Tree.BaseMemberExpression) 
+                            a.getPrimary();
                 if (p!=null) {
                     String an = name(p.getIdentifier());
                     String alias = unit==null ? name : //WTF?!
@@ -46,82 +49,129 @@ public class Util {
         return null;
     }
 
-    public static String getAnnotationArgument(Tree.Annotation a, String def) {
-        String result = def;
+    public static String getAnnotationArgument(Tree.Annotation ann, 
+            String defaultValue) {
+        String result = defaultValue;
         Tree.Expression expression = null;
-        if (a.getPositionalArgumentList() != null && a.getPositionalArgumentList().getPositionalArguments().size() > 0) {
-            Tree.PositionalArgument arg = a.getPositionalArgumentList().getPositionalArguments().get(0);
-            if (arg instanceof Tree.ListedArgument) {
-                expression = ((Tree.ListedArgument) arg).getExpression();
+        Tree.PositionalArgumentList pal = 
+                ann.getPositionalArgumentList();
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            if (!args.isEmpty()) {
+                Tree.PositionalArgument arg = args.get(0);
+                if (arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) arg;
+                    expression = la.getExpression();
+                }
             }
-        } else if (a.getNamedArgumentList() != null && a.getNamedArgumentList().getNamedArguments().size() > 0) {
-            Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)a.getNamedArgumentList().getNamedArguments().get(0);
-            expression = arg.getSpecifierExpression().getExpression();
         }
-        if (expression != null) {
-            Tree.Literal literal = (Tree.Literal)expression.getTerm();
+        Tree.NamedArgumentList nal = 
+                ann.getNamedArgumentList();
+        if (nal!=null) {
+            List<Tree.NamedArgument> args = 
+                    nal.getNamedArguments();
+            if (!args.isEmpty()) {
+                Tree.SpecifiedArgument arg = 
+                        (Tree.SpecifiedArgument)
+                            args.get(0);
+                expression = 
+                        arg.getSpecifierExpression()
+                            .getExpression();
+            }
+        }
+        if (expression!=null) {
+            Tree.Literal literal = (Tree.Literal) 
+                    expression.getTerm();
             result = literal.getText();
-            if (result.startsWith("\"") && result.endsWith("\"")) {
-                result = result.substring(1, result.length() - 1);
+            if (result.startsWith("\"") && 
+                    result.endsWith("\"")) {
+                result = result.substring(1, 
+                        result.length() - 1);
             }
         }
         return result;
     }
     
-    public static boolean isForBackend(Tree.AnnotationList al, Backend forBackend, Unit unit) {
-        return isForBackend(al, forBackend.backendSupport, unit);
+    public static boolean isForBackend(Tree.AnnotationList al, 
+            Backend forBackend, Unit unit) {
+        return isForBackend(al, 
+                forBackend.backendSupport, 
+                unit);
     }
     
-    public static boolean isForBackend(Tree.AnnotationList al, BackendSupport backendSupport, Unit unit) {
+    public static boolean isForBackend(Tree.AnnotationList al, 
+            BackendSupport backendSupport, Unit unit) {
         String be = getNativeBackend(al, unit);
         return isForBackend(be, backendSupport);
     }
     
-    public static boolean isForBackend(String backendName, Backend forBackend) {
-        return isForBackend(backendName, forBackend.backendSupport);
+    public static boolean isForBackend(String backendName, 
+            Backend forBackend) {
+        return isForBackend(backendName, 
+                forBackend.backendSupport);
     }
     
-    public static boolean isForBackend(String backendName, BackendSupport backendSupport) {
+    public static boolean isForBackend(String backendName, 
+            BackendSupport backendSupport) {
         if (backendName != null) {
-            Backend backend = Backend.fromAnnotation(backendName);
-            if (backend == null || !backendSupport.supportsBackend(backend)) {
+            Backend backend = 
+                    Backend.fromAnnotation(backendName);
+            if (backend == null || 
+                    !backendSupport.supportsBackend(backend)) {
                 return false;
             }
         }
         return true;
     }
     
-    public static String getNativeBackend(Tree.AnnotationList al, Unit unit) {
-        Annotation a = getAnnotation(al, "native", unit);
-        if (a != null) {
-            return getAnnotationArgument(a, "");
-        }
-        return null;
+    public static String getNativeBackend(Tree.AnnotationList al, 
+            Unit unit) {
+        Tree.Annotation ann = 
+                getAnnotation(al, "native", unit);
+        return ann == null ? null : 
+            getAnnotationArgument(ann, "");
     }
     
     public static boolean hasUncheckedNulls(Tree.Term term) {
         return hasUncheckedNulls(term, false);
     }
     
-    private static boolean hasUncheckedNulls(Tree.Term term, boolean invoking) {
+    private static boolean hasUncheckedNulls(Tree.Term term, 
+            boolean invoking) {
         if (term instanceof Tree.MemberOrTypeExpression) {
-            Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
-            return d instanceof TypedDeclaration 
-                    && ((TypedDeclaration) d).hasUncheckedNullType()
-                    // only consider method types when invoking them, because java method references can't be null
-                    && (d instanceof Method == false || invoking);
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) term;
+            Declaration d = mte.getDeclaration();
+            if (d instanceof TypedDeclaration) {
+                TypedDeclaration td = (TypedDeclaration) d;
+                return td.hasUncheckedNullType() &&
+                        // only consider method types when invoking them, 
+                        // because java method references can't be null
+                        (!(d instanceof Method) || invoking);
+            }
+            else {
+                return false;
+            }
         }
         else if (term instanceof Tree.QualifiedMemberOrTypeExpression) {
-            return hasUncheckedNulls(((Tree.QualifiedMemberOrTypeExpression)term).getPrimary(), invoking);
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) term;
+            return hasUncheckedNulls(qmte.getPrimary(), invoking);
         }
         else if (term instanceof Tree.InvocationExpression) {
-            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary(), true);
+            Tree.InvocationExpression ite = 
+                    (Tree.InvocationExpression) term;
+            return hasUncheckedNulls(ite.getPrimary(), true);
         }
         else if (term instanceof Tree.DefaultOp) {
-            return hasUncheckedNulls(((Tree.DefaultOp) term).getRightTerm(), invoking);
+            Tree.DefaultOp op = (Tree.DefaultOp) term;
+            return hasUncheckedNulls(op.getRightTerm(), invoking);
         }
         else if (term instanceof Tree.Expression) {
-            return hasUncheckedNulls(((Tree.Expression)term).getTerm(), invoking);
+            Tree.Expression e = (Tree.Expression) term;
+            return hasUncheckedNulls(e.getTerm(), invoking);
         }
         else {
             return false;
@@ -150,30 +200,43 @@ public class Util {
     public static Node getIdentifyingNode(Node node) {
         Node result = null;
         if (node instanceof Tree.Declaration) {
-            result = ((Tree.Declaration) node).getIdentifier();
+            Tree.Declaration d = (Tree.Declaration) node;
+            result = d.getIdentifier();
         }
         else if (node instanceof Tree.ModuleDescriptor) {
-            result = ((Tree.ModuleDescriptor) node).getImportPath();
+            Tree.ModuleDescriptor md = 
+                    (Tree.ModuleDescriptor) node;
+            result = md.getImportPath();
         }
         else if (node instanceof Tree.PackageDescriptor) {
-            result = ((Tree.PackageDescriptor) node).getImportPath();
+            Tree.PackageDescriptor pd = 
+                    (Tree.PackageDescriptor) node;
+            result = pd.getImportPath();
         }
         else if (node instanceof Tree.NamedArgument) {
-            result = ((Tree.NamedArgument) node).getIdentifier();
+            Tree.NamedArgument na = (Tree.NamedArgument) node;
+            result = na.getIdentifier();
         }
         else if (node instanceof Tree.StaticMemberOrTypeExpression) {
-            result = ((Tree.StaticMemberOrTypeExpression) node).getIdentifier();
+            Tree.StaticMemberOrTypeExpression smte = 
+                    (Tree.StaticMemberOrTypeExpression) node;
+            result = smte.getIdentifier();
         }
         else if (node instanceof Tree.ExtendedTypeExpression) {
             //TODO: whoah! this is really ugly!
-            result = ((CustomTree.ExtendedTypeExpression) node).getType()
+            CustomTree.ExtendedTypeExpression ete = 
+                    (CustomTree.ExtendedTypeExpression) node;
+            result = ete.getType()
                     .getIdentifier();
         }
         else if (node instanceof Tree.SimpleType) {
-            result = ((Tree.SimpleType) node).getIdentifier();
+            Tree.SimpleType st = (Tree.SimpleType) node;
+            result = st.getIdentifier();
         }
         else if (node instanceof Tree.ImportMemberOrType) {
-            result = ((Tree.ImportMemberOrType) node).getIdentifier();
+            Tree.ImportMemberOrType imt = 
+                    (Tree.ImportMemberOrType) node;
+            result = imt.getIdentifier();
         }
         else {
             result = node;
