@@ -1113,7 +1113,7 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
           i=INTERSECTION_OP
           { $satisfiedTypes.setEndToken($i); }
         | 
-          COMMA|UNION_OP
+          UNION_OP
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(INTERSECTION_OP, input)); }
         )
@@ -1137,7 +1137,7 @@ caseTypes returns [CaseTypes caseTypes]
           u=UNION_OP 
           { $caseTypes.setEndToken($u); }
         | 
-          COMMA|INTERSECTION_OP
+          INTERSECTION_OP
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(UNION_OP, input)); }
         )
@@ -1350,12 +1350,36 @@ typeConstraint returns [TypeConstraint typeConstraint]
       )?
     ;
 
+anonymousTypeConstraint returns [TypeConstraint typeConstraint]
+    : TYPE_CONSTRAINT
+      { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); }
+      typeNameDeclaration 
+      { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        caseTypes
+        { $typeConstraint.setCaseTypes($caseTypes.caseTypes); }
+      )?
+      (
+        satisfiedTypes
+        { $typeConstraint.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); }
+      )?
+    ;
+
 typeConstraints returns [TypeConstraintList typeConstraintList]
     : { $typeConstraintList=new TypeConstraintList(null); }
       (
         typeConstraint
         { if ($typeConstraint.typeConstraint!=null)
             $typeConstraintList.addTypeConstraint($typeConstraint.typeConstraint); }
+      )+
+    ;
+
+anonymousTypeConstraints returns [TypeConstraintList typeConstraintList]
+    : { $typeConstraintList=new TypeConstraintList(null); }
+      (
+        anonymousTypeConstraint
+        { if ($anonymousTypeConstraint.typeConstraint!=null)
+            $typeConstraintList.addTypeConstraint($anonymousTypeConstraint.typeConstraint); }
       )+
     ;
 
@@ -3219,10 +3243,8 @@ type returns [StaticType type]
       entryType
       { ct.setType($entryType.type); }
       (
-        SMALLER_OP
-        typeConstraints
-        { ct.setTypeConstraintList($typeConstraints.typeConstraintList); }
-        LARGER_OP
+        anonymousTypeConstraints
+        { ct.setTypeConstraintList($anonymousTypeConstraints.typeConstraintList); }
       )?
     | entryType
       { $type=$entryType.type; }
