@@ -790,11 +790,8 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeAlias ta = that.getDeclarationModel();
         ta.setExtendedType(that.getType().getTypeModel());
-        TypeParameter cp = 
-                that.getTypeModel()
-                    .getTypeConstructorParameter();
         ProducedType type = ta.getType();
-        type.setTypeConstructor(cp);
+        type.setTypeConstructor(true);
         that.setTypeModel(type);
     }
     

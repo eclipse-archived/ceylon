@@ -1217,7 +1217,8 @@ public class Util {
                         (Tree.IntersectionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
                     if (setTypeConstructor(st,typeParam)) {
-                        pt.setTypeConstructor(typeParam);
+                        pt.setTypeConstructor(true);
+                        pt.setTypeConstructorParameter(typeParam);
                     }
                 }
             }
@@ -1226,7 +1227,8 @@ public class Util {
                         (Tree.UnionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
                     if (setTypeConstructor(st,typeParam)) {
-                        pt.setTypeConstructor(typeParam);
+                        pt.setTypeConstructor(true);
+                        pt.setTypeConstructorParameter(typeParam);
                     }
                 }
             }
@@ -1234,7 +1236,8 @@ public class Util {
                 Tree.SimpleType s = 
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
-                    pt.setTypeConstructor(typeParam);
+                    pt.setTypeConstructor(true);
+                    pt.setTypeConstructorParameter(typeParam);
                 }
             }
             return pt.isTypeConstructor();

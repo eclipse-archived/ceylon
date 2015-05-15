@@ -3375,7 +3375,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = td.getType();
                 if (type.isTypeConstructor()) {
                     List<TypeParameter> typeParameters = 
-                            type.getTypeConstructorParameter()
+                            type.getDeclaration()
                                 .getTypeParameters();
                     return getTypeArguments(tas, 
                             typeParameters, qt);
@@ -6372,14 +6372,8 @@ public class ExpressionVisitor extends Visitor {
                 ta.setUnit(unit);
                 ta.setExtendedType(pr.getFullType());
                 ta.setTypeParameters(typeParameters);
-                TypeParameter cp = new TypeParameter();
-                cp.setName("Synthetic#" + member.getName());
-                cp.setScope(scope);
-                cp.setUnit(unit);
-                cp.setTypeConstructor(true);
-                cp.setTypeParameters(typeParameters);
                 ProducedType t = ta.getType();
-                t.setTypeConstructor(cp);
+                t.setTypeConstructor(true);
                 that.setTypeModel(t);
             }
         }
@@ -6885,14 +6879,8 @@ public class ExpressionVisitor extends Visitor {
                 ta.setUnit(unit);
                 ta.setExtendedType(pt.getFullType());
                 ta.setTypeParameters(typeParameters);
-                TypeParameter cp = new TypeParameter();
-                cp.setName("Synthetic#" + type.getName());
-                cp.setScope(scope);
-                cp.setUnit(unit);
-                cp.setTypeConstructor(true);
-                cp.setTypeParameters(typeParameters);
                 ProducedType t = ta.getType();
-                t.setTypeConstructor(cp);
+                t.setTypeConstructor(true);
                 that.setTypeModel(t);
             }
         }
@@ -8405,9 +8393,10 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.TypeArgumentList) tal;
                 ProducedType type = td.getType();
                 if (type.isTypeConstructor()) {
+                    TypeDeclaration tcd = 
+                            type.getDeclaration();
                     List<TypeParameter> typeParameters = 
-                            type.getTypeConstructorParameter()
-                                .getTypeParameters();
+                            tcd.getTypeParameters();
                     int size = typeArguments.size();
                     if (size != typeParameters.size()) {
                         tal.addError("wrong number of type arguments: type constructor requires " + 
@@ -8422,10 +8411,11 @@ public class ExpressionVisitor extends Visitor {
                             //TODO: get the right error node!
                             for (ProducedType st: 
                                     param.getSatisfiedTypes()) {
+                                Map<TypeParameter, ProducedType> args = 
+                                        getTypeArgumentMap(tcd, 
+                                                null, typeArguments);
                                 ProducedType bound = 
-                                        st.substitute(getTypeArgumentMap(
-                                                type.getTypeConstructorParameter(), 
-                                                null, typeArguments));
+                                        st.substitute(args);
                                 checkAssignable(arg, bound, 
                                         list.getTypes().get(i), 
                                         "argument not assignable to upper bound of type parameter '" +

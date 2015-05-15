@@ -2338,17 +2338,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         endDeclaration(od);
         exitScope(o);
         
-        TypeParameter cp = new TypeParameter();
-        cp.setName("Synthetic#"+fid++);
-        cp.setUnit(unit);
-        cp.setScope(scope);
-        setVisibleScope(cp);
-        cp.setTypeConstructor(true);
-        cp.setTypeParameters(ta.getTypeParameters());
         ta.setExtendedType(that.getType().getTypeModel());
         that.setDeclarationModel(ta);
         ProducedType pt = ta.getType();
-        pt.setTypeConstructor(cp);
+        pt.setTypeConstructor(true);
         that.setTypeModel(pt);
     }
     
