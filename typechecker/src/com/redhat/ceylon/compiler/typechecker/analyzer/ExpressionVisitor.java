@@ -2910,6 +2910,9 @@ public class ExpressionVisitor extends Visitor {
                 if (!smte.getStaticMethodReferencePrimary() && 
                         dec instanceof Functional && 
                         param!=null) {
+                    if (paramType.isTypeConstructor()) {
+                        return null;
+                    }
                     Functional fun = (Functional) dec;
                     List<ParameterList> apls = 
                             fun.getParameterLists();
