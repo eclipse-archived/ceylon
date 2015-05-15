@@ -44,6 +44,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
 import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
 import static java.util.Collections.emptyList;
 
@@ -1651,21 +1652,23 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, 
             Tree.SpecifierOrInitializerExpression sie, 
             int code) {
-        if (sie!=null && sie.getExpression()!=null) {
-            ProducedType t = 
-                    sie.getExpression().getTypeModel();
-            if (!isTypeUnknown(t)) {
-                String name = "'" + dec.getName(unit) + "'";
-                if (dec.isClassOrInterfaceMember()) {
-                    Declaration c = 
-                            (Declaration) 
-                                dec.getContainer();
-                    name += " of '" + c.getName(unit) + "'";
+        if (sie!=null) {
+            Tree.Expression e = sie.getExpression();
+            if (e!=null) {
+                ProducedType t = e.getTypeModel();
+                if (!isTypeUnknown(t)) {
+                    String name = "'" + dec.getName(unit) + "'";
+                    if (dec.isClassOrInterfaceMember()) {
+                        Declaration c = 
+                                (Declaration) 
+                                    dec.getContainer();
+                        name += " of '" + c.getName(unit) + "'";
+                    }
+                    checkAssignable(t, declaredType, sie, 
+                            "specified expression must be assignable to declared type of " + 
+                                    name,
+                            code);
                 }
-                checkAssignable(t, declaredType, sie, 
-                        "specified expression must be assignable to declared type of " + 
-                                name,
-                        code);
             }
         }
     }
@@ -3167,8 +3170,9 @@ public class ExpressionVisitor extends Visitor {
                         type.getName() + "'");
             }
             else {
+                Scope scope = qmte.getScope();
                 ClassOrInterface ci = 
-                        getContainingClassOrInterface(qmte.getScope());
+                        getContainingClassOrInterface(scope);
                 if (ci!=null) {
                     ClassOrInterface etd = 
                             ci.getExtendedTypeDeclaration();
@@ -6324,7 +6328,43 @@ public class ExpressionVisitor extends Visitor {
                 //otherwise infer type arguments later
             }
             else {
-                typeArgumentsImplicit(that);
+                handleGenericReference(that, member);
+//                typeArgumentsImplicit(that);
+            }
+        }
+    }
+
+    private void handleGenericReference(
+            Tree.BaseMemberExpression that,
+            TypedDeclaration member) {
+        if (member instanceof Generic) {
+            Generic g = (Generic) member;
+            List<TypeParameter> typeParameters = 
+                    g.getTypeParameters();
+            if (!typeParameters.isEmpty()) {
+                Scope scope = that.getScope();
+                ProducedType outerType = 
+                        scope.getDeclaringType(member);
+                ProducedTypedReference pr = 
+                        member.getProducedTypedReference(outerType, 
+                                Collections.<ProducedType>emptyList());
+                that.setTarget(pr);
+                TypeAlias ta = new TypeAlias();
+                ta.setContainer(scope);
+                ta.setName("Anonymous#" + member.getName());
+                ta.setScope(scope);
+                ta.setUnit(unit);
+                ta.setExtendedType(pr.getFullType());
+                ta.setTypeParameters(typeParameters);
+                TypeParameter cp = new TypeParameter();
+                cp.setName("Synthetic#" + member.getName());
+                cp.setScope(scope);
+                cp.setUnit(unit);
+                cp.setTypeConstructor(true);
+                cp.setTypeParameters(typeParameters);
+                ProducedType t = ta.getType();
+                t.setTypeConstructor(cp);
+                that.setTypeModel(t);
             }
         }
     }
@@ -6793,7 +6833,43 @@ public class ExpressionVisitor extends Visitor {
                 //otherwise infer type arguments later
             }
             else if (!that.getStaticMethodReferencePrimary()) {
-                typeArgumentsImplicit(that);
+                handleGenericReference(that, type);
+//                typeArgumentsImplicit(that);
+            }
+        }
+    }
+
+    private void handleGenericReference(
+            Tree.BaseTypeExpression that,
+            TypeDeclaration type) {
+        if (type instanceof Generic) {
+            Generic g = (Generic) type;
+            List<TypeParameter> typeParameters = 
+                    g.getTypeParameters();
+            if (!typeParameters.isEmpty()) {
+                Scope scope = that.getScope();
+                ProducedType outerType = 
+                        scope.getDeclaringType(type);
+                ProducedType pt = 
+                        type.getProducedType(outerType, 
+                                toTypeArgs(g));
+                that.setTarget(pt);
+                TypeAlias ta = new TypeAlias();
+                ta.setContainer(scope);
+                ta.setName("Anonymous#" + type.getName());
+                ta.setScope(scope);
+                ta.setUnit(unit);
+                ta.setExtendedType(pt.getFullType());
+                ta.setTypeParameters(typeParameters);
+                TypeParameter cp = new TypeParameter();
+                cp.setName("Synthetic#" + type.getName());
+                cp.setScope(scope);
+                cp.setUnit(unit);
+                cp.setTypeConstructor(true);
+                cp.setTypeParameters(typeParameters);
+                ProducedType t = ta.getType();
+                t.setTypeConstructor(cp);
+                that.setTypeModel(t);
             }
         }
     }

@@ -2340,7 +2340,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         
         TypeParameter cp = new TypeParameter();
         cp.setName("Synthetic#"+fid++);
-        visitElement(that, cp);
+        cp.setUnit(unit);
+        cp.setScope(scope);
         setVisibleScope(cp);
         cp.setTypeConstructor(true);
         cp.setTypeParameters(ta.getTypeParameters());
