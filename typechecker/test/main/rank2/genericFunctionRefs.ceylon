@@ -21,5 +21,6 @@ shared void run() {
     
     @error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
     <T> => T(T) funcRef = func;
+    <T> => T(T) given T satisfies String funcRefOk = func;
 
 }

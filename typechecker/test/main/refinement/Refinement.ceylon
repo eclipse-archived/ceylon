@@ -326,7 +326,7 @@ void intermediateShortcutRefinement() {
         shared actual formal Float val2;
     }
     
-    class BarAndBaz() satisfies Bar, Baz {
+    class BarAndBaz() satisfies Bar & Baz {
         @error method1() => null;
         @error val1 = 2.3;
         @error method2() => null;
