@@ -6,7 +6,7 @@ COMPILE Binary, Usable, Destroyable, Obtainable, Comparable, Invertible, Summabl
 COMPILE process.js, process, language, system, operatingSystem, runtime, parseInteger, parseFloat, formatInteger, parseBoolean, className
 #metamodel
 COMPILE Annotated, Annotation, ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation
-COMPILE modules.js, meta/, meta/model/, ClassOrInterface_addons.js, Member_addons.js, AppliedAttribute.js, meta/declaration/, NestableDeclaration_addons.js, GenericDeclaration_addons.js, declaration_addons.js, OpenSetter.js, FunParamDecl.js, ValParamDecl.js, metamodel_functions_core.js, metamodel_functions2.js, metamodel_functions3.js, metamodel_functions_ocoi.js, metamodel_functions5.js, metamodel_functions_coi.js, metamodel_functions_funs.js, metamodel_functions_anns.js
+COMPILE modules.js, meta/, meta/model/ClassOrInterface, ClassOrInterface_addons.js, meta/model/Member, Member_addons.js, meta/model/, AppliedAttribute.js, meta/declaration/NestableDeclaration, NestableDeclaration_addons.js, meta/declaration/GenericDeclaration, GenericDeclaration_addons.js, meta/declaration/ClassOrInterfaceDeclaration, meta/declaration/FunctionalDeclaration, declaration_addons.js, meta/declaration/, OpenSetter.js, FunParamDecl.js, ValParamDecl.js, metamodel_functions_core.js, metamodel_functions2.js, metamodel_functions3.js, metamodel_functions_ocoi.js, metamodel_functions5.js, metamodel_functions_coi.js, metamodel_functions_funs.js, metamodel_functions_anns.js
 #Serialization
 COMPILE serialization/, jsint/
 COMPILE module, package, NativeError.js
