@@ -1062,7 +1062,19 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> typeArgs = 
                 getTypeArguments(tal, params, ot);
         ProducedType pt = dec.getProducedType(ot, typeArgs);
-        if (tal!=null) {
+        if (tal==null) {
+            if (!params.isEmpty()) {
+                //For now the only type constructors allowed
+                //as the type of a value are type constructors
+                //that alias Callable (in future relax this)
+                //and interpret *every* type with a missing
+                //type argument list as a type constructor
+                if (dec.inherits(unit.getCallableDeclaration())) {
+                    pt.setTypeConstructor(true);
+                }
+            }
+        }
+        else {
             if (params.isEmpty()) {
                 that.addError("does not accept type arguments: '" + 
                         dec.getName(unit) + 

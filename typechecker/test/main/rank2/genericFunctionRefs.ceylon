@@ -41,4 +41,19 @@ void apply<T>(T x, T y,
 shared void awesome() {
     apply(1.0, 2.0, times);
     apply(1, 2, plus);
+    applyIt("hello", "world", plus);
+    applyIt(1, 2, plus);
 }
+
+alias BinaryOp<V> 
+        given V satisfies Summable<V> 
+        => V(V,V);
+
+void applyIt<T>(T x, T y, BinaryOp f) 
+        given T satisfies Summable<T> {
+    Integer i = f<Integer>(3, 5);
+    print(i);
+    T t = f<T>(x, y);
+    print(t);
+}
+
