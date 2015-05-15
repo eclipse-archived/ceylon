@@ -676,7 +676,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         if (that.getParameterList()==null) {
             if (c.isClassOrInterfaceMember() &&
-                    (c.isFormal() || c.isDefault() || c.isActual())) {
+                    (c.isFormal() || 
+                     c.isDefault() ||
+                     c.isActual())) {
                 that.addError("member class declared formal, default, or actual must have a parameter list");
             }
             Tree.AnnotationList al = 
