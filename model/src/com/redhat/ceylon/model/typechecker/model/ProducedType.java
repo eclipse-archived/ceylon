@@ -2698,6 +2698,7 @@ public class ProducedType extends ProducedReference {
         pt.setQualifyingType(getQualifyingType());
         pt.setTypeArguments(getTypeArguments());
         pt.setVarianceOverrides(getVarianceOverrides());
+        pt.setTypeConstructor(getTypeConstructorParameter());
         return pt;
     }
 
