@@ -3209,6 +3209,20 @@ iterableType returns [IterableType type]
    ;
 
 type returns [StaticType type]
+    @init { TypeConstructor ct=null; }
+    : (typeParameters COMPUTE) =>
+      typeParameters 
+      { ct = new TypeConstructor(null);
+        ct.setTypeParameterList($typeParameters.typeParameterList);
+        $type = ct; }
+      COMPUTE 
+      entryType
+      { ct.setType($entryType.type); }
+    | entryType
+      { $type=$entryType.type; }
+    ;
+
+entryType returns [StaticType type]
     @init { EntryType bt=null; }
     : t1=unionType
       { $type=$t1.type; }
@@ -3284,12 +3298,6 @@ atomicType returns [StaticType type]
     | iterableType
       { $type=$iterableType.type; }
     ;
-
-/*typeAbbreviationStart
-    : DEFAULT_OP
-    | ARRAY
-    | LPAREN tupleElementType? (COMMA|RPAREN)
-    ;*/
 
 primaryType returns [StaticType type]
     @init { FunctionType bt=null; SequenceType st=null; }

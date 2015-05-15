@@ -307,6 +307,11 @@
     STATIC_TYPE keyType
     STATIC_TYPE valueType)
 
+^(TYPE_CONSTRUCTOR: STATIC_TYPE
+    TYPE_PARAMETER_LIST
+    TYPE
+    TypeAlias declarationModel;)
+
 ^(SUPER_TYPE: STATIC_TYPE)
 
 ^(abstract META_LITERAL:PRIMARY

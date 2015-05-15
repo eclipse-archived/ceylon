@@ -137,10 +137,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         visitElement(that, model);
         
         Declaration modelToAdd = model;
-        if (setModelName(that, model, that.getIdentifier())) {
+        Tree.Identifier id = that.getIdentifier();
+        if (setModelName(that, model, id)) {
             if (checkDupe) {
-                modelToAdd = checkForNativeAnnotation(that, model, scope);
-                checkForDuplicateDeclaration(that, model, scope);
+                modelToAdd = 
+                        checkForNativeAnnotation(that, 
+                                model, scope);
+                checkForDuplicateDeclaration(that, 
+                        model, scope);
             }
         }
         //that.setDeclarationModel(model);
@@ -1932,9 +1936,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.QualifiedType that) {
         super.visit(that);
         final String name = name(that.getIdentifier());
-        final ProducedType outerType = 
-                that.getOuterType()
-                    .getTypeModel();
+        final Tree.StaticType outerType = 
+                that.getOuterType();
         if (inExtends) {
             final Tree.TypeArgumentList tal = 
                     that.getTypeArgumentList();
@@ -1947,7 +1950,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     }
                     else {
                         TypeDeclaration dec = 
-                                outerType.getDeclaration();
+                                outerType.getTypeModel()
+                                    .getDeclaration();
                         return Util.getTypeMember(dec, name, 
                                 null, false, unit);
                     }
@@ -1963,10 +1967,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 getDeclaration();
                         List<TypeParameter> tps = 
                                 dec.getTypeParameters();
-                        return getTypeArgumentMap(dec, 
-                                outerType, 
+                        ProducedType ot = 
+                                outerType.getTypeModel();
+                        return getTypeArgumentMap(dec, ot, 
                                 Util.getTypeArguments(tal, 
-                                        tps, outerType));
+                                        tps, ot));
                     }
                 }
             };
@@ -1977,28 +1982,28 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.IterableType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType elementType;
-            final boolean atLeastOne;
-            Tree.Type elem = that.getElementType();
-            if (elem==null) {
-            	elementType = 
-            	        unit.getNothingDeclaration()
-            	            .getType();
-            	atLeastOne = false;
-            }
-            else if (elem instanceof Tree.SequencedType) {
-            	Tree.SequencedType set = 
-            	        (Tree.SequencedType) elem;
-            	elementType = set.getType().getTypeModel();
-            	atLeastOne = set.getAtLeastOne();
-            }
-            else {
-            	elementType = null;
-            	atLeastOne = false;
-            }
+            final Tree.Type elem = that.getElementType();
             ProducedType t = 
                     new LazyProducedType(unit) {
                 ProducedType iterableType() {
+                    final ProducedType elementType;
+                    final boolean atLeastOne;
+                    if (elem==null) {
+                        elementType = 
+                                unit.getNothingDeclaration()
+                                    .getType();
+                        atLeastOne = false;
+                    }
+                    else if (elem instanceof Tree.SequencedType) {
+                        Tree.SequencedType set = 
+                                (Tree.SequencedType) elem;
+                        elementType = set.getType().getTypeModel();
+                        atLeastOne = set.getAtLeastOne();
+                    }
+                    else {
+                        elementType = null;
+                        atLeastOne = false;
+                    }
                     if (elementType!=null) {
                         return atLeastOne ? 
                                 unit.getNonemptyIterableType(elementType) : 
@@ -2052,9 +2057,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(final Tree.OptionalType that) {
         super.visit(that);
-        final ProducedType definiteType = 
-                that.getDefiniteType()
-                    .getTypeModel();
+        final Tree.StaticType definiteType = 
+                that.getDefiniteType();
         if (inExtends) {
             ProducedType t = 
                     new LazyProducedType(unit) {
@@ -2064,7 +2068,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             new ArrayList<ProducedType>(2);
                     types.add(unit.getType(unit.getNullDeclaration()));
                     if (definiteType!=null) {
-                        types.add(definiteType);
+                        types.add(definiteType.getTypeModel());
                     }
                     UnionType ut = new UnionType(unit);
                     ut.setCaseTypes(types);
@@ -2082,22 +2086,22 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(final Tree.UnionType that) {
         super.visit(that);
-        List<Tree.StaticType> sts = 
+        final List<Tree.StaticType> sts = 
                 that.getStaticTypes();
-        final List<ProducedType> types = 
-                new ArrayList<ProducedType>
-                    (sts.size());
-        for (Tree.StaticType st: sts) {
-            ProducedType t = st.getTypeModel();
-            if (t!=null) {
-                types.add(t);
-            }
-        }
         if (inExtends) {
             ProducedType t = 
                     new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
+                    List<ProducedType> types = 
+                            new ArrayList<ProducedType>
+                                (sts.size());
+                    for (Tree.StaticType st: sts) {
+                        ProducedType t = st.getTypeModel();
+                        if (t!=null) {
+                            types.add(t);
+                        }
+                    }
                     UnionType ut = 
                             new UnionType(unit);
                     ut.setCaseTypes(types);
@@ -2116,21 +2120,21 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
         if (inExtends) {
-            List<Tree.StaticType> sts = 
+            final List<Tree.StaticType> sts = 
                     that.getStaticTypes();
-            final List<ProducedType> types = 
-                    new ArrayList<ProducedType>
-                        (sts.size());
-            for (Tree.StaticType st: sts) {
-                ProducedType t = st.getTypeModel();
-                if (t!=null) {
-                    types.add(t);
-                }
-            }
             ProducedType t = 
                     new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
+                    final List<ProducedType> types = 
+                            new ArrayList<ProducedType>
+                                (sts.size());
+                    for (Tree.StaticType st: sts) {
+                        ProducedType t = st.getTypeModel();
+                        if (t!=null) {
+                            types.add(t);
+                        }
+                    }
                     IntersectionType it = 
                             new IntersectionType(unit);
                     it.setSatisfiedTypes(types);
@@ -2149,9 +2153,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.SequenceType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType elementType = 
-                    that.getElementType()
-                        .getTypeModel();
+            final Tree.StaticType elementType = 
+                    that.getElementType();
             final Tree.NaturalLiteral length = 
                     that.getLength();
             ProducedType t;
@@ -2168,7 +2171,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 unit.getSequentialDeclaration()
                                     .getTypeParameters();
                         return singletonMap(stps.get(0), 
-                                elementType);
+                                elementType.getTypeModel());
                     }
                 };
             }
@@ -2193,10 +2196,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     private final class StaticLengthSequenceType 
             extends LazyProducedType {
-        private final ProducedType elementType;
+        private final Tree.StaticType elementType;
         private final int len;
 
-        private StaticLengthSequenceType(ProducedType elementType, int len) {
+        private StaticLengthSequenceType
+                (Tree.StaticType elementType, int len) {
             super(unit);
             this.elementType = elementType;
             this.len = len;
@@ -2215,8 +2219,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         .getTypeParameters();
             Map<TypeParameter,ProducedType> args = 
                     new HashMap<TypeParameter,ProducedType>(3);
-            args.put(stps.get(0), elementType);
-            args.put(stps.get(1), elementType);
+            ProducedType et = elementType.getTypeModel();
+            args.put(stps.get(0), et);
+            args.put(stps.get(1), et);
             args.put(stps.get(3), len==1 ? 
                     unit.getEmptyDeclaration().getType() : 
                     new StaticLengthSequenceType(elementType, len-1));
@@ -2258,12 +2263,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.EntryType that) {
         super.visit(that);
         if (inExtends) {
-            final ProducedType keyType = 
-                    that.getKeyType()
-                        .getTypeModel();
-            final ProducedType valueType = 
-                    that.getValueType()
-                        .getTypeModel();
+            final Tree.StaticType keyType = 
+                    that.getKeyType();
+            final Tree.StaticType valueType = 
+                    that.getValueType();
             ProducedType t = 
                     new LazyProducedType(unit) {
                 @Override
@@ -2278,8 +2281,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     List<TypeParameter> itps = 
                             unit.getEntryDeclaration()
                                 .getTypeParameters();
-                    map.put(itps.get(0), keyType);
-                    map.put(itps.get(1), valueType);
+                    map.put(itps.get(0), 
+                            keyType.getTypeModel());
+                    map.put(itps.get(1), 
+                            valueType.getTypeModel());
                     return map;
                 }
             };
@@ -2290,10 +2295,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.FunctionType that) {
         super.visit(that);
         if (inExtends) {
-            Tree.StaticType rt = that.getReturnType();
+            final Tree.StaticType rt = that.getReturnType();
             if (rt!=null) {
-                final ProducedType returnType = 
-                        rt.getTypeModel();
                 final List<Tree.Type> args = 
                         that.getArgumentTypes();
                 ProducedType t = 
@@ -2310,7 +2313,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         List<TypeParameter> ctps = 
                                 unit.getCallableDeclaration()
                                     .getTypeParameters();
-                        map.put(ctps.get(0), returnType);
+                        map.put(ctps.get(0), 
+                                rt.getTypeModel());
                         map.put(ctps.get(1),
                                 //TODO: holds on to reference to Tree.Type
                                 getTupleType(args, unit));
@@ -2320,6 +2324,31 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 that.setTypeModel(t);
             }
         }
+    }
+    
+    public void visit(Tree.TypeConstructor that) {
+        TypeAlias ta = new TypeAlias();
+        ta.setShared(true);
+        ta.setName("Anonymous#"+fid++);
+        visitElement(that, ta);
+        setVisibleScope(ta);
+        Scope o = enterScope(ta);
+        Declaration od = beginDeclaration(ta);
+        super.visit(that);
+        endDeclaration(od);
+        exitScope(o);
+        
+        TypeParameter cp = new TypeParameter();
+        cp.setName("Synthetic#"+fid++);
+        visitElement(that, cp);
+        setVisibleScope(cp);
+        cp.setTypeConstructor(true);
+        cp.setTypeParameters(ta.getTypeParameters());
+        ta.setExtendedType(that.getType().getTypeModel());
+        that.setDeclarationModel(ta);
+        ProducedType pt = ta.getType();
+        pt.setTypeConstructor(cp);
+        that.setTypeModel(pt);
     }
     
     public void visit(Tree.SuperType that) {

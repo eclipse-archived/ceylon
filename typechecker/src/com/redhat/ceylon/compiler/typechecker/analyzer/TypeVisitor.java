@@ -786,6 +786,19 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.TypeConstructor that) {
+        super.visit(that);
+        TypeAlias ta = that.getDeclarationModel();
+        ta.setExtendedType(that.getType().getTypeModel());
+        TypeParameter cp = 
+                that.getTypeModel()
+                    .getTypeConstructorParameter();
+        ProducedType type = ta.getType();
+        type.setTypeConstructor(cp);
+        that.setTypeModel(type);
+    }
+    
+    @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
         Tree.StaticType rt = 
@@ -794,8 +807,7 @@ public class TypeVisitor extends Visitor {
             ProducedType tt = 
                     getTupleType(that.getArgumentTypes(), 
                             unit);
-            Interface cd = 
-                    unit.getCallableDeclaration();
+            Interface cd = unit.getCallableDeclaration();
             ProducedType pt = 
                     producedType(cd, rt.getTypeModel(), tt);
             that.setTypeModel(pt);

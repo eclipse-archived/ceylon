@@ -45,10 +45,10 @@ shared class ListishFunctor<out Item>(items)
 
 //A functor for regular values
 
-shared alias Id<Val> => Val;
+//shared alias Id<Val> => Val;
 
 shared class IdFunctor<out Val>(Val val) 
-        satisfies Functor<Val, Id> {
+        satisfies Functor<Val, <Val> => Val> {
     get => val;
     shared actual 
     IdFunctor<Result> fmap<Result>
@@ -59,10 +59,10 @@ shared class IdFunctor<out Val>(Val val)
 
 //A functor for optional values
 
-shared alias Maybe<Val> => Val?;
+//shared alias Maybe<Val> => Val?;
 
 shared class MaybeFunctor<out Val>(Val? val) 
-        satisfies Functor<Val, Maybe> {
+        satisfies Functor<Val, <Val> => Val?> {
     get => val;
     shared actual 
     MaybeFunctor<Result> fmap<Result>
@@ -91,7 +91,7 @@ shared class MapFunctor<out Key, out Item>
 //prove that it all works
 
 void tryit(Map<Integer,Integer> map, Float float, Float? x,
-    Functor<Object,Maybe>|Functor<Object,List> functor) {
+    Functor<Object,<T>=>T?>|Functor<Object,List> functor) {
     
     String string = toString(IdFunctor(float));
     
@@ -107,5 +107,5 @@ void tryit(Map<Integer,Integer> map, Float float, Float? x,
     
     String|List<String>? result
             //TODO: improve type inference here!
-            = toString<Object,Maybe|List>(functor);
+            = toString<Object,<<T>=>T?>|List>(functor);
 }
