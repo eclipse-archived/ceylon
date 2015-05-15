@@ -178,39 +178,20 @@ public class Stitcher {
         return 0;
     }
 
-    private static int stitch(File infile, final Writer writer, String version) throws IOException {
+    private static int stitch(File infile, final Writer writer) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.length() > 0) {
-                    if (line.equals("//#METAMODEL")) {
-                        writer.write("var _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
-                        writer.write("ceylon/language/");
-                        writer.write(version);
-                        writer.write("/ceylon.language-");
-                        writer.write(version);
-                        writer.write("-model");
-                        writer.write("').$CCMM$;return _CTM$;}\n");
-                        writer.write("ex$.$CCMM$=$CCMM$;");
-                    } else if (line.startsWith("//#COMPILE ")) {
-                        final String sourceFiles = line.substring(11);
+                    if (line.startsWith("COMPILE ")) {
+                        final String sourceFiles = line.substring(8);
                         System.out.println("Compiling language module sources: " + sourceFiles);
                         int exitCode = compileLanguageModule(sourceFiles, writer);
                         if (exitCode != 0) {
                             return exitCode;
                         }
-                    } else if (line.startsWith("//#UNSHARED")) {
-                        new JsOutput(mod, "UTF-8") {
-                            @Override
-                            public Writer getWriter() throws IOException {
-                                return writer;
-                            }
-                        }.publishUnsharedDeclarations(names);
-                    } else if (!line.endsWith("//IGNORE")) {
-                        writer.write(line);
-                        writer.write("\n");
                     }
                 }
             }
@@ -242,7 +223,24 @@ public class Stitcher {
                     final int p0 = args[1].indexOf(".language-");
                     final String version = args[1].substring(p0+10,args[1].length()-3);
                     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
-                        exitCode = stitch(infile, writer, version);
+                        final JsOutput jsout = new JsOutput(mod, "UTF-8") {
+                            @Override
+                            public Writer getWriter() throws IOException {
+                                return writer;
+                            }
+                        };
+                        //CommonJS wrapper
+                        JsCompiler.beginWrapper(writer);
+                        //Model
+                        jsout.out("var _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
+                                "ceylon/language/", version, "/ceylon.language-", version, "-model",
+                                "').$CCMM$;return _CTM$;}\nex$.$CCMM$=$CCMM$;");
+                        //Compile all the listed files
+                        exitCode = stitch(infile, writer);
+                        //Unshared declarations
+                        jsout.publishUnsharedDeclarations(names);
+                        //Close the commonJS wrapper
+                        JsCompiler.endWrapper(writer);
                     } finally {
                         ShaSigner.sign(outfile, new JsJULLogger(), true);
                     }
