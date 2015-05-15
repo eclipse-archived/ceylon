@@ -48,7 +48,6 @@ public class TypeArgumentVisitor extends Visitor {
     }
         
     @Override public void visit(Tree.TypedDeclaration that) {
-        super.visit(that);
         TypedDeclaration dec = that.getDeclarationModel();
 		if (!(that instanceof Tree.Variable)) {
             check(that.getType(), dec.isVariable(), dec);
@@ -69,6 +68,9 @@ public class TypeArgumentVisitor extends Visitor {
 				parameterizedDeclaration = null;
 			}
         	flip();
+        }
+        else {
+            super.visit(that);            
         }
     }
     
