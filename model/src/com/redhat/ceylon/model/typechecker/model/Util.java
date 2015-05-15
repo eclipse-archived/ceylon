@@ -858,31 +858,39 @@ public class Util {
      * @param typeArguments explicit or inferred type 
      *        arguments of the declaration
      */
-    public static Map<TypeParameter,ProducedType> getTypeArgumentMap(Declaration declaration, 
-            ProducedType receivingType, List<ProducedType> typeArguments) {        
+    public static Map<TypeParameter,ProducedType> 
+    getTypeArgumentMap(Declaration declaration, 
+            ProducedType receivingType, 
+            List<ProducedType> typeArguments) {        
     	List<TypeParameter> typeParameters = 
     	        getTypeParameters(declaration);
 		//make sure we collect all type arguments
 		//from the whole qualified type!
-        int count = countTypeParameters(receivingType, typeParameters);
+        int count = countTypeParameters(receivingType, 
+                typeParameters);
 		if (count==0) {
 		    return EMPTY_TYPE_ARG_MAP;
 		}
 		else {
-			return aggregateTypeArguments(receivingType, typeArguments,
+			return aggregateTypeArguments(receivingType, 
+			        typeArguments,
                     typeParameters, count);
 		}
     }
 
-	private static Map<TypeParameter, ProducedType> aggregateTypeArguments(
-            ProducedType receivingType, List<ProducedType> typeArguments,
-            List<TypeParameter> typeParameters, int count) {
+	private static Map<TypeParameter, ProducedType> 
+	aggregateTypeArguments(ProducedType receivingType, 
+	        List<ProducedType> typeArguments,
+	        List<TypeParameter> typeParameters, 
+	        int count) {
 	    Map<TypeParameter,ProducedType> map = 
 	            new HashMap<TypeParameter,ProducedType>(count);
 	    if (receivingType!=null) {
-	        TypeDeclaration rtd = receivingType.getDeclaration();
+	        TypeDeclaration rtd = 
+	                receivingType.getDeclaration();
             if (rtd instanceof IntersectionType) {
-	            for (ProducedType dt: rtd.getSatisfiedTypes()) {
+	            for (ProducedType dt: 
+	                    rtd.getSatisfiedTypes()) {
 	                while (dt!=null) {
 	                    map.putAll(dt.getTypeArguments());
 	                    dt = dt.getQualifyingType();
@@ -909,14 +917,16 @@ public class Util {
 	    return map;
     }
 
-	private static int countTypeParameters(ProducedType receivingType,
+	private static int countTypeParameters(
+	        ProducedType receivingType,
             List<TypeParameter> typeParameters) {
         int count = typeParameters.size();
         if (receivingType!=null) {
             TypeDeclaration rtd = 
                     receivingType.getDeclaration();
             if (rtd instanceof IntersectionType) {
-                for (ProducedType dt: rtd.getSatisfiedTypes()) {
+                for (ProducedType dt: 
+                        rtd.getSatisfiedTypes()) {
                     while (dt!=null) {
                         count += dt.getTypeArguments().size();
                         dt = dt.getQualifyingType();
@@ -934,7 +944,8 @@ public class Util {
 	    return count;
     }
 
-	private static List<TypeParameter> getTypeParameters(Declaration declaration) {
+	private static List<TypeParameter> getTypeParameters(
+	        Declaration declaration) {
     	if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
             return g.getTypeParameters();
@@ -965,7 +976,8 @@ public class Util {
         if (pt.getDeclaration() instanceof UnionType) {
             // cheaper c-for than foreach
             List<ProducedType> caseTypes = 
-                    pt.getDeclaration().getCaseTypes();
+                    pt.getDeclaration()
+                        .getCaseTypes();
             for ( int i=0,l=caseTypes.size();i<l;i++ ) {
                 ProducedType t = caseTypes.get(i);
                 addToUnion(list, 
@@ -1026,36 +1038,44 @@ public class Util {
             //there exists some enumerated type Baz with
             //    Baz of Foo | Bar 
             //(the intersection of disjoint types is empty)
-            
-            // cheaper c-for than foreach
+            ProducedType nt = 
+                    unit.getNothingDeclaration().getType();
             if (!list.isEmpty() && reduceDisjointTypes) {
                 List<TypeDeclaration> supertypes = 
                         ptd.getSupertypeDeclarations();
                 for (int i=0, l=supertypes.size(); i<l; i++) {
-                    TypeDeclaration supertype = supertypes.get(i);
+                    TypeDeclaration supertype = 
+                            supertypes.get(i);
                     List<TypeDeclaration> ctds =
                             supertype.getCaseTypeDeclarations();
                     if (ctds!=null) {
                         TypeDeclaration ctd=null;
-                        // cheaper c-for than foreach
-                        for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
-                            TypeDeclaration ct = ctds.get(cti);
+                        for (int cti=0, ctl=ctds.size(); 
+                                cti<ctl; 
+                                cti++) {
+                            TypeDeclaration ct = 
+                                    ctds.get(cti);
                             if (ptd.inherits(ct)) {
                                 ctd = ct;
                                 break;
                             }
                         }
                         if (ctd!=null) {
-                            // cheaper c-for than foreach
-                            for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
-                                TypeDeclaration ct = ctds.get(cti);
+                            for (int cti=0, ctl=ctds.size(); 
+                                    cti<ctl; 
+                                    cti++) {
+                                TypeDeclaration ct = 
+                                        ctds.get(cti);
                                 if (ct!=ctd) {
-                                    // cheaper c-for than foreach
-                                    for (int ti=0, tl=list.size(); ti<tl; ti++) {
-                                        ProducedType t = list.get(ti);
-                                        if (t.getDeclaration().inherits(ct)) {
+                                    for (int ti=0, tl=list.size(); 
+                                            ti<tl; 
+                                            ti++) {
+                                        ProducedType t = 
+                                                list.get(ti);
+                                        if (t.getDeclaration()
+                                                .inherits(ct)) {
                                             list.clear();
-                                            list.add(unit.getNothingDeclaration().getType());
+                                            list.add(nt);
                                             return;
                                         }
                                     }
@@ -1068,7 +1088,6 @@ public class Util {
             
             Boolean add = pt.isWellDefined();
             if (add) {
-                // cheaper c-for than foreach
                 for (int i=0; i<list.size(); i++) {
                     ProducedType t = list.get(i);
                     if (pt.isSupertypeOf(t)) {
@@ -1081,22 +1100,25 @@ public class Util {
                     }
                     else if (haveUninhabitableIntersection(pt, t, unit)) {
                         list.clear();
-                        list.add(unit.getNothingDeclaration().getType());
+                        list.add(nt);
                         return;
-                    }
-                    else if (ptd instanceof ClassOrInterface && 
-                            t.getDeclaration() instanceof ClassOrInterface && 
-                            ptd.equals(t.getDeclaration()) &&
-                            !pt.containsUnknowns() &&
-                            !t.containsUnknowns()) {
-                        //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
-                        ProducedType pi = 
-                                principalInstantiation(ptd, 
-                                        pt, t, unit);
-                        if (!pi.containsUnknowns()) {
-                            list.remove(i);
-                            list.add(pi);
-                            return;
+                    } 
+                    else {
+                        TypeDeclaration td = t.getDeclaration();
+                        if (ptd instanceof ClassOrInterface && 
+                                td instanceof ClassOrInterface && 
+                                ptd.equals(td) &&
+                                !pt.containsUnknowns() &&
+                                !t.containsUnknowns()) {
+                            //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
+                            ProducedType pi = 
+                                    principalInstantiation(ptd, 
+                                            pt, t, unit);
+                            if (!pi.containsUnknowns()) {
+                                list.remove(i);
+                                list.add(pi);
+                                return;
+                            }
                         }
                     }
                 }
@@ -1139,13 +1161,15 @@ public class Util {
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
         if (pd instanceof TypeParameter) {
-            IntersectionType it = new IntersectionType(unit);
+            IntersectionType it = 
+                    new IntersectionType(unit);
             it.setSatisfiedTypes(pd.getSatisfiedTypes());
             p = it.canonicalize().getType();
             pd = p.getDeclaration();
         }
         if (qd instanceof TypeParameter) {
-            IntersectionType it = new IntersectionType(unit);
+            IntersectionType it = 
+                    new IntersectionType(unit);
             it.setSatisfiedTypes(qd.getSatisfiedTypes());
             q = it.canonicalize().getType();
             qd = q.getDeclaration();
