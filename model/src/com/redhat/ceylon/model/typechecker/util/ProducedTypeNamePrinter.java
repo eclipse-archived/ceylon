@@ -279,9 +279,10 @@ public class ProducedTypeNamePrinter {
                     if (name.length()>1) name.append(", ");
                     name.append(tp.getName());
                 }
-                name.append("> => ")
-                    .append(getProducedTypeName(declaration.getExtendedType(), unit));
+                name.append(">");
                 appendConstraintsString(pt, name, unit);
+                name.append(" => ")
+                    .append(getProducedTypeName(declaration.getExtendedType(), unit));
                 return name.toString();
             }
             else {            
