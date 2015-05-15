@@ -624,17 +624,12 @@ public class ProducedTypeNamePrinter {
 
     private static void appendConstraintsString(ProducedType pt,
             StringBuilder result, Unit unit) {
-        boolean found = false;
         for (TypeParameter tp: 
                 pt.getTypeConstructorParameter()
                     .getTypeParameters()) {
             List<ProducedType> sts = 
                     tp.getSatisfiedTypes();
             if (!sts.isEmpty()) {
-                if (!found) {
-                    result.append(" <");
-                    found = true;
-                }
                 result.append(" given ")
                     .append(tp.getName())
                     .append(" satisfies ");
@@ -649,9 +644,6 @@ public class ProducedTypeNamePrinter {
                     result.append(st.getProducedTypeName(unit));
                 }
             }
-        }
-        if (found) {
-            result.append(" >");
         }
     }
 
