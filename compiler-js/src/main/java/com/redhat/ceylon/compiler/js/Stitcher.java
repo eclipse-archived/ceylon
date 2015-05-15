@@ -222,8 +222,8 @@ public class Stitcher {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 2) {
-            System.err.println("This program requires 3 arguments to run:");
-            System.err.println("1. The path to the main JS file");
+            System.err.println("This program requires 2 arguments to run:");
+            System.err.println("1. The path to the master file (the one with the list of files to compile)");
             System.err.println("2. The path of the resulting JS file");
             System.exit(1);
             return;
