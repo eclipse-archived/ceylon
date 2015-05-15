@@ -1055,12 +1055,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         Method m = that.getDeclarationModel();
-        if (that.getType() instanceof Tree.FunctionModifier) {
+        Tree.Type type = that.getType();
+        if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
-                that.getType().addError("toplevel function must explicitly specify a return type", 200);
+                type.addError("toplevel function must explicitly specify a return type", 200);
             }
             else if (m.isShared() && !dynamic) {
-                that.getType().addError("shared function must explicitly specify a return type", 200);
+                type.addError("shared function must explicitly specify a return type", 200);
             }
         }
     }
@@ -1251,8 +1252,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         p.setDeclaredAnything(type instanceof Tree.VoidModifier);
         that.setParameterModel(p);
         super.visit(that);
-        Method m = (Method) 
-                td.getDeclarationModel();
+        Method m = (Method) td.getDeclarationModel();
         p.setModel(m);
         p.setName(m.getName());
         m.setInitializerParameter(p);
@@ -1871,7 +1871,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.MetaLiteral that) {
-        declarationReference = that instanceof Tree.ClassLiteral || 
+        declarationReference = 
+                that instanceof Tree.ClassLiteral || 
                 that instanceof Tree.InterfaceLiteral ||
                 that instanceof Tree.NewLiteral ||
                 that instanceof Tree.AliasLiteral ||
@@ -1913,12 +1914,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 @Override
                 public Map<TypeParameter, ProducedType> 
                 initTypeArguments() {
+                    TypeDeclaration dec = getDeclaration();
                     List<TypeParameter> tps = 
-                            getDeclaration().getTypeParameters();
-                    List<ProducedType> args = 
-                            Util.getTypeArguments(tal, tps, null);
-                    return getTypeArgumentMap(getDeclaration(), 
-                            null, args);
+                            dec.getTypeParameters();
+                    return getTypeArgumentMap(dec, null,
+                            Util.getTypeArguments(tal, 
+                                    tps, null));
                 }
             };
             that.setTypeModel(t);
@@ -1943,9 +1944,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         return null;
                     }
                     else {
-                        return Util.getTypeMember(
-                                outerType.getDeclaration(), 
-                                name, null, false, unit);
+                        TypeDeclaration dec = 
+                                outerType.getDeclaration();
+                        return Util.getTypeMember(dec, name, 
+                                null, false, unit);
                     }
                 }
                 @Override
@@ -1959,11 +1961,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 getDeclaration();
                         List<TypeParameter> tps = 
                                 dec.getTypeParameters();
-                        List<ProducedType> args = 
-                                Util.getTypeArguments(tal, 
-                                        tps, outerType);
                         return getTypeArgumentMap(dec, 
-                                outerType, args);
+                                outerType, 
+                                Util.getTypeArguments(tal, 
+                                        tps, outerType));
                     }
                 }
             };
@@ -2003,7 +2004,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     }
                     else {
                         ProducedType ut = 
-                                new UnknownType(unit).getType();
+                                new UnknownType(unit)
+                                    .getType();
                         return unit.getIterableType(ut);
                     }
                 }
