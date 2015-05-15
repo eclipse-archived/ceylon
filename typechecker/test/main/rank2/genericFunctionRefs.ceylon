@@ -21,16 +21,16 @@ shared void run() {
     
     @error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
     <T> => T(T) funcRef = func;
-    <T> => T(T) given T satisfies String funcRefOk = func;
+    <T> given T satisfies String => T(T) funcRefOk = func;
     
-    <Y> => Y(Y,Y) given Y satisfies Numeric<Y> multiply = times;
+    <Y> given Y satisfies Numeric<Y> => Y(Y,Y) multiply = times;
     Float z = multiply<Float>(1.0, 2.0);
 
 }
 
-void apply<V,T>(T x, T y,
-    <V> => V(V,V) 
-            given V satisfies Numeric<V> f) 
+void apply<T>(T x, T y,
+    <V> given V satisfies Numeric<V>
+            => V(V,V) f) 
         given T satisfies Numeric<T> {
     Integer i = f<Integer>(3, 5);
     print(i);

@@ -1113,7 +1113,7 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
           i=INTERSECTION_OP
           { $satisfiedTypes.setEndToken($i); }
         | 
-          UNION_OP
+          COMMA|UNION_OP
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(INTERSECTION_OP, input)); }
         )
@@ -1137,7 +1137,7 @@ caseTypes returns [CaseTypes caseTypes]
           u=UNION_OP 
           { $caseTypes.setEndToken($u); }
         | 
-          INTERSECTION_OP
+          COMMA|INTERSECTION_OP
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(UNION_OP, input)); }
         )
@@ -3234,18 +3234,18 @@ iterableType returns [IterableType type]
 
 type returns [StaticType type]
     @init { TypeConstructor ct=null; }
-    : (typeParameters COMPUTE) =>
+    : (typeParameters (TYPE_CONSTRAINT|COMPUTE)) =>
       typeParameters 
       { ct = new TypeConstructor(null);
         ct.setTypeParameterList($typeParameters.typeParameterList);
         $type = ct; }
-      COMPUTE 
-      entryType
-      { ct.setType($entryType.type); }
       (
         anonymousTypeConstraints
         { ct.setTypeConstraintList($anonymousTypeConstraints.typeConstraintList); }
       )?
+      COMPUTE 
+      entryType
+      { ct.setType($entryType.type); }
     | entryType
       { $type=$entryType.type; }
     ;
