@@ -2324,10 +2324,11 @@ spreadArgument returns [SpreadArgument positionalArgument]
     ;
 
 anonParametersStart
-    : LPAREN 
+    : typeParameters?
+    LPAREN 
     ( 
       RPAREN
-    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE)) 
+    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE|TYPE_CONSTRAINT)) 
     | compilerAnnotations annotatedDeclarationStart 
     )
     ;
@@ -2584,12 +2585,20 @@ anonymousFunction returns [FunctionArgument function]
         VOID_MODIFIER
         { $function.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
+      (
+        tp=typeParameters
+        { $function.setTypeParameterList($tp.typeParameterList); }
+      )?
       p1=parameters
       { $function.addParameterList($p1.parameterList); }
       ( 
         p2=parameters
         { $function.addParameterList($p2.parameterList); }
       )*
+      (
+        tc=typeConstraints
+        { $function.setTypeConstraintList($tc.typeConstraintList); }
+      )?
       ( 
         COMPUTE
         //TODO: should be a LazySpecifierExpression!

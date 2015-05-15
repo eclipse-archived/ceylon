@@ -203,39 +203,52 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.FunctionArgument that) {
         Tree.Expression e = that.getExpression();
+        Method fun = that.getDeclarationModel();
+        Tree.Type type = that.getType();
         if (e==null) {
-            Tree.Type rt = beginReturnScope(that.getType());           
+            Tree.Type rt = beginReturnScope(type);
             Declaration od = 
-                    beginReturnDeclaration(that.getDeclarationModel());
+                    beginReturnDeclaration(fun);
             super.visit(that);
             endReturnDeclaration(od);
-            endReturnScope(rt, that.getDeclarationModel());
+            endReturnScope(rt, fun);
         }
         else {
             super.visit(that);
-            ProducedType t = 
+            ProducedType returnType = 
                     unit.denotableType(e.getTypeModel());
-            that.getDeclarationModel().setType(t);
+            fun.setType(returnType);
             //if (that.getType() instanceof Tree.FunctionModifier) {
-                that.getType().setTypeModel(t);
+            type.setTypeModel(returnType);
             /*}
             else {
                 checkAssignable(t, that.getType().getTypeModel(), e, 
                         "expression type must be assignable to specified return type");
             }*/
-            if (that.getType() instanceof Tree.VoidModifier &&
+            if (type instanceof Tree.VoidModifier &&
                     !isSatementExpression(e)) {
                 e.addError("anonymous function is declared void so specified expression must be a statement");
             }
         }
-        if (that.getType() instanceof Tree.VoidModifier) {
-            ProducedType vt = 
-                    anythingType();
-            that.getDeclarationModel().setType(vt);            
+        if (type instanceof Tree.VoidModifier) {
+            fun.setType(anythingType());            
         }
-        that.setTypeModel(that.getDeclarationModel()
-                .getTypedReference()
-                .getFullType());
+        ProducedType fullType = 
+                fun.getTypedReference()
+                    .getFullType();
+        if (!fun.getTypeParameters().isEmpty()) {
+            TypeAlias ta = new TypeAlias();
+            ta.setName(fun.getName() + "#");
+            ta.setTypeParameters(fun.getTypeParameters());
+            Scope scope = that.getScope();
+            ta.setContainer(scope);
+            ta.setScope(scope);
+            ta.setUnit(unit);
+            ta.setExtendedType(fullType);
+            fullType = ta.getType();
+            fullType.setTypeConstructor(true);
+        }
+        that.setTypeModel(fullType);
     }
     
     @Override public void visit(Tree.IfExpression that) {

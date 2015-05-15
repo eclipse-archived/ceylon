@@ -26,6 +26,10 @@ shared void run() {
     <Y> given Y satisfies Numeric<Y> => Y(Y,Y) multiply = times;
     Float z = multiply<Float>(1.0, 2.0);
 
+    <T> given T satisfies Numeric<T> => T(T,T) afun 
+            = <T>(T x, T y) 
+                given T satisfies Summable<T> 
+                => x+y;
 }
 
 void apply<T>(T x, T y,
@@ -43,6 +47,10 @@ shared void awesome() {
     apply(1, 2, plus);
     applyIt("hello", "world", plus);
     applyIt(1, 2, plus);
+    apply(1,2, 
+        <T>(T x, T y) 
+            given T satisfies Summable<T> 
+            => x+y);
 }
 
 alias BinaryOp<V> 

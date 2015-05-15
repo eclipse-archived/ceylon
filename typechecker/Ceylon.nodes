@@ -772,7 +772,9 @@
 "An anonymous function."
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
+    TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
+    TYPE_CONSTRAINT_LIST?
     EXPRESSION?
     BLOCK?
     Method declarationModel;)

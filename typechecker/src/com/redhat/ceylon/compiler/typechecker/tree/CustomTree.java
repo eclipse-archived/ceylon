@@ -15,9 +15,13 @@ public class CustomTree extends Tree {
         public void visitChildren(Visitor visitor) {
             if (getType()!=null)
                 getType().visit(visitor);
+            if (getTypeParameterList()!=null)
+                getTypeParameterList().visit(visitor);
             List<ParameterList> parameterLists = getParameterLists();
             for (int i=0,l=parameterLists.size();i<l;i++)
                 parameterLists.get(i).visit(visitor);
+            if (getTypeConstraintList()!=null)
+                getTypeConstraintList().visit(visitor);
             if (getExpression()!=null)
                 getExpression().visit(visitor);
             if (getBlock()!=null)
