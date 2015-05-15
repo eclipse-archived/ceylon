@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -184,7 +185,7 @@ public class ExpressionVisitor extends Visitor {
         if (returnType instanceof Tree.FunctionModifier || 
                 returnType instanceof Tree.ValueModifier) {
             ProducedType nt = 
-                    unit.getNothingDeclaration().getType();
+                    nothingType();
             returnType.setTypeModel(nt);
         }
         return ort;
@@ -227,7 +228,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (that.getType() instanceof Tree.VoidModifier) {
             ProducedType vt = 
-                    unit.getType(unit.getAnythingDeclaration());
+                    anythingType();
             that.getDeclarationModel().setType(vt);            
         }
         that.setTypeModel(that.getDeclarationModel()
@@ -340,7 +341,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
         super.visit(that);
         that.setTypeModel(that.getExpression().getTypeModel());
-        that.setFirstTypeModel(unit.getNothingDeclaration().getType());
+        that.setFirstTypeModel(nothingType());
     }
     
     @Override public void visit(Tree.ForComprehensionClause that) {
@@ -381,7 +382,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         that.setPossiblyEmpty(true);
         ProducedType nt = 
-                unit.getType(unit.getNullDeclaration());
+                nullType();
         that.setFirstTypeModel(nt);
         Tree.ComprehensionClause cc = 
                 that.getComprehensionClause();
@@ -742,7 +743,7 @@ public class ExpressionVisitor extends Visitor {
             }
             defaultTypeToAnything(v);
             if (knownType==null) {
-                knownType = unit.getType(unit.getAnythingDeclaration()); //or should we use unknown?
+                knownType = anythingType(); //or should we use unknown?
             }
             
             ProducedType it = 
@@ -847,8 +848,10 @@ public class ExpressionVisitor extends Visitor {
                         else if (that instanceof Tree.NonemptyCondition) {
                             type = unit.getNonemptyDefiniteType(t);
                         }
-                        if (!isTypeUnknown(type) && !type.isNothing()) {
-                            destructure(d.getPattern(), se, type);
+                        if (!isTypeUnknown(type) && 
+                                !type.isNothing()) {
+                            Pattern pattern = d.getPattern();
+                            destructure(pattern, se, type);
                         }
                         /*else {
                             d.getPattern().addError("cannot be destructured: '" + 
@@ -883,7 +886,8 @@ public class ExpressionVisitor extends Visitor {
         if (v.getType() instanceof Tree.SyntheticVariable) {
             Tree.BaseMemberExpression term = 
                     (Tree.BaseMemberExpression) 
-                        se.getExpression().getTerm();
+                        se.getExpression()
+                            .getTerm();
 			checkReferenceIsNonVariable(term, false);
         }
     }
@@ -896,43 +900,54 @@ public class ExpressionVisitor extends Visitor {
             String help=" (assign to a new local value to narrow type)";
             if (!(d instanceof Value)) {
                 ref.addError("referenced declaration is not a value: '" + 
-                        d.getName(unit) + "'", code);
+                        d.getName(unit) + "'", 
+                        code);
             }
             else if (isNonConstant(d)) {
                 ref.addError("referenced value is non-constant: '" + 
-                        d.getName(unit) + "'" + help, code);
+                        d.getName(unit) + "'" + help, 
+                        code);
             }
             else if (d.isDefault() || d.isFormal()) {
                 ref.addError("referenced value may be refined by a non-constant value: '" + 
-                        d.getName(unit) + "'" + help, code);
+                        d.getName(unit) + "'" + help, 
+                        code);
             }
         }
     }
 
     private boolean isNonConstant(Declaration d) {
-        return d instanceof Value && 
-                (((Value) d).isVariable() || 
-                        ((Value) d).isTransient());
+        if (d instanceof Value) {
+            Value v = (Value) d;
+            return v.isVariable() || v.isTransient();
+        }
+        else {
+            return false;
+        }
     }
     
     private void checkEmpty(ProducedType t, Tree.Term term) {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(unit.getDefiniteType(t))) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.getProducedTypeName(unit) + "' is not a subtype of 'Anything[]?'");
+                        t.getProducedTypeName(unit) + 
+                        "' is not a subtype of 'Anything[]?'");
             }
             else if (!unit.isPossiblyEmptyType(t)) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.getProducedTypeName(unit) + "' is not possibly-empty");
+                        t.getProducedTypeName(unit) + 
+                        "' is not possibly-empty");
             }
         }
     }
     
     private void checkOptional(ProducedType t, Tree.Term term) {
-        if (!isTypeUnknown(t) && !unit.isOptionalType(t) && 
+        if (!isTypeUnknown(t) && 
+                !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: '" +
-                    t.getProducedTypeName(unit) + "' is not optional");
+                    t.getProducedTypeName(unit) + 
+                    "' is not optional");
         }
     }
 
@@ -942,9 +957,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = 
                     that.getExpression().getTypeModel();
             if (!isTypeUnknown(t)) {
-                ProducedType bt = 
-                        unit.getType(unit.getBooleanDeclaration());
-                checkAssignable(t, bt, that, 
+                checkAssignable(t, booleanType(), that, 
                         "expression must be of boolean type");
             }
         }
@@ -982,10 +995,8 @@ public class ExpressionVisitor extends Visitor {
         if (typedNode!=null) {
             if (!isTypeUnknown(t)) {
                 if (e != null) {
-                    ProducedType ot = 
-                            unit.getType(unit.getObtainableDeclaration());
-                    ProducedType dt = 
-                            unit.getType(unit.getDestroyableDeclaration());
+                    ProducedType ot = obtainableType();
+                    ProducedType dt = destroyableType();
                     if (isInstantiationExpression(e)) {
                         if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
                             typedNode.addError("resource must be either obtainable or destroyable: '" +
@@ -1001,7 +1012,23 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private ProducedType destroyableType() {
+        return unit.getType(unit.getDestroyableDeclaration());
+    }
+
+    private ProducedType obtainableType() {
+        return unit.getType(unit.getObtainableDeclaration());
+    }
     
+    private ProducedType emptyType() {
+        return unit.getType(unit.getEmptyDeclaration());
+    }
+
+    private ProducedType anythingType() {
+        return unit.getType(unit.getAnythingDeclaration());
+    }
+
     @Override public void visit(Tree.ForIterator that) {
         super.visit(that);
         Tree.SpecifierExpression se = 
@@ -1154,7 +1181,8 @@ public class ExpressionVisitor extends Visitor {
                         .getTypedReference()
                         .getFullType();
                 checkAssignable(at, t, param, 
-                        "type of parameter '" + model.getName() + 
+                        "type of parameter '" + 
+                                model.getName() + 
                         "' must be a supertype of parameter type in declaration of '" + 
                         refName + "'");
             }
@@ -1167,19 +1195,23 @@ public class ExpressionVisitor extends Visitor {
                 boolean refAtLeastOne = model.isAtLeastOne();
                 if (refSequenced && !variadic) {
                     lastParam.addError("parameter list in declaration of '" + 
-                            refName + "' does not have a variadic parameter");
+                            refName + 
+                            "' does not have a variadic parameter");
                 }
                 else if (!refSequenced && variadic) {
                     lastParam.addError("parameter list in declaration of '" + 
-                            refName + "' has a variadic parameter");
+                            refName + 
+                            "' has a variadic parameter");
                 }
                 else if (refAtLeastOne && !atLeastOne) {
                     lastParam.addError("variadic parameter in declaration of '" + 
-                            refName + "' is optional");
+                            refName + 
+                            "' is optional");
                 }
                 else if (!refAtLeastOne && atLeastOne) {
                     lastParam.addError("variadic parameter in declaration of '" + 
-                            refName + "' is not optional");
+                            refName + 
+                            "' is not optional");
                 }
             }
             pt = ct.getTypeArgumentList().get(0);
@@ -1242,7 +1274,8 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         desc = "function";
                     }
-                    me.addError(desc + " already specified: '" + 
+                    me.addError(desc + 
+                            " already specified: '" + 
                                 d.getName(unit) + "'");
                 }
                 else if (d instanceof Value && 
@@ -1261,11 +1294,14 @@ public class ExpressionVisitor extends Visitor {
                     if (mv.isToplevel()) {
                         me.addError("toplevel " + desc + 
                                 " may not be specified: '" + 
-                                d.getName(unit) + "'", 803);
+                                d.getName(unit) + "'", 
+                                803);
                     }
                     else if (!mv.isDefinedInScope(that.getScope())) {
-                        me.addError(desc + " may not be specified here: '" + 
-                                d.getName(unit) + "'", 803);
+                        me.addError(desc + 
+                                " may not be specified here: '" + 
+                                d.getName(unit) + "'", 
+                                803);
                     }
                 }
             }
@@ -1274,7 +1310,8 @@ public class ExpressionVisitor extends Visitor {
                     ((Method) d).isDeclaredVoid() && 
                     !isSatementExpression(rhs.getExpression())) {
                 rhs.addError("function is declared void so specified expression must be a statement: '" + 
-                        d.getName(unit) + "' is declared 'void'");
+                        d.getName(unit) + 
+                        "' is declared 'void'");
             }
             if (d instanceof Value && 
                     rhs instanceof Tree.LazySpecifierExpression) {
@@ -1355,7 +1392,8 @@ public class ExpressionVisitor extends Visitor {
     static ProducedReference getRefinedMember(MethodOrValue d, 
             ClassOrInterface classOrInterface) {
         TypeDeclaration td = 
-                (TypeDeclaration) d.getContainer();
+                (TypeDeclaration) 
+                    d.getContainer();
         ProducedType supertype = 
                 classOrInterface.getType()
                     .getSupertype(td);
@@ -1367,11 +1405,13 @@ public class ExpressionVisitor extends Visitor {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
         ClassOrInterface ci = 
-                (ClassOrInterface) value.getContainer();
+                (ClassOrInterface) 
+                    value.getContainer();
         Declaration root = 
                 refinedValue.getRefinedDeclaration();
         TypeDeclaration td = 
-                (TypeDeclaration) root.getContainer();
+                (TypeDeclaration) 
+                    root.getContainer();
         List<Declaration> interveningRefinements = 
                 getInterveningRefinements(value.getName(), 
                         null, root, ci, td);
@@ -1384,12 +1424,14 @@ public class ExpressionVisitor extends Visitor {
         Method refinedMethod = (Method) that.getRefined();
         Method method = (Method) that.getDeclaration();
         ClassOrInterface ci = 
-                (ClassOrInterface) method.getContainer();
+                (ClassOrInterface) 
+                    method.getContainer();
         Declaration root = method.getRefinedDeclaration();
 //        Declaration root = refinedMethod.getRefinedDeclaration();
 //        method.setRefinedDeclaration(root);
         TypeDeclaration td = 
-                (TypeDeclaration) root.getContainer();
+                (TypeDeclaration) 
+                    root.getContainer();
         List<Declaration> interveningRefinements = 
                 getInterveningRefinements(method.getName(), 
                         getSignature(method), 
@@ -1464,7 +1506,8 @@ public class ExpressionVisitor extends Visitor {
                         }
                         checkIsExactlyForInterop(that.getUnit(),
                                 refinedParameters.isNamedParametersSupported(),
-                                parameterType, refinedParameterType, 
+                                parameterType, 
+                                refinedParameterType, 
                                 typeNode, 
                                 "type of parameter '" + p.getName() + 
                                 "' of '" + method.getName() + 
@@ -1518,8 +1561,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (!refinement.isDefault() && 
                         !refinement.isFormal()) {
-                    Declaration container = (Declaration) 
-                            refinement.getContainer();
+                    Declaration container = 
+                            (Declaration) 
+                                refinement.getContainer();
                     that.getBaseMemberExpression()
                         .addError("shortcut refinement refines non-formal, non-default member: '" +
                                 refinement.getName() + "' of '" +
@@ -1613,8 +1657,9 @@ public class ExpressionVisitor extends Visitor {
             if (!isTypeUnknown(t)) {
                 String name = "'" + dec.getName(unit) + "'";
                 if (dec.isClassOrInterfaceMember()) {
-                    Declaration c = (Declaration) 
-                            dec.getContainer();
+                    Declaration c = 
+                            (Declaration) 
+                                dec.getContainer();
                     name += " of '" + c.getName(unit) + "'";
                 }
                 checkAssignable(t, declaredType, sie, 
@@ -1642,8 +1687,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType vt = type.getTypeModel();
             if (!isTypeUnknown(vt)) {
                 ProducedType nt = not ?
-                        unit.getType(unit.getNullDeclaration()) :
-                        unit.getType(unit.getObjectDeclaration());
+                        nullType() :
+                        objectType();
                 String message = not ?
                         "specified type must be the null type" :
                         "specified type may not be optional";
@@ -1658,7 +1703,7 @@ public class ExpressionVisitor extends Visitor {
                         if (!isTypeUnknown(vt) && 
                                 !isTypeUnknown(set)) {
                             ProducedType net = not ?
-                                    unit.getType(unit.getNullDeclaration()) :
+                                    nullType() :
                                     unit.getDefiniteType(set);
                             checkAssignable(net, vt, se, 
                                     "specified expression must be assignable to declared type after narrowing");
@@ -1677,8 +1722,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType vt = type.getTypeModel();
             if (!isTypeUnknown(vt)) {
                 ProducedType nt = not ?
-                        unit.getType(unit.getEmptyDeclaration()) :
-                        unit.getSequenceType(unit.getType(unit.getAnythingDeclaration()));
+                        emptyType() :
+                        unit.getSequenceType(anythingType());
                 String message = not ?
                         "specified type must be the empty sequence type" :
                         "specified type must be a nonempty sequence type";
@@ -1691,7 +1736,7 @@ public class ExpressionVisitor extends Visitor {
                     if (!isTypeUnknown(vt) && 
                             !isTypeUnknown(set)) {
                         ProducedType net = not ?
-                                unit.getType(unit.getEmptyDeclaration()) :
+                                emptyType() :
                                 unit.getNonemptyDefiniteType(set);
                         checkAssignable(net, vt, se, 
                                 "specified expression must be assignable to declared type after narrowing");
@@ -2173,7 +2218,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.LocalModifier) type;
             if (not) {
                 ProducedType nullType = 
-                        unit.getType(unit.getNullDeclaration());
+                        nullType();
                 local.setTypeModel(nullType);
                 that.getDeclarationModel().setType(nullType);
             }
@@ -2191,7 +2236,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.LocalModifier) type;
             if (not) {
                 ProducedType emptyType= 
-                        unit.getType(unit.getEmptyDeclaration());
+                        emptyType();
                 local.setTypeModel(emptyType);
                 that.getDeclarationModel().setType(emptyType);
             }
@@ -2423,8 +2468,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType et = e.getTypeModel();
             if (!isTypeUnknown(et)) {
-                ProducedType tt = 
-                        unit.getType(unit.getThrowableDeclaration());
+                ProducedType tt = throwableType();
                 checkAssignable(et, tt, e, 
                         "thrown expression must be a throwable");
 //                if (et.getDeclaration().isParameterized()) {
@@ -2528,7 +2572,7 @@ public class ExpressionVisitor extends Visitor {
             result = pt;
         }
         if (result==null) {
-            result = new UnknownType(mte.getUnit()).getType();
+            result = unknownType();
         }
         return result;
     }
@@ -2592,8 +2636,9 @@ public class ExpressionVisitor extends Visitor {
                 inferParameterTypesDirectly(dec, pal, mte);
             }
             else if (dec instanceof Value) {
-                ProducedType pt = ((Value) dec).getType();
-                inferParameterTypesIndirectly(pal, pt);
+                Value value = (Value) dec;
+                inferParameterTypesIndirectly(pal, 
+                        value.getType());
             }
         }
         else {
@@ -2741,8 +2786,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedReference getInvokedProducedReference(Declaration dec,
-            Tree.MemberOrTypeExpression mte) {
+    private ProducedReference getInvokedProducedReference(
+            Declaration dec, Tree.MemberOrTypeExpression mte) {
         Tree.TypeArguments tas;
         if (mte instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression smte = 
@@ -2774,11 +2819,13 @@ public class ExpressionVisitor extends Visitor {
         return pr;
     }
 
-    private static boolean isPackageQualified(Tree.MemberOrTypeExpression mte) {
+    private static boolean isPackageQualified(
+            Tree.MemberOrTypeExpression mte) {
         if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) mte;
-            return !(qmte.getPrimary() instanceof Tree.Package);
+            Tree.Primary primary = qmte.getPrimary();
+            return !(primary instanceof Tree.Package);
         }
         else {
             return false;
@@ -2874,9 +2921,11 @@ public class ExpressionVisitor extends Visitor {
                             List<ProducedType> inferredTypes = 
                                     new ArrayList<ProducedType>();
                             List<Parameter> apl = 
-                                    apls.get(0).getParameters();
+                                    apls.get(0)
+                                        .getParameters();
                             List<Parameter> ppl = 
-                                    ppls.get(0).getParameters();
+                                    ppls.get(0)
+                                        .getParameters();
                             for (TypeParameter tp: 
                                     fun.getTypeParameters()) {
                                 List<ProducedType> list = 
@@ -2917,15 +2966,13 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType template;
                         if (smte.getStaticMethodReferencePrimary()) {
                             ProducedType type = arg.getType();
-                            ProducedType et = 
-                                    unit.getType(unit.getEmptyDeclaration());
-                            template = 
-                                    producedType(unit.getTupleDeclaration(), 
-                                            type, type, et);
+                            template = producedType(
+                                    unit.getTupleDeclaration(), 
+                                    type, type, emptyType());
                         }
                         else {
-                            template = 
-                                    unit.getCallableTuple(arg.getFullType());
+                            template = unit.getCallableTuple(
+                                    arg.getFullType());
                         }
                         ProducedType type = 
                                 unit.getCallableTuple(paramType);
@@ -2941,7 +2988,7 @@ public class ExpressionVisitor extends Visitor {
                             if (isTypeUnknown(it) ||
                                     involvesTypeParameters(generic, it) ||
                                     involvesTypeParams(pd, it)) {
-                                inferredTypes.add(unit.getNothingDeclaration().getType());
+                                inferredTypes.add(nothingType());
                             }
                             else {
                                 inferredTypes.add(it);
@@ -3014,7 +3061,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = types.get(j);
                 if (isTypeUnknown(type) ||
                         involvesTypeParams(declaration, type)) {
-                    type = new UnknownType(unit).getType();
+                    type = unknownType();
                 }
                 Tree.Parameter ap = aps.get(j);
                 if (ap instanceof Tree.InitializerParameter) {
@@ -3063,7 +3110,7 @@ public class ExpressionVisitor extends Visitor {
                                     .getType();
                         if (isTypeUnknown(t) ||
                                 involvesTypeParams(declaration, t)) {
-                            t = new UnknownType(unit).getType();
+                            t = unknownType();
                         }
                         Value model = new Value();
                         model.setUnit(unit);
@@ -3096,7 +3143,8 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
             List<ProducedType> sig = 
-                    new ArrayList<ProducedType>(args.size());
+                    new ArrayList<ProducedType>
+                        (args.size());
             for (Tree.PositionalArgument pa: args) {
                 ProducedType pat = pa.getTypeModel();
                 sig.add(unit.denotableType(pat));
@@ -3111,10 +3159,12 @@ public class ExpressionVisitor extends Visitor {
         if (member!=null) {
             String name = member.getName();
             TypeDeclaration type = 
-                    (TypeDeclaration) member.getContainer();
+                    (TypeDeclaration) 
+                        member.getContainer();
             if (member.isFormal() && !inExtendsClause) {
                 qmte.addError("supertype member is declared formal: '" + 
-                        name + "' of '" + type.getName() + "'");
+                        name + "' of '" + 
+                        type.getName() + "'");
             }
             else {
                 ClassOrInterface ci = 
@@ -3129,7 +3179,8 @@ public class ExpressionVisitor extends Visitor {
                         Declaration etm = 
                                 etd.getMember(name, null, false);
                         if (etm!=null && 
-                                !etm.getContainer().equals(type) && 
+                                !etm.getContainer()
+                                    .equals(type) && 
                                 etm.refines(member)) {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
@@ -3137,7 +3188,8 @@ public class ExpressionVisitor extends Visitor {
                             qmte.addError("inherited member is refined by intervening superclass: '" + 
                                     container.getName() + 
                                     "' refines '" + name + 
-                                    "' declared by '" + type.getName() + "'");
+                                    "' declared by '" + 
+                                    type.getName() + "'");
                         }
                     }
                     for (TypeDeclaration std: 
@@ -3148,7 +3200,8 @@ public class ExpressionVisitor extends Visitor {
                         Declaration stm = 
                                 std.getMember(name, null, false);
                         if (stm!=null && 
-                                !stm.getContainer().equals(type) && 
+                                !stm.getContainer()
+                                    .equals(type) && 
                                 stm.refines(member)) {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
@@ -3156,7 +3209,8 @@ public class ExpressionVisitor extends Visitor {
                             qmte.addError("inherited member is refined by intervening superinterface: '" + 
                                     container.getName() + 
                                     "' refines '" + name + 
-                                    "' declared by '" + type.getName() + "'");
+                                    "' declared by '" + 
+                                    type.getName() + "'");
                         }
                     }
                 }
@@ -3186,7 +3240,8 @@ public class ExpressionVisitor extends Visitor {
         if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) mte;
-            Tree.Term term = unwrapExpressionUntilTerm(qmte.getPrimary());
+            Tree.Term term = 
+                    unwrapExpressionUntilTerm(qmte.getPrimary());
             if (term instanceof Tree.StaticMemberOrTypeExpression) {
                 Tree.StaticMemberOrTypeExpression pmte = 
                         (Tree.StaticMemberOrTypeExpression) term;
@@ -3201,16 +3256,20 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = 
                     resolveBaseTypeExpression(bte, true);
             if (type!=null) {
-                ProducedType qt = null;
+                ProducedType qt;
                 if (type.isClassOrInterfaceMember() &&
                         !type.isStaticallyImportable() &&
 //                        type instanceof Constructor && 
                         !type.isDefinedInScope(that.getScope())) {
                     ClassOrInterface c = 
-                            (ClassOrInterface) type.getContainer();
+                            (ClassOrInterface) 
+                                type.getContainer();
                     List<ProducedType> inferredArgs = 
                             getInferredTypeArgsForReference(that, c, type);
                     qt = c.getProducedType(null, inferredArgs);
+                }
+                else {
+                    qt = null;
                 }
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, type, mte, qt);
@@ -3229,12 +3288,15 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases();
                 List<ProducedType> typeArgs = 
-                        getOrInferTypeArguments(that, type, mte, qt);
+                        getOrInferTypeArguments(that, type, 
+                                mte, qt);
                 if (primary instanceof Tree.Package) {
-                    visitBaseTypeExpression(qte, type, typeArgs, tas);
+                    visitBaseTypeExpression(qte, type, 
+                            typeArgs, tas);
                 }
                 else {
-                    visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
+                    visitQualifiedTypeExpression(qte, qt, 
+                            type, typeArgs, tas);
                 }
             }
         }
@@ -3246,8 +3308,10 @@ public class ExpressionVisitor extends Visitor {
                     resolveBaseMemberExpression(bme, true);
             if (base!=null) {
                 List<ProducedType> typeArgs = 
-                        getOrInferTypeArguments(that, base, mte, null);
-                visitBaseMemberExpression(bme, base, typeArgs, tas);
+                        getOrInferTypeArguments(that, base, 
+                                mte, null);
+                visitBaseMemberExpression(bme, base, 
+                        typeArgs, tas);
             }
         }
         
@@ -3262,12 +3326,15 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases();
                 List<ProducedType> typeArgs = 
-                        getOrInferTypeArguments(that, member, mte, qt);
+                        getOrInferTypeArguments(that, 
+                                member, mte, qt);
                 if (primary instanceof Tree.Package) {
-                    visitBaseMemberExpression(qme, member, typeArgs, tas);
+                    visitBaseMemberExpression(qme, member, 
+                            typeArgs, tas);
                 }
                 else {
-                    visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
+                    visitQualifiedMemberExpression(qme, qt, 
+                            member, typeArgs, tas);
                 }
             }
         }
@@ -3275,15 +3342,21 @@ public class ExpressionVisitor extends Visitor {
 
     private List<ProducedType> getOrInferTypeArguments(
             Tree.InvocationExpression that, Declaration dec,
-            Tree.StaticMemberOrTypeExpression term, ProducedType qt) {
+            Tree.StaticMemberOrTypeExpression term, 
+            ProducedType qt) {
         if (dec instanceof Generic) {
             Generic generic = (Generic) dec;
             Tree.TypeArguments tas = term.getTypeArguments();
-            List<ProducedType> typeArgs = 
-                    tas instanceof Tree.InferredTypeArguments ?
-                            getInferredTypeArguments(that, generic, term) :
-                            getTypeArguments(tas, 
-                                    getTypeParameters(dec), qt);
+            List<ProducedType> typeArgs;
+            if (tas instanceof Tree.InferredTypeArguments) {
+                typeArgs = getInferredTypeArguments(that, 
+                        generic, term);
+            }
+            else {
+                List<TypeParameter> pts = 
+                        getTypeParameters(dec);
+                typeArgs = getTypeArguments(tas, pts, qt);
+            }
             tas.setTypeModels(typeArgs);
             return typeArgs;
         }
@@ -3292,9 +3365,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private List<ProducedType> getInferredTypeArguments(Tree.InvocationExpression that, 
-            Generic generic, Tree.StaticMemberOrTypeExpression mte) {
-        Tree.Term primary = unwrapExpressionUntilTerm(that.getPrimary());
+    private List<ProducedType> getInferredTypeArguments(
+            Tree.InvocationExpression that, 
+            Generic generic, 
+            Tree.StaticMemberOrTypeExpression mte) {
+        Tree.Term primary = 
+                unwrapExpressionUntilTerm(that.getPrimary());
         if (primary instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression pmte = 
                     (Tree.StaticMemberOrTypeExpression) primary;
@@ -3336,11 +3412,12 @@ public class ExpressionVisitor extends Visitor {
                     if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                         Tree.QualifiedMemberOrTypeExpression qmte = 
                                 (Tree.QualifiedMemberOrTypeExpression) primary;
-                        pt = qmte.getPrimary().getTypeModel();
+                        pt = qmte.getPrimary()
+                                .getTypeModel();
                     }
                     else {
                         //TODO: wouldn't null be more correct?!
-                        pt = new UnknownType(unit).getType();
+                        pt = unknownType();
                     }
                     ProducedType it = 
                             inferTypeArgument(that, pt, tp, 
@@ -3367,9 +3444,11 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal = 
                     that.getPositionalArgumentList();
             if (pal!=null && 
-                    !pal.getPositionalArguments().isEmpty()) {
+                    !pal.getPositionalArguments()
+                        .isEmpty()) {
                 Tree.PositionalArgument arg = 
-                        pal.getPositionalArguments().get(0);
+                        pal.getPositionalArguments()
+                            .get(0);
                 if (arg!=null) {
                     List<ProducedType> typeArgs = 
                             new ArrayList<ProducedType>();
@@ -3453,8 +3532,9 @@ public class ExpressionVisitor extends Visitor {
                 new HashSet<Parameter>();
         for (Tree.NamedArgument arg: 
                 args.getNamedArguments()) {
-            inferTypeArgFromNamedArg(arg, tp, qt, parameters, 
-                    inferredTypes, foundParameters);
+            inferTypeArgFromNamedArg(arg, tp, qt, 
+                    parameters, inferredTypes, 
+                    foundParameters);
         }
         Parameter sp = 
                 getUnspecifiedParameter(null, parameters, 
@@ -3470,10 +3550,11 @@ public class ExpressionVisitor extends Visitor {
     private void inferTypeArgFromSequencedArg(
             Tree.SequencedArgument sa, 
             TypeParameter tp, Parameter sp, 
-            List<ProducedType> inferredTypes, Node argNode) {
+            List<ProducedType> inferredTypes, 
+            Node argNode) {
     	ProducedType att;
     	if (sa==null) {
-    		att = unit.getEmptyDeclaration().getType();
+    		att = emptyType();
     	}
     	else {
     		List<Tree.PositionalArgument> args = 
@@ -3481,8 +3562,10 @@ public class ExpressionVisitor extends Visitor {
     		att = getTupleType(args, unit, false);
     	}
         ProducedType spt = sp.getType();
-        addToUnionOrIntersection(tp, inferredTypes,
-                inferTypeArg(tp, spt, att, true, false,
+        addToUnionOrIntersection(tp, 
+                inferredTypes,
+                inferTypeArg(tp, spt, att, 
+                        true, false,
                         new ArrayList<TypeParameter>(),
                         argNode));
     }
@@ -3522,8 +3605,10 @@ public class ExpressionVisitor extends Visitor {
                         qt.getTypedParameter(parameter)
                             .getFullType();
 //              if (parameter.isSequenced()) pt = unit.getIteratedType(pt);
-                addToUnionOrIntersection(tp,inferredTypes,
-                        inferTypeArg(tp, pt, type, true, false,
+                addToUnionOrIntersection(tp,
+                        inferredTypes,
+                        inferTypeArg(tp, pt, type, 
+                                true, false,
                                 new ArrayList<TypeParameter>(), 
                                 arg));
             }
@@ -3545,27 +3630,31 @@ public class ExpressionVisitor extends Visitor {
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     List<Parameter> subList = 
-                            params.subList(i, params.size());
+                            params.subList(i, 
+                                    params.size());
                     ProducedType ptt = 
                             unit.getParameterTypesAsTupleType(subList, qt);
-                    addToUnionOrIntersection(tp, inferredTypes, 
-                            inferTypeArg(tp, ptt, at, true, false, 
+                    addToUnionOrIntersection(tp, 
+                            inferredTypes, 
+                            inferTypeArg(tp, ptt, at, 
+                                    true, false, 
                                     new ArrayList<TypeParameter>(),
                                     pal));
                 }
                 else if (a instanceof Tree.Comprehension) {
                     if (parameter.isSequenced()) {
+                        Tree.Comprehension c = 
+                                (Tree.Comprehension) a;
                         inferTypeArgFromComprehension(tp, 
-                                parameter,
-                                ((Tree.Comprehension) a), 
-                                inferredTypes);
+                                parameter, c, inferredTypes);
                     }
                 }
                 else {
                     if (parameter.isSequenced()) {
                         inferTypeArgFromPositionalArgs(tp, 
                                 parameter,
-                                args.subList(i, args.size()), 
+                                args.subList(i, 
+                                        args.size()), 
                                 inferredTypes);
                         break;
                     }
@@ -3573,8 +3662,10 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType pt = 
                                 qt.getTypedParameter(parameter)
                                   .getFullType();
-                        addToUnionOrIntersection(tp, inferredTypes,
-                                inferTypeArg(tp, pt, at, true, false,
+                        addToUnionOrIntersection(tp, 
+                                inferredTypes,
+                                inferTypeArg(tp, pt, at, 
+                                        true, false,
                                         new ArrayList<TypeParameter>(),
                                         pal));
                     }
@@ -3594,15 +3685,20 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType pt = parameter.getType();
                 if (pa instanceof Tree.SpreadArgument) {
                     sat = spreadType(sat, unit, true);
-                    addToUnionOrIntersection(tp, inferredTypes,
-                            inferTypeArg(tp, pt, sat, true, false,
+                    addToUnionOrIntersection(tp, 
+                            inferredTypes,
+                            inferTypeArg(tp, pt, sat, 
+                                    true, false,
                                     new ArrayList<TypeParameter>(),
                                     pa));
                 }
                 else {
-                    ProducedType spt = unit.getIteratedType(pt);
-                    addToUnionOrIntersection(tp, inferredTypes,
-                            inferTypeArg(tp, spt, sat, true, false,
+                    ProducedType spt = 
+                            unit.getIteratedType(pt);
+                    addToUnionOrIntersection(tp, 
+                            inferredTypes,
+                            inferTypeArg(tp, spt, sat, 
+                                    true, false,
                                     new ArrayList<TypeParameter>(),
                                     pa));
                 }
@@ -3616,9 +3712,12 @@ public class ExpressionVisitor extends Visitor {
             ProducedType sat = c.getTypeModel();
             if (sat!=null) {
                 ProducedType pt = parameter.getType();
-                ProducedType spt = unit.getIteratedType(pt);
-                addToUnionOrIntersection(tp, inferredTypes,
-                        inferTypeArg(tp, spt, sat, true, false,
+                ProducedType spt = 
+                        unit.getIteratedType(pt);
+                addToUnionOrIntersection(tp, 
+                        inferredTypes,
+                        inferTypeArg(tp, spt, sat, 
+                                true, false,
                                 new ArrayList<TypeParameter>(),
                                 c));
             }
@@ -3684,8 +3783,10 @@ public class ExpressionVisitor extends Visitor {
             ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited, Node argNode) {
-        return inferTypeArg(tp, tp, paramType, argType, 
-                covariant, contravariant, visited, argNode);
+        return inferTypeArg(tp, tp, 
+                paramType, argType, 
+                covariant, contravariant, 
+                visited, argNode);
     }
     
     private ProducedType inferTypeArg(TypeParameter tp,
@@ -3719,7 +3820,8 @@ public class ExpressionVisitor extends Visitor {
                     if (argNode.getErrors().isEmpty()) {
                         argNode.addError("argument of unknown type assigned to inferred type parameter: '" + 
                                 tp.getName() + "' of '" + 
-                                tp.getDeclaration().getName(unit) + "'");
+                                tp.getDeclaration()
+                                    .getName(unit) + "'");
                     }
                     //TODO: would it be better to return UnknownType here?
                     return null;
@@ -3925,17 +4027,22 @@ public class ExpressionVisitor extends Visitor {
             boolean covariant, boolean contravariant,
             List<ProducedType> list, List<TypeParameter> visited,
             Node argNode) {
-        inferTypeArg(tp, tp, paramType, supertype, 
-                covariant, contravariant, list, visited, argNode);
+        inferTypeArg(tp, tp, 
+                paramType, supertype, 
+                covariant, contravariant, 
+                list, visited, 
+                argNode);
     }
     
     private void inferTypeArg(TypeParameter tp, TypeParameter tp0,
             ProducedType paramType, ProducedType supertype, 
             boolean covariant, boolean contravariant,
-            List<ProducedType> list, List<TypeParameter> visited,
+            List<ProducedType> list, 
+            List<TypeParameter> visited,
             Node argNode) {
         List<TypeParameter> typeParameters = 
-                paramType.getDeclaration().getTypeParameters();
+                paramType.getDeclaration()
+                    .getTypeParameters();
         List<ProducedType> paramTypeArgs = 
                 paramType.getTypeArgumentList();
         List<ProducedType> superTypeArgs = 
@@ -3945,8 +4052,10 @@ public class ExpressionVisitor extends Visitor {
                 j<superTypeArgs.size() && 
                 j<typeParameters.size(); 
                 j++) {
-            ProducedType paramTypeArg = paramTypeArgs.get(j);
-            ProducedType argTypeArg = superTypeArgs.get(j);
+            ProducedType paramTypeArg = 
+                    paramTypeArgs.get(j);
+            ProducedType argTypeArg = 
+                    superTypeArgs.get(j);
             TypeParameter typeParameter = 
                     typeParameters.get(j);
             boolean co;
@@ -3980,7 +4089,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitDirectInvocation(Tree.InvocationExpression that) {
+    private void visitDirectInvocation(
+            Tree.InvocationExpression that) {
         Tree.Term p = 
                 unwrapExpressionUntilTerm(that.getPrimary());
         Tree.MemberOrTypeExpression mte = 
@@ -3989,10 +4099,12 @@ public class ExpressionVisitor extends Visitor {
         Functional dec = (Functional) mte.getDeclaration();
         if (dec!=null) {
             if (!(p instanceof Tree.ExtendedTypeExpression)) {
-                if (dec instanceof Class && 
-                        ((Class) dec).isAbstract()) {
-                    that.addError("abstract class may not be instantiated: '" + 
-                            dec.getName(unit) + "'");
+                if (dec instanceof Class) {
+                    Class c = (Class) dec;
+                    if (c.isAbstract()) {
+                        that.addError("abstract class may not be instantiated: '" + 
+                                dec.getName(unit) + "'");
+                    }
                 }
             }
             if (that.getNamedArgumentList()!=null && 
@@ -4006,10 +4118,13 @@ public class ExpressionVisitor extends Visitor {
             }
             //that.setTypeModel(prf.getType());
             ProducedType ct = p.getTypeModel();
-            if (ct!=null && 
-                    !ct.getTypeArgumentList().isEmpty()) {
-                //pull the return type out of the Callable
-                that.setTypeModel(ct.getTypeArgumentList().get(0));
+            if (ct!=null) {
+                List<ProducedType> tal = 
+                        ct.getTypeArgumentList();
+                if (!tal.isEmpty()) {
+                    //pull the return type out of the Callable
+                    that.setTypeModel(tal.get(0));
+                }
             }
             if (that.getNamedArgumentList() != null) {
                 List<ParameterList> parameterLists = 
@@ -4050,7 +4165,7 @@ public class ExpressionVisitor extends Visitor {
             }
             
             if (pt.isNothing()) {
-                that.setTypeModel(unit.getNothingDeclaration().getType());
+                that.setTypeModel(nothingType());
             }
             else if (checkCallable(pt, p, 
                     "invoked expression must be callable")) {
@@ -4136,7 +4251,8 @@ public class ExpressionVisitor extends Visitor {
     }*/
     
     private void checkNamedArguments(ParameterList pl, 
-            ProducedReference pr, Tree.NamedArgumentList nal) {
+            ProducedReference pr, 
+            Tree.NamedArgumentList nal) {
         Set<Parameter> foundParameters = 
                 new HashSet<Parameter>();
         
@@ -4192,7 +4308,8 @@ public class ExpressionVisitor extends Visitor {
                         sp.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && !isNativeForWrongBackend() &&
+            else if (!dynamic && 
+                    !isNativeForWrongBackend() &&
                     isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: " + 
                         paramdesc(sp) +
@@ -4227,7 +4344,8 @@ public class ExpressionVisitor extends Visitor {
                         p.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && !isNativeForWrongBackend() &&
+            else if (!dynamic && 
+                    !isNativeForWrongBackend() &&
                     isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: " + 
                         paramdesc(p) + 
@@ -4254,7 +4372,8 @@ public class ExpressionVisitor extends Visitor {
                 dec.getName(unit) + "'";
         if (dec.isClassOrInterfaceMember()) {
             ClassOrInterface ci = 
-                    (ClassOrInterface) dec.getContainer();
+                    (ClassOrInterface) 
+                        dec.getContainer();
             result += " in '" + ci.getName(unit) + "'";
         }
         return result;
@@ -4293,14 +4412,16 @@ public class ExpressionVisitor extends Visitor {
             		.getTypedReference() //argument can't have type parameters
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
-            if (!dynamic && !isNativeForWrongBackend() &&
+            if (!dynamic && 
+                    !isNativeForWrongBackend() &&
                     isTypeUnknown(argType)) {
                 a.addError("could not determine type of named argument: '" + 
                         p.getName() + "'");
             }
         }
         ProducedType pt = 
-                pr.getTypedParameter(p).getFullType();
+                pr.getTypedParameter(p)
+                    .getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
         if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(pt)) {
@@ -4315,7 +4436,8 @@ public class ExpressionVisitor extends Visitor {
             }
             checkAssignable(argType, pt, node,
                     "named argument must be assignable to parameter " + 
-                            argdesc(p, pr), 2100);
+                            argdesc(p, pr), 
+                    2100);
         }
     }
 
@@ -4326,20 +4448,23 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MethodArgument) ta;
             Tree.SpecifierExpression se = 
                     ma.getSpecifierExpression();
-            if (se!=null && se.getExpression()!=null) {
-                Tree.Type t = ta.getType();
-                // if the argument is explicitly declared 
-                // using the function modifier, it should 
-                // be allowed, even if the parameter is 
-                // declared void
-                //TODO: what is a better way to check that 
-                //      this is really the "shortcut" form
-                if (t instanceof Tree.FunctionModifier && 
-                        t.getToken()==null &&
-                    p.isDeclaredVoid() &&
-                    !isSatementExpression(se.getExpression())) {
-                    ta.addError("functional parameter is declared void so argument may not evaluate to a value: '" +
-                            p.getName() + "' is declared 'void'");
+            if (se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    Tree.Type t = ta.getType();
+                    // if the argument is explicitly declared 
+                    // using the function modifier, it should 
+                    // be allowed, even if the parameter is 
+                    // declared void
+                    //TODO: what is a better way to check that 
+                    //      this is really the "shortcut" form
+                    if (t instanceof Tree.FunctionModifier && 
+                            t.getToken()==null &&
+                            p.isDeclaredVoid() &&
+                            !isSatementExpression(e)) {
+                        ta.addError("functional parameter is declared void so argument may not evaluate to a value: '" +
+                                p.getName() + "' is declared 'void'");
+                    }
                 }
             }
         }
@@ -4351,11 +4476,13 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = 
                 sa.getPositionalArguments();
         ProducedType paramType = 
-                pr.getTypedParameter(p).getFullType();
+                pr.getTypedParameter(p)
+                    .getFullType();
         ProducedType att = 
                 getTupleType(args, unit, false)
                     .getSupertype(unit.getIterableDeclaration());
-        if (!isTypeUnknown(att) && !isTypeUnknown(paramType)) {
+        if (!isTypeUnknown(att) && 
+                !isTypeUnknown(paramType)) {
             checkAssignable(att, paramType, sa, 
                     "iterable arguments must be assignable to iterable parameter " + 
                             argdesc(p, pr));
@@ -4390,7 +4517,8 @@ public class ExpressionVisitor extends Visitor {
         for (Parameter p: pl.getParameters()) {
             ProducedType t = pr==null ? 
                     p.getType() : 
-                    pr.getTypedParameter(p).getFullType();
+                    pr.getTypedParameter(p)
+                        .getFullType();
             if (t!=null) {
                 t = t.resolveAliases();
                 if (!foundParameters.contains(p) &&
@@ -4452,7 +4580,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     if (p.isSequenced()) {
                         checkSequencedPositionalArgument(p, pr, 
-                                args.subList(i, args.size()));
+                                args.subList(i, 
+                                        args.size()));
                         return; //Note: early return!
                     }
                     else {
@@ -4473,7 +4602,8 @@ public class ExpressionVisitor extends Visitor {
             arg.addError("no matching parameter declared by '" +
                     target.getName(unit) + "': '" + 
                     target.getName(unit) + "' has " + 
-                    params.size() + " parameters", 2000);
+                    params.size() + " parameters", 
+                    2000);
         }
         
         checkJavaAnnotationElements(args, params, target);
@@ -4487,11 +4617,15 @@ public class ExpressionVisitor extends Visitor {
         if (target instanceof Method && target.isAnnotation()) {
             Method method = (Method) target;
             ParameterList parameterList = 
-                    method.getParameterLists().get(0);
+                    method.getParameterLists()
+                        .get(0);
             if (!parameterList.isPositionalParametersSupported()) {
-                for (int i=0; i<params.size() && i<args.size(); i++) {
+                for (int i=0; 
+                        i<params.size() && i<args.size(); 
+                        i++) {
                     Parameter parameter = 
-                            parameterList.getParameters().get(i);
+                            parameterList.getParameters()
+                                .get(i);
                     Tree.PositionalArgument arg = args.get(i);
                     if (arg!=null && 
                             !"value".equals(parameter.getName())) {
@@ -4612,7 +4746,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             arg.addError("no matching parameter: function reference has " + 
-                    paramTypes.size() + " parameters", 2000);
+                    paramTypes.size() + " parameters", 
+                    2000);
         }
         
     }
@@ -4653,12 +4788,12 @@ public class ExpressionVisitor extends Visitor {
                     at = spreadType(at, unit, true);
                     checkAssignable(at, paramType, a, 
                             "spread argument must be assignable to variadic parameter",
-                                    2101);
+                            2101);
                 }
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter", 
-                                    2101);
+                            2101);
                     //if we already have an arg to a nonempty variadic parameter,
                     //we can treat it like a possibly-empty variadic now
                     Interface sd = 
@@ -4677,8 +4812,8 @@ public class ExpressionVisitor extends Visitor {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
         ProducedType at = c.getTypeModel();
-        ProducedType set = paramType==null ? 
-                null : unit.getIteratedType(paramType);
+        ProducedType set = paramType==null ? null : 
+                unit.getIteratedType(paramType);
         if (!isTypeUnknown(at) && 
                 !isTypeUnknown(set)) {
             checkAssignable(at, set, c, 
@@ -4687,11 +4822,13 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkSequencedPositionalArgument(Parameter p, 
-            ProducedReference pr, List<Tree.PositionalArgument> args) {
+            ProducedReference pr, 
+            List<Tree.PositionalArgument> args) {
         ProducedType paramType = 
-                pr.getTypedParameter(p).getFullType();
-        ProducedType set = paramType==null ? 
-                null : unit.getIteratedType(paramType);
+                pr.getTypedParameter(p)
+                    .getFullType();
+        ProducedType set = paramType==null ? null : 
+                unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
@@ -4703,13 +4840,13 @@ public class ExpressionVisitor extends Visitor {
                     checkAssignable(at, paramType, a, 
                             "spread argument must be assignable to variadic parameter " + 
                                     argdesc(p, pr), 
-                                    2101);
+                            2101);
                 }
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter " + 
                                     argdesc(p, pr), 
-                                    2101);
+                            2101);
                     //if we already have an arg to a nonempty variadic parameter,
                     //we can treat it like a possibly-empty variadic now
                     Interface sd = 
@@ -4729,7 +4866,8 @@ public class ExpressionVisitor extends Visitor {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
         ProducedType paramType = 
-                pr.getTypedParameter(p).getFullType();
+                pr.getTypedParameter(p)
+                    .getFullType();
         c.setParameter(p);
         ProducedType at = c.getTypeModel();
         if (!isTypeUnknown(at) && 
@@ -4739,7 +4877,7 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter " + 
                             argdesc(p, pr), 
-                            2101);
+                    2101);
         }
     }
     
@@ -4782,7 +4920,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type t = that.getType();
         if (t!=null) {
             ProducedType at = 
-                    unit.getType(unit.getAnythingDeclaration());
+                    anythingType();
             checkAssignable(that.getTypeModel(), 
                     unit.getSequentialType(at), 
                     t, "spread type must be a sequence type");
@@ -4817,16 +4955,18 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean involvesUnknownTypes(Tree.ElementOrRange eor) {
         if (eor instanceof Tree.Element) {
-            Tree.Expression expression = 
-                    ((Tree.Element) eor).getExpression();
+            Tree.Element el = (Tree.Element) eor;
+            Tree.Expression expression = el.getExpression();
             return isTypeUnknown(expression.getTypeModel());
         }
         else {
             Tree.ElementRange er = (Tree.ElementRange) eor;
             return er.getLowerBound()!=null && 
-                        isTypeUnknown(er.getLowerBound().getTypeModel()) ||
+                        isTypeUnknown(er.getLowerBound()
+                                .getTypeModel()) ||
                     er.getUpperBound()!=null && 
-                        isTypeUnknown(er.getUpperBound().getTypeModel());
+                        isTypeUnknown(er.getUpperBound()
+                                .getTypeModel());
         }
     }
     
@@ -4910,7 +5050,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                         if (l!=null) {
                             checkAssignable(l.getTypeModel(), 
-                                    unit.getType(unit.getIntegerDeclaration()),
+                                    integerType(),
                                     l, "length must be an integer");
                         }
                         that.setTypeModel(rt);
@@ -4948,25 +5088,29 @@ public class ExpressionVisitor extends Visitor {
             if (t instanceof Tree.NaturalLiteral) {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
-                List<ProducedType> elementTypes = 
+                final List<ProducedType> elementTypes = 
                         unit.getTupleElementTypes(tt);
-                boolean variadic = unit.isTupleLengthUnbounded(tt);
-                int minimumLength = unit.getTupleMinimumLength(tt);
-                boolean atLeastOne = unit.isTupleVariantAtLeastOne(tt);
+                boolean variadic = 
+                        unit.isTupleLengthUnbounded(tt);
+                int minimumLength = 
+                        unit.getTupleMinimumLength(tt);
+                boolean atLeastOne = 
+                        unit.isTupleVariantAtLeastOne(tt);
                 if (elementTypes!=null) {
+                    int size = elementTypes.size();
                     ProducedType nt = 
-                            unit.getType(unit.getNullDeclaration());
-                    if (elementTypes.isEmpty()) {
+                            nullType();
+                    if (size==0) {
                         that.setTypeModel(nt);
                     }
                     else if (index<0) {
                         that.setTypeModel(nt);
                     }
-                    else if (index<elementTypes.size()-(variadic?1:0)) {
+                    else if (index < size-(variadic?1:0)) {
                         ProducedType iet = 
                                 elementTypes.get(index);
                         if (iet==null) return;
-                        if (index>=minimumLength) {
+                        if (index >= minimumLength) {
                             iet = unionType(iet, 
                                     nt, 
                                     unit);
@@ -4975,11 +5119,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else if (variadic) {
                         ProducedType iet = 
-                                elementTypes.get(elementTypes.size()-1);
+                                elementTypes.get(size-1);
                         if (iet==null) return;
-                        ProducedType it = unit.getIteratedType(iet);
+                        ProducedType it = 
+                                unit.getIteratedType(iet);
                         if (it==null) return;
-                        if (!atLeastOne || index>=elementTypes.size()) {
+                        if (!atLeastOne || index >= size) {
                             it = unionType(it, nt, unit);
                         }
                         that.setTypeModel(it);
@@ -5007,35 +5152,42 @@ public class ExpressionVisitor extends Visitor {
             if (l instanceof Tree.NaturalLiteral) {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
-                List<ProducedType> elementTypes = 
+                final List<ProducedType> elementTypes = 
                         unit.getTupleElementTypes(tt);
-                boolean variadic = unit.isTupleLengthUnbounded(tt);
-                boolean atLeastOne = unit.isTupleVariantAtLeastOne(tt);
-                int minimumLength = unit.getTupleMinimumLength(tt);
+                boolean variadic = 
+                        unit.isTupleLengthUnbounded(tt);
+                boolean atLeastOne = 
+                        unit.isTupleVariantAtLeastOne(tt);
+                int minimumLength = 
+                        unit.getTupleMinimumLength(tt);
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>();
                 if (elementTypes!=null) {
+                    int size = elementTypes.size();
                     if (lindex<0) {
                         lindex=0;
                     }
                     for (int index=lindex; 
-                            index<elementTypes.size()-(variadic?1:0); 
+                            index < size-(variadic?1:0); 
                             index++) {
-                        ProducedType et = elementTypes.get(index);
+                        ProducedType et = 
+                                elementTypes.get(index);
                         if (et==null) return;
                         list.add(et);
                     }
                     if (variadic) {
                         ProducedType it = 
-                                elementTypes.get(elementTypes.size()-1);
+                                elementTypes.get(size-1);
                         if (it==null) return;
-                        ProducedType rt = unit.getIteratedType(it);
+                        ProducedType rt = 
+                                unit.getIteratedType(it);
                         if (rt==null) return;
                         list.add(rt);
                     }
                     ProducedType rt = 
-                            unit.getTupleType(list, variadic, 
-                                    atLeastOne && lindex<elementTypes.size(), 
+                            unit.getTupleType(list, 
+                                    variadic, 
+                                    atLeastOne && lindex<size, 
                                     minimumLength-lindex);
                     //intersect with the type determined using
                     //Ranged, which may be narrower, for example,
@@ -5064,7 +5216,8 @@ public class ExpressionVisitor extends Visitor {
         assign(that.getTerm());
         super.visit(that);
         ProducedType type = type(that);
-        visitIncrementDecrement(that, type, that.getTerm());
+        visitIncrementDecrement(that, type, 
+                that.getTerm());
         checkAssignability(that.getTerm(), that);
     }
 
@@ -5073,7 +5226,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         ProducedType type = type(that);
         if (that.getTerm()!=null) {
-            visitIncrementDecrement(that, type, that.getTerm());
+            visitIncrementDecrement(that, type, 
+                    that.getTerm());
             checkAssignability(that.getTerm(), that);
         }
     }
@@ -5088,7 +5242,8 @@ public class ExpressionVisitor extends Visitor {
                             "operand expression must be of enumerable type");
             if (ot!=null) {
                 ProducedType ta = 
-                        ot.getTypeArgumentList().get(0);
+                        ot.getTypeArgumentList()
+                            .get(0);
                 checkAssignable(ta, pt, that, 
                         "result type must be assignable to declared type");
             }
@@ -5120,12 +5275,16 @@ public class ExpressionVisitor extends Visitor {
                             "right operand must be of scalable type");
             if (st!=null) {
                 ProducedType ta = 
-                        st.getTypeArgumentList().get(0);
+                        st.getTypeArgumentList()
+                            .get(0);
                 ProducedType rt = 
-                        st.getTypeArgumentList().get(1);
+                        st.getTypeArgumentList()
+                            .get(1);
                 //hardcoded implicit type conversion Integer->Float 
-                TypeDeclaration fd = unit.getFloatDeclaration();
-                TypeDeclaration id = unit.getIntegerDeclaration();
+                TypeDeclaration fd = 
+                        unit.getFloatDeclaration();
+                TypeDeclaration id = 
+                        unit.getIntegerDeclaration();
                 if (lhst.getDeclaration().inherits(id) &&
                         ta.getDeclaration().inherits(fd)) {
                     lhst = fd.getType();
@@ -5135,6 +5294,30 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(rt);
             }
         }
+    }
+    
+    private ProducedType comparisonType() {
+        return unit.getType(unit.getComparisonDeclaration());
+    }
+    
+    private ProducedType booleanType() {
+        return unit.getType(unit.getBooleanDeclaration());
+    }
+
+    private ProducedType integerType() {
+        return unit.getType(unit.getIntegerDeclaration());
+    }
+    
+    private ProducedType objectType() {
+        return unit.getType(unit.getObjectDeclaration());
+    }
+    
+    private ProducedType identifiableType() {
+        return unit.getType(unit.getIdentifiableDeclaration());
+    }
+    
+    private ProducedType nullType() {
+        return unit.getType(unit.getNullDeclaration());
     }
     
     private void checkComparable(Tree.BinaryOperatorExpression that) {
@@ -5149,14 +5332,14 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitComparisonOperator(Tree.BinaryOperatorExpression that) {
         checkComparable(that);
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));            
+        that.setTypeModel(booleanType());            
     }
 
     private void visitCompareOperator(Tree.CompareOp that) {
         checkComparable(that);
-        that.setTypeModel(unit.getType(unit.getComparisonDeclaration()));            
+        that.setTypeModel(comparisonType());            
     }
-    
+
     private void visitWithinOperator(Tree.WithinOp that) {
         Tree.Term lbt = that.getLowerBound().getTerm();
         Tree.Term ubt = that.getUpperBound().getTerm();
@@ -5169,7 +5352,7 @@ public class ExpressionVisitor extends Visitor {
                     unit.getComparableDeclaration(), 
                     that, "operand expressions must be comparable");
         }
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));            
+        that.setTypeModel(booleanType());            
     }
 
     private void visitSpanOperator(Tree.RangeOp that) {
@@ -5192,7 +5375,7 @@ public class ExpressionVisitor extends Visitor {
                 "left operand must be of enumerable type");
         if (!isTypeUnknown(rhst)) {
             checkAssignable(rhst, 
-                    unit.getType(unit.getIntegerDeclaration()), 
+                    integerType(), 
                     that.getRightTerm(), 
                     "right operand must be an integer");
         }
@@ -5202,29 +5385,27 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getMeasureType(ta));
         }
     }
-    
+
     private void visitEntryOperator(Tree.EntryOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        ProducedType ot = 
-                unit.getType(unit.getObjectDeclaration());
-        checkAssignable(lhst, ot, that.getLeftTerm(), 
+        checkAssignable(lhst, objectType(), 
+                that.getLeftTerm(), 
                 "operand expression must not be an optional type");
 //        checkAssignable(rhst, ot, that.getRightTerm(), 
 //                "operand expression must not be an optional type");
         that.setTypeModel(unit.getEntryType(lhst, rhst));
     }
-    
+
     private void visitIdentityOperator(Tree.BinaryOperatorExpression that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            TypeDeclaration id = 
-                    unit.getIdentifiableDeclaration();
-            checkAssignable(lhst, id.getType(), 
+            ProducedType idt = identifiableType();
+            checkAssignable(lhst, idt, 
                     that.getLeftTerm(), 
                     "operand expression must be of type 'Identifiable'");
-            checkAssignable(rhst, id.getType(), 
+            checkAssignable(rhst, idt, 
                     that.getRightTerm(), 
                     "operand expression must be of type 'Identifiable'");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
@@ -5234,22 +5415,22 @@ public class ExpressionVisitor extends Visitor {
                         rhst.getProducedTypeName(unit) + "'");
             }
         }
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
-    
+
     private void visitEqualityOperator(Tree.BinaryOperatorExpression that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            TypeDeclaration od = unit.getObjectDeclaration();
-            checkAssignable(lhst, od.getType(), 
+            ProducedType obt = objectType();
+            checkAssignable(lhst, obt, 
                     that.getLeftTerm(), 
                     "operand expression must be of type Object");
-            checkAssignable(rhst, od.getType(), 
+            checkAssignable(rhst, obt, 
                     that.getRightTerm(), 
                     "operand expression must be of type Object");
         }
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
     
     private void visitAssignOperator(Tree.AssignOp that) {
@@ -5259,7 +5440,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType leftHandType = lhst;
             // allow assigning null to java properties that could after all be null
             if (hasUncheckedNulls(that.getLeftTerm())) {
-                leftHandType = unit.getOptionalType(leftHandType);
+                leftHandType = 
+                        unit.getOptionalType(leftHandType);
             }
             checkAssignable(rhst, leftHandType, 
                     that.getRightTerm(), 
@@ -5277,7 +5459,8 @@ public class ExpressionVisitor extends Visitor {
                 checkSupertype(lhst, td, node, message);
         if (lhsst!=null) {
             ProducedType at = 
-                    lhsst.getTypeArgumentList().get(0);
+                    lhsst.getTypeArgumentList()
+                        .get(0);
             checkAssignable(rhst, at, node, message);
             return at;
         }
@@ -5289,9 +5472,12 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType checkOperandTypes(ProducedType t, 
             ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
-        ProducedType st = checkSupertype(t, td, node, message);
+        ProducedType st = 
+                checkSupertype(t, td, node, message);
         if (st!=null) {
-            ProducedType at = st.getTypeArgumentList().get(0);
+            ProducedType at = 
+                    st.getTypeArgumentList()
+                        .get(0);
             checkAssignable(lhst, at, node, message);
             checkAssignable(rhst, at, node, message);
             return at;
@@ -5311,12 +5497,16 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
             if (!rhst.isNothing() && !lhst.isNothing()) {
-                if (rhst.getDeclaration().inherits(fd) &&
-                        lhst.getDeclaration().inherits(id)) {
+                if (rhst.getDeclaration()
+                            .inherits(fd) &&
+                        lhst.getDeclaration()
+                            .inherits(id)) {
                     lhst = fd.getType();
                 }
-                else if (rhst.getDeclaration().inherits(id) &&
-                        lhst.getDeclaration().inherits(fd)) {
+                else if (rhst.getDeclaration()
+                            .inherits(id) &&
+                        lhst.getDeclaration()
+                            .inherits(fd)) {
                     rhst = fd.getType();
                 }
             }
@@ -5342,8 +5532,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 checkAssignable(rhst, ot, that, 
                         that instanceof Tree.SumOp ?
-                        "right operand must be of compatible summable type" :
-                        "right operand must be of compatible numeric type");
+                            "right operand must be of compatible summable type" :
+                            "right operand must be of compatible numeric type");
             }
         }
     }
@@ -5357,9 +5547,11 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
             if (!rhst.isNothing() && 
-                    rhst.getDeclaration().inherits(id) &&
+                    rhst.getDeclaration()
+                        .inherits(id) &&
                 !lhst.isNothing() && 
-                    lhst.getDeclaration().inherits(fd)) {
+                    lhst.getDeclaration()
+                        .inherits(fd)) {
                 rhst = fd.getType();
             }
             ProducedType nt = 
@@ -5371,7 +5563,8 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(lhst);
             if (nt!=null) {
                 ProducedType t = 
-                        nt.getTypeArgumentList().get(0);
+                        nt.getTypeArgumentList()
+                            .get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 checkAssignable(rhst, t, that, 
                         that instanceof Tree.AddAssignOp ?
@@ -5389,7 +5582,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             ProducedType ot = 
-                    unit.getType(unit.getObjectDeclaration());
+                    objectType();
             checkAssignable(lhst, 
                     unit.getSetType(ot), 
                     that.getLeftTerm(), 
@@ -5398,8 +5591,10 @@ public class ExpressionVisitor extends Visitor {
                     unit.getSetType(ot), 
                     that.getRightTerm(), 
                     "set operand expression must be a set");
-            ProducedType lhset = unit.getSetElementType(lhst);
-            ProducedType rhset = unit.getSetElementType(rhst);
+            ProducedType lhset = 
+                    unit.getSetElementType(lhst);
+            ProducedType rhset = 
+                    unit.getSetElementType(rhst);
             ProducedType et;
             if (that instanceof Tree.IntersectionOp) {
                 et = intersectionType(rhset, lhset, unit);
@@ -5420,9 +5615,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             ProducedType ot = 
-                    unit.getType(unit.getObjectDeclaration());
-            ProducedType nt = 
-                    unit.getType(unit.getNothingDeclaration());
+                    objectType();
             checkAssignable(lhst, 
                     unit.getSetType(ot), 
                     that.getLeftTerm(), 
@@ -5431,12 +5624,14 @@ public class ExpressionVisitor extends Visitor {
                     unit.getSetType(ot), 
                     that.getRightTerm(), 
                     "set operand expression must be a set");
-            checkAssignable(unit.getSetType(nt), 
+            checkAssignable(unit.getSetType(nothingType()), 
                     lhst, 
                     that.getLeftTerm(),
                     "assigned expression type must be an instantiation of 'Set'");
-            ProducedType lhset = unit.getSetElementType(lhst);
-            ProducedType rhset = unit.getSetElementType(rhst);
+            ProducedType lhset = 
+                    unit.getSetElementType(lhst);
+            ProducedType rhset = 
+                    unit.getSetElementType(rhst);
             if (that instanceof Tree.UnionAssignOp) {
                 checkAssignable(rhset, lhset, 
                         that.getRightTerm(), 
@@ -5448,7 +5643,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitLogicalOperator(Tree.BinaryOperatorExpression that) {
         ProducedType bt = 
-                unit.getType(unit.getBooleanDeclaration());
+                booleanType();
         ProducedType lt = leftType(that);
         ProducedType rt = rightType(that);
         if (!isTypeUnknown(rt) && !isTypeUnknown(lt)) {
@@ -5492,15 +5687,13 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(lhst)) {
-            ProducedType bt = 
-                    unit.getType(unit.getBooleanDeclaration());
-            checkAssignable(lhst, bt, that.getLeftTerm(), 
+            checkAssignable(lhst, booleanType(), 
+                    that.getLeftTerm(), 
                     "operand expression must be a boolean value");
         }
         if ( rhst!=null && !isTypeUnknown(rhst)) {
-            ProducedType ot = 
-                    unit.getType(unit.getObjectDeclaration());
-            checkAssignable(rhst, ot, that.getRightTerm(),
+            checkAssignable(rhst, objectType(), 
+                    that.getRightTerm(),
                     "operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(rhst));
         }
@@ -5518,12 +5711,14 @@ public class ExpressionVisitor extends Visitor {
             if (ct!=null) {
                 ProducedType at = 
                         ct.getTypeArguments().isEmpty() ? null : 
-                            ct.getTypeArgumentList().get(0);
-            	checkAssignable(lhst, at, that.getLeftTerm(), 
+                            ct.getTypeArgumentList()
+                                .get(0);
+            	checkAssignable(lhst, at, 
+            	        that.getLeftTerm(), 
             			"operand expression must be assignable to category type");
             }
         }
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
     
     private void visitUnaryOperator(Tree.UnaryOperatorExpression that, 
@@ -5537,7 +5732,8 @@ public class ExpressionVisitor extends Visitor {
             if (nt!=null) {
                 ProducedType at = 
                         nt.getTypeArguments().isEmpty() ? nt : 
-                            nt.getTypeArgumentList().get(0);
+                            nt.getTypeArgumentList()
+                                .get(0);
                 that.setTypeModel(at);
             }
         }
@@ -5545,12 +5741,12 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitExistsOperator(Tree.Exists that) {
         checkOptional(type(that), that.getTerm());
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
         checkEmpty(type(that), that.getTerm());
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
     
     private void visitOfOperator(Tree.OfOp that) {
@@ -5593,7 +5789,8 @@ public class ExpressionVisitor extends Visitor {
                     if (knownType!=null && 
                             knownType.isSubtypeOf(type)) {
                         that.addError("expression type is a subtype of the type: '" +
-                                knownType.getProducedTypeName(unit) + "' is assignable to '" +
+                                knownType.getProducedTypeName(unit) + 
+                                "' is assignable to '" +
                                 type.getProducedTypeName(unit) + "'");
                     }
                     else {
@@ -5606,7 +5803,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-        that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
+        that.setTypeModel(booleanType());
     }
 
     private void checkAssignability(Tree.Term that, Node node) {
@@ -5625,7 +5822,8 @@ public class ExpressionVisitor extends Visitor {
                     if (!value.isVariable() && 
                             !value.isLate()) {
                         that.addError("value is not a variable: '" + 
-                                dec.getName(unit) + "'", 800);
+                                dec.getName(unit) + "'", 
+                                800);
                     }
                 }
                 else {
@@ -5636,7 +5834,9 @@ public class ExpressionVisitor extends Visitor {
             if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
                 Tree.QualifiedMemberOrTypeExpression qmte = 
                         (Tree.QualifiedMemberOrTypeExpression) that;
-                if (!(qmte.getMemberOperator() instanceof Tree.MemberOp)) {
+                Tree.MemberOperator mo = 
+                        qmte.getMemberOperator();
+                if (!(mo instanceof Tree.MemberOp)) {
                     that.addUnsupportedError("assignment to expression involving ?. or *. not supported");
                 }
             }
@@ -6104,7 +6304,8 @@ public class ExpressionVisitor extends Visitor {
         if (member!=null && notDirectlyInvoked) {
             if (inExtendsClause &&
                     constructorClass!=null &&
-                    member.getContainer().equals(constructorClass)) {
+                    member.getContainer()
+                        .equals(constructorClass)) {
                 that.addError("reference to class member from constructor extends clause");
             }
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -6135,24 +6336,31 @@ public class ExpressionVisitor extends Visitor {
         String name = name(id);
         TypedDeclaration member = 
                 getTypedDeclaration(that.getScope(), name, 
-                        that.getSignature(), that.getEllipsis(),
+                        that.getSignature(), 
+                        that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
-            if (!dynamic && !isNativeForWrongBackend() && error) {
+            if (!dynamic && 
+                    !isNativeForWrongBackend() && 
+                    error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
-                unit.getUnresolvedReferences().add(id);
+                unit.getUnresolvedReferences()
+                    .add(id);
             }
         }
         else {
             if (member.isNative()) {
-                member = (TypedDeclaration)nativeDeclaration(member);
+                member = (TypedDeclaration)
+                        nativeDeclaration(member);
             }
             if (member == null) {
                 that.addError("function or value does not have a proper native backend implementation: '" +
                         name + "'" /* , 100 */);
-                unit.getUnresolvedReferences().add(id);
-            } else {
+                unit.getUnresolvedReferences()
+                    .add(id);
+            }
+            else {
                 member = (TypedDeclaration) 
                         handleAbstraction(member, that);
                 that.setDeclaration(member);
@@ -6165,12 +6373,17 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private List<TypeParameter> getTypeParameters(Declaration member) {
-        return member instanceof Generic ? 
-                ((Generic) member).getTypeParameters() : 
-                Collections.<TypeParameter>emptyList();
+        if (member instanceof Generic) { 
+            Generic d = (Generic) member;
+            return d.getTypeParameters();
+        }
+        else {
+            return emptyList();
+        }
     }
-    
-    @Override public void visit(Tree.QualifiedMemberExpression that) {
+
+    @Override public void visit(
+            Tree.QualifiedMemberExpression that) {
         super.visit(that);
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
@@ -6180,8 +6393,9 @@ public class ExpressionVisitor extends Visitor {
         if (member!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
-            ProducedType pt = primary.getTypeModel()
-                    .resolveAliases(); //TODO: probably not necessary
+            ProducedType pt = 
+                    primary.getTypeModel()
+                        .resolveAliases(); //TODO: probably not necessary
             List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
                 typeArgs = getTypeArguments(tal, 
@@ -6205,7 +6419,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgumentsImplicit(that);
             }
-            handleStaticPrimaryImplicitTypeArguments(that, primary);
+            handleStaticPrimaryImplicitTypeArguments(that, 
+                    primary);
         }
     }
 
@@ -6218,10 +6433,13 @@ public class ExpressionVisitor extends Visitor {
             //without type arguments to the qualifying type
             Declaration dec = that.getDeclaration();
             if (!(dec instanceof Constructor || 
-                    dec!=null && dec.isStaticallyImportable())) {
+                    dec!=null && 
+                    dec.isStaticallyImportable())) {
                 Tree.StaticMemberOrTypeExpression smte =
-                        (Tree.StaticMemberOrTypeExpression) primary;
-                Tree.TypeArguments typeArgs = smte.getTypeArguments();
+                        (Tree.StaticMemberOrTypeExpression) 
+                            primary;
+                Tree.TypeArguments typeArgs = 
+                        smte.getTypeArguments();
                 TypeDeclaration type = 
                         (TypeDeclaration) smte.getDeclaration();
                 if (type!=null && 
@@ -6238,7 +6456,8 @@ public class ExpressionVisitor extends Visitor {
             boolean error) {
         Tree.Identifier id = that.getIdentifier();
         boolean nameNonempty = 
-                id!=null && !id.getText().equals("");
+                id!=null && 
+                !id.getText().equals("");
         if (nameNonempty && checkMember(that)) {
             Tree.Primary p = that.getPrimary();
             String name = name(id);
@@ -6257,12 +6476,14 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = false;
             }
             else {
-                ProducedType pt = p.getTypeModel()
-                        .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                ProducedType pt = 
+                        p.getTypeModel()
+                         .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
+                Scope scope = that.getScope();
                 ClassOrInterface ci = 
-                        getContainingClassOrInterface(that.getScope());
+                        getContainingClassOrInterface(scope);
                 if (ci!=null && 
                         d.inherits(ci) && 
                         !(d instanceof NothingType)) {
@@ -6282,8 +6503,8 @@ public class ExpressionVisitor extends Visitor {
                             signature, ellipsis, unit);
                 }
                 ambiguous = member==null && 
-                        d.isMemberAmbiguous(name, 
-                                unit, signature, ellipsis);
+                        d.isMemberAmbiguous(name, unit, 
+                                signature, ellipsis);
             }
             if (member==null) {
                 if (error) {
@@ -6293,26 +6514,33 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         that.addError("method or attribute does not exist: '" +
-                                name + "' in " + container, 100);
-                        unit.getUnresolvedReferences().add(id);
+                                name + "' in " + container, 
+                                100);
+                        unit.getUnresolvedReferences()
+                            .add(id);
                     }
                 }
             }
             else {
                 if (member.isNative()) {
-                    member = (TypedDeclaration)nativeDeclaration(member);
+                    member = (TypedDeclaration)
+                            nativeDeclaration(member);
                 }
                 if (member == null) {
-                    that.addError("method or attribute does not have a proper native backend implementation: '" +
-                            name + "' in " + container /*, 100 */);
-                    unit.getUnresolvedReferences().add(id);
-                } else {
+                    that.addError("method or attribute does not have a native implementation for this backend: '" +
+                            name + "' in " + container);
+                    unit.getUnresolvedReferences()
+                        .add(id);
+                }
+                else {
                     member = (TypedDeclaration) 
                             handleAbstraction(member, that);
                     that.setDeclaration(member);
                     resetSuperReference(that);
-                    boolean selfReference = isSelfReference(p);
-                    if (!selfReference && !member.isShared()) {
+                    boolean selfReference = 
+                            isSelfReference(p);
+                    if (!selfReference && 
+                            !member.isShared()) {
                         member.setOtherInstanceAccess(true);
                     }
                     if (error) {
@@ -6330,20 +6558,21 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean isSelfReference(Tree.Primary p) {
-        return 
-                p instanceof Tree.This ||
+        return p instanceof Tree.This ||
                 p instanceof Tree.Outer ||
                 p instanceof Tree.Super;
     }
 
-    private void checkSuperMember(Tree.QualifiedMemberOrTypeExpression that) {
+    private void checkSuperMember(
+            Tree.QualifiedMemberOrTypeExpression that) {
         Tree.Term t = eliminateParensAndWidening(that.getPrimary());
         if (t instanceof Tree.Super) {
             checkSuperInvocation(that);
         }
     }
 
-    private void typeArgumentsImplicit(Tree.StaticMemberOrTypeExpression that) {
+    private void typeArgumentsImplicit(
+            Tree.StaticMemberOrTypeExpression that) {
         Declaration declaration = that.getDeclaration();
         Generic dec = (Generic) declaration;
         StringBuilder params = new StringBuilder();
@@ -6384,12 +6613,16 @@ public class ExpressionVisitor extends Visitor {
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
+                String rtname = 
+                        receiverType.getDeclaration()
+                            .getName(unit);
                 that.addError("could not determine type of method or attribute reference: '" +
-                        member.getName(unit) + "' of '" + 
-                        receiverType.getDeclaration().getName(unit) + "'" + 
+                        member.getName(unit) + 
+                        "' of '" + rtname + "'" + 
                         getTypeUnknownError(fullType));
             }
-            that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
+            that.setTypeModel(accountForStaticReferenceType(that, 
+                    member, fullType));
             //}
         }
     }
@@ -6416,7 +6649,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary();
             ProducedReference target = primary.getTarget();
             return target==null ? 
-                    new UnknownType(unit).getType() : 
+                    unknownType() : 
                     target.getType();
         }
         else {
@@ -6482,7 +6715,7 @@ public class ExpressionVisitor extends Visitor {
                     //ordinary non-static, non-constructor member
                     ProducedReference target = p.getTarget();
                     if (target==null) {
-                        return new UnknownType(unit).getType();
+                        return unknownType();
                     }
                     else {
                         return getStaticReferenceType(type, 
@@ -6499,29 +6732,33 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType getStaticReferenceType(ProducedType type, ProducedType rt) {
         return producedType(unit.getCallableDeclaration(), type,
                 producedType(unit.getTupleDeclaration(), rt, rt, 
-                        unit.getType(unit.getEmptyDeclaration())));
+                        emptyType()));
     }
     
     private void visitBaseMemberExpression(
             Tree.StaticMemberOrTypeExpression that, 
-            TypedDeclaration member, List<ProducedType> typeArgs, 
+            TypedDeclaration member, 
+            List<ProducedType> typeArgs, 
             Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that)) {
             ProducedType outerType = 
-                    that.getScope().getDeclaringType(member);
+                    that.getScope()
+                        .getDeclaringType(member);
             ProducedTypedReference pr = 
                     member.getProducedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
             ProducedType fullType = pr.getFullType();
-            if (!dynamic && !isNativeForWrongBackend() && 
+            if (!dynamic && 
+                    !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
                         member.getName(unit) + "'" + 
                         getTypeUnknownError(fullType));
             }
-            if (dynamic && !isNativeForWrongBackend() && 
+            if (dynamic && 
+                    !isNativeForWrongBackend() && 
                     isTypeUnknown(fullType)) {
                 //deliberately throw away the partial
                 //type information we have
@@ -6542,16 +6779,17 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                typeArgs = getTypeArguments(tal, 
-                        type.getTypeParameters(), null);
+                List<TypeParameter> tps = 
+                        type.getTypeParameters();
+                typeArgs = getTypeArguments(tal, tps, null);
             }
             else {
                 typeArgs = inferFunctionRefTypeArgs(that);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
-                visitBaseTypeExpression(that, 
-                        type, typeArgs, tal);
+                visitBaseTypeExpression(that, type, 
+                        typeArgs, tal);
                 //otherwise infer type arguments later
             }
             else if (!that.getStaticMethodReferencePrimary()) {
@@ -6567,22 +6805,30 @@ public class ExpressionVisitor extends Visitor {
         String name = name(id);
         TypeDeclaration type = 
                 getTypeDeclaration(that.getScope(), name, 
-                        that.getSignature(), that.getEllipsis(), 
+                        that.getSignature(), 
+                        that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && !isNativeForWrongBackend() && error) {
-                that.addError("type does not exist: '" + name + "'", 102);
-                unit.getUnresolvedReferences().add(id);
+            if (!dynamic && 
+                    !isNativeForWrongBackend() && 
+                    error) {
+                that.addError("type does not exist: '" + 
+                        name + "'", 
+                        102);
+                unit.getUnresolvedReferences()
+                    .add(id);
             }
         }
         else {
             if (type.isNative()) {
-                type = (TypeDeclaration)nativeDeclaration(type);
+                type = (TypeDeclaration)
+                        nativeDeclaration(type);
             }
             if (type == null) {
-                that.addError("type does not have a proper native backend implementation: '" +
-                        name + "'" /* , 102 */);
-                unit.getUnresolvedReferences().add(id);
+                that.addError("type does not have a native backend implementation for this backend: '" +
+                        name + "'");
+                unit.getUnresolvedReferences()
+                    .add(id);
             } else {
                 type = (TypeDeclaration) 
                         handleAbstraction(type, that);
@@ -6590,7 +6836,8 @@ public class ExpressionVisitor extends Visitor {
                 if (error) {
                     if (checkConcreteClass(type, that)) {
                         if (checkSealedReference(type, that)) {
-                            checkBaseTypeAndConstructorVisibility(that, name, type);
+                            checkBaseTypeAndConstructorVisibility(that, 
+                                    name, type);
                         }
                     }
                 }
@@ -6647,7 +6894,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (type instanceof TypeParameter) {
-                if (((TypeParameter) type).getParameterList()==null) {
+                TypeParameter tp = (TypeParameter) type;
+                if (tp.getParameterList()==null) {
                     that.addError("type parameter cannot be instantiated: '" +
                             type.getName(unit) + "'");
                     return false;
@@ -6666,22 +6914,26 @@ public class ExpressionVisitor extends Visitor {
 
 	private boolean checkSealedReference(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
-	    if (type.isSealed() && !inSameModule(type) &&
-	    		(!that.getStaticMethodReferencePrimary())) {
+	    if (type.isSealed() && 
+	            !inSameModule(type) &&
+	    		!that.getStaticMethodReferencePrimary()) {
 	        String moduleName = 
 	                type.getUnit()
 	                    .getPackage()
 	                    .getModule()
 	                    .getNameAsString();
             if (type instanceof Constructor) {
-	            that.addError("invokes or references a sealed constructor in a different module: '" +
-	                    type.getName(unit) + "' of '" + 
-	                    type.getExtendedTypeDeclaration().getName(unit) + 
+	            String cname = 
+	                    type.getExtendedTypeDeclaration()
+	                        .getName(unit);
+                that.addError("invokes or references a sealed constructor in a different module: '" +
+	                    type.getName(unit) + "' of '" + cname + 
 	                    "' in '" + moduleName + "'");
 	        }
 	        else {
 	            that.addError("instantiates or references a sealed class in a different module: '" +
-	                    type.getName(unit) + "' in '" + moduleName + "'");
+	                    type.getName(unit) + 
+	                    "' in '" + moduleName + "'");
 	        }
 	    	return false;
 	    }
@@ -6722,7 +6974,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+    @Override public void visit(
+            Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
         Tree.Term p = that.getPrimary();
         while (p instanceof Tree.Expression &&
@@ -6744,7 +6997,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    void resetSuperReference(Tree.QualifiedMemberOrTypeExpression that) {
+    void resetSuperReference(
+            Tree.QualifiedMemberOrTypeExpression that) {
         //Just for the IDE!
         Tree.Term p = that.getPrimary();
         if (p instanceof Tree.Super) {
@@ -6752,7 +7006,8 @@ public class ExpressionVisitor extends Visitor {
             if (dec!=null) {
                 Tree.Super s = (Tree.Super) p;
                 TypeDeclaration td = 
-                        (TypeDeclaration) dec.getContainer();
+                        (TypeDeclaration) 
+                            dec.getContainer();
                 s.setDeclarationModel(td);
             }
         }
@@ -6768,12 +7023,14 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
-            ProducedType pt = primary.getTypeModel()
-                    .resolveAliases(); //TODO: probably not necessary
+            ProducedType pt = 
+                    primary.getTypeModel()
+                        .resolveAliases(); //TODO: probably not necessary
             List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                typeArgs = getTypeArguments(tal, 
-                        type.getTypeParameters(), pt);
+                List<TypeParameter> tps = 
+                        type.getTypeParameters();
+                typeArgs = getTypeArguments(tal, tps, pt);
             }
             else {
                 typeArgs = inferFunctionRefTypeArgs(that);
@@ -6781,19 +7038,20 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
-                    visitBaseTypeExpression(that, 
-                            type, typeArgs, tal);
+                    visitBaseTypeExpression(that, type, 
+                            typeArgs, tal);
                 }
                 else {
-                    visitQualifiedTypeExpression(that, 
-                            pt, type, typeArgs, tal);
+                    visitQualifiedTypeExpression(that, pt, 
+                            type, typeArgs, tal);
                 }
                 //otherwise infer type arguments later
             }
             else if (!that.getStaticMethodReferencePrimary()) {
                 typeArgumentsImplicit(that);
             }
-            handleStaticPrimaryImplicitTypeArguments(that, primary);
+            handleStaticPrimaryImplicitTypeArguments(that, 
+                    primary);
         }
     }
 
@@ -6819,12 +7077,14 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = false;
             }
             else {
-                ProducedType pt = p.getTypeModel()
-                        .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                ProducedType pt = 
+                        p.getTypeModel()
+                         .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
+                Scope scope = that.getScope();
                 ClassOrInterface ci = 
-                        getContainingClassOrInterface(that.getScope());
+                        getContainingClassOrInterface(scope);
                 if (ci!=null && 
                         d.inherits(ci) && 
                         !(d instanceof NothingType)) {
@@ -6855,25 +7115,30 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         that.addError("member type does not exist: '" +
-                                name + "' in " + container, 100);
-                        unit.getUnresolvedReferences().add(id);
+                                name + "' in " + container, 
+                                100);
+                        unit.getUnresolvedReferences()
+                            .add(id);
                     }
                 }
             }
             else {
                 if (type.isNative()) {
-                    type = (TypeDeclaration)nativeDeclaration(type);
+                    type = (TypeDeclaration)
+                            nativeDeclaration(type);
                 }
                 if (type == null) {
-                    that.addError("member type does not have a proper native backend implementation: '" +
-                            name + "' in " + container /*, 100 */);
-                    unit.getUnresolvedReferences().add(id);
+                    that.addError("member type does not have a native implementation for this backend: '" +
+                            name + "' in " + container);
+                    unit.getUnresolvedReferences()
+                        .add(id);
                 } else {
                     type = (TypeDeclaration) 
                             handleAbstraction(type, that);
                     that.setDeclaration(type);
                     resetSuperReference(that);
-                    if (!isSelfReference(p) && !type.isShared()) {
+                    if (!isSelfReference(p) && 
+                            !type.isShared()) {
                         type.setOtherInstanceAccess(true);
                     }
                     if (error) {
@@ -6902,13 +7167,26 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
         return packageQualified ||
-                (qmte.getStaticMethodReference() &&
-                        p instanceof Tree.StaticMemberOrTypeExpression &&
-                        ((Tree.StaticMemberOrTypeExpression) p).getDeclaration()!=null) ||
+                isResolvedStaticMethodRef(qmte) ||
                 pt!=null && 
                 //account for dynamic blocks
                 (!pt.isUnknown() || 
-                        qmte.getMemberOperator() instanceof Tree.SpreadOp);
+                        qmte.getMemberOperator() 
+                            instanceof Tree.SpreadOp);
+    }
+
+    private static boolean isResolvedStaticMethodRef(
+            Tree.QualifiedMemberOrTypeExpression qmte) {
+        Tree.Primary p = qmte.getPrimary();
+        if (qmte.getStaticMethodReference() &&
+                p instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression smte = 
+                    (Tree.StaticMemberOrTypeExpression) p;
+            return smte.getDeclaration()!=null;
+        }
+        else {
+            return false;
+        }
     }
     
     private TypeDeclaration getDeclaration(
@@ -6920,14 +7198,16 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary();
             TypeDeclaration td = (TypeDeclaration) 
                     primary.getDeclaration();
-            return td==null ? new UnknownType(unit) : td;
+            return td==null ? 
+                    new UnknownType(unit) : td;
         }
         else {
             return unwrap(pt, that).getDeclaration();
         }
     }
 
-    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
+    private boolean explicitTypeArguments
+            (Declaration dec, Tree.TypeArguments tal) {
         return !dec.isParameterized() || 
                 tal instanceof Tree.TypeArgumentList;
     }
@@ -6982,61 +7262,74 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.EntryType that) {
         super.visit(that);
         checkAssignable(that.getKeyType().getTypeModel(), 
-                unit.getType(unit.getObjectDeclaration()), 
-                that.getKeyType(), 
+                objectType(), that.getKeyType(), 
                 "entry key type must not be an optional type");
-//        checkAssignable(that.getValueType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
-//                that.getValueType(), "entry item type must not be an optional type");
     }
 
     private void visitQualifiedTypeExpression(
             Tree.QualifiedTypeExpression that,
-            ProducedType receivingType, TypeDeclaration memberType, 
-            List<ProducedType> typeArgs, Tree.TypeArguments tal) {
+            ProducedType receivingType, 
+            TypeDeclaration memberType, 
+            List<ProducedType> typeArgs, 
+            Tree.TypeArguments tal) {
         ProducedType receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, memberType, typeArgs, 
-                tal, that)) {
+        if (acceptsTypeArguments(receiverType, memberType, 
+                typeArgs, tal, that)) {
             ProducedType type = 
-                    receiverType.getTypeMember(memberType, typeArgs);
+                    receiverType.getTypeMember(memberType, 
+                            typeArgs);
             that.setTarget(type);
             ProducedType fullType =
-                    type.getFullType(wrap(type, receivingType, that));
-            if (!dynamic && !isNativeForWrongBackend() &&
+                    type.getFullType(wrap(type, 
+                            receivingType, that));
+            if (!dynamic && 
+                    !isNativeForWrongBackend() &&
                     !that.getStaticMethodReference() &&
                     memberType instanceof Class &&
                     !isAbstraction(memberType) &&
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
+                String rtname = 
+                        receiverType.getDeclaration()
+                            .getName(unit);
                 that.addError("could not determine type of member class reference: '" +
                         memberType.getName(unit)  + "' of '" + 
-                        receiverType.getDeclaration().getName(unit) + "'");
+                        rtname + "'");
             }
-            that.setTypeModel(accountForStaticReferenceType(that, memberType, fullType));
+            that.setTypeModel(accountForStaticReferenceType(that, 
+                    memberType, fullType));
         }
     }
     
     private void visitBaseTypeExpression(
             Tree.StaticMemberOrTypeExpression that, 
-            TypeDeclaration baseType, List<ProducedType> typeArgs, 
+            TypeDeclaration baseType, 
+            List<ProducedType> typeArgs, 
             Tree.TypeArguments tal) {
-        visitBaseTypeExpression(that, baseType, typeArgs, tal, null);
+        visitBaseTypeExpression(that, baseType, typeArgs, 
+                tal, null);
     }
     
     private void visitBaseTypeExpression(
             Tree.StaticMemberOrTypeExpression that, 
-            TypeDeclaration baseType, List<ProducedType> typeArgs, 
-            Tree.TypeArguments tal, ProducedType qt) {
-        if (acceptsTypeArguments(baseType, typeArgs, tal, that)) {
+            TypeDeclaration baseType, 
+            List<ProducedType> typeArgs, 
+            Tree.TypeArguments tal, 
+            ProducedType qt) {
+        if (acceptsTypeArguments(baseType, typeArgs, 
+                tal, that)) {
             ProducedType outerType = 
-                    that.getScope().getDeclaringType(baseType);
+                    that.getScope()
+                        .getDeclaringType(baseType);
             if (outerType==null) {
                 outerType = qt;
             }
             ProducedType type = 
-                    baseType.getProducedType(outerType, typeArgs);
+                    baseType.getProducedType(outerType, 
+                            typeArgs);
             ProducedType fullType = type.getFullType();
             that.setTypeModel(fullType);
             that.setTarget(type);
@@ -7052,10 +7345,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             ProducedType t = term.getTypeModel();
-            if (t==null) {
-                //that.addError("could not determine type of expression");
-            }
-            else {
+            if (t!=null) {
                 that.setTypeModel(t);
             }
         }
@@ -7083,7 +7373,8 @@ public class ExpressionVisitor extends Visitor {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface cci = 
-                            (ClassOrInterface) ci.getContainer();
+                            (ClassOrInterface) 
+                                ci.getContainer();
                     that.setDeclarationModel(cci);
                     that.setTypeModel(intersectionOfSupertypes(cci));
                 }
@@ -7108,7 +7399,8 @@ public class ExpressionVisitor extends Visitor {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface cci = 
-                            (ClassOrInterface) ci.getContainer();
+                            (ClassOrInterface) 
+                                ci.getContainer();
                     that.setDeclarationModel(cci);
                     that.setTypeModel(cci.getType());
                 }
@@ -7139,7 +7431,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.NamedArgumentList nal = 
                     that.getNamedArgumentList();
             if (nal!=null) {
-                for (Tree.NamedArgument na: nal.getNamedArguments()) {
+                for (Tree.NamedArgument na: 
+                        nal.getNamedArguments()) {
                     if (na instanceof Tree.SpecifiedArgument) {
                         if (na.getIdentifier()==null) {
                             na.addError("missing argument name in dynamic instantiation expression");
@@ -7164,7 +7457,7 @@ public class ExpressionVisitor extends Visitor {
             tt = getTupleType(pas, unit, true);
         }
         else {
-            tt = unit.getType(unit.getEmptyDeclaration());
+            tt = emptyType();
         }
         if (tt!=null) {
             that.setTypeModel(tt);
@@ -7186,12 +7479,12 @@ public class ExpressionVisitor extends Visitor {
             if (tt!=null) {
                 st = tt.getSupertype(unit.getIterableDeclaration());
                 if (st==null) {
-                    st = unit.getIterableType(new UnknownType(unit).getType());
+                    st = unit.getIterableType(unknownType());
                 }
             }
         }
         else {
-            st = unit.getIterableType(unit.getNothingDeclaration().getType());
+            st = unit.getIterableType(nothingType());
         }
         if (st!=null) {
             that.setTypeModel(st);
@@ -7201,41 +7494,21 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    /*private ProducedType getGenericElementType(List<Tree.Expression> es,
-            Tree.Ellipsis ell) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        for (int i=0; i<es.size(); i++) {
-            Tree.Expression e = es.get(i);
-            if (e.getTypeModel()!=null) {
-                ProducedType et = e.getTypeModel();
-                if (i==es.size()-1 && ell!=null) {
-                    ProducedType it = unit.getIteratedType(et);
-                    if (it==null) {
-                        ell.addError("last element expression is not iterable: " +
-                                et.getProducedTypeName(unit) + " is not an iterable type");
-                    }
-                    else {
-                        addToUnion(list, it);
-                    }
-                }
-                else {
-                    addToUnion(list, unit.denotableType(e.getTypeModel()));
-                }
-            }
-        }
-        if (list.isEmpty()) {
-            return unit.getType(unit.getBooleanDeclaration());
-        }
-        else if (list.size()==1) {
-            return list.get(0);
-        }
-        else {
-            UnionType ut = new UnionType(unit);
-            ut.setExtendedType( unit.getType(unit.getObjectDeclaration()) );
-            ut.setCaseTypes(list);
-            return ut.getType(); 
-        }
-    }*/
+    private ProducedType nothingType() {
+        return unit.getNothingDeclaration().getType();
+    }
+
+    private ProducedType unknownType() {
+        return new UnknownType(unit).getType();
+    }
+
+    private ProducedType throwableType() {
+        return unit.getType(unit.getThrowableDeclaration());
+    }
+
+    private ProducedType exceptionType() {
+        return unit.getType(unit.getExceptionDeclaration());
+    }
 
     @Override public void visit(Tree.CatchVariable that) {
         super.visit(that);
@@ -7243,34 +7516,25 @@ public class ExpressionVisitor extends Visitor {
         if (var!=null) {
             Tree.Type vt = var.getType();
             if (vt instanceof Tree.LocalModifier) {
-                ProducedType et = 
-                        unit.getType(unit.getExceptionDeclaration());
+                ProducedType et = exceptionType();
                 vt.setTypeModel(et);
                 var.getDeclarationModel().setType(et);
             }
             else {
-                ProducedType tt = 
-                        unit.getType(unit.getThrowableDeclaration());
-                checkAssignable(vt.getTypeModel(), tt, vt, 
+                checkAssignable(vt.getTypeModel(), 
+                        throwableType(), vt, 
                         "catch type must be a throwable type");
-//                TypeDeclaration d = vt.getTypeModel().getDeclaration();
-//                if (d instanceof IntersectionType) {
-//                    vt.addUnsupportedError("intersection types in catch not yet supported");
-//                }
-//                else if (d.isParameterized()) {
-//                    vt.addUnsupportedError("parameterized types in catch not yet supported");
-//                }
             }
         }
     }
-    
+
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         for (Tree.Expression e: that.getExpressions()) {
             ProducedType et = e.getTypeModel();
             if (!isTypeUnknown(et)) {
                 checkAssignable(et, 
-                        unit.getType(unit.getObjectDeclaration()), e, 
+                        objectType(), e, 
                         "interpolated expression must not be an optional type");
             }
         }
@@ -7294,14 +7558,17 @@ public class ExpressionVisitor extends Visitor {
         if (result.codePointCount(1, result.length()-1)!=1) {
             that.addError("character literal must contain exactly one character");
         }
-        setLiteralType(that, unit.getCharacterDeclaration());
+        setLiteralType(that, 
+                unit.getCharacterDeclaration());
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
-        setLiteralType(that, unit.getStringDeclaration());
+        setLiteralType(that, 
+                unit.getStringDeclaration());
     }
     
-    private void setLiteralType(Tree.Atom that, TypeDeclaration languageType) {
+    private void setLiteralType(Tree.Atom that, 
+            TypeDeclaration languageType) {
         that.setTypeModel(unit.getType(languageType));
     }
     
@@ -7314,7 +7581,8 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.MatchCase that) {
         super.visit(that);
         for (Tree.Expression e: 
-                that.getExpressionList().getExpressions()) {
+                that.getExpressionList()
+                    .getExpressions()) {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
@@ -7364,13 +7632,12 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
             ProducedType ut = 
-                    unionType(unit.getType(unit.getNullDeclaration()), 
-                            unit.getType(unit.getIdentifiableDeclaration()), 
+                    unionType(nullType(), identifiableType(), 
                             unit);
             TypeDeclaration dec = t.getDeclaration();
-            if ((!dec.isToplevel() && 
-                        !dec.isStaticallyImportable()) || 
-                    !dec.isAnonymous()) {
+            if (!dec.isAnonymous() || 
+                    (!dec.isToplevel() && 
+                     !dec.isStaticallyImportable())) {
                 e.addError("case must refer to a toplevel object declaration or literal value");
             }
             else {
@@ -7382,7 +7649,7 @@ public class ExpressionVisitor extends Visitor {
             e.addError("case must be a literal value or refer to a toplevel object declaration");
         }
     }
-    
+
     @Override
     public void visit(Tree.IsCase that) {
         Tree.Type t = that.getType();
@@ -8678,7 +8945,7 @@ public class ExpressionVisitor extends Visitor {
                 if ( param.isSelfType() && args.size()>i ) {
                     ProducedType arg = args.get(i);
                     if (arg==null) arg = 
-                            new UnknownType(unit).getType();
+                            unknownType();
                     TypeDeclaration std = 
                             param.getSelfTypedDeclaration();
                     ProducedType at;
@@ -9283,11 +9550,16 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private boolean isNativeForWrongBackend() {
-        return inBackend != null && !backendSupport.supportsBackend(inBackend);
+        return inBackend != null && 
+                !backendSupport.supportsBackend(inBackend);
     }
     
     private Declaration nativeDeclaration(Declaration decl) {
-        Declaration d = getNativeDeclaration(decl, inBackend != null ? inBackend.backendSupport : backendSupport);
+        Declaration d = 
+                getNativeDeclaration(decl, 
+                        inBackend != null ? 
+                                inBackend.backendSupport : 
+                                backendSupport);
         if (d == null) {
             d = getNativeDeclaration(decl, Backend.None);
         }
