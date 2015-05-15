@@ -1130,7 +1130,7 @@ shared interface Iterable<out Element=Anything,
      This expression determines if a stream is monotonically
      increasing:
      
-         every { for (pair in nums.paired) pair[0]<pair[1] }
+         every { for ([x, y] in nums.paired) x < y }
      
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`."
