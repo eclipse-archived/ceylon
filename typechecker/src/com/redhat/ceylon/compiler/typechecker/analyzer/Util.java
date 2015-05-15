@@ -320,11 +320,15 @@ public class Util {
         }
     }
     
-    private static String message(ProducedType type, String problem, 
-            ProducedType otherType, Unit unit) {
-        String unknownTypeError = type.getFirstUnknownTypeError(true);
-        String typeName = type.getProducedTypeName(unit);
-        String otherTypeName = otherType.getProducedTypeName(unit);
+    private static String message(ProducedType type, 
+            String problem, ProducedType otherType, 
+            Unit unit) {
+        String unknownTypeError = 
+                type.getFirstUnknownTypeError(true);
+        String typeName = 
+                type.getProducedTypeName(unit);
+        String otherTypeName = 
+                otherType.getProducedTypeName(unit);
         if (otherTypeName.equals(typeName)) {
             typeName = type.getProducedTypeQualifiedName();
             otherTypeName = otherType.getProducedTypeQualifiedName();
