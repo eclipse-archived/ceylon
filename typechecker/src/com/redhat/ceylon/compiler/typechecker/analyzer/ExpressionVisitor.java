@@ -37,6 +37,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefin
 import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParameters;
@@ -8397,6 +8398,8 @@ public class ExpressionVisitor extends Visitor {
             if (tal instanceof Tree.TypeArgumentList &&
                     dec instanceof Value) {
                 Value td = (Value) dec;
+                Tree.TypeArgumentList list = 
+                        (Tree.TypeArgumentList) tal;
                 ProducedType type = td.getType();
                 if (type.isTypeConstructor()) {
                     List<TypeParameter> typeParameters = 
@@ -8416,7 +8419,12 @@ public class ExpressionVisitor extends Visitor {
                             //TODO: get the right error node!
                             for (ProducedType st: 
                                     param.getSatisfiedTypes()) {
-                                checkAssignable(arg, st, tal, 
+                                ProducedType bound = 
+                                        st.substitute(getTypeArgumentMap(
+                                                type.getTypeConstructorParameter(), 
+                                                null, typeArguments));
+                                checkAssignable(arg, bound, 
+                                        list.getTypes().get(i), 
                                         "argument not assignable to upper bound of type parameter '" +
                                                 param.getName() + "'");
                             }

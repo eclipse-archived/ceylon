@@ -22,5 +22,8 @@ shared void run() {
     @error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
     <T> => T(T) funcRef = func;
     <T> => T(T) given T satisfies String funcRefOk = func;
+    
+    <Y> => Y(Y,Y) given Y satisfies Numeric<Y> multiply = times;
+    Float z = multiply<Float>(1.0, 2.0);
 
 }
