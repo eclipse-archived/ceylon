@@ -55,4 +55,21 @@ class DefaultTypeArgs() {
     @type:"Set<Object>" Set<> set1 = nothing;
     @type:"Set<Object>" Set set2 = nothing;
     
+    shared void run() { // keep this method
+        class FooBar<Bar=String>() { 
+            shared object b {
+                shared variable Bar? c = null;
+            }
+        }
+        @error FooBar<Float>().b.c = "aaa";
+    }
+    
+    class FooBar<Bar=String>() { 
+        shared object b {
+            shared variable Bar? c = null;
+        }
+    }
+    
+    @error void x() => FooBar<Float>().b.c = "aaa";
+    
 }
