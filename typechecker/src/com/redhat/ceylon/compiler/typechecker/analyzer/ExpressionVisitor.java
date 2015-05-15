@@ -3348,9 +3348,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.InvocationExpression that, Declaration dec,
             Tree.StaticMemberOrTypeExpression term, 
             ProducedType qt) {
+        Tree.TypeArguments tas = term.getTypeArguments();
         if (dec instanceof Generic) {
             Generic generic = (Generic) dec;
-            Tree.TypeArguments tas = term.getTypeArguments();
             List<ProducedType> typeArgs;
             if (tas instanceof Tree.InferredTypeArguments) {
                 typeArgs = getInferredTypeArguments(that, 
@@ -3365,6 +3365,18 @@ public class ExpressionVisitor extends Visitor {
             return typeArgs;
         }
         else {
+            if (tas instanceof Tree.TypeArgumentList &&
+                    dec instanceof Value) {
+                Value td = (Value) dec;
+                ProducedType type = td.getType();
+                if (type.isTypeConstructor()) {
+                    List<TypeParameter> typeParameters = 
+                            type.getTypeConstructorParameter()
+                                .getTypeParameters();
+                    return getTypeArguments(tas, 
+                            typeParameters, qt);
+                }
+            }
             return emptyList();
         }
     }
@@ -6789,6 +6801,14 @@ public class ExpressionVisitor extends Visitor {
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
             ProducedType fullType = pr.getFullType();
+            if (fullType!=null &&
+                    fullType.isTypeConstructor() && 
+                    tal instanceof Tree.TypeArgumentList) {
+                //TODO: it's ugly to do this here, better to 
+                //      suck it into ProducedTypedReference
+                fullType = fullType.getDeclaration()
+                        .getProducedType(outerType, typeArgs);
+            }
             if (!dynamic && 
                     !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
@@ -8374,6 +8394,37 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
+            if (tal instanceof Tree.TypeArgumentList &&
+                    dec instanceof Value) {
+                Value td = (Value) dec;
+                ProducedType type = td.getType();
+                if (type.isTypeConstructor()) {
+                    List<TypeParameter> typeParameters = 
+                            type.getTypeConstructorParameter()
+                                .getTypeParameters();
+                    int size = typeArguments.size();
+                    if (size != typeParameters.size()) {
+                        tal.addError("wrong number of type arguments: type constructor requires " + 
+                                size + " type arguments");
+                    }
+                    else {
+                        for (int i=0; i<size; i++) {
+                            ProducedType arg = 
+                                    typeArguments.get(i);
+                            TypeParameter param = 
+                                    typeParameters.get(i);
+                            //TODO: get the right error node!
+                            for (ProducedType st: 
+                                    param.getSatisfiedTypes()) {
+                                checkAssignable(arg, st, tal, 
+                                        "argument not assignable to upper bound of type parameter '" +
+                                                param.getName() + "'");
+                            }
+                        }
+                    }
+                    return true;
+                }
+            }
             boolean empty = typeArguments.isEmpty();
             if (!empty || 
                     tal instanceof Tree.TypeArgumentList) {
@@ -8395,13 +8446,17 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration atd = 
                     argType.getDeclaration();
             if (atd instanceof UnionType) {
-                for (ProducedType ct: atd.getCaseTypes()) {
-                    checkTypeConstructorParam(param, ct, argNode);
+                for (ProducedType ct: 
+                        atd.getCaseTypes()) {
+                    checkTypeConstructorParam(param, 
+                            ct, argNode);
                 }
             }
             else if (atd instanceof IntersectionType) {
-                for (ProducedType st: atd.getSatisfiedTypes()) {
-                    checkTypeConstructorParam(param, st, argNode);
+                for (ProducedType st: 
+                        atd.getSatisfiedTypes()) {
+                    checkTypeConstructorParam(param, 
+                            st, argNode);
                 }
             }
             else if (atd instanceof NothingType) {
@@ -8435,25 +8490,31 @@ public class ExpressionVisitor extends Visitor {
                     if (paramParam.isCovariant() &&
                             !argParam.isCovariant()) {
                         argNode.addError("argument type constructor is not covariant: '" +
-                                argParam.getName() + "' of '" + atd.getName(unit) + 
+                                argParam.getName() + "' of '" + 
+                                atd.getName(unit) + 
                                 "' must have the same variance as '" +
-                                paramParam.getName() + "' of '" + param.getName(unit) + 
+                                paramParam.getName() + "' of '" + 
+                                param.getName(unit) + 
                                 "'");
                     }
                     else if (paramParam.isContravariant() &&
                             !argParam.isContravariant()) {
                         argNode.addError("argument type constructor is not contravariant: '" +
-                                argParam.getName() + "' of '" + atd.getName(unit) + 
+                                argParam.getName() + "' of '" + 
+                                atd.getName(unit) + 
                                 "' must have the same variance as '" +
-                                paramParam.getName() + "' of '" + param.getName(unit) + 
+                                paramParam.getName() + "' of '" + 
+                                param.getName(unit) + 
                                 "'");
                     }
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
                         argNode.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
-                                argParam.getName() + "' of '" + atd.getName(unit) + 
+                                argParam.getName() + "' of '" + 
+                                atd.getName(unit) + 
                                 "' does accept all type arguments accepted by '" + 
-                                paramParam.getName() + "' of '" + param.getName(unit) + 
+                                paramParam.getName() + "' of '" + 
+                                param.getName(unit) + 
                                 "'");
                     }
                 }
@@ -8466,7 +8527,8 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> typeArguments, ProducedType argType,
             TypeParameter param) {
         // Moved there because used in the metamodel
-        return ModelUtil.argumentSatisfiesEnumeratedConstraint(receiver, member, typeArguments, argType, param);
+        return ModelUtil.argumentSatisfiesEnumeratedConstraint(receiver, 
+                member, typeArguments, argType, param);
     }
 
     private void visitExtendedOrAliasedType(Tree.SimpleType et,
