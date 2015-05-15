@@ -13,7 +13,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -47,6 +47,7 @@ public class Stitcher {
     public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
     private static JsIdentifierNames names;
     private static Module mod;
+    private static final HashSet<File> compiledFiles = new HashSet<>(256);
 
     private static int compileLanguageModule(final String line, final Writer writer)
             throws IOException {
@@ -90,23 +91,52 @@ public class Stitcher {
             filename = filename.trim();
             final boolean isJsSrc = filename.endsWith(".js");
             final boolean isDir = filename.endsWith("/");
-            final File src = new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
+            final boolean exclude = filename.charAt(0)=='-';
+            if (exclude) {
+                filename = filename.substring(1);
+            }
+            final File src = ".".equals(filename) ? clSrcDir : new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
                     isJsSrc || isDir ? filename :
                     String.format("%s.ceylon", filename));
             if (src.exists() && src.isFile() && src.canRead()) {
-                includes.add(src);
+                if (exclude) {
+                    System.out.println("EXCLUDING " + src);
+                    compiledFiles.add(src);
+                } else if (!compiledFiles.contains(src)) {
+                    includes.add(src);
+                    compiledFiles.add(src);
+                }
             } else if (src.exists() && src.isDirectory()) {
-                includes.addAll(Arrays.asList(src.listFiles()));
+                for (File sub : src.listFiles()) {
+                    if (!compiledFiles.contains(sub)) {
+                        includes.add(sub);
+                        compiledFiles.add(sub);
+                    }
+                }
             } else {
                 final File src2 = new File(LANGMOD_JS_SRC2, isDir ? filename : String.format("%s.ceylon", filename));
                 if (src2.exists() && src2.isFile() && src2.canRead()) {
-                    includes.add(src2);
+                    if (exclude) {
+                        System.out.println("EXCLUDING " + src);
+                        compiledFiles.add(src2);
+                    } else if (!compiledFiles.contains(src2)) {
+                        includes.add(src2);
+                        compiledFiles.add(src2);
+                    }
                 } else if (src2.exists() && src2.isDirectory()) {
-                    includes.addAll(Arrays.asList(src2.listFiles()));
+                    for (File sub : src2.listFiles()) {
+                        if (!compiledFiles.contains(sub)) {
+                            includes.add(sub);
+                            compiledFiles.add(sub);
+                        }
+                    }
                 } else {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
                 }
             }
+        }
+        if (includes.isEmpty()) {
+            return 0;
         }
         //Compile only the files specified in the line
         //Set this before typechecking to share some decls that otherwise would be private
