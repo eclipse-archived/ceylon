@@ -128,11 +128,12 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectDefinition that) {
         visitLocalDecl(that);
         // use the same qualifier for the object type
-        if(that.getAnonymousClass() != null
-                && that.getDeclarationModel() != null) {
-            that.getAnonymousClass().setQualifier(that.getDeclarationModel().getQualifier());
+        Class c = that.getAnonymousClass();
+        Value v = that.getDeclarationModel();
+        if (c!=null && v!=null) {
+            c.setQualifier(v.getQualifier());
         }
-
+        
         Map<String,Integer> oldLocalNames = localNames;
         localNames = new HashMap<String,Integer>();
 
@@ -145,11 +146,12 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectArgument that) {
         visitLocalDecl(that);
         // use the same qualifier for the object type
-        if (that.getAnonymousClass() != null
-                && that.getDeclarationModel() != null) {
-            that.getAnonymousClass().setQualifier(that.getDeclarationModel().getQualifier());
+        Class c = that.getAnonymousClass();
+        Value v = that.getDeclarationModel();
+        if (c != null && v != null) {
+            c.setQualifier(v.getQualifier());
         }
-
+        
         Map<String,Integer> oldLocalNames = localNames;
         localNames = new HashMap<String,Integer>();
 
@@ -245,7 +247,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
          * starts with a number because there's heuristics in the runtime model that local types
          * must start with a number.
          */
-        if(model != null && model.isToplevel()){
+        if (model != null && model.isToplevel()){
             Map<String,Integer> oldLocalNames = localNames;
             String oldPrefix = prefix;
             localNames = new HashMap<String,Integer>();
@@ -255,7 +257,8 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         
             localNames = oldLocalNames;
             prefix = oldPrefix;
-        }else{
+        }
+        else {
             super.visit(that);
         }
     }

@@ -806,12 +806,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Scope o = enterScope(i);
         super.visit(that);
         exitScope(o);
-        /*if (!i.isToplevel()) {
-            that.addWarning("inner interfaces are not yet supported");
-        }*/
-        /*if ( that.getCaseTypes()!=null ) {
-            that.addWarning("interfaces with enumerated cases not yet supported");
-        }*/
     }
     
     @Override
@@ -934,9 +928,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        /*if (that.getClassBody()==null) {
-            that.addError("missing object body");
-        }*/
         Class c = new Class();
         defaultExtendedToBasic(c);
         c.setAnonymous(true);
@@ -945,8 +936,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
-        that.getType().setTypeModel(c.getType());
-        v.setType(c.getType());
+        ProducedType t = c.getType();
+        that.getType().setTypeModel(t);
+        v.setType(t);
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -957,9 +949,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        /*if (that.getClassBody()==null) {
-            that.addError("missing named argument body");
-        }*/
         Class c = new Class();
         defaultExtendedToBasic(c);
         c.setAnonymous(true);
@@ -968,8 +957,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitArgument(that, v);
-        that.getType().setTypeModel(c.getType());
-        v.setType(c.getType());
+        ProducedType t = c.getType();
+        that.getType().setTypeModel(t);
+        v.setType(t);
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -977,9 +967,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.ObjectExpression that) {
-        /*if (that.getClassBody()==null) {
-            that.addError("missing named argument body");
-        }*/
         Class c = new Class();
         c.setName("anonymous#"+fid++);
         c.setNamed(false);
@@ -1006,9 +993,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             if (sie==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
-            /*else {
-                that.addError("interfaces may not have simple attributes");
-            }*/
         }
         if (v.isLate()) {
             if (v.isFormal()) {
@@ -1237,10 +1221,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (p.isSequenced() && p.isDefaulted()) {
             getSpecifier(that).addError("variadic parameter may not specify default argument");
         }
-        if (p.isSequenced() && 
-                ((Tree.SequencedType) type).getAtLeastOne()) {
-//            that.getType().addWarning("nonempty variadic parameters are not yet supported");
-            p.setAtLeastOne(true);
+        if (p.isSequenced()) {
+            Tree.SequencedType st = 
+                    (Tree.SequencedType) type;
+            if (st.getAtLeastOne()) {
+                p.setAtLeastOne(true);
+            }
         }
         if (v.isFormal()) {
             that.addError("parameters may not be annotated formal", 1312);
@@ -1689,14 +1675,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         
-        /*if ( !d.isFormal() && 
-                d.getContainer() instanceof Interface && 
-                !(that instanceof Tree.TypeParameterDeclaration) &&
-                !(that instanceof Tree.ClassDeclaration) &&
-                !(that instanceof Tree.InterfaceDeclaration)) {
-            that.addWarning("concrete members of interfaces not yet supported");
-        }*/
-        
     }
         
     @Override public void visit(Tree.TypedArgument that) {
@@ -1704,7 +1682,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 beginDeclaration(that.getDeclarationModel());
         super.visit(that);
         endDeclaration(d);
-        //that.addWarning("declaration-style named arguments not yet supported");
     }
 
     @Override
@@ -1801,28 +1778,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         that.addUnsupportedError("satisfies conditions are not yet supported");
     }
     
-    /*@Override
-    public void visit(Tree.Comprehension that) {
-        super.visit(that);
-        that.addWarning("comprehensions are not yet supported");
-    }*/
-    
     @Override
     public void visit(Tree.Assertion that) {
         Declaration d = beginDeclaration(null);
         super.visit(that);
         endDeclaration(d);
     }    
-    
-    /*@Override
-    public void visit(Tree.AnnotationList that) {
-        Scope s = scope;
-        if (declaration instanceof Scope) {
-            scope = scope.getContainer();
-        }
-        super.visit(that);
-        scope = s;
-    }*/
     
     @Override
     public void visit(Tree.Annotation that) {

@@ -354,9 +354,7 @@ public class TypeVisitor extends Visitor {
                     //it is legal to import an object declaration 
                     //in the current package without providing an
                     //alias:
-                    !(idec instanceof Value && 
-                            ((Value) idec).getTypeDeclaration().isAnonymous() &&
-                            ((Value) idec).getTypeDeclaration().equals(d))) {
+                    !isLegalAliasFreeImport(d, idec)) {
                 if (alias==null) {
                     id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
@@ -368,6 +366,18 @@ public class TypeVisitor extends Visitor {
         }
         return false;
     }
+
+    private static boolean isLegalAliasFreeImport
+            (Declaration dec, Declaration importedDec) {
+        if (importedDec instanceof Value) {
+            Value value = (Value) importedDec;
+            TypeDeclaration td = value.getTypeDeclaration();
+            return td.isAnonymous() && td.equals(dec);
+        }
+        else {
+            return false;
+        }
+    }
     
     private void importMembers(Tree.ImportMemberOrType member, 
             Declaration d) {
@@ -375,8 +385,8 @@ public class TypeVisitor extends Visitor {
                 member.getImportMemberOrTypeList();
         if (imtl!=null) {
             if (d instanceof Value) {
-                TypeDeclaration td = 
-                        ((Value) d).getTypeDeclaration();
+                Value v = (Value) d;
+                TypeDeclaration td = v.getTypeDeclaration();
                 if (td.isAnonymous()) {
                     d = td;
                 }
@@ -386,14 +396,15 @@ public class TypeVisitor extends Visitor {
                 ImportList til = imtl.getImportList();
                 TypeDeclaration td = (TypeDeclaration) d;
                 til.setImportedScope(td);
-                for (Tree.ImportMemberOrType submember: 
-                        imtl.getImportMemberOrTypes()) {
-                    names.add(importMember(submember, td, til));
+                List<Tree.ImportMemberOrType> imts = 
+                        imtl.getImportMemberOrTypes();
+                for (Tree.ImportMemberOrType imt: imts) {
+                    names.add(importMember(imt, td, til));
                 }
                 if (imtl.getImportWildcard()!=null) {
                     importAllMembers(td, names, til);
                 }
-                else if (imtl.getImportMemberOrTypes().isEmpty()) {
+                else if (imts.isEmpty()) {
                     imtl.addError("empty import list");
                 }
             }
@@ -422,7 +433,8 @@ public class TypeVisitor extends Visitor {
     
     private String importMember(Tree.ImportMemberOrType member,
             Package importedPackage, ImportList il) {
-        Tree.Identifier id = member.getIdentifier();
+        Tree.Identifier id = 
+                member.getIdentifier();
         if (id==null) {
             return null;
         }
@@ -444,14 +456,16 @@ public class TypeVisitor extends Visitor {
                 importedPackage.getMember(name, null, false);
         if (d==null) {
             id.addError("imported declaration not found: '" + 
-                    name + "'", 100);
+                    name + "'", 
+                    100);
             unit.getUnresolvedReferences().add(id);
         }
         else {
             if (!declaredInPackage(d, unit)) {
                 if (!d.isShared()) {
                     id.addError("imported declaration is not shared: '" +
-                            name + "'", 400);
+                            name + "'", 
+                            400);
                 }
                 else if (d.isPackageVisibility()) {
                     id.addError("imported package private declaration is not visible: '" +
@@ -478,7 +492,8 @@ public class TypeVisitor extends Visitor {
     
     private String importMember(Tree.ImportMemberOrType member, 
             TypeDeclaration td, ImportList il) {
-        Tree.Identifier id = member.getIdentifier();
+        Tree.Identifier id = 
+                member.getIdentifier();
         if (id==null) {
             return null;
         }
@@ -496,11 +511,14 @@ public class TypeVisitor extends Visitor {
         if (m==null) {
             id.addError("imported declaration not found: '" + 
                     name + "' of '" + 
-                    td.getName() + "'", 100);
+                    td.getName() + "'", 
+                    100);
             unit.getUnresolvedReferences().add(id);
         }
         else {
-            for (Declaration d: m.getContainer().getMembers()) {
+            List<Declaration> members = 
+                    m.getContainer().getMembers();
+            for (Declaration d: members) {
                 String dn = d.getName();
                 if (dn!=null &&
                         dn.equals(name) && 
@@ -516,7 +534,8 @@ public class TypeVisitor extends Visitor {
             if (!m.isShared()) {
                 id.addError("imported declaration is not shared: '" +
                         name + "' of '" + 
-                        td.getName() + "'", 400);
+                        td.getName() + "'", 
+                        400);
             }
             else if (!declaredInPackage(m, unit)) {
                 if (m.isPackageVisibility()) {
@@ -1177,6 +1196,9 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
+        ProducedType type = o.getType();
+        that.getDeclarationModel().setType(type);
+        that.getType().setTypeModel(type);
     }
 
     @Override 
@@ -1186,6 +1208,9 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
+        ProducedType type = o.getType();
+        that.getDeclarationModel().setType(type);
+        that.getType().setTypeModel(type);
     }
 
     @Override 
