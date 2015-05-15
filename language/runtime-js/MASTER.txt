@@ -1,12 +1,38 @@
-#the Ceylon language module
-COMPILE core_functions.js, is-op.js, exists-nonempty.js, type_arithmetic.js, Anything.js, Object, Null, Identifiable, Callable, callables.js, dynamic_functions.js
-COMPILE Basic, Throwable, printStackTrace, Exception, Comparison, identityHash
-COMPILE Iterable, comprehensions.js, Correspondence, Finished, Sequential, Sequence, Empty, Boolean.js, tuples.js, impl/
-COMPILE Binary, Usable, Destroyable, Obtainable, Comparable, Invertible, Summable, Ordinal, Enumerable, Numeric, Exponentiable, Integral, Scalable, Number, numbers.js, OverflowException, InitializationError, Resource, Ranged, Iterator, Collection, Category, List, Array, sequences.js, ArraySequence, Tuple, ChainedIterator, CycledIterator, Entry, Byte, Set, Range, Span, Measure, Singleton, AssertionError, Map, String, strings.js, Character, StringBuilder, any, byDecreasing, byIncreasing, byItem, byKey, count, emptyOrSingleton, curry, apply, comparing, functions, every, forItem, forKey, concatenate, expand, interleave, corresponding, loop, largest, max, min, smallest, sum, product, pairs, zip, unzip, print, nothing, identical, compose, shuffle, flatten, unflatten, plus, times, sort, and, or, not, arrayOfSize, annotations
-COMPILE process.js, process, language, system, operatingSystem, runtime, parseInteger, parseFloat, formatInteger, parseBoolean, className
-#metamodel
-COMPILE Annotated, Annotation, ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation
+This file contains the list of files to compile for the language module.
+The order in which certain things are defined in the language module is important,
+so the files will be compiled in the order specified here.
+
+Files with no extension are looked up in ../ceylon.language/src/ceylon/language first and then
+in ../ceylon.language/runtime-js/ceylon/language
+
+Files with js extension are looked up in ../ceylon.language/runtime-js
+
+To exclude a file, prepend "-" to its name. To compile all the Ceylon files in a directory,
+specify the directory name with a "/" at the end.
+
+Only the lines beginning with COMPILE are read by the Stitcher program in ceylon-js.
+
+So, we begin with some core stuff...
+
+COMPILE core_functions.js, is-op.js, exists-nonempty.js, type_arithmetic.js, -Anything, Anything.js, Object, Null, Identifiable, Callable, callables.js, dynamic_functions.js
+
+...and some not-so-core stuff that needs to be defined early on, with some native code in between.
+
+COMPILE Basic, Throwable, Exception, Comparison, Iterable, comprehensions.js, -Boolean, Boolean.js, Tuple, tuples.js, impl/
+COMPILE Numeric, Integral, Scalable, Number, -Integer, -Float, numbers.js, Array, sequences.js, String, strings.js
+COMPILE process.js
+
+Now compile the rest of the language module, except the files we already compiled before...
+
+COMPILE .
+
+Now compile the metamodel packages, also with some native code in between...
+
 COMPILE modules.js, meta/, meta/model/ClassOrInterface, ClassOrInterface_addons.js, meta/model/Member, Member_addons.js, meta/model/, AppliedAttribute.js, meta/declaration/NestableDeclaration, NestableDeclaration_addons.js, meta/declaration/GenericDeclaration, GenericDeclaration_addons.js, meta/declaration/ClassOrInterfaceDeclaration, meta/declaration/FunctionalDeclaration, declaration_addons.js, meta/declaration/, OpenSetter.js, FunParamDecl.js, ValParamDecl.js, metamodel_functions_core.js, metamodel_functions2.js, metamodel_functions3.js, metamodel_functions_ocoi.js, metamodel_functions5.js, metamodel_functions_coi.js, metamodel_functions_funs.js, metamodel_functions_anns.js
-#Serialization
+
+And finally, the serialization package and some native stuff in JS
+
 COMPILE serialization/, jsint/
 COMPILE module, package, NativeError.js
+
+And that's it.
