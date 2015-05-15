@@ -61,9 +61,11 @@ public abstract class TypedDeclaration extends Declaration {
         }
     }
 
-    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
+    public ProducedTypedReference getProducedTypedReference(
+            ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
-        return getProducedTypedReference(qualifyingType, typeArguments, false);
+        return getProducedTypedReference(qualifyingType, 
+                typeArguments, false);
     }
     
     /**
@@ -82,13 +84,17 @@ public abstract class TypedDeclaration extends Declaration {
      * @param assignment the reference occurs on the
      *                   LHS of an assignment
      */
-    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
-            List<ProducedType> typeArguments, boolean assignment) {
+    public ProducedTypedReference getProducedTypedReference(
+            ProducedType qualifyingType,
+            List<ProducedType> typeArguments, 
+            boolean assignment) {
         ProducedTypedReference ptr = 
-                new ProducedTypedReference(!assignment, assignment);
+                new ProducedTypedReference(!assignment, 
+                        assignment);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
-        ptr.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
+        ptr.setTypeArguments(getTypeArgumentMap(this, 
+                qualifyingType, typeArguments));
         return ptr;
     }
     

@@ -2056,13 +2056,16 @@ public class Util {
 
     private static Module getModule(Declaration decl) {
         Scope scope = decl.getContainer();
-        while(scope instanceof Package == false)
+        while (scope!=null &&
+                !(scope instanceof Package)) {
             scope = scope.getContainer();
-        Module module = null;
-        if(scope instanceof Package){
-            module = ((Package) scope).getModule();
         }
-        return module;
+        if (scope instanceof Package) {
+            return ((Package) scope).getModule();
+        }
+        else {
+            return null;
+        }
     }
 
     public static boolean sameModule(Declaration a, Declaration b) {
@@ -2209,5 +2212,18 @@ public class Util {
         } else {
             return decl;
         }
+    }
+
+    public static List<ProducedType> toTypeArgs(Generic dec) {
+        List<TypeParameter> params = 
+                dec.getTypeParameters();
+        int size = params.size();
+        List<ProducedType> paramsAsArgs =
+                new ArrayList<ProducedType>(size);
+        for (int i=0; i<size; i++) {
+            TypeParameter param = params.get(i);
+            paramsAsArgs.add(param.getType());
+        }
+        return paramsAsArgs;
     }
 }

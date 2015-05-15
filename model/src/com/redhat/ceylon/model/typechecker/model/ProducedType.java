@@ -11,6 +11,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSuper
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.Util.principalInstantiation;
+import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
@@ -406,19 +407,6 @@ public class ProducedType extends ProducedReference {
         finally {
             depth.set(depth.get()-1);
         }
-    }
-
-    private static List<ProducedType> toTypeArgs(Generic dec) {
-        List<TypeParameter> params = 
-                dec.getTypeParameters();
-        int size = params.size();
-        List<ProducedType> paramsAsArgs =
-                new ArrayList<ProducedType>(size);
-        for (int i=0; i<size; i++) {
-            TypeParameter param = params.get(i);
-            paramsAsArgs.add(param.getType());
-        }
-        return paramsAsArgs;
     }
 
     /**

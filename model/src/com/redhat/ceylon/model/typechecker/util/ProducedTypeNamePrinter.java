@@ -93,8 +93,9 @@ public class ProducedTypeNamePrinter {
             return "unknown";
         }
         else {
+            TypeDeclaration declaration = pt.getDeclaration();
             if (printAbbreviated()) {
-                Unit u = pt.getDeclaration().getUnit();
+                Unit u = declaration.getUnit();
                 if (abbreviateOptional(pt)) {
                     ProducedType dt = pt.eliminateNull();
                     String dtn = getProducedTypeName(dt, unit);
@@ -187,7 +188,7 @@ public class ProducedTypeNamePrinter {
                     }
                 }
             }
-            if (pt.getDeclaration() instanceof UnionType) {
+            if (declaration instanceof UnionType) {
                 StringBuilder name = new StringBuilder();
                 boolean first = true;
                 for (ProducedType caseType: pt.getCaseTypes()) {
@@ -212,7 +213,7 @@ public class ProducedTypeNamePrinter {
                 }
                 return name.toString();
             }
-            else if (pt.getDeclaration() instanceof IntersectionType) {
+            else if (declaration instanceof IntersectionType) {
                 StringBuilder name = new StringBuilder();
                 boolean first = true;
                 for (ProducedType satisfiedType: pt.getSatisfiedTypes()) {
@@ -238,9 +239,9 @@ public class ProducedTypeNamePrinter {
                 }
                 return name.toString();
             }
-            else if (pt.getDeclaration() instanceof TypeParameter) {
+            else if (declaration instanceof TypeParameter) {
                 StringBuilder name = new StringBuilder();
-                TypeParameter tp = (TypeParameter) pt.getDeclaration();
+                TypeParameter tp = (TypeParameter) declaration;
 
                 if (printTypeParameterDetail() && tp.isContravariant()) {
                     name.append("in ");
@@ -262,6 +263,18 @@ public class ProducedTypeNamePrinter {
                     }
                 }
 
+                return name.toString();
+            }
+            else if (pt.isTypeConstructor() && 
+                    declaration.getName().contains("#")) {
+                StringBuilder name = new StringBuilder();
+                name.append("<");
+                for (TypeParameter tp: pt.getTypeConstructorParameter().getTypeParameters()) {
+                    if (name.length()>1) name.append(", ");
+                    name.append(tp.getName());
+                }
+                name.append("> => ")
+                    .append(getProducedTypeName(pt.getDeclaration().getExtendedType(), unit));
                 return name.toString();
             }
             else {            
