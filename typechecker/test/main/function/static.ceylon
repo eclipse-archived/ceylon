@@ -61,8 +61,10 @@ void testAB() {
     @error value val5 = AB.CA.jjj;
     value val6 = AB<String>.G.m<Float>;
     @error value val7 = AB<String>.G.m;
-    @error value val9 = Singleton;
-    @error value val10 = sum;
+    @type:"<Element> => Callable<Singleton<Element>,Tuple<Element,Element,Empty>>" 
+    value val9 = Singleton;
+    @type:"<Value> => Callable<Value,Tuple<Iterable<Value,Nothing>,Iterable<Value,Nothing>,Empty>> given Value satisfies Summable<Value>" 
+    value val10 = sum;
     value val11 = Singleton<String>;
     value val12 = sum<Integer>;
     value val13 = every;

@@ -209,9 +209,11 @@ void method() {
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;
-    @error function fy(String g()) => do;
+    @type:"<T> => Callable<T,Tuple<Callable<T,Empty>,Callable<T,Empty>,Empty>>" 
+    function fy(String g()) => do;
     value fw = do<String>;
-    @error value fz = do;
+    @type:"<T> => Callable<T,Tuple<Callable<T,Empty>,Callable<T,Empty>,Empty>>" 
+    value fz = do;
 
     function sqrt(Float x) => x^0.5;
     value temp = sqrt;

@@ -18,6 +18,8 @@ Entry<String,Integer> e3(String name, Integer i) => Entry(name,i);
 abstract class F2(){}
 abstract class F() => F2();
 
+alias EA<K,I> given K satisfies Object => K->I(K,I);
+
 void check() { 
     E1 g1 = E1("gavin",1); 
     E2<String> g2 = E2<String>("gavin","king"); 
@@ -26,5 +28,6 @@ void check() {
     E2<String> g5 = e2("gavin","king"); 
     E3<String> g6 = e2("gavin","king"); 
     @error F();
-    @error value e4 = Entry;
+    @type:"<Key, Item> => Callable<Entry<Key,Item>,Tuple<Key|Item,Key,Tuple<Item,Item,Empty>>> given Key satisfies Object" 
+    value e4 = Entry;
 }

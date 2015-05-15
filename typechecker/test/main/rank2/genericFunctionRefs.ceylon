@@ -1,5 +1,9 @@
 [Integer,T] f<T>(Integer i, T t) => [i,t];
 
+Val plus<Val>(Val x, Val y) => y;
+
+T func<T>(T t) given T satisfies String => t;
+
 shared void run() {
     <T> => [Integer,T](Integer,T) fun = f;
     <T> => [Object,T](Nothing,T) funk = f;
@@ -14,4 +18,8 @@ shared void run() {
     Float x = p<Float>(1.0, 2.0);
     <T> => T(T,T) getPlus() => plus;
     <V> => V(V,V) q = getPlus();
+    
+    @error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
+    <T> => T(T) funcRef = func;
+
 }
