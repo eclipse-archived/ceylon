@@ -275,6 +275,7 @@ public class ProducedTypeNamePrinter {
                 }
                 name.append("> => ")
                     .append(getProducedTypeName(pt.getDeclaration().getExtendedType(), unit));
+                appendConstraintsString(pt, name, unit);
                 return name.toString();
             }
             else {            
@@ -540,7 +541,7 @@ public class ProducedTypeNamePrinter {
 
         TypeDeclaration ptd = pt.getDeclaration();
         printDeclaration(ptn, ptd, fullyQualified, unit);
-
+        
         List<ProducedType> args = pt.getTypeArgumentList();
         List<TypeParameter> params = ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
@@ -579,7 +580,8 @@ public class ProducedTypeNamePrinter {
             Declaration declaration, boolean fullyQualified, 
             Unit unit) {
         // type parameters are not fully qualified
-        if (fullyQualified && !(declaration instanceof TypeParameter)) {
+        if (fullyQualified && 
+                !(declaration instanceof TypeParameter)) {
             Scope container = declaration.getContainer();
             while(container != null
                     && container instanceof Package == false
@@ -618,6 +620,31 @@ public class ProducedTypeNamePrinter {
             }
         }
         return name;
+    }
+
+    private static void appendConstraintsString(ProducedType pt,
+            StringBuilder result, Unit unit) {
+        for (TypeParameter tp: 
+                pt.getTypeConstructorParameter()
+                    .getTypeParameters()) {
+            List<ProducedType> sts = 
+                    tp.getSatisfiedTypes();
+            if (!sts.isEmpty()) {
+                result.append(" given ")
+                    .append(tp.getName())
+                    .append(" satisfies ");
+                boolean first = true;
+                for (ProducedType st: sts) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        result.append("&");
+                    }
+                    result.append(st.getProducedTypeName(unit));
+                }
+            }
+        }
     }
 
 }

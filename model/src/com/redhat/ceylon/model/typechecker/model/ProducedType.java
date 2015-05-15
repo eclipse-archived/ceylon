@@ -509,7 +509,9 @@ public class ProducedType extends ProducedReference {
                             otherDec.getProducedType(oqt, 
                                     paramsAsArgs);
                     //resolves aliases:
-                    return rt.isSubtypeOf(ort);
+                    return rt.isSubtypeOf(ort) &&
+                            acceptsUpperBounds(type,
+                                    paramsAsArgs);
                 }
             }
             else if (isTypeConstructor() || 
@@ -621,6 +623,37 @@ public class ProducedType extends ProducedReference {
         finally { 
             depth.set(depth.get()-1);
         }
+    }
+
+    private boolean acceptsUpperBounds(ProducedType type, 
+            List<ProducedType> paramsAsArgs) {
+        List<TypeParameter> typeParameters = 
+                getTypeConstructorParameter()
+                    .getTypeParameters();
+        List<TypeParameter> otherTypeParameters = 
+                type.getTypeConstructorParameter()
+                    .getTypeParameters();
+        for (int i=0; 
+                i<typeParameters.size() && 
+                i<otherTypeParameters.size(); 
+                i++) {
+            TypeParameter param = 
+                    typeParameters.get(i);
+            TypeParameter otherParam = 
+                    otherTypeParameters.get(i);
+            ProducedType otherBound = 
+                    intersectionOfSupertypes(otherParam)
+                        .substitute(getTypeArgumentMap(type.getDeclaration(), 
+                                null, paramsAsArgs));
+            ProducedType bound = 
+                    intersectionOfSupertypes(param)
+                        .substitute(getTypeArgumentMap(getDeclaration(), 
+                                null, paramsAsArgs));
+            if (!otherBound.isSubtypeOf(bound)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -2437,16 +2470,19 @@ public class ProducedType extends ProducedReference {
 
     private String getSimpleProducedTypeQualifiedName() {
         StringBuilder ptn = new StringBuilder();
-        //if (getDeclaration().isMember()) {
+        if (isTypeConstructor()) {
+            return getProducedTypeName();
+        }
         ProducedType qt = getQualifyingType();
+        TypeDeclaration declaration = getDeclaration();
         if (qt!=null) {
             ptn.append(qt.getProducedTypeQualifiedName())
                .append(".")
-               .append(getDeclaration().getName());
+               .append(declaration.getName());
         }
         //}
         else {
-            ptn.append(getDeclaration().getQualifiedNameString());
+            ptn.append(declaration.getQualifiedNameString());
         }
         if (!getTypeArgumentList().isEmpty()) {
             ptn.append("<");
@@ -2471,11 +2507,12 @@ public class ProducedType extends ProducedReference {
     }
 
     public String getProducedTypeQualifiedName() {
-        if (getDeclaration()==null) {
+        TypeDeclaration declaration = getDeclaration();
+        if (declaration==null) {
             //unknown type
             return null;
         }
-        if (getDeclaration() instanceof UnionType) {
+        if (declaration instanceof UnionType) {
             StringBuilder name = new StringBuilder();
             for (ProducedType pt: getCaseTypes()) {
                 if (pt==null) {
@@ -2488,7 +2525,7 @@ public class ProducedType extends ProducedReference {
             }
             return name.substring(0,name.length()>0?name.length()-1:0);
         }
-        else if (getDeclaration() instanceof IntersectionType) {
+        else if (declaration instanceof IntersectionType) {
             StringBuilder name = new StringBuilder();
             for (ProducedType pt: getSatisfiedTypes()) {
                 if (pt==null) {
