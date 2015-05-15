@@ -43,6 +43,7 @@ public class ProducedType extends ProducedReference {
     private boolean isRaw;
     private ProducedType resolvedAliases;
     private TypeParameter typeConstructorParameter;
+    private boolean typeConstructor;
     
     // cache
     private int hashCode;
@@ -121,14 +122,19 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isTypeConstructor() {
-        return typeConstructorParameter!=null;
+        return typeConstructor;
     }
     
     public TypeParameter getTypeConstructorParameter() {
         return typeConstructorParameter;
     }
     
-    public void setTypeConstructor(TypeParameter typeConstructorParameter) {
+    public void setTypeConstructor(boolean typeConstructor) {
+        this.typeConstructor = typeConstructor;
+    }
+    
+    public void setTypeConstructorParameter
+            (TypeParameter typeConstructorParameter) {
         this.typeConstructorParameter = typeConstructorParameter;
     }
     
@@ -264,18 +270,36 @@ public class ProducedType extends ProducedReference {
                     return true;
                 }
                 else {
-                    List<ProducedType> paramsAsArgs = 
-                            toTypeArgs(getTypeConstructorParameter());
-                    ProducedType rt = 
-                            dec.getProducedType(
-                                    getQualifyingType(), 
-                                    paramsAsArgs);
-                    ProducedType ort = 
-                            otherDec.getProducedType(
-                                    type.getQualifyingType(), 
-                                    paramsAsArgs);
-                    //resolves aliases:
-                    return rt.isExactly(ort);
+                    TypeParameter typeConstructorParam = 
+                            getTypeConstructorParameter();
+                    ProducedType qt = getQualifyingType();
+                    ProducedType oqt = type.getQualifyingType();
+                    if (typeConstructorParam==null) {
+                        List<ProducedType> paramsAsArgs = 
+                                toTypeArgs(otherDec);
+                        ProducedType rt = 
+                                dec.getProducedType(qt,
+                                        paramsAsArgs);
+                        ProducedType ort = 
+                                otherDec.getProducedType(oqt, 
+                                        paramsAsArgs);
+                        //resolves aliases:
+                        return rt.isExactly(ort) &&
+                                hasExactSameUpperBounds(type, 
+                                        paramsAsArgs);
+                    }
+                    else {
+                        List<ProducedType> paramsAsArgs = 
+                                toTypeArgs(typeConstructorParam);
+                        ProducedType rt = 
+                                dec.getProducedType(qt, 
+                                        paramsAsArgs);
+                        ProducedType ort = 
+                                otherDec.getProducedType(oqt, 
+                                        paramsAsArgs);
+                        //resolves aliases:
+                        return rt.isExactly(ort);
+                    }
                 }
             }
             else if (isTypeConstructor() ||
@@ -496,22 +520,40 @@ public class ProducedType extends ProducedReference {
                     return true;
                 }
                 else {
-                    List<ProducedType> paramsAsArgs = 
-                            toTypeArgs(getTypeConstructorParameter());
                     ProducedType qt = 
                             getQualifyingType();
                     ProducedType oqt = 
                             type.getQualifyingType();
-                    ProducedType rt = 
-                            dec.getProducedType(qt, 
-                                    paramsAsArgs);
-                    ProducedType ort = 
-                            otherDec.getProducedType(oqt, 
-                                    paramsAsArgs);
-                    //resolves aliases:
-                    return rt.isSubtypeOf(ort) &&
-                            acceptsUpperBounds(type,
-                                    paramsAsArgs);
+                    TypeParameter typeConstructorParam = 
+                            getTypeConstructorParameter();
+                    if (typeConstructorParam == null) {
+                        //occurs somewhere else
+                        List<ProducedType> paramsAsArgs = 
+                                toTypeArgs(otherDec);
+                        ProducedType rt =
+                                dec.getProducedType(qt, 
+                                        paramsAsArgs);
+                        ProducedType ort = 
+                                otherDec.getProducedType(oqt, 
+                                        paramsAsArgs);
+                        //resolves aliases:
+                        return rt.isSubtypeOf(ort) &&
+                                acceptsUpperBounds(type,
+                                        paramsAsArgs);
+                    }
+                    else {
+                        //occurs as a type argument
+                        List<ProducedType> paramsAsArgs = 
+                                toTypeArgs(typeConstructorParam);
+                        ProducedType rt = 
+                                dec.getProducedType(qt, 
+                                        paramsAsArgs);
+                        ProducedType ort = 
+                                otherDec.getProducedType(oqt, 
+                                        paramsAsArgs);
+                        //resolves aliases:
+                        return rt.isSubtypeOf(ort);
+                    }
                 }
             }
             else if (isTypeConstructor() || 
@@ -627,35 +669,116 @@ public class ProducedType extends ProducedReference {
 
     private boolean acceptsUpperBounds(ProducedType type, 
             List<ProducedType> paramsAsArgs) {
+        TypeDeclaration declaration = 
+                getDeclaration();
+        TypeDeclaration otherDeclaration = 
+                type.getDeclaration();
         List<TypeParameter> typeParameters = 
-                getTypeConstructorParameter()
-                    .getTypeParameters();
+                declaration.getTypeParameters();
         List<TypeParameter> otherTypeParameters = 
-                type.getTypeConstructorParameter()
-                    .getTypeParameters();
-        for (int i=0; 
-                i<typeParameters.size() && 
-                i<otherTypeParameters.size(); 
-                i++) {
+                otherDeclaration.getTypeParameters();
+        int size = typeParameters.size();
+        int otherSize = otherTypeParameters.size();
+        if (size<otherSize) {
+            return false;
+        }
+        int required = 0;
+        for (int i=0; i<size; i++) {
+            TypeParameter param = 
+                    typeParameters.get(i);
+            if (param.isDefaulted()) {
+                break;
+            }
+            required++;
+        }
+        if (required>otherSize) {
+            return false;
+        }
+        for (int i=0; i<size && i<otherSize; i++) {
             TypeParameter param = 
                     typeParameters.get(i);
             TypeParameter otherParam = 
                     otherTypeParameters.get(i);
+            Map<TypeParameter, ProducedType> otherArgs = 
+                    getTypeArgumentMap(otherDeclaration, 
+                            null, paramsAsArgs);
+            Map<TypeParameter, ProducedType> args = 
+                    getTypeArgumentMap(declaration, 
+                            null, paramsAsArgs);
             ProducedType otherBound = 
                     intersectionOfSupertypes(otherParam)
-                        .substitute(getTypeArgumentMap(type.getDeclaration(), 
-                                null, paramsAsArgs));
+                        .substitute(otherArgs);
             ProducedType bound = 
                     intersectionOfSupertypes(param)
-                        .substitute(getTypeArgumentMap(getDeclaration(), 
-                                null, paramsAsArgs));
+                        .substitute(args);
             if (!otherBound.isSubtypeOf(bound)) {
                 return false;
             }
+            //TODO: check enumerated bounds!!!
         }
         return true;
     }
 
+    private boolean hasExactSameUpperBounds(ProducedType type, 
+            List<ProducedType> paramsAsArgs) {
+        TypeDeclaration declaration = 
+                getDeclaration();
+        TypeDeclaration otherDeclaration = 
+                type.getDeclaration();
+        List<TypeParameter> typeParameters = 
+                declaration.getTypeParameters();
+        List<TypeParameter> otherTypeParameters = 
+                otherDeclaration.getTypeParameters();
+        int size = typeParameters.size();
+        int otherSize = otherTypeParameters.size();
+        if (size!=otherSize) {
+            return false;
+        }
+        int required = 0;
+        int otherRequired = 0;
+        for (int i=0; i<size; i++) {
+            TypeParameter param = 
+                    typeParameters.get(i);
+            if (param.isDefaulted()) {
+                break;
+            }
+            required++;
+        }
+        for (int i=0; i<otherSize; i++) {
+            TypeParameter param = 
+                    otherTypeParameters.get(i);
+            if (param.isDefaulted()) {
+                break;
+            }
+            otherRequired++;
+        }
+        if (required!=otherRequired) {
+            return false;
+        }
+        for (int i=0; i<size && i<otherSize; i++) {
+            TypeParameter param = 
+                    typeParameters.get(i);
+            TypeParameter otherParam = 
+                    otherTypeParameters.get(i);
+            Map<TypeParameter, ProducedType> otherArgs = 
+                    getTypeArgumentMap(otherDeclaration, 
+                            null, paramsAsArgs);
+            Map<TypeParameter, ProducedType> args = 
+                    getTypeArgumentMap(declaration, 
+                            null, paramsAsArgs);
+            ProducedType otherBound = 
+                    intersectionOfSupertypes(otherParam)
+                        .substitute(otherArgs);
+            ProducedType bound = 
+                    intersectionOfSupertypes(param)
+                        .substitute(args);
+            if (!otherBound.isExactly(bound)) {
+                return false;
+            }
+            //TODO: check enumerated bounds!!!
+        }
+        return true;
+    }
     /**
      * Eliminate the given type from the union type.
      * (Performs a set complement operation.) Note
@@ -1556,7 +1679,8 @@ public class ProducedType extends ProducedReference {
                 }
             }
             if (tp.isTypeConstructor()) {
-                result.setTypeConstructor(tp);
+                result.setTypeConstructor(true);
+                result.setTypeConstructorParameter(tp);
             }
             args.add(result);
         }
@@ -2390,7 +2514,8 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
-            type.setTypeConstructor(pt.getTypeConstructorParameter());
+            type.setTypeConstructor(pt.isTypeConstructor());
+            type.setTypeConstructorParameter(pt.getTypeConstructorParameter());
             type.setUnderlyingType(pt.getUnderlyingType());
             ProducedType qt = pt.getQualifyingType();
             if (qt!=null) {
@@ -2735,7 +2860,8 @@ public class ProducedType extends ProducedReference {
         pt.setQualifyingType(getQualifyingType());
         pt.setTypeArguments(getTypeArguments());
         pt.setVarianceOverrides(getVarianceOverrides());
-        pt.setTypeConstructor(getTypeConstructorParameter());
+        pt.setTypeConstructor(isTypeConstructor());
+        pt.setTypeConstructorParameter(getTypeConstructorParameter());
         return pt;
     }
 
@@ -2829,7 +2955,8 @@ public class ProducedType extends ProducedReference {
             }
             ProducedType rt = ud.getType();
             rt.setQualifyingType(aliasedQualifyingType);
-            rt.setTypeConstructor(getTypeConstructorParameter());
+            rt.setTypeConstructor(isTypeConstructor());
+            rt.setTypeConstructorParameter(getTypeConstructorParameter());
             return rt;
         }
         else {
@@ -2896,7 +3023,8 @@ public class ProducedType extends ProducedReference {
                             null : qt.simple(), 
                         simpleArgs);
         ret.setUnderlyingType(getUnderlyingType());
-        ret.setTypeConstructor(getTypeConstructorParameter());
+        ret.setTypeConstructor(isTypeConstructor());
+        ret.setTypeConstructorParameter(getTypeConstructorParameter());
         ret.setRaw(isRaw());
         ret.setVarianceOverrides(getVarianceOverrides());
         return ret;

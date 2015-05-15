@@ -269,12 +269,18 @@ public class ProducedTypeNamePrinter {
                     declaration.getName().contains("#")) {
                 StringBuilder name = new StringBuilder();
                 name.append("<");
-                for (TypeParameter tp: pt.getTypeConstructorParameter().getTypeParameters()) {
+                TypeParameter tpc = 
+                        pt.getTypeConstructorParameter();
+                List<TypeParameter> params = 
+                        tpc == null ?
+                            declaration.getTypeParameters() :
+                            tpc.getTypeParameters();
+                for (TypeParameter tp: params) {
                     if (name.length()>1) name.append(", ");
                     name.append(tp.getName());
                 }
                 name.append("> => ")
-                    .append(getProducedTypeName(pt.getDeclaration().getExtendedType(), unit));
+                    .append(getProducedTypeName(declaration.getExtendedType(), unit));
                 appendConstraintsString(pt, name, unit);
                 return name.toString();
             }
@@ -624,9 +630,15 @@ public class ProducedTypeNamePrinter {
 
     private static void appendConstraintsString(ProducedType pt,
             StringBuilder result, Unit unit) {
+        TypeParameter tpc = 
+                pt.getTypeConstructorParameter();
+        List<TypeParameter> params = 
+                tpc==null ?
+                    pt.getDeclaration()
+                        .getTypeParameters() :
+                    tpc.getTypeParameters();
         for (TypeParameter tp: 
-                pt.getTypeConstructorParameter()
-                    .getTypeParameters()) {
+                params) {
             List<ProducedType> sts = 
                     tp.getSatisfiedTypes();
             if (!sts.isEmpty()) {
