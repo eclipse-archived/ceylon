@@ -15,3 +15,4 @@ function Nothing(wat) {
 }
 initType(Nothing, 'ceylon.language::Nothing');
 Nothing.$crtmm$=function(){return{ps:[],pa:1,mod:$CCMM$,d:['$','Nothing']};}
+ex$.Nothing=Nothing;

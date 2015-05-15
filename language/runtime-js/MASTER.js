@@ -16,27 +16,8 @@
 //#COMPILE modules.js,meta/,meta/model/,ClassOrInterface_addons.js,Member_addons.js,AppliedAttribute.js,meta/declaration/,NestableDeclaration_addons.js,GenericDeclaration_addons.js,declaration_addons.js,OpenSetter.js,FunParamDecl.js,ValParamDecl.js,metamodel_functions_core.js,metamodel_functions2.js,metamodel_functions3.js,metamodel_functions_ocoi.js,metamodel_functions5.js,metamodel_functions_coi.js,metamodel_functions_funs.js,metamodel_functions_anns.js
 //Serialization
 //#COMPILE serialization/,jsint/
-//#COMPILE module,package
+//#COMPILE module,package,NativeError.js
 
-function NatErr(e) {
-    var that = new NatErr.$$;
-    var msg;
-    if (typeof e === 'string') {
-        msg = e;
-    } else if (e) {
-        msg = e.toString();
-    } else {
-        msg = "Native JavaScript Error";
-    }
-    Throwable(msg,null,that);
-    return that;
-}
-initTypeProto(NatErr, 'ceylon.language::NativeError', $init$Throwable());
-NatErr.$crtmm$=function(){return{nm:'NativeError',mt:'c',ps:[{$t:{t:Throwable},nm:'src',mt:'prm'}],pa:1,mod:$CCMM$,d:['$','Throwable']};}
-ex$.Nothing=Nothing;
-ex$.getTrue=getTrue;
-ex$.getFalse=getFalse;
-ex$.NatErr=NatErr;
 //#UNSHARED
 });
 }(typeof define==='function' && define.amd ? 
