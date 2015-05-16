@@ -4,6 +4,12 @@ Val plusy<Val>(Val x, Val y) => y;
 
 T func<T>(T t) given T satisfies String => t;
 
+class Outer<X>(X x) {
+    shared class Inner<Y>(Y y) {}
+    shared T id<T>(T t) => t;
+    shared <R> => {R*}(R(Character)) mapped = "hello".map;
+}
+
 shared void run() {
     <T> => [Integer,T](Integer,T) fun = f;
     <T> => [Object,T](Nothing,T) funk = f;
@@ -30,6 +36,17 @@ shared void run() {
             = <T>(T x, T y) 
                 given T satisfies Summable<T> 
                 => x+y;
+    
+    <R> => {R*}(R(Character)) mapped = "hello".map;
+    <R> => {R*}(Nothing(Anything)) mapped2 = "hello".map;
+    <T> => T(T) idref = Outer("").id;
+    <S> => Outer<Integer>.Inner<S>(S) innref = Outer(1).Inner;
+    {String*} strings = Outer(3).mapped<String>(Object.string);
+    
+    @error print(Outer(3).mapped.hash);
+    @error print(mapped.string);
+    @error value val = "hello".map<Object>.string;
+
 }
 
 void apply<T>(T x, T y,
