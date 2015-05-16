@@ -4219,14 +4219,14 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitDirectInvocation(
             Tree.InvocationExpression that) {
-        Tree.Term p = 
+        Tree.Term primary = 
                 unwrapExpressionUntilTerm(that.getPrimary());
         Tree.MemberOrTypeExpression mte = 
-                (Tree.MemberOrTypeExpression) p;
+                (Tree.MemberOrTypeExpression) primary;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
         if (dec!=null) {
-            if (!(p instanceof Tree.ExtendedTypeExpression)) {
+            if (!(primary instanceof Tree.ExtendedTypeExpression)) {
                 if (dec instanceof Class) {
                     Class c = (Class) dec;
                     if (c.isAbstract()) {
@@ -4245,7 +4245,7 @@ public class ExpressionVisitor extends Visitor {
                         dec.getName(unit) + "'");
             }
             //that.setTypeModel(prf.getType());
-            ProducedType ct = p.getTypeModel();
+            ProducedType ct = primary.getTypeModel();
             if (ct!=null) {
                 List<ProducedType> tal = 
                         ct.getTypeArgumentList();
@@ -4275,10 +4275,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void visitIndirectInvocation(Tree.InvocationExpression that) {
-        
-        Tree.Primary p = that.getPrimary();
-        ProducedType pt = p.getTypeModel();
+    private void visitIndirectInvocation(
+            Tree.InvocationExpression that) {
+        Tree.Term primary = 
+                unwrapExpressionUntilTerm(that.getPrimary());
+        ProducedType pt = primary.getTypeModel();
         if (!isTypeUnknown(pt)) {
             
             if (that.getNamedArgumentList()!=null) {
@@ -4295,7 +4296,7 @@ public class ExpressionVisitor extends Visitor {
             if (pt.isNothing()) {
                 that.setTypeModel(nothingType());
             }
-            else if (checkCallable(pt, p, 
+            else if (checkCallable(pt, primary, 
                     "invoked expression must be callable")) {
                 List<ProducedType> typeArgs = 
                         pt.getSupertype(unit.getCallableDeclaration())
