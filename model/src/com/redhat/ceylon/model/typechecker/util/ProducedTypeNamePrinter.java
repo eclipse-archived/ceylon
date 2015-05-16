@@ -268,7 +268,7 @@ public class ProducedTypeNamePrinter {
             else if (pt.isTypeConstructor() && 
                     declaration.getName().contains("#")) {
                 StringBuilder name = new StringBuilder();
-                name.append("<");
+                name.append(lt());
                 TypeParameter tpc = 
                         pt.getTypeConstructorParameter();
                 List<TypeParameter> params = 
@@ -279,10 +279,12 @@ public class ProducedTypeNamePrinter {
                     if (name.length()>1) name.append(", ");
                     name.append(tp.getName());
                 }
-                name.append(">");
+                name.append(gt());
                 appendConstraintsString(pt, name, unit);
-                name.append(" => ")
-                    .append(getProducedTypeName(declaration.getExtendedType(), unit));
+                name.append(" =").append(gt()).append(" ");
+                ProducedType aliasedType =
+                        declaration.getExtendedType();
+                name.append(getProducedTypeName(aliasedType, unit));
                 return name.toString();
             }
             else {            
