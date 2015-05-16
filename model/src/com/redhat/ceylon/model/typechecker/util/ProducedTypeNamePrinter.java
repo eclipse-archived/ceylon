@@ -279,7 +279,7 @@ public class ProducedTypeNamePrinter {
                     if (name.length()>lt().length()) {
                         name.append(", ");
                     }
-                    name.append(tp.getName());
+                    printDeclaration(name, tp, printFullyQualified(), unit);
                 }
                 name.append(gt());
                 appendConstraintsString(pt, name, unit);
@@ -633,7 +633,7 @@ public class ProducedTypeNamePrinter {
         return name;
     }
 
-    private static void appendConstraintsString(ProducedType pt,
+    private void appendConstraintsString(ProducedType pt,
             StringBuilder result, Unit unit) {
         TypeParameter tpc = 
                 pt.getTypeConstructorParameter();
@@ -647,18 +647,18 @@ public class ProducedTypeNamePrinter {
             List<ProducedType> sts = 
                     tp.getSatisfiedTypes();
             if (!sts.isEmpty()) {
-                result.append(" given ")
-                    .append(tp.getName())
-                    .append(" satisfies ");
+                result.append(" given ");
+                printDeclaration(result, tp, printFullyQualified(), unit);
+                result.append(" satisfies ");
                 boolean first = true;
                 for (ProducedType st: sts) {
                     if (first) {
                         first = false;
                     }
                     else {
-                        result.append("&");
+                        result.append(amp());
                     }
-                    result.append(st.getProducedTypeName(unit));
+                    result.append(getProducedTypeName(st,unit));
                 }
             }
         }
