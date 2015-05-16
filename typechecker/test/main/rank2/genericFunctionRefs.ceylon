@@ -37,11 +37,21 @@ shared void run() {
                 given T satisfies Summable<T> 
                 => x+y;
     
-    <R> => {R*}(R(Character)) mapped = "hello".map;
+    <R> => {R*}(R(Character)) mapped1 = "hello".map;
     <R> => {R*}(Nothing(Anything)) mapped2 = "hello".map;
     <T> => T(T) idref = Outer("").id;
     <S> => Outer<Integer>.Inner<S>(S) innref = Outer(1).Inner;
     {String*} strings = Outer(3).mapped<String>(Object.string);
+    
+    value mapped = "hello world 2".map;
+    @type:"Iterable<Integer,Null>" 
+    value result1 = mapped(Character.integer);
+    @type:"Iterable<Integer,Null>"
+    value result2 = mapped<Integer>(Character.integer);
+    @type:"Callable<Iterable<Integer,Null>,Tuple<Callable<Integer,Tuple<Character,Character,Empty>>,Callable<Integer,Tuple<Character,Character,Empty>>,Empty>>"
+    value applied = mapped<Integer>;
+    @type:"<Result> => Callable<Iterable<Result,Null>,Tuple<Callable<Result,Tuple<Character,Character,Empty>>,Callable<Result,Tuple<Character,Character,Empty>>,Empty>>"
+    value unapplied = mapped;
     
     @error print(Outer(3).mapped.hash);
     @error print(mapped.string);

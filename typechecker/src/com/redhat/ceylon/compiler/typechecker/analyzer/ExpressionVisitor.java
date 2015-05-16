@@ -3387,37 +3387,87 @@ public class ExpressionVisitor extends Visitor {
     private List<ProducedType> getOrInferTypeArguments(
             Tree.InvocationExpression that, Declaration dec,
             Tree.StaticMemberOrTypeExpression term, 
-            ProducedType qt) {
+            ProducedType receiverType) {
         Tree.TypeArguments tas = term.getTypeArguments();
+        List<ProducedType> typeArguments;
+        boolean explicit = 
+                tas instanceof Tree.TypeArgumentList;
         if (dec instanceof Generic) {
             Generic generic = (Generic) dec;
-            List<ProducedType> typeArgs;
-            if (tas instanceof Tree.InferredTypeArguments) {
-                typeArgs = getInferredTypeArguments(that, 
-                        generic, term);
-            }
-            else {
+            if (explicit) {
                 List<TypeParameter> pts = 
                         getTypeParameters(dec);
-                typeArgs = getTypeArguments(tas, pts, qt);
+                typeArguments = 
+                        getTypeArguments(tas, pts, 
+                                receiverType);
             }
-            tas.setTypeModels(typeArgs);
-            return typeArgs;
+            else {
+                typeArguments = 
+                        getInferredTypeArguments(that, 
+                                generic, term);
+            }
         }
         else {
-            if (tas instanceof Tree.TypeArgumentList &&
-                    dec instanceof Value) {
-                Value td = (Value) dec;
-                ProducedType type = td.getType();
-                if (type.isTypeConstructor()) {
+            if (dec instanceof Value) {
+                Value value = (Value) dec;
+                ProducedType type = value.getType();
+                if (type!=null && 
+                        type.isTypeConstructor()) {
+                    TypeDeclaration td = 
+                            type.getDeclaration();
                     List<TypeParameter> typeParameters = 
-                            type.getDeclaration()
-                                .getTypeParameters();
-                    return getTypeArguments(tas, 
-                            typeParameters, qt);
+                            td.getTypeParameters();
+                    if (explicit) {
+                        typeArguments = 
+                                getTypeArguments(tas, 
+                                        typeParameters, 
+                                        receiverType);
+                    }
+                    else {
+                        typeArguments = 
+                                getInferredTypeArguments(that,
+                                        receiverType, type, 
+                                        typeParameters);
+                    }
+                }
+                else {
+                    return NO_TYPE_ARGS;
                 }
             }
+            else {
+                return NO_TYPE_ARGS;
+            }
+        }
+        tas.setTypeModels(typeArguments);
+        return typeArguments;
+    }
+
+    List<ProducedType> getInferredTypeArguments(
+            Tree.InvocationExpression that,
+            ProducedType receiverType, ProducedType type,
+            List<TypeParameter> typeParameters) {
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        if (pal==null) {
             return NO_TYPE_ARGS;
+        }
+        else {
+            List<ProducedType> typeArguments = 
+                    new ArrayList<ProducedType>();
+            for (TypeParameter tp: typeParameters) {
+                List<ProducedType> paramTypes = 
+                        unit.getCallableArgumentTypes(type);
+                List<ProducedType> inferredTypes = 
+                        new ArrayList<ProducedType>();
+                inferTypeArgumentFromPositionalArgs(tp, 
+                        paramTypes, receiverType, 
+                        pal, inferredTypes);
+                ProducedType it = 
+                        formUnionOrIntersection(tp, 
+                                inferredTypes);
+                typeArguments.add(it);
+            }
+            return typeArguments;
         }
     }
     
@@ -3727,6 +3777,28 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+
+    private void inferTypeArgumentFromPositionalArgs(TypeParameter tp, 
+            List<ProducedType> parameterTypes, ProducedType qt, 
+            Tree.PositionalArgumentList pal, 
+            List<ProducedType> inferredTypes) {
+        for (int i=0; i<parameterTypes.size(); i++) {
+            ProducedType pt = parameterTypes.get(i);
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            if (args.size()>i) {
+                Tree.PositionalArgument a = args.get(i);
+                ProducedType at = a.getTypeModel();
+                addToUnionOrIntersection(tp, 
+                        inferredTypes,
+                        inferTypeArg(tp, pt, at, 
+                                true, false,
+                                new ArrayList<TypeParameter>(),
+                                pal));
+            }
+            //TODO: comprehensions, spreads, sequenced args!
         }
     }
 
@@ -6739,20 +6811,11 @@ public class ExpressionVisitor extends Visitor {
             else {*/
             that.setTarget(ptr);
             checkSpread(member, that);
-            ProducedType fullType =
-                    ptr.getFullType(wrap(ptr.getType(), 
-                            receivingType, that));
-            if (fullType!=null &&
-                    fullType.isTypeConstructor() && 
-                    tal instanceof Tree.TypeArgumentList) {
-                //apply the type arguments to the generic
-                //function reference
-                //TODO: it's ugly to do this here, better to 
-                //      suck it into ProducedTypedReference
-                fullType = fullType.getDeclaration()
-                        .getProducedType(receivingType, 
-                                typeArgs);
-            }
+            ProducedType fullType = 
+                    accountForGenericFunctionRef(that, tal,
+                            receivingType, typeArgs, 
+                            ptr.getFullType(wrap(ptr.getType(), 
+                                    receivingType, that)));
             if (!dynamic && 
                     !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
@@ -6770,6 +6833,31 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(accountForStaticReferenceType(that, 
                     member, fullType));
             //}
+        }
+    }
+
+    private static ProducedType accountForGenericFunctionRef(
+            Tree.StaticMemberOrTypeExpression that, 
+            Tree.TypeArguments tal, 
+            ProducedType receivingType,
+            List<ProducedType> typeArgs, 
+            ProducedType fullType) {
+        boolean explicit = 
+                tal instanceof Tree.TypeArgumentList;
+        if (fullType!=null &&
+                fullType.isTypeConstructor() &&
+                (explicit || that.getDirectlyInvoked())) {
+            //apply the type arguments to the generic
+            //function reference
+            //TODO: it's ugly to do this here, better to 
+            //      suck it into ProducedTypedReference
+            return fullType.getDeclaration()
+                    .getProducedType(receivingType, 
+                            typeArgs)
+                    .resolveAliases();
+        }
+        else {
+            return fullType;
         }
     }
 
@@ -6894,18 +6982,10 @@ public class ExpressionVisitor extends Visitor {
                     member.getProducedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
-            ProducedType fullType = pr.getFullType();
-            if (fullType!=null &&
-                    fullType.isTypeConstructor() && 
-                    tal instanceof Tree.TypeArgumentList) {
-                //apply the type arguments to the generic
-                //function reference
-                //TODO: it's ugly to do this here, better to 
-                //      suck it into ProducedTypedReference
-                fullType = fullType.getDeclaration()
-                        .getProducedType(outerType, 
-                                typeArgs);
-            }
+            ProducedType fullType =
+                    accountForGenericFunctionRef(that, tal, 
+                            outerType, typeArgs, 
+                            pr.getFullType());
             if (!dynamic && 
                     !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
@@ -8385,6 +8465,8 @@ public class ExpressionVisitor extends Visitor {
     private boolean acceptsTypeArguments(ProducedType receiver, 
             Declaration dec, List<ProducedType> typeArguments, 
             Tree.TypeArguments tal, Node parent) {
+        boolean explicit = 
+                tal instanceof Tree.TypeArgumentList;
         if (dec==null) {
             return false;
         }
@@ -8426,7 +8508,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                         else if (param.isTypeConstructor()) {
                             Node argNode;
-                            if (tal instanceof Tree.TypeArgumentList) {
+                            if (explicit) {
                                 Tree.TypeArgumentList tl = 
                                         (Tree.TypeArgumentList) tal;
                                 argNode = tl.getTypes().get(i);
@@ -8455,16 +8537,7 @@ public class ExpressionVisitor extends Visitor {
                             if (!isCondition && 
                                     !at.isSubtypeOf(sts)) {
                                 if (argTypeMeaningful) {
-                                    if (tal instanceof Tree.InferredTypeArguments) {
-                                        parent.addError("inferred type argument '" 
-                                                + at.getProducedTypeName(unit)
-                                                + "' to type parameter '" + param.getName()
-                                                + "' of declaration '" + dec.getName(unit)
-                                                + "' is not assignable to upper bound '" 
-                                                + sts.getProducedTypeName(unit)
-                                                + "' of '" + param.getName() + "'");
-                                    }
-                                    else {
+                                    if (explicit) {
                                         ((Tree.TypeArgumentList) tal).getTypes()
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
@@ -8472,6 +8545,15 @@ public class ExpressionVisitor extends Visitor {
                                                         + "' which is not assignable to upper bound '" 
                                                         + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
+                                    }
+                                    else {
+                                        parent.addError("inferred type argument '" 
+                                                + at.getProducedTypeName(unit)
+                                                + "' to type parameter '" + param.getName()
+                                                + "' of declaration '" + dec.getName(unit)
+                                                + "' is not assignable to upper bound '" 
+                                                + sts.getProducedTypeName(unit)
+                                                + "' of '" + param.getName() + "'");
                                     }
                                 }
                                 return false;
@@ -8482,21 +8564,21 @@ public class ExpressionVisitor extends Visitor {
                             !argumentSatisfiesEnumeratedConstraint(receiver, 
                                     dec, typeArguments, argType, param)) {
                         if (argTypeMeaningful) {
-                            if (tal instanceof Tree.InferredTypeArguments) {
-                                parent.addError("inferred type argument '" 
-                                        + argType.getProducedTypeName(unit)
-                                        + "' to type parameter '" + param.getName()
-                                        + "' of declaration '" + dec.getName(unit)
-                                        + "' is not one of the enumerated cases of '" 
-                                        + param.getName() + "'");
-                            }
-                            else {
+                            if (explicit) {
                                 ((Tree.TypeArgumentList) tal).getTypes()
                                         .get(i).addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' has argument '" + argType.getProducedTypeName(unit) 
                                                 + "' which is not one of the enumerated cases of '" 
                                                 + param.getName() + "'");
+                            }
+                            else {
+                                parent.addError("inferred type argument '" 
+                                        + argType.getProducedTypeName(unit)
+                                        + "' to type parameter '" + param.getName()
+                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' is not one of the enumerated cases of '" 
+                                        + param.getName() + "'");
                             }
                         }
                         return false;
@@ -8505,8 +8587,7 @@ public class ExpressionVisitor extends Visitor {
                 return true;
             }
             else {
-                if (tal==null || 
-                        tal instanceof Tree.InferredTypeArguments) {
+                if (!explicit) {
                     //Now handled in TypeArgumentVisitor
 //                    if (!metamodel) {
 //                        parent.addError("missing type arguments to generic type: '" + 
@@ -8534,13 +8615,12 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (tal instanceof Tree.TypeArgumentList &&
-                    dec instanceof Value) {
+            boolean empty = typeArguments.isEmpty();
+            if (dec instanceof Value && !empty) {
                 Value td = (Value) dec;
-                Tree.TypeArgumentList list = 
-                        (Tree.TypeArgumentList) tal;
                 ProducedType type = td.getType();
-                if (type.isTypeConstructor()) {
+                if (type!=null && 
+                        type.isTypeConstructor()) {
                     TypeDeclaration tcd = 
                             type.getDeclaration();
                     List<TypeParameter> typeParameters = 
@@ -8564,19 +8644,34 @@ public class ExpressionVisitor extends Visitor {
                                                 null, typeArguments);
                                 ProducedType bound = 
                                         st.substitute(args);
-                                checkAssignable(arg, bound, 
-                                        list.getTypes().get(i), 
-                                        "argument not assignable to upper bound of type parameter '" +
-                                                param.getName() + "'");
+                                if (explicit) {
+                                    Tree.TypeArgumentList list = 
+                                            (Tree.TypeArgumentList) tal;
+                                    checkAssignable(arg, bound, 
+                                            list.getTypes().get(i), 
+                                            "type argument '" + 
+                                            arg.getProducedTypeName(unit) +
+                                            "' is not assignable to upper bound '" +
+                                            bound.getProducedTypeName(unit) +
+                                            "' of type parameter '" +
+                                            param.getName() + "'");
+                                }
+                                else {
+                                    checkAssignable(arg, bound, parent,
+                                            "inferred type argument '" + 
+                                            arg.getProducedTypeName(unit) +
+                                            "' is not assignable to upper bound '" +
+                                            bound.getProducedTypeName(unit) +
+                                            "' of type parameter '" +
+                                            param.getName() + "'");
+                                }
                             }
                         }
                     }
                     return true;
                 }
             }
-            boolean empty = typeArguments.isEmpty();
-            if (!empty || 
-                    tal instanceof Tree.TypeArgumentList) {
+            if (!empty || explicit) {
                 tal.addError("does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic declaration");
