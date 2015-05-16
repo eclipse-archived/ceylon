@@ -256,6 +256,9 @@ public class ExpressionVisitor extends Visitor {
         ProducedType fullType = 
                 fun.getTypedReference()
                     .getFullType();
+        //if the anonymous function has type parameters,
+        //then the type of the expression is a type 
+        //constructor, so create a fake type alias
         if (!fun.getTypeParameters().isEmpty()) {
             TypeAlias ta = new TypeAlias();
             ta.setName(fun.getName() + "#");
@@ -6742,6 +6745,8 @@ public class ExpressionVisitor extends Visitor {
             if (fullType!=null &&
                     fullType.isTypeConstructor() && 
                     tal instanceof Tree.TypeArgumentList) {
+                //apply the type arguments to the generic
+                //function reference
                 //TODO: it's ugly to do this here, better to 
                 //      suck it into ProducedTypedReference
                 fullType = fullType.getDeclaration()
@@ -6893,6 +6898,8 @@ public class ExpressionVisitor extends Visitor {
             if (fullType!=null &&
                     fullType.isTypeConstructor() && 
                     tal instanceof Tree.TypeArgumentList) {
+                //apply the type arguments to the generic
+                //function reference
                 //TODO: it's ugly to do this here, better to 
                 //      suck it into ProducedTypedReference
                 fullType = fullType.getDeclaration()
