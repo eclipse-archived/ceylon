@@ -264,14 +264,14 @@ public abstract class Node {
     }
 
     public String getMessage(Exception e, Visitor visitor) {
-		return visitor.getClass().getSimpleName() +
-	            " caused an exception visiting " + getNodeType() + 
-	            " node: " + e + " at " + getLocationInfo(e);
+		return "'" + visitor.getClass().getSimpleName() +
+		        "' caused an exception visiting a '" + getNodeType() + 
+	            "' node: '" + e + "' " + getLocationInfo(e);
 	}
 
 	private String getLocationInfo(Exception e) {
-		return e.getStackTrace().length>0 ? 
-				e.getStackTrace()[0].toString() : "unknown";
+		return e.getStackTrace().length==0 ? "" : 
+		    "at '" + e.getStackTrace()[0].toString() + "'";
 	}
 	
 	public void connect(Node child) {
