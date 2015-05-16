@@ -264,9 +264,10 @@ public abstract class Node {
     }
 
     public String getMessage(Exception e, Visitor visitor) {
-		return "'" + visitor.getClass().getSimpleName() +
-		        "' caused an exception visiting a '" + getNodeType() + 
-	            "' node: '" + e + "' " + getLocationInfo(e);
+		return "the '" + visitor.getClass().getSimpleName() +
+		        "' caused an exception visiting a '" + 
+		        getNodeType() + "' node: '" + e + "' " + 
+		        getLocationInfo(e);
 	}
 
 	private String getLocationInfo(Exception e) {
