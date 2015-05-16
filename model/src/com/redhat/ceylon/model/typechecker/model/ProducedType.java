@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.Unit.getAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
@@ -13,11 +14,11 @@ import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParamet
 import static com.redhat.ceylon.model.typechecker.model.Util.principalInstantiation;
 import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +40,9 @@ import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
  */
 public class ProducedType extends ProducedReference {
     
+    private static final Map<TypeParameter, SiteVariance> NO_VARIANCES = 
+            emptyMap();
+    
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
@@ -50,7 +54,7 @@ public class ProducedType extends ProducedReference {
     private List<ProducedType> typeArgumentList;
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
-            Collections.emptyMap();
+            NO_VARIANCES;
     
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
@@ -1759,7 +1763,7 @@ public class ProducedType extends ProducedReference {
             List<TypeParameter> tps = 
                     dec.getTypeParameters();
             if (tps.isEmpty()) {
-                return emptyList();
+                return NO_TYPE_ARGS;
             }
             else {
                 List<ProducedType> argList = 
@@ -2492,7 +2496,7 @@ public class ProducedType extends ProducedReference {
                     pt.getTypeArguments();
             if (substitutions.isEmpty() && 
                 typeArguments.isEmpty()) {
-                return Collections.emptyMap();
+                return emptyMap();
             }
             Map<TypeParameter, ProducedType> map = 
                     new HashMap<TypeParameter, ProducedType>
@@ -2966,9 +2970,9 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> args = 
                     getTypeArgumentList();
             List<ProducedType> aliasedArgs = 
-                    args.isEmpty() ? 
-                        Collections.<ProducedType>emptyList() : 
-                        new ArrayList<ProducedType>(args.size());
+                    args.isEmpty() ? NO_TYPE_ARGS : 
+                        new ArrayList<ProducedType>
+                            (args.size());
             for (ProducedType arg: args) {
                 aliasedArgs.add(arg==null ? 
                         null : arg.resolveAliases());
@@ -3010,7 +3014,7 @@ public class ProducedType extends ProducedReference {
             if (qt == null) {
                 return this; // we have nothing to simplify
             }
-            simpleArgs = emptyList();
+            simpleArgs = NO_TYPE_ARGS;
         }
         else {
             simpleArgs = 
@@ -3326,9 +3330,8 @@ public class ProducedType extends ProducedReference {
     private Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
         ProducedType qt = getQualifyingType();
         Map<TypeParameter,SiteVariance> qualifyingOverrides = 
-                qt==null ? 
-                        Collections.<TypeParameter,SiteVariance>emptyMap() :
-                        qt.collectVarianceOverrides();
+                qt==null ? NO_VARIANCES :
+                    qt.collectVarianceOverrides();
         if (varianceOverrides.isEmpty()) {
             return qualifyingOverrides;
         }
@@ -3359,7 +3362,8 @@ public class ProducedType extends ProducedReference {
                 return unit.getNothingDeclaration().getType();
             }
             else if (covariant && siteVariance==IN) {
-                return type.getUpperBoundIntersection((TypeParameter) dec);
+                TypeParameter tp = (TypeParameter) dec;
+                return type.getUpperBoundIntersection(tp);
             }
             else {
                 return type;

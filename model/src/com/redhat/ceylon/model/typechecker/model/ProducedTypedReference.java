@@ -1,8 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-
-
-
 /**
  * A produced reference to a method or 
  * attribute with actual type arguments.

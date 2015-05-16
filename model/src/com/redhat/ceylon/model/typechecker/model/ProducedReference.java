@@ -1,9 +1,9 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ProducedType.depth;
+import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
-import static java.util.Collections.emptyMap;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +22,7 @@ public abstract class ProducedReference {
     ProducedReference() {}
 
     private Map<TypeParameter, ProducedType> typeArguments = 
-            emptyMap();
+            EMPTY_TYPE_ARG_MAP;
     private Declaration declaration;
     private ProducedType qualifyingType;
     

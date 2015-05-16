@@ -20,12 +20,11 @@ import com.redhat.ceylon.common.BackendSupport;
 
 public class Util {
     
-    private static final List<ProducedType> NO_TYPE_ARGS = 
+    static final List<ProducedType> NO_TYPE_ARGS = 
             Collections.<ProducedType>emptyList();
     static final Map<TypeParameter, ProducedType> EMPTY_TYPE_ARG_MAP = 
             Collections.<TypeParameter,ProducedType>emptyMap();
-
-
+    
     /**
      * Is the second scope contained by the first scope?
      */
@@ -207,7 +206,8 @@ public class Util {
                                 params.get(i).getModel();
                         if (pm==null) return false;
                         ProducedType pdt = 
-                                pm.getProducedReference(null, NO_TYPE_ARGS)
+                                pm.getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                     .getFullType();
                         if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
@@ -218,7 +218,8 @@ public class Util {
                     if (hasSeqParam) {
                         ProducedType pdt = 
                                 params.get(size).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         if (pdt==null || 
                                 pdt.getTypeArgumentList().isEmpty()) {
@@ -343,13 +344,15 @@ public class Util {
                     for (int i=0; i<dplSize; i++) {
                         ProducedType dplt =
                                 dpl.get(i).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType paramType = 
                                 unit.getDefiniteType(dplt);
                         ProducedType rplt = 
                                 rpl.get(i).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType otherType = 
                                 unit.getDefiniteType(rplt);
@@ -380,12 +383,14 @@ public class Util {
                     if (dhsp && rhsp){
                         ProducedType dplt = 
                                 dpl.get(dplSize).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType paramType = unit.getDefiniteType(dplt);
                         ProducedType rplt = 
                                 rpl.get(dplSize).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType otherType = unit.getDefiniteType(rplt);
                         if (isTypeUnknown(otherType) || 
@@ -643,13 +648,15 @@ public class Util {
                     for (int i=0; i<dplSize; i++) {
                         ProducedType dplt = 
                                 dpl.get(i).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType paramType = 
                                 unit.getDefiniteType(dplt);
                         ProducedType rplt = 
                                 rpl.get(i).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType otherType = 
                                 unit.getDefiniteType(rplt);
@@ -675,13 +682,15 @@ public class Util {
                     if (dhsp && rhsp) {
                         ProducedType dplt = 
                                 dpl.get(dplSize).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType paramType = 
                                 unit.getDefiniteType(dplt);
                         ProducedType rplt = 
                                 rpl.get(dplSize).getModel()
-                                .getProducedReference(null, NO_TYPE_ARGS)
+                                .getProducedReference(null, 
+                                        NO_TYPE_ARGS)
                                 .getFullType();
                         ProducedType otherType = 
                                 unit.getDefiniteType(rplt);
