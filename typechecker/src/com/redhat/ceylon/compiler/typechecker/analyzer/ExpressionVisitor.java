@@ -3271,10 +3271,31 @@ public class ExpressionVisitor extends Visitor {
             visitInvocationPrimary(that, mte);
             
         }
-        if (primary instanceof Tree.ExtendedTypeExpression) {
+        else if (primary instanceof Tree.ExtendedTypeExpression) {
             Tree.ExtendedTypeExpression ete = 
                     (Tree.ExtendedTypeExpression) primary;
             visitExtendedTypePrimary(ete);
+        }
+        else {
+            visitInvocationPrimary(that, term);
+        }
+    }
+
+    private void visitInvocationPrimary(
+            Tree.InvocationExpression that, 
+            Tree.Term term) {
+        ProducedType type = term.getTypeModel();
+        if (type!=null && 
+                type.isTypeConstructor()) {
+            List<ProducedType> typeArgs = 
+                    getOrInferTypeArgumentsForTypeConstructor(
+                            that, null, null, type);
+            checkArgumentsAgainstTypeConstructor(
+                    typeArgs, null, type, term);
+            ProducedType fullType =
+                    accountForGenericFunctionRef(true, null, 
+                            null, typeArgs, type);
+            term.setTypeModel(fullType);
         }
     }
 
@@ -3413,22 +3434,9 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = value.getType();
                 if (type!=null && 
                         type.isTypeConstructor()) {
-                    TypeDeclaration td = 
-                            type.getDeclaration();
-                    List<TypeParameter> typeParameters = 
-                            td.getTypeParameters();
-                    if (explicit) {
-                        typeArguments = 
-                                getTypeArguments(tas, 
-                                        typeParameters, 
-                                        receiverType);
-                    }
-                    else {
-                        typeArguments = 
-                                getInferredTypeArguments(that,
-                                        receiverType, type, 
-                                        typeParameters);
-                    }
+                    typeArguments = 
+                            getOrInferTypeArgumentsForTypeConstructor(
+                                    that, receiverType, tas, type);
                 }
                 else {
                     return NO_TYPE_ARGS;
@@ -3439,6 +3447,33 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         tas.setTypeModels(typeArguments);
+        return typeArguments;
+    }
+
+    private List<ProducedType> getOrInferTypeArgumentsForTypeConstructor(
+            Tree.InvocationExpression that, 
+            ProducedType receiverType,
+            Tree.TypeArguments tas, 
+            ProducedType type) {
+        List<ProducedType> typeArguments;
+        TypeDeclaration td = 
+                type.getDeclaration();
+        List<TypeParameter> typeParameters = 
+                td.getTypeParameters();
+        boolean explicit = 
+                tas instanceof Tree.TypeArgumentList;
+        if (explicit) {
+            typeArguments = 
+                    getTypeArguments(tas, 
+                            typeParameters, 
+                            receiverType);
+        }
+        else {
+            typeArguments = 
+                    getInferredTypeArguments(that,
+                            receiverType, type, 
+                            typeParameters);
+        }
         return typeArguments;
     }
 
@@ -6812,9 +6847,10 @@ public class ExpressionVisitor extends Visitor {
             else {*/
             that.setTarget(ptr);
             checkSpread(member, that);
+            boolean direct = that.getDirectlyInvoked();
             ProducedType fullType = 
-                    accountForGenericFunctionRef(that, tal,
-                            receivingType, typeArgs, 
+                    accountForGenericFunctionRef(direct, 
+                            tal, receivingType, typeArgs, 
                             ptr.getFullType(wrap(ptr.getType(), 
                                     receivingType, that)));
             if (!dynamic && 
@@ -6838,7 +6874,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private static ProducedType accountForGenericFunctionRef(
-            Tree.StaticMemberOrTypeExpression that, 
+            boolean directlyInvoked, 
             Tree.TypeArguments tal, 
             ProducedType receivingType,
             List<ProducedType> typeArgs, 
@@ -6847,7 +6883,7 @@ public class ExpressionVisitor extends Visitor {
                 tal instanceof Tree.TypeArgumentList;
         if (fullType!=null &&
                 fullType.isTypeConstructor() &&
-                (explicit || that.getDirectlyInvoked())) {
+                (explicit || directlyInvoked)) {
             //apply the type arguments to the generic
             //function reference
             //TODO: it's ugly to do this here, better to 
@@ -6983,9 +7019,10 @@ public class ExpressionVisitor extends Visitor {
                     member.getProducedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
+            boolean direct = that.getDirectlyInvoked();
             ProducedType fullType =
-                    accountForGenericFunctionRef(that, tal, 
-                            outerType, typeArgs, 
+                    accountForGenericFunctionRef(direct, 
+                            tal, outerType, typeArgs, 
                             pr.getFullType());
             if (!dynamic && 
                     !isNativeForWrongBackend() && 
@@ -7005,7 +7042,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(fullType);
         }
     }
-
+    
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         boolean notDirectlyInvoked = 
@@ -7636,8 +7673,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> typeArgs, 
             Tree.TypeArguments tal, 
             ProducedType qt) {
-        if (acceptsTypeArguments(baseType, typeArgs, 
-                tal, that)) {
+        if (acceptsTypeArguments(baseType, typeArgs, tal, that)) {
             ProducedType outerType = 
                     that.getScope()
                         .getDeclaringType(baseType);
@@ -8459,161 +8495,25 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private static boolean isGeneric(Declaration member) {
-        return member instanceof Generic && 
-            !((Generic) member).getTypeParameters().isEmpty();
+        if (member instanceof Generic) {
+            Generic g = (Generic) member;
+            return !g.getTypeParameters().isEmpty();
+        }
+        else {
+            return false;
+        }
     }
     
     private boolean acceptsTypeArguments(ProducedType receiver, 
             Declaration dec, List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent) {
-        boolean explicit = 
-                tal instanceof Tree.TypeArgumentList;
+            Tree.TypeArguments tas, Node parent) {
         if (dec==null) {
             return false;
         }
         else if (isGeneric(dec)) {
-            List<TypeParameter> params = 
-                    ((Generic) dec).getTypeParameters();
-            int min = 0;
-            for (TypeParameter tp: params) { 
-                if (!tp.isDefaulted()) min++;
-            }
-            if (receiver==null && 
-                    dec.isClassOrInterfaceMember()) {
-                receiver = parent.getScope()
-                        .getDeclaringType(dec);
-            }
-            int max = params.size();
-            int args = typeArguments.size();
-            if (args<=max && args>=min) {
-                for (int i=0; i<args; i++) {
-                    TypeParameter param = params.get(i);
-                    ProducedType argType = 
-                            typeArguments.get(i);
-                    boolean argTypeMeaningful = 
-                            argType!=null && 
-                            !(argType.getDeclaration() 
-                                    instanceof UnknownType);
-                    if (argTypeMeaningful) {
-                        if (argType.isTypeConstructor() && 
-                                !param.isTypeConstructor()) {
-                            parent.addError("type argument must be a regular type: parameter '" + 
-                                    param.getName() + 
-                                    "' is not a type constructor");
-                        }
-                        else if (!argType.isTypeConstructor() && 
-                                param.isTypeConstructor()) {
-                            parent.addError("type argument must be a type constructor: parameter '" + 
-                                    param.getName() + 
-                                    "' is a type constructor");
-                        }
-                        else if (param.isTypeConstructor()) {
-                            Node argNode;
-                            if (explicit) {
-                                Tree.TypeArgumentList tl = 
-                                        (Tree.TypeArgumentList) tal;
-                                argNode = tl.getTypes().get(i);
-                            }
-                            else {
-                                argNode = parent;
-                            }
-                            checkTypeConstructorParam(param, 
-                                    argType, argNode);
-                        }
-                    }
-                    for (ProducedType st: 
-                            param.getSatisfiedTypes()) {
-                        //sts = sts.substitute(self);
-                        ProducedType sts = 
-                                st.getProducedType(receiver, 
-                                        dec, typeArguments);
-                        if (argType!=null) {
-                            ProducedType at =
-                                argType.isTypeConstructor() ?
-                                    argType.getDeclaration()
-                                        .getProducedType(null, 
-                                            param.getType()
-                                                .getTypeArgumentList()) :
-                                argType;
-                            if (!isCondition && 
-                                    !at.isSubtypeOf(sts)) {
-                                if (argTypeMeaningful) {
-                                    if (explicit) {
-                                        ((Tree.TypeArgumentList) tal).getTypes()
-                                                .get(i).addError("type parameter '" + param.getName() 
-                                                        + "' of declaration '" + dec.getName(unit)
-                                                        + "' has argument '" + at.getProducedTypeName(unit) 
-                                                        + "' which is not assignable to upper bound '" 
-                                                        + sts.getProducedTypeName(unit)
-                                                        + "' of '" + param.getName() + "'", 2102);
-                                    }
-                                    else {
-                                        parent.addError("inferred type argument '" 
-                                                + at.getProducedTypeName(unit)
-                                                + "' to type parameter '" + param.getName()
-                                                + "' of declaration '" + dec.getName(unit)
-                                                + "' is not assignable to upper bound '" 
-                                                + sts.getProducedTypeName(unit)
-                                                + "' of '" + param.getName() + "'");
-                                    }
-                                }
-                                return false;
-                            }
-                        }
-                    }
-                    if (!isCondition && 
-                            !argumentSatisfiesEnumeratedConstraint(receiver, 
-                                    dec, typeArguments, argType, param)) {
-                        if (argTypeMeaningful) {
-                            if (explicit) {
-                                ((Tree.TypeArgumentList) tal).getTypes()
-                                        .get(i).addError("type parameter '" + param.getName() 
-                                                + "' of declaration '" + dec.getName(unit)
-                                                + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                + "' which is not one of the enumerated cases of '" 
-                                                + param.getName() + "'");
-                            }
-                            else {
-                                parent.addError("inferred type argument '" 
-                                        + argType.getProducedTypeName(unit)
-                                        + "' to type parameter '" + param.getName()
-                                        + "' of declaration '" + dec.getName(unit)
-                                        + "' is not one of the enumerated cases of '" 
-                                        + param.getName() + "'");
-                            }
-                        }
-                        return false;
-                    }
-                }
-                return true;
-            }
-            else {
-                if (!explicit) {
-                    //Now handled in TypeArgumentVisitor
-//                    if (!metamodel) {
-//                        parent.addError("missing type arguments to generic type: '" + 
-//                                dec.getName(unit) + 
-//                                "' declares type parameters");
-//                    }
-                }
-                else {
-                    String help;
-                    if (args<min) {
-                        help = " requires at least " + min + 
-                                " type arguments";
-                    }
-                    else if (args>max) {
-                        help = " allows at most " + max + 
-                                " type arguments";
-                    }
-                    else {
-                        help = "";
-                    }
-                    tal.addError("wrong number of type arguments: '" + 
-                            dec.getName(unit) + "'" + help);
-                }
-                return false;
-            }
+            return checkTypeArgumentAgainstDeclaration(
+                    receiver, dec, typeArguments, tas, 
+                    parent);
         }
         else {
             boolean empty = typeArguments.isEmpty();
@@ -8622,62 +8522,225 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = td.getType();
                 if (type!=null && 
                         type.isTypeConstructor()) {
-                    TypeDeclaration tcd = 
-                            type.getDeclaration();
-                    List<TypeParameter> typeParameters = 
-                            tcd.getTypeParameters();
-                    int size = typeArguments.size();
-                    if (size != typeParameters.size()) {
-                        tal.addError("wrong number of type arguments: type constructor requires " + 
-                                size + " type arguments");
-                    }
-                    else {
-                        for (int i=0; i<size; i++) {
-                            ProducedType arg = 
-                                    typeArguments.get(i);
-                            TypeParameter param = 
-                                    typeParameters.get(i);
-                            //TODO: get the right error node!
-                            for (ProducedType st: 
-                                    param.getSatisfiedTypes()) {
-                                Map<TypeParameter, ProducedType> args = 
-                                        getTypeArgumentMap(tcd, 
-                                                null, typeArguments);
-                                ProducedType bound = 
-                                        st.substitute(args);
-                                if (explicit) {
-                                    Tree.TypeArgumentList list = 
-                                            (Tree.TypeArgumentList) tal;
-                                    checkAssignable(arg, bound, 
-                                            list.getTypes().get(i), 
-                                            "type argument '" + 
-                                            arg.getProducedTypeName(unit) +
-                                            "' is not assignable to upper bound '" +
-                                            bound.getProducedTypeName(unit) +
-                                            "' of type parameter '" +
-                                            param.getName() + "'");
-                                }
-                                else {
-                                    checkAssignable(arg, bound, parent,
-                                            "inferred type argument '" + 
-                                            arg.getProducedTypeName(unit) +
-                                            "' is not assignable to upper bound '" +
-                                            bound.getProducedTypeName(unit) +
-                                            "' of type parameter '" +
-                                            param.getName() + "'");
-                                }
-                            }
-                        }
-                    }
+                    checkArgumentsAgainstTypeConstructor(
+                            typeArguments, tas, type, 
+                            parent);
                     return true;
                 }
             }
+            boolean explicit = 
+                    tas instanceof Tree.TypeArgumentList;
             if (!empty || explicit) {
-                tal.addError("does not accept type arguments: '" + 
+                tas.addError("does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic declaration");
             }
             return empty;
+        }
+    }
+
+    private boolean checkTypeArgumentAgainstDeclaration(
+            ProducedType receiver, Declaration dec, 
+            List<ProducedType> typeArguments,
+            Tree.TypeArguments tas, Node parent) {
+        Generic g = (Generic) dec;
+        List<TypeParameter> params = g.getTypeParameters();
+        boolean explicit = 
+                tas instanceof Tree.TypeArgumentList;
+        int min = 0;
+        for (TypeParameter tp: params) { 
+            if (!tp.isDefaulted()) min++;
+        }
+        if (receiver==null && 
+                dec.isClassOrInterfaceMember()) {
+            receiver = parent.getScope()
+                    .getDeclaringType(dec);
+        }
+        int max = params.size();
+        int args = typeArguments.size();
+        if (args<=max && args>=min) {
+            for (int i=0; i<args; i++) {
+                TypeParameter param = params.get(i);
+                ProducedType argType = 
+                        typeArguments.get(i);
+                boolean argTypeMeaningful = 
+                        argType!=null && 
+                        !(argType.getDeclaration() 
+                                instanceof UnknownType);
+                if (argTypeMeaningful) {
+                    if (argType.isTypeConstructor() && 
+                            !param.isTypeConstructor()) {
+                        parent.addError("type argument must be a regular type: parameter '" + 
+                                param.getName() + 
+                                "' is not a type constructor");
+                    }
+                    else if (!argType.isTypeConstructor() && 
+                            param.isTypeConstructor()) {
+                        parent.addError("type argument must be a type constructor: parameter '" + 
+                                param.getName() + 
+                                "' is a type constructor");
+                    }
+                    else if (param.isTypeConstructor()) {
+                        Node argNode;
+                        if (explicit) {
+                            Tree.TypeArgumentList tl = 
+                                    (Tree.TypeArgumentList) tas;
+                            argNode = tl.getTypes().get(i);
+                        }
+                        else {
+                            argNode = parent;
+                        }
+                        checkTypeConstructorParam(param, 
+                                argType, argNode);
+                    }
+                }
+                for (ProducedType st: 
+                        param.getSatisfiedTypes()) {
+                    //sts = sts.substitute(self);
+                    ProducedType sts = 
+                            st.getProducedType(receiver, 
+                                    dec, typeArguments);
+                    if (argType!=null) {
+                        ProducedType at =
+                            argType.isTypeConstructor() ?
+                                argType.getDeclaration()
+                                    .getProducedType(null, 
+                                        param.getType()
+                                            .getTypeArgumentList()) :
+                            argType;
+                        if (!isCondition && 
+                                !at.isSubtypeOf(sts)) {
+                            if (argTypeMeaningful) {
+                                if (explicit) {
+                                    ((Tree.TypeArgumentList) tas).getTypes()
+                                            .get(i).addError("type parameter '" + param.getName() 
+                                                    + "' of declaration '" + dec.getName(unit)
+                                                    + "' has argument '" + at.getProducedTypeName(unit) 
+                                                    + "' which is not assignable to upper bound '" 
+                                                    + sts.getProducedTypeName(unit)
+                                                    + "' of '" + param.getName() + "'", 2102);
+                                }
+                                else {
+                                    parent.addError("inferred type argument '" 
+                                            + at.getProducedTypeName(unit)
+                                            + "' to type parameter '" + param.getName()
+                                            + "' of declaration '" + dec.getName(unit)
+                                            + "' is not assignable to upper bound '" 
+                                            + sts.getProducedTypeName(unit)
+                                            + "' of '" + param.getName() + "'");
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+                if (!isCondition && 
+                        !argumentSatisfiesEnumeratedConstraint(receiver, 
+                                dec, typeArguments, argType, param)) {
+                    if (argTypeMeaningful) {
+                        if (explicit) {
+                            ((Tree.TypeArgumentList) tas).getTypes()
+                                    .get(i).addError("type parameter '" + param.getName() 
+                                            + "' of declaration '" + dec.getName(unit)
+                                            + "' has argument '" + argType.getProducedTypeName(unit) 
+                                            + "' which is not one of the enumerated cases of '" 
+                                            + param.getName() + "'");
+                        }
+                        else {
+                            parent.addError("inferred type argument '" 
+                                    + argType.getProducedTypeName(unit)
+                                    + "' to type parameter '" + param.getName()
+                                    + "' of declaration '" + dec.getName(unit)
+                                    + "' is not one of the enumerated cases of '" 
+                                    + param.getName() + "'");
+                        }
+                    }
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if (explicit) {
+                String help;
+                if (args<min) {
+                    help = " requires at least " + min + 
+                            " type arguments";
+                }
+                else if (args>max) {
+                    help = " allows at most " + max + 
+                            " type arguments";
+                }
+                else {
+                    help = "";
+                }
+                tas.addError("wrong number of type arguments: '" + 
+                        dec.getName(unit) + "'" + help);
+            }
+            else {
+                //Now handled in TypeArgumentVisitor
+//                    if (!metamodel) {
+//                        parent.addError("missing type arguments to generic type: '" + 
+//                                dec.getName(unit) + 
+//                                "' declares type parameters");
+//                    }
+            }
+            return false;
+        }
+    }
+
+    private void checkArgumentsAgainstTypeConstructor(
+            List<ProducedType> typeArguments,
+            Tree.TypeArguments tas, ProducedType type,
+            Node parent) {
+        boolean explicit = 
+                tas instanceof Tree.TypeArgumentList;
+        TypeDeclaration tcd = 
+                type.getDeclaration();
+        List<TypeParameter> typeParameters = 
+                tcd.getTypeParameters();
+        int size = typeArguments.size();
+        if (size != typeParameters.size()) {
+            tas.addError("wrong number of type arguments: type constructor requires " + 
+                    size + " type arguments");
+        }
+        else {
+            for (int i=0; i<size; i++) {
+                ProducedType arg = 
+                        typeArguments.get(i);
+                TypeParameter param = 
+                        typeParameters.get(i);
+                //TODO: get the right error node!
+                for (ProducedType st: 
+                        param.getSatisfiedTypes()) {
+                    Map<TypeParameter, ProducedType> args = 
+                            getTypeArgumentMap(tcd, 
+                                    null, typeArguments);
+                    ProducedType bound = 
+                            st.substitute(args);
+                    if (explicit) {
+                        Tree.TypeArgumentList list = 
+                                (Tree.TypeArgumentList) tas;
+                        checkAssignable(arg, bound, 
+                                list.getTypes().get(i), 
+                                "type argument '" + 
+                                arg.getProducedTypeName(unit) +
+                                "' is not assignable to upper bound '" +
+                                bound.getProducedTypeName(unit) +
+                                "' of type parameter '" +
+                                param.getName() + "'");
+                    }
+                    else {
+                        checkAssignable(arg, bound, parent,
+                                "inferred type argument '" + 
+                                arg.getProducedTypeName(unit) +
+                                "' is not assignable to upper bound '" +
+                                bound.getProducedTypeName(unit) +
+                                "' of type parameter '" +
+                                param.getName() + "'");
+                    }
+                }
+            }
         }
     }
 

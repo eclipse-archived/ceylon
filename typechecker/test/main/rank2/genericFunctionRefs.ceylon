@@ -44,6 +44,7 @@ shared void run() {
     {String*} strings = Outer(3).mapped<String>(Object.string);
     
     value mapped = "hello world 2".map;
+    function getmapped(String str) => str.map;
     @type:"Iterable<Integer,Null>" 
     value result0 = mapped(Character.integer);
     @type:"Iterable<Integer,Null>" 
@@ -54,6 +55,10 @@ shared void run() {
     value applied = mapped<Integer>;
     @type:"<Result> => Callable<Iterable<Result,Null>,Tuple<Callable<Result,Tuple<Character,Character,Empty>>,Callable<Result,Tuple<Character,Character,Empty>>,Empty>>"
     value unapplied = mapped;
+    @type:"Iterable<Boolean,Null>" 
+    value result3 = getmapped("hello world 3")(Character.digit);
+    @type:"Iterable<Boolean,Null>" 
+    value result4 = (getmapped("hello world 3"))(Character.digit);
     
     @error print(Outer(3).mapped.hash);
     @error print(mapped.string);
