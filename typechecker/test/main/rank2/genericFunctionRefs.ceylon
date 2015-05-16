@@ -45,7 +45,9 @@ shared void run() {
     
     value mapped = "hello world 2".map;
     @type:"Iterable<Integer,Null>" 
-    value result1 = mapped(Character.integer);
+    value result0 = mapped(Character.integer);
+    @type:"Iterable<Integer,Null>" 
+    value result1 = (mapped)(Character.integer);
     @type:"Iterable<Integer,Null>"
     value result2 = mapped<Integer>(Character.integer);
     @type:"Callable<Iterable<Integer,Null>,Tuple<Callable<Integer,Tuple<Character,Character,Empty>>,Callable<Integer,Tuple<Character,Character,Empty>>,Empty>>"
