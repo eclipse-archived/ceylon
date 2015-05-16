@@ -963,7 +963,8 @@ public class ProducedType extends ProducedReference {
     public ProducedTypedReference getTypedMember(TypedDeclaration member, 
             List<ProducedType> typeArguments, boolean assigned) {
         TypeDeclaration type = 
-                (TypeDeclaration) member.getContainer();
+                (TypeDeclaration) 
+                    member.getContainer();
         ProducedType declaringType = getSupertype(type);
         /*if (declaringType==null) {
             return null;
@@ -994,7 +995,8 @@ public class ProducedType extends ProducedReference {
     public ProducedType getTypeMember(TypeDeclaration member, 
             List<ProducedType> typeArguments) {
         TypeDeclaration type = 
-                (TypeDeclaration) member.getContainer();
+                (TypeDeclaration) 
+                    member.getContainer();
         ProducedType declaringType = getSupertype(type);
         return member.getProducedType(declaringType, 
                 typeArguments);
@@ -1029,7 +1031,8 @@ public class ProducedType extends ProducedReference {
         }
         else {
             TypeDeclaration type = 
-                    (TypeDeclaration) member.getContainer();
+                    (TypeDeclaration) 
+                        member.getContainer();
             receivingType = receiver.getSupertype(type);
         }
         Map<TypeParameter, ProducedType> tam = 
