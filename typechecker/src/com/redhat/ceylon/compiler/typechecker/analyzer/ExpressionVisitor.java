@@ -121,37 +121,55 @@ public class ExpressionVisitor extends Visitor {
     
     
     private Tree.IfClause ifClause() {
-        if (ifStatementOrExpression instanceof Tree.IfStatement) {
-            return ((Tree.IfStatement) ifStatementOrExpression)
-                    .getIfClause();
+        if (ifStatementOrExpression 
+                instanceof Tree.IfStatement) {
+            Tree.IfStatement is = 
+                    (Tree.IfStatement) 
+                        ifStatementOrExpression;
+            return is.getIfClause();
         }
-        if (ifStatementOrExpression instanceof Tree.IfExpression) {
-            return ((Tree.IfExpression) ifStatementOrExpression)
-                    .getIfClause();
+        if (ifStatementOrExpression 
+                instanceof Tree.IfExpression) {
+            Tree.IfExpression ie = 
+                    (Tree.IfExpression) 
+                        ifStatementOrExpression;
+            return ie.getIfClause();
         }
         return null;
     }
     
     private Tree.SwitchClause switchClause() {
-        if (switchStatementOrExpression instanceof Tree.SwitchStatement) {
-            return ((Tree.SwitchStatement) switchStatementOrExpression)
-                    .getSwitchClause();
+        if (switchStatementOrExpression 
+                instanceof Tree.SwitchStatement) {
+            Tree.SwitchStatement ss = 
+                    (Tree.SwitchStatement) 
+                        switchStatementOrExpression;
+            return ss.getSwitchClause();
         }
-        if (switchStatementOrExpression instanceof Tree.SwitchExpression) {
-            return ((Tree.SwitchExpression) switchStatementOrExpression)
-                    .getSwitchClause();
+        if (switchStatementOrExpression 
+                instanceof Tree.SwitchExpression) {
+            Tree.SwitchExpression se = 
+                    (Tree.SwitchExpression) 
+                        switchStatementOrExpression;
+            return se.getSwitchClause();
         }
         return null;
     }
     
     private Tree.SwitchCaseList switchCaseList() {
-        if (switchStatementOrExpression instanceof Tree.SwitchStatement) {
-            return ((Tree.SwitchStatement) switchStatementOrExpression)
-                    .getSwitchCaseList();
+        if (switchStatementOrExpression 
+                instanceof Tree.SwitchStatement) {
+            Tree.SwitchStatement ss = 
+                    (Tree.SwitchStatement) 
+                        switchStatementOrExpression;
+            return ss.getSwitchCaseList();
         }
-        if (switchStatementOrExpression instanceof Tree.SwitchExpression) {
-            return ((Tree.SwitchExpression) switchStatementOrExpression)
-                    .getSwitchCaseList();
+        if (switchStatementOrExpression 
+                instanceof Tree.SwitchExpression) {
+            Tree.SwitchExpression se = 
+                    (Tree.SwitchExpression) 
+                        switchStatementOrExpression;
+            return se.getSwitchCaseList();
         }
         return null;
     }
