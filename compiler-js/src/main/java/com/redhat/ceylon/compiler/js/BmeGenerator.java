@@ -8,6 +8,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
@@ -79,10 +80,16 @@ public class BmeGenerator {
             return null;
         }
         final HashMap<TypeParameter, ProducedType> targs = new HashMap<>();
-        final Iterator<ProducedType> iter = expr.getTypeArguments().getTypeModels().iterator();
-        for (TypeParameter tp : tparams) {
-            ProducedType pt = iter.hasNext() ? iter.next() : tp.getDefaultTypeArgument();
-            targs.put(tp, pt);
+        TypeArguments typeArguments = expr.getTypeArguments();
+        if (typeArguments!=null) {
+            List<ProducedType> typeModels = typeArguments.getTypeModels();
+            if (typeModels!=null) {
+                final Iterator<ProducedType> iter = typeModels.iterator();
+                for (TypeParameter tp : tparams) {
+                    ProducedType pt = iter.hasNext() ? iter.next() : tp.getDefaultTypeArgument();
+                    targs.put(tp, pt);
+                }
+            }
         }
         return targs;
     }
