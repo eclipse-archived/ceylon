@@ -276,7 +276,9 @@ public class ProducedTypeNamePrinter {
                             declaration.getTypeParameters() :
                             tpc.getTypeParameters();
                 for (TypeParameter tp: params) {
-                    if (name.length()>1) name.append(", ");
+                    if (name.length()>lt().length()) {
+                        name.append(", ");
+                    }
                     name.append(tp.getName());
                 }
                 name.append(gt());
