@@ -64,7 +64,8 @@ public class Util {
             return (TypeDeclaration) member;
         }
         else if (member instanceof TypedDeclaration) {
-            return anonymousType(name, member);
+            return anonymousType(name, 
+                    (TypedDeclaration) member);
         }
         else {
             return null;
@@ -95,7 +96,8 @@ public class Util {
         	return (TypeDeclaration) result;
         }
         else if (result instanceof TypedDeclaration) {
-            return anonymousType(name, result);
+            return anonymousType(name, 
+                    (TypedDeclaration) result);
         }
         else {
         	return null;
@@ -126,7 +128,8 @@ public class Util {
             return (TypeDeclaration) result;
         }
         else if (result instanceof TypedDeclaration) {
-            return anonymousType(name, result);
+            return anonymousType(name, 
+                    (TypedDeclaration) result);
         }
         else {
             return null;
@@ -134,9 +137,8 @@ public class Util {
     }
 
     public static TypeDeclaration anonymousType(String name, 
-            Declaration result) {
-        ProducedType type = 
-                ((TypedDeclaration) result).getType();
+            TypedDeclaration result) {
+        ProducedType type = result.getType();
         if (type!=null) {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();

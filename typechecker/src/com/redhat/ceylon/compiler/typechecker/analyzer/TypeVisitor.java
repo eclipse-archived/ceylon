@@ -1920,9 +1920,14 @@ public class TypeVisitor extends Visitor {
     public boolean isLegalParameter(Declaration a) {
         if (a instanceof Value) {
             Value v = (Value) a;
-            return !v.isTransient() && 
-                    (v.getTypeDeclaration()==null ||
-                    !v.getTypeDeclaration().isAnonymous());
+            if (v.isTransient()) {
+                return false;
+            }
+            else {
+                TypeDeclaration td = v.getTypeDeclaration();
+                return !(td instanceof Class) || 
+                        !td.isAnonymous();
+            }
         }
         else if (a instanceof Method) {
             return true;
