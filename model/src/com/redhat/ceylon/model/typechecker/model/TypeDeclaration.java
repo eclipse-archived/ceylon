@@ -271,7 +271,8 @@ public abstract class TypeDeclaration extends Declaration
      *                      parameters of this 
      *                      declaration
      */
-    public ProducedType getProducedType(ProducedType qualifyingType,
+    public ProducedType getProducedType(
+            ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
     	if (qualifyingType!=null && 
     	        qualifyingType.isNothing()) {
@@ -300,7 +301,8 @@ public abstract class TypeDeclaration extends Declaration
         ProducedType type = new ProducedType();
         if (isMember()) {
             ClassOrInterface ci = 
-                    (ClassOrInterface) getContainer();
+                    (ClassOrInterface) 
+                        getContainer();
             type.setQualifyingType(ci.getType());
         }
         type.setDeclaration(this);
