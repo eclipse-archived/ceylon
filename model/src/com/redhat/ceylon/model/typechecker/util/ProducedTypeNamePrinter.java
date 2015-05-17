@@ -266,8 +266,7 @@ public class ProducedTypeNamePrinter {
                 return name.toString();
             }
             else if (declaration.isAlias() && 
-//TODO:             declaration.isAnonymous()
-                    declaration.getName().contains("#")) {
+                    declaration.isAnonymous()) {
                 StringBuilder name = new StringBuilder();
                 if (pt.isTypeConstructor()) {
                     name.append(lt());

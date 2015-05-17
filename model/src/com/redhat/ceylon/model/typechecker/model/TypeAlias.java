@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeAlias extends TypeDeclaration {
-
+    
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    
+    private boolean anonymous;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -32,6 +34,15 @@ public class TypeAlias extends TypeDeclaration {
 	public boolean isAlias() {
 		return true;
 	}
+	
+	@Override
+	public boolean isAnonymous() {
+	    return anonymous;
+	}
+	
+	public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
 	
     @Override
     public boolean isMember() {

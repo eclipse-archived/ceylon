@@ -2607,6 +2607,7 @@ public class ProducedType extends ProducedReference {
                     return pt.unknownType();
                 }
                 TypeAlias ta = new TypeAlias();
+                ta.setAnonymous(d.isAnonymous());
                 ta.setName(d.getName());
                 ta.setExtendedType(et.substitute(substitutions));
                 ta.setScope(d.getScope());
