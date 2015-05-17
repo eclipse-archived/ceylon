@@ -8587,14 +8587,18 @@ public class ExpressionVisitor extends Visitor {
                         typeArgNode(tas, i, parent)
                             .addError("type argument must be a regular type: parameter '" + 
                                     param.getName() + 
-                                    "' is not a type constructor");
+                                    "' is a regular type parameter but '" +
+                                    argType.getProducedTypeName(unit) + 
+                                    "' is a type constructor");
                     }
                     else if (!argType.isTypeConstructor() && 
                             param.isTypeConstructor()) {
                         typeArgNode(tas, i, parent)
                             .addError("type argument must be a type constructor: parameter '" + 
                                     param.getName() + 
-                                    "' is a type constructor");
+                                    "' is a type constructor parameter but '" +
+                                    argType.getProducedTypeName(unit) + 
+                                    "' is a regular type");
                     }
                     else if (param.isTypeConstructor()) {
                         Node argNode;
