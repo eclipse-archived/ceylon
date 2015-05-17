@@ -227,7 +227,7 @@
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
-        <mkdir dir="${build.bin.repo}" />
+        <mkdir dir="${build.bin}" />
         <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
