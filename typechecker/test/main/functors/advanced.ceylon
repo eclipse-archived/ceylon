@@ -60,3 +60,42 @@ void moreConstraints() {
     accept<Integer,List>(1..10, 5);
     accept<Integer,List>(1..10, -1);
 }
+
+void moreConstraintsBroken() {
+    Category cat = "hello world";
+    
+    void accept<E,C>(C<E> c, E e) 
+            given E satisfies Object
+            given C<in E_> satisfies Category<E_>
+            given E_ satisfies Object {
+        print(c.contains(e));
+    }
+    
+    accept<String,Category>(cat, "hello");
+    accept<String,Category>(cat, "goodbye");
+    @error accept<Integer,List>(1..10, 5);
+    @error accept<Integer,List>(1..10, -1);
+    
+    interface Cat<in A> {}
+    
+    void haha<C>() 
+            given C<out E> given E<out X> {
+        C<List> co;
+        @error C<Cat> contra;
+        @error C<Object> bad;
+    }
+    haha<List>();
+    @error haha<Category>();
+    @error haha<Object>();
+    
+    void hahaha<C>() 
+            given C<in E> given E<in X> {
+        @error C<List> co;
+        C<Cat> contra;
+        @error C<Object> bad;
+    }
+    @error hahahe<List>();
+    hahaha<Cat>();
+    @error haha<Object>();
+    
+}

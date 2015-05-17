@@ -8584,15 +8584,17 @@ public class ExpressionVisitor extends Visitor {
                 if (argTypeMeaningful) {
                     if (argType.isTypeConstructor() && 
                             !param.isTypeConstructor()) {
-                        parent.addError("type argument must be a regular type: parameter '" + 
-                                param.getName() + 
-                                "' is not a type constructor");
+                        typeArgNode(tas, i, parent)
+                            .addError("type argument must be a regular type: parameter '" + 
+                                    param.getName() + 
+                                    "' is not a type constructor");
                     }
                     else if (!argType.isTypeConstructor() && 
                             param.isTypeConstructor()) {
-                        parent.addError("type argument must be a type constructor: parameter '" + 
-                                param.getName() + 
-                                "' is a type constructor");
+                        typeArgNode(tas, i, parent)
+                            .addError("type argument must be a type constructor: parameter '" + 
+                                    param.getName() + 
+                                    "' is a type constructor");
                     }
                     else if (param.isTypeConstructor()) {
                         Node argNode;
@@ -8626,13 +8628,13 @@ public class ExpressionVisitor extends Visitor {
                                 !at.isSubtypeOf(sts)) {
                             if (argTypeMeaningful) {
                                 if (explicit) {
-                                    ((Tree.TypeArgumentList) tas).getTypes()
-                                            .get(i).addError("type parameter '" + param.getName() 
-                                                    + "' of declaration '" + dec.getName(unit)
-                                                    + "' has argument '" + at.getProducedTypeName(unit) 
-                                                    + "' which is not assignable to upper bound '" 
-                                                    + sts.getProducedTypeName(unit)
-                                                    + "' of '" + param.getName() + "'", 2102);
+                                    typeArgNode(tas, i, parent)
+                                        .addError("type parameter '" + param.getName() 
+                                                + "' of declaration '" + dec.getName(unit)
+                                                + "' has argument '" + at.getProducedTypeName(unit) 
+                                                + "' which is not assignable to upper bound '" 
+                                                + sts.getProducedTypeName(unit)
+                                                + "' of '" + param.getName() + "'", 2102);
                                 }
                                 else {
                                     parent.addError("inferred type argument '" 
@@ -8653,12 +8655,12 @@ public class ExpressionVisitor extends Visitor {
                                 dec, typeArguments, argType, param)) {
                     if (argTypeMeaningful) {
                         if (explicit) {
-                            ((Tree.TypeArgumentList) tas).getTypes()
-                                    .get(i).addError("type parameter '" + param.getName() 
-                                            + "' of declaration '" + dec.getName(unit)
-                                            + "' has argument '" + argType.getProducedTypeName(unit) 
-                                            + "' which is not one of the enumerated cases of '" 
-                                            + param.getName() + "'");
+                            typeArgNode(tas, i, parent)
+                                .addError("type parameter '" + param.getName() 
+                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' has argument '" + argType.getProducedTypeName(unit) 
+                                        + "' which is not one of the enumerated cases of '" 
+                                        + param.getName() + "'");
                         }
                         else {
                             parent.addError("inferred type argument '" 
@@ -8703,6 +8705,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private static Node typeArgNode
+            (Tree.TypeArguments tas, int i, Node parent) {
+        if (tas instanceof Tree.TypeArgumentList) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            return tal.getTypes().get(i);
+        }
+        else {
+            return parent;
+        }
+    }
+
     private void checkArgumentsAgainstTypeConstructor(
             List<ProducedType> typeArguments,
             Tree.TypeArguments tas, ProducedType type,
@@ -8733,10 +8747,8 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType bound = 
                             st.substitute(args);
                     if (explicit) {
-                        Tree.TypeArgumentList list = 
-                                (Tree.TypeArgumentList) tas;
                         checkAssignable(arg, bound, 
-                                list.getTypes().get(i), 
+                                typeArgNode(tas, i, parent), 
                                 "type argument '" + 
                                 arg.getProducedTypeName(unit) +
                                 "' is not assignable to upper bound '" +
