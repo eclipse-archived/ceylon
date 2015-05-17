@@ -99,3 +99,15 @@ void applyIt<T>(T x, T y, BinaryOp f)
     print(t);
 }
 
+void higherRank() {
+    <Result> => {Result*}(Result(Element)) higher<Element>({Element*} elements) => elements.map;
+    
+    <T> => <<R> => {R*}(R(T))>({T*}) higherref = higher;
+
+    <<Rs> => {Rs*}(Rs(String))>({String*}) higherdirect = higher<String>;
+
+    <<Rs> => {Rs*}(Rs(String))>({String*}) higherapplied = higherref<String>;
+    
+    {Integer*} result = higherref("hello world")(Character.integer);
+}
+        

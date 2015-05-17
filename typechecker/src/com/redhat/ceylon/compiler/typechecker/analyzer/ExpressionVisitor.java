@@ -6879,22 +6879,30 @@ public class ExpressionVisitor extends Visitor {
             ProducedType receivingType,
             List<ProducedType> typeArgs, 
             ProducedType fullType) {
-        boolean explicit = 
-                tal instanceof Tree.TypeArgumentList;
-        if (fullType!=null &&
-                fullType.isTypeConstructor() &&
-                (explicit || directlyInvoked)) {
-            //apply the type arguments to the generic
-            //function reference
-            //TODO: it's ugly to do this here, better to 
-            //      suck it into ProducedTypedReference
-            return fullType.getDeclaration()
-                    .getProducedType(receivingType, 
-                            typeArgs)
-                    .resolveAliases();
+        if (fullType == null) {
+            return null;
         }
         else {
-            return fullType;
+            boolean explicit = 
+                    tal instanceof Tree.TypeArgumentList;
+            if (explicit || directlyInvoked) {
+                TypeDeclaration ftd = 
+                        fullType.getDeclaration();
+                if (fullType.isTypeConstructor()) {
+                    //apply the type arguments to the generic
+                    //function reference
+                    //TODO: it's ugly to do this here, better to 
+                    //      suck it into ProducedTypedReference
+                    return ftd.getProducedType(receivingType, typeArgs)
+                            .resolveAliases();
+                }
+                else {
+                    return fullType;
+                }
+            }
+            else {
+                return fullType;
+            }
         }
     }
 
@@ -7485,7 +7493,8 @@ public class ExpressionVisitor extends Visitor {
                             name + "' in " + container);
                     unit.getUnresolvedReferences()
                         .add(id);
-                } else {
+                }
+                else {
                     type = (TypeDeclaration) 
                             handleAbstraction(type, that);
                     that.setDeclaration(type);
@@ -7551,8 +7560,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary();
             TypeDeclaration td = (TypeDeclaration) 
                     primary.getDeclaration();
-            return td==null ? 
-                    new UnknownType(unit) : td;
+            return td==null ? new UnknownType(unit) : td;
         }
         else {
             return unwrap(pt, that).getDeclaration();
