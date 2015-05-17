@@ -932,7 +932,6 @@ public class ProducedType extends ProducedReference {
             Map<TypeParameter,ProducedType> substitutions) {
         return new Substitution()
             .substitute(this, substitutions)
-            .substituteIntoTypeConstructors(substitutions)
             .simple();
     }
 
@@ -2438,7 +2437,12 @@ public class ProducedType extends ProducedReference {
                 }
                 dec = ptd;
             }
-            return substitutedType(dec, pt, substitutions);
+            if (pt.isTypeConstructor()) {
+                return substituteIntoTypeConstructor(pt, substitutions);
+            }
+            else {
+                return substitutedType(dec, pt, substitutions);
+            }
         }
         
         private ProducedType substituteIntoTypeConstructors(
@@ -2551,6 +2555,40 @@ public class ProducedType extends ProducedReference {
             return type;
         }
             
+        private ProducedType substituteIntoTypeConstructor(
+                ProducedType pt,
+                Map<TypeParameter, ProducedType> typeArgs) {
+            TypeDeclaration d = pt.getDeclaration();            
+            if (d.isAlias() && typeArgs!=null) {
+                //really this stuff is unnecessary, since
+                //we're going to disallow rank-N polymorphic
+                //types, but it helps give the right result
+                //for subtyping of such types
+                ProducedType et = 
+                        d.getExtendedType();
+                if (et==null) {
+                    return pt.unknownType();
+                }
+                TypeAlias ta = new TypeAlias();
+                ta.setName(d.getName());
+                ta.setExtendedType(et.substitute(typeArgs));
+                ta.setScope(d.getScope());
+                ta.setContainer(d.getContainer());
+                ta.setUnit(d.getUnit());
+                ta.setTypeParameters(d.getTypeParameters());
+                ProducedType type = ta.getType();
+//                            ta.getProducedType(
+//                                    getQualifyingType(), 
+//                                    getTypeArgumentList());
+                type.setTypeConstructor(true);
+                type.setTypeConstructorParameter(
+                        pt.getTypeConstructorParameter());
+                return type;
+            }
+            else {
+                return pt;
+            }
+        }
     }
     
     /**
@@ -3000,93 +3038,6 @@ public class ProducedType extends ProducedReference {
             result.setVarianceOverrides(getVarianceOverrides());
             return result;
         }
-    }
-    
-    ProducedType substituteIntoTypeConstructors(
-            Map<TypeParameter, ProducedType> typeArgs) {
-        TypeDeclaration d = getDeclaration();
-        Unit unit = d.getUnit();
-        
-        if (isTypeConstructor()) {
-            if (d.isAlias() && typeArgs!=null) {
-                //really this stuff is unnecessary, since
-                //we're going to disallow rank-N polymorphic
-                //types, but it helps give the right result
-                //for subtyping of such types
-                ProducedType et = 
-                        d.getExtendedType()
-                            .substitute(typeArgs);
-                TypeAlias ta = new TypeAlias();
-                ta.setName(d.getName());
-                ta.setExtendedType(et);
-                ta.setScope(d.getScope());
-                ta.setContainer(d.getContainer());
-                ta.setUnit(unit);
-                ta.setTypeParameters(d.getTypeParameters());
-                ProducedType type = ta.getType();
-//                        ta.getProducedType(
-//                                getQualifyingType(), 
-//                                getTypeArgumentList());
-                type.setTypeConstructor(true);
-                type.setTypeConstructorParameter(
-                        getTypeConstructorParameter());
-                return type;
-            }
-            else {
-                return this;
-            }
-        }
-        
-        if (d instanceof UnionType) {
-            List<ProducedType> caseTypes = 
-                    d.getCaseTypes();
-            List<ProducedType> list = 
-                    new ArrayList<ProducedType>
-                        (caseTypes.size());
-            for (ProducedType pt: caseTypes) {
-                list.add(pt.substituteIntoTypeConstructors(typeArgs));
-            }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
-        }
-        if (d instanceof IntersectionType) {
-            List<ProducedType> satisfiedTypes = 
-                    d.getSatisfiedTypes();
-            List<ProducedType> list = 
-                    new ArrayList<ProducedType>
-                        (satisfiedTypes.size());
-            for (ProducedType pt: satisfiedTypes) {
-                list.add(pt.substituteIntoTypeConstructors(typeArgs));
-            }
-            IntersectionType ut = 
-                    new IntersectionType(unit);
-            ut.setSatisfiedTypes(list);
-            return ut.getType();
-        }
-        
-        ProducedType qt = getQualifyingType();
-        ProducedType aliasedQualifyingType = 
-                qt==null ? null : 
-                    qt.substituteIntoTypeConstructors(typeArgs);
-        
-        List<ProducedType> args = getTypeArgumentList();
-        List<ProducedType> aliasedArgs = 
-                args.isEmpty() ? NO_TYPE_ARGS : 
-                    new ArrayList<ProducedType>
-                        (args.size());
-        for (ProducedType arg: args) {
-            ProducedType aliasedArg = 
-                    arg==null ? null : 
-                        arg.substituteIntoTypeConstructors(typeArgs);
-            aliasedArgs.add(aliasedArg);
-        }
-        ProducedType result = 
-                d.getProducedTypeInternal(
-                        aliasedQualifyingType, 
-                        aliasedArgs);
-        result.setVarianceOverrides(getVarianceOverrides());
-        return result;
     }
     
     private ProducedType simple() {

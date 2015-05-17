@@ -274,28 +274,20 @@ public abstract class TypeDeclaration extends Declaration
     public ProducedType getProducedType(
             ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
-    	ProducedType pt = 
-    	        getProducedTypeInternal(qualifyingType, 
-    	                typeArguments);
-        return pt.substituteIntoTypeConstructors(
-                pt.getTypeArguments());
+    	if (qualifyingType!=null && 
+                qualifyingType.isNothing()) {
+        	return qualifyingType;
+        }
+    	else {
+            ProducedType pt = new ProducedType();
+            pt.setDeclaration(this);
+            pt.setQualifyingType(qualifyingType);
+            pt.setTypeArguments(getTypeArgumentMap(this, 
+                    qualifyingType, typeArguments));
+            return pt;
+    	}
     }
 
-    ProducedType getProducedTypeInternal(
-            ProducedType qualifyingType, 
-            List<ProducedType> typeArguments) {
-        if (qualifyingType!=null && 
-    	        qualifyingType.isNothing()) {
-    		return qualifyingType;
-    	}
-        ProducedType pt = new ProducedType();
-        pt.setDeclaration(this);
-        pt.setQualifyingType(qualifyingType);
-        pt.setTypeArguments(getTypeArgumentMap(this, 
-                qualifyingType, typeArguments));
-        return pt;
-    }
-    
     /**
      * The type of the declaration as seen from
      * within the body of the declaration itself.
