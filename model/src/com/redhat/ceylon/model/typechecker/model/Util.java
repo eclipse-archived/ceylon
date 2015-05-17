@@ -2156,31 +2156,36 @@ public class Util {
         }
     }
     
-    public static boolean isNativeAbstraction(Declaration decl) {
-        if (decl instanceof Overloadable) {
-            Overloadable f = (Overloadable)decl;
-            return decl.isNative() && decl.getNative().isEmpty()
-                    && f.getOverloads() != null && f.getOverloads().size() > 1;
+    public static boolean isNativeAbstraction(Declaration dec) {
+        if (dec instanceof Overloadable) {
+            Overloadable f = (Overloadable) dec;
+            List<Declaration> overloads = f.getOverloads();
+            return dec.isNative() && 
+                    dec.getNative().isEmpty() && 
+                    overloads != null && 
+                    !overloads.isEmpty();
         }
         else {
             return false;
         }
     }
     
-    public static boolean isNativeNoImpl(Declaration decl) {
-        return decl.isNative() && decl.getNative().isEmpty();
+    public static boolean isNativeNoImpl(Declaration dec) {
+        return dec.isNative() && dec.getNative().isEmpty();
     }
     
-    public static boolean isNativeImplementation(Declaration decl) {
-        return decl.isNative() && !decl.getNative().isEmpty();
+    public static boolean isNativeImplementation(Declaration dec) {
+        return dec.isNative() && !dec.getNative().isEmpty();
     }
     
-    public static boolean hasNativeImplementation(Declaration decl) {
-        if (decl instanceof Overloadable) {
-            Overloadable f = (Overloadable)decl;
-            if (decl.isNative() && f.getOverloads() != null) {
-                for (Declaration d : f.getOverloads()) {
-                    if (d.isNative() && !d.getNative().isEmpty()) {
+    public static boolean hasNativeImplementation(Declaration dec) {
+        if (dec instanceof Overloadable && dec.isNative()) {
+            Overloadable f = (Overloadable) dec;
+            List<Declaration> overloads = f.getOverloads();
+            if (overloads != null) {
+                for (Declaration d: overloads) {
+                    if (d.isNative() && 
+                            !d.getNative().isEmpty()) {
                         return true;
                     }
                 }
@@ -2189,27 +2194,36 @@ public class Util {
         return false;
     }
     
-    public static boolean isInNativeContainer(Declaration decl) {
-        Scope container = decl.getContainer();
+    public static boolean isInNativeContainer(Declaration dec) {
+        Scope container = dec.getContainer();
         if (container instanceof Declaration) {
-            return ((Declaration) container).isNative();
+            Declaration d = (Declaration) container;
+            return d.isNative();
         }
         return false;
     }
     
-    public static Declaration getNativeDeclaration(Declaration decl, Backend backend) {
-        return getNativeDeclaration(decl, backend != null ? backend.backendSupport : null);
+    public static Declaration getNativeDeclaration
+            (Declaration decl, Backend backend) {
+        return getNativeDeclaration(decl, 
+                backend == null ? null :
+                    backend.backendSupport);
     }
     
-    public static Declaration getNativeDeclaration(Declaration decl, BackendSupport backendSupport) {
-        if (decl.isNative() && backendSupport != null) {
+    public static Declaration getNativeDeclaration
+            (Declaration dec, BackendSupport backendSupport) {
+        if (dec.isNative() && 
+                dec instanceof Overloadable &&
+                backendSupport != null) {
+            Overloadable f = (Overloadable) dec;
             Declaration abstraction = null;
-            Overloadable f = (Overloadable)decl;
-            if (backendSupport.supportsBackend(Backend.fromAnnotation(decl.getNative()))) {
-                abstraction = decl;
-            } else {
-                if (f.getOverloads() != null) {
-                    for (Declaration d : f.getOverloads()) {
+            if (backendSupport.supportsBackend(Backend.fromAnnotation(dec.getNative()))) {
+                abstraction = dec;
+            }
+            else {
+                List<Declaration> overloads = f.getOverloads();
+                if (overloads != null) {
+                    for (Declaration d: overloads) {
                         if (backendSupport.supportsBackend(Backend.fromAnnotation(d.getNative()))) {
                             abstraction = d;
                             break;
@@ -2218,8 +2232,9 @@ public class Util {
                 }
             }
             return abstraction;
-        } else {
-            return decl;
+        }
+        else {
+            return dec;
         }
     }
 
