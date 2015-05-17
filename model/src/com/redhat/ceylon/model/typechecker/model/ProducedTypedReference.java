@@ -1,5 +1,8 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * A produced reference to a method or 
@@ -57,6 +60,46 @@ public class ProducedTypedReference extends ProducedReference {
                 return type.substitute(getTypeArguments());
             }
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "Reference[" + getProducedName() + "]";
+    }
+
+    @Override
+    public String getProducedName() {
+        TypedDeclaration dec = getDeclaration();
+        StringBuilder name = new StringBuilder();
+        ProducedType type = getQualifyingType();
+        if (type!=null) {
+            name.append(type.getProducedTypeName());
+        }
+        name.append(dec.getName());
+        if (dec instanceof Generic) {
+            Generic g = (Generic) dec;
+            List<TypeParameter> tps = g.getTypeParameters();
+            if (!tps.isEmpty()) {
+                name.append("<");
+                Map<TypeParameter, ProducedType> args = 
+                        getTypeArguments();
+                for (int i=0, l=tps.size(); i<l; i++) {
+                    if (i!=0) {
+                        name.append(",");
+                    }
+                    TypeParameter tp = tps.get(i);
+                    ProducedType arg = args.get(tp);
+                    if (arg==null) {
+                        name.append("unknown");
+                    }
+                    else {
+                        name.append(arg.getProducedTypeName());
+                    }
+                }
+                name.append(">");
+            }
+        }
+        return name.toString();
     }
     
 }

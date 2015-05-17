@@ -161,5 +161,7 @@ public abstract class ProducedReference {
     public Declaration getOverloadedVersion() {
         return declaration;
     }
+
+    public abstract String getProducedName();
     
 }

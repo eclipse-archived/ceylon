@@ -1787,7 +1787,6 @@ public class ProducedType extends ProducedReference {
                             (tps.size());
                 Map<TypeParameter, ProducedType> args = 
                         getTypeArguments();
-                // cheaper c-for than foreach
                 for (int i=0, l=tps.size(); i<l; i++) {
                     TypeParameter tp = tps.get(i);
                     ProducedType arg = args.get(tp);
@@ -2631,6 +2630,11 @@ public class ProducedType extends ProducedReference {
         return isTypeConstructor() ?
                 "TypeConstructor[" + getProducedTypeName() + "]" :
                 "Type[" + getProducedTypeName() + "]";
+    }
+    
+    @Override
+    public String getProducedName() {
+        return getProducedTypeName();
     }
     
     public String getProducedTypeName() {
