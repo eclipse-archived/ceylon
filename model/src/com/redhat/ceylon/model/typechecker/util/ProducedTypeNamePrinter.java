@@ -265,27 +265,31 @@ public class ProducedTypeNamePrinter {
 
                 return name.toString();
             }
-            else if (pt.isTypeConstructor() && 
+            else if (declaration.isAlias() && 
+//TODO:             declaration.isAnonymous()
                     declaration.getName().contains("#")) {
                 StringBuilder name = new StringBuilder();
-                name.append(lt());
-                TypeParameter tpc = 
-                        pt.getTypeConstructorParameter();
-                List<TypeParameter> params = 
-                        tpc == null ?
-                            declaration.getTypeParameters() :
-                            tpc.getTypeParameters();
-                for (TypeParameter tp: params) {
-                    if (name.length()>lt().length()) {
-                        name.append(", ");
+                if (pt.isTypeConstructor()) {
+                    name.append(lt());
+                    TypeParameter tpc = 
+                            pt.getTypeConstructorParameter();
+                    List<TypeParameter> params = 
+                            tpc == null ?
+                                declaration.getTypeParameters() :
+                                tpc.getTypeParameters();
+                    for (TypeParameter tp: params) {
+                        if (name.length()>lt().length()) {
+                            name.append(", ");
+                        }
+                        printDeclaration(name, tp, printFullyQualified(), unit);
                     }
-                    printDeclaration(name, tp, printFullyQualified(), unit);
+                    name.append(gt());
+                    appendConstraintsString(pt, name, unit);
+                    name.append(" =").append(gt()).append(" ");
                 }
-                name.append(gt());
-                appendConstraintsString(pt, name, unit);
-                name.append(" =").append(gt()).append(" ");
                 ProducedType aliasedType =
-                        declaration.getExtendedType();
+                        declaration.getExtendedType()
+                            .substitute(pt.getTypeArguments());
                 name.append(getProducedTypeName(aliasedType, unit));
                 return name.toString();
             }
