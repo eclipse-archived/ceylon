@@ -2330,6 +2330,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         TypeAlias ta = new TypeAlias();
         ta.setShared(true);
         ta.setName("Anonymous#"+fid++);
+        ta.setAnonymous(true);
         visitElement(that, ta);
         setVisibleScope(ta);
         Scope o = enterScope(ta);

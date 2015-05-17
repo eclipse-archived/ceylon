@@ -262,6 +262,7 @@ public class ExpressionVisitor extends Visitor {
         if (!fun.getTypeParameters().isEmpty()) {
             TypeAlias ta = new TypeAlias();
             ta.setName(fun.getName() + "#");
+            ta.setAnonymous(true);
             ta.setTypeParameters(fun.getTypeParameters());
             Scope scope = that.getScope();
             ta.setContainer(scope);
@@ -6518,6 +6519,7 @@ public class ExpressionVisitor extends Visitor {
                 TypeAlias ta = new TypeAlias();
                 ta.setContainer(scope);
                 ta.setName("Anonymous#" + member.getName());
+                ta.setAnonymous(true);
                 ta.setScope(scope);
                 ta.setUnit(unit);
                 ta.setExtendedType(pr.getFullType());
@@ -6659,6 +6661,7 @@ public class ExpressionVisitor extends Visitor {
                 TypeAlias ta = new TypeAlias();
                 ta.setContainer(scope);
                 ta.setName("Anonymous#" + member.getName());
+                ta.setAnonymous(true);
                 ta.setScope(scope);
                 ta.setUnit(unit);
                 ta.setExtendedType(pr.getFullType());
@@ -7110,6 +7113,7 @@ public class ExpressionVisitor extends Visitor {
                 TypeAlias ta = new TypeAlias();
                 ta.setContainer(scope);
                 ta.setName("Anonymous#" + type.getName());
+                ta.setAnonymous(true);
                 ta.setScope(scope);
                 ta.setUnit(unit);
                 ta.setExtendedType(pt.getFullType());
@@ -7411,6 +7415,7 @@ public class ExpressionVisitor extends Visitor {
                 TypeAlias ta = new TypeAlias();
                 ta.setContainer(scope);
                 ta.setName("Anonymous#" + type.getName());
+                ta.setAnonymous(true);
                 ta.setScope(scope);
                 ta.setUnit(unit);
                 ta.setExtendedType(pt.getFullType());
