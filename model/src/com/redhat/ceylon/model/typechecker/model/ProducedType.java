@@ -1909,6 +1909,42 @@ public class ProducedType extends ProducedReference {
         return errors;
     }
     
+    private static boolean isTrulyCovariant(TypeParameter tp) {
+        Scope container = tp.getContainer();
+        if (container instanceof TypeParameter) {
+            if (isTrulyCovariant((TypeParameter) container)) {
+                return tp.isCovariant();
+            }
+            else if (isTrulyContravariant((TypeParameter) container)) {
+                return tp.isContravariant();
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return tp.isCovariant();
+        }
+    }
+    
+    private static boolean isTrulyContravariant(TypeParameter tp) {
+        Scope container = tp.getContainer();
+        if (container instanceof TypeParameter) {
+            if (isTrulyCovariant((TypeParameter) container)) {
+                return tp.isContravariant();
+            }
+            else if (isTrulyContravariant((TypeParameter) container)) {
+                return tp.isCovariant();
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return tp.isContravariant();
+        }
+    }
+    
     private void checkVariance(
             boolean covariant, 
             boolean contravariant,
@@ -1919,15 +1955,16 @@ public class ProducedType extends ProducedReference {
             TypeParameter tp = (TypeParameter) dec;
             Declaration parameterizedDec = 
                     tp.getDeclaration();
-            boolean ok = 
-                    parameterizedDec.equals(declaration) ||
-                    ((covariant || !tp.isCovariant()) && 
-                    (contravariant || !tp.isContravariant()));
-            if (!ok) {
-                //a covariant type parameter appears in a 
-                //contravariant location, or a contravariant 
-                //type parameter appears in a covariant location.
-                errors.add(tp);
+            if (!parameterizedDec.equals(declaration)) {
+                if (//if a contravariant type parameter appears 
+                    //in a covariant location
+                    !covariant && isTrulyCovariant(tp) ||
+                    //or a covariant type parameter appears in a 
+                    //contravariant location
+                    !contravariant && isTrulyContravariant(tp)) {
+                    //add an error to the list
+                    errors.add(tp);
+                }
             }
         }
         else if (dec instanceof UnionType) {
