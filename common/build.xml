@@ -64,7 +64,7 @@
 
     <target name="ceylon-common.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
-        <mkdir dir="${build.bin.repo}"/>
+        <mkdir dir="${build.bin}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>    	
