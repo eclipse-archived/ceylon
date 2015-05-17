@@ -2438,7 +2438,7 @@ public class ProducedType extends ProducedReference {
                 dec = ptd;
             }
             if (pt.isTypeConstructor()) {
-                return substituteIntoTypeConstructor(pt, substitutions);
+                return substitutedTypeConstructor(pt, substitutions);
             }
             else {
                 return substitutedType(dec, pt, substitutions);
@@ -2555,11 +2555,11 @@ public class ProducedType extends ProducedReference {
             return type;
         }
             
-        private ProducedType substituteIntoTypeConstructor(
+        private ProducedType substitutedTypeConstructor(
                 ProducedType pt,
-                Map<TypeParameter, ProducedType> typeArgs) {
+                Map<TypeParameter, ProducedType> substitutions) {
             TypeDeclaration d = pt.getDeclaration();            
-            if (d.isAlias() && typeArgs!=null) {
+            if (d.isAlias() && substitutions!=null) {
                 //really this stuff is unnecessary, since
                 //we're going to disallow rank-N polymorphic
                 //types, but it helps give the right result
@@ -2571,15 +2571,16 @@ public class ProducedType extends ProducedReference {
                 }
                 TypeAlias ta = new TypeAlias();
                 ta.setName(d.getName());
-                ta.setExtendedType(et.substitute(typeArgs));
+                ta.setExtendedType(et.substitute(substitutions));
                 ta.setScope(d.getScope());
                 ta.setContainer(d.getContainer());
                 ta.setUnit(d.getUnit());
                 ta.setTypeParameters(d.getTypeParameters());
                 ProducedType type = ta.getType();
-//                            ta.getProducedType(
-//                                    getQualifyingType(), 
-//                                    getTypeArgumentList());
+                ProducedType qt = pt.getQualifyingType();
+                if (qt!=null) {
+                    type.setQualifyingType(qt.substitute(substitutions));
+                }
                 type.setTypeConstructor(true);
                 type.setTypeConstructorParameter(
                         pt.getTypeConstructorParameter());
