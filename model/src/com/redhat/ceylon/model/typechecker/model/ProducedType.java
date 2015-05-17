@@ -2910,8 +2910,7 @@ public class ProducedType extends ProducedReference {
             }
             depth.set(depth.get()+1);
             try {
-                resolvedAliases = 
-                        resolveAliasesInternal();
+                resolvedAliases = resolveAliasesInternal();
             }
             finally { 
                 depth.set(depth.get()-1);
