@@ -6881,7 +6881,7 @@ public class ExpressionVisitor extends Visitor {
 
     private static ProducedType accountForGenericFunctionRef(
             boolean directlyInvoked, 
-            Tree.TypeArguments tal, 
+            Tree.TypeArguments tas, 
             ProducedType receivingType,
             List<ProducedType> typeArgs, 
             ProducedType fullType) {
@@ -6890,7 +6890,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             boolean explicit = 
-                    tal instanceof Tree.TypeArgumentList;
+                    tas instanceof Tree.TypeArgumentList;
             if (explicit || directlyInvoked) {
                 TypeDeclaration ftd = 
                         fullType.getDeclaration();
