@@ -268,7 +268,7 @@
     <!-- Rule to build runtime jar -->
     <target name="runtime.jar" depends="runtime.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.runtime.dir}"/>
-        <mkdir dir="${build.bin.repo}"/>
+        <mkdir dir="${build.bin}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>        
