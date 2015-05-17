@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 
@@ -104,21 +105,25 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             print(" (" + node.getLocation() + ")");
         }
         if (node instanceof Tree.MemberOrTypeExpression) {
+            ProducedReference t = ((Tree.MemberOrTypeExpression) node).getTarget();
             Declaration d = ((Tree.MemberOrTypeExpression) node).getDeclaration();
+            if (t!=null) {
+                print(" (" + t.getProducedName() + ")");
+            }
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.Outer) {
             Declaration d = ((Tree.Outer) node).getDeclarationModel();
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.SelfExpression) {
             Declaration d = ((Tree.SelfExpression) node).getDeclarationModel();
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.Declaration) {
@@ -127,49 +132,49 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 if (d.isCaptured()) {
                     print("[captured]");
                 }
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.SpecifierStatement) {
             Declaration d = ((Tree.SpecifierStatement) node).getDeclaration();
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.SimpleType) {
             Declaration d = ((Tree.SimpleType) node).getDeclarationModel();
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.ImportMemberOrType) {
             Declaration d = ((Tree.ImportMemberOrType) node).getDeclarationModel();
             if (d!=null) {
-                print(" => " + d);
+                print(" ~> " + d);
             }
         }
         if (node instanceof Tree.Return) {
         	Declaration d = ((Tree.Return) node).getDeclaration();
 			if (d!=null) {
-				print(" => " + d);
+				print(" ~> " + d);
 			}
         }
         if (node instanceof Tree.PositionalArgument) {
         	Parameter p = ((Tree.PositionalArgument) node).getParameter();
 			if (p!=null) {
-				print(" => " + p);
+				print(" ~> " + p);
 			}
         }
         if (node instanceof Tree.NamedArgument) {
         	Parameter p = ((Tree.NamedArgument) node).getParameter();
 			if (p!=null) {
-				print(" => " + p);
+				print(" ~> " + p);
 			}
         }
         if (node instanceof Tree.SequencedArgument) {
         	Parameter p = ((Tree.SequencedArgument) node).getParameter();
 			if (p!=null) {
-				print(" => " + p);
+				print(" ~> " + p);
 			}
         }
         if (!node.getErrors().isEmpty()) {
