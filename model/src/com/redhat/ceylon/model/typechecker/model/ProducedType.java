@@ -1912,10 +1912,11 @@ public class ProducedType extends ProducedReference {
     private static boolean isTrulyCovariant(TypeParameter tp) {
         Scope container = tp.getContainer();
         if (container instanceof TypeParameter) {
-            if (isTrulyCovariant((TypeParameter) container)) {
+            TypeParameter tcp = (TypeParameter) container;
+            if (isTrulyCovariant(tcp)) {
                 return tp.isCovariant();
             }
-            else if (isTrulyContravariant((TypeParameter) container)) {
+            else if (isTrulyContravariant(tcp)) {
                 return tp.isContravariant();
             }
             else {
@@ -1930,10 +1931,11 @@ public class ProducedType extends ProducedReference {
     private static boolean isTrulyContravariant(TypeParameter tp) {
         Scope container = tp.getContainer();
         if (container instanceof TypeParameter) {
-            if (isTrulyCovariant((TypeParameter) container)) {
+            TypeParameter tcp = (TypeParameter) container;
+            if (isTrulyCovariant(tcp)) {
                 return tp.isContravariant();
             }
-            else if (isTrulyContravariant((TypeParameter) container)) {
+            else if (isTrulyContravariant(tcp)) {
                 return tp.isCovariant();
             }
             else {
