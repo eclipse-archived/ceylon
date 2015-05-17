@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.Map;
+
 /**
  * A produced reference to a method or 
  * attribute with actual type arguments.
@@ -34,21 +36,27 @@ public class ProducedTypedReference extends ProducedReference {
     
     public ProducedType getType() {
         TypedDeclaration dec = getDeclaration();
-        ProducedType type = dec==null ? null : dec.getType();
-        if (type==null) {
+        if (dec==null) {
             return null;
         }
-        // FIXME: perhaps this should be in type.substitute?
-        else if(type.isUnknown()) {
-            return type;
-        }
         else {
-            ProducedType qt = getQualifyingType();
-            if (qt!=null) {
-                type = qt.applyVarianceOverrides(type, 
-                        covariant, contravariant);
+            ProducedType type = dec.getType();
+            if (type==null) {
+                return null;
             }
-            return type.substitute(getTypeArguments()); //the type arguments to the member
+            // FIXME: perhaps this should be in type.substitute?
+            else if (type.isUnknown()) {
+                return type;
+            }
+            else {
+                ProducedType qt = getQualifyingType();
+                if (qt!=null) {
+                    type = qt.applyVarianceOverrides(type, 
+                            covariant, contravariant);
+                }
+                //the type arguments to the member
+                return type.substitute(getTypeArguments());
+            }
         }
     }
     

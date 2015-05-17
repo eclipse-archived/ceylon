@@ -611,26 +611,16 @@ public class ProducedType extends ProducedReference {
             ProducedType qt = getQualifyingType();
             ProducedType oqt = type.getQualifyingType();
             if (typeConstructorParam==null) {
-                List<ProducedType> paramsAsArgs = 
+                List<ProducedType> paramsAsArgs =
                         toTypeArgs(otherDec);
-                ProducedType rt = 
+                ProducedType rt =
                         dec.getProducedType(qt,
                                 paramsAsArgs);
-                ProducedType ort = 
-                        otherDec.getProducedType(oqt, 
+                ProducedType ort =
+                        otherDec.getProducedType(oqt,
                                 paramsAsArgs);
-                Map<TypeParameter,ProducedType> map = 
-                        getTypeArgumentMap(dec, 
-                                qt, paramsAsArgs);
-                Map<TypeParameter,ProducedType> omap = 
-                        getTypeArgumentMap(otherDec, 
-                                oqt, paramsAsArgs);
-                ProducedType rtr = 
-                        rt.resolveAliases(map);
-                ProducedType ortr = 
-                        ort.resolveAliases(omap);
-                return rtr.isExactlyInternal(ortr) &&
-                        hasExactSameUpperBounds(type, 
+                return rt.isExactly(ort) &&
+                        hasExactSameUpperBounds(type,
                                 paramsAsArgs);
             }
             else {
@@ -671,17 +661,7 @@ public class ProducedType extends ProducedReference {
                 ProducedType ort = 
                         otherDec.getProducedType(oqt, 
                                 paramsAsArgs);
-                Map<TypeParameter,ProducedType> map = 
-                        getTypeArgumentMap(dec, 
-                                qt, paramsAsArgs);
-                Map<TypeParameter,ProducedType> omap = 
-                        getTypeArgumentMap(otherDec, 
-                                oqt, paramsAsArgs);
-                ProducedType rtr = 
-                        rt.resolveAliases(map);
-                ProducedType ortr = 
-                        ort.resolveAliases(omap);
-                return rtr.isSubtypeOfInternal(ortr) &&
+                return rt.isSubtypeOf(ort) &&
                         acceptsUpperBounds(type, 
                                 paramsAsArgs);
             }
@@ -838,7 +818,7 @@ public class ProducedType extends ProducedReference {
         Unit unit = dec.getUnit();
         Class nd = unit.getNullDeclaration();
         if (getDeclaration().inherits(nd)) {
-            return unit.getNothingDeclaration().getType();
+            return nothingType();
         }
         else if (dec instanceof UnionType) {
             List<ProducedType> caseTypes = getCaseTypes();
@@ -846,9 +826,7 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (caseTypes.size());
             for (ProducedType ct: caseTypes) {
-//                if (!ct.getDeclaration().inherits(nd)) {
-                    addToUnion(types, ct.eliminateNull());
-//                }
+                addToUnion(types, ct.eliminateNull());
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(types);
@@ -861,9 +839,8 @@ public class ProducedType extends ProducedReference {
     
     public ProducedType shallowMinus(ProducedType pt) {
         TypeDeclaration dec = getDeclaration();
-        Unit unit = dec.getUnit();
         if (isSubtypeOf(pt)) {
-            return unit.getNothingDeclaration().getType();
+            return nothingType();
         }
         else if (dec instanceof UnionType) {
             List<ProducedType> caseTypes = getCaseTypes();
@@ -871,11 +848,9 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (caseTypes.size());
             for (ProducedType ct: caseTypes) {
-//                if (!ct.getDeclaration().inherits(nd)) {
-                    addToUnion(types, ct.shallowMinus(pt));
-//                }
+                addToUnion(types, ct.shallowMinus(pt));
             }
-            UnionType ut = new UnionType(unit);
+            UnionType ut = new UnionType(dec.getUnit());
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -883,12 +858,17 @@ public class ProducedType extends ProducedReference {
             return this;
         }
     }
+
+    ProducedType nothingType() {
+        return getDeclaration().getUnit()
+                .getNothingDeclaration().getType();
+    }
     
     private ProducedType minusInternal(ProducedType pt) {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
         if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
-            return unit.getNothingDeclaration().getType();
+            return nothingType();
         }
         else {
             ProducedType ucts = getUnionOfCases();
@@ -952,6 +932,7 @@ public class ProducedType extends ProducedReference {
             Map<TypeParameter,ProducedType> substitutions) {
         return new Substitution()
             .substitute(this, substitutions)
+            .substituteIntoTypeConstructors(substitutions)
             .simple();
     }
 
@@ -1161,7 +1142,8 @@ public class ProducedType extends ProducedReference {
             superType = this;
         }
         else {
-            superType = getSupertype(new SupertypeCriteria(dec));
+            superType = 
+                    getSupertype(new SupertypeCriteria(dec));
         }
         if (canCache) {
             cache.put(this, dec, superType);
@@ -1525,11 +1507,11 @@ public class ProducedType extends ProducedReference {
                             ut.setCaseTypes(caseTypes);
                             result = ut.getType().getSupertype(c);
                             if (result==null) {
-                                return new UnknownType(unit).getType();
+                                return unknownType();
                             }
                         }
                         else {
-                            return new UnknownType(unit).getType();
+                            return unknownType();
                         }
                     }
                 }
@@ -1537,6 +1519,11 @@ public class ProducedType extends ProducedReference {
         }
         
         return result;
+    }
+
+    private ProducedType unknownType() {
+        Unit unit = getDeclaration().getUnit();
+        return new UnknownType(unit).getType();
     }
 
     private ProducedType qualifiedByDeclaringType() {
@@ -1807,8 +1794,7 @@ public class ProducedType extends ProducedReference {
                     TypeParameter tp = tps.get(i);
                     ProducedType arg = args.get(tp);
                     if (arg==null) {
-                        Unit unit = dec.getUnit();
-                        arg = new UnknownType(unit).getType();
+                        arg = unknownType();
                     }
                     argList.add(arg);
                 }
@@ -2396,9 +2382,10 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             Declaration dec;
             TypeDeclaration ptd = pt.getDeclaration();
+            Unit unit = ptd.getUnit();
             if (ptd instanceof UnionType) {
                 UnionType ut = 
-                        new UnionType(ptd.getUnit());
+                        new UnionType(unit);
                 List<ProducedType> cts = 
                         ptd.getCaseTypes();
                 List<ProducedType> types = 
@@ -2412,7 +2399,7 @@ public class ProducedType extends ProducedReference {
             }
             else if (ptd instanceof IntersectionType) {
                 IntersectionType it = 
-                        new IntersectionType(ptd.getUnit());
+                        new IntersectionType(unit);
                 List<ProducedType> sts = 
                         ptd.getSatisfiedTypes();
                 List<ProducedType> types = 
@@ -2445,7 +2432,7 @@ public class ProducedType extends ProducedReference {
                                 sta.add(ta.substitute(substitutions));
                             }
                             return substituteIntoTypeConstructors(sub, 
-                                    sta, substitutions, ptd.getUnit());
+                                    sta, substitutions, unit);
                         }
                     }
                 }
@@ -2853,6 +2840,7 @@ public class ProducedType extends ProducedReference {
         else {
             //X covers Y if Y extends Z and X covers Z
             ProducedType et = t.getExtendedType();
+            Unit unit = dec.getUnit();
             if (et!=null) {
 //                if (coversInternal(et)) {
 //                    return true;
@@ -2863,8 +2851,7 @@ public class ProducedType extends ProducedReference {
                 ProducedType stu = et.getUnionOfCases();
                 if (stu.getDeclaration() instanceof UnionType) {
                     ProducedType it = 
-                            intersectionType(stu, 
-                                    t, dec.getUnit());
+                            intersectionType(stu, t, unit);
                     if (it.isSubtypeOf(this)) {
                         return true;
                     }
@@ -2881,8 +2868,7 @@ public class ProducedType extends ProducedReference {
                 ProducedType stu = st.getUnionOfCases();
                 if (stu.getDeclaration() instanceof UnionType) {
                     ProducedType it = 
-                            intersectionType(stu, 
-                                    t, dec.getUnit());
+                            intersectionType(stu, t, unit);
                     if (it.isSubtypeOf(this)) {
                         return true;
                     }
@@ -2917,71 +2903,126 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType resolveAliases() {
-        return resolveAliases(null);
-    }
-    
-    public ProducedType resolveAliases(
-            Map<TypeParameter, ProducedType> typeArgumentMap) {
-        if (typeArgumentMap != null) {
+        if (resolvedAliases == null) {
+            // really compute it
             if (depth.get()>50) {
                 throw new RuntimeException("undecidable canonicalization");
             }
             depth.set(depth.get()+1);
             try {
-                return resolveAliasesInternal(typeArgumentMap);
+                resolvedAliases = 
+                        resolveAliasesInternal();
             }
             finally { 
                 depth.set(depth.get()-1);
             }
-        }
-        else {
-            if (resolvedAliases == null) {
-                // really compute it
-                if (depth.get()>50) {
-                    throw new RuntimeException("undecidable canonicalization");
-                }
-                depth.set(depth.get()+1);
-                try {
-                    resolvedAliases = 
-                            resolveAliasesInternal(null);
-                }
-                finally { 
-                    depth.set(depth.get()-1);
-                }
-                // mark it as resolved so it doesn't get resolved again
-                resolvedAliases.resolvedAliases = resolvedAliases;
-                if (resolvedAliases != this) {
-                    // inherit whatever underlying type we had
-                    resolvedAliases.underlyingType = underlyingType;
-                    resolvedAliases.isRaw = isRaw;
-                }
+            // mark it as resolved so it doesn't get resolved again
+            resolvedAliases.resolvedAliases = resolvedAliases;
+            if (resolvedAliases != this) {
+                // inherit whatever underlying type we had
+                resolvedAliases.underlyingType = underlyingType;
+                resolvedAliases.isRaw = isRaw;
             }
-            return resolvedAliases;
         }
+        return resolvedAliases;
     }
     
-    private ProducedType resolveAliasesInternal(
-            //really this paramater is unnecessary, see
-            //comment immediately below
-            Map<TypeParameter, ProducedType> typeArgumentMap) {
+    private ProducedType resolveAliasesInternal() {
         TypeDeclaration d = getDeclaration();
         Unit unit = d.getUnit();
         
         if (isTypeConstructor()) {
-            if (d.isAlias() && typeArgumentMap!=null) {
+            return this;
+        }
+        
+        if (d instanceof UnionType) {
+            List<ProducedType> caseTypes = 
+                    d.getCaseTypes();
+            List<ProducedType> list = 
+                    new ArrayList<ProducedType>
+                        (caseTypes.size());
+            for (ProducedType pt: caseTypes) {
+                addToUnion(list, 
+                        pt.resolveAliases());
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }
+        if (d instanceof IntersectionType) {
+            List<ProducedType> satisfiedTypes = 
+                    d.getSatisfiedTypes();
+            List<ProducedType> list = 
+                    new ArrayList<ProducedType>
+                        (satisfiedTypes.size());
+            for (ProducedType pt: satisfiedTypes) {
+                addToIntersection(list, 
+                        pt.resolveAliases(), 
+                        unit);
+            }
+            IntersectionType ut = 
+                    new IntersectionType(unit);
+            ut.setSatisfiedTypes(list);
+            return ut.canonicalize().getType();
+        }
+        
+        ProducedType qt = getQualifyingType();
+        ProducedType aliasedQualifyingType = 
+                qt==null ? null : 
+                    qt.resolveAliases();
+        
+        List<ProducedType> args = getTypeArgumentList();
+        List<ProducedType> aliasedArgs = 
+                args.isEmpty() ? NO_TYPE_ARGS : 
+                    new ArrayList<ProducedType>
+                        (args.size());
+        for (ProducedType arg: args) {
+            ProducedType aliasedArg = 
+                    arg==null ? null : 
+                        arg.resolveAliases();
+            aliasedArgs.add(aliasedArg);
+        }
+        if (d.isAlias()) {
+            ProducedType et = d.getExtendedType();
+            if (et == null) {
+                return unknownType();
+            }
+            else {
+                return et.resolveAliases()
+                        .substitute(getTypeArgumentMap(d, 
+                                aliasedQualifyingType, 
+                                aliasedArgs));
+            }
+        }
+        else {
+            ProducedType result = 
+                    d.getProducedType(aliasedQualifyingType, 
+                            aliasedArgs);
+            result.setVarianceOverrides(getVarianceOverrides());
+            return result;
+        }
+    }
+    
+    ProducedType substituteIntoTypeConstructors(
+            Map<TypeParameter, ProducedType> typeArgs) {
+        TypeDeclaration d = getDeclaration();
+        Unit unit = d.getUnit();
+        
+        if (isTypeConstructor()) {
+            if (d.isAlias() && typeArgs!=null) {
                 //really this stuff is unnecessary, since
                 //we're going to disallow rank-N polymorphic
                 //types, but it helps give the right result
                 //for subtyping of such types
                 ProducedType et = 
                         d.getExtendedType()
-                            .substitute(typeArgumentMap);
+                            .substitute(typeArgs);
                 TypeAlias ta = new TypeAlias();
                 ta.setName(d.getName());
                 ta.setExtendedType(et);
                 ta.setScope(d.getScope());
                 ta.setContainer(d.getContainer());
-                ta.setUnit(d.getUnit());
+                ta.setUnit(unit);
                 ta.setTypeParameters(d.getTypeParameters());
                 ProducedType type = ta.getType();
 //                        ta.getProducedType(
@@ -3004,8 +3045,7 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (caseTypes.size());
             for (ProducedType pt: caseTypes) {
-                addToUnion(list, 
-                        pt.resolveAliases(typeArgumentMap));
+                list.add(pt.substituteIntoTypeConstructors(typeArgs));
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
@@ -3018,20 +3058,18 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (satisfiedTypes.size());
             for (ProducedType pt: satisfiedTypes) {
-                addToIntersection(list, 
-                        pt.resolveAliases(typeArgumentMap), 
-                        unit);
+                list.add(pt.substituteIntoTypeConstructors(typeArgs));
             }
             IntersectionType ut = 
                     new IntersectionType(unit);
             ut.setSatisfiedTypes(list);
-            return ut.canonicalize().getType();
+            return ut.getType();
         }
         
         ProducedType qt = getQualifyingType();
         ProducedType aliasedQualifyingType = 
                 qt==null ? null : 
-                    qt.resolveAliases(typeArgumentMap);
+                    qt.substituteIntoTypeConstructors(typeArgs);
         
         List<ProducedType> args = getTypeArgumentList();
         List<ProducedType> aliasedArgs = 
@@ -3039,29 +3077,17 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (args.size());
         for (ProducedType arg: args) {
-            ProducedType aliasedArg = arg==null ? null : 
-                        arg.resolveAliases(typeArgumentMap);
+            ProducedType aliasedArg = 
+                    arg==null ? null : 
+                        arg.substituteIntoTypeConstructors(typeArgs);
             aliasedArgs.add(aliasedArg);
         }
-        if (d.isAlias()) {
-            ProducedType et = d.getExtendedType();
-            if (et == null) {
-                return new UnknownType(d.getUnit()).getType();
-            }
-            else {
-                return et.resolveAliases(typeArgumentMap)
-                        .substitute(getTypeArgumentMap(d, 
-                                aliasedQualifyingType, 
-                                aliasedArgs));
-            }
-        }
-        else {
-            ProducedType result = 
-                    d.getProducedType(aliasedQualifyingType, 
-                            aliasedArgs);
-            result.setVarianceOverrides(getVarianceOverrides());
-            return result;
-        }
+        ProducedType result = 
+                d.getProducedTypeInternal(
+                        aliasedQualifyingType, 
+                        aliasedArgs);
+        result.setVarianceOverrides(getVarianceOverrides());
+        return result;
     }
     
     private ProducedType simple() {
@@ -3088,14 +3114,15 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (args.size());
             for (ProducedType arg: args) {
-                simpleArgs.add(arg==null ? 
-                            null : arg.simple());
+                ProducedType sarg = 
+                        arg==null ? null : 
+                            arg.simple();
+                simpleArgs.add(sarg);
             }
         }
+        ProducedType sqt = qt==null ? null : qt.simple();
         ProducedType ret = 
-                d.getProducedType(qt==null ? 
-                            null : qt.simple(), 
-                        simpleArgs);
+                d.getProducedType(sqt, simpleArgs);
         ret.setUnderlyingType(getUnderlyingType());
         ret.setTypeConstructor(isTypeConstructor());
         ret.setTypeConstructorParameter(getTypeConstructorParameter());
@@ -3426,7 +3453,7 @@ public class ProducedType extends ProducedReference {
         if (dec instanceof TypeParameter) {
             SiteVariance siteVariance = overrides.get(dec);
             if (contravariant && siteVariance==OUT) {
-                return unit.getNothingDeclaration().getType();
+                return nothingType();
             }
             else if (covariant && siteVariance==IN) {
                 TypeParameter tp = (TypeParameter) dec;
@@ -3507,7 +3534,7 @@ public class ProducedType extends ProducedReference {
                     if (contravariant) {
                         if (argDec instanceof TypeParameter &&
                                 overrides.containsKey(argDec)) {
-                            return unit.getNothingDeclaration().getType();
+                            return nothingType();
                         }
                     }
                     else if (covariant) {
@@ -3617,7 +3644,7 @@ public class ProducedType extends ProducedReference {
         //      visitQualifiedTypeExpression()
 //        TypeDeclaration declaration = getDeclaration();
 //        if (!(declaration instanceof Class)) {           
-//            return new UnknownType(declaration.getUnit()).getType();
+//            return unknownType();
 //        }
 //        else {
             return super.getFullType(wrappedType);
