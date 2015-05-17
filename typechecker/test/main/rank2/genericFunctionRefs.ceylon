@@ -109,5 +109,10 @@ void higherRank() {
     <<Rs> => {Rs*}(Rs(String))>({String*}) higherapplied = higherref<String>;
     
     {Integer*} result = higherref("hello world")(Character.integer);
+
+    void rank2(<T> => T(T) rank1Arg, Integer i) => rank1Arg(i);
+    value refToRank2 = rank2;
+    rank2(identity, 0);
+    refToRank2(identity, 1);
 }
         

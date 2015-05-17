@@ -2961,20 +2961,23 @@ public class ExpressionVisitor extends Visitor {
                             return null; //TODO: to give a nicer error
                         }
                         else {
+                            List<TypeParameter> tps = 
+                                    fun.getTypeParameters();
                             List<ProducedType> inferredTypes = 
-                                    new ArrayList<ProducedType>();
+                                    new ArrayList<ProducedType>
+                                        (tps.size());
                             List<Parameter> apl = 
                                     apls.get(0)
                                         .getParameters();
                             List<Parameter> ppl = 
                                     ppls.get(0)
                                         .getParameters();
-                            for (TypeParameter tp: 
-                                    fun.getTypeParameters()) {
+                            for (TypeParameter tp: tps) {
                                 List<ProducedType> list = 
                                         new ArrayList<ProducedType>();
                                 for (int i=0; 
-                                        i<apl.size() && i<ppl.size(); 
+                                        i<apl.size() && 
+                                        i<ppl.size(); 
                                         i++) {
                                     Parameter ap = apl.get(i);
                                     Parameter pp = ppl.get(i);
@@ -3002,6 +3005,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 if (paramType!=null) {
+                    if (paramType.isTypeConstructor()) {
+                        return null;
+                    }
                     if (unit.isSequentialType(paramType)) {
                         paramType = unit.getSequentialElementType(paramType);
                     }
