@@ -1,6 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import java.util.Map;
 
 /**
  * A produced reference to a method or 
