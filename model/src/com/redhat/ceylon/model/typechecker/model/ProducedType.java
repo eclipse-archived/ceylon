@@ -1050,10 +1050,9 @@ public class ProducedType extends ProducedReference {
                         member.getContainer();
             receivingType = receiver.getSupertype(type);
         }
-        Map<TypeParameter, ProducedType> tam = 
+        return new Substitution().substitute(this, 
                 getTypeArgumentMap(member, receivingType, 
-                        typeArguments);
-        return new Substitution().substitute(this, tam);
+                        typeArguments));
     }
 
     public ProducedType getType() {
