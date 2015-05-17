@@ -44,3 +44,19 @@ void testAdvancedStuff() {
     Functor<String,out List> wildlistfun = seqfun;
 
 }
+
+void moreConstraints() {
+    Category cat = "hello world";
+    
+    void accept<E,C>(C<in E> c, E e) 
+            given E satisfies Object
+            given C<E_> satisfies Category<E_>
+            given E_ satisfies Object {
+        print(c.contains(e));
+    }
+    
+    accept<String,Category>(cat, "hello");
+    accept<String,Category>(cat, "goodbye");
+    accept<Integer,List>(1..10, 5);
+    accept<Integer,List>(1..10, -1);
+}
