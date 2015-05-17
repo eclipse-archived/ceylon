@@ -35,9 +35,10 @@ public class TypeArgumentVisitor extends Visitor {
         if (dec!=null) {
             parameterizedDeclaration = dec.getDeclaration();
             flip();
-            if (that.getSatisfiedTypes()!=null) {
-                for (Tree.Type type: 
-                        that.getSatisfiedTypes().getTypes()) {
+            Tree.SatisfiedTypes sts = 
+                    that.getSatisfiedTypes();
+            if (sts!=null) {
+                for (Tree.Type type: sts.getTypes()) {
                     //TODO: is "null" really correct here?!
                     check(type, false, null);
                 }
@@ -57,8 +58,9 @@ public class TypeArgumentVisitor extends Visitor {
             boolean topLevel = 
                     parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
-            	parameterizedDeclaration = 
-            	        ((MethodOrValue) dec).getInitializerParameter()
+            	MethodOrValue mv = (MethodOrValue) dec;
+                parameterizedDeclaration = 
+            	        mv.getInitializerParameter()
             	                .getDeclaration();
             }
 			check(that.getType(), false, 
@@ -179,7 +181,8 @@ public class TypeArgumentVisitor extends Visitor {
             List<TypeParameter> errors, Declaration d) {
         for (TypeParameter tp: errors) {
             Declaration declaration = tp.getDeclaration();
-            if (d==null || d.isShared() || d.getOtherInstanceAccess() 
+            if (d==null || 
+                    d.isShared() || d.getOtherInstanceAccess() 
                     || declaration.equals(d))
             if (constructorClass==null ||
                     !declaration.equals(constructorClass)) {
@@ -195,10 +198,13 @@ public class TypeArgumentVisitor extends Visitor {
                 else {
                     throw new RuntimeException();
                 }
-                that.addError(var + " type parameter '" + tp.getName() + 
+                String typename = 
+                        type.getProducedTypeName(that.getUnit());
+                that.addError(var + 
+                        " type parameter '" + tp.getName() + 
                         "' of '" + declaration.getName() +
                         "' appears in " + loc + " location in type: '" + 
-                        type.getProducedTypeName(that.getUnit()) + "'");
+                        typename + "'");
             }
         }
     }
@@ -217,16 +223,16 @@ public class TypeArgumentVisitor extends Visitor {
                     !params.isEmpty() && 
                     !type.isTypeConstructor() &&
                     !that.getMetamodel()) {
+                String name = dec.getName(that.getUnit());
                 if (!params.get(0).isDefaulted()) {
-                  that.addError("missing type arguments to generic type: '" + 
-                          dec.getName(that.getUnit()) + 
-                          "' declares required type parameters");
+                    that.addError("missing type arguments to generic type: '" + 
+                            name + "' declares required type parameters");
 
                 }
                 else {
                     that.addUsageWarning(Warning.syntaxDeprecation,
                             "implicit use of default type arguments is deprecated (change to '" + 
-                            dec.getName(that.getUnit()) + "<>')");
+                            name + "<>')");
                 }
             }
         }
