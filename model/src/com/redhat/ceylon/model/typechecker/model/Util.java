@@ -139,7 +139,7 @@ public class Util {
 
     public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
-            !(declaration.isSetter()) && //return getters, not setters
+            !declaration.isSetter() && //return getters, not setters
             !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
@@ -2145,9 +2145,8 @@ public class Util {
     }
 
     public static boolean isToplevelAnonymousClass(Scope s) {
-        if (s instanceof TypeDeclaration) {
-            TypeDeclaration td = 
-                    (TypeDeclaration) s;
+        if (s instanceof Class) {
+            Class td = (Class) s;
             return td.isAnonymous() &&
                     td.isToplevel();
         }

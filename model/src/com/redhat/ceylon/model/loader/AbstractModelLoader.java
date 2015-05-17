@@ -954,7 +954,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // if it's a Value return its object type by preference, the member otherwise
         if (member instanceof Value){
             TypeDeclaration typeDeclaration = ((Value) member).getTypeDeclaration();
-            if(typeDeclaration != null && typeDeclaration.isAnonymous())
+            if(typeDeclaration instanceof Class && typeDeclaration.isAnonymous())
                 return typeDeclaration;
             // did we want the setter?
             if(wantsSetter)
