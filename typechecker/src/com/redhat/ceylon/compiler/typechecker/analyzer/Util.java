@@ -152,7 +152,7 @@ public class Util {
     }
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tas,
-    		List<TypeParameter> typeParameters, ProducedType qt) {
+    		ProducedType qt, List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
             int size = typeParameters.size();
             List<ProducedType> typeArguments = 

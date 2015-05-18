@@ -1060,7 +1060,7 @@ public class TypeVisitor extends Visitor {
         List<TypeParameter> params = 
                 dec.getTypeParameters();
         List<ProducedType> typeArgs = 
-                getTypeArguments(tal, params, ot);
+                getTypeArguments(tal, ot, params);
         ProducedType pt = dec.getProducedType(ot, typeArgs);
         if (tal==null) {
             if (!params.isEmpty()) {

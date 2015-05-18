@@ -204,8 +204,8 @@ void method() {
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
     @type:"Entry<Float,String>" generic(str,nothing);
-    @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
-    @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
+    @type:"Entry<String,Object>" generic((Object obj) => obj, () => "hello");
+    @type:"Entry<String,String>" generic((Object obj) => obj.string, () => "hello");
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;
@@ -399,4 +399,13 @@ void abbreviations<T>() given T satisfies Anything[] {
     @type:"Callable<String,Tuple<String,String,Empty>>" String(String) f3;
     @error String(*String) f4;
     @type:"Callable<String,Tuple<String,String,Empty>>" String(*[String]) f5;
+}
+
+void inferenceIssue() {
+    class X<out Y>(shared Y y) {}
+    X<To> transform<From, To>(X<From> x, To(From) convert)
+            => X(convert(x.y));
+    
+    X<String> x1 = X("10");
+    X<Integer?> x2 = transform(x1, parseInteger);
 }

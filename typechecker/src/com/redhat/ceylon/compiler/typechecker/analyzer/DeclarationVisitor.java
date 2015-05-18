@@ -1925,7 +1925,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             dec.getTypeParameters();
                     return getTypeArgumentMap(dec, null,
                             Util.getTypeArguments(tal, 
-                                    tps, null));
+                                    null, tps));
                 }
             };
             that.setTypeModel(t);
@@ -1971,7 +1971,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 outerType.getTypeModel();
                         return getTypeArgumentMap(dec, ot, 
                                 Util.getTypeArguments(tal, 
-                                        tps, ot));
+                                        ot, tps));
                     }
                 }
             };
