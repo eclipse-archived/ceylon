@@ -3985,8 +3985,12 @@ public class ExpressionVisitor extends Visitor {
                 else if (tp0.isContravariant() && covariant ||
                          //note that this introduces a difference
                          //between the case of a covariant type
-                         //parameter, and an invariant one!
+                         //parameter, and of an invariant one!
                          tp0.isCovariant() && contravariant) {
+                    //ignore occurrences of covariant type parameters
+                    //in contravariant locations in the parameter list,
+                    //and occurrences of contravariant type parameters
+                    //in covariant locations in the parameter list,
                     return null;
                 }
                 else if (argType.isUnknown()) {
