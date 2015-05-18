@@ -58,13 +58,21 @@ void test() {
     @error X<Singleton> xs2 = X<List>();
 }
 
-void fun<X>
-        (X<String> strings) 
+void fun<X>(X<String> strings) 
         given X<T> satisfies {T*} 
             given T satisfies Object {
     for (s in strings) {}
     @error X<Null> nulls;
 }
+
+void gun<X>(X<Integer> ints) 
+        given X<T> satisfies {T*} 
+            given T of Integer|Float|String {
+    for (i in ints) {}
+    @error X<Null> nulls;
+    @error X<Integer|Float> iof;
+}
+
         
 class Blah<Element>() 
         satisfies Iterable<Element>
@@ -74,11 +82,28 @@ class Blah<Element>()
 
 class Meh<Element>() {}
 
+class Why<Element>(Element e) 
+        satisfies {Element*} 
+        given Element of Integer|Float {
+    iterator() => [e].iterator();
+}
+class WhyNot<Element>(Element e) 
+        satisfies {Element*} 
+        given Element of Integer|Float|String {
+    iterator() => [e].iterator();
+}
+
 void testfun() {
     fun<List>(["", "", ""]);
     @error fun<Meh>(Meh());
     @error fun<Integer>(["", "", ""]);
     @error fun<Blah>(Blah());
+    @error fun<Blah>(nothing);
+    @error fun<Meh>(nothing);
+    @error fun<Integer>(nothing);
+    @error gun<Why>(nothing);
+    gun<WhyNot>(nothing);
+    gun<WhyNot>(WhyNot(1));
 }
 
 class Dummy<X>() given X<T> {

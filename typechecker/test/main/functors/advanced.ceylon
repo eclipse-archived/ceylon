@@ -123,13 +123,13 @@ Map<String,I> map<I>() => nothing;
 
 void testEnumeratedConstraints() {
     J<Array,String> j1 
-            = J<Array,String>
-            (Array<String> {""});
+            = J<Array,String>(Array<String> {""});
     J<<I>=>Map<String,I>,Integer> j2
-            = J<<I>=>Map<String,I>,Integer>
-            (map<Integer>());
+            = J<<I>=>Map<String,I>,Integer>(map<Integer>());
     J<Sequence,String> j3
             = J<Sequence,String>([""]);
     @error J<List,String> j4
             = J<List,String>([""]);
+    value j5 = J<<T>=>T[],String>([""]);
+    @error value j6 = J<List,String>([""]);
 }

@@ -47,6 +47,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion
 import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
 import static java.util.Collections.emptyList;
 
@@ -8957,8 +8958,17 @@ public class ExpressionVisitor extends Visitor {
                                 param.getName(unit) + 
                                 "'");
                     }
+                    if (!unionOfCaseTypes(paramParam)
+                            .isSubtypeOf(unionOfCaseTypes(argParam))) {
+                        argNode.addError("enumerated bound on type parameter of argument type constructor is not a supertype of enumerated bound on corresponding type parameter of parameter: '" + 
+                                argParam.getName() + "' of '" + 
+                                atd.getName(unit) + 
+                                "' does accept all type arguments accepted by '" + 
+                                paramParam.getName() + "' of '" + 
+                                param.getName(unit) + 
+                                "'");
+                    }
                 }
-                //TODO: enumerated bounds!
             }
         }
     }
