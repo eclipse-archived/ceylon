@@ -247,7 +247,18 @@ public class JsCompiler {
             if (opts.isVerbose()) {
                 logger.debug("Generating metamodel...");
             }
-            List<PhasedUnit> phasedUnits = tc.getPhasedUnits().getPhasedUnits();
+            List<PhasedUnit> typecheckerPhasedUnits = tc.getPhasedUnits().getPhasedUnits();
+            List<PhasedUnit> phasedUnits = new ArrayList<>(typecheckerPhasedUnits.size());
+            for (PhasedUnit pu : typecheckerPhasedUnits) {
+                if (srcFiles == null) {
+                    phasedUnits.add(pu);
+                } else {
+                    File path = getFullPath(pu);
+                    if (FileUtil.containsFile(srcFiles, path)) {
+                        phasedUnits.add(pu);
+                    }
+                }
+            }
             boolean generatedCode = false;
             
             checkInvalidNativePUs(phasedUnits);
@@ -265,19 +276,17 @@ public class JsCompiler {
                         pkg.setModule(defmod);
                     }
                 }
-                if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
-                    if (opts.getSuppressWarnings() != null) {
-                        pu.getCompilationUnit().visit(
-                                new WarningSuppressionVisitor<Warning>(Warning.class, opts.getSuppressWarnings()));
-                    }
-                    pu.getCompilationUnit().visit(getOutput(pu).mmg);
-                    if (opts.hasVerboseFlag("ast")) {
-                        if (opts.getOutWriter() == null) {
-                            logger.debug(pu.getCompilationUnit().toString());
-                        } else {
-                            opts.getOutWriter().write(pu.getCompilationUnit().toString());
-                            opts.getOutWriter().write('\n');
-                        }
+                if (opts.getSuppressWarnings() != null) {
+                    pu.getCompilationUnit().visit(
+                            new WarningSuppressionVisitor<Warning>(Warning.class, opts.getSuppressWarnings()));
+                }
+                pu.getCompilationUnit().visit(getOutput(pu).mmg);
+                if (opts.hasVerboseFlag("ast")) {
+                    if (opts.getOutWriter() == null) {
+                        logger.debug(pu.getCompilationUnit().toString());
+                    } else {
+                        opts.getOutWriter().write(pu.getCompilationUnit().toString());
+                        opts.getOutWriter().write('\n');
                     }
                 }
             }
@@ -303,22 +312,8 @@ public class JsCompiler {
                 }
             };
 
-            if (srcFiles == null && !phasedUnits.isEmpty()) {
-                for (PhasedUnit pu: phasedUnits) {
-                    pu.getCompilationUnit().visit(importVisitor);
-                }
-            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
-                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
-                for (File path : srcFiles) {
-                    if (!path.getPath().endsWith(ArtifactContext.JS)) {
-                        for (PhasedUnit pu : units) {
-                            File unitFile = getFullPath(pu);
-                            if (FileUtil.sameFile(path, unitFile)) {
-                                pu.getCompilationUnit().visit(importVisitor);
-                            }
-                        }
-                    }
-                }
+            for (PhasedUnit pu: phasedUnits) {
+                pu.getCompilationUnit().visit(importVisitor);
             }
 
 //            if (srcFiles == null && !phasedUnits.isEmpty()) {
@@ -355,9 +350,17 @@ public class JsCompiler {
                     }
                     getOutput(pu).addSource(getFullPath(pu));
                 }
-            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
-                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
-                PhasedUnit lastUnit = units.get(0);
+            } else if(srcFiles != null && !srcFiles.isEmpty()
+                         // For the specific case of the Stitcher
+                         && !typecheckerPhasedUnits.isEmpty() ){
+                PhasedUnit lastUnit;
+                if (phasedUnits.isEmpty()) {
+                    // For the specific case of the Stitcher
+                    lastUnit = typecheckerPhasedUnits.get(0);
+                } else {
+                    lastUnit = phasedUnits.get(0);
+                }
+                
                 for (File path : srcFiles) {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
@@ -383,7 +386,7 @@ public class JsCompiler {
                         generatedCode = true;
                     } else {
                         //Find the corresponding compilation unit
-                        for (PhasedUnit pu : units) {
+                        for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
                             if (FileUtil.sameFile(path, unitFile)) {
                                 compileUnit(pu, names);
