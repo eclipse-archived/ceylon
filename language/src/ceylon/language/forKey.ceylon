@@ -1,5 +1,5 @@
 "A function that returns the result of applying the given 
- [[function|resulting]] function to the [[key|Entry.key]] of
+ [[function|resulting]] to the [[key|Entry.key]] of
  a given [[Entry]], discarding its `item`.
      
      Map<String,List<Item>> map = ... ;
