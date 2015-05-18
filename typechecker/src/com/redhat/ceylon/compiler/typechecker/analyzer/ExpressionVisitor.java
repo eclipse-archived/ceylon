@@ -29,6 +29,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpress
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.Util.findMatchingOverloadedClass;
@@ -73,7 +74,6 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -8646,68 +8646,64 @@ public class ExpressionVisitor extends Visitor {
                                 argType, argNode);
                     }
                 }
-                for (ProducedType st: 
-                        param.getSatisfiedTypes()) {
-                    //sts = sts.substitute(self);
-                    ProducedType sts = 
-                            st.getProducedType(receiver, 
-                                    dec, typeArguments);
-                    if (argType!=null) {
-                        ProducedType at =
-                            argType.isTypeConstructor() ?
-                                argType.getDeclaration()
-                                    .getProducedType(null, 
-                                        param.getType()
-                                            .getTypeArgumentList()) :
-                            argType;
-                        if (!isCondition && 
-                                !at.isSubtypeOf(sts)) {
+                if (!isCondition && 
+                        !(param.getSatisfiedTypes().isEmpty() && 
+                                param.getCaseTypes()==null)) {
+                    ProducedType assignedType = 
+                            argumentTypeForBoundsCheck(param, 
+                                    argType);
+                    for (ProducedType st: param.getSatisfiedTypes()) {
+                        ProducedType bound =
+                                st.getProducedType(receiver, 
+                                        dec, typeArguments);
+                        if (!assignedType.isSubtypeOf(bound)) {
                             if (argTypeMeaningful) {
                                 if (explicit) {
                                     typeArgNode(tas, i, parent)
                                         .addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
-                                                + "' has argument '" + at.getProducedTypeName(unit) 
+                                                + "' has argument '" 
+                                                + assignedType.getProducedTypeName(unit) 
                                                 + "' which is not assignable to upper bound '" 
-                                                + sts.getProducedTypeName(unit)
+                                                + bound.getProducedTypeName(unit)
                                                 + "' of '" + param.getName() + "'", 2102);
                                 }
                                 else {
                                     parent.addError("inferred type argument '" 
-                                            + at.getProducedTypeName(unit)
+                                            + assignedType.getProducedTypeName(unit)
                                             + "' to type parameter '" + param.getName()
                                             + "' of declaration '" + dec.getName(unit)
                                             + "' is not assignable to upper bound '" 
-                                            + sts.getProducedTypeName(unit)
+                                            + bound.getProducedTypeName(unit)
                                             + "' of '" + param.getName() + "'");
                                 }
                             }
                             return false;
                         }
                     }
-                }
-                if (!isCondition && 
-                        !argumentSatisfiesEnumeratedConstraint(receiver, 
-                                dec, typeArguments, argType, param)) {
-                    if (argTypeMeaningful) {
-                        if (explicit) {
-                            typeArgNode(tas, i, parent)
-                                .addError("type parameter '" + param.getName() 
+                    if (!argumentSatisfiesEnumeratedConstraint(receiver, 
+                            dec, typeArguments, assignedType, param)) {
+                        if (argTypeMeaningful) {
+                            if (explicit) {
+                                typeArgNode(tas, i, parent)
+                                    .addError("type parameter '" + param.getName() 
+                                            + "' of declaration '" + dec.getName(unit)
+                                            + "' has argument '" 
+                                            + assignedType.getProducedTypeName(unit) 
+                                            + "' which is not one of the enumerated cases of '" 
+                                            + param.getName() + "'");
+                            }
+                            else {
+                                parent.addError("inferred type argument '" 
+                                        + assignedType.getProducedTypeName(unit)
+                                        + "' to type parameter '" + param.getName()
                                         + "' of declaration '" + dec.getName(unit)
-                                        + "' has argument '" + argType.getProducedTypeName(unit) 
-                                        + "' which is not one of the enumerated cases of '" 
+                                        + "' is not one of the enumerated cases of '" 
                                         + param.getName() + "'");
+                            }
                         }
-                        else {
-                            parent.addError("inferred type argument '" 
-                                    + argType.getProducedTypeName(unit)
-                                    + "' to type parameter '" + param.getName()
-                                    + "' of declaration '" + dec.getName(unit)
-                                    + "' is not one of the enumerated cases of '" 
-                                    + param.getName() + "'");
-                        }
+                        return false;
                     }
-                    return false;
                 }
             }
             return true;
@@ -8738,6 +8734,22 @@ public class ExpressionVisitor extends Visitor {
 //                    }
             }
             return false;
+        }
+    }
+
+    private static ProducedType argumentTypeForBoundsCheck(TypeParameter param,
+            ProducedType argType) {
+        if (argType==null) {
+            return null;
+        }
+        else if (argType.isTypeConstructor()) {
+            return argType.getDeclaration()
+                .getProducedType(null, 
+                    param.getType()
+                        .getTypeArgumentList());
+        }
+        else {
+            return argType;
         }
     }
 
@@ -8774,7 +8786,6 @@ public class ExpressionVisitor extends Visitor {
                         typeArguments.get(i);
                 TypeParameter param = 
                         typeParameters.get(i);
-                //TODO: get the right error node!
                 for (ProducedType st: 
                         param.getSatisfiedTypes()) {
                     Map<TypeParameter, ProducedType> args = 
@@ -8802,6 +8813,7 @@ public class ExpressionVisitor extends Visitor {
                                 param.getName() + "'");
                     }
                 }
+                //TODO: enumerated bounds!
             }
         }
     }
@@ -8888,17 +8900,9 @@ public class ExpressionVisitor extends Visitor {
                                 "'");
                     }
                 }
+                //TODO: enumerated bounds!
             }
         }
-    }
-
-    public static boolean argumentSatisfiesEnumeratedConstraint(
-            ProducedType receiver, Declaration member, 
-            List<ProducedType> typeArguments, ProducedType argType,
-            TypeParameter param) {
-        // Moved there because used in the metamodel
-        return ModelUtil.argumentSatisfiesEnumeratedConstraint(receiver, 
-                member, typeArguments, argType, param);
     }
 
     private void visitExtendedOrAliasedType(Tree.SimpleType et,
@@ -9955,9 +9959,11 @@ public class ExpressionVisitor extends Visitor {
             Declaration result) {
         ProducedType outerType;
         if (result.isClassOrInterfaceMember()) {
-            outerType = that.getType()==null ? 
-                    that.getScope().getDeclaringType(result) : 
-                    that.getType().getTypeModel();            
+            Tree.StaticType type = that.getType();
+            outerType = type==null ? 
+                    that.getScope()
+                        .getDeclaringType(result) : 
+                    type.getTypeModel();            
         }
         else {
             outerType = null;

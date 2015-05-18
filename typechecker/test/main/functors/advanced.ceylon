@@ -113,3 +113,23 @@ interface TypeClass1<Container>
 
 interface TypeClass2<Container> 
         given Container<out E> {}
+
+interface I<C> {}
+
+class J<C,E>(C<E> c) 
+        given C<T> of Array<T>|Map<String,T>|T[] {}
+
+Map<String,I> map<I>() => nothing;
+
+void testEnumeratedConstraints() {
+    J<Array,String> j1 
+            = J<Array,String>
+            (Array<String> {""});
+    J<<I>=>Map<String,I>,Integer> j2
+            = J<<I>=>Map<String,I>,Integer>
+            (map<Integer>());
+    J<Sequence,String> j3
+            = J<Sequence,String>([""]);
+    @error J<List,String> j4
+            = J<List,String>([""]);
+}
