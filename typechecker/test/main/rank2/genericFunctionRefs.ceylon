@@ -115,4 +115,16 @@ void higherRank() {
     rank2(identity, 0);
     refToRank2(identity, 1);
 }
-        
+
+<Element> => Singleton<Element>(Element) 
+sing = Singleton;
+
+<Element> => Singleton<Element>(Element)
+anon = <Element>(Element e) => Singleton(e);
+
+
+void callThem() {
+    Singleton<String> s1 = sing("");
+    Singleton<String> s2 = anon("");
+    Singleton<String> s3 = (<E>(E e) => Singleton(e))("");
+}

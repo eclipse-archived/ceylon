@@ -99,3 +99,17 @@ void moreConstraintsBroken() {
     @error haha<Object>();
     
 }
+
+void runWithTypeClasses<Cont, Elem>(
+    TypeClass1<Cont> & TypeClass2<Cont> tc,
+    Cont<Elem> container)
+        given Cont<out E> {
+    tc.foo(container);
+}
+interface TypeClass1<Container> 
+        given Container<out E> {
+    shared void foo<Element>(Container<Element> c) {}
+}
+
+interface TypeClass2<Container> 
+        given Container<out E> {}

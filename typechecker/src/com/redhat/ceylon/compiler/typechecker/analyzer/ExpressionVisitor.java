@@ -3807,8 +3807,28 @@ public class ExpressionVisitor extends Visitor {
                         break;
                     }
                     else {
+                        //this is sorta rubbish: we use the
+                        //type that declares the member with
+                        //the parameter to substitute type
+                        //args into the parameter type, which
+                        //is I guess an abuse of the API
+                        Scope container = 
+                                parameter.getDeclaration()
+                                    .getContainer();
+                        ProducedType dt = qt;
+                        if (container instanceof TypeDeclaration) {
+                            TypeDeclaration td = 
+                                    (TypeDeclaration) container;
+                            ProducedType supertype = 
+                                    qt.getSupertype(td);
+                            dt = supertype==null ? 
+                                    qt : supertype;
+                        }
+                        else {
+                            dt = qt;
+                        }
                         ProducedType pt = 
-                                qt.getTypedParameter(parameter)
+                                dt.getTypedParameter(parameter)
                                   .getFullType();
                         addToUnionOrIntersection(tp, 
                                 inferredTypes,
