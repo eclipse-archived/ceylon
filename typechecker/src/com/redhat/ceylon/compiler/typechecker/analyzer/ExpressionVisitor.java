@@ -3983,6 +3983,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else if (tp0.isContravariant() && covariant ||
+                         //note that this introduces a difference
+                         //between the case of a covariant type
+                         //parameter, and an invariant one!
                          tp0.isCovariant() && contravariant) {
                     return null;
                 }
