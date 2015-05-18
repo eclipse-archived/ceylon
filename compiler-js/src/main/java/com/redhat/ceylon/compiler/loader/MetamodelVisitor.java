@@ -1,10 +1,8 @@
 package com.redhat.ceylon.compiler.loader;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
 
 import java.util.Map;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;

@@ -48,7 +48,7 @@ public class Stitcher {
     private static Module mod;
     private static final HashSet<File> compiledFiles = new HashSet<>(256);
 
-    private static int compileLanguageModule(final String line, final Writer writer)
+    private static int compileLanguageModule(final String line, final JsOutput writer)
             throws IOException {
         File clsrcTmpDir = Files.createTempDirectory(tmpDir, "clsrc").toFile();
         final File tmpout = new File(clsrcTmpDir, Constants.DEFAULT_MODULE_DIR);
@@ -145,19 +145,12 @@ public class Stitcher {
         jsc.generate();
         if (names == null) {
             names = jsc.getNames();
-            mod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule();
         }
         JsCompiler.compilingLanguageModule=false;
         File compsrc = new File(tmpout, "delete/me/delete-me.js");
         if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
-            try (BufferedReader jsr = new BufferedReader(new FileReader(compsrc))) {
-                String jsline = null;
-                while ((jsline = jsr.readLine()) != null) {
-                    if (!jsline.contains("=require('")) {
-                        writer.write(jsline);
-                        writer.write("\n");
-                    }
-                }
+            try {
+                writer.outputFile(compsrc);
             } finally {
                 compsrc.delete();
             }
@@ -190,15 +183,19 @@ public class Stitcher {
             }
             pu.getCompilationUnit().visit(mmg);
         }
+        mod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule();
         try (FileWriter writer = new FileWriter(file)) {
             JsCompiler.beginWrapper(writer);
             writer.write("ex$.$CCMM$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
-            int exitCode = compileLanguageModule("MODEL.js", writer);
-            if (exitCode != 0) {
-                return exitCode;
-            }
+            final JsOutput jsout = new JsOutput(mod, "UTF-8") {
+                @Override
+                public Writer getWriter() throws IOException {
+                    return writer;
+                }
+            };
+            jsout.outputFile(new File(LANGMOD_JS_SRC, "MODEL.js"));
             JsCompiler.endWrapper(writer);
         } finally {
             ShaSigner.sign(file, new JsJULLogger(), true);
@@ -206,7 +203,7 @@ public class Stitcher {
         return 0;
     }
 
-    private static int stitch(File infile, final Writer writer) throws IOException {
+    private static int stitch(File infile, final JsOutput writer) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
@@ -264,7 +261,7 @@ public class Stitcher {
                                 "ceylon/language/", version, "/ceylon.language-", version, "-model",
                                 "').$CCMM$;return _CTM$;}\nex$.$CCMM$=$CCMM$;");
                         //Compile all the listed files
-                        exitCode = stitch(infile, writer);
+                        exitCode = stitch(infile, jsout);
                         //Unshared declarations
                         jsout.publishUnsharedDeclarations(names);
                         //Close the commonJS wrapper

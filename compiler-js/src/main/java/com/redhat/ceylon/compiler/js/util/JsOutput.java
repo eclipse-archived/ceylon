@@ -40,7 +40,7 @@ public class JsOutput {
     public JsOutput(Module m, String encoding) throws IOException {
         this.encoding = encoding == null ? "UTF-8" : encoding;
         module = m;
-        mmg = new MetamodelVisitor(m);
+        mmg = m==null?null:new MetamodelVisitor(m);
     }
     public void setJsWriter(JsWriter value) {
         jsw = value;
