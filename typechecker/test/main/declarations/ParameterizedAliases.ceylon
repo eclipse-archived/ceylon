@@ -28,6 +28,6 @@ void check() {
     E2<String> g5 = e2("gavin","king"); 
     E3<String> g6 = e2("gavin","king"); 
     @error F();
-    @type:"<Key, Item> given Key satisfies Object => Callable<Entry<Key,Item>,Tuple<Key|Item,Key,Tuple<Item,Item,Empty>>>" 
+    @type:"<out Key, out Item> given Key satisfies Object => Callable<Entry<Key,Item>,Tuple<Key|Item,Key,Tuple<Item,Item,Empty>>>" 
     value e4 = Entry;
 }

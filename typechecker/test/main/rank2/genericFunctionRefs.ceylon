@@ -70,7 +70,9 @@ shared void run() {
     @error value val = "hello".map<Object>.string;
     
     @error <V> => V(V, V) badbinref = binary;
-    <V> given V of Integer|Float => V(V, V) binref = binary;
+    <V> given V of Integer|Float => V(V, V) binref1 = binary;
+    @error <V> given V of Integer|Float|String => V(V, V) binref2 = binary;
+    <V> given V of Integer => V(V, V) binref3 = binary;
     @type:"<V> given V of Integer|Float => Callable<V,Tuple<V,V,Tuple<V,V,Empty>>>" 
     value infbinref = binary;
     infbinref(1,2);
