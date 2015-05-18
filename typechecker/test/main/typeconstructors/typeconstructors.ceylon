@@ -146,3 +146,16 @@ void testSubtyping(High<U> h1,
     High<N> hj = l1;
     @error High<N> hk = l2;
 }
+
+class Inv<T>(T t) {}
+
+void testVariances() {
+    <T> => Inv<T> inv = nothing;
+    <T> => Inv<T> inv1 = inv;
+    <T> => Inv<out T> cov = inv;
+    @error <out T> => Inv<T> inv2 = inv;
+    @error <T> => Inv<T> inv3 = cov;
+    @error value x = <out T>(T t) => Inv<T>(t);
+    @error function y<out T>(T t) => Inv<T>(t);
+}
+

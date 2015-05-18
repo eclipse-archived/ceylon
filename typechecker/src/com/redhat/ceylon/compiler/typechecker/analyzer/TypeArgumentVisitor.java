@@ -110,6 +110,23 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.TypeConstructor that) {
+        super.visit(that);
+        if (that.getType()!=null) {
+            check(that.getType(), false, 
+                    that.getDeclarationModel());
+        }
+    }
+    
+    @Override public void visit(Tree.FunctionArgument that) {
+        super.visit(that);
+        if (that.getType()!=null) {
+            check(that.getType().getTypeModel(), false, 
+                    that.getDeclarationModel(),
+                    that.getExpression());
+        }
+    }
+    
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
         if (that.getExtendedType()!=null) {
@@ -157,8 +174,6 @@ public class TypeArgumentVisitor extends Visitor {
         constructorClass = occ;
     }
     
-//    @Override public void visit(Tree.FunctionArgument that) {}
-
     private void check(Tree.Type that, boolean variable, 
             Declaration d) {
         if (that!=null) {
