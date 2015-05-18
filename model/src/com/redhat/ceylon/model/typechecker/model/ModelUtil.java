@@ -191,9 +191,10 @@ public class ModelUtil {
         //an enumerated constraint, and every enumerated case
         //is a subtype of one of the cases of the type parameter,
         //then the constraint is satisfied
-        if (argType.getDeclaration() instanceof TypeParameter) {
+        TypeDeclaration atd = argType.getDeclaration();
+        if (atd instanceof TypeParameter) {
             List<ProducedType> argCaseTypes = 
-                    argType.getDeclaration().getCaseTypes();
+                    atd.getCaseTypes();
             if (argCaseTypes!=null && 
                     !argCaseTypes.isEmpty()) {
                 for (ProducedType act: argCaseTypes) {
