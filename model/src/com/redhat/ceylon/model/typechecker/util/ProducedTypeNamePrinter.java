@@ -273,12 +273,17 @@ public class ProducedTypeNamePrinter {
                     TypeParameter tpc = 
                             pt.getTypeConstructorParameter();
                     List<TypeParameter> params = 
-                            tpc == null ?
-                                declaration.getTypeParameters() :
-                                tpc.getTypeParameters();
+                            (tpc == null ? declaration : tpc)
+                                .getTypeParameters();
                     for (TypeParameter tp: params) {
                         if (name.length()>lt().length()) {
                             name.append(", ");
+                        }
+                        if (tp.isCovariant()) {
+                            name.append("out ");
+                        }
+                        if (tp.isContravariant()) {
+                            name.append("in ");
                         }
                         printDeclaration(name, tp, printFullyQualified(), unit);
                     }
