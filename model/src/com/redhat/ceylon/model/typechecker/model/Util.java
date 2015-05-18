@@ -1048,7 +1048,7 @@ public class Util {
             //    Baz of Foo | Bar 
             //(the intersection of disjoint types is empty)
             ProducedType nt = 
-                    unit.getNothingDeclaration().getType();
+                    nothingType(unit);
             if (!list.isEmpty() && reduceDisjointTypes) {
                 List<TypeDeclaration> supertypes = 
                         ptd.getSupertypeDeclarations();
@@ -1750,7 +1750,8 @@ public class Util {
     
     public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
             List<ProducedType> signature, boolean ellipsis) {
-        List<Declaration> results = new ArrayList<Declaration>(1);
+        List<Declaration> results = 
+                new ArrayList<Declaration>(1);
         if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
         }
@@ -1774,29 +1775,37 @@ public class Util {
         if (!(dec instanceof Functional)) {
             return null;
         }
+        Functional fun = (Functional)dec;
         List<ParameterList> parameterLists = 
-                ((Functional)dec).getParameterLists();
+                fun.getParameterLists();
         if (parameterLists == null || parameterLists.isEmpty()) {
             return null;
         }
         ParameterList parameterList = parameterLists.get(0);
-        if (parameterList == null || 
-                parameterList.getParameters() == null) {
+        if (parameterList == null) {
             return null;
         }
-        int size = parameterList.getParameters().size();
+        List<Parameter> parameters = 
+                parameterList.getParameters();
+        if (parameters == null) {
+            return null;
+        }
         List<ProducedType> signature = 
-                new ArrayList<ProducedType>(size);
-        for (Parameter param : parameterList.getParameters()) {
-            signature.add(param.getModel()==null ? 
-                    new UnknownType(dec.getUnit()).getType() : 
-                    param.getModel().getType());
+                new ArrayList<ProducedType>
+                    (parameters.size());
+        Unit unit = dec.getUnit();
+        for (Parameter param: parameters) {
+            MethodOrValue model = param.getModel();
+            ProducedType t = model==null ? 
+                    unknownType(unit) : model.getType();
+            signature.add(t);
         }
         return signature;
     }
     
     public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
-        return involvesTypeParameters(pt, member.getTypeParameters());
+        return involvesTypeParameters(pt, 
+                member.getTypeParameters());
     }
     
     public static boolean involvesTypeParameters(ProducedType pt, 
@@ -1911,7 +1920,7 @@ public class Util {
             ProducedType secondArg = 
                     second.getTypeArguments().get(tp);
             if (firstArg==null || secondArg==null) {
-                arg = new UnknownType(unit).getType();
+                arg = unknownType(unit);
             }
             else {
                 boolean firstCo = first.isCovariant(tp);
@@ -1941,10 +1950,10 @@ public class Util {
                     }
                     else if (parameterized) {
                        //irreconcilable instantiations
-                       arg = new UnknownType(unit).getType();
+                       arg = unknownType(unit);
                     }
                     else {
-                        return unit.getNothingDeclaration().getType();
+                        return nothingType(unit);
                     }
                 }
                 else if (firstCo && secondInv) {
@@ -1953,10 +1962,10 @@ public class Util {
                     }
                     else if (parameterized) {
                        //irreconcilable instantiations
-                       arg = new UnknownType(unit).getType();
+                       arg = unknownType(unit);
                     }
                     else {
-                        return unit.getNothingDeclaration().getType();
+                        return nothingType(unit);
                     }
                 }
                 else if (secondCo && firstInv) {
@@ -1965,10 +1974,10 @@ public class Util {
                    }
                    else if (parameterized) {
                       //irreconcilable instantiations
-                      arg = new UnknownType(unit).getType();
+                      arg = unknownType(unit);
                    }
                    else {
-                       return unit.getNothingDeclaration().getType();
+                       return nothingType(unit);
                    }
                 }
                 else if (secondContra && firstInv) {
@@ -1977,10 +1986,10 @@ public class Util {
                     }
                     else if (parameterized) {
                         //irreconcilable instantiations
-                        arg = new UnknownType(unit).getType();
+                        arg = unknownType(unit);
                     }
                     else {
-                        return unit.getNothingDeclaration().getType();
+                        return nothingType(unit);
                     }
                 }
                 else if (firstInv && secondInv) {
@@ -1995,19 +2004,19 @@ public class Util {
                         //      sure that the types are disjoint
                         //      because the type parameters only
                         //      occur as type args
-                        arg = new UnknownType(unit).getType();
+                        arg = unknownType(unit);
                     }
                     else {
                         //the type arguments are distinct, and the
                         //intersection is Nothing, so there is
                         //no reasonable principal instantiation
-                        return unit.getNothingDeclaration().getType();
+                        return nothingType(unit);
                     }
                 }
                 else {
                     //opposite variances
                     //irreconcilable instantiations
-                    arg = new UnknownType(unit).getType();
+                    arg = unknownType(unit);
                 }
             }
             args.add(arg);
@@ -2019,6 +2028,14 @@ public class Util {
                 dec.getProducedType(pqt, args);
         result.setVarianceOverrides(varianceOverrides);
         return result;
+    }
+
+    static ProducedType unknownType(Unit unit) {
+        return new UnknownType(unit).getType();
+    }
+
+    static ProducedType nothingType(Unit unit) {
+        return unit.getNothingDeclaration().getType();
     }
     
     public static boolean areConsistentSupertypes(ProducedType st1, 
@@ -2033,8 +2050,12 @@ public class Util {
         for (TypeParameter tp: 
                 st1.getDeclaration().getTypeParameters()) {
             if (!tp.isCovariant() && !tp.isContravariant()) {
-                ProducedType ta1 = st1.getTypeArguments().get(tp);
-                ProducedType ta2 = st2.getTypeArguments().get(tp);
+                ProducedType ta1 = 
+                        st1.getTypeArguments()
+                            .get(tp);
+                ProducedType ta2 = 
+                        st2.getTypeArguments()
+                            .get(tp);
                 if (ta1!=null && ta2!=null && 
                         !ta1.isExactly(ta2)) {
                     return false;
@@ -2045,22 +2066,41 @@ public class Util {
     }
 
     public static ProducedType intersectionOfSupertypes(TypeDeclaration td) {
-        int capacity = td.getSatisfiedTypes().size()+1;
+        List<ProducedType> satisfiedTypes = 
+                td.getSatisfiedTypes();
+        int capacity = satisfiedTypes.size()+1;
         List<ProducedType> list = 
                 new ArrayList<ProducedType>(capacity);
-        if (td.getExtendedType()!=null) {
-            list.add(td.getExtendedType());
+        ProducedType extendedType = td.getExtendedType();
+        if (extendedType!=null) {
+            list.add(extendedType);
         }
-        list.addAll(td.getSatisfiedTypes());
+        list.addAll(satisfiedTypes);
         IntersectionType it = 
                 new IntersectionType(td.getUnit());
         it.setSatisfiedTypes(list);
         return it.getType();
     }
 
+    public static ProducedType unionOfCaseTypes(TypeDeclaration td) {
+        List<ProducedType> caseTypes = td.getCaseTypes();
+        Unit unit = td.getUnit();
+        if (caseTypes==null) {
+            return unit.getType(unit.getAnythingDeclaration());
+        }
+        int capacity = caseTypes.size()+1;
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>(capacity);
+        list.addAll(caseTypes);
+        UnionType it = new UnionType(unit);
+        it.setCaseTypes(list);
+        return it.getType();
+    }
+
     public static int addHashForModule(int ret, Declaration decl) {
         Module module = getModule(decl);
-        return (37 * ret) + (module != null ? module.hashCode() : 0);
+        return (37 * ret) + 
+                (module != null ? module.hashCode() : 0);
     }
 
     private static Module getModule(Declaration decl) {
@@ -2070,7 +2110,8 @@ public class Util {
             scope = scope.getContainer();
         }
         if (scope instanceof Package) {
-            return ((Package) scope).getModule();
+            Package p = (Package) scope;
+            return p.getModule();
         }
         else {
             return null;
@@ -2104,8 +2145,9 @@ public class Util {
                 if (member!=null && 
                         member.isShared() && 
                         !isAbstraction(member)) {
-                    TypeDeclaration td = (TypeDeclaration) 
-                            member.getContainer();
+                    TypeDeclaration td = 
+                            (TypeDeclaration) 
+                                member.getContainer();
                     Declaration refined = 
                             td.getRefinedMember(name, 
                                     signature, false);
@@ -2147,8 +2189,7 @@ public class Util {
     public static boolean isToplevelAnonymousClass(Scope s) {
         if (s instanceof Class) {
             Class td = (Class) s;
-            return td.isAnonymous() &&
-                    td.isToplevel();
+            return td.isAnonymous() && td.isToplevel();
         }
         else {
             return false;
@@ -2157,8 +2198,8 @@ public class Util {
     
     public static boolean isNativeAbstraction(Declaration dec) {
         if (dec instanceof Overloadable) {
-            Overloadable f = (Overloadable) dec;
-            List<Declaration> overloads = f.getOverloads();
+            Overloadable fun = (Overloadable) dec;
+            List<Declaration> overloads = fun.getOverloads();
             return dec.isNative() && 
                     dec.getNative().isEmpty() && 
                     overloads != null && 
@@ -2179,8 +2220,8 @@ public class Util {
     
     public static boolean hasNativeImplementation(Declaration dec) {
         if (dec instanceof Overloadable && dec.isNative()) {
-            Overloadable f = (Overloadable) dec;
-            List<Declaration> overloads = f.getOverloads();
+            Overloadable fun = (Overloadable) dec;
+            List<Declaration> overloads = fun.getOverloads();
             if (overloads != null) {
                 for (Declaration d: overloads) {
                     if (d.isNative() && 
