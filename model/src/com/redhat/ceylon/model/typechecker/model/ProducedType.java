@@ -13,6 +13,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.Util.principalInstantiation;
 import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
@@ -730,7 +731,15 @@ public class ProducedType extends ProducedReference {
             if (!otherBound.isSubtypeOf(bound)) {
                 return false;
             }
-            //TODO: check enumerated bounds!!!
+            ProducedType otherEnumBound = 
+                    unionOfCaseTypes(otherParam)
+                        .substitute(otherArgs);
+            ProducedType enumBound = 
+                    unionOfCaseTypes(param)
+                        .substitute(args);
+            if (!otherEnumBound.isSubtypeOf(enumBound)) {
+                return false;
+            }
         }
         return true;
     }
