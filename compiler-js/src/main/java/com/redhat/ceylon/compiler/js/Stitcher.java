@@ -30,7 +30,6 @@ import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 /** A simple program that takes the main JS module file and replaces #include markers with the contents of other files.
@@ -179,13 +178,12 @@ public class Stitcher {
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
         MetamodelVisitor mmg = null;
+        final ErrorVisitor errVisitor = new ErrorVisitor();
         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-            if (!pu.getCompilationUnit().getErrors().isEmpty()) {
+            if (errVisitor.hasErrors(pu.getCompilationUnit())) {
                 System.out.println("whoa, errors in the language module "
                         + pu.getCompilationUnit().getLocation());
-                for (Message err : pu.getCompilationUnit().getErrors()) {
-                    System.out.println(err.getMessage());
-                }
+                return 1;
             }
             if (mmg == null) {
                 mmg = new MetamodelVisitor(pu.getPackage().getModule());
