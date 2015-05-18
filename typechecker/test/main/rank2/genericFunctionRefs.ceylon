@@ -4,6 +4,11 @@ Val plusy<Val>(Val x, Val y) => y;
 
 T func<T>(T t) given T satisfies String => t;
 
+V binary<V>(V u, V v) 
+        given V of Integer|Float {
+    throw;
+}
+
 class Outer<X>(X x) {
     shared class Inner<Y>(Y y) {}
     shared T id<T>(T t) => t;
@@ -63,7 +68,14 @@ shared void run() {
     @error print(Outer(3).mapped.hash);
     @error print(mapped.string);
     @error value val = "hello".map<Object>.string;
-
+    
+    @error <V> => V(V, V) badbinref = binary;
+    <V> given V of Integer|Float => V(V, V) binref = binary;
+    @type:"<V> given V of Integer|Float => Callable<V,Tuple<V,V,Tuple<V,V,Empty>>>" 
+    value infbinref = binary;
+    infbinref(1,2);
+    @error infbinref("hello", "world");
+    @error infbinref(1,2.0);
 }
 
 void apply<T>(T x, T y,

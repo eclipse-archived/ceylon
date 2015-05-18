@@ -8781,16 +8781,17 @@ public class ExpressionVisitor extends Visitor {
                     size + " type arguments");
         }
         else {
+            Map<TypeParameter, ProducedType> args = 
+                    getTypeArgumentMap(tcd, 
+                            null, typeArguments);
             for (int i=0; i<size; i++) {
                 ProducedType arg = 
                         typeArguments.get(i);
                 TypeParameter param = 
                         typeParameters.get(i);
-                for (ProducedType st: 
-                        param.getSatisfiedTypes()) {
-                    Map<TypeParameter, ProducedType> args = 
-                            getTypeArgumentMap(tcd, 
-                                    null, typeArguments);
+                List<ProducedType> sts = 
+                        param.getSatisfiedTypes();
+                for (ProducedType st: sts) {
                     ProducedType bound = 
                             st.substitute(args);
                     if (explicit) {
@@ -8801,7 +8802,9 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not assignable to upper bound '" +
                                 bound.getProducedTypeName(unit) +
                                 "' of type parameter '" +
-                                param.getName() + "'");
+                                param.getName() + "' of '" +
+                                param.getDeclaration().getName(unit) + 
+                                "'");
                     }
                     else {
                         checkAssignable(arg, bound, parent,
@@ -8810,12 +8813,67 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not assignable to upper bound '" +
                                 bound.getProducedTypeName(unit) +
                                 "' of type parameter '" +
-                                param.getName() + "'");
+                                param.getName() + "' of '" +
+                                param.getDeclaration().getName(unit) + 
+                                "'");
                     }
                 }
-                //TODO: enumerated bounds!
+                if (!satisfiesEnumeratedConstraint(args, arg, param)) {
+                    if (explicit) {
+                        typeArgNode(tas, i, parent)
+                            .addError("type argument '" + 
+                                    arg.getProducedTypeName(unit) +
+                                    "' is not one of the enumerated cases of the type parameter '" +
+                                    param.getName() + "' of '" +
+                                    param.getDeclaration().getName(unit) + 
+                                    "'");
+                    }
+                    else {
+                        parent.addError("inferred type argument '" + 
+                                arg.getProducedTypeName(unit) +
+                                "' is not one of the enumerated cases of the type parameter '" +
+                                param.getName() + "' of '" +
+                                param.getDeclaration().getName(unit) + 
+                                "'");
+
+                    }
+                }
             }
         }
+    }
+
+    boolean satisfiesEnumeratedConstraint(
+            Map<TypeParameter, ProducedType> args,
+            ProducedType arg, TypeParameter param) {
+        List<ProducedType> cts = 
+                param.getCaseTypes();
+        if (cts!=null) {
+            for (ProducedType ct: cts) {
+                ProducedType bound = 
+                        ct.substitute(args);
+                if (arg.isSubtypeOf(bound)) {
+                    return true;
+                }
+            }
+            if (arg.getDeclaration() instanceof TypeParameter) {
+                for (ProducedType act: arg.getCaseTypes()) {
+                    boolean foundCase = false;
+                    for (ProducedType ct: cts) {
+                        ProducedType bound = 
+                                ct.substitute(args);
+                        if (act.isSubtypeOf(bound)) {
+                            foundCase = true;
+                        }
+                    }
+                    if(!foundCase) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 
     private void checkTypeConstructorParam(TypeParameter param, 
