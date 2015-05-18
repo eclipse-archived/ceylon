@@ -534,8 +534,9 @@ public class ProducedType extends ProducedReference {
                             //of the type that declares the member
                             //type, as long as it doesn't refine the
                             //member type
-                            TypeDeclaration totd = (TypeDeclaration) 
-                                    otherDec.getContainer();
+                            TypeDeclaration totd = 
+                                    (TypeDeclaration) 
+                                        otherDec.getContainer();
                             ProducedType tqts = 
                                     tqt.getSupertypeInternal(totd);
                             if (!stqt.isSubtypeOf(tqts)) {

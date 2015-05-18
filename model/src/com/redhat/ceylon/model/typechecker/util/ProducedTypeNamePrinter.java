@@ -647,21 +647,39 @@ public class ProducedTypeNamePrinter {
                     tpc.getTypeParameters();
         for (TypeParameter tp: 
                 params) {
-            List<ProducedType> sts = 
-                    tp.getSatisfiedTypes();
-            if (!sts.isEmpty()) {
+            List<ProducedType> sts = tp.getSatisfiedTypes();
+            List<ProducedType> cts = tp.getCaseTypes();
+            boolean hasEnumeratedBounds = 
+                    cts!=null && !cts.isEmpty();
+            boolean hasUpperBounds = !sts.isEmpty();
+            if (hasUpperBounds || hasEnumeratedBounds) {
                 result.append(" given ");
                 printDeclaration(result, tp, printFullyQualified(), unit);
-                result.append(" satisfies ");
-                boolean first = true;
-                for (ProducedType st: sts) {
-                    if (first) {
-                        first = false;
+                if (hasEnumeratedBounds) {
+                    result.append(" of ");
+                    boolean first = true;
+                    for (ProducedType ct: cts) {
+                        if (first) {
+                            first = false;
+                        }
+                        else {
+                            result.append("|");
+                        }
+                        result.append(getProducedTypeName(ct,unit));
                     }
-                    else {
-                        result.append(amp());
+                }
+                if (hasUpperBounds) {
+                    result.append(" satisfies ");
+                    boolean first = true;
+                    for (ProducedType st: sts) {
+                        if (first) {
+                            first = false;
+                        }
+                        else {
+                            result.append(amp());
+                        }
+                        result.append(getProducedTypeName(st,unit));
                     }
-                    result.append(getProducedTypeName(st,unit));
                 }
             }
         }
