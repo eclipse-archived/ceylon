@@ -56,7 +56,7 @@ public class TypeUtils {
                 gen.out(",");
             }
             gen.out(e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), ":");
-            final ProducedType pt = e.getValue();
+            final ProducedType pt = e.getValue() == null ? null : e.getValue().resolveAliases();
             if (pt == null) {
                 gen.out("'", e.getKey().getName(), "'");
             } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
