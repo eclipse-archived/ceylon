@@ -403,9 +403,22 @@ void abbreviations<T>() given T satisfies Anything[] {
 
 void inferenceIssue() {
     class X<out Y>(shared Y y) {}
-    X<To> transform<From, To>(X<From> x, To(From) convert)
+    
+    X<To> transform<From, To>
+            (X<From> x, To(From) convert)
             => X(convert(x.y));
     
     X<String> x1 = X("10");
     X<Integer?> x2 = transform(x1, parseInteger);
+}
+
+void inferenceIssue2() {
+    class X<out Y>(shared Y y) {}
+    
+    X<To> transform<From, To>
+            (To(From) convert)(X<From> x)
+            => X(convert(x.y));
+    
+    X<String> x1 = X("10");
+    X<Integer?> x3 = transform(parseInteger)(x1);
 }
