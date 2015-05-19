@@ -104,6 +104,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCCase;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
@@ -1261,7 +1262,9 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.serializable();
         serializationConstructor(model, classBuilder);
         serializationSerialize(model, classBuilder);
-        serializationDeserialize(model, classBuilder);
+        serializationReferences(model, classBuilder);
+        serializationSet(model, classBuilder);
+        
     }
     
     private boolean hasField(Declaration member) {
@@ -1514,43 +1517,117 @@ public class ClassTransformer extends AbstractTransformer {
      *     class by invoking {@code dted.getValue()}.</li>
      * </ul>
      */
-    private void serializationDeserialize(Class model,
+    private void serializationReferences(Class model,
             ClassDefinitionBuilder classBuilder) {
-        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$deserialize$.toString());
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$references$.toString());
         mdb.isOverride(true);
         mdb.ignoreModelAnnotations();
         mdb.modifiers(PUBLIC);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.deconstructed.toString());
-        pdb.modifiers(FINAL);
-        pdb.type(make().Type(syms().ceylonDeconstructedType), null);
-        mdb.parameter(pdb);
+        mdb.resultType(null, naming.makeQuotedFQIdent("java.util.Collection"));
         
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
-        boolean requiredLookup = false;
-        
-        
-        // assign fields
-        for (Declaration member : model.getMembers()) {
-            if (hasField(member)) {
-                requiredLookup |= makeDeserializationAssignment(stmts, (Value)member);
-            }
-        }
-        if (requiredLookup) {
-            // if we needed to use a lookup object to reset final fields, 
-            // prepend that variable
-            stmts.prepend(makeVar(FINAL, 
-                    "lookup", 
-                    naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"), 
-                    make().Apply(null, naming.makeQuotedFQIdent("java.lang.invoke.MethodHandles.lookup"), List.<JCExpression>nil())));
-        }
-        
+        // TODO this is all static information, but the method itself needs to be 
+        // callable virtually, so we should cache it somehow.
+        SyntheticName r = naming.synthetic(Unfix.reference);
         if (extendsSerializable(model)) {
             // prepend the invocation of super.$serialize$()
-            stmts.prepend(make().Exec(make().Apply(null,
-                    naming.makeQualIdent(naming.makeSuper(), Unfix.$deserialize$.toString()),
-                    List.<JCExpression>of(naming.makeUnquotedIdent(Unfix.deconstructed.toString())))));
+            stmts.add(makeVar(r, 
+                    naming.makeQuotedFQIdent("java.util.Collection"), 
+                    make().Apply(null,
+                    naming.makeQualIdent(naming.makeSuper(), Unfix.$references$.toString()),
+                    List.<JCExpression>nil())));
+        } else {
+            stmts.add(makeVar(r, 
+                    naming.makeQuotedFQIdent("java.util.Collection"), 
+                    make().NewClass(null, null,
+                            naming.makeQuotedFQIdent("java.util.ArrayList"),
+                            List.<JCExpression>nil(),
+                            null)));
         }
+        
+        for (Declaration member : model.getMembers()) {
+            if (hasField(member)) {
+                stmts.add(make().Exec(make().Apply(null,
+                        naming.makeQualIdent(r.makeIdent(), "add"),
+                        List.<JCExpression>of(make().Literal(member.getQualifiedNameString())))));
+            }
+        }
+        stmts.add(make().Return(r.makeIdent()));
         mdb.body(stmts.toList());
+        classBuilder.method(mdb);
+    }
+    
+    private void serializationSet(Class model,
+            ClassDefinitionBuilder classBuilder) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$set$.toString());
+        mdb.isOverride(true);
+        mdb.ignoreModelAnnotations();
+        mdb.modifiers(PUBLIC);
+        
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.reference.toString());
+        pdb.modifiers(FINAL);
+        pdb.type(make().Type(syms().objectType), null);
+        mdb.parameter(pdb);
+        
+        ParameterDefinitionBuilder pdb2 = ParameterDefinitionBuilder.systemParameter(this, Unfix.instance.toString());
+        pdb2.modifiers(FINAL);
+        pdb2.type(make().Type(syms().objectType), null);
+        mdb.parameter(pdb2);
+
+        //mdb.resultType(null, naming.makeQuotedFQIdent("java.util.Collection"));
+        /*
+         * public void $set$(Object reference, Object instance) {
+         *     switch((String)reference) {
+         *     case ("attr1")
+         *           this.field1 = ...;
+         *           break;
+         *     // ... other fields of this class
+         *     default:
+         *           super.set(reference, instance);
+         */
+        
+        
+        ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+        boolean needsLookup = false;
+        for (Declaration member : model.getMembers()) {
+            if (hasField(member)) {
+                ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
+                needsLookup |= makeDeserializationAssignment(caseStmts, (Value)member);
+                caseStmts.add(make().Break(null));
+                cases.add(make().Case(make().Literal(member.getQualifiedNameString()), caseStmts.toList()));
+            }
+        }
+        SyntheticName reference = naming.synthetic(Unfix.reference);
+        SyntheticName instance = naming.synthetic(Unfix.instance);
+        ListBuffer<JCStatement> defaultCase = ListBuffer.lb();
+        if (extendsSerializable(model)) {
+            // super.set(reference, instance);
+            defaultCase.add(make().Exec(make().Apply(null,
+                    naming.makeQualIdent(naming.makeSuper(), Unfix.$set$.toString()),
+                    List.<JCExpression>of(reference.makeIdent(), instance.makeIdent()))));
+        } else {
+            // throw (or pass to something else to throw, based on policy)
+            defaultCase.add(make().Throw(make().NewClass(null, null,
+                    naming.makeQuotedFQIdent("java.lang.RuntimeException"),
+                    List.<JCExpression>of(make().Literal("unknown attribute")),
+                    null)));
+        }
+        cases.add(make().Case(null, defaultCase.toList()));
+        
+        ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+        if (needsLookup) {
+            // if we needed to use a lookup object to reset final fields, 
+            // prepend that variable
+            stmts.add(makeVar(FINAL, 
+                "lookup", 
+                naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"), 
+                make().Apply(null, naming.makeQuotedFQIdent("java.lang.invoke.MethodHandles.lookup"), List.<JCExpression>nil())));
+        }
+        
+        stmts.add(make().Switch(make().TypeCast(make().Type(syms().stringType), reference.makeIdent()), cases.toList()));
+    
+        mdb.body(stmts.toList());
+        
         classBuilder.method(mdb);
     }
     
@@ -1563,26 +1640,8 @@ public class ClassTransformer extends AbstractTransformer {
           //  typeOrReferenceType = typeFact().getReferenceType(value.getType());
         //}
             
-        Naming.SyntheticName n = naming.alias("valueOrRef");
-        JCExpression newValue = make().Apply(List.of(makeJavaType(typeOrReferenceType, JT_TYPE_ARGUMENT)),
-                naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructed.toString()), "getValue"),
-                List.<JCExpression>of(
-                        makeReifiedTypeArgument(typeOrReferenceType),
-                        makeValueDeclaration(value)));
-        // let ( 
-        // Object valueOrRef = ^^;
-        // valueOrRef instanceof Reference ? (($InstanceLeaker$)valueOrRef).$leakInstance$() : (Type)valueOrRef;
-        // )
-        newValue = make().LetExpr(makeVar(0, n, make().Type(syms().objectType), newValue), 
-                make().Conditional(
-                        make().TypeTest(n.makeIdent(),
-                                makeJavaType(typeFact().getReferenceType(value.getType()), JT_RAW)), 
-                        make().Apply(null,
-                                naming.makeQualIdent(make().TypeCast(
-                                        make().TypeApply(make().QualIdent(syms().ceylonInstanceLeakerType.tsym), List.of(makeJavaType(value.getType(), JT_TYPE_ARGUMENT))), n.makeIdent()), "$leakInstance$"),
-                                List.<JCExpression>nil()), 
-                        make().TypeCast(makeJavaType(typeOrReferenceType, JT_NO_PRIMITIVES), n.makeIdent())));
-
+        Naming.SyntheticName n = naming.synthetic(Unfix.instance);
+        JCExpression newValue = make().TypeCast(makeJavaType(value.getType(), JT_NO_PRIMITIVES), n.makeIdent());
         if (isValueType) {
             newValue = expressionGen().applyErasureAndBoxing(newValue, 
                     value.getType(), true, CodegenUtil.getBoxingStrategy(value), 

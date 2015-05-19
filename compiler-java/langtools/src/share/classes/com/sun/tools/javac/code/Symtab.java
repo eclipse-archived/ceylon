@@ -212,7 +212,6 @@ public class Symtab {
     public  Type ceylonGetterDoubleType;
     public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
-    public  Type ceylonDeconstructedType;
     public  Type ceylonDeconstructorType;
     
     public final Type ceylonAtCeylonType;
@@ -944,6 +943,5 @@ public class Symtab {
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
         
         ceylonDeconstructorType = enterClass("ceylon.language.serialization.Deconstructor");
-        ceylonDeconstructedType = enterClass("ceylon.language.serialization.Deconstructed");
     }
 }
