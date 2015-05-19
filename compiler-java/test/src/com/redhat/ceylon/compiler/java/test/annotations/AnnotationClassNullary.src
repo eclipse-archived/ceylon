@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassNullary(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation$ anno) {
         this();
@@ -38,7 +38,7 @@ final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.r
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassNullarySequenced(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation$ anno) {
         this();

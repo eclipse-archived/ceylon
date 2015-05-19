@@ -15,7 +15,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassMetamodelReference(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.Declaration>parseMetamodelReference(anno.mmr()));
@@ -50,7 +50,7 @@ final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.comp
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassMetamodelReferenceDefaulted() {
         (
@@ -71,7 +71,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
     }
     
     public static .ceylon.language.meta.declaration.Declaration $default$mmr() {
-        return (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class);
+        return (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class);
     }
     
     @.java.lang.Override
@@ -100,7 +100,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassMetamodelReferenceVariadic() {
         (
@@ -157,7 +157,7 @@ final class annotationClassMetamodelReferenceLiteral_ {
     
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class));
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class));
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(

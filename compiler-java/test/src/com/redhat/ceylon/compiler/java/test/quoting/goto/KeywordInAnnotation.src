@@ -14,7 +14,7 @@ public @interface AnnotationClass$annotation$ {
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated> {
+public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated, .java.lang.Object> {
     
     public AnnotationClass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation$ anno) {
         this(anno.$strictfp());

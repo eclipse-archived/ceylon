@@ -51,7 +51,7 @@ public final class bugCL634_ {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bugCL634() {
-        if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.NestableDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCL634.class)).<.ceylon.language.meta.declaration.NestableDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).getSize() == 3L) {
+        if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.NestableDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCL634.class)).<.ceylon.language.meta.declaration.NestableDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).getSize() == 3L) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class BugCL634`.declaredMemberDeclarations<NestableDeclaration>().size == 3"));
         }

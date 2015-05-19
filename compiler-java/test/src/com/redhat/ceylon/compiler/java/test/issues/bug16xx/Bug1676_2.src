@@ -11,8 +11,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A,ceylon.language.meta.declaration::ClassDeclaration>"})
-final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug1676_2_A(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A$annotation$ anno) {
@@ -52,8 +52,8 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B,ceylon.language::Annotated>"})
-final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B,ceylon.language::Annotated,ceylon.language::Anything>"})
+final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug1676_2_B(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B$annotation$ anno) {

@@ -16,7 +16,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassInteger(final long i) {
         (

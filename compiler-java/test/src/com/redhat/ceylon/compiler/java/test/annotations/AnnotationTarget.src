@@ -11,7 +11,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated> {
+final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated, .java.lang.Object> {
     
     AnnotationTarget(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$ anno) {
         this();
@@ -55,7 +55,7 @@ final class annotationTarget_ {
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated> {
+final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated, .java.lang.Object> {
     
     AnnotationTarget2(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$ anno) {
         this();

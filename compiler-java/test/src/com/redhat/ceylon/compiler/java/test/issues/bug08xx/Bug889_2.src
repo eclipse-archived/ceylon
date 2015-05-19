@@ -17,8 +17,8 @@ final class bug889_2_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
-        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reified$T, t);
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<.java.lang.Object>bug889(.ceylon.language.Anything.$TypeDescriptor$, t);
         boolean b = c.$call$((.java.lang.Object)t).booleanValue();
-        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reified$T, t).$call$((.java.lang.Object)t).booleanValue();
+        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<.java.lang.Object>bug889(.ceylon.language.Anything.$TypeDescriptor$, t).$call$((.java.lang.Object)t).booleanValue();
     }
 }

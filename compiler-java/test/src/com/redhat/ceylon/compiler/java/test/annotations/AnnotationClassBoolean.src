@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassBoolean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassBoolean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassBoolean(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation$ anno) {
         this(anno.b());
@@ -70,7 +70,7 @@ final class annotationClassBoolean_ {
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassBooleanDefaulted() {
         (
@@ -119,7 +119,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassBooleanVariadic() {
         (
@@ -213,7 +213,7 @@ final class annotationClassVariadicIterable_ {
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassBooleanSequence(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));
@@ -283,7 +283,7 @@ final class annotationClassSequenceSequence_ {
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     AnnotationClassBooleanIterable(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));

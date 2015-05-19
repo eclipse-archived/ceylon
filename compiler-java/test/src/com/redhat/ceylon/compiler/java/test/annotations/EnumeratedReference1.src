@@ -20,8 +20,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>"})
-final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     EnumeratedReference(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation$ anno) {
@@ -94,8 +94,8 @@ final class enumeratedReference_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceVariadic,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>"})
-final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceVariadic,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     EnumeratedReferenceVariadic() {
@@ -193,8 +193,8 @@ final class enumeratedReferenceVariadic_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceDefaulted,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>"})
-final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceDefaulted,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     EnumeratedReferenceDefaulted() {

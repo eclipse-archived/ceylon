@@ -9,8 +9,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClass,ceylon.language.meta.declaration::ClassDeclaration>"})
-final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToClass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass$annotation$ anno) {
@@ -51,8 +51,8 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassSeq,ceylon.language.meta.declaration::ClassDeclaration>"})
-final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassSeq,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToClassSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation$ anno) {
@@ -85,8 +85,8 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToInterface,ceylon.language.meta.declaration::InterfaceDeclaration>"})
-final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToInterface,ceylon.language.meta.declaration::InterfaceDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToInterface(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface$annotation$ anno) {
@@ -127,8 +127,8 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToInterfaceSeq,ceylon.language.meta.declaration::InterfaceDeclaration>"})
-final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToInterfaceSeq,ceylon.language.meta.declaration::InterfaceDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToInterfaceSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation$ anno) {
@@ -161,8 +161,8 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassOrInterface,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>"})
-final class ConstrainedToClassOrInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassOrInterface, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassOrInterface,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToClassOrInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassOrInterface, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToClassOrInterface(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassOrInterface$annotation$ anno) {
@@ -195,7 +195,7 @@ final class ConstrainedToClassOrInterface implements .com.redhat.ceylon.compiler
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassOrInterface2,ceylon.language.meta.declaration::ClassDeclaration|ceylon.language.meta.declaration::InterfaceDeclaration>"})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToClassOrInterface2,ceylon.language.meta.declaration::ClassDeclaration|ceylon.language.meta.declaration::InterfaceDeclaration,ceylon.language::Anything>"})
 final class ConstrainedToClassOrInterface2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -231,8 +231,8 @@ final class ConstrainedToClassOrInterface2 implements .com.redhat.ceylon.compile
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunction,ceylon.language.meta.declaration::FunctionDeclaration>"})
-final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunction,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToFunction(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction$annotation$ anno) {
@@ -275,8 +275,8 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionSeq,ceylon.language.meta.declaration::FunctionDeclaration>"})
-final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionSeq,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToFunctionSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$ anno) {
@@ -311,8 +311,8 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToValue,ceylon.language.meta.declaration::ValueDeclaration>"})
-final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToValue,ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToValue(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue$annotation$ anno) {
@@ -355,8 +355,8 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToValueSeq,ceylon.language.meta.declaration::ValueDeclaration>"})
-final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToValueSeq,ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToValueSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$ anno) {
@@ -391,8 +391,8 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionOrValue,ceylon.language.meta.declaration::FunctionOrValueDeclaration>"})
-final class ConstrainedToFunctionOrValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionOrValue, .ceylon.language.meta.declaration.FunctionOrValueDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionOrValue,ceylon.language.meta.declaration::FunctionOrValueDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToFunctionOrValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionOrValue, .ceylon.language.meta.declaration.FunctionOrValueDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToFunctionOrValue(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionOrValue$annotation$ anno) {
@@ -427,7 +427,7 @@ final class ConstrainedToFunctionOrValue implements .com.redhat.ceylon.compiler.
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionOrValue2,ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language.meta.declaration::ValueDeclaration>"})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToFunctionOrValue2,ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
 final class ConstrainedToFunctionOrValue2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -461,8 +461,8 @@ final class ConstrainedToFunctionOrValue2 implements .com.redhat.ceylon.compiler
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToConstructor,ceylon.language.meta.declaration::ConstructorDeclaration>"})
-final class ConstrainedToConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToConstructor, .ceylon.language.meta.declaration.ConstructorDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToConstructor,ceylon.language.meta.declaration::ConstructorDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToConstructor, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToConstructor(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToConstructor$annotation$ anno) {
@@ -498,7 +498,7 @@ final class ConstrainedToConstructor implements .com.redhat.ceylon.compiler.java
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToConstructorOrFunction,ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language.meta.declaration::FunctionDeclaration>"})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToConstructorOrFunction,ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
 final class ConstrainedToConstructorOrFunction implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -532,8 +532,8 @@ final class ConstrainedToConstructorOrFunction implements .com.redhat.ceylon.com
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToPackage,ceylon.language.meta.declaration::Package>"})
-final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToPackage,ceylon.language.meta.declaration::Package,ceylon.language::Anything>"})
+final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToPackage(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage$annotation$ anno) {
@@ -574,8 +574,8 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToPackageSeq,ceylon.language.meta.declaration::Package>"})
-final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToPackageSeq,ceylon.language.meta.declaration::Package,ceylon.language::Anything>"})
+final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToPackageSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation$ anno) {
@@ -608,8 +608,8 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToModule,ceylon.language.meta.declaration::Module>"})
-final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToModule,ceylon.language.meta.declaration::Module,ceylon.language::Anything>"})
+final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToModule(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule$annotation$ anno) {
@@ -650,8 +650,8 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToModuleSeq,ceylon.language.meta.declaration::Module>"})
-final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToModuleSeq,ceylon.language.meta.declaration::Module,ceylon.language::Anything>"})
+final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToModuleSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation$ anno) {
@@ -684,8 +684,8 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToImport,ceylon.language.meta.declaration::Import>"})
-final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToImport,ceylon.language.meta.declaration::Import,ceylon.language::Anything>"})
+final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToImport(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport$annotation$ anno) {
@@ -726,8 +726,8 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToImportSeq,ceylon.language.meta.declaration::Import>"})
-final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToImportSeq,ceylon.language.meta.declaration::Import,ceylon.language::Anything>"})
+final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToImportSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation$ anno) {
@@ -760,8 +760,8 @@ final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.r
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAlias,ceylon.language.meta.declaration::AliasDeclaration>"})
-final class ConstrainedToAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAlias, .ceylon.language.meta.declaration.AliasDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAlias,ceylon.language.meta.declaration::AliasDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAlias, .ceylon.language.meta.declaration.AliasDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToAlias(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAlias$annotation$ anno) {
@@ -794,8 +794,8 @@ final class ConstrainedToAlias implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToSetter,ceylon.language.meta.declaration::SetterDeclaration>"})
-final class ConstrainedToSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToSetter, .ceylon.language.meta.declaration.SetterDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToSetter,ceylon.language.meta.declaration::SetterDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToSetter, .ceylon.language.meta.declaration.SetterDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToSetter(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToSetter$annotation$ anno) {
@@ -832,8 +832,8 @@ final class ConstrainedToSetter implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAnnotatedDeclaration,ceylon.language.meta.declaration::AnnotatedDeclaration>"})
-final class ConstrainedToAnnotatedDeclaration implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotatedDeclaration, .ceylon.language.meta.declaration.AnnotatedDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAnnotatedDeclaration,ceylon.language.meta.declaration::AnnotatedDeclaration,ceylon.language::Anything>"})
+final class ConstrainedToAnnotatedDeclaration implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotatedDeclaration, .ceylon.language.meta.declaration.AnnotatedDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToAnnotatedDeclaration(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotatedDeclaration$annotation$ anno) {
@@ -871,8 +871,8 @@ final class ConstrainedToAnnotatedDeclaration implements .com.redhat.ceylon.comp
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAnnotated,ceylon.language::Annotated>"})
-final class ConstrainedToAnnotated implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotated, .ceylon.language.Annotated> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::ConstrainedToAnnotated,ceylon.language::Annotated,ceylon.language::Anything>"})
+final class ConstrainedToAnnotated implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotated, .ceylon.language.Annotated, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConstrainedToAnnotated(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToAnnotated$annotation$ anno) {

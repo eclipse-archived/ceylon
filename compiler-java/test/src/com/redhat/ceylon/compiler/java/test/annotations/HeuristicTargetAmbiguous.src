@@ -95,8 +95,8 @@ final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrAnnotationTypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::AmbiguousAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
-final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::AmbiguousAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     AmbiguousAnnotationClass(.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass$annotation$ anno) {

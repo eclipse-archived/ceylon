@@ -56,7 +56,7 @@ public final class bug2032_ {
         if ((
             let
             {
-                .ceylon.language.meta.declaration.ClassDeclaration $ceylontmp$1 = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(Foo$impl.Bar.class);
+                .ceylon.language.meta.declaration.ClassWithInitializerDeclaration $ceylontmp$1 = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(Foo$impl.Bar.class);
             }
             returning ((.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)((.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)).<.ceylon.language.meta.declaration.NestableDeclaration>memberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).contains($ceylontmp$1);
         )) {

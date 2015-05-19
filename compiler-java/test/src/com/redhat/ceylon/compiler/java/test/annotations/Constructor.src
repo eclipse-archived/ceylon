@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface ConstructorAnnotation$annotation$ {
 }
-final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration> {
+final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object> {
     
     ConstructorAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$ anno) {
         this();

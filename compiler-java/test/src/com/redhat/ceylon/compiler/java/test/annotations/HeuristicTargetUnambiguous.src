@@ -132,8 +132,8 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration>"})
-final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     HeuristicAnnotationClass(.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass$annotation$ anno) {

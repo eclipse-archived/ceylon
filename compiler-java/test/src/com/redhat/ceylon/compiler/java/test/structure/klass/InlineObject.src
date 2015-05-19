@@ -243,7 +243,7 @@ final class inlineObject_ {
         final .ceylon.language.meta.declaration.ClassDeclaration inClassParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.getParam()).getDeclaration();
         .java.lang.String $ceylontmp$assert$8 = null;
         if (inClassParamDecl.getAnonymous()) {
-            if (inClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
+            if (inClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
             } else {
                 $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
             }
@@ -254,7 +254,7 @@ final class inlineObject_ {
         final .ceylon.language.meta.declaration.ClassDeclaration inClassAttributeDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.getAttribute()).getDeclaration();
         .java.lang.String $ceylontmp$assert$9 = null;
         if (inClassAttributeDecl.getAnonymous()) {
-            if (inClassAttributeDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
+            if (inClassAttributeDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
             } else {
                 $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassAttributeDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
             }
@@ -277,7 +277,7 @@ final class inlineObject_ {
         final .ceylon.language.meta.declaration.ClassDeclaration inSuperClassParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inSuperClass.getParam()).getDeclaration();
         .java.lang.String $ceylontmp$assert$11 = null;
         if (inSuperClassParamDecl.getAnonymous()) {
-            if (inSuperClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class))) {
+            if (inSuperClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class))) {
             } else {
                 $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tunviolated " + "inSuperClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
             }

@@ -21,8 +21,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.meta.declaration::FunctionDeclaration>"})
-final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedLeaf() {
@@ -153,8 +153,8 @@ final class nestedLeafLiteralArgument_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration>"})
-final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedBranch(.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$ anno) {
