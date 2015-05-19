@@ -18,6 +18,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -314,8 +315,8 @@ public class TypeGenerator {
         }
         final String me = gen.getNames().self(d);
         if (withTargs) {
-            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$)");
-            gen.endLine(true);
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$);");
+            gen.endLine();
         } else {
             //Check if any of the satisfied types have type arguments
             if (sats != null) {
@@ -459,6 +460,10 @@ public class TypeGenerator {
                         TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(), typeArgs),
                         gen, false, null);
                 gen.out(",");
+            }
+            if (typeDecl instanceof Constructor && ((Class)typeDecl.getContainer()).getTypeParameters()!=null
+                            && !((Class)typeDecl.getContainer()).getTypeParameters().isEmpty()) {
+                gen.out("$$targs$$,");
             }
             gen.out(gen.getNames().self(d), ")");
             gen.endLine(true);
@@ -793,6 +798,15 @@ public class TypeGenerator {
             }
             boolean pseudoAbstract = false;
             gen.initParameters(that.getParameterList(), container, null);
+            if (!d.isAbstract()) {
+                //Call common initializer
+                gen.out(gen.getNames().name(container), "$$c(");
+                if (withTargs) {
+                    gen.out("$$targs$$,");
+                }
+                gen.out(me, ");");
+                gen.endLine();
+            }
             if (forceAbstract) {
                 gen.out(fullName, "$$a");
                 generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
@@ -807,15 +821,6 @@ public class TypeGenerator {
                 callSuperclass(that.getDelegatedConstructor().getType(),
                         that.getDelegatedConstructor().getInvocationExpression(),
                         container, plist, that, pseudoAbstract, null, gen);
-            }
-            if (!d.isAbstract()) {
-                //Call common initializer
-                gen.out(gen.getNames().name(container), "$$c(");
-                if (withTargs) {
-                    gen.out("$$targs$$,");
-                }
-                gen.out(me, ");");
-                gen.endLine();
             }
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
