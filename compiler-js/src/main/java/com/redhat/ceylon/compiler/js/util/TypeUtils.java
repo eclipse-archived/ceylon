@@ -1183,7 +1183,7 @@ public class TypeUtils {
             final String methodName, final String rightTpName, final String leftTpName) {
         Method md = (Method)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
         if (md == null) {
-            expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName);
+            expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName, Backend.JavaScript);
             return null;
         }
         Map<TypeParameter, ProducedType> targs = expr.getRightTerm().getTypeModel().getTypeArguments();
@@ -1195,7 +1195,7 @@ public class TypeUtils {
             }
         }
         if (otherType == null) {
-            expr.addUnexpectedError("Right term of intersection operator should have type parameter named " + rightTpName);
+            expr.addUnexpectedError("Right term of intersection operator should have type parameter named " + rightTpName, Backend.JavaScript);
             return null;
         }
         targs = new HashMap<>();
@@ -1207,7 +1207,7 @@ public class TypeUtils {
             }
         }
         if (mtp == null) {
-            expr.addUnexpectedError("Left term of intersection should have type parameter named " + leftTpName);
+            expr.addUnexpectedError("Left term of intersection should have type parameter named " + leftTpName, Backend.JavaScript);
         }
         targs.put(mtp, otherType);
         return targs;

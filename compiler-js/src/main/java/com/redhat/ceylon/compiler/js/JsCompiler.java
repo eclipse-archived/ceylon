@@ -111,7 +111,7 @@ public class JsCompiler {
             if (that.getImportModel() == null || that.getImportModel().getDeclaration() == null)return;
             Unit u = that.getImportModel().getDeclaration().getUnit();
             if (nonCeylonUnit(u)) {
-                that.addUnexpectedError("cannot import Java declarations in Javascript");
+                that.addUnexpectedError("cannot import Java declarations in Javascript", Backend.JavaScript);
             }
             super.visit(that);
         }
@@ -121,7 +121,7 @@ public class JsCompiler {
                 exitCode = 1;
             } else if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module &&
                     ((Module)that.getImportPath().getModel()).isJava()) {
-                that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript");
+                that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
             } else {
                 super.visit(that);
             }
@@ -132,7 +132,7 @@ public class JsCompiler {
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
                 if (nonCeylonUnit(u)) {
-                    that.addUnexpectedError("cannot call Java declarations in Javascript");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
@@ -143,7 +143,7 @@ public class JsCompiler {
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
                 if (nonCeylonUnit(u)) {
-                    that.addUnexpectedError("cannot call Java declarations in Javascript");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
@@ -425,7 +425,7 @@ public class JsCompiler {
         for (PhasedUnit pu : phasedUnits) {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null && !isForBackend(md.getAnnotationList(), Backend.JavaScript, md.getUnit())) {
-                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
+                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
             }
         }
     }
@@ -440,7 +440,7 @@ public class JsCompiler {
                         Module m = (Module)im.getImportPath().getModel();
                         if (be != null && m.isNative() && !be.equals(m.getNative())) {
                             im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNative() + "\"'");
+                                    be + "\"' is not '\"" + m.getNative() + "\"'", Backend.JavaScript);
                         }
                     }
                 }

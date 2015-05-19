@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
@@ -95,7 +96,7 @@ class ComprehensionGenerator {
                 return;
             } else {
                 that.addError("No support for comprehension clause of type "
-                              + startClause.getClass().getName());
+                              + startClause.getClass().getName(), Backend.JavaScript);
                 return;
             }
         }
@@ -115,7 +116,7 @@ class ComprehensionGenerator {
                     clause = null;
                 } else {
                     that.addError("No support for comprehension clause of type "
-                                  + clause.getClass().getName());
+                                  + clause.getClass().getName(), Backend.JavaScript);
                     return;
                 }
             }
@@ -284,7 +285,7 @@ class ComprehensionGenerator {
                 valueVarName = names.createTempVariable();
             } else {
                 that.addError("No support yet for iterators of type "
-                              + forIterator.getClass().getName());
+                              + forIterator.getClass().getName(), Backend.JavaScript);
                 valueVarName = null;
                 valDecl = null;
                 pattern = null;

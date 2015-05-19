@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
@@ -54,7 +55,7 @@ public class ConditionGenerator {
             } else if (cond instanceof IsCondition) {
                 variable = ((IsCondition) cond).getVariable();
             } else if (!(cond instanceof Tree.BooleanCondition)) {
-                cond.addUnexpectedError("No support for conditions of type " + cond.getClass().getSimpleName());
+                cond.addUnexpectedError("No support for conditions of type " + cond.getClass().getSimpleName(), Backend.JavaScript);
                 return null;
             }
             if (variable != null) {
@@ -403,7 +404,7 @@ public class ConditionGenerator {
                 names.forceName(caseVar.getDeclarationModel(), expvar);
             }
         } else if (item instanceof Tree.SatisfiesCase) {
-            item.addError("case(satisfies) not yet supported");
+            item.addError("case(satisfies) not yet supported", Backend.JavaScript);
             gen.out("true");
         } else if (item instanceof MatchCase) {
             boolean first = true;
@@ -429,7 +430,7 @@ public class ConditionGenerator {
                 first = false;
             }
         } else {
-            cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
+            cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented", Backend.JavaScript);
         }
         gen.out(")");
         if (cc.getBlock() == null) {

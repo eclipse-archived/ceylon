@@ -129,7 +129,7 @@ public class MissingNativeVisitor extends Visitor {
         // we should detect if it actually exists
         //ok = ok && checkNativeImplementationExists(model);
         if(!ok)
-            node.addError("native implementation not found for: '" + model.getName() + "'");
+            node.addError("native implementation not found for: '" + model.getName() + "'", Backend.JavaScript);
         
         return true;
     }

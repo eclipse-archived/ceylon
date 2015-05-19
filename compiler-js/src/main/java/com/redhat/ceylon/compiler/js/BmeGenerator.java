@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -76,7 +77,7 @@ public class BmeGenerator {
             tparams = ((Generic)expr.getDeclaration()).getTypeParameters();
         } else {
             expr.addUnexpectedError("Getting type parameters from unidentified declaration type "
-                    + expr.getDeclaration());
+                    + expr.getDeclaration(), Backend.JavaScript);
             return null;
         }
         final HashMap<TypeParameter, ProducedType> targs = new HashMap<>();

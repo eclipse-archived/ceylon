@@ -18,6 +18,7 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -136,7 +137,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void handleException(Exception e, Node that) {
-        that.addUnexpectedError(that.getMessage(e, this));
+        that.addUnexpectedError(that.getMessage(e, this), Backend.JavaScript);
     }
 
     private final JsOutput jsout;
@@ -1129,7 +1130,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 final String err = "REQUIRED NATIVE FILE MISSING FOR "
                         + missingDeclarationName + " => " + f + ", containing " + names.name(d);
-                n.addError(err);
+                n.addError(err, Backend.JavaScript);
                 spitOut(err);
                 out("/*", err, "*/");
             }
@@ -1200,14 +1201,14 @@ public class GenerateJsVisitor extends Visitor
                     md = (MethodDeclaration)td;
                     expr = md.getSpecifierExpression();
                 } else {
-                    param.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName());
+                    param.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName(), Backend.JavaScript);
                     expr = null;
                 }
             } else {
                 expr = ((InitializerParameter) param).getSpecifierExpression();
             }
         } else {
-            param.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param);
+            param.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param, Backend.JavaScript);
             expr = null;
         }
         return expr;
@@ -1265,7 +1266,7 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
                         if (expr == null) {
-                            param.addUnexpectedError("Default expression missing for " + pd.getName());
+                            param.addUnexpectedError("Default expression missing for " + pd.getName(), Backend.JavaScript);
                             out("null");
                         } else if (param instanceof ParameterDeclaration &&
                                 ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
@@ -1704,14 +1705,14 @@ public class GenerateJsVisitor extends Visitor
         if (radix == 10) {
             if (lit.compareTo(maxLong) > 0 || lit.compareTo(minLong) < 0) {
                 that.addError("literal outside representable range: " + lit
-                        + " is too large to be represented as an Integer");
+                        + " is too large to be represented as an Integer", Backend.JavaScript);
                 return 0;
             }
         } else {
             if ((neg?lit.negate():lit).compareTo(maxUnsignedLong) == 0) {
                 return neg?1:-1;
             } else if ((neg?lit.negate():lit).compareTo(maxUnsignedLong) > 0) {
-                that.addError("invalid hexadecimal literal: '" + (radix==2?"$":"#") + nt + "' has more than 64 bits");
+                that.addError("invalid hexadecimal literal: '" + (radix==2?"$":"#") + nt + "' has more than 64 bits", Backend.JavaScript);
                 return 0;
             }
         }
@@ -1723,7 +1724,7 @@ public class GenerateJsVisitor extends Visitor
         try {
             out("(", Long.toString(parseNaturalLiteral(that, false)), ")");
         } catch (NumberFormatException ex) {
-            that.addError("Invalid numeric literal " + that.getText());
+            that.addError("Invalid numeric literal " + that.getText(), Backend.JavaScript);
         }
     }
 
