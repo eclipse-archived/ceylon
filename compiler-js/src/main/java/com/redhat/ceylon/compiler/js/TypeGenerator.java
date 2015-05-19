@@ -18,7 +18,6 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -764,7 +763,20 @@ public class TypeGenerator {
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
             final Tree.DelegatedConstructor delcons = that.getDelegatedConstructor();
-            final TypeDeclaration superdec = delcons == null ? null : delcons.getType().getDeclarationModel();
+            final TypeDeclaration superdec;
+            final ParameterList superplist;
+            final boolean pseudoAbstract;
+            if (delcons == null) {
+                superdec = null;
+                superplist = null;
+                pseudoAbstract = false;
+            } else {
+                superdec = delcons.getType().getDeclarationModel();
+                pseudoAbstract = superdec instanceof Class ? superdec==container :
+                    ((Constructor)superdec).getContainer()==container;
+                superplist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
+                    ((Constructor)superdec).getParameterLists().get(0);
+            }
             gen.out("function ", fullName);
             boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
             if (forceAbstract) {
@@ -777,10 +789,8 @@ public class TypeGenerator {
             if (forceAbstract) {
                 gen.initParameters(that.getParameterList(), container, null);
                 if (delcons != null) {
-                    ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
-                        ((Constructor)superdec).getParameterLists().get(0);
                     callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                            container, plist, that, false, null, gen);
+                            container, superplist, that, false, null, gen);
                 }
                 gen.generateClassStatements(cdef, that, null, 1);
                 gen.out("return ", me, ";");
@@ -796,7 +806,6 @@ public class TypeGenerator {
                 gen.declareSelf(container);
                 gen.referenceOuter(container);
             }
-            boolean pseudoAbstract = false;
             gen.initParameters(that.getParameterList(), container, null);
             if (!d.isAbstract()) {
                 //Call common initializer
@@ -813,12 +822,8 @@ public class TypeGenerator {
                         container, gen);
                 gen.endLine(true);
             } else if (delcons != null) {
-                pseudoAbstract = superdec instanceof Class ? superdec==container :
-                    ((Constructor)superdec).getContainer()==container;
-                ParameterList plist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
-                    ((Constructor)superdec).getParameterLists().get(0);
                 callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                        container, plist, that, pseudoAbstract, null, gen);
+                        container, superplist, that, pseudoAbstract, null, gen);
             }
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
