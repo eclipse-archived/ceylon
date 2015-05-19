@@ -4193,7 +4193,8 @@ public class ExpressionVisitor extends Visitor {
                     !paramTypeDec.isParameterized()) {
                 TypeParameter tp2 = 
                         (TypeParameter) paramTypeDec;
-                if (!visited.contains(tp2)) {
+                if (!findingUpperBounds &&
+                        !visited.contains(tp2)) { //TODO: this surely has to be wrong!!
                     visited.add(tp2);
                     List<ProducedType> sts = 
                             tp2.getSatisfiedTypes();
