@@ -765,20 +765,20 @@ public class TypeGenerator {
             final Tree.DelegatedConstructor delcons = that.getDelegatedConstructor();
             final TypeDeclaration superdec;
             final ParameterList superplist;
-            final boolean pseudoAbstract;
+            final boolean callAbstract;
             if (delcons == null) {
                 superdec = null;
                 superplist = null;
-                pseudoAbstract = false;
+                callAbstract = false;
             } else {
                 superdec = delcons.getType().getDeclarationModel();
-                pseudoAbstract = superdec instanceof Class ? superdec==container :
+                callAbstract = superdec instanceof Class ? superdec==container :
                     ((Constructor)superdec).getContainer()==container;
                 superplist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
                     ((Constructor)superdec).getParameterLists().get(0);
             }
             gen.out("function ", fullName);
-            boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
+            final boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
             if (forceAbstract) {
                 gen.out("$$a");
             }
@@ -790,9 +790,11 @@ public class TypeGenerator {
                 gen.initParameters(that.getParameterList(), container, null);
                 if (delcons != null) {
                     callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                            container, superplist, that, false, null, gen);
+                            container, superplist, that, callAbstract, null, gen);
                 }
-                gen.generateClassStatements(cdef, that, null, 1);
+                if (!callAbstract) {
+                    gen.generateClassStatements(cdef, that, null, 1);
+                }
                 gen.out("return ", me, ";");
                 gen.endBlockNewLine(true);
                 gen.out("function ", fullName);
@@ -823,14 +825,12 @@ public class TypeGenerator {
                 gen.endLine(true);
             } else if (delcons != null) {
                 callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                        container, superplist, that, pseudoAbstract, null, gen);
+                        container, superplist, that, callAbstract, null, gen);
             }
             if (d.isNative()) {
                 gen.stitchConstructorHelper(cdef, "_cons_before");
             }
-            if (forceAbstract) {
-                gen.generateClassStatements(cdef, that, null, 2);
-            } else if (pseudoAbstract) {
+            if (callAbstract) {
                 //Pass the delegated constructor
                 Tree.Constructor pseudo1 = null;
                 if (superdec instanceof Class) {
@@ -847,6 +847,8 @@ public class TypeGenerator {
                     }
                 }
                 gen.generateClassStatements(cdef, pseudo1, that, 2);
+            } else if (forceAbstract) {
+                gen.generateClassStatements(cdef, that, null, 2);
             } else {
                 gen.generateClassStatements(cdef, that, null, 0);
             }
