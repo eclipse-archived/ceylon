@@ -92,7 +92,7 @@ public class ConfigWriter {
                     }
                 }
                 if (ok) {
-                    File sourceBackup = new File(source.getAbsoluteFile().getParentFile(), source.getName() + ".old");
+                    File sourceBackup = new File(source.getAbsoluteFile().getParentFile(), source.getName() + "~");
                     Files.deleteIfExists(sourceBackup.toPath());
                     Files.move(source.toPath(), sourceBackup.toPath());
                     Files.move(tmpFile.toPath(), source.toPath());
