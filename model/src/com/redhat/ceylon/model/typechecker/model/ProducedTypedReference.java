@@ -73,7 +73,8 @@ public class ProducedTypedReference extends ProducedReference {
         StringBuilder name = new StringBuilder();
         ProducedType type = getQualifyingType();
         if (type!=null) {
-            name.append(type.getProducedTypeName());
+            name.append(type.getProducedTypeName())
+                .append(" ");
         }
         name.append(dec.getName());
         if (dec instanceof Generic) {
