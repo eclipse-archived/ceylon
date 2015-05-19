@@ -24,6 +24,7 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 
 import java.util.HashMap;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
@@ -74,7 +75,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (e instanceof BugException) {
             ((BugException)e).addError(that);
         } else {
-            that.addError(new CodeGenError(that, e.getMessage(), e));
+            that.addError(new CodeGenError(that, e.getMessage(), Backend.Java, e));
         }
     }
 

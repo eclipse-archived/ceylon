@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -130,7 +131,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (!(annotationConstructor instanceof Tree.MethodDefinition 
                         && d instanceof Tree.Return)
                     && !d.equals(annotationConstructor)) {
-                d.addError("compiler bug: annotation constructors may only contain a return statement");
+                d.addError("compiler bug: annotation constructors may only contain a return statement", Backend.Java);
             }
         }
         super.visit(d);
@@ -225,7 +226,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     }
 
     private void errorDefaultedParameter(Node d) {
-        d.addError("compiler bug: only literals, true, false, and annotation class instantiations are permitted as annotation parameter defaults");
+        d.addError("compiler bug: only literals, true, false, and annotation class instantiations are permitted as annotation parameter defaults", Backend.Java);
     }
     
     @Override
@@ -395,7 +396,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
             factory = ObjectLiteralAnnotationTerm.FACTORY;
         } else if (Decl.isAnnotationClass(declaration)) {
-            t.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"));
+            t.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
             return null;
         } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {
             factory = DeclarationLiteralAnnotationTerm.FACTORY;
@@ -417,7 +418,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.Term term) {
         if (annotationConstructor != null && !checkingDefaults) {
-            term.addError("compiler bug: unsupported term " + term.getClass().getSimpleName());
+            term.addError("compiler bug: unsupported term " + term.getClass().getSimpleName(), Backend.Java);
         }
     }
     
@@ -455,10 +456,10 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     LiteralAnnotationTerm argument = new ObjectLiteralAnnotationTerm(bme.getTypeModel());
                     appendLiteralArgument(bme, argument);
                 } else {
-                    bme.addError("compiler bug: unsupported base member expression in annotation constructor");
+                    bme.addError("compiler bug: unsupported base member expression in annotation constructor", Backend.Java);
                 }
             } else {
-                bme.addError("compiler bug: unsupported base member expression in annotation constructor");
+                bme.addError("compiler bug: unsupported base member expression in annotation constructor", Backend.Java);
             }
         }
     }
@@ -479,7 +480,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
      */
     private LiteralAnnotationTerm appendLiteralArgument(Node bme, LiteralAnnotationTerm argument) {
         if (spread) {
-            bme.addError("compiler bug: spread static arguments not supported");
+            bme.addError("compiler bug: spread static arguments not supported", Backend.Java);
         }
         if (this.elements != null) {
            this.elements.addElement(argument);
@@ -495,7 +496,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (isAnnotationClass(bte.getDeclaration())) {
                 instantiation.setPrimary((Class)bte.getDeclaration());
             } else {
-                bte.addError("compiler bug: not an annotation class");
+                bte.addError("compiler bug: not an annotation class", Backend.Java);
             }
         }
     }
@@ -504,7 +505,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.PositionalArgument argument) {
         if (annotationConstructor != null
                 && this.elements == null) {
-            argument.addError("compiler bug: unsupported positional argument");
+            argument.addError("compiler bug: unsupported positional argument", Backend.Java);
         }
         super.visit(argument);
     }
@@ -547,7 +548,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.NamedArgument argument) {
         if (annotationConstructor != null
                 && this.elements == null) {
-            argument.addError("compiler bug: unsupported named argument");
+            argument.addError("compiler bug: unsupported named argument", Backend.Java);
         }
         super.visit(argument);
     }

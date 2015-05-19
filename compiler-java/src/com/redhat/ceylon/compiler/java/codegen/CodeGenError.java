@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 
@@ -32,8 +33,8 @@ public class CodeGenError extends UnexpectedError {
 
     private Exception cause;
     
-    public CodeGenError(Node treeNode, String message, Exception cause) {
-        super(treeNode, message);
+    public CodeGenError(Node treeNode, String message, Backend backend, Exception cause) {
+        super(treeNode, message, backend);
         this.cause = cause;
     }
     

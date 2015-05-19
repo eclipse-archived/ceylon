@@ -544,7 +544,7 @@ public class LanguageCompiler extends JavaCompiler {
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null && !isForBackend(md.getAnnotationList(), Backend.Java, md.getUnit())) {
-                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()));
+                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
             }
         }
     }
@@ -559,7 +559,7 @@ public class LanguageCompiler extends JavaCompiler {
                         Module m = (Module)im.getImportPath().getModel();
                         if (be != null && m.isNative() && !be.equals(m.getNative())) {
                             im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNative() + "\"'");
+                                    be + "\"' is not '\"" + m.getNative() + "\"'", Backend.Java);
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.codegen.recovery;
 
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -156,7 +157,7 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
         // type inference is used but the type of 
         // the inferred expression is unknown due to other errors
         if (that.getTypeModel().containsUnknowns()) {
-            newplan(new Drop(that, new AnalysisError(that, "unknown type")));
+            newplan(new Drop(that, new AnalysisError(that, "unknown type", Backend.Java)));
         }
     }
     

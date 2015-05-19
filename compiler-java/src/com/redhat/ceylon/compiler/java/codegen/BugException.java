@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -100,7 +101,7 @@ public class BugException extends RuntimeException {
     public void addError(Node fallbackNode) {
         if (!this.attached) {
             Node bestNode = bestNode(fallbackNode);
-            bestNode.addError(new CodeGenError(bestNode, getMessage(), this));
+            bestNode.addError(new CodeGenError(bestNode, getMessage(), Backend.Java, this));
             this.attached = true;
         }
     }

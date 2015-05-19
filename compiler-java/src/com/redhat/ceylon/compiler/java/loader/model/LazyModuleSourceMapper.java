@@ -203,7 +203,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             if(JDKUtils.jdk.isLowerVersion(version)){
                 definition.addUsageWarning(Warning.importsOtherJdk, "You import JDK7, which is provided by the JDK8 you are running on, but"+
                         " we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on"+
-                        " JDK8 classes or methods.");
+                        " JDK8 classes or methods.", Backend.Java);
             }
         }
     }

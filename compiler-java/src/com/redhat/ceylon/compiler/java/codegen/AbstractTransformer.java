@@ -4550,7 +4550,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if (message != null) {
             if (node != null) {
-                node.addError(new CodeGenError(node, message, null));
+                node.addError(new CodeGenError(node, message, Backend.Java, null));
             } else {
                 log.error(key, message);
             }

@@ -2,13 +2,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.EnumSet;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.OutputElement;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 public class UnsupportedVisitor extends Visitor {
     
@@ -16,20 +13,20 @@ public class UnsupportedVisitor extends Visitor {
     public void visit(Tree.Annotation that) {
         String msg = AnnotationInvocationVisitor.checkForBannedJavaAnnotation(that);
         if (msg != null) {
-            that.addError(msg);
+            that.addError(msg, Backend.Java);
         }
         super.visit(that);
     }
     
     @Override
     public void visit(Tree.DynamicStatement that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
         super.visit(that);
     }
     
     @Override
     public void visit(Tree.Dynamic that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
         super.visit(that);
     }
 
@@ -42,7 +39,7 @@ public class UnsupportedVisitor extends Visitor {
 
     @Override
     public void visit(Tree.DynamicModifier that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
         super.visit(that);
     }
 
@@ -51,7 +48,7 @@ public class UnsupportedVisitor extends Visitor {
         try {
             ExpressionTransformer.literalValue(that);
         } catch (ErroneousException e) {
-            that.addError(e.getMessage());
+            that.addError(e.getMessage(), Backend.Java);
         }
         super.visit(that);
     }
@@ -61,7 +58,7 @@ public class UnsupportedVisitor extends Visitor {
         try {
             ExpressionTransformer.literalValue(that);
         } catch (ErroneousException e) {
-            that.addError(e.getMessage());
+            that.addError(e.getMessage(), Backend.Java);
         }
         super.visit(that);
     }
@@ -71,7 +68,7 @@ public class UnsupportedVisitor extends Visitor {
             try {
                 ExpressionTransformer.literalValue(that);
             } catch (ErroneousException e) {
-                that.addError(e.getMessage());
+                that.addError(e.getMessage(), Backend.Java);
             }
         } else {
             super.visit(that);

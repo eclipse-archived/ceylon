@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import static com.redhat.ceylon.model.loader.model.OutputElement.*;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
@@ -72,7 +73,7 @@ public class AnnotationUtil {
                         }
                     }
                     sb.append(" to disambiguate");
-                    annotation.addUsageWarning(Warning.ambiguousAnnotation, sb.toString());
+                    annotation.addUsageWarning(Warning.ambiguousAnnotation, sb.toString(), Backend.Java);
                 }
                 return null;
             } else if (actualTargets.size() == 0) {
@@ -81,7 +82,7 @@ public class AnnotationUtil {
                             " annotation: @Target of @interface " + 
                             ((AnnotationProxyClass)annoClass).iface.getName() + 
                             " lists " + possibleTargets + 
-                            " but annotated element tranforms to " + outputs);
+                            " but annotated element tranforms to " + outputs, Backend.Java);
                 }
             }
         

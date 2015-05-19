@@ -137,7 +137,7 @@ public class MissingNativeVisitor extends Visitor {
         ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
         ok = ok && (classMirror != null);
         if(!ok)
-            node.addError("native implementation not found");
+            node.addError("native implementation not found", Backend.Java);
 
         return true;
     }
