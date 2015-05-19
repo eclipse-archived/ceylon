@@ -710,3 +710,21 @@ class Covariant<out T>(T t) {
     }
 }
 
+U foome<U>(U u, U v) 
+        given U satisfies Summable<U>{
+    @type:"Integer" foome(1,2);
+    @type:"String" foome("x", "y");
+    @error foome(1.0,"");
+    return u;
+}
+
+U barme<V,U>(U u, U v, V w) 
+        given U
+        given V satisfies List<U> {
+    @type:"Integer" barme(1,2, [1,2]);
+    @type:"String" barme("x", "y", []);
+    @type:"Float|Integer" barme(1.0,2.0, [1]);
+    @type:"Float|Character" barme(1.0,2.0, "");
+    @error barme(1.0,2.0, 7);
+    return u;
+}
