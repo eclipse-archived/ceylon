@@ -4127,7 +4127,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration atd = argType.getDeclaration();
             if (paramTypeDec instanceof TypeParameter &&
                     paramTypeDec.equals(tp)) {
-                if (tp0.isTypeConstructor()) {
+                if (tp.isTypeConstructor()) {
                     if (argType.isTypeConstructor()) {
                         return argType;
                     }
@@ -4166,15 +4166,21 @@ public class ExpressionVisitor extends Visitor {
                     visited.add(tp2);
                     List<ProducedType> list = 
                             new ArrayList<ProducedType>();
+                    //TODO: Is this really correct, should 
+                    //      we pass the variance of tp2, or
+                    //      just propagate findingUpperBounds?
+                    //      THERE IS NO TEST FOR THIS!
+                    boolean contra = 
+                            isEffectivelyContravariant(tp2);
                     for (ProducedType upperBound: 
                             tp2.getSatisfiedTypes()) {
                         addToUnionOrIntersection(
-                                findingUpperBounds, list,
+                                contra, list,
                                 inferTypeArg(tp, tp2, 
                                         upperBound, argType,
                                         covariant, contravariant,
-                                        findingUpperBounds,
-                                        visited, argNode));
+                                        contra, visited, 
+                                        argNode));
                         TypeDeclaration ubd = 
                                 upperBound.getDeclaration();
                         ProducedType supertype = 
@@ -4183,12 +4189,11 @@ public class ExpressionVisitor extends Visitor {
                             inferTypeArg(tp, tp2, 
                                     paramType, supertype,
                                     covariant, contravariant, 
-                                    findingUpperBounds,
-                                    list, visited, argNode);
+                                    contra, list, visited, 
+                                    argNode);
                         }
                     }
-                    return unionOrIntersection(
-                            findingUpperBounds, list);
+                    return unionOrIntersection(contra, list);
                 }
                 else {
                     return null;
