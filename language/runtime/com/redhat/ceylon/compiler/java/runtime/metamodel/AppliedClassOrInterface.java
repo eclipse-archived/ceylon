@@ -101,7 +101,10 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.model::Type<ceylon.language::Anything>>")
     public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
-        checkInit();
+        //checkInit();
+        if (typeArguments == null) {
+            this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
+        }
         return typeArguments;
     }
     
@@ -488,7 +491,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                                         @Ignore TypeDescriptor $reifiedSet, 
                                                                         String name) {
         
-        checkInit();
+        //checkInit();
         FreeValue value = declaration.findValue(name);
         if(value == null)
             return null;
