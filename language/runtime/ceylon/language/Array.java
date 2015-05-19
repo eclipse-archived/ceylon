@@ -5,7 +5,9 @@ import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.inter
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +19,6 @@ import ceylon.language.impl.BaseList;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -1946,22 +1947,32 @@ public final class Array<Element>
     }
     
     private enum ArrayType {
-        CeylonInteger,   // 0
-        JavaLong,        // 1 
-        CeylonFloat,     // 2
-        JavaDouble,      // 3
-        CeylonCharacter, // 4
-        JavaInteger,     // 5
-        CeylonByte,      // 6
-        JavaByte,        // 7
-        CeylonBoolean,   // 8
-        JavaBoolean,     // 9
-        JavaCharacter,   // 10
-        JavaShort,       // 11
-        JavaFloat,       // 12
-        CeylonString,    // 13
-        JavaString,      // 14
-        Other            // 15
+        CeylonInteger("longArray"),   // 0
+        JavaLong,                     // 1 
+        CeylonFloat("doubleArray"),   // 2
+        JavaDouble,                   // 3
+        CeylonCharacter("intArray"),  // 4
+        JavaInteger,                  // 5
+        CeylonByte("byteArray"),      // 6
+        JavaByte,                     // 7
+        CeylonBoolean("booleanArray"),// 8
+        JavaBoolean,                  // 9
+        JavaCharacter,                // 10
+        JavaShort,                    // 11
+        JavaFloat,                    // 12
+        CeylonString("stringArray"),  // 13
+        JavaString,                   // 14
+        Other("objectArray");         // 15
+        
+        /** The name of the field, apart from "array" which should be set for this element type */
+        final java.lang.String fieldName;
+        
+        ArrayType(java.lang.String fieldName) {
+            this.fieldName = fieldName;
+        }
+        ArrayType() {
+            this.fieldName = null;
+        }
     }
     
     private static ArrayType elementType(TypeDescriptor $reifiedElement) {
@@ -2069,6 +2080,21 @@ public final class Array<Element>
     }
     
     @Ignore
+    @Override
+    public void $serialize$(Deconstructor dtor) {
+        
+        ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
+        
+        dtor.putValue(Integer.$TypeDescriptor$, 
+                sizeAttribute, 
+                Integer.instance(getSize()));
+        
+        for (int ii = 0; ii < getSize(); ii++) {
+            dtor.<Element>putElement(this.$reifiedElement, ii, unsafeItem(ii));
+        }
+    }
+
+    @Ignore
     public Array($Serialization$ ignored, TypeDescriptor $reifiedElement) {
         super(ignored, $reifiedElement);
         this.$reifiedElement = $reifiedElement;
@@ -2085,73 +2111,57 @@ public final class Array<Element>
         
     }
     
-    @Ignore
     @Override
-    public void $serialize$(Deconstructor dtor) {
-        
-        ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
-        
-        dtor.putValue(Integer.$TypeDescriptor$, 
-                sizeAttribute, 
-                Integer.instance(getSize()));
-        
-        for (int ii = 0; ii < getSize(); ii++) {
-            dtor.<Element>putElement(this.$reifiedElement, ii, unsafeItem(ii));
-        }
+    public java.util.Collection<java.lang.Object> $references$() {
+        return Collections.<java.lang.Object>singletonList("ceylon.langage::Array.size");
     }
-
-    @Ignore
+    
     @Override
-    public void $deserialize$(Deconstructed dted) {
-        try {
-            //ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
-            //TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
-            //Util.setter(MethodHandles.lookup(), "$reifiedElement").invokeExact(this, reifiedElement);
-            
-            ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
-            Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
-            Util.setter(MethodHandles.lookup(), "size").invokeExact(this, Util.toInt(size.value));
-            java.lang.Object a = createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null);
-            
-            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, a);
-            switch (this.elementType) {
-            case Other:
-                Util.setter(MethodHandles.lookup(), "objectArray").invoke(this, a);
-                break;
-            case CeylonInteger:
-                Util.setter(MethodHandles.lookup(), "longArray").invoke(this, a);
-                break;
-            case CeylonFloat:
-                Util.setter(MethodHandles.lookup(), "doubleArray").invoke(this, a);
-                break;
-            case CeylonByte:
-                Util.setter(MethodHandles.lookup(), "byteArray").invoke(this, a);
-                break;
-            case CeylonCharacter:
-                Util.setter(MethodHandles.lookup(), "intArray").invoke(this, a);
-                break;
-            case CeylonBoolean:
-                Util.setter(MethodHandles.lookup(), "booleanArray").invoke(this, a);
-                break;
-            case CeylonString:
-                Util.setter(MethodHandles.lookup(), "stringArray").invoke(this, a);
-                break;
-            default:
-                // nothing to do
-            }
-            
-            for (int ii = 0; ii < size.value; ii++) {
-                java.lang.Object elementValOrRef = dted.<Element>getElement(this.$reifiedElement, ii);
-                Element element;
-                if (elementValOrRef instanceof ceylon.language.serialization.Reference) {
-                    element = (Element)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)elementValOrRef).$leakInstance$();
-                } else {
-                    element = (Element)elementValOrRef;
+    public void $set$(java.lang.Object reference, java.lang.Object instance) {
+        if (reference instanceof ceylon.language.String
+                && "ceylon.language::Array.size".equals(((ceylon.language.String)reference).value)) {
+            int size = toSize(((ceylon.language.Integer)instance).value);
+            try {
+                Lookup lookup = MethodHandles.lookup();
+                Util.setter(lookup, "size").invokeExact(this, size);
+                java.lang.Object array = createArrayWithElement($reifiedElement, size, null);
+                Util.setter(lookup, "array")
+                    .invokeExact(this, array);
+                if (elementType.fieldName != null) {
+                    MethodHandle fieldSetter = Util.setter(lookup, elementType.fieldName);
+                    switch (elementType) {
+                    case CeylonInteger:
+                        fieldSetter.invokeExact(this, (long[])array);
+                        break;
+                    case CeylonFloat:
+                        fieldSetter.invokeExact(this, (double[])array);
+                        break;
+                    case CeylonCharacter:
+                        fieldSetter.invokeExact(this, (int[])array);
+                        break;
+                    case CeylonByte:
+                        fieldSetter.invokeExact(this, (byte[])array);
+                        break;
+                    case CeylonBoolean:
+                        fieldSetter.invokeExact(this, (boolean[])array);
+                        break;
+                    case CeylonString:
+                        fieldSetter.invokeExact(this, (java.lang.String[])array);
+                        break;
+                    case Other:
+                        fieldSetter.invokeExact(this, (java.lang.Object[])array);
+                        break;
+                    default:
+                        fieldSetter.invoke(this, array);
+                        break;
+                    }
                 }
-                set(ii, element);
+            } catch (java.lang.Throwable t) {
+                rethrow_.rethrow(t);
             }
-        } catch (java.lang.Throwable e) {
-            rethrow_.rethrow(e);
+        } else {
+            ceylon.language.Integer index  = (ceylon.language.Integer)reference;
+            set(index.value, (Element)instance);
         }
     }
 }

@@ -481,8 +481,9 @@
                 <include name="ceylon/language/meta/modules_.java"/>
                 <exclude name="ceylon/language/serialization/serialization.ceylon"/>
                 <include name="ceylon/language/serialization/serialization_.java"/>
-                <exclude name="ceylon/language/serialization/deserialization.ceylon"/>
-                <include name="ceylon/language/serialization/deserialization_.java"/>
+                <include name="ceylon/language/serialization/PartialImpl.java"/>
+                <include name="ceylon/language/serialization/NativeDequeImpl.java"/>
+                <include name="ceylon/language/serialization/NativeMapImpl.java"/>
             </files>
         </ceylon-compile>
     </target>

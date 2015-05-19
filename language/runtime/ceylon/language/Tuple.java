@@ -6,9 +6,13 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTyp
 import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
 import static java.lang.System.arraycopy;
 
-import java.lang.invoke.MethodHandles;
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
+
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Deconstructor;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -29,13 +33,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
-
-import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.rethrow_;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Deconstructed;
-import ceylon.language.serialization.Deconstructor;
 
 @Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Object", 
@@ -721,19 +718,7 @@ public final class Tuple<Element, First extends Element,
     public int $getLength$() {
         return Util.toInt(array.length + rest.getSize());
     }
-
-    @Ignore
-    public Tuple($Serialization$ ignored, 
-            TypeDescriptor $reifiedElement,
-            TypeDescriptor $reifiedFirst, 
-            TypeDescriptor $reifiedRest) {
-//        super($reifiedElement);
-        this.$reifiedElement = $reifiedElement;
-        // hack: put the type descriptors into the array, so they're available
-        // in $deserialize$() for getting the values from the dted
-        this.array = new java.lang.Object[]{$reifiedFirst, $reifiedRest};
-        this.rest = null;
-    }
+    
     @Ignore
     @Override
     public void $serialize$(Deconstructor dtor) {
@@ -755,52 +740,26 @@ public final class Tuple<Element, First extends Element,
         dtor.putValue(reifiedRest, restAttribute, getRest());
     }
     @Ignore
+    public Tuple($Serialization$ ignored, 
+            TypeDescriptor $reifiedElement,
+            TypeDescriptor $reifiedFirst, 
+            TypeDescriptor $reifiedRest) {
+//        super($reifiedElement);
+        this.$reifiedElement = $reifiedElement;
+        // hack: put the type descriptors into the array, so they're available
+        // in $deserialize$() for getting the values from the dted
+        this.array = new java.lang.Object[]{$reifiedFirst, $reifiedRest};
+        this.rest = null;
+    }
+    @Ignore
     @Override
-    public void $deserialize$(Deconstructed deconstructed) {
-        // Don't call super.$deserialize$() since our runtime super class is 
-        // an implementation detail
-        try {
-            // hack: recover the reified type arguments stored in the array
-            TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
-            TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
-            
-            ValueDeclaration firstAttribute = (ValueDeclaration)
-                    ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
-            ValueDeclaration restAttribute = (ValueDeclaration)
-                    ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
-            
-            java.lang.Object firstValOrRef = deconstructed.<First>getValue(reifiedFirst, firstAttribute);
-            java.lang.Object restValOrRef = deconstructed.<Rest>getValue(reifiedRest, restAttribute);
-            
-            First first;
-            if (firstValOrRef instanceof ceylon.language.serialization.Reference) {
-                first = (First)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)firstValOrRef).$leakInstance$();
-            } else {
-                first = (First)firstValOrRef;
-            }
-            
-            Sequential<? extends Element> rest1;
-            if (restValOrRef instanceof ceylon.language.serialization.Reference) {
-                if (restValOrRef instanceof ceylon.language.serialization.RealizableReference) {
-                    ((ceylon.language.serialization.RealizableReference)restValOrRef).reconstruct();
-                } else {
-                    throw new AssertionError("cannot deserialize tuple because tail hasn't been deserialized");
-                }
-                rest1 = (Sequential<? extends Element>)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)restValOrRef).$leakInstance$();
-            } else {
-                rest1 = (Sequential<? extends Element>)restValOrRef;
-            }
-            
-            Rest rest2 = (Rest)makeRest(rest1);
-            java.lang.Object[] array = makeArray(first, rest1);
-            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, array);
-            Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, rest2);
-        } catch (java.lang.Throwable t) {
-            rethrow_.rethrow(t);
-        }
-        
+    public java.util.Collection<java.lang.Object> $references$() {
+        // could put the elements with int indexes and the rest as a String!
+        return null;
+    }
+    @Ignore
+    @Override
+    public void $set$(java.lang.Object indexOrAttr, java.lang.Object ref) {
     }
     
     
