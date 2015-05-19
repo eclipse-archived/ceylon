@@ -3507,6 +3507,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, base, 
                                 mte, null);
+                tas.setTypeModels(typeArgs);
                 visitBaseMemberExpression(bme, base, 
                         typeArgs, tas);
             }
@@ -3527,6 +3528,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, mte, qt);
+                tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, member, 
                             typeArgs, tas);
