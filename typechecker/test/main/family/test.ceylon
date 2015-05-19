@@ -43,7 +43,7 @@ void testGraph() {
     
     OnOffGraph.Edge e2 = method2(OnOffGraph());
 
-    Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
+    Edge method3<out ActualGraph, Node, Edge>(ActualGraph g) 
             given ActualGraph satisfies Graph<Node,Edge> 
             @error given Node satisfies ActualGraph.Node 
             @error given Edge satisfies ActualGraph.Edge {

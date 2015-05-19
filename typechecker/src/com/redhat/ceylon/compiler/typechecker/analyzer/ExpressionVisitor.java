@@ -3757,15 +3757,42 @@ public class ExpressionVisitor extends Visitor {
             return true;
         }
         else {
+            boolean occursCovariantly = false;
+            boolean occursContravariantly = false;
+            Declaration declaration = tp.getDeclaration();
+            Generic generic = (Generic) declaration;
+            List<TypeParameter> typeParameters = 
+                    generic.getTypeParameters();
+            for (TypeParameter otp: typeParameters) {
+                for (ProducedType bound: 
+                        otp.getSatisfiedTypes()) {
+                    if (!otp.equals(tp)) {
+                        occursCovariantly = 
+                                occursCovariantly || 
+                                bound.occursContravariantly(tp);
+                        occursContravariantly =
+                                occursContravariantly ||
+                                bound.occursCovariantly(tp);
+                    }
+                }
+            }
             ProducedType fullType = 
-                    tp.getDeclaration()
+                    declaration
                         .getReference()
                         .getFullType();
             ProducedType returnType = 
                     unit.getCallableReturnType(fullType);
-            return returnType!=null &&
-                    returnType.occursContravariantly(tp) &&
-                    !returnType.occursCovariantly(tp);
+            if (returnType!=null) {
+                occursCovariantly = 
+                        occursCovariantly || 
+                        returnType.occursCovariantly(tp);
+                occursContravariantly =
+                        occursContravariantly ||
+                        returnType.occursContravariantly(tp);
+            }
+            return returnType!=null && 
+                    occursContravariantly &&
+                    !occursCovariantly;
         }
     }
 
@@ -8886,7 +8913,9 @@ public class ExpressionVisitor extends Visitor {
                                             + "' of declaration '" + dec.getName(unit)
                                             + "' is not assignable to upper bound '" 
                                             + bound.getProducedTypeName(unit)
-                                            + "' of '" + param.getName() + "'");
+                                            + "' of effectively " + 
+                                            (isEffectivelyContravariant(param)?"contra":"co") + 
+                                            "variant '" + param.getName() + "'");
                                 }
                             }
                             return false;
