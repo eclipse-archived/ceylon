@@ -3101,7 +3101,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType template, ProducedType type, 
             boolean findingUpperBounds,
             Node node) {
-        return inferTypeArg(tp, tp, 
+        return inferTypeArg(tp, 
                 template, type, 
                 true, false,
                 findingUpperBounds, 
@@ -4111,7 +4111,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType inferTypeArg(TypeParameter tp,
-            TypeParameter tp0,
             ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             boolean findingUpperBounds,
@@ -4137,10 +4136,11 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (findingUpperBounds && covariant ||
                         !findingUpperBounds && contravariant) {
-                    //ignore occurrences of covariant type parameters
-                    //in contravariant locations in the parameter list,
-                    //and occurrences of contravariant type parameters
-                    //in covariant locations in the parameter list,
+                    //ignore occurrences of covariant type 
+                    //parameters in contravariant locations 
+                    //in the parameter list, and occurrences 
+                    //of contravariant type parameters in 
+                    //covariant locations in the list
                     return null;
                 }
                 else if (argType.isUnknown()) {
@@ -4166,34 +4166,19 @@ public class ExpressionVisitor extends Visitor {
                     visited.add(tp2);
                     List<ProducedType> list = 
                             new ArrayList<ProducedType>();
-                    //TODO: Is this really correct, should 
-                    //      we pass the variance of tp2, or
-                    //      just propagate findingUpperBounds?
-                    //      THERE IS NO TEST FOR THIS!
-                    boolean contra = 
-                            isEffectivelyContravariant(tp2);
                     for (ProducedType upperBound: 
                             tp2.getSatisfiedTypes()) {
+                        //recurse to the upper bounds
                         addToUnionOrIntersection(
-                                contra, list,
-                                inferTypeArg(tp, tp2, 
+                                findingUpperBounds, list,
+                                inferTypeArg(tp, 
                                         upperBound, argType,
                                         covariant, contravariant,
-                                        contra, visited, 
-                                        argNode));
-                        TypeDeclaration ubd = 
-                                upperBound.getDeclaration();
-                        ProducedType supertype = 
-                                argType.getSupertype(ubd);
-                        if (supertype!=null) {
-                            inferTypeArg(tp, tp2, 
-                                    paramType, supertype,
-                                    covariant, contravariant, 
-                                    contra, list, visited, 
-                                    argNode);
-                        }
+                                        findingUpperBounds, 
+                                        visited, argNode));
                     }
-                    return unionOrIntersection(contra, list);
+                    return unionOrIntersection(
+                            findingUpperBounds, list);
                 }
                 else {
                     return null;
@@ -4205,11 +4190,12 @@ public class ExpressionVisitor extends Visitor {
                 //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
                 //types. 
-                //TODO: This is all a bit adhoc. The problem is that
-                //      when a parameter type involves a union of type
-                //      parameters, it in theory imposes a compound 
-                //      constraint upon the type parameters, but our
-                //      algorithm doesn't know how to deal with compound
+                //TODO: This is all a bit adhoc. The problem 
+                //      is that when a parameter type involves 
+                //      a union of type parameters, it in theory 
+                //      imposes a compound constraint upon the 
+                //      type parameters, but our algorithm 
+                //      doesn't know how to deal with compound
                 //      constraints
                 /*ProducedType typeParamType = null;
                 boolean found = false;
@@ -4236,8 +4222,10 @@ public class ExpressionVisitor extends Visitor {
                             argType.getTypeArguments();
                     for (ProducedType act: 
                             atd.getCaseTypes()) {
-                        //some element of the argument union is already a subtype
-                        //of the parameter union, so throw it away from both unions
+                        //some element of the argument union 
+                        //is already a subtype of the 
+                        //parameter union, so throw it away 
+                        //from both unions
                         if (!act.involvesDeclaration(tp) && //in a recursive generic function, T can get assigned to T
                                 act.substitute(args)
                                     .isSubtypeOf(paramType)) {
@@ -4265,7 +4253,7 @@ public class ExpressionVisitor extends Visitor {
                             ptd.getCaseTypes()) {
                         addToUnionOrIntersection(
                                 findingUpperBounds, list, 
-                                inferTypeArg(tp, tp, 
+                                inferTypeArg(tp, 
                                         ct.substitute(args), apt, 
                                         covariant, contravariant,
                                         findingUpperBounds,
@@ -4275,7 +4263,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     addToUnionOrIntersection(
                             findingUpperBounds, list, 
-                            inferTypeArg(tp, tp, 
+                            inferTypeArg(tp, 
                                     pt, apt, 
                                     covariant, contravariant,
                                     findingUpperBounds,
@@ -4299,9 +4287,10 @@ public class ExpressionVisitor extends Visitor {
                         new ArrayList<ProducedType>();
                 for (ProducedType ct: 
                         paramTypeDec.getSatisfiedTypes()) {
+                    //recurse to intersected types
                     addToUnionOrIntersection(
                             findingUpperBounds, list, 
-                            inferTypeArg(tp, tp, 
+                            inferTypeArg(tp, 
                                     ct.substitute(paramTypeArgs), 
                                     argType, 
                                     covariant, contravariant,
@@ -4316,10 +4305,11 @@ public class ExpressionVisitor extends Visitor {
                         new ArrayList<ProducedType>();
                 for (ProducedType ct: 
                         atd.getCaseTypes()) {
+                    //recurse to union types
                     addToUnion(list, 
-                            inferTypeArg(tp, tp, 
+                            inferTypeArg(tp, 
                             paramType, 
-                            ct.substitute(paramTypeArgs), 
+                            ct.substitute(paramTypeArgs),
                             covariant, contravariant,
                             findingUpperBounds,
                             visited, argNode));
@@ -4329,15 +4319,17 @@ public class ExpressionVisitor extends Visitor {
             else if (atd instanceof IntersectionType) {
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>();
-                for (ProducedType ct: 
+                for (ProducedType st: 
                         atd.getSatisfiedTypes()) {
+                    //recurse to intersected types
                     addToIntersection(list, 
-                            inferTypeArg(tp, tp,
-                            paramType, 
-                            ct.substitute(paramTypeArgs), 
-                            covariant, contravariant,
-                            findingUpperBounds,
-                            visited, argNode), unit);
+                            inferTypeArg(tp,
+                                    paramType, 
+                                    st.substitute(paramTypeArgs), 
+                                    covariant, contravariant,
+                                    findingUpperBounds,
+                                    visited, argNode), 
+                            unit);
                 }
                 return intersection(list);
             }
@@ -4352,15 +4344,16 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType sqt = 
                             supertype.getQualifyingType();
                     if (pqt!=null && sqt!=null) {
+                        //recurse to qualifying types
                         addToUnionOrIntersection(
                                 findingUpperBounds, list, 
-                                inferTypeArg(tp, tp, 
+                                inferTypeArg(tp, 
                                         pqt, sqt, 
                                         covariant, contravariant,
                                         findingUpperBounds,
                                         visited, argNode));
                     }
-                    inferTypeArg(tp, tp, 
+                    inferTypeArg(tp, 
                             paramType, supertype, 
                             covariant, contravariant,
                             findingUpperBounds,
@@ -4379,7 +4372,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void inferTypeArg(TypeParameter tp, TypeParameter tp0,
+    private void inferTypeArg(TypeParameter tp,
             ProducedType paramType, ProducedType supertype, 
             boolean covariant, boolean contravariant,
             boolean findingUpperBounds,
@@ -4429,7 +4422,7 @@ public class ExpressionVisitor extends Visitor {
             }
             addToUnionOrIntersection(
                     findingUpperBounds, list, 
-                    inferTypeArg(tp, tp0,
+                    inferTypeArg(tp,
                             paramTypeArg, argTypeArg, 
                             co, contra,
                             findingUpperBounds,

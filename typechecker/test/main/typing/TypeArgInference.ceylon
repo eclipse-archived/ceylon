@@ -314,3 +314,28 @@ void testAnotherHigherOrderFun() {
     @error Integer result3
             = anotherHigherOrderFun(42, void(b){});
 }
+
+class BlahBlah<X,Y>(Y x, Y y) 
+        given Y satisfies List<X> {}
+void testBlahBlah() {
+    List<String> strings1 = ["", ""];
+    List<Integer> ints1 = [1, 2, 3];
+    @type:"BlahBlah<String|Integer,List<String>|List<Integer>>" 
+    BlahBlah(strings1, ints1);
+    
+    Sequence<String> strings2 = ["", ""];
+    Sequence<Integer> ints2 = [1, 2, 3];
+    @type:"BlahBlah<String|Integer,Sequence<String>|Sequence<Integer>>" 
+    BlahBlah(strings2, ints2);
+}
+
+class BlahBlahBlah<in X,in Y>(Anything(Y,Y) x, Anything(Y,Y) y) 
+        given X satisfies Object
+        given Y satisfies X {}
+void testBlahBlahBlah() {
+    interface String {} interface Integer {} interface Float {}
+    void strings(String x, Integer y) {}
+    void ints(Float x, Float y) {}
+    @type:"BlahBlahBlah<String&Float|Integer&Float,String&Integer&Float>" 
+    BlahBlahBlah(strings, ints);
+}
