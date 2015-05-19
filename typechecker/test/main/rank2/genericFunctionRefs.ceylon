@@ -17,6 +17,8 @@ class Outer<X>(X x) {
 
 shared void run() {
     <T> => [Integer,T](Integer,T) fun = f;
+    @type:"<T> => Callable<Tuple<Integer|T,Integer,Tuple<T,T,Empty>>,Tuple<Integer|T,Integer,Tuple<T,T,Empty>>>" 
+    value foobar = fun;
     <T> => [Object,T](Nothing,T) funk = f;
     @error <T> => [Float,T](Integer,T) fun0 = f;
     @error <T> => [Integer,T](Float,T) fun1 = f;
@@ -141,4 +143,38 @@ void callThem() {
     Singleton<String> s1 = sing("");
     Singleton<String> s2 = anon("");
     Singleton<String> s3 = (<E>(E e) => Singleton(e))("");
+}
+
+void refPassing() {
+    @type:"Boolean" function always<T>(T t) => true;
+    @type:"<T> => Callable<Boolean,Tuple<T,T,Empty>>" 
+    value all = always;
+    @type:"Boolean" value bool1 = "hello world".any(always);
+    @type:"Boolean" value bool2 = "hello world".any(all);
+    @type:"<Value> given Value satisfies Summable<Value> => Callable<Value,Tuple<Value,Value,Tuple<Value,Value,Empty>>>" 
+    value pl = plus;
+    Integer sum1 = [1,2,3].fold(0)(plus);
+    Integer sum2 = [1,2,3].fold(0)(pl);
+    @type:"<Value> => Callable<Value,Tuple<Value,Value,Empty>>" 
+    value id = identity;
+    @type:"Iterable<Character,Null>" 
+    value chars1 = "hello world".map(identity);
+    @type:"Iterable<Character,Null>" 
+    value chars2 = "hello world".map(id);
+}
+
+void moreRefPassing() {
+    value pl = plus;
+    value sing = Singleton;
+    class Holder() {
+        shared <V> given V satisfies Summable<V> => V(V,V) 
+        pl = plus;
+        shared <E> => Singleton<E>(E) 
+        sing = Singleton;
+    }
+    Integer sum1 = [1,2,3].fold(0)(pl);
+    {Singleton<Integer|String>*} it1 = [1,2,""].map(sing);
+    
+    Integer sum2 = [1,2,3].fold(0)(Holder().pl);
+    {Singleton<Integer|String>*} it2 = [1,2,""].map(Holder().sing);
 }
