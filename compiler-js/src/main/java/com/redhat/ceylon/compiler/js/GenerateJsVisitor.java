@@ -385,20 +385,22 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.ParameterList that) {
         out("(");
         boolean first=true;
-        boolean ptypes = false;
+        String ptypes = null;
         //Check if this is the first parameter list
         if (that.getScope() instanceof Method && that.getModel().isFirst()) {
-            ptypes = ((Method)that.getScope()).getTypeParameters() != null && 
-                    !((Method)that.getScope()).getTypeParameters().isEmpty();
+            if (((Method)that.getScope()).getTypeParameters() != null &&
+                    !((Method)that.getScope()).getTypeParameters().isEmpty()) {
+                ptypes = names.typeArgsParamName((Method)that.getScope());
+            }
         }
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
             out(names.name(param.getParameterModel()));
             first = false;
         }
-        if (ptypes) {
+        if (ptypes != null) {
             if (!first) out(",");
-            out("$$$mptypes");
+            out(ptypes);
         }
         out(")");
     }
@@ -3227,7 +3229,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
             Declaration d = Util.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
             if (d != null && d instanceof Method && !((Method)d).getTypeParameters().isEmpty()) {
-                out(",$$$mptypes");
+                out(",", names.typeArgsParamName((Method)d));
             }
         }
         out(")");

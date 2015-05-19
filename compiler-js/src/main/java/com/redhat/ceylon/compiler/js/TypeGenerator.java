@@ -193,7 +193,8 @@ public class TypeGenerator {
         }
         callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes,",
+            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
+                    ",", gen.getNames().typeArgsParamName((Method)d.getContainer()), ",",
                     gen.getNames().name(d), ")");
             gen.endLine(true);
         }
@@ -337,7 +338,8 @@ public class TypeGenerator {
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method
                 && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$$mptypes)");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",",
+                    gen.getNames().typeArgsParamName((Method)d.getContainer()), ")");
             gen.endLine(true);
         }
         if (plist != null) {

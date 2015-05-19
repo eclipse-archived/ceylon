@@ -339,7 +339,8 @@ public class TypeUtils {
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
-                gen.out("$$$mptypes.", tp.getName(), "$", tp.getDeclaration().getName());
+                gen.out(gen.getNames().typeArgsParamName((Method)tp.getContainer()), ".",
+                        tp.getName(), "$", tp.getDeclaration().getName());
             } else {
                 if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
                     if (tp.getContainer() == ((Tree.StaticMemberOrTypeExpression)node).getDeclaration()) {

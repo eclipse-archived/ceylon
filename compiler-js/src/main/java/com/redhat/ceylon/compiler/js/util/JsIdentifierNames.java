@@ -346,6 +346,11 @@ public class JsIdentifierNames {
         return id;
     }
 
+    /** The name for the argument that holds the type parameters of a method. */
+    public String typeArgsParamName(Method m) {
+        return "$$$mptypes";
+    }
+
     /** Replace any characters considered invalid in JS with some regular
      * mark specifying the Unicode codepoint. */
     public static String sanitize(String name) {
