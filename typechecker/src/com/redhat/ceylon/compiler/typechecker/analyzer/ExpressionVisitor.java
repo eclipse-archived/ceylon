@@ -41,7 +41,6 @@ import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
@@ -2889,7 +2888,8 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypes(ProducedReference pr, 
             Parameter param, Tree.Expression e, 
             boolean variadic) {
-        if (param.getModel()==null) return;
+        MethodOrValue model = param.getModel();
+        if (model==null) return;
         if (e!=null) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
@@ -2898,7 +2898,7 @@ public class ExpressionVisitor extends Visitor {
             if (term instanceof Tree.FunctionArgument) {
                 Tree.FunctionArgument anon = 
                         (Tree.FunctionArgument) term;
-                if (param.getModel() instanceof Functional) {
+                if (model instanceof Functional) {
                     //NOTE: this branch is basically redundant
                     //      and could be removed
                     inferParameterTypesFromCallableParameter(
@@ -2989,37 +2989,11 @@ public class ExpressionVisitor extends Visitor {
                                     ppls.get(0)
                                         .getParameters();
                             for (TypeParameter tp: tps) {
-                                ProducedType it;
-                                if (tp.isCovariant()) {
-                                    it = inferFunctionRefTypeArg(
-                                            smte, generic,
-                                            param, pd, arg, 
-                                            apl, ppl, tp,
-                                            false);
-                                }
-                                else if (tp.isContravariant()) {
-                                    it = inferFunctionRefTypeArg(
-                                            smte, generic,
-                                            param, pd, arg, 
-                                            apl, ppl, tp,
-                                            true);
-                                }
-                                else {
-                                    ProducedType lb = 
-                                            inferFunctionRefTypeArg(
-                                                    smte, generic,
-                                                    param, pd, arg, 
-                                                    apl, ppl, tp,
-                                                    false);
-                                    ProducedType ub = 
-                                            inferFunctionRefTypeArg(
-                                                    smte, generic,
-                                                    param, pd, arg, 
-                                                    apl, ppl, tp,
-                                                    true);
-                                    
-                                    it = pickBound(lb, ub);
-                                }
+                                ProducedType it = inferFunctionRefTypeArg(
+                                        smte, generic,
+                                        param, pd, arg, 
+                                        apl, ppl, tp,
+                                        isEffectivelyContravariant(tp));
                                 inferredTypes.add(it);
                             }
                             return inferredTypes;
@@ -3051,32 +3025,11 @@ public class ExpressionVisitor extends Visitor {
                                 new ArrayList<ProducedType>();
                         for (TypeParameter tp: 
                                 generic.getTypeParameters()) {
-                            ProducedType it;
-                            if (tp.isCovariant()) {
-                                it = inferFunctionRefTypeArg(
-                                        smte, generic, pd, 
-                                        template, type, tp, 
-                                        false);
-                            }
-                            else if (tp.isContravariant()) {
-                                it = inferFunctionRefTypeArg(
-                                        smte, generic, pd, 
-                                        template, type, tp, 
-                                        true);
-                            }
-                            else {
-                                ProducedType lb = 
-                                        inferFunctionRefTypeArg(
-                                                smte, generic, pd, 
-                                                template, type, tp, 
-                                                false);
-                                ProducedType ub = 
-                                        inferFunctionRefTypeArg(
-                                                smte, generic, pd, 
-                                                template, type, tp, 
-                                                false);
-                                it = pickBound(lb, ub);
-                            }
+                            ProducedType it = 
+                                    inferFunctionRefTypeArg(
+                                            smte, generic, pd, 
+                                            template, type, tp, 
+                                            isEffectivelyContravariant(tp));
                             inferredTypes.add(it);
                         }
                         return inferredTypes;
@@ -3098,7 +3051,7 @@ public class ExpressionVisitor extends Visitor {
                         template, type,
                         findingUpperBounds, smte);
         if (isTypeUnknown(it) ||
-                involvesTypeParameters(generic, it) ||
+                it.involvesTypeParameters(generic) ||
                 involvesTypeParams(pd, it)) {
             return nothingType();
         }
@@ -3134,7 +3087,7 @@ public class ExpressionVisitor extends Visitor {
                             findingUpperBounds, 
                             smte);
             if (!(isTypeUnknown(it) ||
-                    involvesTypeParameters(generic, it) ||
+                    it.involvesTypeParameters(generic) ||
                     involvesTypeParams(pd, it))) {
                 addToUnionOrIntersection(findingUpperBounds, 
                         list, it);
@@ -3198,7 +3151,7 @@ public class ExpressionVisitor extends Visitor {
             (Declaration dec, ProducedType type) {
         if (dec instanceof Generic) {
             Generic g = (Generic) dec;
-            return involvesTypeParameters(g, type);
+            return type.involvesTypeParameters(g);
         }
         else {
             return false;
@@ -3218,27 +3171,18 @@ public class ExpressionVisitor extends Visitor {
             Declaration declaration = param==null ? 
                     null : param.getDeclaration();
             for (int j=0; 
-                    j<types.size() && j<aps.size(); 
+                    j<types.size() && 
+                    j<aps.size(); 
                     j++) {
-                ProducedType type = types.get(j);
-                if (isTypeUnknown(type) ||
-                        involvesTypeParams(declaration, type)) {
-                    type = unknownType();
-                }
                 Tree.Parameter ap = aps.get(j);
                 if (ap instanceof Tree.InitializerParameter) {
                     Parameter parameter = 
                             ap.getParameterModel();
                     if (parameter.getModel()==null) {
-                        Value model = new Value();
-                        model.setUnit(unit);
-                        model.setType(type);
-                        model.setName(parameter.getName());
-                        parameter.setModel(model);
-                        model.setInitializerParameter(parameter);
-                        Method fun = anon.getDeclarationModel();
-                        model.setContainer(fun);
-                        fun.addMember(model);
+                        createInferredParameter(anon,
+                                declaration, ap,
+                                parameter,
+                                types.get(j));
                     }
                 }
             }
@@ -3267,27 +3211,46 @@ public class ExpressionVisitor extends Visitor {
                     Parameter parameter = 
                             ap.getParameterModel();
                     if (parameter.getModel()==null) {
-                        ProducedType t = 
+                        createInferredParameter(anon,
+                                declaration, ap,
+                                parameter,
                                 pr.getTypedParameter(fp)
-                                    .getType();
-                        if (isTypeUnknown(t) ||
-                                involvesTypeParams(declaration, t)) {
-                            t = unknownType();
-                        }
-                        Value model = new Value();
-                        model.setUnit(unit);
-                        model.setType(t);
-                        model.setName(parameter.getName());
-                        model.setInferred(true);
-                        parameter.setModel(model);
-                        model.setInitializerParameter(parameter);
-                        Method m = anon.getDeclarationModel();
-                        model.setContainer(m);
-                        m.addMember(model);
+                                    .getType());
                     }
                 }
             }
         }
+    }
+
+    private void createInferredParameter(Tree.FunctionArgument anon,
+            Declaration declaration, Tree.Parameter ap,
+            Parameter parameter, ProducedType type) {
+        if (isTypeUnknown(type)) {
+            type = unknownType();
+            if (!dynamic) {
+                ap.addError("could not infer parameter type: " +
+                        parameter.getName() + 
+                        " would have unknown type");
+            }
+        }
+        else if (involvesTypeParams(declaration, type)) {
+            ap.addError("could not infer parameter type: " +
+                    parameter.getName() + 
+                    " would have type '" + 
+                    type.getProducedTypeName(unit) + 
+                    "' involving type parameters");
+            type = unknownType();
+        }
+        Value model = new Value();
+        model.setUnit(unit);
+        model.setType(type);
+        model.setName(parameter.getName());
+        model.setInferred(true);
+        parameter.setModel(model);
+        model.setInitializerParameter(parameter);
+        Method m = anon.getDeclarationModel();
+        model.setContainer(m);
+        m.addMember(model);
     }
     
     private void visitInvocationPositionalArgs(
@@ -3624,48 +3587,15 @@ public class ExpressionVisitor extends Visitor {
             for (TypeParameter tp: typeParameters) {
                 List<ProducedType> paramTypes = 
                         unit.getCallableArgumentTypes(type);
-                ProducedType it;
-                if (tp.isCovariant()) {
-                    List<ProducedType> inferredTypes = 
-                            new ArrayList<ProducedType>();
-                    inferTypeArgumentFromPositionalArgs(tp, 
-                            paramTypes, receiverType, 
-                            pal, false,
-                            inferredTypes);
-                    it = formUnionOrIntersection(
-                            false, inferredTypes);
-                }
-                else if (tp.isContravariant()) {
-                    List<ProducedType> inferredTypes = 
-                            new ArrayList<ProducedType>();
-                    inferTypeArgumentFromPositionalArgs(tp, 
-                            paramTypes, receiverType, 
-                            pal, true,
-                            inferredTypes);
-                    it = formUnionOrIntersection(
-                            true, inferredTypes);
-                }
-                else {
-                    List<ProducedType> itlb = 
-                            new ArrayList<ProducedType>();
-                    List<ProducedType> itub = 
-                            new ArrayList<ProducedType>();
-                    inferTypeArgumentFromPositionalArgs(tp, 
-                            paramTypes, receiverType, 
-                            pal, false,
-                            itlb);
-                    inferTypeArgumentFromPositionalArgs(tp, 
-                            paramTypes, receiverType, 
-                            pal, true,
-                            itub);
-                    ProducedType lb =
-                            formUnionOrIntersection(
-                                    false, itlb);
-                    ProducedType ub =
-                            formUnionOrIntersection(
-                                    true, itub);
-                    it = pickBound(lb, ub);
-                }
+                boolean contra =
+                        isEffectivelyContravariant(tp);
+                List<ProducedType> inferredTypes = 
+                        new ArrayList<ProducedType>();
+                inferTypeArgumentFromPositionalArgs(tp, 
+                        paramTypes, receiverType, 
+                        pal, contra, inferredTypes);
+                ProducedType it = formUnionOrIntersection(
+                        contra, inferredTypes);
                 typeArguments.add(it);
             }
             return typeArguments;
@@ -3702,19 +3632,6 @@ public class ExpressionVisitor extends Visitor {
         return NO_TYPE_ARGS;
     }
 
-    private static ProducedType pickBound
-            (ProducedType lb, ProducedType ub) {
-        if (ub==null || ub.isAnything()) {
-            return lb;
-        }
-        else if (lb==null || lb.isNothing()) {
-            return ub;
-        }
-        else {
-            return lb;
-        }
-    }
-
     private List<ProducedType> getInferredTypeArgsForReference(
             Tree.InvocationExpression that, Generic generic,
             Declaration declaration) {
@@ -3742,24 +3659,9 @@ public class ExpressionVisitor extends Visitor {
                         pt = unknownType();
                     }
                     ParameterList pl = parameters.get(0);
-                    ProducedType it;
-                    if (tp.isCovariant()) {
-                        it = inferTypeArgument(that, 
-                                pt, tp, pl, false);
-                    }
-                    else if (tp.isContravariant()) {
-                        it = inferTypeArgument(that, 
-                                pt, tp, pl, true);
-                    }
-                    else {
-                        ProducedType lb = 
-                                inferTypeArgument(that, 
-                                        pt, tp, pl, false);
-                        ProducedType ub = 
-                                inferTypeArgument(that, 
-                                        pt, tp, pl, true);
-                        it = pickBound(lb, ub);
-                    }
+                    ProducedType it = 
+                            inferTypeArgument(that, pt, tp, pl, 
+                                    isEffectivelyContravariant(tp));
                     if (it==null || it.containsUnknowns()) {
                         that.addError("could not infer type argument from given arguments: type parameter '" + 
                                 tp.getName() + "' could not be inferred");
@@ -3796,24 +3698,10 @@ public class ExpressionVisitor extends Visitor {
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: 
                             generic.getTypeParameters()) {
-                        ProducedType it; 
-                        if (tp.isCovariant()) {
-                            it = inferTypeArg(tp, tt, at,
-                                    false, arg);
-                        }
-                        else if (tp.isContravariant()) {
-                            it = inferTypeArg(tp, tt, at,
-                                    true, arg);
-                        }
-                        else {
-                            ProducedType lb = 
-                                    inferTypeArg(tp, tt, at,
-                                            false, arg);
-                            ProducedType ub = 
-                                    inferTypeArg(tp, tt, at,
-                                            true, arg);
-                            it = pickBound(lb, ub);
-                        }
+                        ProducedType it = 
+                                inferTypeArg(tp, tt, at,
+                                        isEffectivelyContravariant(tp), 
+                                        arg);
                         if (it==null || it.containsUnknowns()) {
                             that.addError("could not infer type argument from given arguments: type parameter '" + 
                                     tp.getName() + "' could not be inferred");
@@ -3828,6 +3716,26 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         return NO_TYPE_ARGS;
+    }
+
+    private boolean isEffectivelyContravariant(TypeParameter tp) {
+        if (tp.isCovariant()) {
+            return false;
+        }
+        else if (tp.isContravariant()) {
+            return true;
+        }
+        else {
+            ProducedType fullType = 
+                    tp.getDeclaration()
+                        .getReference()
+                        .getFullType();
+            ProducedType returnType = 
+                    unit.getCallableReturnType(fullType);
+            return returnType!=null &&
+                    returnType.occursContravariantly(tp) &&
+                    !returnType.occursCovariantly(tp);
+        }
     }
 
     private ProducedType constrainInferredType(TypeParameter tp, 
@@ -3847,7 +3755,7 @@ public class ExpressionVisitor extends Visitor {
             //TODO: substitute in the other inferred type args
             //      of the invocation
             //TODO: st.getProducedType(receiver, dec, typeArgs);
-            if (!st.containsTypeParameters()) {
+            if (!st.involvesTypeParameters()) {
                 addToIntersection(list, st, unit);
             }
         }
@@ -4236,6 +4144,7 @@ public class ExpressionVisitor extends Visitor {
                     return null;
                 }
                 else if (argType.isUnknown()) {
+                    //TODO: is this error really necessary now!?
                     if (argNode.getErrors().isEmpty()) {
                         argNode.addError("argument of unknown type assigned to inferred type parameter: '" + 
                                 tp.getName() + "' of '" + 
@@ -4324,7 +4233,7 @@ public class ExpressionVisitor extends Visitor {
                             atd.getCaseTypes()) {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
-                        if (!act.containsDeclaration(tp) && //in a recursive generic function, T can get assigned to T
+                        if (!act.involvesDeclaration(tp) && //in a recursive generic function, T can get assigned to T
                                 act.substitute(args)
                                     .isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);

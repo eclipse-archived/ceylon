@@ -22,7 +22,7 @@ Fun<String> toString<Fun>
             (Functor<Fun> functor)
             (Fun<Object> inFun) 
         given Fun<Element> 
-        => functor.map(Object.string)(inFun);
+        => functor.map<Object,String>(Object.string)(inFun);
 
 
 void testFunctors() {

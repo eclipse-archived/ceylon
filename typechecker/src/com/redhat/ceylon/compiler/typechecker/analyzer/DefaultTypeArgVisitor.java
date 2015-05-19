@@ -21,7 +21,7 @@ public class DefaultTypeArgVisitor extends Visitor {
             ProducedType dta = tpd.getDefaultTypeArgument();
             if (dta!=null) {
                 try {
-                    if (dta.containsDeclaration(tpd.getDeclaration())) {
+                    if (dta.involvesDeclaration(tpd.getDeclaration())) {
                         tpd.setDefaultTypeArgument(null);
                     }
                 }

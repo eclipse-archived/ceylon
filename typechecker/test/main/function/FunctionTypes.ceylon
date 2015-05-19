@@ -203,7 +203,7 @@ void method() {
     function str(Float f) => f.string;
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
-    @type:"Entry<Float,String>" generic(str,nothing);
+    @type:"Entry<Nothing,String>" generic(str,nothing);
     @type:"Entry<String,Object>" generic((Object obj) => obj, () => "hello");
     @type:"Entry<String,String>" generic((Object obj) => obj.string, () => "hello");
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");

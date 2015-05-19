@@ -140,10 +140,10 @@ class TypeArgInference() {
     higherAnything { void f(String x) { print(x); } };
 
     X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
-    @type:"Integer|String" higher((String? y) => 1);
-    @type:"Float|String" higher { function f(String? y) => 1.0; };
+    @type:"Integer" higher((String? y) => 1);
+    @type:"Float" higher { function f(String? y) => 1.0; };
     function argfun(Integer? x) => x?.float;
-    @type:"Null|Float|Integer" higher(argfun);
+    @type:"Null|Float" higher(argfun);
     
     @type:"Iterable<Integer,Nothing>" { "hello", "world" }.map((String s) => s.size);
     @type:"Iterable<String,Null>" { "hello", "world" }.filter((String s) => !s.empty);
@@ -222,26 +222,48 @@ void folding() {
     
 }
 
-void inferenceAndAliases() {
-    class Test1<T>(Anything(T) x) {}
+void inferenceAndAliases1() {
+    class Test1<T>(T(T) x) {}
     @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
     @type:"Test1<Integer>" value test1x = Test1 { x = (Integer x) => x; };
-    alias TestFun<in T> => Anything(T);
+    alias TestFun<T> => T(T);
     class Test2<T>(TestFun<T> x) {}
     @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
     @type:"Test2<Integer>" value test2x = Test2 { x = (Integer x) => x; };
 }
 
-void inferenceAndSequencedAliases() {
-    class Test1<T>(Anything(T)* x) {}
+void inferenceAndSequencedAliases1() {
+    class Test1<T>(T(T)* x) {}
     @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
     @type:"Test1<Integer>" value test1c = Test1(for (i in 1..1) (Integer x) => x);
     @type:"Test1<Integer>" value test1x = Test1 { x = [(Integer x) => x]; };
-    alias TestFun<in T> => Anything(T);
+    alias TestFun<T> => T(T);
     class Test2<T>(TestFun<T>* x) {}
     @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
     @type:"Test1<Integer>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
     @type:"Test2<Integer>" value test2x = Test2 { x = [(Integer x) => x]; };
+}
+
+void inferenceAndAliases2() {
+    class Test1<T>(Anything(T) x) {}
+    @type:"Test1<Nothing>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Nothing>" value test1x = Test1 { x = (Integer x) => x; };
+    alias TestFun<in T> => Anything(T);
+    class Test2<T>(TestFun<T> x) {}
+    @type:"Test2<Nothing>" value test2 = Test2((Integer x) => x);
+    @type:"Test2<Nothing>" value test2x = Test2 { x = (Integer x) => x; };
+}
+
+void inferenceAndSequencedAliases2() {
+    class Test1<T>(Anything(T)* x) {}
+    @type:"Test1<Nothing>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Nothing>" value test1c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test1<Nothing>" value test1x = Test1 { x = [(Integer x) => x]; };
+    alias TestFun<in T> => Anything(T);
+    class Test2<T>(TestFun<T>* x) {}
+    @type:"Test2<Nothing>" value test2 = Test2((Integer x) => x);
+    @type:"Test1<Nothing>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test2<Nothing>" value test2x = Test2 { x = [(Integer x) => x]; };
 }
 
 void inferenceAndVariance() {

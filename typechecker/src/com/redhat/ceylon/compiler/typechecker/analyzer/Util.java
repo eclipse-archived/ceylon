@@ -215,7 +215,7 @@ public class Util {
                 	        //necessary to prevent stack overflow
                 	        //for illegal recursively-defined
                 	        //default type argument
-                	        dta.containsDeclaration(tp.getDeclaration())) {
+                	        dta.involvesDeclaration(tp.getDeclaration())) {
                 		break;
                 	}
                 	else {

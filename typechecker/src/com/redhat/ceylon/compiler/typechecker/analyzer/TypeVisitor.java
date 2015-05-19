@@ -1298,7 +1298,7 @@ public class TypeVisitor extends Visitor {
                 ProducedType dta = type.getTypeModel();
                 Declaration dec = p.getDeclaration();
                 if (dta!=null && 
-                        dta.containsDeclaration(dec)) {
+                        dta.involvesDeclaration(dec)) {
                     type.addError("default type argument involves parameterized type: '" + 
                             dta.getProducedTypeName(unit) + 
                             "' involves '" + dec.getName(unit) + 
@@ -1333,7 +1333,7 @@ public class TypeVisitor extends Visitor {
                         tp.getDefaultTypeArgument();
                 if (dta!=null) {
                     params.add(tp);
-                    if (dta.containsTypeParameters(params)) {
+                    if (dta.involvesTypeParameters(params)) {
                         tpd.getTypeSpecifier()
                             .addError("default type argument involves a type parameter not yet declared");
                     }
