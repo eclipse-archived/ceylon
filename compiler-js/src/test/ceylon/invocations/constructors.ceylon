@@ -18,40 +18,37 @@ class ToplevelBug476 {
   }
 }
 
+StringBuilder sb528 = StringBuilder();
 class Test528 {
-    value sb = StringBuilder();
-    sb.append("1");
+    sb528.append("1");
     shared new C1() {
-        sb.append(", 1.5");
+        sb528.append(", 1.5");
     }
-    sb.append(", 2");
+    sb528.append(", 2");
     shared new C2() extends C1() {
-        sb.append(", 2.5");
+        sb528.append(", 2.5");
     }
-    sb.append(", 3");
+    sb528.append(", 3");
     shared new C3() extends C1() {
-        sb.append(", 3.5");
+        sb528.append(", 3.5");
     }
-    sb.append(", 4");
-    string => sb.string;
+    sb528.append(", 4");
 }
 
 class Test528Default {
-    value sb = StringBuilder();
-    sb.append("1");
+    sb528.append("1");
     shared new () {
-        sb.append(", 1.5");
+        sb528.append(", 1.5");
     }
-    sb.append(", 2");
+    sb528.append(", 2");
     shared new C2() extends Test528Default() {
-        sb.append(", 2.5");
+        sb528.append(", 2.5");
     }
-    sb.append(", 3");
+    sb528.append(", 3");
     shared new C3() extends Test528Default() {
-        sb.append(", 3.5");
+        sb528.append(", 3.5");
     }
-    sb.append(", 4");
-    string => sb.string;
+    sb528.append(", 4");
 }
 
 class Test538 {
@@ -90,12 +87,24 @@ void testConstructors() {
   check(NestedBug476.Bar().x==2, "#476 nested");
   check(ToplevelBug476().test485_1().x==2, "#485.1");
   check(ToplevelBug476().test485_2().x==2, "#485.2");
-  check(Test528.C1().string=="1, 1.5, 2, 3, 4", "#528.1");
-  check(Test528.C2().string=="1, 1.5, 2, 2.5, 3, 4", "#528.2");
-  check(Test528.C3().string=="1, 1.5, 2, 3, 3.5, 4", "#528.3");
-  check(Test528Default().string=="1, 1.5, 2, 3, 4", "#536.1");
-  check(Test528Default.C2().string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
-  check(Test528Default.C3().string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
+  Test528.C1();
+  check(sb528.string=="1, 1.5, 2, 3, 4", "#528.1");
+  sb528.clear();
+  Test528.C2();
+  check(sb528.string=="1, 1.5, 2, 2.5, 3, 4", "#528.2");
+  sb528.clear();
+  Test528.C3();
+  check(sb528.string=="1, 1.5, 2, 3, 3.5, 4", "#528.3");
+  sb528.clear();
+  Test528Default();
+  check(sb528.string=="1, 1.5, 2, 3, 4", "#536.1");
+  sb528.clear();
+  Test528Default.C2();
+  check(sb528.string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
+  sb528.clear();
+  Test528Default.C3();
+  check(sb528.string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
+  sb528.clear();
   check(curry(Test538.Foo)(1)(2).hash == 3, "#538.2");
   check(Test555(42).f==42, "#555.1");
 }
