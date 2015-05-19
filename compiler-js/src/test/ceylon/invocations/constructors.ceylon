@@ -1,4 +1,5 @@
 import check { check }
+
 class ToplevelBug476 {
   shared Integer x;
   shared new(){
@@ -72,6 +73,23 @@ class Test555<F> {
     }
 }
 
+class Parent() {}
+
+class Test557<F> extends Parent {
+    sb528.append("1");
+    shared F f;
+    sb528.append(",2");
+    shared new Bar(F f) extends Parent() {
+        this.f = f;
+        print(`F`==`Integer`);
+    }
+    sb528.append(",3");
+
+    shared new (F f) extends Bar(f){
+    }
+    sb528.append(",4");
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -107,4 +125,11 @@ void testConstructors() {
   sb528.clear();
   check(curry(Test538.Foo)(1)(2).hash == 3, "#538.2");
   check(Test555(42).f==42, "#555.1");
+  sb528.clear();
+  Test557(1);
+  check(sb528.string=="1,2,3,4", "#557.1");
+  sb528.clear();
+  Test557.Bar(1);
+  check(sb528.string=="1,2,3,4", "#557.2");
+  sb528.clear();
 }
