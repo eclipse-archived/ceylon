@@ -7360,7 +7360,7 @@ public class ExpressionVisitor extends Visitor {
                         nativeDeclaration(type);
             }
             if (type == null) {
-                that.addError("type does not have a native backend implementation for this backend: '" +
+                that.addError("type does not have a native implementation for this backend: '" +
                         name + "'");
                 unit.getUnresolvedReferences()
                     .add(id);
