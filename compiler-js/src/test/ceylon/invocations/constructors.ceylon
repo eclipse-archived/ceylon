@@ -63,6 +63,18 @@ class Test538 {
   hash => x;
 }
 
+class Test555<F> {
+    shared F f;
+    shared new Bar(F f){
+        this.f = f;
+        check(`F`==`Integer`, "#555.2");
+    }
+
+    shared new (F f) extends Bar(f){
+        check(`F`==`Integer`, "#555.3");
+    }
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -85,4 +97,5 @@ void testConstructors() {
   check(Test528Default.C2().string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
   check(Test528Default.C3().string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
   check(curry(Test538.Foo)(1)(2).hash == 3, "#538.2");
+  check(Test555(42).f==42, "#555.1");
 }
