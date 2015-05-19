@@ -2225,6 +2225,75 @@ public class ProducedType extends ProducedReference {
         return false;
     }
     
+   public boolean occursInvariantly(TypeParameter tp) {
+       return occursInvariantly(tp, true, false);
+   }
+   
+   private boolean occursInvariantly(TypeParameter tp,
+           boolean covariant, boolean contravariant) {
+       TypeDeclaration d = getDeclaration();
+       if (d instanceof UnknownType) {
+           return false;
+       }
+       else if (d instanceof UnionType) {
+           for (ProducedType ct: d.getCaseTypes()) {
+               if (ct.occursInvariantly(tp,covariant,contravariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof IntersectionType) {
+           for (ProducedType st: d.getSatisfiedTypes()) {
+               if (st.occursInvariantly(tp,covariant,contravariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof NothingType) {
+           return false;
+       }
+       else {
+           if (!covariant && !contravariant && d.equals(tp)) {
+               return true;
+           }
+           ProducedType qt = getQualifyingType();
+           if (qt!=null && 
+                   qt.occursInvariantly(tp,covariant,contravariant)) {
+               return true;
+           }
+           List<TypeParameter> tps = d.getTypeParameters();
+           List<ProducedType> tas = getTypeArgumentList();
+           for (int i=0; i<tps.size() && i<tas.size(); i++) {
+               TypeParameter itp = tps.get(i);
+               ProducedType at = tas.get(i);
+               if (at!=null) {
+                   boolean co;
+                   boolean contra;
+                   if (!covariant && !contravariant) {
+                       co = false;
+                       contra = false;
+                   }
+                   else if (isCovariant(itp)) {
+                       co = covariant;
+                       contra = contravariant;
+                   }
+                   else if (isContravariant(itp)) {
+                       co = !covariant;
+                       contra = !contravariant;
+                   }
+                   else {
+                       co = false;
+                       contra = false;
+                   }
+                   if (at.occursInvariantly(tp,co,contra)) {
+                       return true;
+                   }
+               }
+           }
+       }
+       return false;
+   }
+   
    public boolean occursCovariantly(TypeParameter tp) {
        return occursCovariantly(tp, true);
    }
