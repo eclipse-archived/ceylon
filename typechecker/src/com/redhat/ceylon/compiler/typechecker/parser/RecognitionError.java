@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.antlr.runtime.RecognitionException;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 
 public abstract class RecognitionError implements Message {
@@ -30,6 +31,11 @@ public abstract class RecognitionError implements Message {
 		return recognitionException;
 	}
 	
+    @Override
+    public Backend getBackend() {
+        return null;
+    }
+    
 	@Override
 	public int getLine() {
 		return recognitionException.line;

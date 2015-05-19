@@ -15,6 +15,7 @@ import java.util.WeakHashMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
@@ -35,8 +36,16 @@ public class ModuleSourceMapper {
             super(treeNode, message, code);
         }
         
+        public ModuleDependencyAnalysisError(Node treeNode, String message, int code, Backend backend) {
+            super(treeNode, message, code, backend);
+        }
+        
         public ModuleDependencyAnalysisError(Node treeNode, String message) {
             super(treeNode, message);
+        }
+        
+        public ModuleDependencyAnalysisError(Node treeNode, String message, Backend backend) {
+            super(treeNode, message, backend);
         }
     }
 

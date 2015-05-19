@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 
@@ -14,7 +15,11 @@ public class UsageWarning extends AnalysisMessage {
     private boolean suppressed;
     
     public UsageWarning(Node treeNode, String message, String name) {
-        super(treeNode, message);
+        this(treeNode, message, name, null);
+    }
+    
+    public UsageWarning(Node treeNode, String message, String name, Backend backend) {
+        super(treeNode, message, backend);
         this.name = name;
         this.suppressed = false;
     }

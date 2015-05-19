@@ -8,6 +8,7 @@ import java.util.List;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
@@ -216,16 +217,32 @@ public abstract class Node {
         addError( new AnalysisError(this, message) );
     }
     
+    public void addError(String message, Backend backend) {
+        addError( new AnalysisError(this, message, backend) );
+    }
+    
     public void addError(String message, int code) {
         addError( new AnalysisError(this, message, code) );
+    }
+    
+    public void addError(String message, int code, Backend backend) {
+        addError( new AnalysisError(this, message, code, backend) );
     }
     
     public void addUnexpectedError(String message) {
         addError( new UnexpectedError(this, message) );
     }
     
+    public void addUnexpectedError(String message, Backend backend) {
+        addError( new UnexpectedError(this, message, backend) );
+    }
+    
     public void addUnsupportedError(String message) {
         addError( new UnsupportedError(this, message) );
+    }
+    
+    public void addUnsupportedError(String message, Backend backend) {
+        addError( new UnsupportedError(this, message, backend) );
     }
     
     public <E extends Enum<E>> void addUsageWarning
@@ -234,6 +251,12 @@ public abstract class Node {
                 warningName.toString()) );
     }
     
+    public <E extends Enum<E>> void addUsageWarning
+            (E warningName, String message, Backend backend) {
+        addError( new UsageWarning(this, message, 
+                warningName.toString(), backend) );
+    }
+
     public void addParseError(ParseError error) {
         addError(error);
     }
