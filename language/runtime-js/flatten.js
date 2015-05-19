@@ -20,7 +20,7 @@ function flatten(tf, $$$mptypes) {
     for (var i=0;i<argc;i++) {
       t.push(arguments[i]);
     }
-    if (t.length===1 && is$(t[0],{t:Tuple}) &&mm&&mm.ps.length<=t[0].size){
+    if (t.length===1 && is$(t[0],{t:Sequential}) &&mm&&mm.ps.length<=t[0].size){
       //It's already a Tuple
       return tf(t[0]);
     }
