@@ -919,6 +919,7 @@ You can now build the package by executing:
     <target name="clean"
             description="Cleans the distribution package">
         <delete dir="${ceylon.dist.dir}"/>
+        <delete dir="${ceylon-dist-osgi.dir}/build"/>
     </target>
 
     <target name="clean-all" depends="clean"
