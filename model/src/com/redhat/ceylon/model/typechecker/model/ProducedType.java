@@ -10,7 +10,6 @@ import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.involvesTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.Util.principalInstantiation;
 import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
 import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
@@ -20,6 +19,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1345,8 +1345,8 @@ public class ProducedType extends ProducedReference {
         }
     }
     
-    private ProducedType getPrincipalInstantiationFromCases(Criteria c,
-            ProducedType result) {
+    private ProducedType getPrincipalInstantiationFromCases(
+            Criteria c, ProducedType result) {
         if (getDeclaration() instanceof UnionType) {
             //trying to infer supertypes of algebraic
             //types from their cases was resulting in
@@ -2174,21 +2174,30 @@ public class ProducedType extends ProducedReference {
         return null;
     }
 
-    public boolean containsDeclaration(Declaration td) {
+    public boolean involvesDeclaration(Declaration d) {
+        if (d instanceof TypeDeclaration) {
+            return involvesDeclaration((TypeDeclaration) d);
+        }
+        else {
+            return false;
+        }
+    }
+    
+   public boolean involvesDeclaration(TypeDeclaration td) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnknownType) {
             return false;
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: d.getCaseTypes()) {
-                if (ct.containsDeclaration(td)) {
+                if (ct.involvesDeclaration(td)) {
                     return true;
                 }
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: d.getSatisfiedTypes()) {
-                if (st.containsDeclaration(td)) {
+                if (st.involvesDeclaration(td)) {
                     return true;
                 }
             }
@@ -2202,13 +2211,13 @@ public class ProducedType extends ProducedReference {
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && 
-                    qt.containsDeclaration(td)) {
+                    qt.involvesDeclaration(td)) {
                 return true;
             }
             List<ProducedType> tas = getTypeArgumentList();
             for (ProducedType at: tas) {
-                if (at==null || 
-                        at.containsDeclaration(td)) {
+                if (at==null || //take note!
+                        at.involvesDeclaration(td)) {
                     return true;
                 }
             }
@@ -2216,6 +2225,116 @@ public class ProducedType extends ProducedReference {
         return false;
     }
     
+   public boolean occursCovariantly(TypeParameter tp) {
+       return occursCovariantly(tp, true);
+   }
+   
+   private boolean occursCovariantly(TypeParameter tp,
+           boolean covariant) {
+       TypeDeclaration d = getDeclaration();
+       if (d instanceof UnknownType) {
+           return false;
+       }
+       else if (d instanceof UnionType) {
+           for (ProducedType ct: d.getCaseTypes()) {
+               if (ct.occursCovariantly(tp,covariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof IntersectionType) {
+           for (ProducedType st: d.getSatisfiedTypes()) {
+               if (st.occursCovariantly(tp,covariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof NothingType) {
+           return false;
+       }
+       else {
+           if (covariant && d.equals(tp)) {
+               return true;
+           }
+           ProducedType qt = getQualifyingType();
+           if (qt!=null && 
+                   qt.occursCovariantly(tp,covariant)) {
+               return true;
+           }
+           List<TypeParameter> tps = d.getTypeParameters();
+           List<ProducedType> tas = getTypeArgumentList();
+           for (int i=0; i<tps.size() && i<tas.size(); i++) {
+               TypeParameter itp = tps.get(i);
+               ProducedType at = tas.get(i);
+               if (at!=null && !isInvariant(itp)) {
+                   boolean co = covariant;
+                   if (isContravariant(itp)) {
+                       co = !co;
+                   }
+                   if (at.occursCovariantly(tp,co)) {
+                       return true;
+                   }
+               }
+           }
+       }
+       return false;
+   }
+   
+   public boolean occursContravariantly(TypeParameter tp) {
+       return occursContravariantly(tp, true);
+   }
+   
+   private boolean occursContravariantly(TypeParameter tp,
+           boolean covariant) {
+       TypeDeclaration d = getDeclaration();
+       if (d instanceof UnknownType) {
+           return false;
+       }
+       else if (d instanceof UnionType) {
+           for (ProducedType ct: d.getCaseTypes()) {
+               if (ct.occursContravariantly(tp,covariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof IntersectionType) {
+           for (ProducedType st: d.getSatisfiedTypes()) {
+               if (st.occursContravariantly(tp,covariant)) {
+                   return true;
+               }
+           }
+       }
+       else if (d instanceof NothingType) {
+           return false;
+       }
+       else {
+           if (!covariant && d.equals(tp)) {
+               return true;
+           }
+           ProducedType qt = getQualifyingType();
+           if (qt!=null && 
+                   qt.occursContravariantly(tp,covariant)) {
+               return true;
+           }
+           List<TypeParameter> tps = d.getTypeParameters();
+           List<ProducedType> tas = getTypeArgumentList();
+           for (int i=0; i<tps.size() && i<tas.size(); i++) {
+               TypeParameter itp = tps.get(i);
+               ProducedType at = tas.get(i);
+               if (at!=null && !isInvariant(itp)) {
+                   boolean co = covariant;
+                   if (isContravariant(itp)) {
+                       co = !co;
+                   }
+                   if (at.occursContravariantly(tp,co)) {
+                       return true;
+                   }
+               }
+           }
+       }
+       return false;
+   }
+   
     private ProducedType withVarianceOverrides(
             Map<TypeParameter,SiteVariance> varianceOverrides) {
         TypeDeclaration declaration = getDeclaration();
@@ -3135,21 +3254,21 @@ public class ProducedType extends ProducedReference {
         return ret;
     }
     
-    public boolean containsTypeParameters() {
+    public boolean involvesTypeParameters() {
         TypeDeclaration d = getDeclaration();
         if (d instanceof TypeParameter) {
             return true;
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.containsTypeParameters()) {
+                if (ct.involvesTypeParameters()) {
                     return true;
                 }
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.containsTypeParameters()) {
+                if (st.involvesTypeParameters()) {
                     return true;
                 }
             }
@@ -3157,20 +3276,25 @@ public class ProducedType extends ProducedReference {
         else {
             for (ProducedType at: getTypeArgumentList()) {
                 if (at!=null && 
-                        at.containsTypeParameters()) {
+                        at.involvesTypeParameters()) {
                     return true;
                 }
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && 
-                    qt.containsTypeParameters()) {
+                    qt.involvesTypeParameters()) {
                 return true;
             }
         }
         return false;
     }
     
-    public boolean containsTypeParameters(List<TypeParameter> params) {
+    public boolean involvesTypeParameters(Generic g) {
+        return involvesTypeParameters(g.getTypeParameters());
+    }
+    
+    public boolean involvesTypeParameters(
+            Collection<TypeParameter> params) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof TypeParameter) {
             if (params.contains(d)) {
@@ -3179,14 +3303,14 @@ public class ProducedType extends ProducedReference {
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.containsTypeParameters(params)) {
+                if (ct.involvesTypeParameters(params)) {
                     return true;
                 }
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.containsTypeParameters(params)) {
+                if (st.involvesTypeParameters(params)) {
                     return true;
                 }
             }
@@ -3194,13 +3318,13 @@ public class ProducedType extends ProducedReference {
         else {
             for (ProducedType at: getTypeArgumentList()) {
                 if (at!=null && 
-                        at.containsTypeParameters(params)) {
+                        at.involvesTypeParameters(params)) {
                     return true;
                 }
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && 
-                    qt.containsTypeParameters(params)) {
+                    qt.involvesTypeParameters(params)) {
                 return true;
             }
         }
@@ -3557,7 +3681,7 @@ public class ProducedType extends ProducedReference {
                         return resultArg;
                     }
                     resultArgs.add(resultArg);
-                    if (involvesTypeParameters(arg, 
+                    if (arg.involvesTypeParameters(
                             overrides.keySet())) {
                         varianceResults.put(param, OUT);
                     }

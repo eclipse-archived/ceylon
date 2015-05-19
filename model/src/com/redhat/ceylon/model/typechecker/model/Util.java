@@ -8,7 +8,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1255,7 +1254,7 @@ public class Util {
         }
         if (pd.isFinal()) {
             if (pd.getTypeParameters().isEmpty() &&
-                    !q.containsTypeParameters() &&
+                    !q.involvesTypeParameters() &&
                     !p.isSubtypeOf(q) &&
                     !(qd instanceof UnknownType)) {
                 return true;
@@ -1267,7 +1266,7 @@ public class Util {
         }
         if (qd.isFinal()) { 
             if (qd.getTypeParameters().isEmpty() &&
-                    !p.containsTypeParameters() &&
+                    !p.involvesTypeParameters() &&
                     !q.isSubtypeOf(p) &&
                     !(pd instanceof UnknownType)) {
                 return true;
@@ -1292,7 +1291,7 @@ public class Util {
             pd instanceof ClassOrInterface &&
                 qd.inherits(st) && !pd.inherits(st) && 
                 !st.inherits(pd) && 
-                !p.containsTypeParameters()) {
+                !p.involvesTypeParameters()) {
             return true;
         }
         
@@ -1402,9 +1401,9 @@ public class Util {
                             ProducedType qsta = qst.getTypeArguments().get(tp);
                             //TODO: why isWellDefined() instead of isTypeUnknown() ?
                             if (psta!=null && psta.isWellDefined() && 
-                                    !pst.containsTypeParameters() && 
+                                    !pst.involvesTypeParameters() && 
                                 qsta!=null && qsta.isWellDefined() && 
-                                    !qst.containsTypeParameters()) {
+                                    !qst.involvesTypeParameters()) {
                                 boolean psti = pst.isInvariant(tp);
                                 boolean pstcov = pst.isCovariant(tp);
                                 boolean pstcontra = pst.isContravariant(tp);
@@ -1803,49 +1802,6 @@ public class Util {
         return signature;
     }
     
-    public static boolean involvesTypeParameters(Generic member, ProducedType pt) {
-        return involvesTypeParameters(pt, 
-                member.getTypeParameters());
-    }
-    
-    public static boolean involvesTypeParameters(ProducedType pt, 
-            Collection<TypeParameter> parameters) {
-        if (pt.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: 
-                    pt.getDeclaration().getCaseTypes()) {
-                ProducedType args = 
-                        ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(args, parameters)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
-            for (ProducedType ct: 
-                    pt.getDeclaration().getSatisfiedTypes()) {
-                ProducedType args = 
-                        ct.substitute(pt.getTypeArguments());
-                if (involvesTypeParameters(args, parameters)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else {
-            if (parameters.contains(pt.getDeclaration())) {
-                return true;
-            }
-            for (ProducedType at: pt.getTypeArgumentList()) {
-                if (at!=null && 
-                        involvesTypeParameters(at, parameters)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-    
     public static boolean isCompletelyVisible(Declaration member, 
             ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
@@ -1930,8 +1886,8 @@ public class Util {
                 boolean firstInv = !firstCo && !firstContra;
                 boolean secondInv = !secondCo && !secondContra;
                 boolean parameterized = 
-                        firstArg.containsTypeParameters() ||
-                        secondArg.containsTypeParameters();
+                        firstArg.involvesTypeParameters() ||
+                        secondArg.involvesTypeParameters();
                 if (firstContra && secondContra) {
                     arg = unionType(firstArg,secondArg,unit);
                     if (!tp.isContravariant()) {
