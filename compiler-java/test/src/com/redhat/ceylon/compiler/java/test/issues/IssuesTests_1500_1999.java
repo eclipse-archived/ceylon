@@ -277,7 +277,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 new CompilerError(27, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(29, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(32, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
-                new CompilerError(22, "parameter type could not be determined: ''props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n" + 
+                new CompilerError(22, "parameter type could not be determined: 'props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n" + 
                         "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n" + 
                         "   Failed to find declaration for Properties"),
                 new CompilerError(23, "could not determine type of method or attribute reference: 'props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n"+
