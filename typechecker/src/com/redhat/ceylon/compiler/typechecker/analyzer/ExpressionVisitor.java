@@ -3063,28 +3063,19 @@ public class ExpressionVisitor extends Visitor {
     private List<TypeParameter> 
     getTypeParametersAccountingForTypeConstructor(
             Declaration dec) {
-        List<TypeParameter> typeParameters;
-        if (dec instanceof Generic) {
+        if (isGeneric(dec)) {
             Generic generic = (Generic) dec;
-            typeParameters = 
-                    generic.getTypeParameters();
+            return generic.getTypeParameters();
         }
         else if (dec instanceof Value) {
             Value value = (Value) dec;
             ProducedType type = value.getType();
             if (type.isTypeConstructor()) {
-                typeParameters = 
-                        type.getDeclaration()
-                            .getTypeParameters();
-            }
-            else {
-                typeParameters = null;
+                return type.getDeclaration()
+                        .getTypeParameters();
             }
         }
-        else {
-            typeParameters = null;
-        }
-        return typeParameters;
+        return null;
     }
 
     private ProducedType inferFunctionRefTypeArg(
@@ -3178,15 +3169,15 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             List<ProducedType> list;
-            if (dec instanceof Generic) {
-                list = new ArrayList<ProducedType>();
+            if (isGeneric(dec)) {
                 Generic generic = (Generic) dec;
                 List<TypeParameter> tps = 
                         generic.getTypeParameters();
+                list = new ArrayList<ProducedType>
+                        (tps.size());
                 for (TypeParameter tp: tps) {
                     list.add(tp.getType());
                 }
-                
             }
             else {
                 list = NO_TYPE_ARGS;
@@ -3197,7 +3188,7 @@ public class ExpressionVisitor extends Visitor {
 
     private static boolean involvesTypeParams
             (Declaration dec, ProducedType type) {
-        if (dec instanceof Generic) {
+        if (isGeneric(dec)) {
             Generic g = (Generic) dec;
             return type.involvesTypeParameters(g);
         }
@@ -3555,8 +3546,7 @@ public class ExpressionVisitor extends Visitor {
         List<ProducedType> typeArguments;
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
-        if (dec instanceof Generic) {
-            Generic generic = (Generic) dec;
+        if (isGeneric(dec)) {
             if (explicit) {
                 List<TypeParameter> pts = 
                         getTypeParameters(dec);
@@ -3565,28 +3555,27 @@ public class ExpressionVisitor extends Visitor {
                                 pts);
             }
             else {
+                Generic generic = (Generic) dec;
                 typeArguments = 
                         getInferredTypeArguments(that, 
                                 generic, term);
             }
         }
-        else {
-            if (dec instanceof Value) {
-                Value value = (Value) dec;
-                ProducedType type = value.getType();
-                if (type!=null && 
-                        type.isTypeConstructor()) {
-                    typeArguments = 
-                            getOrInferTypeArgumentsForTypeConstructor(
-                                    that, receiverType, tas, type);
-                }
-                else {
-                    return NO_TYPE_ARGS;
-                }
+        else if (dec instanceof Value) {
+            Value value = (Value) dec;
+            ProducedType type = value.getType();
+            if (type!=null && 
+                    type.isTypeConstructor()) {
+                typeArguments = 
+                        getOrInferTypeArgumentsForTypeConstructor(
+                                that, receiverType, tas, type);
             }
             else {
                 return NO_TYPE_ARGS;
             }
+        }
+        else {
+            return NO_TYPE_ARGS;
         }
         tas.setTypeModels(typeArguments);
         return typeArguments;
@@ -6731,30 +6720,28 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseMemberReference(
             Tree.StaticMemberOrTypeExpression that,
             TypedDeclaration member) {
-        if (member instanceof Generic) {
+        if (isGeneric(member)) {
             Generic g = (Generic) member;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
-            if (!typeParameters.isEmpty()) {
-                Scope scope = that.getScope();
-                ProducedType outerType = 
-                        scope.getDeclaringType(member);
-                ProducedTypedReference pr = 
-                        member.getProducedTypedReference(outerType, 
-                                NO_TYPE_ARGS);
-                that.setTarget(pr);
-                TypeAlias ta = new TypeAlias();
-                ta.setContainer(scope);
-                ta.setName("Anonymous#" + member.getName());
-                ta.setAnonymous(true);
-                ta.setScope(scope);
-                ta.setUnit(unit);
-                ta.setExtendedType(pr.getFullType());
-                ta.setTypeParameters(typeParameters);
-                ProducedType t = ta.getType();
-                t.setTypeConstructor(true);
-                that.setTypeModel(t);
-            }
+            Scope scope = that.getScope();
+            ProducedType outerType = 
+                    scope.getDeclaringType(member);
+            ProducedTypedReference pr = 
+                    member.getProducedTypedReference(outerType, 
+                            NO_TYPE_ARGS);
+            that.setTarget(pr);
+            TypeAlias ta = new TypeAlias();
+            ta.setContainer(scope);
+            ta.setName("Anonymous#" + member.getName());
+            ta.setAnonymous(true);
+            ta.setScope(scope);
+            ta.setUnit(unit);
+            ta.setExtendedType(pr.getFullType());
+            ta.setTypeParameters(typeParameters);
+            ProducedType t = ta.getType();
+            t.setTypeConstructor(true);
+            that.setTypeModel(t);
         }
     }
 
@@ -6878,28 +6865,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberExpression that,
             ProducedType receiverType,
             TypedDeclaration member) {
-        if (member instanceof Generic) {
+        if (isGeneric(member)) {
             Generic g = (Generic) member;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
-            if (!typeParameters.isEmpty()) {
-                Scope scope = that.getScope();
-                ProducedTypedReference pr = 
-                        receiverType.getTypedMember(member, 
-                                NO_TYPE_ARGS);
-                that.setTarget(pr);
-                TypeAlias ta = new TypeAlias();
-                ta.setContainer(scope);
-                ta.setName("Anonymous#" + member.getName());
-                ta.setAnonymous(true);
-                ta.setScope(scope);
-                ta.setUnit(unit);
-                ta.setExtendedType(pr.getFullType());
-                ta.setTypeParameters(typeParameters);
-                ProducedType t = ta.getType();
-                t.setTypeConstructor(true);
-                that.setTypeModel(t);
-            }
+            Scope scope = that.getScope();
+            ProducedTypedReference pr = 
+                    receiverType.getTypedMember(member, 
+                            NO_TYPE_ARGS);
+            that.setTarget(pr);
+            TypeAlias ta = new TypeAlias();
+            ta.setContainer(scope);
+            ta.setName("Anonymous#" + member.getName());
+            ta.setAnonymous(true);
+            ta.setScope(scope);
+            ta.setUnit(unit);
+            ta.setExtendedType(pr.getFullType());
+            ta.setTypeParameters(typeParameters);
+            ProducedType t = ta.getType();
+            t.setTypeConstructor(true);
+            that.setTypeModel(t);
         }
     }
 
@@ -7329,30 +7314,28 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseTypeReference(
             Tree.StaticMemberOrTypeExpression that,
             TypeDeclaration type) {
-        if (type instanceof Generic) {
+        if (isGeneric(type)) {
             Generic g = (Generic) type;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
-            if (!typeParameters.isEmpty()) {
-                Scope scope = that.getScope();
-                ProducedType outerType = 
-                        scope.getDeclaringType(type);
-                ProducedType pt = 
-                        type.getProducedType(outerType, 
-                                toTypeArgs(g));
-                that.setTarget(pt);
-                TypeAlias ta = new TypeAlias();
-                ta.setContainer(scope);
-                ta.setName("Anonymous#" + type.getName());
-                ta.setAnonymous(true);
-                ta.setScope(scope);
-                ta.setUnit(unit);
-                ta.setExtendedType(pt.getFullType());
-                ta.setTypeParameters(typeParameters);
-                ProducedType t = ta.getType();
-                t.setTypeConstructor(true);
-                that.setTypeModel(t);
-            }
+            Scope scope = that.getScope();
+            ProducedType outerType = 
+                    scope.getDeclaringType(type);
+            ProducedType pt = 
+                    type.getProducedType(outerType, 
+                            toTypeArgs(g));
+            that.setTarget(pt);
+            TypeAlias ta = new TypeAlias();
+            ta.setContainer(scope);
+            ta.setName("Anonymous#" + type.getName());
+            ta.setAnonymous(true);
+            ta.setScope(scope);
+            ta.setUnit(unit);
+            ta.setExtendedType(pt.getFullType());
+            ta.setTypeParameters(typeParameters);
+            ProducedType t = ta.getType();
+            t.setTypeConstructor(true);
+            that.setTypeModel(t);
         }
     }
 
@@ -7633,28 +7616,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedTypeExpression that,
             ProducedType outerType,
             TypeDeclaration type) {
-        if (type instanceof Generic) {
+        if (isGeneric(type)) {
             Generic g = (Generic) type;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
-            if (!typeParameters.isEmpty()) {
-                Scope scope = that.getScope();
-                ProducedType pt =
-                        outerType.getTypeMember(type, 
-                                toTypeArgs(g));
-                that.setTarget(pt);
-                TypeAlias ta = new TypeAlias();
-                ta.setContainer(scope);
-                ta.setName("Anonymous#" + type.getName());
-                ta.setAnonymous(true);
-                ta.setScope(scope);
-                ta.setUnit(unit);
-                ta.setExtendedType(pt.getFullType());
-                ta.setTypeParameters(typeParameters);
-                ProducedType t = ta.getType();
-                t.setTypeConstructor(true);
-                that.setTypeModel(t);
-            }
+            Scope scope = that.getScope();
+            ProducedType pt =
+                    outerType.getTypeMember(type, 
+                            toTypeArgs(g));
+            that.setTarget(pt);
+            TypeAlias ta = new TypeAlias();
+            ta.setContainer(scope);
+            ta.setName("Anonymous#" + type.getName());
+            ta.setAnonymous(true);
+            ta.setScope(scope);
+            ta.setUnit(unit);
+            ta.setExtendedType(pt.getFullType());
+            ta.setTypeParameters(typeParameters);
+            ProducedType t = ta.getType();
+            t.setTypeConstructor(true);
+            that.setTypeModel(t);
         }
     }
 
