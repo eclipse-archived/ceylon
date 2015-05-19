@@ -922,6 +922,7 @@ You can now build the package by executing:
         <delete dir="${ceylon-dist-osgi.dir}/build"/>
         <delete dir="${ceylon-dist-osgi.dir}/embeddedRepository/bin"/>
         <delete dir="${ceylon-dist-osgi.dir}/embeddedRepository/repo"/>
+        <delete file="${ceylon-dist-osgi.dir}/lib/ceylon-bootstrap.jar"/>
     </target>
 
     <target name="clean-all" depends="clean"
