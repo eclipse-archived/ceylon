@@ -2889,8 +2889,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter param, Tree.Expression e, 
             boolean variadic) {
         MethodOrValue model = param.getModel();
-        if (model==null) return;
-        if (e!=null) {
+        if (e!=null && model!=null) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
             ProducedTypedReference tpr = 
@@ -3468,6 +3467,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 mte, qt);
+                tas.setTypeModels(typeArgs);
                 visitBaseTypeExpression(bte, type, 
                         typeArgs, tas, qt);
             }
@@ -3486,6 +3486,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 mte, qt);
+                tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
                             typeArgs, tas);
@@ -3543,22 +3544,16 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression term, 
             ProducedType receiverType) {
         Tree.TypeArguments tas = term.getTypeArguments();
-        List<ProducedType> typeArguments;
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         if (isGeneric(dec)) {
             if (explicit) {
-                List<TypeParameter> pts = 
-                        getTypeParameters(dec);
-                typeArguments = 
-                        getTypeArguments(tas, receiverType, 
-                                pts);
+                return getTypeArguments(tas, receiverType, 
+                        getTypeParameters(dec));
             }
             else {
-                Generic generic = (Generic) dec;
-                typeArguments = 
-                        getInferredTypeArguments(that, 
-                                generic, term);
+                return getInferredTypeArguments(that, 
+                        (Generic) dec, term);
             }
         }
         else if (dec instanceof Value) {
@@ -3566,9 +3561,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType type = value.getType();
             if (type!=null && 
                     type.isTypeConstructor()) {
-                typeArguments = 
-                        getOrInferTypeArgumentsForTypeConstructor(
-                                that, receiverType, tas, type);
+                return getOrInferTypeArgumentsForTypeConstructor(
+                        that, receiverType, tas, type);
             }
             else {
                 return NO_TYPE_ARGS;
@@ -3577,8 +3571,6 @@ public class ExpressionVisitor extends Visitor {
         else {
             return NO_TYPE_ARGS;
         }
-        tas.setTypeModels(typeArguments);
-        return typeArguments;
     }
 
     private List<ProducedType> getOrInferTypeArgumentsForTypeConstructor(
