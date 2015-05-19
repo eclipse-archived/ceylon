@@ -3087,7 +3087,7 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
 
-    ProducedType inferFunctionRefTypeArg(
+    private ProducedType inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte, 
             Generic generic, Declaration pd, 
             ProducedType template, ProducedType type,
@@ -4446,10 +4446,12 @@ public class ExpressionVisitor extends Visitor {
                                         findingUpperBounds,
                                         visited, argNode));
                     }
-                    inferTypeArg(tp, paramType, supertype, 
+                    inferTypeArg(tp, tp, 
+                            paramType, supertype, 
                             covariant, contravariant,
                             findingUpperBounds,
-                            list, visited, argNode);
+                            list, visited, 
+                            argNode);
                     return unionOrIntersection(
                             findingUpperBounds, list);
                 }
@@ -4461,21 +4463,6 @@ public class ExpressionVisitor extends Visitor {
         else {
             return null;
         }
-    }
-    
-    private void inferTypeArg(TypeParameter tp, 
-            ProducedType paramType, ProducedType supertype, 
-            boolean covariant, boolean contravariant,
-            boolean findingUpperBounds,
-            List<ProducedType> list, 
-            List<TypeParameter> visited,
-            Node argNode) {
-        inferTypeArg(tp, tp, 
-                paramType, supertype, 
-                covariant, contravariant,
-                findingUpperBounds,
-                list, visited, 
-                argNode);
     }
     
     private void inferTypeArg(TypeParameter tp, TypeParameter tp0,
