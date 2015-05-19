@@ -663,7 +663,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", tname, "=function(){var ");
         ProducedType pt = that.getTypeSpecifier().getType().getTypeModel();
         boolean skip=true;
-        if (pt.containsTypeParameters() && outerSelf(d)) {
+        if (pt.involvesTypeParameters() && outerSelf(d)) {
             out("=this,");
             skip=false;
         }
