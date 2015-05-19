@@ -69,6 +69,13 @@ class Bug341<T>(T t) {
   }
 }
 
+void test550<F>() {
+  void g<G>() {
+    check(`F` == `Integer`, "#550");
+  }
+  g<String>();
+}
+
 void testReifiedRuntime(){
     Object member = Container<String>().Member<Integer>();
     check(member is Container<String>.Member<Integer>, "reified runtime inner 1");
@@ -153,6 +160,7 @@ void testReifiedRuntime(){
     value c2 = c1.and<Integer>();
     c2.debug();
     clang639();
+    test550<Integer>();
 }
 
 class Holder458<T>() {
