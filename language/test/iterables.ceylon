@@ -306,9 +306,9 @@ shared void testIterables() {
     
     //check({for (i in 1..4) i*i}.reversed==[16,9,4,1], "iterable reverse");
     
-    value itfun = loop(1, (Integer i) => i*2).takeWhile((Integer i) => i<10);
+    value itfun = loop(1)((Integer i) => i*2).takeWhile((Integer i) => i<10);
     check([*itfun]==[1,2,4,8], "loop function 1``itfun``");
-    check(loop(0, 3.plus).takeWhile(10.largerThan).sequence()==[0,3,6,9], "loop function 2");
+    check(loop(0)(3.plus).takeWhile(10.largerThan).sequence()==[0,3,6,9], "loop function 2");
     
     check(interleave(1..5,"-+".cycled).sequence()==[1,'-',2,'+',3,'-',4,'+',5, '-'], "interleave 1");
     check(interleave(1..5,"-+").sequence()==[1,'-',2,'+',3], "interleave 2");
@@ -336,7 +336,7 @@ shared void testIterables() {
     check((1..3).spread(Integer.times)(2).sequence()==[2,4,6], "range spread");
     
     check(corresponding(1..5,
-        loop(0, Integer.successor).takeWhile(5.largerThan), 
+        loop(0)(Integer.successor).takeWhile(5.largerThan), 
         (Integer x, Integer y)=>x==y+1),"corresponding");
     check(!corresponding((1..5).withTrailing(1),
         (1..5).withTrailing(0), 
