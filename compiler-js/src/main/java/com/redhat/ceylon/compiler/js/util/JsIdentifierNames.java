@@ -348,7 +348,7 @@ public class JsIdentifierNames {
 
     /** The name for the argument that holds the type parameters of a method. */
     public String typeArgsParamName(Method m) {
-        return "$$$mptypes";
+        return "$t$" + Long.toString(Math.abs(m.getQualifiedNameString().hashCode()), 36);
     }
 
     /** Replace any characters considered invalid in JS with some regular
