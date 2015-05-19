@@ -4195,10 +4195,12 @@ public class ExpressionVisitor extends Visitor {
                         (TypeParameter) paramTypeDec;
                 if (!visited.contains(tp2)) {
                     visited.add(tp2);
+                    List<ProducedType> sts = 
+                            tp2.getSatisfiedTypes();
                     List<ProducedType> list = 
-                            new ArrayList<ProducedType>();
-                    for (ProducedType upperBound: 
-                            tp2.getSatisfiedTypes()) {
+                            new ArrayList<ProducedType>
+                                (sts.size());
+                    for (ProducedType upperBound: sts) {
                         //recurse to the upper bounds
                         addToUnionOrIntersection(
                                 findingUpperBounds, list,
@@ -4314,10 +4316,12 @@ public class ExpressionVisitor extends Visitor {
                 }*/
             } 
             else if (paramTypeDec instanceof IntersectionType) {
+                List<ProducedType> sts = 
+                        paramTypeDec.getSatisfiedTypes();
                 List<ProducedType> list = 
-                        new ArrayList<ProducedType>();
-                for (ProducedType ct: 
-                        paramTypeDec.getSatisfiedTypes()) {
+                        new ArrayList<ProducedType>
+                            (sts.size());
+                for (ProducedType ct: sts) {
                     //recurse to intersected types
                     addToUnionOrIntersection(
                             findingUpperBounds, list, 
@@ -4332,10 +4336,12 @@ public class ExpressionVisitor extends Visitor {
                         findingUpperBounds, list);
             }
             else if (atd instanceof UnionType) {
+                List<ProducedType> cts = 
+                        atd.getCaseTypes();
                 List<ProducedType> list = 
-                        new ArrayList<ProducedType>();
-                for (ProducedType ct: 
-                        atd.getCaseTypes()) {
+                        new ArrayList<ProducedType>
+                            (cts.size());
+                for (ProducedType ct: cts) {
                     //recurse to union types
                     addToUnion(list, 
                             inferTypeArg(tp, 
@@ -4348,10 +4354,12 @@ public class ExpressionVisitor extends Visitor {
                 return union(list);
             }
             else if (atd instanceof IntersectionType) {
+                List<ProducedType> sts = 
+                        atd.getSatisfiedTypes();
                 List<ProducedType> list = 
-                        new ArrayList<ProducedType>();
-                for (ProducedType st: 
-                        atd.getSatisfiedTypes()) {
+                        new ArrayList<ProducedType>
+                            (sts.size());
+                for (ProducedType st: sts) {
                     //recurse to intersected types
                     addToIntersection(list, 
                             inferTypeArg(tp,
