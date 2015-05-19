@@ -3757,42 +3757,58 @@ public class ExpressionVisitor extends Visitor {
             return true;
         }
         else {
+            Declaration declaration = tp.getDeclaration();
+            if (!(declaration instanceof TypedDeclaration)) {
+                return false;
+            }
+            TypedDeclaration typed = 
+                    (TypedDeclaration) declaration;
+            ProducedType fullType =
+                    typed.getTypedReference()
+                        .getFullType();
+            ProducedType returnType =
+                    unit.getCallableReturnType(fullType);
+            if (returnType!=null) {
+                boolean occursInvariantly =
+                        returnType.occursInvariantly(tp);
+                boolean occursCovariantly =  
+                        returnType.occursCovariantly(tp);
+                boolean occursContravariantly =
+                        returnType.occursContravariantly(tp);
+                if (occursCovariantly || occursInvariantly) {
+                    return false;
+                }
+                else if (occursContravariantly) {
+                    return true;
+                } 
+            }
+            
             boolean occursCovariantly = false;
             boolean occursContravariantly = false;
-            Declaration declaration = tp.getDeclaration();
+            boolean occursInvariantly = false;
             Generic generic = (Generic) declaration;
             List<TypeParameter> typeParameters = 
                     generic.getTypeParameters();
             for (TypeParameter otp: typeParameters) {
                 for (ProducedType bound: 
                         otp.getSatisfiedTypes()) {
+                    occursInvariantly = 
+                            occursInvariantly || 
+                            bound.occursInvariantly(tp);
+                    //deliberately "backwards"!
+                    occursCovariantly = 
+                            occursCovariantly || 
+                            bound.occursContravariantly(tp);
                     if (!otp.equals(tp)) {
-                        occursCovariantly = 
-                                occursCovariantly || 
-                                bound.occursContravariantly(tp);
                         occursContravariantly =
                                 occursContravariantly ||
                                 bound.occursCovariantly(tp);
                     }
                 }
             }
-            ProducedType fullType = 
-                    declaration
-                        .getReference()
-                        .getFullType();
-            ProducedType returnType = 
-                    unit.getCallableReturnType(fullType);
-            if (returnType!=null) {
-                occursCovariantly = 
-                        occursCovariantly || 
-                        returnType.occursCovariantly(tp);
-                occursContravariantly =
-                        occursContravariantly ||
-                        returnType.occursContravariantly(tp);
-            }
-            return returnType!=null && 
-                    occursContravariantly &&
-                    !occursCovariantly;
+            return occursContravariantly && 
+                    !occursCovariantly && 
+                    !occursInvariantly;
         }
     }
 

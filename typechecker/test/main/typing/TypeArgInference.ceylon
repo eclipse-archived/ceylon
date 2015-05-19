@@ -336,6 +336,6 @@ void testBlahBlahBlah() {
     interface String {} interface Integer {} interface Float {}
     void strings(String x, Integer y) {}
     void ints(Float x, Float y) {}
-    @type:"BlahBlahBlah<String&Float|Integer&Float,String&Integer&Float>" 
+    @type:"BlahBlahBlah<Object,String&Integer&Float>" 
     BlahBlahBlah(strings, ints);
 }
