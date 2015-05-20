@@ -1112,7 +1112,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <para>An <literal>extends</literal> clause has a reference to a superclass or
             superclass constructor, followed by an optional positional argument list, as
-            defined in <xref linkend="positionalarguments"/>.</para>
+            defined in <xref linkend="positionalarguments"/>. The <literal>extends</literal> 
+            clause may not refer to a partial constructor of the superclass.</para>
             
             <synopsis>ExtendedType: "extends" (Extension | SuperclassExtension) PositionalArguments?</synopsis>
             
