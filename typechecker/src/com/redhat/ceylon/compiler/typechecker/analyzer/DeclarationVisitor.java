@@ -2037,7 +2037,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     that.getElementTypes();
             ProducedType t = 
                     new LazyProducedType(unit) {
-                //TODO: this holds a hard reference to the Tree.Type
                 private ProducedType tupleType() {
                     return getTupleType(ets, unit);
                 }
@@ -2316,7 +2315,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         map.put(ctps.get(0), 
                                 rt.getTypeModel());
                         map.put(ctps.get(1),
-                                //TODO: holds on to reference to Tree.Type
                                 getTupleType(args, unit));
                         return map;
                     }
