@@ -422,3 +422,42 @@ void inferenceIssue2() {
     X<String> x1 = X("10");
     X<Integer?> x3 = transform(parseInteger)(x1);
 }
+
+shared class TreeSet<Element>(compare, elements={})
+        given Element satisfies Object {
+    
+    "A comparator function used to sort the elements."
+    Comparison compare(Element x, Element y);
+    
+    "The initial elements of the set."
+    {Element*} elements;
+}
+
+shared class ArrayList<Element>
+        (initialCapacity = 0, growthFactor=1.5,
+         elements = {}) {
+    
+    "The initial size of the backing array."
+    Integer initialCapacity;
+    
+    "The factor used to determine the new size of the
+     backing array when a new backing array is allocated."
+    Float growthFactor;
+    
+    "The initial elements of the list."
+    {Element*} elements;
+    
+}
+
+void treesetsAndArraylists() {
+    function compare(String x, String y) => x<=>y;
+    @type:"TreeSet<String>" TreeSet((String x, String y)=>x<=>y);
+    @type:"TreeSet<String>" TreeSet(compare);
+    @type:"TreeSet<String>" TreeSet { compare; "foo", "bar" };
+    @type:"TreeSet<Float|Integer>" TreeSet { 
+        (Float|Integer x, Float|Integer y) => larger; 
+        1, 1.0 
+    };
+    @type:"ArrayList<String>" ArrayList { "", "hello" };
+    @type:"ArrayList<Float|Integer>" ArrayList { 1.0, 1 };
+}
