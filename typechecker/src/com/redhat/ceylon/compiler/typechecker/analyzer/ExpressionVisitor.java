@@ -9358,12 +9358,21 @@ public class ExpressionVisitor extends Visitor {
                     ClassOrInterface delegatedType = 
                             c.getExtendedTypeDeclaration();
                     if (superclass.equals(delegatedType)) {
-                        checkIsExactly(constructedType.getExtendedType(), 
+                        checkIsExactly(
+                                constructedType.getExtendedType(), 
                                 extendedType, type, 
                                 "type arguments must match type arguments in extended class expression");
                     }
                     else if (containingClass.equals(delegatedType)) {
-                        //nothing to do
+                        if (type instanceof Tree.QualifiedType) {
+                            Tree.QualifiedType qt = 
+                                    (Tree.QualifiedType) type;
+                            checkIsExactly(
+                                    constructedType.getQualifyingType(), 
+                                    containingClass.getType(), 
+                                    qt.getOuterType(), 
+                                    "type arguments must be the type parameters of this class");
+                        }
                     }
                     else {
                         type.addError("not a constructor of the immediate superclass: '" +
@@ -9379,7 +9388,9 @@ public class ExpressionVisitor extends Visitor {
                                 "type arguments must match type arguments in extended class expression");
                     }
                     else if (containingClass.equals(delegate)) {
-                      //nothing to do
+                        checkIsExactly(constructedType, 
+                                containingClass.getType(), type, 
+                                "type arguments must be the type parameters of this class");
                     }
                     else {
                         type.addError("does not instantiate the immediate superclass: '" +

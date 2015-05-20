@@ -342,3 +342,22 @@ shared class WithBrokenPartialConstructor {
     @error string = "``name``:``length``";
     @error print(WithLength(1.0, 2.0));
 }
+
+class WithBrokenDelegation<Element> {
+    
+    shared new(){}
+    
+    @error shared new Foo(Element f) 
+            extends WithBrokenDelegation<Integer>(){} 
+    
+    shared new Foo0(Element f) 
+            extends WithBrokenDelegation<Element>(){} 
+    
+    shared new Baz(){}
+    
+    @error shared new Bar(Element f) 
+            extends WithBrokenDelegation<Integer>.Baz(){}
+    
+    shared new Bar0(Element f) 
+            extends WithBrokenDelegation<Element>.Baz(){} 
+}
