@@ -5,7 +5,6 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.Unit.getAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
@@ -152,7 +151,7 @@ public class ProducedType extends ProducedReference {
                 .isExactlyInternal(type.resolveAliases());
     }
     
-    public boolean isExactlyInternal(ProducedType type) {
+    private boolean isExactlyInternal(ProducedType type) {
         if (depth.get()>50) {
             throw new RuntimeException("undecidable subtyping");
         }
@@ -282,16 +281,10 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
                 else {
-                    //for Java's static inner types, ignore the
-                    //qualifying type
                     ProducedType qt = 
-                            dec.isStaticallyImportable() ?
-                                    null : 
-                                    getQualifyingType();
+                            trueQualifyingType();
                     ProducedType tqt = 
-                            otherDec.isStaticallyImportable() ? 
-                                    null : 
-                                    type.getQualifyingType();
+                            type.trueQualifyingType();
                     if (qt==null || tqt==null) {
                         if (qt!=tqt) {
                             return false;
@@ -329,79 +322,85 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                     }
-                    for (TypeParameter p: 
-                            dec.getTypeParameters()) {
-                        ProducedType arg = 
-                                getTypeArguments()
-                                    .get(p);
-                        ProducedType otherArg = 
-                                type.getTypeArguments()
-                                    .get(p);
-                        if (arg==null || otherArg==null) {
-                            return false;
-                        }
-                        else {
-                            boolean contravariant = 
-                                    isContravariant(p);
-                            boolean covariant = 
-                                    isCovariant(p);
-                            boolean invariant = 
-                                    !covariant && 
-                                    !contravariant;
-                            boolean otherCovariant = 
-                                    type.isCovariant(p);
-                            boolean otherContravariant = 
-                                    type.isContravariant(p);
-                            boolean otherInvariant = 
-                                    !otherCovariant && 
-                                    !otherContravariant;
-                            if (contravariant && otherCovariant) {
-                                //Inv<in Nothing> == Inv<out Anything> 
-                                if (!arg.isNothing() ||
-                                        !getUpperBoundIntersection(p)
-                                            .isSubtypeOf(otherArg)) {
-                                    return false;
-                                }
-                            }
-                            else if (covariant && otherContravariant) {
-                                //Inv<out Anything> == Inv<in Nothing>
-                                if (!otherArg.isNothing() ||
-                                        !getUpperBoundIntersection(p)
-                                            .isSubtypeOf(arg)) {
-                                    return false;
-                                }
-                            }
-                            else if (contravariant && otherInvariant ||
-                                    invariant && otherContravariant) {
-                                //Inv<in Anything> == Inv<Anything> 
-                                if (!arg.isAnything() || 
-                                    !otherArg.isAnything()) {
-                                    return false;
-                                }
-                            }
-                            else if (covariant && otherInvariant ||
-                                    invariant && otherCovariant) {
-                                //Inv<out nothing> == Inv<Nothing>
-                                if (!arg.isNothing() || 
-                                    !otherArg.isNothing()) {
-                                    return false;
-                                }
-                            }
-                            else {
-                                //variances are same!
-                                if (!arg.isExactlyInternal(otherArg)) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                    return true;
+                    return isTypeArgumentListExactly(type);
                 }
             }
         }
         finally {
             depth.set(depth.get()-1);
         }
+    }
+
+    private boolean isTypeArgumentListExactly(ProducedType type) {
+        List<TypeParameter> typeParameters = 
+                getDeclaration().getTypeParameters();
+        for (TypeParameter p: 
+                typeParameters) {
+            ProducedType arg = 
+                    getTypeArguments()
+                        .get(p);
+            ProducedType otherArg = 
+                    type.getTypeArguments()
+                        .get(p);
+            if (arg==null || otherArg==null) {
+                return false;
+            }
+            else {
+                boolean contravariant = 
+                        isContravariant(p);
+                boolean covariant = 
+                        isCovariant(p);
+                boolean invariant = 
+                        !covariant && 
+                        !contravariant;
+                boolean otherCovariant = 
+                        type.isCovariant(p);
+                boolean otherContravariant = 
+                        type.isContravariant(p);
+                boolean otherInvariant = 
+                        !otherCovariant && 
+                        !otherContravariant;
+                if (contravariant && otherCovariant) {
+                    //Inv<in Nothing> == Inv<out Anything> 
+                    if (!arg.isNothing() ||
+                            !getUpperBoundIntersection(p)
+                                .isSubtypeOf(otherArg)) {
+                        return false;
+                    }
+                }
+                else if (covariant && otherContravariant) {
+                    //Inv<out Anything> == Inv<in Nothing>
+                    if (!otherArg.isNothing() ||
+                            !getUpperBoundIntersection(p)
+                                .isSubtypeOf(arg)) {
+                        return false;
+                    }
+                }
+                else if (contravariant && otherInvariant ||
+                        invariant && otherContravariant) {
+                    //Inv<in Anything> == Inv<Anything> 
+                    if (!arg.isAnything() || 
+                        !otherArg.isAnything()) {
+                        return false;
+                    }
+                }
+                else if (covariant && otherInvariant ||
+                        invariant && otherCovariant) {
+                    //Inv<out nothing> == Inv<Nothing>
+                    if (!arg.isNothing() || 
+                        !otherArg.isNothing()) {
+                        return false;
+                    }
+                }
+                else {
+                    //variances are same!
+                    if (!arg.isExactlyInternal(otherArg)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -423,7 +422,7 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? Ignore
      * a certain self type constraint.
      */
-    public boolean isSubtypeOfInternal(final ProducedType type) {
+    private boolean isSubtypeOfInternal(final ProducedType type) {
         if (depth.get()>50) {
             throw new RuntimeException("undecidable subtyping");
         }
@@ -489,9 +488,11 @@ public class ProducedType extends ProducedReference {
                     type.isTypeConstructor()) {
                 return isSubtypeOfTypeConstructor(type);
             }
-            else if (isTypeConstructor() || 
-                    type.isTypeConstructor()) {
-                return false;
+            else if (isTypeConstructor()) {
+                return type.isSupertypeOfObject();
+            }
+            else if (type.isTypeConstructor()) {
+                return isSupertypeOfObject();
             }
             else {
                 ProducedType supertype = 
@@ -501,16 +502,10 @@ public class ProducedType extends ProducedReference {
                 }
                 else {
                     supertype = supertype.resolveAliases();
-                    TypeDeclaration superDec = 
-                            supertype.getDeclaration();
-                    ProducedType stqt = 
-                            superDec.isStaticallyImportable() ?
-                                    null : 
-                                    supertype.getQualifyingType();
+                    ProducedType stqt =
+                            supertype.trueQualifyingType();
                     ProducedType tqt =
-                            otherDec.isStaticallyImportable() ? 
-                                    null : 
-                                    type.getQualifyingType();
+                            type.trueQualifyingType();
                     if (stqt==null) {
                         if (tqt!=null) {
                             //probably extraneous!
@@ -545,54 +540,8 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                     }
-                    for (TypeParameter p: 
-                            otherDec.getTypeParameters()) {
-                        ProducedType arg = 
-                                supertype.getTypeArguments()
-                                    .get(p);
-                        ProducedType otherArg = 
-                                type.getTypeArguments()
-                                    .get(p);
-                        if (arg==null || otherArg==null) {
-                            return false;
-                        }
-                        else if (type.isCovariant(p)) {
-                            if (supertype.isContravariant(p)) {
-                                //Inv<in T> is a subtype of Inv<out Anything>
-                                if (!p.getType()
-                                        .isSubtypeOf(otherArg)) {
-                                    return false;
-                                }
-                            }
-                            else if (!arg.isSubtypeOfInternal(otherArg)) {
-                                return false;
-                            }
-                        }
-                        else if (type.isContravariant(p)) {
-                            if (supertype.isCovariant(p)) {
-                                //Inv<out T> is a subtype of Inv<in Nothing>
-                                if (!otherArg.isNothing()) {
-                                    return false;
-                                }
-                            }
-                            else if (!otherArg.isSubtypeOfInternal(arg)) {
-                                return false;
-                            }
-                        }
-                        else {
-                            //type is invariant in p
-                            //Inv<out Nothing> is a subtype of Inv<Nothing>
-                            //Inv<in Anything> is a subtype of Inv<Anything>
-                            if (supertype.isCovariant(p) && 
-                                    !arg.isNothing() ||
-                                supertype.isContravariant(p) && 
-                                    !arg.isAnything() ||
-                                !arg.isExactlyInternal(otherArg)) {
-                                return false;
-                            }
-                        }
-                    }
-                    return true;
+                    return isTypeArgumentListAssignable(
+                            supertype, type);
                 }
             }
         }
@@ -601,6 +550,75 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    private static boolean isTypeArgumentListAssignable
+            (ProducedType supertype, ProducedType type) {
+        List<TypeParameter> typeParameters = 
+                type.getDeclaration()
+                    .getTypeParameters();
+        for (TypeParameter tp: typeParameters) {
+            ProducedType arg = 
+                    supertype.getTypeArguments().get(tp);
+            ProducedType otherArg = 
+                    type.getTypeArguments().get(tp);
+            if (arg==null || otherArg==null) {
+                return false;
+            }
+            else if (type.isCovariant(tp)) {
+                if (supertype.isContravariant(tp)) {
+                    //Inv<in T> is a subtype of Inv<out Anything>
+                    if (!tp.getType()
+                            .isSubtypeOf(otherArg)) {
+                        return false;
+                    }
+                }
+                else if (!arg.isSubtypeOfInternal(otherArg)) {
+                    return false;
+                }
+            }
+            else if (type.isContravariant(tp)) {
+                if (supertype.isCovariant(tp)) {
+                    //Inv<out T> is a subtype of Inv<in Nothing>
+                    if (!otherArg.isNothing()) {
+                        return false;
+                    }
+                }
+                else if (!otherArg.isSubtypeOfInternal(arg)) {
+                    return false;
+                }
+            }
+            else {
+                //type is invariant in p
+                //Inv<out Nothing> is a subtype of Inv<Nothing>
+                //Inv<in Anything> is a subtype of Inv<Anything>
+                if (supertype.isCovariant(tp) && 
+                        !arg.isNothing() ||
+                    supertype.isContravariant(tp) && 
+                        !arg.isAnything() ||
+                    !arg.isExactlyInternal(otherArg)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * For Java's static inner types, we sometimes need to
+     * ignore the qualifying type, since it doesn't affect
+     * the subtyping rules.
+     */
+    private ProducedType trueQualifyingType() {
+        return getDeclaration()
+                    .isStaticallyImportable() ? null : 
+                getQualifyingType();
+    }
+    
+    private boolean isSupertypeOfObject() {
+        Unit unit = getDeclaration().getUnit();
+        return unit.getType(unit.getObjectDeclaration())
+                .isSubtypeOf(this);
+    }
+    
     private boolean isExactlyTypeConstructor(ProducedType type) {
         TypeDeclaration dec = getDeclaration();
         TypeDeclaration otherDec = type.getDeclaration();
@@ -985,8 +1003,10 @@ public class ProducedType extends ProducedReference {
      * @param assigned does this reference occur on the
      *                 RHS of an assignment operator
      */
-    public ProducedTypedReference getTypedMember(TypedDeclaration member, 
-            List<ProducedType> typeArguments, boolean assigned) {
+    public ProducedTypedReference getTypedMember(
+            TypedDeclaration member, 
+            List<ProducedType> typeArguments, 
+            boolean assigned) {
         TypeDeclaration type = 
                 (TypeDeclaration) 
                     member.getContainer();
@@ -1017,7 +1037,8 @@ public class ProducedType extends ProducedReference {
      * @param typeArguments the type arguments of the
      *                      invocation
      */
-    public ProducedType getTypeMember(TypeDeclaration member, 
+    public ProducedType getTypeMember(
+            TypeDeclaration member, 
             List<ProducedType> typeArguments) {
         TypeDeclaration type = 
                 (TypeDeclaration) 
@@ -1070,8 +1091,8 @@ public class ProducedType extends ProducedReference {
     }
     
     /**
-     * Get all supertypes of the type by traversing the whole
-     * type hierarchy. Avoid using this!
+     * Get all supertypes of the type by traversing the
+     * whole type hierarchy. Avoid using this!
      */
     public List<ProducedType> getSupertypes() {
         return getSupertypes(new ArrayList<ProducedType>(5));
@@ -1084,7 +1105,7 @@ public class ProducedType extends ProducedReference {
             throw new RuntimeException("getSupertypes() not defined for union types or Nothing");
         }
         if (isWellDefined() && 
-                addToSupertypes(list, this)) {
+                addToSupertypes(this, list)) {
             ProducedType extendedType = 
                     getExtendedType();
             if (extendedType!=null) {
@@ -1101,6 +1122,20 @@ public class ProducedType extends ProducedReference {
         return list;
     }
     
+    private static boolean addToSupertypes(ProducedType st, 
+            List<ProducedType> list) {
+        for (ProducedType et: list) {
+            TypeDeclaration std = st.getDeclaration();
+            TypeDeclaration etd = et.getDeclaration();
+            if (std.equals(etd) && //return both a type and its self type
+                    st.isExactlyInternal(et)) {
+                return false;
+            }
+        }
+        list.add(st);
+        return true;
+    }
+
     /**
      * Given a type declaration, return a produced type of 
      * which this type is an invariant subtype.
@@ -1792,12 +1827,12 @@ public class ProducedType extends ProducedReference {
                 return NO_TYPE_ARGS;
             }
             else {
+                int size = tps.size();
                 List<ProducedType> argList = 
-                        new ArrayList<ProducedType>
-                            (tps.size());
+                        new ArrayList<ProducedType>(size);
                 Map<TypeParameter, ProducedType> args = 
                         getTypeArguments();
-                for (int i=0, l=tps.size(); i<l; i++) {
+                for (int i=0; i<size; i++) {
                     TypeParameter tp = tps.get(i);
                     ProducedType arg = args.get(tp);
                     if (arg==null) {
@@ -1826,9 +1861,12 @@ public class ProducedType extends ProducedReference {
     public List<TypeDeclaration> checkDecidability() {
         List<TypeDeclaration> errors = 
                 new ArrayList<TypeDeclaration>();
-        for (TypeParameter tp: 
-                getDeclaration().getTypeParameters()) {
-            ProducedType pt = getTypeArguments().get(tp);
+        List<TypeParameter> typeParameters = 
+                getDeclaration().getTypeParameters();
+        Map<TypeParameter, ProducedType> typeArguments = 
+                getTypeArguments();
+        for (TypeParameter tp: typeParameters) {
+            ProducedType pt = typeArguments.get(tp);
             if (pt!=null) {
                 pt.checkDecidability(tp.isCovariant(), 
                         tp.isContravariant(), errors);
@@ -1847,13 +1885,15 @@ public class ProducedType extends ProducedReference {
         }
         else if (declaration instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                ct.checkDecidability(covariant, contravariant, 
+                ct.checkDecidability(
+                        covariant, contravariant, 
                         errors);
             }
         }
         else if (declaration instanceof IntersectionType) {
             for (ProducedType ct: getSatisfiedTypes()) {
-                ct.checkDecidability(covariant, contravariant, 
+                ct.checkDecidability(
+                        covariant, contravariant, 
                         errors);
             }
         }
@@ -1871,23 +1911,27 @@ public class ProducedType extends ProducedReference {
                         getTypeArguments().get(tp);
                 if (pt!=null) {
                     if (tp.isCovariant()) {
-                        pt.checkDecidability(covariant, 
-                                contravariant, errors);
+                        pt.checkDecidability(
+                                covariant, contravariant, 
+                                errors);
                     }
                     else if (tp.isContravariant()) {
                         if (covariant|contravariant) { 
-                            pt.checkDecidability(!covariant, 
-                                    !contravariant, errors); 
+                            pt.checkDecidability(
+                                    !covariant, !contravariant, 
+                                    errors); 
                         }
                         else {
                             //else if we are in an invariant 
                             //position, it stays invariant
-                            pt.checkDecidability(covariant, 
-                                    contravariant, errors);
+                            pt.checkDecidability(
+                                    covariant, contravariant, 
+                                    errors);
                         }
                     }
                     else {
-                        pt.checkDecidability(false, false, 
+                        pt.checkDecidability(
+                                false, false, 
                                 errors);
                     }
                 }
@@ -1913,7 +1957,7 @@ public class ProducedType extends ProducedReference {
             boolean contravariant, 
             Declaration declaration) {
         List<TypeParameter> errors = 
-                new ArrayList<TypeParameter>();
+                new ArrayList<TypeParameter>(3);
         checkVariance(covariant, contravariant, 
                 declaration, errors);
         return errors;
@@ -1970,10 +2014,12 @@ public class ProducedType extends ProducedReference {
             if (!parameterizedDec.equals(declaration)) {
                 if (//if a contravariant type parameter appears 
                     //in a covariant location
-                    !covariant && isTrulyCovariant(tp) ||
+                    !covariant && 
+                        isTrulyCovariant(tp) ||
                     //or a covariant type parameter appears in a 
                     //contravariant location
-                    !contravariant && isTrulyContravariant(tp)) {
+                    !contravariant && 
+                        isTrulyContravariant(tp)) {
                     //add an error to the list
                     errors.add(tp);
                 }
@@ -2087,7 +2133,8 @@ public class ProducedType extends ProducedReference {
                 return true;
             }
             if (!isTypeConstructor()) {
-                List<ProducedType> tas = getTypeArgumentList();
+                List<ProducedType> tas = 
+                        getTypeArgumentList();
                 for (ProducedType at: tas) {
                     if (at==null || 
                             at.containsUnknowns()) {
@@ -2103,31 +2150,33 @@ public class ProducedType extends ProducedReference {
         return getFirstUnknownTypeError(false);
     }
 
-    public String getFirstUnknownTypeError(boolean includeSuperTypes) {
+    public String getFirstUnknownTypeError(
+            boolean includeSuperTypes) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnknownType) {
+            UnknownType ut = (UnknownType) d;
             ErrorReporter errorReporter = 
-                    ((UnknownType) d).getErrorReporter();
-            return errorReporter != null ? 
-                    errorReporter.getMessage() : null;
+                    ut.getErrorReporter();
+            return errorReporter == null ? null : 
+                errorReporter.getMessage();
         }
         else if (d instanceof UnionType) {
-            for (ProducedType ct: 
-                    getDeclaration().getCaseTypes()) {
-                String ret = 
-                        ct.getFirstUnknownTypeError(includeSuperTypes);
-                if (ret != null) {
-                    return ret;
+            for (ProducedType ct: d.getCaseTypes()) {
+                String error = 
+                        ct.getFirstUnknownTypeError(
+                                includeSuperTypes);
+                if (error!=null) {
+                    return error;
                 }
             }
         }
         else if (d instanceof IntersectionType) {
-            for (ProducedType st: 
-                    getDeclaration().getSatisfiedTypes()) {
-                String ret = 
-                        st.getFirstUnknownTypeError(includeSuperTypes);
-                if (ret != null) {
-                    return ret;
+            for (ProducedType st: d.getSatisfiedTypes()) {
+                String error = 
+                        st.getFirstUnknownTypeError(
+                                includeSuperTypes);
+                if (error!=null) {
+                    return error;
                 }
             }
         }
@@ -2138,35 +2187,38 @@ public class ProducedType extends ProducedReference {
             if (includeSuperTypes) {
                 ProducedType et = d.getExtendedType();
                 if (et != null) {
-                    String ret = 
-                            et.getFirstUnknownTypeError(includeSuperTypes);
-                    if (ret != null) {
-                        return ret;
+                    String error = 
+                            et.getFirstUnknownTypeError(
+                                    includeSuperTypes);
+                    if (error!=null) {
+                        return error;
                     }
                 }
                 for (ProducedType st: d.getSatisfiedTypes()) {
-                    String ret = 
-                            st.getFirstUnknownTypeError(includeSuperTypes);
-                    if (ret != null) {
-                        return ret;
+                    String error = 
+                            st.getFirstUnknownTypeError(
+                                    includeSuperTypes);
+                    if (error!=null) {
+                        return error;
                     }
                 }
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null) {
-                String ret = 
-                        qt.getFirstUnknownTypeError(includeSuperTypes);
-                if (ret != null) {
-                    return ret;
+                String error = 
+                        qt.getFirstUnknownTypeError(
+                                includeSuperTypes);
+                if (error!=null) {
+                    return error;
                 }
             }
             List<ProducedType> tas = getTypeArgumentList();
             for (ProducedType at: tas) {
                 if (at!=null) {
-                    String ret = 
+                    String error = 
                             at.getFirstUnknownTypeError(false);
-                    if (ret != null) {
-                        return ret;
+                    if (error!=null) {
+                        return error;
                     }
                 }
             }
@@ -2237,14 +2289,16 @@ public class ProducedType extends ProducedReference {
        }
        else if (d instanceof UnionType) {
            for (ProducedType ct: d.getCaseTypes()) {
-               if (ct.occursInvariantly(tp,covariant,contravariant)) {
+               if (ct.occursInvariantly(tp,
+                       covariant, contravariant)) {
                    return true;
                }
            }
        }
        else if (d instanceof IntersectionType) {
            for (ProducedType st: d.getSatisfiedTypes()) {
-               if (st.occursInvariantly(tp,covariant,contravariant)) {
+               if (st.occursInvariantly(tp,
+                       covariant, contravariant)) {
                    return true;
                }
            }
@@ -2253,12 +2307,14 @@ public class ProducedType extends ProducedReference {
            return false;
        }
        else {
-           if (!covariant && !contravariant && d.equals(tp)) {
+           if (!covariant && !contravariant && 
+                   d.equals(tp)) {
                return true;
            }
            ProducedType qt = getQualifyingType();
            if (qt!=null && 
-                   qt.occursInvariantly(tp,covariant,contravariant)) {
+                   qt.occursInvariantly(tp,
+                           covariant, contravariant)) {
                return true;
            }
            List<TypeParameter> tps = d.getTypeParameters();
@@ -2285,7 +2341,7 @@ public class ProducedType extends ProducedReference {
                        co = false;
                        contra = false;
                    }
-                   if (at.occursInvariantly(tp,co,contra)) {
+                   if (at.occursInvariantly(tp, co, contra)) {
                        return true;
                    }
                }
@@ -2340,7 +2396,7 @@ public class ProducedType extends ProducedReference {
                    if (isContravariant(itp)) {
                        co = !co;
                    }
-                   if (at.occursCovariantly(tp,co)) {
+                   if (at.occursCovariantly(tp, co)) {
                        return true;
                    }
                }
@@ -2361,14 +2417,14 @@ public class ProducedType extends ProducedReference {
        }
        else if (d instanceof UnionType) {
            for (ProducedType ct: d.getCaseTypes()) {
-               if (ct.occursContravariantly(tp,covariant)) {
+               if (ct.occursContravariantly(tp, covariant)) {
                    return true;
                }
            }
        }
        else if (d instanceof IntersectionType) {
            for (ProducedType st: d.getSatisfiedTypes()) {
-               if (st.occursContravariantly(tp,covariant)) {
+               if (st.occursContravariantly(tp, covariant)) {
                    return true;
                }
            }
@@ -2382,7 +2438,7 @@ public class ProducedType extends ProducedReference {
            }
            ProducedType qt = getQualifyingType();
            if (qt!=null && 
-                   qt.occursContravariantly(tp,covariant)) {
+                   qt.occursContravariantly(tp, covariant)) {
                return true;
            }
            List<TypeParameter> tps = d.getTypeParameters();
@@ -2395,7 +2451,7 @@ public class ProducedType extends ProducedReference {
                    if (isContravariant(itp)) {
                        co = !co;
                    }
-                   if (at.occursContravariantly(tp,co)) {
+                   if (at.occursContravariantly(tp, co)) {
                        return true;
                    }
                }
@@ -2443,11 +2499,7 @@ public class ProducedType extends ProducedReference {
                         else if (p.isContravariant() 
                                     && var==OUT) {
                             //simplify Contra<out T> to Contra<Nothing>
-                            ProducedType nothing = 
-                                    declaration.getUnit()
-                                        .getNothingDeclaration()
-                                        .getType();
-                            args.put(param, nothing);
+                            args.put(param, nothingType());
                             continue;
                         }
                     }

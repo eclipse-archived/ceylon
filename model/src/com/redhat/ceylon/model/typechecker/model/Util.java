@@ -1442,18 +1442,6 @@ public class Util {
         return formatPath(path, '.');
     }
     
-    static boolean addToSupertypes(List<ProducedType> list, 
-            ProducedType st) {
-        for (ProducedType et: list) {
-            if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
-                    st.isExactlyInternal(et)) {
-                return false;
-            }
-        }
-        list.add(st);
-        return true;
-    }
-
     public static ProducedType unionType(
             ProducedType lhst, ProducedType rhst, 
             Unit unit) {
