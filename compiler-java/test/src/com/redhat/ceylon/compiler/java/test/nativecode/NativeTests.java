@@ -52,6 +52,24 @@ public class NativeTests extends CompilerTests {
         assertErrors(dir + "/" + test, expectedErrors);
     }
     
+    private void testNativeModule(String dir) {
+        boolean ok = false;
+        try {
+            compile(dir + "/test.ceylon", dir + "/module.ceylon");
+            run("com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test", new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0"));
+        } catch (RuntimeException ex) {
+            assert(("ceylon.language.Exception \"" + dir + "-JVM\"").equals(ex.getMessage()));
+            ok = true;
+        }
+        if (!ok) {
+            Assert.fail("Test terminated incorrectly");
+        }
+    }
+    
+    private void testNativeModuleErrors(String dir, CompilerError... expectedErrors) {
+        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon"}, defaultOptions, null, expectedErrors);
+    }
+    
     // Methods
     
     @Test
@@ -187,6 +205,29 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(110, "type does not have a native implementation for this backend: 'NativeClassMismatch8js'")
         );
     }
+    
+    // Modules
+    
+    @Test
+    public void testNativeModule() {
+        testNativeModule("modok");
+    }
+    
+    @Test
+    public void testNativeModuleMissing() {
+        testNativeModuleErrors("modmissing",
+                new CompilerError(2, "Missing backend argument for native annotation on module: com.redhat.ceylon.compiler.java.test.nativecode.modmissing")
+        );
+    }
+    
+    @Test
+    public void testNativeModuleWrong() {
+        testNativeModuleErrors("modwrong",
+                new CompilerError(2, "Module not meant for this backend: com.redhat.ceylon.compiler.java.test.nativecode.modwrong")
+        );
+    }
+    
+    // Misc
     
     @Test
     public void testNativeInvalidTypes() {
