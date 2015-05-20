@@ -382,7 +382,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
         // create the actual list of modules to process
         List<File> srcs = FileUtil.applyCwd(cwd, sourceFolders);
-        List<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs);
+        List<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs, null);
         final List<ModuleSpec> modules = ModuleSpec.parseEachList(expandedModules);
         
         // we need to plug in the module manager which can load from .cars
