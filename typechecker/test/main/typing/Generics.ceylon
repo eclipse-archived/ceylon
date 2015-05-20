@@ -728,3 +728,18 @@ U barme<V,U>(U u, U v, V w)
     @error barme(1.0,2.0, 7);
     return u;
 }
+
+void upperBoundSubstitution() {
+    abstract class C<W,V,I,J>() {}
+    
+    interface A<T,Q> {
+        shared formal void fun<R, S>()
+                given R satisfies C<S,T,R,Q>;
+    }
+    
+    class B<P>() 
+            satisfies A<String,P> {
+        shared actual void fun<X, Y>()
+                given X satisfies C<Y,String,X,P> {}
+    }
+}

@@ -21,10 +21,10 @@ import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -693,6 +693,28 @@ public class RefinementVisitor extends Visitor {
 	    if (max==0) {
 	    	return emptyList();
 	    }
+	    //we substitute the type parameters of the refined
+	    //declaration into the bounds of the refining 
+	    //declaration
+        Map<TypeParameter, ProducedType> substitution =
+                new HashMap<TypeParameter, ProducedType>();
+        for (int i=0; i<max; i++) {
+            TypeParameter refinedTypeParam = 
+                    refinedTypeParams.get(i);
+            TypeParameter refiningTypeParam = 
+                    refiningTypeParams.get(i);
+            substitution.put(refiningTypeParam, 
+                    refinedTypeParam.getType());
+        }
+        TypeDeclaration rc = 
+                (TypeDeclaration) 
+                    refined.getContainer();
+        //we substitute the type arguments of the subtype's
+        //instantiation of the supertype into the bounds of 
+        //the refined declaration
+        Map<TypeParameter, ProducedType> args = 
+                ci.getType().getSupertype(rc)
+                    .getTypeArguments();
 		List<ProducedType> typeArgs = 
 		        new ArrayList<ProducedType>(max); 
 		for (int i=0; i<max; i++) {
@@ -702,16 +724,13 @@ public class RefinementVisitor extends Visitor {
 	                refiningTypeParams.get(i);
 	        ProducedType refinedProducedType = 
 	                refinedTypeParam.getType();
-            TypeDeclaration rc = 
-                    (TypeDeclaration) refined.getContainer();
-            Map<TypeParameter, ProducedType> args = 
-                    ci.getType().getSupertype(rc)
-                        .getTypeArguments();
-	        for (ProducedType t: 
-	                refiningTypeParam.getSatisfiedTypes()) {
-	            ProducedType bound = 
-	            		t.substitute(singletonMap(refiningTypeParam, 
-	            		        refinedProducedType));
+	        List<ProducedType> refinedBounds = 
+	                refinedTypeParam.getSatisfiedTypes();
+            List<ProducedType> refiningBounds = 
+                    refiningTypeParam.getSatisfiedTypes();
+            for (ProducedType t: refiningBounds) {
+	            ProducedType refiningBound = 
+	                    t.substitute(substitution);
 	            //for every type constraint of the refining member, there must
 	            //be at least one type constraint of the refined member which
 	            //is assignable to it, guaranteeing that the intersection of
@@ -721,9 +740,9 @@ public class RefinementVisitor extends Visitor {
 	            //      test assignability directly (the error messages might
 	            //      not be as helpful, but it might be less restrictive)
 	            boolean ok = false;
-	            for (ProducedType st: 
-	                    refinedTypeParam.getSatisfiedTypes()) {
-	                if (st.substitute(args).isSubtypeOf(bound)) {
+	            for (ProducedType refinedBound: refinedBounds) {
+	                if (refinedBound.substitute(args)
+	                        .isSubtypeOf(refiningBound)) {
 	                    ok = true;
 	                }
 	            }
@@ -737,15 +756,13 @@ public class RefinementVisitor extends Visitor {
 	                        t.getProducedTypeName(that.getUnit()) + "'");
 	            }
 	        }
-            for (ProducedType st: 
-                    refinedTypeParam.getSatisfiedTypes()) {
+            for (ProducedType refinedBound: refinedBounds) {
                 boolean ok = false;
-                for (ProducedType t: 
-                        refiningTypeParam.getSatisfiedTypes()) {
+                for (ProducedType refiningBound: refiningBounds) {
                     ProducedType bound = 
-                            t.substitute(singletonMap(refiningTypeParam, 
-                                    refinedProducedType));
-                    if (st.substitute(args).isSubtypeOf(bound)) {
+                            refiningBound.substitute(substitution);
+                    if (refinedBound.substitute(args)
+                            .isSubtypeOf(bound)) {
                         ok = true;
                     }
                 }
@@ -756,7 +773,7 @@ public class RefinementVisitor extends Visitor {
                             " with upper bound which member type parameter '" + 
                             refiningTypeParam.getName() + 
                             "' does not satisfy not yet supported: '" + 
-                            st.getProducedTypeName(that.getUnit()) + "'");
+                            refinedBound.getProducedTypeName(that.getUnit()) + "'");
                 }
             }
 	        typeArgs.add(refinedProducedType);
