@@ -156,7 +156,7 @@ public class JsOutput {
             ArrayList<Declaration> unsharedDecls = new ArrayList<>(pkg.getMembers().size());
             for (Declaration d : pkg.getMembers()) {
                 if (!d.isShared()
-                        && !(d.isAnonymous() && d.getName().startsWith("anonymous#"))
+                        && !(d.isAnonymous() && d.getName() != null && d.getName().startsWith("anonymous#"))
                         && (!d.isNative() || d.getNative().equals(Backend.JavaScript.nativeAnnotation))) {
                     unsharedDecls.add(d);
                 }
