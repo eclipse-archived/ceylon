@@ -820,7 +820,8 @@ public class TypeVisitor extends Visitor {
         that.setTypeModel(tt);
     }
 
-    static ProducedType getTupleType(List<Tree.Type> ets, Unit unit) {
+    static ProducedType getTupleType(List<Tree.Type> ets, 
+            Unit unit) {
         List<ProducedType> args = 
                 new ArrayList<ProducedType>
                     (ets.size());
@@ -872,11 +873,13 @@ public class TypeVisitor extends Visitor {
                 atleastone, firstDefaulted, unit);
     }
 
-    //TODO: big copy/paste from Unit.getTupleType(), to eliminate
-    //      the canonicalization (since aliases are not yet 
-    //      resolvable in this phase)
-    public static ProducedType getTupleType(List<ProducedType> elemTypes, 
-            boolean variadic, boolean atLeastOne, int firstDefaulted,
+    //TODO: big copy/paste from Unit.getTupleType(), to 
+    //      eliminate the canonicalization (since aliases  
+    //      are not yet resolvable in this phase)
+    public static ProducedType getTupleType(
+            List<ProducedType> elemTypes, 
+            boolean variadic, boolean atLeastOne, 
+            int firstDefaulted,
             Unit unit) {
         Class td = unit.getTupleDeclaration();
         Interface ed = unit.getEmptyDeclaration();
@@ -1069,7 +1072,12 @@ public class TypeVisitor extends Visitor {
                 //that alias Callable (in future relax this)
                 //and interpret *every* type with a missing
                 //type argument list as a type constructor
-                if (dec.inherits(unit.getCallableDeclaration())) {
+                Interface cd = unit.getCallableDeclaration();
+                boolean functionTypeConstructor = 
+                        dec.isAlias() ?
+                                dec.inherits(cd) :
+                                dec.equals(cd);
+                if (functionTypeConstructor) {
                     pt.setTypeConstructor(true);
                 }
             }
