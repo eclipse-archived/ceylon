@@ -429,7 +429,7 @@ public class JsCompiler {
                 if (be != null) {
                     if (be.isEmpty()) {
                         md.addError("Missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
-                    } else if (!isForBackend(be, Backend.Java)) {
+                    } else if (!isForBackend(be, Backend.JavaScript)) {
                         md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
                     }
                 }
