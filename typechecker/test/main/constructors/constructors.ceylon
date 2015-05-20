@@ -361,3 +361,8 @@ class WithBrokenDelegation<Element> {
     shared new Bar0(Element f) 
             extends WithBrokenDelegation<Element>.Baz(){} 
 }
+
+class WithInnerClassExtendingPartialConstructor {
+    abstract new Partial() {}   
+    @error shared class Inner() extends Partial() {}
+}

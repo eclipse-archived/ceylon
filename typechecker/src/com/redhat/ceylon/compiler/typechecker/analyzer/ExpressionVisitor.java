@@ -9753,13 +9753,21 @@ public class ExpressionVisitor extends Visitor {
                     //checkCaseOfSupertype(et, td, type);
                     TypeDeclaration etd = 
                             td.getExtendedTypeDeclaration();
+                    TypeDeclaration aetd = type.getDeclaration();
+                    if (aetd instanceof Constructor &&
+                            aetd.isAbstract()) {
+                        et.addError("extends a partial constructor: '" +
+                                aetd.getName(unit) + 
+                                "' is declared abstract");
+                    }
                     while (etd!=null && etd.isAlias()) {
                         etd = etd.getExtendedTypeDeclaration();
                     }
                     if (etd!=null) {
                         if (etd.isFinal()) {
                             et.addError("extends a final class: '" + 
-                                    etd.getName(unit) + "'");
+                                    etd.getName(unit) + 
+                                    "' is declared final");
                         }
                     	if (etd.isSealed() && 
                     	        !inSameModule(etd)) {
@@ -9769,7 +9777,9 @@ public class ExpressionVisitor extends Visitor {
                     				    .getModule()
                     				    .getNameAsString();
                             et.addError("extends a sealed class in a different module: '" +
-                    				etd.getName(unit) + "' in '" + moduleName + "'");
+                    				etd.getName(unit) + 
+                    				"' in '" + moduleName + 
+                    				"' is sealed");
                     	}
                     }
 //                if (td.isParameterized() &&

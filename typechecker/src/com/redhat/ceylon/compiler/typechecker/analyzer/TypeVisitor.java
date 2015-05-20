@@ -1628,7 +1628,8 @@ public class TypeVisitor extends Visitor {
             if (et!=null) {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    TypeDeclaration etd = et.getDeclarationModel();
+                    TypeDeclaration etd = 
+                            et.getDeclarationModel();
                     if (etd!=null && 
                             !(etd instanceof UnknownType)) {
                         if (etd instanceof Constructor) {
