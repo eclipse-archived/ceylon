@@ -26,10 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
-import com.redhat.ceylon.launcher.CeylonClassLoader;
-import com.redhat.ceylon.launcher.Launcher;
-
 /*
  * Really crappy proxy class for com.redhat.ceylon.compiler.ModuleDescriptorReader 
  * to prevent a problem with that class accessing all kinds of needed dependencies
@@ -39,6 +35,7 @@ class ModuleDescriptorReader {
     private Object instance;
     private Method moduleVersion;
     private Method moduleName;
+    private Method moduleBackend;
     private Method moduleLicense;
     private Method moduleAuthors;
     private Method moduleImports;
@@ -58,6 +55,8 @@ class ModuleDescriptorReader {
             this.moduleVersion.setAccessible(true);
             this.moduleName = mdr.getMethod("getModuleName");
             this.moduleName.setAccessible(true);
+            this.moduleBackend = mdr.getMethod("getModuleBackend");
+            this.moduleBackend.setAccessible(true);
             this.moduleLicense = mdr.getMethod("getModuleLicense");
             this.moduleLicense.setAccessible(true);
             this.moduleAuthors = mdr.getMethod("getModuleAuthors");
@@ -96,6 +95,18 @@ class ModuleDescriptorReader {
     public String getModuleName() {
         try {
             return (String)moduleName.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * Gets the module backend
+     * @return The name of the supported backend, or null if no native backend was found
+     */
+    public String getModuleBackend() {
+        try {
+            return (String)moduleBackend.invoke(instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
