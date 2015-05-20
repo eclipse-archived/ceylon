@@ -3266,15 +3266,15 @@ public class ExpressionVisitor extends Visitor {
         if (isTypeUnknown(type)) {
             type = unknownType();
             if (!dynamic) {
-                ap.addError("could not infer parameter type: " +
+                ap.addError("could not infer parameter type: '" +
                         parameter.getName() + 
-                        " would have unknown type");
+                        "' would have unknown type");
             }
         }
         else if (involvesTypeParams(declaration, type)) {
-            ap.addError("could not infer parameter type: " +
+            ap.addError("could not infer parameter type: '" +
                     parameter.getName() + 
-                    " would have type '" + 
+                    "' would have type '" + 
                     type.getProducedTypeName(unit) + 
                     "' involving type parameters");
             type = unknownType();
