@@ -4031,14 +4031,19 @@ public class ExpressionVisitor extends Visitor {
                         if (specifiedArguments==null ||
                                 specifiedArguments[i]) {
                             Parameter p = params.get(i);
-                            ProducedType pt = p.getType();
-                            if (pt!=null) {
-                            	occursContravariantly = occursContravariantly
-                        				|| pt.occursContravariantly(tp);
-                            	occursCovariantly = occursCovariantly
-                            			|| pt.occursCovariantly(tp);
-                            	occursInvariantly = occursInvariantly
-                            			|| pt.occursInvariantly(tp);
+                            MethodOrValue model = p.getModel();
+                            if (model!=null) {
+                                ProducedType pt = 
+                                        model.getTypedReference()
+                                            .getFullType();
+                                if (pt!=null) {
+                                	occursContravariantly = occursContravariantly
+                            				|| pt.occursContravariantly(tp);
+                                	occursCovariantly = occursCovariantly
+                                			|| pt.occursCovariantly(tp);
+                                	occursInvariantly = occursInvariantly
+                                			|| pt.occursInvariantly(tp);
+                                }
                             }
                         }
                     }
