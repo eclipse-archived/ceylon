@@ -150,6 +150,22 @@ class ModuleDescriptorReader {
     }
     
     /**
+     * Gets the module backend
+     * @return The name of the supported backend, or null if no native backend was found
+     */
+    public String getModuleBackend() {
+        for (Annotation ann : moduleDescriptor.getAnnotations()) {
+            if (ann.getName().equals("native")) {
+                List<String> args = ann.getPositionalArguments();
+                if (args != null && !args.isEmpty()) {
+                    return removeQuotes(args.get(0));
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Gets the module license
      * @return The module version, or null if no version could be found
      */
