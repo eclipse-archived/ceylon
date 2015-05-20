@@ -633,7 +633,11 @@ TypeConstraints?
             
             <synopsis>CallableParameter: Annotations CallableParameterPrefix MemberName Parameters+</synopsis>
             
-            <synopsis>CallableParameterPrefix: Type | "void"</synopsis>
+            <synopsis>CallableParameterPrefix: Type | "void" | "dynamic"</synopsis>
+            
+            <para>A callable parameter may be declared using the keyword <literal>dynamic</literal> 
+            in place of the return type, indicating that it is a partially typed declaration.
+            Such a parameter has no return type.</para>
             
             <para>If a callable parameter <literal>f</literal> has callable type 
             <literal>X(*A)</literal>, as specified below in 
