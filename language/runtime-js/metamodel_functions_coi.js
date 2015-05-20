@@ -305,7 +305,12 @@ function coistr$(coi) {
         s+=simplename(t.l[i]);
       }
     } else if (t.t==='T') {
-      s+='[TODO]Tuple';
+      s+= '[';
+      for (var tttt=0; tttt<t.l.length;tttt++) {
+        if (tttt>0)tttt+=',';
+        s+=qname$(t.l[tttt]);
+      }
+      s+=']';
     } else {
       s+=qname$(getrtmm$$(t.t));
       if (t.a)s+=addtargs(t);
