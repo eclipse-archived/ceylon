@@ -543,8 +543,15 @@ public class LanguageCompiler extends JavaCompiler {
     private void checkInvalidNativeModules() {
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             ModuleDescriptor md = pu.findModuleDescriptor();
-            if (md != null && !isForBackend(md.getAnnotationList(), Backend.Java, md.getUnit())) {
-                md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
+            if (md != null) {
+                String be = getNativeBackend(md.getAnnotationList(), md.getUnit());
+                if (be != null) {
+                    if (be.isEmpty()) {
+                        md.addError("Missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
+                    } else if (!isForBackend(be, Backend.Java)) {
+                        md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
+                    }
+                }
             }
         }
     }
