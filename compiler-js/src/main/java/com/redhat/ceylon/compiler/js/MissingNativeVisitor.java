@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.js;
 
 import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
 
+import java.util.HashSet;
+
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -25,8 +27,11 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class MissingNativeVisitor extends Visitor {
     private final Backend forBackend;
 
+    private final HashSet<String> declarations;
+
     public MissingNativeVisitor(Backend forBackend) {
         this.forBackend = forBackend;
+        declarations = new HashSet<String>();
     }
 
     //
@@ -86,6 +91,10 @@ public class MissingNativeVisitor extends Visitor {
 
     private boolean checkNativeExistence(Tree.Declaration decl) {
         Declaration model = decl.getDeclarationModel();
+        if (declarations.contains(model.getName())) {
+            return false;
+        }
+        declarations.add(model.getName());
         return checkNativeExistence(decl, model);
     }
     
@@ -120,7 +129,6 @@ public class MissingNativeVisitor extends Visitor {
                 if (m != null) {
                     return true;
                 }
-                ok = false;
             }
         }
         
