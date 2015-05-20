@@ -50,6 +50,7 @@ public class ModuleVisitor extends Visitor {
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
     private boolean completeOnlyAST = false;
+    private String moduleBackend = null;
 
     public void setCompleteOnlyAST(boolean completeOnlyAST) {
         this.completeOnlyAST = completeOnlyAST;
@@ -113,6 +114,7 @@ public class ModuleVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ModuleDescriptor that) {
+        moduleBackend = getNativeBackend(that.getAnnotationList(), that.getUnit());
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
             String version = getVersionString(that.getVersion());
@@ -158,7 +160,7 @@ public class ModuleVisitor extends Visitor {
                         mainModule.setAvailable(true);
                         mainModule.getAnnotations().clear();
                         buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
-                        mainModule.setNative(getNativeBackend(that.getAnnotationList(), that.getUnit()));
+                        mainModule.setNative(moduleBackend);
                     }
                 }
             }
@@ -183,6 +185,7 @@ public class ModuleVisitor extends Visitor {
                 }
             }
         }
+        moduleBackend = null;
     }
     
     @Override
@@ -245,18 +248,21 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing module version");
             }
             String version = getVersionString(that.getVersion());
+            String nameString;
             List<String> name;
             Node node;
             if (that.getImportPath()!=null) {
+                nameString = formatPath(that.getImportPath().getIdentifiers());
             	name = getNameAsList(that.getImportPath());
             	node = that.getImportPath();
             }
             else if (that.getQuotedLiteral()!=null) {
-                String nameString = getNameString(that.getQuotedLiteral());
+                nameString = getNameString(that.getQuotedLiteral());
                 name = asList(nameString.split("\\."));
                 node = that.getQuotedLiteral();
             }
             else {
+                nameString = "";
             	name = Collections.emptyList();
             	node = null;
             }
@@ -287,9 +293,12 @@ public class ModuleVisitor extends Visitor {
                     if (backend == null) {
                         node.addError("illegal native backend name: '\"" + 
                                 be + "\"' (must be either '\"java\"' or '\"js\"')");
+                    } else if (moduleBackend != null && !moduleBackend.equals(be)) {
+                        node.addError("native backend name on import conflicts with module descriptor: '\"" + 
+                                be + "\"' is not '\"" + moduleBackend + "\"'");
                     }
                 }
-                Module importedModule = moduleManager.getOrCreateModule(name,version);
+                Module importedModule = moduleManager.getOrCreateModule(name, version);
                 if (that.getImportPath()!=null) {
                 	that.getImportPath().setModel(importedModule);
                 }
@@ -304,6 +313,10 @@ public class ModuleVisitor extends Visitor {
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
                             if (be == null) {
                                 be = importedModule.getNative();
+                                if (be != null && moduleBackend == null) {
+                                    node.addError("native import for cross-platform module" +
+                                            " (mark either the module or the import as native)");
+                                }
                             } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
                                 node.addError("native backend name conflicts with imported module: '\"" + 
                                         be + "\"' is not '\"" + importedModule.getNative() + "\"'");
