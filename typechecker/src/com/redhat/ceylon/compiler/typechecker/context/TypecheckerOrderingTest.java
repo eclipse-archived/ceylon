@@ -19,6 +19,9 @@ public class TypecheckerOrderingTest {
     }
 
     public static void main(String[] args) throws IOException {
-        testCompileLanguageModule();
+        for (int i=1; i <= 20; i++) {
+            System.out.println("Try " + i);
+            testCompileLanguageModule();
+        }
     }
 }

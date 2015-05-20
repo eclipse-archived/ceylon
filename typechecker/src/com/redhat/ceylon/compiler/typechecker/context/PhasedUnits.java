@@ -37,8 +37,9 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
 
-    private long seed = 1432125695258L; // Many errors
+    //private long seed = 1432125695258L; // Many errors
     //private long seed = 1432125695260; // Single NPE
+    private long seed = System.currentTimeMillis(); // Who knows?
     
     public PhasedUnits(Context context) {
         this.context = context;
@@ -47,6 +48,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         this.moduleManager = new ModuleManager();
         this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
         this.moduleSourceMapper.initCoreModules();
+        System.err.println("RANDOM: " + seed);
     }
 
     public PhasedUnits(Context context, ModuleManagerFactory moduleManagerFactory) {
@@ -61,6 +63,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             this.moduleSourceMapper = new ModuleSourceMapper(context, moduleManager);
         }
         this.moduleSourceMapper.initCoreModules();
+        System.err.println("RANDOM: " + seed);
     }
     
     public void setSourceFiles(List<VirtualFile> sourceFiles){
