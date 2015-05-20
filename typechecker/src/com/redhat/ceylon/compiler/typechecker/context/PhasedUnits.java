@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
@@ -35,6 +37,9 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
 
+    private long seed = 1432125695258L; // Many errors
+    //private long seed = 1432125695260; // Single NPE
+    
     public PhasedUnits(Context context) {
         this.context = context;
         if(context.getModules() == null)
@@ -92,7 +97,8 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         try {
             if (file.isFolder()) {
                 //root directory is the src dir => start from here
-                final List<? extends VirtualFile> files = file.getChildren();
+                final List<? extends VirtualFile> files = new ArrayList<>(file.getChildren());
+                Collections.shuffle(files, new Random(seed));
                 for (VirtualFile subfile : files) {
                     parseFileOrDirectory(subfile, srcDir);
                 }
@@ -196,7 +202,8 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         moduleSourceMapper.push(dir.getName());
         
         // See if we're defining a new module
-        final List<? extends VirtualFile> files = dir.getChildren();
+        final List<? extends VirtualFile> files = new ArrayList<>(dir.getChildren());
+        Collections.shuffle(files, new Random(seed));
         boolean definesModule = false;
         for (VirtualFile file : files) {
             if (ModuleManager.MODULE_FILE.equals(file.getName())) {
