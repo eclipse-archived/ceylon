@@ -249,4 +249,17 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(30, "duplicate declaration name: 'nativeNonNativeMixed3'")
         );
     }
+    
+    @Test
+    public void testNativeDuplicates() {
+        testNativeErrors("NativeDuplicates",
+                new CompilerError(20, "native implementation not found for: 'nativeDuplicates1'"),
+                new CompilerError(22, "duplicate native header: 'nativeDuplicates1'"),
+                new CompilerError(28, "duplicate native implementation: 'nativeDuplicates2'"),
+                new CompilerError(30, "native implementation not found for: 'nativeDuplicates3'"),
+                new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
+                new CompilerError(38, "duplicate native implementation: 'nativeDuplicates4'"),
+                new CompilerError(42, "duplicate native implementation: 'nativeDuplicates5'")
+        );
+    }
 }
