@@ -35,6 +35,7 @@ public class ModuleDescriptorReader {
     private Object instance;
     private Method moduleVersion;
     private Method moduleName;
+    private Method moduleBackend;
     private Method moduleLicense;
     private Method moduleAuthors;
     private Method moduleImports;
@@ -56,6 +57,8 @@ public class ModuleDescriptorReader {
             this.moduleVersion.setAccessible(true);
             this.moduleName = mdr.getMethod("getModuleName");
             this.moduleName.setAccessible(true);
+            this.moduleBackend = mdr.getMethod("getModuleBackend");
+            this.moduleBackend.setAccessible(true);
             this.moduleLicense = mdr.getMethod("getModuleLicense");
             this.moduleLicense.setAccessible(true);
             this.moduleAuthors = mdr.getMethod("getModuleAuthors");
@@ -93,6 +96,18 @@ public class ModuleDescriptorReader {
     public String getModuleName() {
         try {
             return (String)moduleName.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * Gets the module backend
+     * @return The name of the supported backend, or null if no native backend was found
+     */
+    public String getModuleBackend() {
+        try {
+            return (String)moduleBackend.invoke(instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
