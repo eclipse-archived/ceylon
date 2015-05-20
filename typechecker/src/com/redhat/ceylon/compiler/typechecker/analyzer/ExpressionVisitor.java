@@ -2975,9 +2975,11 @@ public class ExpressionVisitor extends Visitor {
                             (Tree.StaticMemberOrTypeExpression) 
                                 qmte.getPrimary();
                     ote.setTargetParameter(tpr);
+                    stme.setParameterType(tpr.getFullType());
                 }
                 else {
                     stme.setTargetParameter(tpr);
+                    stme.setParameterType(tpr.getFullType());
                 }
             }
         }
@@ -3168,7 +3170,7 @@ public class ExpressionVisitor extends Visitor {
                         template, type,
                         findingUpperBounds, smte);
         if (isTypeUnknown(it) ||
-                it.involvesTypeParameters(typeParams) ||
+//                it.involvesTypeParameters(typeParams) ||
                 involvesTypeParams(pd, it)) {
             return nothingType();
         }
@@ -3211,7 +3213,7 @@ public class ExpressionVisitor extends Visitor {
                             findingUpperBounds, 
                             smte);
             if (!(isTypeUnknown(it) ||
-                    it.involvesTypeParameters(typeParams) ||
+//                    it.involvesTypeParameters(typeParams) ||
                     involvesTypeParams(pd, it))) {
                 addToUnionOrIntersection(findingUpperBounds, 
                         list, it);
@@ -4229,7 +4231,9 @@ public class ExpressionVisitor extends Visitor {
                 parameters.getParameters();
         boolean[] specified = 
                 new boolean[params.size()];
-        for (int i=0; i<count; i++) {
+        for (int i=0; 
+                i<count && i<params.size(); 
+                i++) {
             specified[i] = true;
         }
         return specified;
