@@ -20,6 +20,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMembe
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
@@ -8818,16 +8819,6 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal, Node parent) {
         return acceptsTypeArguments(null, member, 
                 typeArguments, tal, parent);
-    }
-    
-    private static boolean isGeneric(Declaration member) {
-        if (member instanceof Generic) {
-            Generic g = (Generic) member;
-            return !g.getTypeParameters().isEmpty();
-        }
-        else {
-            return false;
-        }
     }
     
     private boolean acceptsTypeArguments(ProducedType receiver, 

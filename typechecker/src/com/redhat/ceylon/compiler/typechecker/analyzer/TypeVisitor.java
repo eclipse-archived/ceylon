@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArgume
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -40,7 +41,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
@@ -1668,7 +1668,8 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (td.isAlias()) {
             return;
         }
@@ -1692,18 +1693,16 @@ public class TypeVisitor extends Visitor {
                         //unnecessary, handled by SupertypeVisitor
 //                      st.addError("directly extends itself: '" + 
 //                              td.getName() + "'");
-                        continue;
                     }
-                    if (std instanceof TypeAlias) {
+                    else if (std instanceof TypeAlias) {
                         st.addError("satisfies a type alias: '" + 
                                 type.getDeclaration().getName(unit) + 
                                 "'");
-                        continue;
                     }
-                    if (std instanceof Constructor) {
-                        continue;
+                    else if (std instanceof Constructor) {
+                        //nothing to do
                     }
-                    if (td instanceof TypeParameter) {
+                    else if (td instanceof TypeParameter) {
                         if (foundTypeParam) {
                             st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
                         }
@@ -1712,31 +1711,31 @@ public class TypeVisitor extends Visitor {
                                 st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
                             }
                             foundTypeParam = true;
+                            list.add(type);
                         }
                         else if (std instanceof Class) {
                             if (foundClass) {
                                 st.addUnsupportedError("multiple class upper bounds are not yet supported");
                             }
                             foundClass = true;
+                            list.add(type);
                         }
                         else if (std instanceof Interface) {
                             foundInterface = true;
+                            list.add(type);
                         }
                         else {
                             st.addError("upper bound must be a class, interface, or type parameter");
-                            continue;
                         }
                     } 
                     else {
                         if (std instanceof TypeParameter) {
                             st.addError("directly satisfies type parameter: '" + 
                                     std.getName(unit) + "'");
-                            continue;
                         }
                         else if (std instanceof Class) {
                             st.addError("satisfies a class: '" + 
                                     std.getName(unit) + "'");
-                            continue;
                         }
                         else if (std instanceof Interface) {
                             if (td.isDynamic() && 
@@ -1744,13 +1743,14 @@ public class TypeVisitor extends Visitor {
                                 st.addError("dynamic interface satisfies a non-dynamic interface: '" + 
                                         std.getName(unit) + "'");
                             }
+                            else {
+                                list.add(type);
+                            }
                         }
                         else {
                             st.addError("satisfied type must be an interface");
-                            continue;
                         }
                     }
-                    list.add(type);
                 }
             }
         }
@@ -1824,10 +1824,12 @@ public class TypeVisitor extends Visitor {
                     else if (ctd.equals(td)) {
                         ct.addError("directly enumerates itself: '" + 
                                 td.getName() + "'");
-                        continue;
                     }
                     else if (ctd instanceof TypeParameter) {
-                        if (!(td instanceof TypeParameter)) {
+                        if (td instanceof TypeParameter) {
+                            list.add(type);
+                        }
+                        else {
                             TypeParameter tp = 
                                     (TypeParameter) ctd;
                             td.setSelfType(type);
@@ -1836,17 +1838,15 @@ public class TypeVisitor extends Visitor {
                             }
                             else {
                                 tp.setSelfTypedDeclaration(td);
+                                list.add(type);
                             }
                             if (cts.size()>1) {
                                 ct.addError("a type may not have more than one self type");
                             }
                         }
-                        else {
-                            //TODO: error?!
-                        }
                     }
                     else if (ctd instanceof ClassOrInterface) {
-                        //nothing special to do
+                        list.add(type);
                     }
                     else {
                         if (td instanceof TypeParameter) {
@@ -1855,9 +1855,7 @@ public class TypeVisitor extends Visitor {
                         else {
                             ct.addError("case type must be a class, interface, or self type");
                         }
-                        continue;
                     }
-                    list.add(type);
                 }
             }
         }
@@ -1869,17 +1867,23 @@ public class TypeVisitor extends Visitor {
                         list.get(0)
                             .getDeclaration()
                             .getContainer();
-                if (scope instanceof ClassOrInterface && 
-                        !((ClassOrInterface) scope).isAbstract()) {
-                    that.addError("non-abstract class parameterized by self type: '" + 
-                            td.getName() + "'", 905);
+                if (scope instanceof ClassOrInterface) {
+                    ClassOrInterface ci = 
+                            (ClassOrInterface) scope;
+                    if (!ci.isAbstract()) {
+                        that.addError("non-abstract class parameterized by self type: '" + 
+                                td.getName() + "'", 905);
+                    }
                 }
             }
             else {
-                if (td instanceof ClassOrInterface && 
-                        !((ClassOrInterface) td).isAbstract()) {
-                    that.addError("non-abstract class has enumerated subtypes: '" +
-                            td.getName() + "'", 905);
+                if (td instanceof ClassOrInterface) {
+                    ClassOrInterface ci = 
+                            (ClassOrInterface) td;
+                    if (!ci.isAbstract()) {
+                        that.addError("non-abstract class has enumerated subtypes: '" +
+                                td.getName() + "'", 905);
+                    }
                 }
             }
             td.setCaseTypes(list);
@@ -1889,37 +1893,31 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        //i.e. an attribute initializer parameter
         Parameter p = that.getParameterModel();
+        String name = p.getName();
         Declaration a = 
                 that.getScope()
-                    .getDirectMember(p.getName(), 
-                            null, false);
+                    .getDirectMember(name, null, false);
         if (a==null) {
             //Now done in ExpressionVisitor!
 //            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 
-                    p.getName() + "'");
+                    name + "'");
         }
         else {
             if (a.isFormal()) {
                 that.addError("parameter is a formal attribute: '" + 
-                        p.getName() + "'", 320);
+                        name + "'", 320);
             }
-            /*else if (a.isDefault()) {
-                that.addError("initializer parameter refers to a default attribute: " + 
-                        d.getName());
-            }*/
             MethodOrValue mov = (MethodOrValue) a;
             mov.setInitializerParameter(p);
             p.setModel(mov);
         }
-        if (a instanceof Generic && 
-                !((Generic) a).getTypeParameters().isEmpty()) {
-            that.addError("parameter declaration has type parameters: '" + 
-                    p.getName() + "' may not declare type parameters");
+        if (isGeneric(a)) {
+            that.addError("parameter declaration is generic: '" + 
+                    name + "' may not declare type parameters");
         }
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);

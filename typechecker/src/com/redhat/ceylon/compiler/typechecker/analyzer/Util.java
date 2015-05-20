@@ -22,6 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -1243,6 +1244,16 @@ public class Util {
                 }
             }
             return pt.isTypeConstructor();
+        }
+    }
+
+    static boolean isGeneric(Declaration member) {
+        if (member instanceof Generic) {
+            Generic g = (Generic) member;
+            return !g.getTypeParameters().isEmpty();
+        }
+        else {
+            return false;
         }
     }
 }
