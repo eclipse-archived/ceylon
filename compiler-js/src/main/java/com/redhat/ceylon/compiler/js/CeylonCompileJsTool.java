@@ -277,6 +277,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                         return super.equals(obj);
                     }
                 }
+                @Override
+                public int compareTo(VirtualFile o) {
+                    return getPath().compareTo(o.getPath());
+                }
             };
             t0 = System.nanoTime();
             tcb = new TypeCheckerBuilder()
