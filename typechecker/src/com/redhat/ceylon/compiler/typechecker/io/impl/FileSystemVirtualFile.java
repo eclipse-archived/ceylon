@@ -87,6 +87,11 @@ public class FileSystemVirtualFile implements VirtualFile {
     }
 
     @Override
+    public int compareTo(VirtualFile o) {
+        return getPath().compareTo(o.getPath());
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("FileSystemVirtualFile");

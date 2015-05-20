@@ -140,6 +140,26 @@ public class ZipFileVirtualFile implements ClosableVirtualFile {
     }
 
     @Override
+    public int hashCode() {
+        return getPath().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof VirtualFile) {
+            return ((VirtualFile) obj).getPath().equals(getPath());
+        }
+        else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
+    public int compareTo(VirtualFile o) {
+        return getPath().compareTo(o.getPath());
+    }
+
+    @Override
     public void close() {
         if (closable) {
             try {

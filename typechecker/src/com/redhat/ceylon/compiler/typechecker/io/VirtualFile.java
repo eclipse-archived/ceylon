@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public interface VirtualFile {
+public interface VirtualFile extends Comparable<VirtualFile> {
     /**
      * Is the file a folder?
      */

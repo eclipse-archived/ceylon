@@ -88,4 +88,9 @@ class ZipEntryVirtualFile implements VirtualFile {
             return super.equals(obj);
         }
     }
+
+    @Override
+    public int compareTo(VirtualFile o) {
+        return getPath().compareTo(o.getPath());
+    }
 }
