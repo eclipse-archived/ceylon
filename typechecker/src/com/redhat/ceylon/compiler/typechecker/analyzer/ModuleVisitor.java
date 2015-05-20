@@ -286,7 +286,7 @@ public class ModuleVisitor extends Visitor {
                     Backend backend = Backend.fromAnnotation(be);
                     if (backend == null) {
                         node.addError("illegal native backend name: '\"" + 
-                                be + "\"', must be either '\"jvm\"' or '\"js\"'");
+                                be + "\"' (must be either '\"jvm\"' or '\"js\"')");
                     }
                 }
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
