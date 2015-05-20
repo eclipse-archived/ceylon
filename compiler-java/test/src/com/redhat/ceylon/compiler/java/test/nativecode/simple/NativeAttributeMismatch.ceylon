@@ -19,12 +19,12 @@
  */
 native Integer nativeAttributeMismatch1;
 
-native("jvm") Integer nativeAttributeMismatch1 => 0;
+native("java") Integer nativeAttributeMismatch1 => 0;
 
 native("js") shared Integer nativeAttributeMismatch1 => 1;
 
 native Integer nativeAttributeMismatch2;
 
-native("jvm") String nativeAttributeMismatch2 => "";
+native("java") String nativeAttributeMismatch2 => "";
 
 native("js") Integer nativeAttributeMismatch2 => 1;

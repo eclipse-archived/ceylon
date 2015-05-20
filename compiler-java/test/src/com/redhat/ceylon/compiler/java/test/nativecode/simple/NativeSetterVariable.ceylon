@@ -20,7 +20,7 @@
 native shared Integer nativeSetterVariable;
 native assign nativeSetterVariable;
 
-native("jvm") shared variable Integer nativeSetterVariable = 1;
+native("java") shared variable Integer nativeSetterVariable = 1;
 
 native("js") shared variable Integer nativeSetterVariable = 2;
 

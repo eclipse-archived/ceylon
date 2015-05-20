@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm") Integer nativeAttributePrivate1 = 1;
+native("java") Integer nativeAttributePrivate1 = 1;
 
 native("js") Integer nativeAttributePrivate1 = 2;
 
 
-native("jvm") variable Integer nativeAttributePrivate2 = 1;
+native("java") variable Integer nativeAttributePrivate2 = 1;
 
 native("js") variable Integer nativeAttributePrivate2 = 2;
 
 
-native("jvm") Integer nativeAttributePrivate3 {
+native("java") Integer nativeAttributePrivate3 {
     throw Exception("NativeAttributePrivate-JVM");
 }
 

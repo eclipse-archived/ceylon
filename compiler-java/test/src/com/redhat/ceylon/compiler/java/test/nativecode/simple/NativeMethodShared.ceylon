@@ -19,7 +19,7 @@
  */
 native shared void nativeMethodShared();
 
-native("jvm") shared void nativeMethodShared() {
+native("java") shared void nativeMethodShared() {
     throw Exception("NativeMethodShared-JVM");
 }
 

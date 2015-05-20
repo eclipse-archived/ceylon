@@ -30,21 +30,21 @@ interface NativeClassMismatchSuper2 {
 
 native class NativeClassMismatch1() {}
 
-native("jvm") class NativeClassMismatch1() {}
+native("java") class NativeClassMismatch1() {}
 
 native("js") shared class NativeClassMismatch1() {}
 
 
 native class NativeClassMismatch2(Integer i) {}
 
-native("jvm") class NativeClassMismatch2(Integer i, Boolean b) {}
+native("java") class NativeClassMismatch2(Integer i, Boolean b) {}
 
 native("js") class NativeClassMismatch2(String s) {}
 
 
 native class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
 
-native("jvm") class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
+native("java") class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
 
 native("js") class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
 
@@ -54,8 +54,8 @@ native class NativeClassMismatch4() satisfies NativeClassMismatchSuper1, NativeC
     native shared actual void test2(Integer i);
 }
 
-native("jvm") class NativeClassMismatch4() satisfies NativeClassMismatchSuper1 {
-    native("jvm") shared actual void test1(Integer i) {}
+native("java") class NativeClassMismatch4() satisfies NativeClassMismatchSuper1 {
+    native("java") shared actual void test1(Integer i) {}
 }
 
 native("js") class NativeClassMismatch4() satisfies NativeClassMismatchSuper1, NativeClassMismatchSuper2 {
@@ -68,8 +68,8 @@ native class NativeClassMismatch5() satisfies NativeClassMismatchSuper1 {
     native shared actual void test1(Integer i);
 }
 
-native("jvm") class NativeClassMismatch5() satisfies NativeClassMismatchSuper1 {
-    native("jvm") shared actual void test1(Integer i) {}
+native("java") class NativeClassMismatch5() satisfies NativeClassMismatchSuper1 {
+    native("java") shared actual void test1(Integer i) {}
 }
 
 native("js") class NativeClassMismatch5() satisfies NativeClassMismatchSuper2 {
@@ -88,13 +88,13 @@ native class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
     native shared actual void test1(Integer i);
 }
 
-native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
+native("java") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
     native("js") shared actual void test1(Integer i) {}
 }
 
 
-native("jvm") class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
-    native("jvm") shared actual void test1(Integer i) {
+native("java") class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
+    native("java") shared actual void test1(Integer i) {
         NativeClassMismatch8js().test2(i);
     }
 }

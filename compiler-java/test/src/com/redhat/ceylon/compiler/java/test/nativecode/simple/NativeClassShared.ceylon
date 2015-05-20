@@ -22,11 +22,11 @@ native shared class NativeClassShared() {
     native shared Integer foo;
 }
 
-native("jvm") shared class NativeClassShared() {
-    native("jvm") shared Integer test(Integer i) {
+native("java") shared class NativeClassShared() {
+    native("java") shared Integer test(Integer i) {
         throw Exception("NativeClassShared-JVM");
     }
-    native("jvm") shared Integer foo => test(0);
+    native("java") shared Integer foo => test(0);
 }
 
 native("js") shared class NativeClassShared() {
