@@ -30,6 +30,63 @@ shared class C511() satisfies I511 {
 }
 shared class D511() extends C511() satisfies I511 {}
 
+class Issue231_1(shared actual String string) {}
+class Issue231_2(string) {
+    shared actual String string;
+}
+
+interface Issue266i<Parm> {}
+class Issue266() satisfies Issue266i<String|Integer>{}
+class Issue266_2() satisfies Issue266i<String>{}
+interface Issue266two{}
+interface Issue266three satisfies Issue266i<String>&Issue266two{}
+class Issue266_3() satisfies Issue266i<Issue266three> {}
+class Issue266_4() satisfies Issue266i<Issue266i<String>&Issue266two> {}
+
+class MyList360() extends Object() satisfies List<String> {
+    getFromFirst(Integer index) => index.string;
+    lastIndex => 100;
+    measure(Integer from, Integer length) => nothing;
+    span(Integer from, Integer to) => nothing;
+    spanFrom(Integer from) => nothing;
+    spanTo(Integer to) => nothing;
+    clone() => this;
+}
+
+class Outer459<T>(T t) {
+    class Inner() {
+        shared T get() => t;
+    }
+    shared Object create() => Inner();
+    shared T get(Object obj) => if (is Inner obj) then obj.get() else t;
+}
+[Object(), T(Object)] func459<T>(T t) {
+    class Inner() {
+        shared T get() => t;
+    }
+    Object create() => Inner();
+    T get(Object obj) => if (is Inner obj) then obj.get() else t;
+    return [create,get];
+}
+
+interface Cont547<T> {}
+interface One547 satisfies Identifiable {
+    shared formal Cont547<A> m<A>();
+}
+interface Two547 satisfies One547 {
+    shared formal actual Cont547<B> m<B>();
+}
+class Three547() satisfies Two547 {
+    shared default actual Cont547<C> m<C>() {
+        object x satisfies Cont547<C> {}
+        return x;
+    }
+}
+class Four547() extends Three547() {
+    shared actual Cont547<D> m<D>()
+        => object satisfies Cont547<D> {};
+}
+
 void testIssues() {
     check(C150((Integer i) => "i=``i``").f()=="i=100", "issue 150");
     check(Issue231_1("Hola").string == "Hola", "Issue 231 [1]");
@@ -71,43 +128,18 @@ void testIssues() {
     interface Bar549<T> satisfies Foo549<T> {}
     Object bar = object satisfies Bar549<String> {};
     check(bar is Foo549<String>, "#549");
-}
 
-class Issue231_1(shared actual String string) {}
-class Issue231_2(string) {
-    shared actual String string;
-}
-
-interface Issue266i<Parm> {}
-class Issue266() satisfies Issue266i<String|Integer>{}
-class Issue266_2() satisfies Issue266i<String>{}
-interface Issue266two{}
-interface Issue266three satisfies Issue266i<String>&Issue266two{}
-class Issue266_3() satisfies Issue266i<Issue266three> {}
-class Issue266_4() satisfies Issue266i<Issue266i<String>&Issue266two> {}
-
-class MyList360() extends Object() satisfies List<String> {
-    getFromFirst(Integer index) => index.string;
-    lastIndex => 100;
-    measure(Integer from, Integer length) => nothing;
-    span(Integer from, Integer to) => nothing;
-    spanFrom(Integer from) => nothing;
-    spanTo(Integer to) => nothing;
-    clone() => this;
-}
-
-class Outer459<T>(T t) {
-    class Inner() {
-        shared T get() => t;
-    }
-    shared Object create() => Inner();
-    shared T get(Object obj) => if (is Inner obj) then obj.get() else t;
-}
-[Object(), T(Object)] func459<T>(T t) {
-    class Inner() {
-        shared T get() => t;
-    }
-    Object create() => Inner();
-    T get(Object obj) => if (is Inner obj) then obj.get() else t;
-    return [create,get];
+    //547
+    Four547 d547 = Four547();
+    Three547 c547 = d547;
+    Two547   b547 = d547;
+    One547   a547 = d547;
+    Anything ca547 = a547.m<String>();
+    Anything cb547 = b547.m<String>();
+    Anything cc547 = c547.m<String>();
+    Anything cd547 = d547.m<String>();
+    check(ca547 is Cont547<String>, "#547 gen 1");
+    check(cb547 is Cont547<String>, "#547 gen 2");
+    check(cc547 is Cont547<String>, "#547 gen 3");
+    check(cd547 is Cont547<String>, "#547 gen 4");
 }
