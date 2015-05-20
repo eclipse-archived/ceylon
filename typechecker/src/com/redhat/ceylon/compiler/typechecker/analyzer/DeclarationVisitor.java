@@ -2396,7 +2396,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType t = that.getType();
             if (t==null) {
@@ -2417,7 +2418,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (td.isAlias()) {
             return;
         }
@@ -2450,14 +2452,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         else {
             TypeDeclaration td = 
-                    (TypeDeclaration) that.getScope();
+                    (TypeDeclaration) 
+                        that.getScope();
             ProducedType type = t.getTypeModel();
             if (type!=null) {
                 td.setExtendedType(type);
             }
-            if (that.getMainToken().getType()==SPECIFY) {
-                that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
-            }
+            checkSpecifierSymbol(that);
         }
     }
     
@@ -2472,20 +2473,23 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         else if (!(that instanceof Tree.DefaultTypeArgument)) {
             TypeDeclaration td = 
-                    (TypeDeclaration) that.getScope();
+                    (TypeDeclaration) 
+                        that.getScope();
             ProducedType type = t.getTypeModel();
             if (type!=null) {
                 td.setExtendedType(type);
             }
-            if (that.getMainToken().getType()==SPECIFY) {
-                that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
-            }
+            checkSpecifierSymbol(that);
         }
     }
     
     @Override
     public void visit(Tree.LazySpecifierExpression that) {
         super.visit(that);
+        checkSpecifierSymbol(that);
+    }
+
+    private static void checkSpecifierSymbol(Node that) {
         if (that.getMainToken().getType()==SPECIFY) {
             that.addError("incorrect syntax: expression must be specified using =>", 1050);
         }
