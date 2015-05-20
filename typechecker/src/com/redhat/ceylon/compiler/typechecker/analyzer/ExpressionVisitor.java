@@ -4256,7 +4256,10 @@ public class ExpressionVisitor extends Visitor {
                 TypeParameter tp2 = 
                         (TypeParameter) paramTypeDec;
                 if (!findingUpperBounds &&
-                        !visited.contains(tp2)) { //TODO: this surely has to be wrong!!
+                        //protect ourselves from revisiting
+                        //this upper bound due to circularities
+                        //in the upper bounds
+                        !visited.contains(tp2)) {
                     visited.add(tp2);
                     List<ProducedType> sts = 
                             tp2.getSatisfiedTypes();
@@ -4273,6 +4276,7 @@ public class ExpressionVisitor extends Visitor {
                                         findingUpperBounds, 
                                         visited, argNode));
                     }
+                    visited.remove(tp2);
                     return unionOrIntersection(
                             findingUpperBounds, list);
                 }
