@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public enum Backend {
     None("", BackendSupport.HEADER),
-    Java("jvm", BackendSupport.JAVA),
+    Java("java", BackendSupport.JAVA),
     JavaScript("js", BackendSupport.JAVASCRIPT);
     
     public final String nativeAnnotation;
