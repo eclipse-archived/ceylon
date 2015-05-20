@@ -15,6 +15,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Util;
 
 public class FunctionHelper {
@@ -30,6 +31,9 @@ public class FunctionHelper {
             public void completeFunction() {
                 gen.beginBlock();
                 if (paramLists.size() == 1 && scope!=null && initSelf) { gen.initSelf(block); }
+                if (scope instanceof Method) {
+                    addParentMethodTypeParameters((Method)scope, gen);
+                }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
@@ -45,6 +49,9 @@ public class FunctionHelper {
             public void completeFunction() {
                 gen.out("{");
                 if (paramLists.size() == 1 && scope != null && initSelf) { gen.initSelf(expr); }
+                if (scope instanceof Method) {
+                    addParentMethodTypeParameters((Method)scope, gen);
+                }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
                 gen.out("return ");
@@ -302,6 +309,7 @@ public class FunctionHelper {
             if (d.getContainer() instanceof TypeDeclaration) {
                 gen.initSelf(that);
             }
+            addParentMethodTypeParameters(d, gen);
             gen.initParameters(paramList, null, d);
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
@@ -405,6 +413,66 @@ public class FunctionHelper {
                     params.getParameters().get(params.getParameters().size()-1).getParameterModel().isSequenced(),
                     params.getParameters().get(params.getParameters().size()-1).getParameterModel().isAtLeastOne(),
                     firstDefaulted);
+        }
+    }
+
+    private static boolean copyMissingTypeParameters(final Method child, final Method parent,
+            final int idx, final boolean firstOne, final GenerateJsVisitor gen) {
+        //We already know the kid has type parameters
+        List<TypeParameter> ctp = child.getTypeParameters();
+        List<TypeParameter> ptp = parent.getTypeParameters();
+        String tpaname = gen.getNames().typeArgsParamName(child) + ".";
+        TypeParameter dad = ptp.get(idx);
+        TypeParameter kid = ctp.get(idx);
+        if (!dad.getName().equals(kid.getName())) {
+            String pname = tpaname + dad.getName() + "$" + child.getName();
+            if (firstOne) {
+                String cname = tpaname + kid.getName() + "$" + child.getName();
+                gen.out("if(", cname, "===undefined)", cname, "=", pname);
+            } else {
+                gen.out("||", pname);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /** See #547 - a generic actual method that has different names in its type parameters as the one
+     * it's refining, can receive the type arguments of the parent instead. */
+    static void addParentMethodTypeParameters(final Method m, final GenerateJsVisitor gen) {
+        List<TypeParameter> tps = m.getTypeParameters();
+        if (m.isActual() && tps != null && !tps.isEmpty()) {
+            //This gives us the root declaration
+            Method sm = (Method)m.getRefinedDeclaration();
+            boolean end = false;
+            for (int i = 0; i < tps.size(); i++) {
+                end |= copyMissingTypeParameters(m, sm, i, true, gen);
+                //We still need to find intermediate declarations
+                if (m.isClassOrInterfaceMember()) {
+                    final Set<Declaration> decs = new HashSet<Declaration>();
+                    decs.add(sm);
+                    decs.add(m);
+                    //This gives us the containing type
+                    TypeDeclaration cont = Util.getContainingClassOrInterface(m);
+                    for (TypeDeclaration sup : cont.getSupertypeDeclarations()) {
+                        Declaration d = sup.getDirectMember(m.getName(), null, false);
+                        if (d instanceof Method && !decs.contains(d)) {
+                            decs.add(d);
+                            end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
+                        }
+                    }
+                    for (TypeDeclaration sup : cont.getSatisfiedTypeDeclarations()) {
+                        Declaration d = sup.getDirectMember(m.getName(), null, false);
+                        if (d instanceof Method && !decs.contains(d)) {
+                            decs.add(d);
+                            end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
+                        }
+                    }
+                }
+            }
+            if (end) {
+                gen.endLine(true);
+            }
         }
     }
 
