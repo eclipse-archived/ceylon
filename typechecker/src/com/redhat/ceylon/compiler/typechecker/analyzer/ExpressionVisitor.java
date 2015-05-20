@@ -63,8 +63,9 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -2636,6 +2637,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    /**
+     * Typecheck an invocation expression. Note that this
+     * is a tricky process involving type argument inference,
+     * anonymous function parameter type inference, function
+     * reference type argument inference, Java overload
+     * resolution, and argument type checking, and it all
+     * has to happen in exactly the right order, which is
+     * not at all the natural order for walking the tree.
+     */
     @Override public void visit(Tree.InvocationExpression that) {
         
         Tree.Primary p = that.getPrimary();
@@ -2667,7 +2677,12 @@ public class ExpressionVisitor extends Visitor {
         }
         
     }
-
+    
+    /**
+     * Infer parameter types for anonymous functions in a
+     * positional argument list, and set up references from
+     * arguments back to parameter models. 
+     */
     private void inferParameterTypes(Tree.Primary p,
             Tree.PositionalArgumentList pal) {
         Tree.Term term = unwrapExpressionUntilTerm(p);
@@ -2690,6 +2705,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Infer parameter types for anonymous functions in a
+     * named argument list, and set up references from
+     * arguments back to parameter models. 
+     */
     private void inferParameterTypes(Tree.Primary p,
             Tree.NamedArgumentList nal) {
         Tree.Term term = unwrapExpressionUntilTerm(p);
@@ -2703,6 +2723,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Infer parameter types of anonymous function arguments
+     * in an indirect invocation with positional arguments.
+     */
     private void inferParameterTypesIndirectly(
             Tree.PositionalArgumentList pal,
             ProducedType pt) {
@@ -2730,7 +2754,7 @@ public class ExpressionVisitor extends Visitor {
                             Tree.FunctionArgument fa = 
                                     (Tree.FunctionArgument) term;
                             inferParameterTypesFromCallableType(
-                                    paramType, fa, null);
+                                    paramType, null, fa);
                         }
                         else if (term instanceof Tree.StaticMemberOrTypeExpression) {
                             Tree.StaticMemberOrTypeExpression smte = 
@@ -2743,7 +2767,14 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
+    /**
+     * Infer parameter types of anonymous function arguments
+     * in a direct invocation with positional arguments.
+     * 
+     * Also sets references from arguments back to parameters
+     * by side effect.
+     */
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.PositionalArgumentList pal,
             Tree.MemberOrTypeExpression mte) {
@@ -2763,10 +2794,10 @@ public class ExpressionVisitor extends Visitor {
                     i++) {
                 Parameter param = params.get(j);
                 Tree.PositionalArgument arg = args.get(i);
+                arg.setParameter(param);
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
-                    la.setParameter(param);
                     inferParameterTypes(pr, param, 
                             la.getExpression(), 
                             param.isSequenced());
@@ -2778,6 +2809,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Infer parameter types of anonymous function arguments
+     * in a direct invocation with named arguments.
+     * 
+     * Also sets references from arguments back to parameters
+     * by side effect.
+     */
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.NamedArgumentList nal,
             Tree.MemberOrTypeExpression mte) {
@@ -2850,7 +2888,6 @@ public class ExpressionVisitor extends Visitor {
         }
         Functional fun = (Functional) dec;
         List<TypeParameter> tps = fun.getTypeParameters();
-        ProducedReference pr;
         if (isPackageQualified(mte)) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) 
@@ -2859,17 +2896,16 @@ public class ExpressionVisitor extends Visitor {
                     qmte.getPrimary().getTypeModel()
                         .resolveAliases();
             ProducedType qt = unwrap(pt, qmte);
-            pr = qt.getTypedReference(dec,
+            return qt.getTypedReference(dec,
                     getTypeArguments(tas, qt, tps));
         }
         else {
             ProducedType qt = 
                     mte.getScope()
                         .getDeclaringType(dec);
-            pr = dec.getProducedReference(qt,
+            return dec.getProducedReference(qt,
                     getTypeArguments(tas, qt, tps));
         }
-        return pr;
     }
 
     private static boolean isPackageQualified(
@@ -2886,6 +2922,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Infer parameter types for an anonymous function, and
+     * also set the "target parameter" for a reference, 
+     * which will be used later for inferring type arguments
+     * for a function ref or generic function ref.
+     */
     private void inferParameterTypes(ProducedReference pr, 
             Parameter param, Tree.Expression e, 
             boolean variadic) {
@@ -2913,11 +2955,14 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(
-                                paramType, anon, param);
+                                paramType, param, anon);
                     }
                 }
             }
             else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                //the "target parameter" is used later to
+                //infer type arguments for function refs
+                //and generic function refs
                 Tree.StaticMemberOrTypeExpression stme = 
                         (Tree.StaticMemberOrTypeExpression) 
                             term;
@@ -2938,16 +2983,22 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    /**
+     * Infer the type arguments for a reference to a 
+     * generic function that occurs as an argument in
+     * an invocation.
+     */
     private List<ProducedType> inferFunctionRefTypeArgs(
             Tree.StaticMemberOrTypeExpression smte) {
         Tree.TypeArguments typeArguments = 
                 smte.getTypeArguments();
         if (typeArguments instanceof Tree.InferredTypeArguments) {
-            Declaration dec = smte.getDeclaration();
+            Declaration passed = smte.getDeclaration();
             List<TypeParameter> typeParameters = 
-                    getTypeParametersAccountingForTypeConstructor(dec);
+                    getTypeParametersAccountingForTypeConstructor(passed);
             if (typeParameters!=null &&
                     !typeParameters.isEmpty()) {
+                //set earlier in inferParameterTypes()
                 ProducedTypedReference param = 
                         smte.getTargetParameter();
                 ProducedType paramType = 
@@ -2967,9 +3018,9 @@ public class ExpressionVisitor extends Visitor {
                 ProducedReference arg = 
                         getProducedReference(smte);
                 if (!smte.getStaticMethodReferencePrimary()) {
-                    if (dec instanceof Functional && 
+                    if (passed instanceof Functional && 
                             param!=null) {
-                        Functional fun = (Functional) dec;
+                        Functional fun = (Functional) passed;
                         List<ParameterList> apls = 
                                 fun.getParameterLists();
                         Declaration pdec = param.getDeclaration();
@@ -2984,45 +3035,60 @@ public class ExpressionVisitor extends Visitor {
                                 List<ProducedType> inferredTypes = 
                                         new ArrayList<ProducedType>
                                             (typeParameters.size());
+                                ParameterList aplf = apls.get(0);
+                                ParameterList pplf = ppls.get(0);
                                 List<Parameter> apl = 
-                                        apls.get(0)
-                                            .getParameters();
+                                        aplf.getParameters();
                                 List<Parameter> ppl = 
-                                        ppls.get(0)
-                                            .getParameters();
+                                        pplf.getParameters();
+                                boolean[] specifiedParams = 
+                                        specified(apl.size(), 
+                                                pplf);
                                 for (TypeParameter tp: typeParameters) {
+                                    boolean findUpperBounds =
+                                            isEffectivelyContravariant(tp,
+                                                    passed, specifiedParams);
                                     ProducedType it = 
                                             inferFunctionRefTypeArg(
                                                     smte, 
                                                     typeParameters,
-                                                    param, parameterizedDec, arg, 
+                                                    param, 
+                                                    parameterizedDec, 
+                                                    arg, 
                                                     apl, ppl, tp,
-                                                    isEffectivelyContravariant(tp));
+                                                    findUpperBounds);
                                     inferredTypes.add(it);
                                 }
                                 return inferredTypes;
                             }
                         }
                     }
-                    else if (dec instanceof Value) {
-                        List<ProducedType> inferredTypes = 
-                                new ArrayList<ProducedType>
-                                    (typeParameters.size());
-                        Value value = (Value) dec;
-                        ProducedType argType = 
-                                value.getType()
-                                    .getDeclaration()
-                                    .getType();
-                        for (TypeParameter tp: typeParameters) {
-                            ProducedType it = 
-                                    inferTypeArg(tp, 
-                                            argType, paramType,  
-                                            !isEffectivelyContravariant(tp),
-                                            smte);
-                            inferredTypes.add(it);
-                        }
-                        return inferredTypes;
-                    }
+//                    else if (passed instanceof Value) {
+//                        //TODO: is this even necessary, or
+//                        //can we just let it fall through
+//                        //to the code immediately below?
+//                        List<ProducedType> inferredTypes = 
+//                                new ArrayList<ProducedType>
+//                                    (typeParameters.size());
+//                        Value value = (Value) passed;
+//                        ProducedType argType = 
+//                                value.getType()
+//                                    .getDeclaration()
+//                                    .getType();
+//                        for (TypeParameter tp: typeParameters) {
+//                            boolean findUpperBounds =
+//                                    isEffectivelyContravariant(tp,
+//                                            //TODO: better variance inference
+//                                            passed, null);
+//                            ProducedType it = 
+//                                    inferTypeArg(tp, 
+//                                            argType, paramType,
+//                                            !findUpperBounds,
+//                                            smte);
+//                            inferredTypes.add(it);
+//                        }
+//                        return inferredTypes;
+//                    }
                 }
                 if (unit.isSequentialType(paramType)) {
                     paramType = unit.getSequentialElementType(paramType);
@@ -3045,12 +3111,17 @@ public class ExpressionVisitor extends Visitor {
                             new ArrayList<ProducedType>
                                 (typeParameters.size());
                     for (TypeParameter tp: typeParameters) {
+                        boolean findUpperBounds = 
+                                isEffectivelyContravariant(tp,
+                                        //TODO: better variance inference
+                                        passed, null);
                         ProducedType it = 
                                 inferFunctionRefTypeArg(
                                         smte, 
-                                        typeParameters, parameterizedDec, 
+                                        typeParameters, 
+                                        parameterizedDec, 
                                         template, type, tp, 
-                                        isEffectivelyContravariant(tp));
+                                        findUpperBounds);
                         inferredTypes.add(it);
                     }
                     return inferredTypes;
@@ -3078,6 +3149,14 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
 
+    /**
+     * Infer the type arguments for a reference to a 
+     * generic function that occurs as a parameter in
+     * an invocation. This implementation is used when 
+     * have an indirect ref whose type is a type 
+     * constructor. This version is also used for static
+     * references (?)
+     */
     private ProducedType inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte, 
             List<TypeParameter> typeParams, Declaration pd, 
@@ -3098,6 +3177,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Infer the type arguments for a reference to a 
+     * generic function that occurs as a parameter in
+     * an invocation. This implementation is used when 
+     * have a direct ref to the actual declaration.
+     */
     private ProducedType inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte,
             List<TypeParameter> typeParams, 
@@ -3198,8 +3283,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferParameterTypesFromCallableType(
-            ProducedType paramType, 
-            Tree.FunctionArgument anon, Parameter param) {
+            ProducedType paramType, Parameter param, 
+            Tree.FunctionArgument anon) {
         List<Tree.ParameterList> apls = 
                 anon.getParameterLists();
         if (!apls.isEmpty()) {
@@ -3260,7 +3345,11 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
+    /**
+     * Create a model for an inferred parameter of an
+     * anonymous function.
+     */
     private void createInferredParameter(Tree.FunctionArgument anon,
             Declaration declaration, Tree.Parameter ap,
             Parameter parameter, ProducedType type) {
@@ -3385,13 +3474,13 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitInvocationPrimary(Tree.InvocationExpression that) {
-        Tree.Primary primary = that.getPrimary();
-        Tree.Term term = unwrapExpressionUntilTerm(primary);
-        if (term instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression mte = 
+        Tree.Term primary = 
+                unwrapExpressionUntilTerm(that.getPrimary());
+        if (primary instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression pmte = 
                     (Tree.StaticMemberOrTypeExpression) 
-                        term;
-            visitInvocationPrimary(that, mte);
+                        primary;
+            visitInvocationPrimary(that, pmte);
             
         }
         else if (primary instanceof Tree.ExtendedTypeExpression) {
@@ -3401,7 +3490,7 @@ public class ExpressionVisitor extends Visitor {
             visitExtendedTypePrimary(ete);
         }
         else {
-            visitInvocationPrimary(that, term);
+            visitInvocationPrimary(that, primary);
         }
     }
 
@@ -3413,7 +3502,7 @@ public class ExpressionVisitor extends Visitor {
                 type.isTypeConstructor()) {
             List<ProducedType> typeArgs = 
                     getOrInferTypeArgumentsForTypeConstructor(
-                            that, null, null, type);
+                            that, null, type, null);
             checkArgumentsAgainstTypeConstructor(
                     typeArgs, null, type, term);
             ProducedType fullType =
@@ -3424,14 +3513,14 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitInvocationPrimary(Tree.InvocationExpression that,
-            Tree.StaticMemberOrTypeExpression mte) {
+            Tree.StaticMemberOrTypeExpression reference) {
         
-        if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
+        if (reference instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
-                    (Tree.QualifiedMemberOrTypeExpression) mte;
-            Primary primary = qmte.getPrimary();
+                    (Tree.QualifiedMemberOrTypeExpression) 
+                        reference;
             Tree.Term term = 
-                    unwrapExpressionUntilTerm(primary);
+                    unwrapExpressionUntilTerm(qmte.getPrimary());
             if (term instanceof Tree.StaticMemberOrTypeExpression) {
                 Tree.StaticMemberOrTypeExpression pmte = 
                         (Tree.StaticMemberOrTypeExpression) 
@@ -3440,43 +3529,46 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        Tree.TypeArguments tas = mte.getTypeArguments();
-        if (mte instanceof Tree.BaseTypeExpression) {
+        Tree.TypeArguments tas = reference.getTypeArguments();
+        if (reference instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression bte = 
-                    (Tree.BaseTypeExpression) mte;
+                    (Tree.BaseTypeExpression) 
+                        reference;
             TypeDeclaration type = 
                     resolveBaseTypeExpression(bte, true);
             if (type!=null) {
-                ProducedType qt;
+                ProducedType receiverType;
                 Scope scope = that.getScope();
                 if (type.isClassOrInterfaceMember() &&
                         !type.isStaticallyImportable() &&
 //                        type instanceof Constructor && 
                         !type.isDefinedInScope(scope)) {
-                    ClassOrInterface c = 
+                    ClassOrInterface ci = 
                             (ClassOrInterface) 
                                 type.getContainer();
                     List<ProducedType> inferredArgs = 
                             getInferredTypeArgsForReference(
-                                    that, c, type);
-                    qt = c.getProducedType(null, 
-                            inferredArgs);
+                                    that, type, ci);
+                    receiverType = 
+                            ci.getProducedType(null, 
+                                    inferredArgs);
                 }
                 else {
-                    qt = null;
+                    receiverType = null;
                 }
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                mte, qt);
+                                reference, receiverType);
                 tas.setTypeModels(typeArgs);
-                visitBaseTypeExpression(bte, type, 
-                        typeArgs, tas, qt);
+                visitBaseTypeExpression(bte, type, typeArgs, 
+                        tas, receiverType);
             }
         }
         
-        else if (mte instanceof Tree.QualifiedTypeExpression) {
+        else if (reference instanceof Tree.QualifiedTypeExpression) {
             Tree.QualifiedTypeExpression qte = 
-                    (Tree.QualifiedTypeExpression) mte;
+                    (Tree.QualifiedTypeExpression) 
+                        reference;
             TypeDeclaration type = 
                     resolveQualifiedTypeExpression(qte, true);
             if (type!=null) {
@@ -3486,11 +3578,11 @@ public class ExpressionVisitor extends Visitor {
                             .resolveAliases();
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                mte, qt);
+                                reference, qt);
                 tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
-                    visitBaseTypeExpression(qte, type, 
-                            typeArgs, tas);
+                    visitBaseTypeExpression(qte, 
+                            type, typeArgs, tas);
                 }
                 else {
                     visitQualifiedTypeExpression(qte, qt, 
@@ -3499,25 +3591,26 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        else if (mte instanceof Tree.BaseMemberExpression) {
+        else if (reference instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = 
-                    (Tree.BaseMemberExpression) mte;
+                    (Tree.BaseMemberExpression) 
+                        reference;
             TypedDeclaration base = 
                     resolveBaseMemberExpression(bme, true);
             if (base!=null) {
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, base, 
-                                mte, null);
+                                reference, null);
                 tas.setTypeModels(typeArgs);
                 visitBaseMemberExpression(bme, base, 
                         typeArgs, tas);
             }
         }
         
-        else if (mte instanceof Tree.QualifiedMemberExpression) {
+        else if (reference instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qme = 
                     (Tree.QualifiedMemberExpression) 
-                        mte;
+                        reference;
             TypedDeclaration member = 
                     resolveQualifiedMemberExpression(qme, 
                             true);
@@ -3528,11 +3621,11 @@ public class ExpressionVisitor extends Visitor {
                             .resolveAliases();
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, 
-                                member, mte, qt);
+                                member, reference, qt);
                 tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
-                    visitBaseMemberExpression(qme, member, 
-                            typeArgs, tas);
+                    visitBaseMemberExpression(qme, 
+                            member, typeArgs, tas);
                 }
                 else {
                     visitQualifiedMemberExpression(qme, qt, 
@@ -3541,31 +3634,47 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
+    /**
+     * Get the explicitly specified or inferred type 
+     * arguments of a reference that occurs within the
+     * primary of an invocation expression.
+     * 
+     * @param that the invocation
+     * @param dec the thing with type parameters
+     * @param reference the reference to the thing with type
+     *        parameters
+     * @param receiverType the qualifying type
+     * 
+     * @return the type arguments
+     */
     private List<ProducedType> getOrInferTypeArguments(
-            Tree.InvocationExpression that, Declaration dec,
-            Tree.StaticMemberOrTypeExpression term, 
+            Tree.InvocationExpression that, 
+            Declaration dec,
+            Tree.StaticMemberOrTypeExpression reference, 
             ProducedType receiverType) {
-        Tree.TypeArguments tas = term.getTypeArguments();
+        Tree.TypeArguments tas = reference.getTypeArguments();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         if (isGeneric(dec)) {
+            //a generic declaration
             if (explicit) {
                 return getTypeArguments(tas, receiverType, 
                         getTypeParameters(dec));
             }
             else {
                 return getInferredTypeArguments(that, 
-                        (Generic) dec, term);
+                        reference, (Generic) dec);
             }
         }
         else if (dec instanceof Value) {
+            //a generic function reference
             Value value = (Value) dec;
             ProducedType type = value.getType();
             if (type!=null && 
                     type.isTypeConstructor()) {
                 return getOrInferTypeArgumentsForTypeConstructor(
-                        that, receiverType, tas, type);
+                        that, receiverType, type, tas);
             }
             else {
                 return NO_TYPE_ARGS;
@@ -3576,34 +3685,51 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Get the explicitly specified or inferred type 
+     * arguments of a generic function reference that occurs 
+     * within the primary of an invocation expression.
+     * 
+     * @param that the invocation
+     * @param receiverType the qualifying type
+     * @param type the type constructor
+     * @param tas the type argument list
+     * @return the type arguments
+     */
     private List<ProducedType> getOrInferTypeArgumentsForTypeConstructor(
             Tree.InvocationExpression that, 
             ProducedType receiverType,
-            Tree.TypeArguments tas, 
-            ProducedType type) {
-        List<ProducedType> typeArguments;
-        TypeDeclaration td = 
-                type.getDeclaration();
+            ProducedType type, 
+            Tree.TypeArguments tas) {
+        TypeDeclaration td = type.getDeclaration();
         List<TypeParameter> typeParameters = 
                 td.getTypeParameters();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         if (explicit) {
-            typeArguments = 
-                    getTypeArguments(tas, 
-                            receiverType, 
-                            typeParameters);
+            return getTypeArguments(tas, receiverType, 
+                    typeParameters);
         }
         else {
-            typeArguments = 
-                    getInferredTypeArguments(that,
-                            receiverType, type, 
-                            typeParameters);
+            return getInferredTypeArgumentsForTypeConstructor(
+                    that, receiverType, type, 
+                    typeParameters);
         }
-        return typeArguments;
     }
 
-    List<ProducedType> getInferredTypeArguments(
+    /**
+     * Infer type arguments for a generic function reference 
+     * that occurs within the primary of an invocation 
+     * expression.
+     * 
+     * @param that the invocation
+     * @param receiverType the qualifying type
+     * @param type the type constructor
+     * @param typeParameters the type parameters to infer
+     * 
+     * @return the type arguments
+     */
+    private List<ProducedType> getInferredTypeArgumentsForTypeConstructor(
             Tree.InvocationExpression that,
             ProducedType receiverType, 
             ProducedType type,
@@ -3619,54 +3745,107 @@ public class ExpressionVisitor extends Visitor {
             for (TypeParameter tp: typeParameters) {
                 List<ProducedType> paramTypes = 
                         unit.getCallableArgumentTypes(type);
-                boolean contra =
-                        isEffectivelyContravariant(tp);
+                boolean findUpperBounds =
+                        isEffectivelyContravariant(tp,
+                                //TODO: better variance inference
+                                type.getDeclaration(),
+                                null);
                 List<ProducedType> inferredTypes = 
                         new ArrayList<ProducedType>();
                 inferTypeArgumentFromPositionalArgs(tp, 
                         paramTypes, receiverType, 
-                        pal, contra, inferredTypes);
+                        pal, findUpperBounds, inferredTypes);
                 ProducedType it = formUnionOrIntersection(
-                        contra, inferredTypes);
+                        findUpperBounds, inferredTypes);
                 typeArguments.add(it);
             }
             return typeArguments;
         }
     }
     
+    /**
+     * Infer type arguments for a reference that is invoked
+     * or qualifies a reference being invoked.
+     * 
+     * @param that the invocation
+     * @param reference the reference to a thing with type
+     *        parameters
+     * @param generic the model of the thing with type 
+     *        parameters
+     *        
+     * @return a list of inferred type arguments
+     */
     private List<ProducedType> getInferredTypeArguments(
-            Tree.InvocationExpression that, 
-            Generic generic, 
-            Tree.StaticMemberOrTypeExpression mte) {
-        Primary primary = that.getPrimary();
-        Tree.Term term = unwrapExpressionUntilTerm(primary);
-        if (term instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.InvocationExpression that,
+            Tree.StaticMemberOrTypeExpression reference, 
+            Generic generic) {
+        Tree.Term primary =
+                unwrapExpressionUntilTerm(that.getPrimary());
+        if (primary instanceof Tree.StaticMemberOrTypeExpression) {
+            //note: this is the immediate primary of the
+            //invocation, not the reference to the thing
+            //we're inferring type arguments for
             Tree.StaticMemberOrTypeExpression pmte = 
                     (Tree.StaticMemberOrTypeExpression) 
-                        term;
+                        primary;
             Declaration declaration = pmte.getDeclaration();
-            if (mte.getStaticMethodReferencePrimary() &&
-                //Note: for a real static method reference
-                //      the declaration has not yet been 
-                //      resolved at this point (for a 
-                //      Constructor it always has been)
-                !(declaration instanceof Constructor ||
-                  declaration!=null && 
-                      declaration.isStaticallyImportable())) {
+            if (isStaticReference(reference, declaration)) {
                 return getInferredTypeArgsForStaticReference(
-                        that, generic, mte.getDeclaration());
+                        that, (TypeDeclaration) generic);
             }
             else {
                 return getInferredTypeArgsForReference(that, 
-                        generic, declaration);
+                        declaration, generic);
             }
         }
         return NO_TYPE_ARGS;
     }
-
-    private List<ProducedType> getInferredTypeArgsForReference(
-            Tree.InvocationExpression that, Generic generic,
+    
+    /**
+     * Determine if a reference is really a reference, 
+     * taking into account that it might be something that 
+     * looks like a static reference, but really isn't, a 
+     * constructor reference, or a reference to a static
+     * method in Java. 
+     */
+    private static boolean isStaticReference(
+            Tree.StaticMemberOrTypeExpression reference, 
             Declaration declaration) {
+        if (reference.getStaticMethodReferencePrimary()) {
+            //Note: for a real static method reference
+            //      the declaration has not yet been 
+            //      resolved at this point (for a 
+            //      Constructor it always has been)
+            if (declaration instanceof Constructor) {
+                return false;
+            }
+            else {
+                return declaration==null ||
+                        !declaration.isStaticallyImportable();
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    /**
+     * Infer type arguments for a given generic declaration,
+     * using the value arguments of an invocation of a given
+     * declaration. 
+     * 
+     * @param that the invocation
+     * @param declaration the thing actually being invoked
+     * @param generic the thing we're inferring type 
+     *        arguments for, which may not be the thing
+     *        actually being invoked
+     *        
+     * @return a list of inferred type arguments
+     */
+    private List<ProducedType> getInferredTypeArgsForReference(
+            Tree.InvocationExpression that,
+            Declaration declaration,
+            Generic generic) {
         if (declaration instanceof Functional) {
             Functional functional = 
                     (Functional) declaration;
@@ -3675,25 +3854,15 @@ public class ExpressionVisitor extends Visitor {
             if (!parameters.isEmpty()) {
                 List<ProducedType> typeArgs = 
                         new ArrayList<ProducedType>();
-                for (TypeParameter tp: 
-                        generic.getTypeParameters()) {
-                    Tree.Primary primary = that.getPrimary();
-                    ProducedType pt;
-                    if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
-                        Tree.QualifiedMemberOrTypeExpression qmte = 
-                                (Tree.QualifiedMemberOrTypeExpression) 
-                                    primary;
-                        pt = qmte.getPrimary()
-                                .getTypeModel();
-                    }
-                    else {
-                        //TODO: wouldn't null be more correct?!
-                        pt = unknownType();
-                    }
+                List<TypeParameter> typeParameters = 
+                        generic.getTypeParameters();
+                for (TypeParameter tp: typeParameters) {
+                    ProducedType qt = 
+                            getTargetQualifyingType(that);
                     ParameterList pl = parameters.get(0);
                     ProducedType it = 
-                            inferTypeArgument(that, pt, tp, pl, 
-                                    isEffectivelyContravariant(tp));
+                            inferTypeArgument(that, qt, tp, 
+                                    pl, declaration);
                     if (it==null || it.containsUnknowns()) {
                         that.addError("could not infer type argument from given arguments: type parameter '" + 
                                 tp.getName() + "' could not be inferred");
@@ -3709,34 +3878,71 @@ public class ExpressionVisitor extends Visitor {
         return NO_TYPE_ARGS;
     }
 
+    private ProducedType getTargetQualifyingType
+            (Tree.InvocationExpression that) {
+        Tree.Primary primary = that.getPrimary();
+        if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) 
+                        primary;
+            return qmte.getPrimary().getTypeModel();
+        }
+        else {
+            //TODO: wouldn't null be more correct?!
+            return unknownType();
+        }
+    }
+
+    /**
+     * Infer type arguments for the qualifying type in a
+     * static method reference or constructor reference
+     * that is directly invoked.
+     * 
+     * @param that the invocation
+     * @param type the type whose type arguments we're
+     *             inferring (the qualifying type)
+     */
     private List<ProducedType> getInferredTypeArgsForStaticReference(
-            Tree.InvocationExpression that, Generic generic,
-            Declaration type) {
-        if (type instanceof TypeDeclaration) {
-            Tree.PositionalArgumentList pal = 
-                    that.getPositionalArgumentList();
-            if (pal!=null && 
-                    !pal.getPositionalArguments()
-                        .isEmpty()) {
-                Tree.PositionalArgument arg = 
-                        pal.getPositionalArguments()
-                            .get(0);
+            Tree.InvocationExpression that, 
+            TypeDeclaration type) {
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        Tree.MemberOrTypeExpression primary = 
+                (Tree.MemberOrTypeExpression) 
+                    that.getPrimary();
+        Declaration invoked = 
+                primary.getDeclaration();
+        if (pal!=null && 
+                invoked instanceof Functional) {
+            List<PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            Functional fun = (Functional) invoked;
+            List<ParameterList> pls = 
+                    fun.getParameterLists();
+            if (!args.isEmpty() && !pls.isEmpty()) {
+                ParameterList params = pls.get(0);
+                boolean[] specifiedParams = 
+                        specified(pal, params);
+                Tree.PositionalArgument arg = args.get(0);
                 if (arg!=null) {
                     ProducedType at = arg.getTypeModel();
-                    TypeDeclaration td = 
-                            (TypeDeclaration) type;
-                    ProducedType tt = td.getType();
+                    ProducedType tt = type.getType();
                     List<ProducedType> typeArgs = 
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: 
-                            generic.getTypeParameters()) {
+                            type.getTypeParameters()) {
+                        boolean findUpperBounds = 
+                                isEffectivelyContravariant(tp,
+                                        invoked, specifiedParams);
                         ProducedType it = 
                                 inferTypeArg(tp, tt, at,
-                                        isEffectivelyContravariant(tp), 
+                                        findUpperBounds, 
                                         arg);
-                        if (it==null || it.containsUnknowns()) {
+                        if (it==null || 
+                                it.containsUnknowns()) {
                             that.addError("could not infer type argument from given arguments: type parameter '" + 
-                                    tp.getName() + "' could not be inferred");
+                                    tp.getName() + 
+                                    "' could not be inferred");
                         }
                         else {
                             it = constrainInferredType(tp, it);
@@ -3749,8 +3955,21 @@ public class ExpressionVisitor extends Visitor {
         }
         return NO_TYPE_ARGS;
     }
-
-    private boolean isEffectivelyContravariant(TypeParameter tp) {
+    
+    /**
+     * Determine if a type parameter is contravariant for
+     * the purposes of type argument inference.
+     * 
+     * @param tp the type parameter
+     * @param invoked the declaration actually being invoked
+     *        (not always the owner of the type parameter!)
+     * @param specifiedArguments the args that were given
+     * 
+     * @return true if we should treat it is contravariant
+     */
+    private boolean isEffectivelyContravariant(
+            TypeParameter tp, Declaration invoked, 
+            boolean[] specifiedArguments) {
         if (tp.isCovariant()) {
             return false;
         }
@@ -3758,16 +3977,16 @@ public class ExpressionVisitor extends Visitor {
             return true;
         }
         else {
-            Declaration declaration = tp.getDeclaration();
-            ProducedType fullType;
-            if (declaration instanceof TypedDeclaration) {
+            
+            if (invoked instanceof TypedDeclaration) {
                 TypedDeclaration typed =
-                        (TypedDeclaration) declaration;
-                fullType = typed.getTypedReference()
+                        (TypedDeclaration) invoked;
+                ProducedType fullType = 
+                        typed.getTypedReference()
                             .getFullType();
                 ProducedType returnType =
                         unit.getCallableReturnType(fullType);
-
+                
                 if (returnType!=null) {
                     boolean occursInvariantly =
                             returnType.occursInvariantly(tp);
@@ -3793,38 +4012,58 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            else {
-            	TypeDeclaration type =
-                        (TypeDeclaration) declaration;
-                fullType = type.getType().getFullType();
+            
+            if (invoked instanceof Functional) {
+            	//Return type wasn't definitive, optimize 
+                //variance for parameters
+                Functional fun = (Functional) invoked;
+                List<ParameterList> paramLists = 
+                        fun.getParameterLists();
+                boolean occursContravariantly = false;
+                boolean occursCovariantly = false;
+                boolean occursInvariantly = false;
+                if (!paramLists.isEmpty()) {
+                    List<Parameter> params =
+                            paramLists.get(0).getParameters();
+                    for (int i=0, size = params.size(); 
+                            i<size; i++) {
+                        //ignore parameters with no argument
+                        if (specifiedArguments==null ||
+                                specifiedArguments[i]) {
+                            Parameter p = params.get(i);
+                            ProducedType pt = p.getType();
+                            if (pt!=null) {
+                            	occursContravariantly = occursContravariantly
+                        				|| pt.occursContravariantly(tp);
+                            	occursCovariantly = occursCovariantly
+                            			|| pt.occursCovariantly(tp);
+                            	occursInvariantly = occursInvariantly
+                            			|| pt.occursInvariantly(tp);
+                            }
+                        }
+                    }
+                }
+                //if the parameter occurs only contravariantly 
+                //in the argument list, then treat it as 'in'
+                return occursContravariantly
+                        && !occursCovariantly
+                        && !occursInvariantly;
             }
-
-        	// Return type wasn't definitive,
-        	// optimize variance for arguments
-            List<ProducedType> argumentTypes =
-        			unit.getCallableArgumentTypes(fullType);
-            boolean occursContravariantly = false;
-            boolean occursCovariantly = false;
-            boolean occursInvariantly = false;
-            for (ProducedType argumentType : argumentTypes) {
-            	occursContravariantly = occursContravariantly
-        				|| argumentType.occursContravariantly(tp);
-            	occursCovariantly = occursCovariantly
-            			|| argumentType.occursCovariantly(tp);
-            	occursInvariantly = occursInvariantly
-            			|| argumentType.occursInvariantly(tp);
-            }
-
-            // FIXME we should be ignoring unspecified optional arguments!!!
-
-            //if the parameter occurs only
-            //contravariantly in the argument
-            //list, then treat it as 'in'
-    		return occursContravariantly
-					&& !occursCovariantly
-					&& !occursInvariantly;
+            
+            return false;
+            
         }
     }
+    
+    /**
+     * Apply upper bound type constraints to an inferred 
+     * type argument.
+     *  
+     * @param tp the type parameter
+     * @param ta the inferred type argument
+     * 
+     * @return the improved type argument
+     */
     private ProducedType constrainInferredType(TypeParameter tp, 
             ProducedType ta) {
         //Note: according to the language spec we should only 
@@ -3854,38 +4093,41 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType inferTypeArgument(
             Tree.InvocationExpression that,
             ProducedType qt, TypeParameter tp, 
-            ParameterList parameters,
-            boolean findingUpperBounds) {
-        List<ProducedType> inferredTypes = 
-                new ArrayList<ProducedType>();
+            ParameterList parameters, 
+            Declaration invoked) {
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         Tree.NamedArgumentList nal = 
                 that.getNamedArgumentList();
         if (pal!=null) {
-            inferTypeArgumentFromPositionalArgs(tp, 
-                    parameters, qt, pal, 
-                    findingUpperBounds,
-                    inferredTypes);
+            return inferTypeArgumentFromPositionalArgs(tp, 
+                    parameters, qt, pal, invoked);
         }
         else if (nal!=null) {
-            inferTypeArgumentFromNamedArgs(tp, parameters, 
-                    qt, nal, findingUpperBounds, 
-                    inferredTypes);
+            return inferTypeArgumentFromNamedArgs(tp, 
+                    parameters, qt, nal, invoked);
         }
-        return formUnionOrIntersection(findingUpperBounds, 
-                inferredTypes);
+        else {
+            //impossible
+            return null;
+        }
     }
 
-    private void inferTypeArgumentFromNamedArgs(
+    private ProducedType inferTypeArgumentFromNamedArgs(
             TypeParameter tp, ParameterList parameters, 
-            ProducedType qt, Tree.NamedArgumentList args, 
-            boolean findingUpperBounds,
-            List<ProducedType> inferredTypes) {
+            ProducedType qt, Tree.NamedArgumentList nal, 
+            Declaration invoked) {
+        boolean findingUpperBounds = 
+                isEffectivelyContravariant(tp, invoked,
+                        specified(nal, parameters));
+        List<NamedArgument> namedArgs = 
+                nal.getNamedArguments();
         Set<Parameter> foundParameters = 
                 new HashSet<Parameter>();
-        for (Tree.NamedArgument arg: 
-                args.getNamedArguments()) {
+        List<ProducedType> inferredTypes =
+                new ArrayList<ProducedType>
+                    (namedArgs.size());
+        for (Tree.NamedArgument arg: namedArgs) {
             inferTypeArgFromNamedArg(arg, tp, qt, 
                     parameters,
                     findingUpperBounds,
@@ -3897,11 +4139,13 @@ public class ExpressionVisitor extends Visitor {
                         foundParameters);
         if (sp!=null) {
         	Tree.SequencedArgument sa = 
-        	        args.getSequencedArgument();
+        	        nal.getSequencedArgument();
         	inferTypeArgFromSequencedArg(sa, tp, sp, 
         	        findingUpperBounds,
         	        inferredTypes, sa);
-        }    
+        }
+        return formUnionOrIntersection(findingUpperBounds, 
+                inferredTypes);
     }
 
     private void inferTypeArgFromSequencedArg(
@@ -3972,18 +4216,76 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+    
+    private static boolean[] specified(
+            int count,
+            ParameterList parameters) {
+        List<Parameter> params = 
+                parameters.getParameters();
+        boolean[] specified = 
+                new boolean[params.size()];
+        for (int i=0; i<count; i++) {
+            specified[i] = true;
+        }
+        return specified;
+    }
 
-    private void inferTypeArgumentFromPositionalArgs(
+    private static boolean[] specified(
+            Tree.PositionalArgumentList args,
+            ParameterList parameters) {
+        List<Parameter> params = 
+                parameters.getParameters();
+        boolean[] specified = 
+                new boolean[params.size()];
+        for (Tree.PositionalArgument arg: 
+                args.getPositionalArguments()) {
+            Parameter p = arg.getParameter();
+            if (p!=null) {
+                int loc = params.indexOf(p);
+                if (loc>=0) {
+                    specified[loc] = true;
+                }
+            }
+        }
+        return specified;
+    }
+
+    private static boolean[] specified(
+            Tree.NamedArgumentList args,
+            ParameterList parameters) {
+        List<Parameter> params = 
+                parameters.getParameters();
+        boolean[] specified = 
+                new boolean[params.size()];
+        for (Tree.NamedArgument arg: 
+                args.getNamedArguments()) {
+            Parameter p = arg.getParameter();
+            if (p!=null) {
+                int loc = params.indexOf(p);
+                if (loc>=0) {
+                    specified[loc] = true;
+                }
+            }
+        }
+        return specified;
+    }
+
+    private ProducedType inferTypeArgumentFromPositionalArgs(
             TypeParameter tp, 
             ParameterList parameters, ProducedType qt, 
             Tree.PositionalArgumentList pal, 
-            boolean findingUpperBounds,
-            List<ProducedType> inferredTypes) {
+            Declaration invoked) {
+        boolean findingUpperBounds = 
+                isEffectivelyContravariant(tp, invoked,
+                        specified(pal, parameters));
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
+        List<ProducedType> inferredTypes = 
+                new ArrayList<ProducedType>
+                    (args.size());
         List<Parameter> params = parameters.getParameters();
         for (int i=0; i<params.size(); i++) {
             Parameter parameter = params.get(i);
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
             if (args.size()>i) {
                 Tree.PositionalArgument a = args.get(i);
                 ProducedType at = a.getTypeModel();
@@ -4054,6 +4356,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+        return formUnionOrIntersection(findingUpperBounds, 
+                inferredTypes);
     }
 
     private void inferTypeArgumentFromPositionalArgs(
@@ -4533,6 +4837,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    /**
+     * Typecheck a direct invocation.
+     */
     private void visitDirectInvocation(
             Tree.InvocationExpression that) {
         Tree.Term primary = 
@@ -4593,6 +4900,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    /**
+     * Typecheck an indirect invocation.
+     */
     private void visitIndirectInvocation(
             Tree.InvocationExpression that) {
         Tree.Term primary = 
@@ -4657,7 +4967,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkInvocationArguments(Tree.InvocationExpression that,
+    /**
+     * Typecheck the arguments of a direct invocation.
+     */
+    private void checkInvocationArguments(
+            Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
@@ -5309,6 +5623,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkComprehensionPositionalArgument(Parameter p, 
             ProducedReference pr, Tree.Comprehension c, 
             boolean atLeastOne) {
+        c.setParameter(p);
         Tree.InitialComprehensionClause icc = 
                 c.getInitialComprehensionClause();
         if (icc.getPossiblyEmpty() && atLeastOne) {
@@ -8939,9 +9254,7 @@ public class ExpressionVisitor extends Visitor {
                                             + "' of declaration '" + dec.getName(unit)
                                             + "' is not assignable to upper bound '" 
                                             + bound.getProducedTypeName(unit)
-                                            + "' of effectively " + 
-                                            (isEffectivelyContravariant(param)?"contra":"co") + 
-                                            "variant '" + param.getName() + "'");
+                                            + "' of '" + param.getName() + "'");
                                 }
                             }
                             return false;

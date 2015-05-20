@@ -152,81 +152,103 @@ public class Util {
         return null;
     }
     
-    static List<ProducedType> getTypeArguments(Tree.TypeArguments tas,
-    		ProducedType qt, List<TypeParameter> typeParameters) {
+    /**
+     * Get the type arguments specified explicitly in the
+     * code, or an empty list if no type arguments were
+     * explicitly specified. For missing arguments, use
+     * default type arguments.
+     * 
+     * @param tas the type argument list
+     * @param qt the qualifying type
+     * @param typeParameters the list of type parameters
+     * 
+     * @return a list of type arguments to the given type
+     *         parameters
+     */
+    static List<ProducedType> getTypeArguments(
+            Tree.TypeArguments tas,
+    		ProducedType qt, 
+    		List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
-            int size = typeParameters.size();
-            List<ProducedType> typeArguments = 
-                    new ArrayList<ProducedType>(size);
+            
+            //accumulate substitutions in case we need
+            //them below for calculating default args
             Map<TypeParameter,ProducedType> typeArgMap = 
                     new HashMap<TypeParameter,ProducedType>();
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
-            if (tas instanceof Tree.TypeArgumentList) {
-                TypeArgumentList tal = 
-                        (Tree.TypeArgumentList) tas;
-                List<Tree.Type> types = tal.getTypes();
-                int count = types.size();
-                for (int i=0; i<count; i++) {
-                    Type type = types.get(i);
-                    ProducedType t = 
-                            type.getTypeModel();
-                    if (t==null) {
-                        typeArguments.add(null);
-                    }
-                    else {
-                        typeArguments.add(t);
-                        if (i<size) {
-                            TypeParameter tp = 
-                                    typeParameters.get(i);
-                            if (tp.isTypeConstructor()) {
-                                setTypeConstructor(type,tp);
-                            }
-                            typeArgMap.put(tp, t);
+            
+//            if (tas instanceof Tree.TypeArgumentList) {
+            TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            int size = typeParameters.size();
+            List<ProducedType> typeArguments = 
+                    new ArrayList<ProducedType>(size);
+            List<Tree.Type> types = tal.getTypes();
+            int count = types.size();
+            for (int i=0; i<count; i++) {
+                Type type = types.get(i);
+                ProducedType t = 
+                        type.getTypeModel();
+                if (t==null) {
+                    typeArguments.add(null);
+                }
+                else {
+                    typeArguments.add(t);
+                    if (i<size) {
+                        TypeParameter tp = 
+                                typeParameters.get(i);
+                        if (tp.isTypeConstructor()) {
+                            setTypeConstructor(type,tp);
                         }
+                        typeArgMap.put(tp, t);
                     }
                 }
             }
-            else {
-                List<ProducedType> types = 
-                        tas.getTypeModels();
-                int count = types.size();
-                for (int i=0; i<count; i++) {
-                    ProducedType t = types.get(i);
-                    if (t==null) {
-                        typeArguments.add(null);
-                    }
-                    else {
-                        typeArguments.add(t);
-                        if (i<size) {
-                            TypeParameter tp = 
-                                    typeParameters.get(i);
-                            typeArgMap.put(tp, t);
-                        }
-                    }
-                }
+//            }
+//            else {
+//                List<ProducedType> types = 
+//                        tas.getTypeModels();
+//                int count = types.size();
+//                for (int i=0; i<count; i++) {
+//                    ProducedType t = types.get(i);
+//                    if (t==null) {
+//                        typeArguments.add(null);
+//                    }
+//                    else {
+//                        typeArguments.add(t);
+//                        if (i<size) {
+//                            TypeParameter tp = 
+//                                    typeParameters.get(i);
+//                            typeArgMap.put(tp, t);
+//                        }
+//                    }
+//                }
+//            }
+//            if (!(tas instanceof Tree.InferredTypeArguments)) {
+            
+            //for missing arguments, use the default args
+            for (int i=typeArguments.size(); i<size; i++) {
+                TypeParameter tp = typeParameters.get(i);
+            	ProducedType dta = 
+            	        tp.getDefaultTypeArgument();
+            	if (dta==null || 
+            	        //necessary to prevent stack overflow
+            	        //for illegal recursively-defined
+            	        //default type argument
+            	        dta.involvesDeclaration(tp.getDeclaration())) {
+            		break;
+            	}
+            	else {
+            	    ProducedType da = 
+            	            dta.substitute(typeArgMap);
+            		typeArguments.add(da);
+            		typeArgMap.put(tp, da);
+            	}
+//                }
             }
-            if (!(tas instanceof Tree.InferredTypeArguments)) {
-                for (int i=typeArguments.size(); i<size; i++) {
-                    TypeParameter tp = typeParameters.get(i);
-                	ProducedType dta = 
-                	        tp.getDefaultTypeArgument();
-                	if (dta==null || 
-                	        //necessary to prevent stack overflow
-                	        //for illegal recursively-defined
-                	        //default type argument
-                	        dta.involvesDeclaration(tp.getDeclaration())) {
-                		break;
-                	}
-                	else {
-                	    ProducedType da = 
-                	            dta.substitute(typeArgMap);
-                		typeArguments.add(da);
-                		typeArgMap.put(tp, da);
-                	}
-                }
-            }
+            
             return typeArguments;
         }
         else {
@@ -917,7 +939,8 @@ public class Util {
 
     public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
         while (term instanceof Tree.Expression) {
-            term = ((Tree.Expression)term).getTerm();
+            Tree.Expression e = (Tree.Expression) term;
+            term = e.getTerm();
         }
         return term;
     }
@@ -927,10 +950,10 @@ public class Util {
     }
 
     private static boolean isIndirectInvocation(Tree.Primary primary) {
-        Tree.Term p = unwrapExpressionUntilTerm(primary);
-        if (p instanceof Tree.MemberOrTypeExpression) {
+        Tree.Term term = unwrapExpressionUntilTerm(primary);
+        if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) p;
+                    (Tree.MemberOrTypeExpression) term;
             return isIndirectInvocation(mte);
         }
         else {
