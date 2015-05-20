@@ -152,25 +152,25 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     public List<ProducedType> getSatisfiedTypes() {
-        if (!(this instanceof TypeParameter)) { //don't ask me why, but this is necessary!
-            for (int i=0, size=satisfiedTypes.size(); 
-                    i<size; i++) {
-                ProducedType st = satisfiedTypes.get(i);
-                if (st!=null) {
-                    TypeDeclaration std = st.getDeclaration();
-                    if (std==this || 
-                            std instanceof TypeAlias && 
-                            !(this instanceof IntersectionType)) {
-                        satisfiedTypes = 
-                                new ArrayList<ProducedType>
-                                    (satisfiedTypes);
-                        satisfiedTypes.remove(i);
-                        i--; size--;
+        List<ProducedType> sts = satisfiedTypes;
+        for (int i=0, size=sts.size(); 
+                i<size; i++) {
+            ProducedType st = sts.get(i);
+            if (st!=null) {
+                TypeDeclaration std = st.getDeclaration();
+                if (std==this || 
+                        std instanceof TypeAlias && 
+                        !(this instanceof IntersectionType)) {
+                    if (sts == satisfiedTypes) {
+                        sts = new ArrayList<ProducedType>(sts);
                     }
+                    sts.remove(i);
+                    size--;
+                    i--; 
                 }
             }
         }
-        return satisfiedTypes;
+        return sts;
     }
 
     public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
@@ -195,27 +195,27 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public List<ProducedType> getCaseTypes() {
-        if (caseTypes!=null) {
-            if (!(this instanceof TypeParameter)) {
-                for (int i=0, size=caseTypes.size(); 
-                        i<size; i++) {
-                    ProducedType ct = caseTypes.get(i);
-                    if (ct!=null) {
-                        TypeDeclaration ctd = ct.getDeclaration();
-                        if (ctd==this || 
-                                ctd instanceof TypeAlias && 
-                                !(this instanceof UnionType)) {
-                            caseTypes = 
-                                    new ArrayList<ProducedType>
-                                        (caseTypes);
-                            caseTypes.remove(i);
-                            i--; size--;
+        List<ProducedType> cts = caseTypes;
+        if (cts!=null) {
+            for (int i=0, size=cts.size(); 
+                    i<size; i++) {
+                ProducedType ct = cts.get(i);
+                if (ct!=null) {
+                    TypeDeclaration ctd = ct.getDeclaration();
+                    if (ctd==this || 
+                            ctd instanceof TypeAlias && 
+                            !(this instanceof UnionType)) {
+                        if (cts==caseTypes) {
+                            cts = new ArrayList<ProducedType>(cts);
                         }
+                        cts.remove(i);
+                        i--;
+                        size--;
                     }
                 }
             }
         }
-        return caseTypes;
+        return cts;
     }
 
     public void setCaseTypes(List<ProducedType> caseTypes) {
