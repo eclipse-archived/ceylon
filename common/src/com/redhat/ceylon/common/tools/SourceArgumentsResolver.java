@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.ToolUsageError;
@@ -72,8 +73,8 @@ public class SourceArgumentsResolver {
         return resFiles;
     }
 
-    public void expandAndParse(List<String> modulesOrFiles) throws IOException {
-        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(sourceDirs , modulesOrFiles);
+    public void expandAndParse(List<String> modulesOrFiles, Backend forBackend) throws IOException {
+        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(sourceDirs , modulesOrFiles, forBackend);
         parse(expandedModulesOrFiles);
     }
     
