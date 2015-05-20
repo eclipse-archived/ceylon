@@ -92,7 +92,8 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         try {
             if (file.isFolder()) {
                 //root directory is the src dir => start from here
-                for (VirtualFile subfile : file.getChildren()) {
+                final List<? extends VirtualFile> files = file.getChildren();
+                for (VirtualFile subfile : files) {
                     parseFileOrDirectory(subfile, srcDir);
                 }
             }
