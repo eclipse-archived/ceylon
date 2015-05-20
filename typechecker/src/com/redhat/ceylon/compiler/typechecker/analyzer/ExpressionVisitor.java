@@ -3759,79 +3759,72 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Declaration declaration = tp.getDeclaration();
+            ProducedType fullType;
             if (declaration instanceof TypedDeclaration) {
-                TypedDeclaration typed = 
+                TypedDeclaration typed =
                         (TypedDeclaration) declaration;
-                ProducedType fullType =
-                        typed.getTypedReference()
+                fullType = typed.getTypedReference()
                             .getFullType();
                 ProducedType returnType =
                         unit.getCallableReturnType(fullType);
+
                 if (returnType!=null) {
                     boolean occursInvariantly =
                             returnType.occursInvariantly(tp);
-                    boolean occursCovariantly =  
+                    boolean occursCovariantly =
                             returnType.occursCovariantly(tp);
                     boolean occursContravariantly =
                             returnType.occursContravariantly(tp);
-                    if (occursCovariantly || occursInvariantly) {
-                        //if the parameter occurs covariantly
-                        //or invariantly in the return type,
+                    if (occursCovariantly
+                			&& !occursContravariantly
+            				&& !occursInvariantly) {
+                        //if the parameter occurs only
+                        //covariantly in the return type,
                         //then treat it as 'out'
                         return false;
                     }
-                    else if (occursContravariantly) {
-                        //if the parameter occurs only 
+                    else if (!occursCovariantly
+                			&& occursContravariantly
+            				&& !occursInvariantly) {
+                        //if the parameter occurs only
                         //contravariantly in the return type,
                         //then treat it as 'in'
                         return true;
-                    } 
-                }
-                
-                //if the type parameter does not occur anywhere
-                //in the return type, and if it occurs covariantly
-                //in at least one upper bound, and never occurs
-                //contravariantly or invariantly in any upper
-                //bounds, then we want to pick the least 
-                //restrictive type that can possibly satisfy  
-                //the constraints, so treat it as 'in'
-                boolean occursContravariantly = false;
-                boolean occursCovariantly = false;
-                boolean occursInvariantly = false;
-                Generic generic = (Generic) declaration;
-                List<TypeParameter> typeParameters = 
-                        generic.getTypeParameters();
-                for (TypeParameter otp: typeParameters) {
-                    for (ProducedType bound: 
-                            otp.getSatisfiedTypes()) {
-                        occursInvariantly = 
-                                occursInvariantly || 
-                                bound.occursInvariantly(tp);
-                        occursContravariantly = 
-                                occursContravariantly || 
-                                bound.occursContravariantly(tp);
-                        if (!otp.equals(tp)) { //self type constraints 
-                                               //aren't really bounds
-                                               //so don't flip to 'in'
-                            occursCovariantly =
-                                    occursCovariantly ||
-                                    bound.occursCovariantly(tp);
-                        }
                     }
                 }
-                return occursCovariantly && 
-                        !occursContravariantly && 
-                        !occursInvariantly;
             }
             else {
-                //for classes, every type parameter with no 
-                //explicit variance annotation occurs 
-                //invariantly in the "return type"
-                return false;
+            	TypeDeclaration type =
+                        (TypeDeclaration) declaration;
+                fullType = type.getType().getFullType();
             }
+
+        	// Return type wasn't definitive,
+        	// optimize variance for arguments
+            List<ProducedType> argumentTypes =
+        			unit.getCallableArgumentTypes(fullType);
+            boolean occursContravariantly = false;
+            boolean occursCovariantly = false;
+            boolean occursInvariantly = false;
+            for (ProducedType argumentType : argumentTypes) {
+            	occursContravariantly = occursContravariantly
+        				|| argumentType.occursContravariantly(tp);
+            	occursCovariantly = occursCovariantly
+            			|| argumentType.occursCovariantly(tp);
+            	occursInvariantly = occursInvariantly
+            			|| argumentType.occursInvariantly(tp);
+            }
+
+            // FIXME we should be ignoring unspecified optional arguments!!!
+
+            //if the parameter occurs only
+            //contravariantly in the argument
+            //list, then treat it as 'in'
+    		return occursContravariantly
+					&& !occursCovariantly
+					&& !occursInvariantly;
         }
     }
-
     private ProducedType constrainInferredType(TypeParameter tp, 
             ProducedType ta) {
         //Note: according to the language spec we should only 
