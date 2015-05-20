@@ -33,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1166,7 +1165,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        Type type = that.getType();
+        Tree.Type type = that.getType();
         TypedDeclaration dec = that.getDeclarationModel();
         setType(that, type, dec);
         if (dec instanceof MethodOrValue) {
@@ -1673,16 +1672,17 @@ public class TypeVisitor extends Visitor {
         if (td.isAlias()) {
             return;
         }
+        List<Tree.StaticType> types = that.getTypes();
         List<ProducedType> list = 
                 new ArrayList<ProducedType>
-                    (that.getTypes().size());
-        if (that.getTypes().isEmpty()) {
+                    (types.size());
+        if (types.isEmpty()) {
             that.addError("missing types in satisfies");
         }
         boolean foundTypeParam = false;
         boolean foundClass = false;
         boolean foundInterface = false;
-        for (Tree.StaticType st: that.getTypes()) {
+        for (Tree.StaticType st: types) {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
@@ -1777,7 +1777,8 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         List<Tree.BaseMemberExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();

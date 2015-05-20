@@ -2421,14 +2421,19 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (td.isAlias()) {
             return;
         }
-        for (Tree.StaticType t: that.getTypes()) {
+        List<Tree.StaticType> types = that.getTypes();
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>
+                    (types.size());
+        for (Tree.StaticType t: types) {
             if (t!=null) {
                 ProducedType type = t.getTypeModel();
                 if (type!=null) {
-                    td.getSatisfiedTypes().add(type);
+                    list.add(type);
                 }
             }
         }
+        td.setSatisfiedTypes(list);
     }
     
     @Override
