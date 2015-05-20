@@ -12,8 +12,8 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -31,7 +31,6 @@ import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
@@ -289,7 +288,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             SourceArgumentsResolver resolver = new SourceArgumentsResolver(roots, resources, Constants.CEYLON_SUFFIX, Constants.JS_SUFFIX);
             resolver
                 .cwd(cwd)
-                .expandAndParse(files);
+                .expandAndParse(files, Backend.JavaScript);
             onlySources = resolver.getSourceFiles();
             onlyResources = resolver.getResourceFiles();
             
