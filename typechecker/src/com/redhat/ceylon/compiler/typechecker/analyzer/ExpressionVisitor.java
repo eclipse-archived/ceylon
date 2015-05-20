@@ -3499,18 +3499,20 @@ public class ExpressionVisitor extends Visitor {
     private void visitInvocationPrimary(
             Tree.InvocationExpression that, 
             Tree.Term term) {
-        ProducedType type = term.getTypeModel();
-        if (type!=null && 
-                type.isTypeConstructor()) {
-            List<ProducedType> typeArgs = 
-                    getOrInferTypeArgumentsForTypeConstructor(
-                            that, null, type, null);
-            checkArgumentsAgainstTypeConstructor(
-                    typeArgs, null, type, term);
-            ProducedType fullType =
-                    accountForGenericFunctionRef(true, null, 
-                            null, typeArgs, type);
-            term.setTypeModel(fullType);
+        if (term!=null) {
+            ProducedType type = term.getTypeModel();
+            if (type!=null && 
+                    type.isTypeConstructor()) {
+                List<ProducedType> typeArgs = 
+                        getOrInferTypeArgumentsForTypeConstructor(
+                                that, null, type, null);
+                checkArgumentsAgainstTypeConstructor(
+                        typeArgs, null, type, term);
+                ProducedType fullType =
+                        accountForGenericFunctionRef(true, 
+                                null, null, typeArgs, type);
+                term.setTypeModel(fullType);
+            }
         }
     }
 
@@ -4853,6 +4855,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.InvocationExpression that) {
         Tree.Term primary = 
                 unwrapExpressionUntilTerm(that.getPrimary());
+        if (primary==null) {
+            return;
+        }
         Tree.MemberOrTypeExpression mte = 
                 (Tree.MemberOrTypeExpression) primary;
         ProducedReference prf = mte.getTarget();
@@ -4916,6 +4921,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.InvocationExpression that) {
         Tree.Term primary = 
                 unwrapExpressionUntilTerm(that.getPrimary());
+        if (primary==null) {
+            return;
+        }
         ProducedType pt = primary.getTypeModel();
         if (!isTypeUnknown(pt)) {
             
