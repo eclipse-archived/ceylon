@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.Delegates;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DefaultTypeArgVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
@@ -40,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.util.DeprecationVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
-import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -322,11 +322,17 @@ public class PhasedUnit {
                 processLiterals();
                 scanningDeclarations = true;
                 //System.out.println("Scan declarations for " + fileName);
-                UnitFactory unitFactory = 
-                        new UnitFactory() {
+                Delegates unitFactory = 
+                        new Delegates() {
                     @Override
                     public TypecheckerUnit createUnit() {
                         return PhasedUnit.this.createUnit();
+                    }
+
+                    @Override
+                    public boolean shouldIgnoreOverload(Declaration overload,
+                            Declaration currentDeclaration) {
+                        return PhasedUnit.this.shouldIgnoreOverload(overload, currentDeclaration);
                     }
                 };
                 DeclarationVisitor dv = 
@@ -349,7 +355,12 @@ public class PhasedUnit {
         }
     }
 
-	private void processLiterals() {
+    public boolean shouldIgnoreOverload(Declaration overload,
+            Declaration currentDeclaration) {
+        return false;
+    }
+
+    private void processLiterals() {
 		if (!literalsProcessed) {
 			rootNode.visit(new LiteralVisitor());
 			literalsProcessed = true;

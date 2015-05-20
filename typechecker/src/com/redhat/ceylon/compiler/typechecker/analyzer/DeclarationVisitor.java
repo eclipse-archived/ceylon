@@ -32,7 +32,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -81,6 +80,11 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
+    public interface Delegates {
+        TypecheckerUnit createUnit();
+        boolean shouldIgnoreOverload(Declaration overload, Declaration currentDeclaration);
+    }
+    
     private final Package pkg;
     private final String filename;
     private Scope scope;
@@ -90,17 +94,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private String fullPath; 
     private String relativePath;
     private boolean dynamic;
-    protected UnitFactory unitFactory;
+    protected Delegates delegates;
     
     public DeclarationVisitor(Package pkg, String filename,
             String fullPath, String relativePath, 
-            UnitFactory unitFactory) {
+            Delegates delegates) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
         this.fullPath = fullPath;
         this.relativePath = relativePath;
-        this.unitFactory = unitFactory;
+        this.delegates = delegates;
     }
 
     public TypecheckerUnit getCompilationUnit() {
@@ -198,7 +202,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    private static Declaration checkForNativeAnnotation(
+    private Declaration checkForNativeAnnotation(
             Tree.Declaration that, 
             Declaration model, Scope scope) {
         Declaration modelToAdd = model;
@@ -325,13 +329,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return null;
     }
 
-    private static boolean hasOverload
-            (List<Declaration> overloads, String backend, 
-                    Declaration overloadToIgnore) {
+    private boolean hasOverload
+            (List<Declaration> overloads, String backend, Declaration currentDeclaration) {
         if (overloads!=null) {
             for (Declaration d: overloads) {
                 if (backend.equals(d.getNative()) 
-                        && !d.equals(overloadToIgnore)) {
+                        && !delegates.shouldIgnoreOverload(d, currentDeclaration)) {
                     return true;
                 }
             }
@@ -339,11 +342,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return false;
     }
 
-    private static boolean hasModelInOverloads
-            (List<Declaration> overloads, Declaration model) {
+    private boolean hasModelInOverloads
+            (List<Declaration> overloads, Declaration currentDeclaration) {
         if (overloads!=null) {
-            for (Declaration d: overloads) {
-                if (d.equals(model)) {
+            for (Declaration overload: overloads) {
+                if (overload == currentDeclaration ||
+                        overload.equals(currentDeclaration)
+                        && delegates.shouldIgnoreOverload(overload, currentDeclaration)) {
                     return true;
                 }
             }
@@ -542,7 +547,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-        unit = unitFactory.createUnit();
+        unit = delegates.createUnit();
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
