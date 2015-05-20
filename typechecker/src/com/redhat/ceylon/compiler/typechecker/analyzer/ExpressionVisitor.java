@@ -4285,8 +4285,6 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (paramTypeDec instanceof UnionType) {
-                List<ProducedType> list = 
-                        new ArrayList<ProducedType>();
                 //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
                 //types. 
@@ -4299,8 +4297,11 @@ public class ExpressionVisitor extends Visitor {
                 //      constraints
                 /*ProducedType typeParamType = null;
                 boolean found = false;
-                for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                    TypeDeclaration ctd = ct.getDeclaration();
+                for (ProducedType ct: 
+                        paramType.getDeclaration()
+                            .getCaseTypes()) {
+                    TypeDeclaration ctd = 
+                            ct.getDeclaration();
                     if (ctd instanceof TypeParameter) {
                         typeParamType = ct;
                     }
@@ -4349,8 +4350,12 @@ public class ExpressionVisitor extends Visitor {
                 	//just one type parameter left in the union
                     Map<TypeParameter, ProducedType> args = 
                             pt.getTypeArguments();
-                    for (ProducedType ct: 
-                            ptd.getCaseTypes()) {
+                    List<ProducedType> cts = 
+                            ptd.getCaseTypes();
+                    List<ProducedType> list = 
+                            new ArrayList<ProducedType>
+                                (cts.size());
+                    for (ProducedType ct: cts) {
                         addToUnionOrIntersection(
                                 findingUpperBounds, list, 
                                 inferTypeArg(tp, 
@@ -4359,18 +4364,16 @@ public class ExpressionVisitor extends Visitor {
                                         findingUpperBounds,
                                         visited, argNode));
                     }
+                    return unionOrIntersection(
+                            findingUpperBounds, list);
                 }
                 else {
-                    addToUnionOrIntersection(
-                            findingUpperBounds, list, 
-                            inferTypeArg(tp, 
-                                    pt, apt, 
-                                    covariant, contravariant,
-                                    findingUpperBounds,
-                                    visited, argNode));
+                    return inferTypeArg(tp, 
+                            pt, apt, 
+                            covariant, contravariant,
+                            findingUpperBounds,
+                            visited, argNode);
                 }
-                return unionOrIntersection(
-                        findingUpperBounds, list);
                 /*else {
                     //if the param type is of form T|A1 and the arg type is
                     //of form A2|B then constrain T by B and A1 by A2
@@ -4444,7 +4447,7 @@ public class ExpressionVisitor extends Visitor {
                         argType.getSupertype(paramTypeDec);
                 if (supertype!=null) {
                     List<ProducedType> list = 
-                            new ArrayList<ProducedType>();
+                            new ArrayList<ProducedType>(2);
                     ProducedType pqt = 
                             paramType.getQualifyingType();
                     ProducedType sqt = 
