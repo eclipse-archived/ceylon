@@ -67,6 +67,7 @@ public class ModuleSourceMapper {
 
     public void initCoreModules(){
         moduleManager.initCoreModules(modules);
+        packageStack.clear();
         packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
     }
     
