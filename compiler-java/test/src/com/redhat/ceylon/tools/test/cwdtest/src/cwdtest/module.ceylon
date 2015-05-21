@@ -1,3 +1,4 @@
+native("jvm")
 module cwdtest "1" {
     import java.base "7";
     import "commons-codec:commons-codec" "1.4";

@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 "Some module doc"
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.metamodel "123" {
     "Not actually needed, but we want to test ModuleImports"
     deprecated optional import java.base "7";

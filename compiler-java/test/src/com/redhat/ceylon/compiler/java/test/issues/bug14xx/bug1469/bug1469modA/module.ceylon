@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1469.bug1469modA "1" {
     import java.base "7";
 //    shared import org.jboss.xnio.api "3.1.0.CR7";

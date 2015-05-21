@@ -20,6 +20,7 @@
 "Bla bla."
 by("Roland Tepp")
 license("http://www.gnu.org/licenses/gpl.html")
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.java "1.1.0" {
     import java.base "7";
 }

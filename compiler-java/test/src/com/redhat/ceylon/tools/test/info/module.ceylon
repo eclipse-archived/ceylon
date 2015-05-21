@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.tools.test.info "1" {
     shared import java.base "7";
     optional import java.desktop "7";
