@@ -327,12 +327,12 @@ public class ModuleValidator {
             String be = getNativeBackend(imp.getAnnotationList(), imp.getUnit());
             if (be == null) {
                 if (importedModule.isNative() && !module.isNative()) {
-                    node.addError("native import for cross-platform module" +
-                            " (mark either the module or the import as native)");
+                    node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, "native import for cross-platform module" +
+                            " (mark either the module or the import as native)"));
                 }
             } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
-                node.addError("native backend name conflicts with imported module: '\"" + 
-                        be + "\"' is not '\"" + importedModule.getNative() + "\"'");
+                node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, "native backend name conflicts with imported module: '\"" + 
+                        be + "\"' is not '\"" + importedModule.getNative() + "\"'"));
             }
         }
     }
