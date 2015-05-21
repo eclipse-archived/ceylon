@@ -107,18 +107,18 @@ class WWWW<U>() {
 }
 
 void testMissingTypeArgs() {
-    @error Array.clone();
-    @error value blah = Array.clone;
-    @error Array<>.clone();
-    @error value blahblah = Array<>.clone;
+    @error:"missing type arguments" Array.clone();
+    @error:"missing type arguments" value blah = Array.clone;
+    @error:"wrong number of type arguments" Array<>.clone();
+    @error:"wrong number of type arguments" value blahblah = Array<>.clone;
     value genericRef = Array;
     value nonGenericRef = Array<String>.clone;
     value char = Integer.character;
-    @error value nochar = Integer.character();
-    @error value notchar = Integer<>.character;
-    @error value nottachar = Integer.character<>;
+    @error:"missing argument for required parameter" value nochar = Integer.character();
+    @error:"does not accept type arguments" value notchar = Integer<>.character;
+    @error:"does not accept type arguments" value nottachar = Integer.character<>;
     value and = Integer.and;
-    @error value noand = Integer.and();
-    @error value notand = Integer<>.and;
-    @error value nottaand = Integer.and<>;
+    @error:"missing argument for required parameter" value noand = Integer.and();
+    @error:"does not accept type arguments" value notand = Integer<>.and;
+    @error:"does not accept type arguments" value nottaand = Integer.and<>;
 }
