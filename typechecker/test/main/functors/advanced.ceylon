@@ -47,6 +47,9 @@ void testAdvancedStuff() {
 
 void moreConstraints() {
     Category cat = "hello world";
+    class Foo<T>(T[] ts) satisfies Category<> {
+        contains = ts.contains;
+    }
     
     void accept<E,C>(C<in E> c, E e) 
             given E satisfies Object
@@ -57,8 +60,12 @@ void moreConstraints() {
     
     accept<String,Category>(cat, "hello");
     accept<String,Category>(cat, "goodbye");
-    accept<Integer,List>(1..10, 5);
-    accept<Integer,List>(1..10, -1);
+    accept<Integer,Foo>(Foo(1..10), 5);
+    accept<Integer,Foo>(Foo(1..10), -1);
+    @error accept<Integer,List>(1..10, 5);
+    @error accept<Integer,List>(1..10, -1);
+    @error accept<Integer,Range>(1..10, 5);
+    @error accept<Integer,Range>(1..10, -1);
 }
 
 void moreConstraintsBroken() {
