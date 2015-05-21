@@ -292,7 +292,7 @@ public class ModuleVisitor extends Visitor {
                     Backend backend = Backend.fromAnnotation(be);
                     if (backend == null) {
                         node.addError("illegal native backend name: '\"" + 
-                                be + "\"' (must be either '\"java\"' or '\"js\"')");
+                                be + "\"' (must be either '\"jvm\"' or '\"js\"')");
                     } else if (moduleBackend != null && !moduleBackend.equals(be)) {
                         node.addError("native backend name on import conflicts with module descriptor: '\"" + 
                                 be + "\"' is not '\"" + moduleBackend + "\"'");
