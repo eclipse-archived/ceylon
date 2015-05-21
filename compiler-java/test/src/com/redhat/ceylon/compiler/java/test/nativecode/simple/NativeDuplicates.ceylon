@@ -23,9 +23,9 @@ native shared Integer nativeDuplicates1();
 
 native shared Integer nativeDuplicates2();
 
-native("java") shared Integer nativeDuplicates2() => 1;
+native("jvm") shared Integer nativeDuplicates2() => 1;
 
-native("java") shared Integer nativeDuplicates2() => 1;
+native("jvm") shared Integer nativeDuplicates2() => 1;
 
 native shared Integer nativeDuplicates3();
 
@@ -33,9 +33,9 @@ native("js") shared Integer nativeDuplicates3() => 1;
 
 native("js") shared Integer nativeDuplicates3() => 1;
 
-native("java") Integer nativeDuplicates4() => 1;
+native("jvm") Integer nativeDuplicates4() => 1;
 
-native("java") Integer nativeDuplicates4() => 1;
+native("jvm") Integer nativeDuplicates4() => 1;
 
 native("js") Integer nativeDuplicates5() => 1;
 
