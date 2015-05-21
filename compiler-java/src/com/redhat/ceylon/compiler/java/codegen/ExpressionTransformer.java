@@ -1164,11 +1164,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make a raw call and cast
             if(declaration instanceof Method){
                 // we need to get types for each type argument
-                JCExpression closedTypesExpr;
-                if(expr.getTypeArgumentList() != null)
-                    closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
-                else
-                    closedTypesExpr = null;
+                JCExpression closedTypesExpr = null;
+                if(expr.getTypeArgumentList() != null) {
+                    java.util.List<ProducedType> typeModels = expr.getTypeArgumentList().getTypeModels();
+                    if (typeModels!=null) {
+                        closedTypesExpr = getClosedTypesSequential(typeModels);
+                    }
+                }
                 // we also need type descriptors for ret and args
                 ProducedType callableType = producedReference.getFullType();
                 JCExpression reifiedReturnTypeExpr = makeReifiedTypeArgument(typeFact().getCallableReturnType(callableType));
@@ -1276,9 +1278,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression reifiedArguments = makeReifiedTypeArgument(argumentsType);
                 closedTypeArgs.append(reifiedArguments);
                 if(expr.getTypeArgumentList() != null){
-                    JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
-                    // must apply it
-                    closedTypeArgs.append(closedTypesExpr);
+                    java.util.List<ProducedType> typeModels = expr.getTypeArgumentList().getTypeModels();
+                    if(typeModels!=null){
+                        JCExpression closedTypesExpr = getClosedTypesSequential(typeModels);
+                        // must apply it
+                        closedTypeArgs.append(closedTypesExpr);
+                    }
                 }
             }else{
                 JCExpression reifiedSet;
@@ -3388,8 +3393,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             // instantiator
             callBuilder.typeArguments(List.<JCExpression>nil());
-            for (ProducedType tm : qte.getTypeArguments().getTypeModels()) {
-                callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+            java.util.List<ProducedType> typeModels = qte.getTypeArguments().getTypeModels();
+            if (typeModels!=null) {
+                for (ProducedType tm : typeModels) {
+                    callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+                }
             }
             callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(declaration)));
         }
