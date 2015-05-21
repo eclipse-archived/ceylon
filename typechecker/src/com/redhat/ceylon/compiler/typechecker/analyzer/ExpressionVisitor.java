@@ -7360,14 +7360,14 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(that, 
-                            primary);
+                    handleStaticPrimaryImplicitTypeArguments(
+                            that, primary);
                 }
                 //otherwise infer type arguments later
             }
             else if (that.getStaticMethodReference()) {
-                handleStaticPrimaryImplicitTypeArguments(that, 
-                        primary);
+                handleStaticPrimaryImplicitTypeArguments(
+                        that, primary);
             }
             else {
                 if (primary instanceof Tree.Package) {
@@ -7621,8 +7621,8 @@ public class ExpressionVisitor extends Visitor {
                         "' of '" + rtname + "'" + 
                         getTypeUnknownError(fullType));
             }
-            that.setTypeModel(accountForStaticReferenceType(that, 
-                    member, fullType));
+            that.setTypeModel(accountForStaticReferenceType(
+                    that, member, fullType));
             //}
         }
         else if (that.getStaticMethodReference()) {
@@ -8126,14 +8126,14 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(that, 
-                            primary);
+                    handleStaticPrimaryImplicitTypeArguments(
+                            that, primary);
                 }
                 //otherwise infer type arguments later
             }
             else if (that.getStaticMethodReference()) {
-                handleStaticPrimaryImplicitTypeArguments(that, 
-                        primary);
+                handleStaticPrimaryImplicitTypeArguments(
+                        that, primary);
             }
             else if (!that.getStaticMethodReferencePrimary()) {
                 if (primary instanceof Tree.Package) {
@@ -8444,8 +8444,8 @@ public class ExpressionVisitor extends Visitor {
                         memberType.getName(unit)  + "' of '" + 
                         rtname + "'");
             }
-            that.setTypeModel(accountForStaticReferenceType(that, 
-                    memberType, fullType));
+            that.setTypeModel(accountForStaticReferenceType(
+                    that, memberType, fullType));
         }
         else if (that.getStaticMethodReference()) {
             handleStaticPrimaryImplicitTypeArguments(that, 
