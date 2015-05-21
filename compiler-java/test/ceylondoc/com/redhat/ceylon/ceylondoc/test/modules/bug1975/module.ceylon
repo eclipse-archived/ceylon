@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.ceylondoc.test.modules.bug1975 "1" {
     // not really needed but https://github.com/ceylon/ceylon-compiler/issues/2003 makes it required for now
     import java.base "7";

@@ -20,6 +20,7 @@
 "Bla bla."
 by("Stef FroMage")
 license("http://www.gnu.org/licenses/gpl.html")
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.maven "6.6.6" {
     import "javax.ws.rs.jsr311-api" "1.1.1";
 }

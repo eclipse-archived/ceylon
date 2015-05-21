@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2 "1" {
     shared import "org.apache.httpcomponents:httpclient" "4.3.3";
 }

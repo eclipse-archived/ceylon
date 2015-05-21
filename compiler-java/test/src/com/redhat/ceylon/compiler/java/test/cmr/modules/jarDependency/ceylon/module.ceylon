@@ -20,6 +20,7 @@
 "Bla bla."
 by("Stef FroMage")
 license("http://www.gnu.org/licenses/gpl.html")
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.jarDependency.ceylon "6.6.6" {
     import com.redhat.ceylon.compiler.java.test.cmr.modules.jarDependency.java "1.0";
 }

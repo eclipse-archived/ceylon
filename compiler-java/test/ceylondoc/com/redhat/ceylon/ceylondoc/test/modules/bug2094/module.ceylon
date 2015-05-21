@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.ceylondoc.test.modules.bug2094 "1" {
     import ceylon.file "1.1.1";
 }
