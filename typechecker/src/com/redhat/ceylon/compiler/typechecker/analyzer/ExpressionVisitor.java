@@ -3044,8 +3044,7 @@ public class ExpressionVisitor extends Visitor {
                                 List<Parameter> ppl = 
                                         pplf.getParameters();
                                 boolean[] specifiedParams = 
-                                        specified(apl.size(), 
-                                                pplf);
+                                        specified(apl.size(), pplf);
                                 for (TypeParameter tp: typeParameters) {
                                     boolean findUpperBounds =
                                             isEffectivelyContravariant(tp,
@@ -4028,7 +4027,8 @@ public class ExpressionVisitor extends Visitor {
                 boolean occursInvariantly = false;
                 if (!paramLists.isEmpty()) {
                     List<Parameter> params =
-                            paramLists.get(0).getParameters();
+                            paramLists.get(0)
+                                .getParameters();
                     for (int i=0, size = params.size(); 
                             i<size; i++) {
                         //ignore parameters with no argument
