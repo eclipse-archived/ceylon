@@ -311,17 +311,7 @@ public class ModuleVisitor extends Visitor {
                         if (moduleImport == null) {
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
-                            if (be == null) {
-                                be = importedModule.getNative();
-                                if (be != null && moduleBackend == null) {
-                                    node.addError("native import for cross-platform module" +
-                                            " (mark either the module or the import as native)");
-                                }
-                            } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
-                                node.addError("native backend name conflicts with imported module: '\"" + 
-                                        be + "\"' is not '\"" + importedModule.getNative() + "\"'");
-                            }
-                            moduleImport = new ModuleImport(importedModule, optional, export, be);
+                            moduleImport = new ModuleImport(importedModule, optional, export);
                             moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);

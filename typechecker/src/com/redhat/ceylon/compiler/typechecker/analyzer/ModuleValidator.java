@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,6 +18,8 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -90,6 +94,9 @@ public class ModuleValidator {
             //we don't care about propagated dependency here as top modules are independent from one another
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First, searchedArtifacts);
             dependencyTree.pollLast();
+        }
+        for (Module module : compiledModules) {
+            verifyNative(module);
         }
         moduleManager.addImplicitImports();
         executeExternalModulePhases();
@@ -305,6 +312,31 @@ public class ModuleValidator {
         return dupe.getVersion().equals(module.getVersion());
     }
 
+    private void verifyNative(Module module) {
+        for (ImportModule imp : moduleManagerUtil.retrieveModuleImportNodes(module)) {
+            Module importedModule;
+            Node node;
+            if (imp.getImportPath()!=null) {
+                node = imp.getImportPath();
+                importedModule = (Module)imp.getImportPath().getModel();
+            } else {
+                node = imp.getQuotedLiteral();
+                importedModule = moduleManagerUtil.getModuleForNode(node);
+                if (importedModule == null) continue;
+            }
+            String be = getNativeBackend(imp.getAnnotationList(), imp.getUnit());
+            if (be == null) {
+                if (importedModule.isNative() && !module.isNative()) {
+                    node.addError("native import for cross-platform module" +
+                            " (mark either the module or the import as native)");
+                }
+            } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
+                node.addError("native backend name conflicts with imported module: '\"" + 
+                        be + "\"' is not '\"" + importedModule.getNative() + "\"'");
+            }
+        }
+    }
+    
     protected void executeExternalModulePhases() {
         //moduleimport phase already done
         //Already called from within verifyModuleDependencyTree

@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -187,6 +188,35 @@ public class ModuleSourceMapper {
             }
         }
         return imports;
+    }
+    
+    public Iterable<Tree.ImportModule> retrieveModuleImportNodes(Module module) {
+        List<Tree.ImportModule> nodes = new ArrayList<>();
+        for (ModuleImport imp : module.getImports()) {
+            WeakHashMap<Node, Object> moduleDepDefinition = moduleImportToNode.get(imp);
+            if (moduleDepDefinition != null) {
+                for (Node node : moduleDepDefinition.keySet()) {
+                    if (node instanceof Tree.ImportModule) {
+                        nodes.add((Tree.ImportModule)node);
+                    }
+                }
+            }
+        }
+        return nodes;
+    }
+    
+    public Module getModuleForNode(Node importNode) {
+        for (ModuleImport imp : moduleImportToNode.keySet()) {
+            WeakHashMap<Node, Object> moduleDepDefinition = moduleImportToNode.get(imp);
+            if (moduleDepDefinition != null) {
+                for (Node node : moduleDepDefinition.keySet()) {
+                    if (node == importNode) {
+                        return imp.getModule();
+                    }
+                }
+            }
+        }
+        return null;
     }
     
     public void attachErrorToModuleImport(ModuleImport moduleImport, String error){
