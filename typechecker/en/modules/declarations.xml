@@ -1830,6 +1830,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <literal>abstract</literal>, it is considered an abstract nested class of the 
             containing class or interface.</para>
             
+            <para>A class alias may not alias a partial constructor. A 
+            <literal>shared</literal> class alias may not alias an 
+            un-<literal>shared</literal> constructor.</para>
+            
             <para>A class may extend a class alias, in which case, the class inherits the 
             aliased class type.</para>
                 
