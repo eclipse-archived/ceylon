@@ -3061,9 +3061,6 @@ public class ExpressionVisitor extends Visitor {
                         return null; //TODO: to give a nicer error
                     }
                     else {
-                        List<ProducedType> inferredTypes = 
-                                new ArrayList<ProducedType>
-                                    (typeParameters.size());
                         ParameterList aplf = apls.get(0);
                         ParameterList pplf = ppls.get(0);
                         List<Parameter> apl = 
@@ -3071,8 +3068,11 @@ public class ExpressionVisitor extends Visitor {
                         List<Parameter> ppl = 
                                 pplf.getParameters();
                         boolean[] specifiedParams = 
-                                specified(apl.size(), 
+                                specifiedParameters(apl.size(), 
                                           ppl.size());
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>
+                                    (typeParameters.size());
                         for (TypeParameter tp: typeParameters) {
                             boolean findUpperBounds =
                                     isEffectivelyContravariant(
@@ -3791,14 +3791,10 @@ public class ExpressionVisitor extends Visitor {
                 boolean findUpperBounds =
                         isEffectivelyContravariant(tp,
                                 type, argCount);
-                List<ProducedType> inferredTypes = 
-                        new ArrayList<ProducedType>();
-                inferTypeArgumentFromPositionalArgs(tp,
-                        paramTypes, receiverType, 
-                        pal, findUpperBounds, 
-                        inferredTypes);
-                ProducedType it = formUnionOrIntersection(
-                        findUpperBounds, inferredTypes);
+                ProducedType it = 
+                        inferTypeArgumentFromPositionalArgs(
+                                tp, paramTypes, receiverType, 
+                                pal, findUpperBounds);
                 typeArguments.add(it);
             }
             return typeArguments;
@@ -4252,7 +4248,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration invoked) {
         boolean findingUpperBounds = 
                 isEffectivelyContravariant(tp, invoked,
-                        specified(nal, parameters));
+                        specifiedParameters(nal, parameters));
         List<NamedArgument> namedArgs = 
                 nal.getNamedArguments();
         Set<Parameter> foundParameters = 
@@ -4271,11 +4267,11 @@ public class ExpressionVisitor extends Visitor {
                 getUnspecifiedParameter(null, parameters, 
                         foundParameters);
         if (sp!=null) {
-        	Tree.SequencedArgument sa = 
+        	Tree.SequencedArgument sarg = 
         	        nal.getSequencedArgument();
-        	inferTypeArgFromSequencedArg(sa, tp, sp, 
+        	inferTypeArgFromSequencedArg(sarg, tp, sp, 
         	        findingUpperBounds,
-        	        inferredTypes, sa);
+        	        inferredTypes, sarg);
         }
         return formUnionOrIntersection(findingUpperBounds, 
                 inferredTypes);
@@ -4350,19 +4346,19 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private static boolean[] specified(
-            int count, int total) {
+    private static boolean[] specifiedParameters
+            (int argumentCount, int total) {
         boolean[] specified = 
                 new boolean[total];
         for (int i=0; 
-                i<count && i<total; 
+                i<argumentCount && i<total; 
                 i++) {
             specified[i] = true;
         }
         return specified;
     }
 
-    private static boolean[] specified(
+    private static boolean[] specifiedParameters(
             Tree.PositionalArgumentList args,
             ParameterList parameters) {
         List<Parameter> params = 
@@ -4382,7 +4378,7 @@ public class ExpressionVisitor extends Visitor {
         return specified;
     }
 
-    private static boolean[] specified(
+    private static boolean[] specifiedParameters(
             Tree.NamedArgumentList args,
             ParameterList parameters) {
         List<Parameter> params = 
@@ -4409,7 +4405,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration invoked) {
         boolean findingUpperBounds = 
                 isEffectivelyContravariant(tp, invoked,
-                        specified(pal, parameters));
+                        specifiedParameters(pal, parameters));
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         List<ProducedType> inferredTypes = 
@@ -4419,9 +4415,9 @@ public class ExpressionVisitor extends Visitor {
         for (int i=0; i<params.size(); i++) {
             Parameter parameter = params.get(i);
             if (args.size()>i) {
-                Tree.PositionalArgument a = args.get(i);
-                ProducedType at = a.getTypeModel();
-                if (a instanceof Tree.SpreadArgument) {
+                Tree.PositionalArgument arg = args.get(i);
+                ProducedType at = arg.getTypeModel();
+                if (arg instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     List<Parameter> subList = 
                             params.subList(i, 
@@ -4435,10 +4431,10 @@ public class ExpressionVisitor extends Visitor {
                                     findingUpperBounds, 
                                     pal));
                 }
-                else if (a instanceof Tree.Comprehension) {
+                else if (arg instanceof Tree.Comprehension) {
                     if (parameter.isSequenced()) {
                         Tree.Comprehension c = 
-                                (Tree.Comprehension) a;
+                                (Tree.Comprehension) arg;
                         inferTypeArgFromComprehension(tp, 
                                 parameter, c, 
                                 findingUpperBounds,
@@ -4492,13 +4488,14 @@ public class ExpressionVisitor extends Visitor {
                 inferredTypes);
     }
 
-    private void inferTypeArgumentFromPositionalArgs(
+    private ProducedType inferTypeArgumentFromPositionalArgs(
             TypeParameter tp, 
             List<ProducedType> parameterTypes, 
             ProducedType qt, 
             Tree.PositionalArgumentList pal, 
-            boolean findingUpperBounds,
-            List<ProducedType> inferredTypes) {
+            boolean findingUpperBounds) {
+        List<ProducedType> inferredTypes = 
+                new ArrayList<ProducedType>();
         for (int i=0; i<parameterTypes.size(); i++) {
             ProducedType pt = parameterTypes.get(i);
             List<Tree.PositionalArgument> args = 
@@ -4515,6 +4512,8 @@ public class ExpressionVisitor extends Visitor {
             }
             //TODO: comprehensions, spreads, sequenced args!
         }
+        return formUnionOrIntersection(
+                findingUpperBounds, inferredTypes);
     }
 
     private void inferTypeArgFromPositionalArgs(
