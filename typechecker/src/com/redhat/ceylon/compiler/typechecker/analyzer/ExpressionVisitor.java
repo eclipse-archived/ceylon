@@ -3025,9 +3025,11 @@ public class ExpressionVisitor extends Visitor {
                         Functional fun = (Functional) passed;
                         List<ParameterList> apls = 
                                 fun.getParameterLists();
-                        Declaration pdec = param.getDeclaration();
+                        Declaration pdec = 
+                                param.getDeclaration();
                         if (pdec instanceof Functional) {
-                            Functional pfun = (Functional) pdec;
+                            Functional pfun = 
+                                    (Functional) pdec;
                             List<ParameterList> ppls = 
                                     pfun.getParameterLists();
                             if (apls.isEmpty() || ppls.isEmpty()) {
@@ -3047,8 +3049,9 @@ public class ExpressionVisitor extends Visitor {
                                         specified(apl.size(), pplf);
                                 for (TypeParameter tp: typeParameters) {
                                     boolean findUpperBounds =
-                                            isEffectivelyContravariant(tp,
-                                                    passed, specifiedParams);
+                                            isEffectivelyContravariant(
+                                                    tp, passed, 
+                                                    specifiedParams);
                                     ProducedType it = 
                                             inferFunctionRefTypeArg(
                                                     smte, 
@@ -3092,36 +3095,58 @@ public class ExpressionVisitor extends Visitor {
 //                    }
                 }
                 if (unit.isSequentialType(paramType)) {
-                    paramType = unit.getSequentialElementType(paramType);
+                    paramType = 
+                            unit.getSequentialElementType(
+                                    paramType);
                 }
                 if (unit.isCallableType(paramType)) {
-                    ProducedType template;
+                    //this is the type of the parameter list
+                    //of the function ref itself, which 
+                    //involves the type parameters we are
+                    //trying to infer
+                    ProducedType parameterListType;
+                    ProducedType fullType;
                     if (smte.getStaticMethodReferencePrimary()) {
                         ProducedType type = arg.getType();
-                        template = producedType(
+                        parameterListType = producedType(
                                 unit.getTupleDeclaration(), 
                                 type, type, emptyType());
+                        fullType = producedType(
+                                unit.getCallableDeclaration(),
+                                type, parameterListType);
                     }
                     else {
-                        template = unit.getCallableTuple(
-                                arg.getFullType());
+                        fullType = arg.getFullType();
+                        parameterListType = 
+                                unit.getCallableTuple(fullType);
                     }
-                    ProducedType type = 
+                    //this is the type of the parameter list
+                    //of the callable parameter that the 
+                    //function ref is being passed to (these
+                    //parameters are going to be assigned to
+                    //the parameters of the function ref)
+                    ProducedType argumentListType = 
                             unit.getCallableTuple(paramType);
+                    int argCount = 
+                            unit.getTupleElementTypes(
+                                    unit.getCallableReturnType(
+                                            argumentListType))
+                                .size();
                     List<ProducedType> inferredTypes = 
                             new ArrayList<ProducedType>
                                 (typeParameters.size());
                     for (TypeParameter tp: typeParameters) {
                         boolean findUpperBounds = 
                                 isEffectivelyContravariant(tp,
-                                        //TODO: better variance inference
-                                        passed, null);
+                                        fullType, argCount);
                         ProducedType it = 
                                 inferFunctionRefTypeArg(
-                                        smte, 
+                                        smte,
                                         typeParameters, 
-                                        parameterizedDec, 
-                                        template, type, tp, 
+                                        parameterizedDec,
+                                        parameterListType,
+                                        argumentListType,
+                                        tp,
                                         findUpperBounds);
                         inferredTypes.add(it);
                     }
@@ -3748,16 +3773,18 @@ public class ExpressionVisitor extends Visitor {
             for (TypeParameter tp: typeParameters) {
                 List<ProducedType> paramTypes = 
                         unit.getCallableArgumentTypes(type);
+                int argCount = 
+                        pal.getPositionalArguments()
+                            .size();
                 boolean findUpperBounds =
                         isEffectivelyContravariant(tp,
-                                //TODO: better variance inference
-                                type.getDeclaration(),
-                                null);
+                                type, argCount);
                 List<ProducedType> inferredTypes = 
                         new ArrayList<ProducedType>();
-                inferTypeArgumentFromPositionalArgs(tp, 
+                inferTypeArgumentFromPositionalArgs(tp,
                         paramTypes, receiverType, 
-                        pal, findUpperBounds, inferredTypes);
+                        pal, findUpperBounds, 
+                        inferredTypes);
                 ProducedType it = formUnionOrIntersection(
                         findUpperBounds, inferredTypes);
                 typeArguments.add(it);
@@ -3957,6 +3984,76 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         return NO_TYPE_ARGS;
+    }
+    
+    private boolean isEffectivelyContravariant(
+            TypeParameter tp, ProducedType fullType, 
+            int argumentListLength) {
+        if (tp.isCovariant()) {
+            return false;
+        }
+        else if (tp.isContravariant()) {
+            return true;
+        }
+        else {
+            
+            ProducedType returnType = 
+                    unit.getCallableReturnType(fullType);
+            
+            if (returnType!=null) {
+                boolean occursInvariantly =
+                        returnType.occursInvariantly(tp);
+                boolean occursCovariantly =
+                        returnType.occursCovariantly(tp);
+                boolean occursContravariantly =
+                        returnType.occursContravariantly(tp);
+                if (occursCovariantly
+                        && !occursContravariantly
+                        && !occursInvariantly) {
+                    //if the parameter occurs only
+                    //covariantly in the return type,
+                    //then treat it as 'out'
+                    return false;
+                }
+                else if (!occursCovariantly
+                        && occursContravariantly
+                        && !occursInvariantly) {
+                    //if the parameter occurs only
+                    //contravariantly in the return type,
+                    //then treat it as 'in'
+                    return true;
+                }
+            }
+            
+            List<ProducedType> parameterTypes =
+                    unit.getCallableArgumentTypes(fullType);
+            if (parameterTypes!=null) {
+                boolean occursContravariantly = false;
+                boolean occursCovariantly = false;
+                boolean occursInvariantly = false;
+                for (int i=0, size = parameterTypes.size(); 
+                        i<size && i<argumentListLength; 
+                        i++) {
+                    ProducedType pt = 
+                            parameterTypes.get(i);
+                    if (pt!=null) {
+                        occursContravariantly = occursContravariantly
+                                || pt.occursContravariantly(tp);
+                        occursCovariantly = occursCovariantly
+                                || pt.occursCovariantly(tp);
+                        occursInvariantly = occursInvariantly
+                                || pt.occursInvariantly(tp);
+                    }
+                }
+                //if the parameter occurs only contravariantly 
+                //in the argument list, then treat it as 'in'
+                return occursContravariantly
+                        && !occursCovariantly
+                        && !occursInvariantly;
+            }
+        }
+        
+        return false;
     }
     
     /**
