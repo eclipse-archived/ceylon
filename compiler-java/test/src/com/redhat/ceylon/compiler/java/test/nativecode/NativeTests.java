@@ -234,7 +234,7 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeInvalidTypes",
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
-                new CompilerError(26, "illegal native backend name: '\"foo\"' (must be either '\"java\"' or '\"js\"')")
+                new CompilerError(26, "illegal native backend name: '\"foo\"', must be either '\"jvm\"' or '\"js\"'")
         );
     }
     

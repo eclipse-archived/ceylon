@@ -26,8 +26,8 @@ native class NativeClassExtends() extends NativeClassExtendsSuper() {
     native shared actual void test(Integer i);
 }
 
-native("java") class NativeClassExtends() extends NativeClassExtendsSuper() {
-    native("java") shared actual void test(Integer i) {
+native("jvm") class NativeClassExtends() extends NativeClassExtendsSuper() {
+    native("jvm") shared actual void test(Integer i) {
         throw Exception("NativeClassExtends-JVM");
     }
 }

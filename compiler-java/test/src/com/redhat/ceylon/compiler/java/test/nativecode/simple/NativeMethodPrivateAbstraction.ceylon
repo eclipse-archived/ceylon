@@ -19,7 +19,7 @@
  */
 native void nativeMethodPrivateAbstraction();
 
-native("java") void nativeMethodPrivateAbstraction() {
+native("jvm") void nativeMethodPrivateAbstraction() {
     throw Exception("NativeMethodPrivateAbstraction-JVM");
 }
 

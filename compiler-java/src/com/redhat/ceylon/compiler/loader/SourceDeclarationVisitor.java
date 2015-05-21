@@ -35,7 +35,7 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
     public abstract void loadFromSource(Tree.Declaration decl);
     
     // Returns `true` if the declaration is not marked `native` or if
-    // it has a "java" argument, in all other cases returns `false`.
+    // it has a "jvm" argument, in all other cases returns `false`.
     protected boolean checkNative(Tree.Declaration decl){
         return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit());
     }

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("java") class  NativeClassPrivate() {
+native("jvm") class  NativeClassPrivate() {
     throw Exception("NativeClassPrivate-JVM");
 }
 

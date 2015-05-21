@@ -19,7 +19,7 @@
  */
 native class NativeClassPrivateAbstraction() {}
 
-native("java") class NativeClassPrivateAbstraction() {
+native("jvm") class NativeClassPrivateAbstraction() {
     throw Exception("NativeClassPrivateAbstraction-JVM");
 }
 

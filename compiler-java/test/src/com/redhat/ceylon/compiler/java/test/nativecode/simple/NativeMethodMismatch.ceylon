@@ -19,7 +19,7 @@
  */
 native void nativeMethodMismatch1();
 
-native("java") void nativeMethodMismatch1() {
+native("jvm") void nativeMethodMismatch1() {
 }
 
 native("js") shared void nativeMethodMismatch1() {
@@ -27,7 +27,7 @@ native("js") shared void nativeMethodMismatch1() {
 
 native void nativeMethodMismatch2();
 
-native("java") String nativeMethodMismatch2() {
+native("jvm") String nativeMethodMismatch2() {
     throw Exception("NativeMethodMismatch-JVM");
 }
 
@@ -37,7 +37,7 @@ native("js") Integer nativeMethodMismatch2() {
 
 native void nativeMethodMismatch3(Integer i);
 
-native("java") void nativeMethodMismatch3(Integer i, Boolean b) {
+native("jvm") void nativeMethodMismatch3(Integer i, Boolean b) {
     throw Exception("NativeMethodMismatch-JVM");
 }
 
@@ -45,7 +45,7 @@ native("js") void nativeMethodMismatch3(String s) {
     throw Exception("NativeMethodMismatch-JS");
 }
 
-native("java") void nativeMethodMismatch4jvm() {
+native("jvm") void nativeMethodMismatch4jvm() {
     nativeMethodMismatch4js();
 }
 

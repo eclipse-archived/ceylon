@@ -19,7 +19,7 @@
  */
 native shared Integer nativeInvalidTypes();
 
-native("java") shared Integer nativeInvalidTypes => 1;
+native("jvm") shared Integer nativeInvalidTypes => 1;
 
 native("js") shared class \InativeInvalidTypes() {
 }
