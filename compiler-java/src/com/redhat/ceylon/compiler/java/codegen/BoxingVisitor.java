@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.List;
 import java.util.Stack;
 
 import com.redhat.ceylon.common.BooleanUtil;
@@ -61,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -232,7 +232,7 @@ public abstract class BoxingVisitor extends Visitor {
             if (expr.getDeclaration() instanceof Method) {
                 Method mth = (Method)expr.getDeclaration();
                 if (isTypeParameter(mth.getType()) 
-                        && (hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments().getTypeModels())
+                        && (hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments())
                         || CodegenUtil.isRaw(that))) {
                     CodegenUtil.markTypeErased(that);
                     CodegenUtil.markUntrustedType(that);
@@ -269,9 +269,9 @@ public abstract class BoxingVisitor extends Visitor {
         return false;
     }
 
-    private boolean hasErasedTypeParameter(ProducedReference producedReference, List<ProducedType> typeArguments) {
-        if (typeArguments != null){
-            for (ProducedType arg : typeArguments) {
+    private boolean hasErasedTypeParameter(ProducedReference producedReference, TypeArguments typeArguments) {
+        if (typeArguments != null && typeArguments.getTypeModels() != null){
+            for (ProducedType arg : typeArguments.getTypeModels()) {
                 if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {
                     return true;
                 }
