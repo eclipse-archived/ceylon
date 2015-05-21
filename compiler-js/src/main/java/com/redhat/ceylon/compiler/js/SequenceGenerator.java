@@ -157,7 +157,7 @@ public class SequenceGenerator {
                 }
             }
             gen.out(gen.getClAlias(), "JsCallableList(", tmplist);
-            if (that.getTypeArguments() != null && !that.getTypeArguments().getTypeModels().isEmpty()) {
+            if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null && !that.getTypeArguments().getTypeModels().isEmpty()) {
                 gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         ((Method)that.getDeclaration()).getTypeParameters(),

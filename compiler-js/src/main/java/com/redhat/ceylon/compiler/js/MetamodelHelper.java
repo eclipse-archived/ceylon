@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -230,16 +231,22 @@ public class MetamodelHelper {
             }
             if (d.isMember()) {
                 if (that.getTypeArgumentList()!=null) {
-                    gen.out("[");
-                    boolean first=true;
-                    for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
-                        if (first)first=false;else gen.out(",");
-                        gen.out(gen.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
-                        TypeUtils.typeNameOrList(that, targ, gen, false);
-                        gen.out("})");
+                    List<ProducedType> typeModels = that.getTypeArgumentList().getTypeModels();
+                    if (typeModels!=null) {
+                        gen.out("[");
+                        boolean first=true;
+                        for (ProducedType targ : typeModels) {
+                            if (first)first=false;else gen.out(",");
+                            gen.out(gen.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
+                            TypeUtils.typeNameOrList(that, targ, gen, false);
+                            gen.out("})");
+                        }
+                        gen.out("]");
+                        gen.out(",");
                     }
-                    gen.out("]");
-                    gen.out(",");
+                    else {
+                        gen.out("undefined,");
+                    }
                 } else {
                     gen.out("undefined,");
                 }
