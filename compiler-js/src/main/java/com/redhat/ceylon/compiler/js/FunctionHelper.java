@@ -444,8 +444,8 @@ public class FunctionHelper {
         if (m.isActual() && tps != null && !tps.isEmpty()) {
             //This gives us the root declaration
             Method sm = (Method)m.getRefinedDeclaration();
-            boolean end = false;
             for (int i = 0; i < tps.size(); i++) {
+                boolean end = false;
                 end |= copyMissingTypeParameters(m, sm, i, true, gen);
                 //We still need to find intermediate declarations
                 if (m.isClassOrInterfaceMember()) {
@@ -469,9 +469,9 @@ public class FunctionHelper {
                         }
                     }
                 }
-            }
-            if (end) {
-                gen.endLine(true);
+                if (end) {
+                    gen.endLine(true);
+                }
             }
         }
     }
