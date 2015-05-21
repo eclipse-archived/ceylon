@@ -9806,11 +9806,6 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         inExtendsClause = false;
         
-        //Dupe check:
-        /*if (ie!=null && 
-                ie.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-            checkOverloadedReference((Tree.MemberOrTypeExpression) ie.getPrimary());
-        }*/
     }
     
     private ClassOrInterface constructorClass;

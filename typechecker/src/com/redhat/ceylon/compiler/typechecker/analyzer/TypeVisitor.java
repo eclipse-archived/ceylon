@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1352,11 +1353,11 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         ClassAlias td = 
-                (ClassAlias) that.getDeclarationModel();
+                (ClassAlias) 
+                    that.getDeclarationModel();
         td.setExtendedType(null);
         super.visit(that);
-        Tree.ClassSpecifier cs = 
-                that.getClassSpecifier();
+        Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
             that.addError("missing class body or aliased class reference");
         }
@@ -1381,23 +1382,25 @@ public class TypeVisitor extends Visitor {
 //                that.addError("malformed aliased class");
             }
             else if (!(ct instanceof Tree.StaticType)) {
-                cs.addError("aliased type must be a class");
+                ct.addError("aliased type must be a class");
             }
-            /*else if (ct instanceof Tree.QualifiedType) {
-                cs.addError("aliased class may not be a qualified type");
-            }*/
             else {
                 ProducedType type = ct.getTypeModel();
                 if (type!=null) {
-                    /*if (type.containsTypeAliases()) {
-                        et.addError("aliased type involves type aliases: " +
-                                type.getProducedTypeName());
-                    }
-                    else*/
                     TypeDeclaration dec = 
                             type.getDeclaration();
                     td.setConstructor(dec);
                     if (dec instanceof Constructor) {
+                        if (dec.isAbstract()) {
+                            ct.addError("aliases a partial constructor: '" +
+                                    dec.getName(unit) + 
+                                    "' is declared abstract");
+                        }
+                        if (td.isShared() && !dec.isShared()) {
+                            ct.addError("shared alias of an unshared constructor: '" +
+                                    dec.getName(unit) + 
+                                    "' is not shared");
+                        }
                         type = type.getExtendedType();
                         dec = dec.getExtendedTypeDeclaration();
                     }
@@ -1411,7 +1414,6 @@ public class TypeVisitor extends Visitor {
                     TypeDeclaration etd = 
                             ct.getDeclarationModel();
                     if (etd==td) {
-                        //TODO: handle indirect circularities!
                         ct.addError("directly aliases itself: '" + 
                                 td.getName() + "'");
                     }
@@ -1425,7 +1427,9 @@ public class TypeVisitor extends Visitor {
         Interface id = that.getDeclarationModel();
         id.setExtendedType(null);
         super.visit(that);
-        if (that.getTypeSpecifier()==null) {
+        Tree.TypeSpecifier typeSpecifier = 
+                that.getTypeSpecifier();
+        if (typeSpecifier==null) {
             that.addError("missing interface body or aliased interface reference");
         }
         else {
@@ -1440,23 +1444,17 @@ public class TypeVisitor extends Visitor {
                 that.addError("class alias may not have cases or a self type");
             }
             Tree.StaticType et = 
-                    that.getTypeSpecifier()
-                        .getType();
+                    typeSpecifier.getType();
             if (et==null) {
 //                that.addError("malformed aliased interface");
             }
             else if (!(et instanceof Tree.StaticType)) {
-                that.getTypeSpecifier()
+                typeSpecifier
                         .addError("aliased type must be an interface");
             }
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    /*if (type.containsTypeAliases()) {
-                        et.addError("aliased type involves type aliases: " +
-                                type.getProducedTypeName());
-                    }
-                    else*/ 
                     if (type.getDeclaration() instanceof Interface) {
                         id.setExtendedType(type);
                     } 
@@ -1480,26 +1478,21 @@ public class TypeVisitor extends Visitor {
         if (sts!=null) {
             sts.addError("type alias may not satisfy a type");
         }
-        if (that.getTypeSpecifier()==null) {
+        TypeSpecifier typeSpecifier = 
+                that.getTypeSpecifier();
+        if (typeSpecifier==null) {
             that.addError("missing aliased type");
         }
         else {
             Tree.StaticType et = 
-                    that.getTypeSpecifier()
-                        .getType();
+                    typeSpecifier.getType();
             if (et==null) {
                 that.addError("malformed aliased type");
             }
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    /*if (type.containsTypeAliases()) {
-                        et.addError("aliased type involves type aliases: " +
-                                type.getProducedTypeName());
-                    }
-                    else {*/
-                        ta.setExtendedType(type);
-                    //}
+                    ta.setExtendedType(type);
                 }
             }
         }
