@@ -3002,7 +3002,7 @@ public class ExpressionVisitor extends Visitor {
             if (typeParameters==null ||
                     typeParameters.isEmpty()) {
                 //nothing to infer
-                return null;
+                return NO_TYPE_ARGS;
             }
             else {
                 //set earlier in inferParameterTypes()
@@ -3693,7 +3693,8 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec,
             Tree.StaticMemberOrTypeExpression reference, 
             ProducedType receiverType) {
-        Tree.TypeArguments tas = reference.getTypeArguments();
+        Tree.TypeArguments tas = 
+                reference.getTypeArguments();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         if (isGeneric(dec)) {
@@ -3704,15 +3705,14 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 return getInferredTypeArguments(that, 
-                        reference, (Generic) dec);
+                        (Generic) dec);
             }
         }
         else if (dec instanceof Value) {
             //a generic function reference
             Value value = (Value) dec;
             ProducedType type = value.getType();
-            if (type!=null && 
-                    type.isTypeConstructor()) {
+            if (type!=null && type.isTypeConstructor()) {
                 return getOrInferTypeArgumentsForTypeConstructor(
                         that, receiverType, type, tas);
             }
@@ -3721,7 +3721,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            return null;
+            return NO_TYPE_ARGS;
         }
     }
 
@@ -3777,7 +3777,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         if (pal==null) {
-            return NO_TYPE_ARGS;
+            return null;
         }
         else {
             List<ProducedType> typeArguments = 
@@ -3814,8 +3814,7 @@ public class ExpressionVisitor extends Visitor {
      * @return a list of inferred type arguments
      */
     private List<ProducedType> getInferredTypeArguments(
-            Tree.InvocationExpression that,
-            Tree.StaticMemberOrTypeExpression reference, 
+            Tree.InvocationExpression that, 
             Generic generic) {
         Tree.Term primary =
                 unwrapExpressionUntilTerm(that.getPrimary());
@@ -3826,17 +3825,19 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression pmte = 
                     (Tree.StaticMemberOrTypeExpression) 
                         primary;
-            Declaration declaration = pmte.getDeclaration();
-            if (isStaticReference(reference, declaration)) {
+            if (isStaticReference(pmte)) {
                 return getInferredTypeArgsForStaticReference(
                         that, (TypeDeclaration) generic);
             }
             else {
+                Declaration declaration = pmte.getDeclaration();
                 return getInferredTypeArgsForReference(that, 
                         declaration, generic);
             }
         }
-        return NO_TYPE_ARGS;
+        else {
+            return null;
+        }
     }
     
     /**
@@ -3847,19 +3848,22 @@ public class ExpressionVisitor extends Visitor {
      * method in Java. 
      */
     private static boolean isStaticReference(
-            Tree.StaticMemberOrTypeExpression reference, 
-            Declaration declaration) {
-        if (reference.getStaticMethodReferencePrimary()) {
+            Tree.StaticMemberOrTypeExpression reference) {
+        if (reference.getStaticMethodReference()) {
             //Note: for a real static method reference
             //      the declaration has not yet been 
             //      resolved at this point (for a 
             //      Constructor it always has been)
-            if (declaration instanceof Constructor) {
+            Declaration declaration = 
+                    reference.getDeclaration();
+            if (declaration==null) {
+                return true;
+            }
+            else if (declaration instanceof Constructor) {
                 return false;
             }
             else {
-                return declaration==null ||
-                        !declaration.isStaticallyImportable();
+                return !declaration.isStaticallyImportable();
             }
         }
         else {
@@ -3887,9 +3891,12 @@ public class ExpressionVisitor extends Visitor {
         if (declaration instanceof Functional) {
             Functional functional = 
                     (Functional) declaration;
-            List<ParameterList> parameters = 
+            List<ParameterList> parameterLists = 
                     functional.getParameterLists();
-            if (!parameters.isEmpty()) {
+            if (parameterLists.isEmpty()) {
+                return null;
+            }
+            else {
                 List<ProducedType> typeArgs = 
                         new ArrayList<ProducedType>();
                 List<TypeParameter> typeParameters = 
@@ -3897,7 +3904,8 @@ public class ExpressionVisitor extends Visitor {
                 for (TypeParameter tp: typeParameters) {
                     ProducedType qt = 
                             getTargetQualifyingType(that);
-                    ParameterList pl = parameters.get(0);
+                    ParameterList pl = 
+                            parameterLists.get(0);
                     ProducedType it = 
                             inferTypeArgument(that, qt, tp, 
                                     pl, declaration);
@@ -3913,7 +3921,9 @@ public class ExpressionVisitor extends Visitor {
                 return typeArgs;
             }
         }
-        return NO_TYPE_ARGS;
+        else {
+            return null;
+        }
     }
 
     private ProducedType getTargetQualifyingType
@@ -3951,45 +3961,62 @@ public class ExpressionVisitor extends Visitor {
                     that.getPrimary();
         Declaration invoked = 
                 primary.getDeclaration();
-        if (pal!=null && 
-                invoked instanceof Functional) {
-            List<PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            Functional fun = (Functional) invoked;
-            List<ParameterList> pls = 
-                    fun.getParameterLists();
-            if (!args.isEmpty() && !pls.isEmpty()) {
-                //a static method ref invocation has exactly
-                //one meaningful argument (the instance of
-                //the receiving type)
-                Tree.PositionalArgument arg = args.get(0);
-                if (arg!=null) {
-                    ProducedType at = arg.getTypeModel();
-                    ProducedType tt = type.getType();
-                    List<ProducedType> typeArgs = 
-                            new ArrayList<ProducedType>();
-                    for (TypeParameter tp: 
-                            type.getTypeParameters()) {
-                        ProducedType it = 
-                                inferTypeArg(tp, tt, at,
-                                        false, //TODO: is this 100% correct?
-                                        arg);
-                        if (it==null || 
-                                it.containsUnknowns()) {
-                            that.addError("could not infer type argument from given arguments: type parameter '" + 
-                                    tp.getName() + 
-                                    "' could not be inferred");
-                        }
-                        else {
-                            it = constrainInferredType(tp, it);
-                        }
-                        typeArgs.add(it);
+        if (pal == null) {
+            return null;
+        }
+        else {
+            if (invoked instanceof Functional) {
+                List<PositionalArgument> args = 
+                        pal.getPositionalArguments();
+                Functional fun = (Functional) invoked;
+                List<ParameterList> parameterLists = 
+                        fun.getParameterLists();
+                if (args.isEmpty() || 
+                        parameterLists.isEmpty()) {
+                    return null;
+                }
+                else {
+                    //a static method ref invocation has exactly
+                    //one meaningful argument (the instance of
+                    //the receiving type)
+                    Tree.PositionalArgument arg = 
+                            args.get(0);
+                    if (arg == null) {
+                        return null;
                     }
-                    return typeArgs;
+                    else {
+                        ProducedType at = 
+                                arg.getTypeModel();
+                        ProducedType tt = type.getType();
+                        List<TypeParameter> tps = 
+                                type.getTypeParameters();
+                        List<ProducedType> typeArgs = 
+                                new ArrayList<ProducedType>
+                                    (tps.size());
+                        for (TypeParameter tp: tps) {
+                            ProducedType it = 
+                                    inferTypeArg(tp, tt, at,
+                                            false, //TODO: is this 100% correct?
+                                            arg);
+                            if (it==null || 
+                                    it.containsUnknowns()) {
+                                that.addError("could not infer type argument from given arguments: type parameter '" + 
+                                        tp.getName() + 
+                                        "' could not be inferred");
+                            }
+                            else {
+                                it = constrainInferredType(tp, it);
+                            }
+                            typeArgs.add(it);
+                        }
+                        return typeArgs;
+                    }
                 }
             }
+            else {
+                return null;
+            }
         }
-        return NO_TYPE_ARGS;
     }
     
     /**
@@ -7351,8 +7378,8 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
-                    visitBaseMemberExpression(that, 
-                            member, typeArgs, tal);
+                    visitBaseMemberExpression(that, member, 
+                            typeArgs, tal);
                 }
                 else {
                     visitQualifiedMemberExpression(that, 
@@ -7361,14 +7388,14 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (that.getStaticMethodReference()) {
                     handleStaticPrimaryImplicitTypeArguments(
-                            that, primary);
+                            that);
                 }
                 //otherwise infer type arguments later
             }
             else {
                 if (that.getStaticMethodReference()) {
                     handleStaticPrimaryImplicitTypeArguments(
-                            that, primary);
+                            that);
                 }
                 else {
                     if (primary instanceof Tree.Package) {
@@ -7414,28 +7441,31 @@ public class ExpressionVisitor extends Visitor {
     /**
      * Validate the type arguments to the qualifying type
      * in a static reference when no type arguments are
-     * given explicitly.
+     * given explicitly. 
      * 
-     * @param that the static referece
-     * @param primary the reference to the qualifying type
+     * This is called later than usual because the type args 
+     * might be inferrable from an invocation of the whole 
+     * static reference.
+     * 
+     * @param that the static reference
      */
     private void handleStaticPrimaryImplicitTypeArguments(
-            Tree.StaticMemberOrTypeExpression that,
-            Tree.Primary primary) {
+            Tree.QualifiedMemberOrTypeExpression that) {
         //we do this check later than usual, in order
         //to allow qualified refs to Java static members
         //without type arguments to the qualifying type
-        Declaration dec = that.getDeclaration();
-        if (!(dec instanceof Constructor || 
-                dec!=null && 
-                dec.isStaticallyImportable())) {
+        if (isStaticReference(that)) {
             Tree.StaticMemberOrTypeExpression smte =
                     (Tree.StaticMemberOrTypeExpression) 
-                        primary;
+                        that.getPrimary();
+            //we have to get the type args from the tree
+            //here because the calling code doesn't know
+            //them (it is walking the qualifying reference)
             Tree.TypeArguments typeArgs = 
                     smte.getTypeArguments();
             TypeDeclaration type = 
-                    (TypeDeclaration) smte.getDeclaration();
+                    (TypeDeclaration) 
+                        smte.getDeclaration();
             if (type!=null && 
                     !explicitTypeArguments(type, typeArgs) &&
                     typeArgs.getTypeModels()==null) { //nothing inferred
@@ -7630,7 +7660,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             if (that.getStaticMethodReference()) {
                 handleStaticPrimaryImplicitTypeArguments(
-                        that, that.getPrimary());
+                        that);
             }
             else {
                 typeArgumentsImplicit(that);
@@ -8121,8 +8151,8 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
-                    visitBaseTypeExpression(that, type, typeArgs, 
-                            tal, null);
+                    visitBaseTypeExpression(that, type, 
+                            typeArgs, tal, null);
                 }
                 else {
                     visitQualifiedTypeExpression(that, 
@@ -8131,14 +8161,14 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (that.getStaticMethodReference()) {
                     handleStaticPrimaryImplicitTypeArguments(
-                            that, primary);
+                            that);
                 }
                 //otherwise infer type arguments later
             }
             else {
                 if (that.getStaticMethodReference()) {
                     handleStaticPrimaryImplicitTypeArguments(
-                            that, primary);
+                            that);
                 }
                 else if (!that.getStaticMethodReferencePrimary()) {
                     if (primary instanceof Tree.Package) {
@@ -8457,7 +8487,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             if (that.getStaticMethodReference()) {
                 handleStaticPrimaryImplicitTypeArguments(
-                        that, that.getPrimary());
+                        that);
             }
             else {
                 typeArgumentsImplicit(that);
