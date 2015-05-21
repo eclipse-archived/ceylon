@@ -1,6 +1,3 @@
-import calendar {
-    Foobar
-}
 @error class WithBothInitAndDefaultConst() {
     shared new WithBothInitAndDefaultConst() {}
 }
