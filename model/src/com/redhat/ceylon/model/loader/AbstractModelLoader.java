@@ -53,6 +53,7 @@ import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.loader.model.LocalDeclarationContainer;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.loader.model.SetterWithLocalDeclarations;
+import com.redhat.ceylon.model.typechecker.model.Annotated;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -1765,6 +1766,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setMajor(major);
         module.setMinor(minor);
 
+        setAnnotations(module, moduleClass);
+        
         List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
         if(imports != null){
             for (AnnotationMirror importAttribute : imports) {
@@ -2291,7 +2294,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
     }
 
-    private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
+    private void setAnnotations(Annotated annotated, AnnotatedMirror classMirror) {
         if (classMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION) != null) {
             // If the class has @Annotations then use it (in >=1.2 only ceylon.language does)
             Long mods = (Long)getAnnotationValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION, "modifiers");
@@ -2300,7 +2303,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 for (LanguageAnnotation mod : LanguageAnnotation.values()) {
                     if (mod.isModifier()) {
                         if ((mod.mask & mods) != 0) {
-                            decl.getAnnotations().addAll(mod.makeFromCeylonAnnotation(null));
+                            annotated.getAnnotations().addAll(mod.makeFromCeylonAnnotation(null));
                         }
                     }
                 }
@@ -2310,7 +2313,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
             if(annotations != null) {
                 for(AnnotationMirror annotation : annotations){
-                    decl.getAnnotations().add(readModelAnnotation(annotation));
+                    annotated.getAnnotations().add(readModelAnnotation(annotation));
                 }
             }
         } else {
@@ -2318,23 +2321,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // according to the presence of @Shared$annotation etc
             for (LanguageAnnotation mod : LanguageAnnotation.values()) {
                 if (classMirror.getAnnotation(mod.annotationType) != null) {
-                    decl.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
+                    annotated.getAnnotations().addAll(mod.makeFromCeylonAnnotation(classMirror.getAnnotation(mod.annotationType)));
                 }
             }
             // Hack for anonymous classes where the getter method has the annotations, 
             // but the typechecker wants them on the Class model. 
-            if ((decl instanceof Class)
-                    && ((Class)decl).isAnonymous()) {
-                Declaration objectValue = decl.getContainer().getDirectMember(decl.getName(), null, false);
+            if ((annotated instanceof Class)
+                    && ((Class)annotated).isAnonymous()) {
+                Class clazz = (Class)annotated;
+                Declaration objectValue = clazz.getContainer().getDirectMember(clazz.getName(), null, false);
                 if (objectValue != null) {
-                    decl.getAnnotations().addAll(objectValue.getAnnotations());
+                    annotated.getAnnotations().addAll(objectValue.getAnnotations());
                 }
                 
             }
         }
 
         boolean hasCeylonDeprecated = false;
-        for(Annotation a : decl.getAnnotations()) {
+        for(Annotation a : annotated.getAnnotations()) {
             if (a.getName().equals("deprecated")) {
                 hasCeylonDeprecated = true;
                 break;
@@ -2348,25 +2352,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Annotation modelAnnotation = new Annotation();
                 modelAnnotation.setName("deprecated");
                 modelAnnotation.getPositionalArguments().add("");
-                decl.getAnnotations().add(modelAnnotation);
+                annotated.getAnnotations().add(modelAnnotation);
                 hasCeylonDeprecated = true;
             }
         }
         
-        if (hasCeylonDeprecated) {
-            decl.setDeprecated(true);
+        if (hasCeylonDeprecated && annotated instanceof Declaration) {
+            ((Declaration)annotated).setDeprecated(true);
         }
 
         // Set "native" annotation
         String nativeBackend = getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
-        decl.setNative(nativeBackend);
         if (nativeBackend != null) {
-            
-            List<Declaration> al = getOverloads(decl);
-            if (al == null) {
-                al = new ArrayList<Declaration>(3);
-                al.add(decl);
-                setOverloads(decl, al);
+            if (annotated instanceof Declaration) {
+                Declaration decl = (Declaration)annotated;
+                decl.setNative(nativeBackend);
+                List<Declaration> al = getOverloads(decl);
+                if (al == null) {
+                    al = new ArrayList<Declaration>(3);
+                    al.add(decl);
+                    setOverloads(decl, al);
+                }
+            } else if (annotated instanceof Module) {
+                ((Module)annotated).setNative(nativeBackend);
             }
         }
     }
