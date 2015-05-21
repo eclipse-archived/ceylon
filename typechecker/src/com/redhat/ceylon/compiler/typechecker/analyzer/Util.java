@@ -256,22 +256,6 @@ public class Util {
         }
     }
     
-    /*static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
-        if (pts==null) return null;
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        for (Tree.SimpleType st: pts.getSimpleTypes()) {
-            ProducedType t = st.getTypeModel();
-            if (t==null) {
-                st.addError("could not resolve parameter type");
-                typeArguments.add(null);
-            }
-            else {
-                typeArguments.add(t);
-            }
-        }
-        return typeArguments;
-    }*/
-    
     public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         Unit unit = that.getUnit();

@@ -105,3 +105,20 @@ class XXXX<T> {
 class WWWW<U>() {
     shared class XXXX<V>(U u, V v) {}
 }
+
+void testMissingTypeArgs() {
+    @error Array.clone();
+    @error value blah = Array.clone;
+    @error Array<>.clone();
+    @error value blahblah = Array<>.clone;
+    value genericRef = Array;
+    value nonGenericRef = Array<String>.clone;
+    value char = Integer.character;
+    @error value nochar = Integer.character();
+    @error value notchar = Integer<>.character;
+    @error value nottachar = Integer.character<>;
+    value and = Integer.and;
+    @error value noand = Integer.and();
+    @error value notand = Integer<>.and;
+    @error value nottaand = Integer.and<>;
+}
