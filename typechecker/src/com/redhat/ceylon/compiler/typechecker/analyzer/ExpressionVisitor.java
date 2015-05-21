@@ -2995,166 +2995,178 @@ public class ExpressionVisitor extends Visitor {
         Tree.TypeArguments typeArguments = 
                 smte.getTypeArguments();
         if (typeArguments instanceof Tree.InferredTypeArguments) {
-            Declaration passed = smte.getDeclaration();
+            //the model object for the function ref 
+            Declaration reference = smte.getDeclaration();
             List<TypeParameter> typeParameters = 
-                    getTypeParametersAccountingForTypeConstructor(passed);
-            if (typeParameters!=null &&
-                    !typeParameters.isEmpty()) {
+                    getTypeParametersAccountingForTypeConstructor(reference);
+            if (typeParameters==null ||
+                    typeParameters.isEmpty()) {
+                //nothing to infer
+                return null;
+            }
+            else {
                 //set earlier in inferParameterTypes()
-                ProducedTypedReference param = 
+                ProducedTypedReference paramTypedRef = 
                         smte.getTargetParameter();
                 ProducedType paramType = 
                         smte.getParameterType();
-                Declaration parameterizedDec = 
-                        param==null ? null :
-                            (Declaration)
-                                param.getDeclaration()
-                                    .getContainer();
-                if (paramType==null && param!=null) {
-                    paramType = param.getFullType();
+                //the method or class to whose parameter
+                //the function ref is being passed
+                if (paramType==null && paramTypedRef!=null) {
+                    paramType = paramTypedRef.getFullType();
                 }
                 if (paramType==null ||
                         paramType.isTypeConstructor()) {
                     return null;
                 }
+                Declaration paramDec;
+                Declaration parameterizedDec;
+                if (paramTypedRef!=null) {
+                    paramDec = 
+                            paramTypedRef.getDeclaration();
+                    parameterizedDec = 
+                            (Declaration)
+                                paramDec.getContainer();
+                }
+                else {
+                    paramDec = null;
+                    parameterizedDec = null;
+                }
+                
                 ProducedReference arg = 
                         getProducedReference(smte);
-                if (!smte.getStaticMethodReferencePrimary()) {
-                    if (passed instanceof Functional && 
-                            param!=null) {
-                        Functional fun = (Functional) passed;
-                        List<ParameterList> apls = 
-                                fun.getParameterLists();
-                        Declaration pdec = 
-                                param.getDeclaration();
-                        if (pdec instanceof Functional) {
-                            Functional pfun = 
-                                    (Functional) pdec;
-                            List<ParameterList> ppls = 
-                                    pfun.getParameterLists();
-                            if (apls.isEmpty() || ppls.isEmpty()) {
-                                return null; //TODO: to give a nicer error
-                            }
-                            else {
-                                List<ProducedType> inferredTypes = 
-                                        new ArrayList<ProducedType>
-                                            (typeParameters.size());
-                                ParameterList aplf = apls.get(0);
-                                ParameterList pplf = ppls.get(0);
-                                List<Parameter> apl = 
-                                        aplf.getParameters();
-                                List<Parameter> ppl = 
-                                        pplf.getParameters();
-                                boolean[] specifiedParams = 
-                                        specified(apl.size(), pplf);
-                                for (TypeParameter tp: typeParameters) {
-                                    boolean findUpperBounds =
-                                            isEffectivelyContravariant(
-                                                    tp, passed, 
-                                                    specifiedParams);
-                                    ProducedType it = 
-                                            inferFunctionRefTypeArg(
-                                                    smte, 
-                                                    typeParameters,
-                                                    param, 
-                                                    parameterizedDec, 
-                                                    arg, 
-                                                    apl, ppl, tp,
-                                                    findUpperBounds);
-                                    inferredTypes.add(it);
-                                }
-                                return inferredTypes;
-                            }
-                        }
-                    }
-//                    else if (passed instanceof Value) {
-//                        //TODO: is this even necessary, or
-//                        //can we just let it fall through
-//                        //to the code immediately below?
-//                        List<ProducedType> inferredTypes = 
-//                                new ArrayList<ProducedType>
-//                                    (typeParameters.size());
-//                        Value value = (Value) passed;
-//                        ProducedType argType = 
-//                                value.getType()
-//                                    .getDeclaration()
-//                                    .getType();
-//                        for (TypeParameter tp: typeParameters) {
-//                            boolean findUpperBounds =
-//                                    isEffectivelyContravariant(tp,
-//                                            //TODO: better variance inference
-//                                            passed, null);
-//                            ProducedType it = 
-//                                    inferTypeArg(tp, 
-//                                            argType, paramType,
-//                                            !findUpperBounds,
-//                                            smte);
-//                            inferredTypes.add(it);
-//                        }
-//                        return inferredTypes;
-//                    }
-                }
-                if (unit.isSequentialType(paramType)) {
-                    paramType = 
-                            unit.getSequentialElementType(
-                                    paramType);
-                }
-                if (unit.isCallableType(paramType)) {
-                    //this is the type of the parameter list
-                    //of the function ref itself, which 
-                    //involves the type parameters we are
-                    //trying to infer
-                    ProducedType parameterListType;
-                    ProducedType fullType;
-                    if (smte.getStaticMethodReferencePrimary()) {
-                        ProducedType type = arg.getType();
-                        parameterListType = producedType(
-                                unit.getTupleDeclaration(), 
-                                type, type, emptyType());
-                        fullType = producedType(
-                                unit.getCallableDeclaration(),
-                                type, parameterListType);
+                
+                if (!smte.getStaticMethodReferencePrimary() &&
+                        reference instanceof Functional && 
+                        paramDec instanceof Functional &&
+                        paramTypedRef!=null) {
+                    //when we have actual individualized
+                    //parameters on both the given function
+                    //ref, and the callable parameter to
+                    //which it is assigned, we use a more
+                    //forgiving algorithm that doesn't throw
+                    //away all constraints just because one
+                    //constraint involves unknown type 
+                    //parameters of the declaration with the
+                    //callable parameter
+                    Functional fun = 
+                            (Functional) reference;
+                    List<ParameterList> apls = 
+                            fun.getParameterLists();
+                    Functional pfun = 
+                            (Functional) paramDec;
+                    List<ParameterList> ppls = 
+                            pfun.getParameterLists();
+                    if (apls.isEmpty() || ppls.isEmpty()) {
+                        return null; //TODO: to give a nicer error
                     }
                     else {
-                        fullType = arg.getFullType();
-                        parameterListType = 
-                                unit.getCallableTuple(fullType);
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>
+                                    (typeParameters.size());
+                        ParameterList aplf = apls.get(0);
+                        ParameterList pplf = ppls.get(0);
+                        List<Parameter> apl = 
+                                aplf.getParameters();
+                        List<Parameter> ppl = 
+                                pplf.getParameters();
+                        boolean[] specifiedParams = 
+                                specified(apl.size(), 
+                                          ppl.size());
+                        for (TypeParameter tp: typeParameters) {
+                            boolean findUpperBounds =
+                                    isEffectivelyContravariant(
+                                            tp, reference, 
+                                            specifiedParams);
+                            ProducedType it = 
+                                    inferFunctionRefTypeArg(
+                                            smte, 
+                                            typeParameters,
+                                            paramTypedRef, 
+                                            parameterizedDec, 
+                                            arg, 
+                                            apl, ppl, tp,
+                                            findUpperBounds);
+                            inferredTypes.add(it);
+                        }
+                        return inferredTypes;
                     }
-                    //this is the type of the parameter list
-                    //of the callable parameter that the 
-                    //function ref is being passed to (these
-                    //parameters are going to be assigned to
-                    //the parameters of the function ref)
-                    ProducedType argumentListType = 
-                            unit.getCallableTuple(paramType);
-                    int argCount = 
-                            unit.getTupleElementTypes(
-                                    unit.getCallableReturnType(
-                                            argumentListType))
-                                .size();
-                    List<ProducedType> inferredTypes = 
-                            new ArrayList<ProducedType>
-                                (typeParameters.size());
-                    for (TypeParameter tp: typeParameters) {
-                        boolean findUpperBounds = 
-                                isEffectivelyContravariant(tp,
-                                        fullType, argCount);
-                        ProducedType it = 
-                                inferFunctionRefTypeArg(
-                                        smte,
-                                        typeParameters, 
-                                        parameterizedDec,
-                                        parameterListType,
-                                        argumentListType,
-                                        tp,
-                                        findUpperBounds);
-                        inferredTypes.add(it);
+                }
+                else {
+                    //use a worse algorithm that throws 
+                    //away too many constraints (I guess we
+                    //should improve this, including in the
+                    //spec)
+                    
+                    if (unit.isSequentialType(paramType)) {
+                        paramType = 
+                                unit.getSequentialElementType(
+                                        paramType);
                     }
-                    return inferredTypes;
+                    if (unit.isCallableType(paramType)) {
+                        //this is the type of the parameter list
+                        //of the function ref itself, which 
+                        //involves the type parameters we are
+                        //trying to infer
+                        ProducedType parameterListType;
+                        ProducedType fullType;
+                        if (smte.getStaticMethodReferencePrimary()) {
+                            ProducedType type = arg.getType();
+                            parameterListType = producedType(
+                                    unit.getTupleDeclaration(), 
+                                    type, type, emptyType());
+                            fullType = producedType(
+                                    unit.getCallableDeclaration(),
+                                    type, parameterListType);
+                        }
+                        else {
+                            fullType = arg.getFullType();
+                            parameterListType = 
+                                    unit.getCallableTuple(fullType);
+                        }
+                        //this is the type of the parameter list
+                        //of the callable parameter that the 
+                        //function ref is being passed to (these
+                        //parameters are going to be assigned to
+                        //the parameters of the function ref)
+                        ProducedType argumentListType = 
+                                unit.getCallableTuple(paramType);
+                        int argCount = 
+                                unit.getTupleElementTypes(
+                                        argumentListType)
+                                    .size();
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>
+                                    (typeParameters.size());
+                        for (TypeParameter tp: typeParameters) {
+                            boolean findUpperBounds = 
+                                    isEffectivelyContravariant(tp,
+                                            fullType, argCount);
+                            ProducedType it = 
+                                    inferFunctionRefTypeArg(
+                                            smte,
+                                            typeParameters, 
+                                            parameterizedDec,
+                                            parameterListType,
+                                            argumentListType,
+                                            tp,
+                                            findUpperBounds);
+                            inferredTypes.add(it);
+                        }
+                        return inferredTypes;
+                    }
+                    else {
+                        //not a callable parameter, nor a
+                        //value parameter of callable type
+                        return null;
+                    }
                 }
             }
         }
-        return null;
+        else {
+            //not inferring
+            return null;
+        }
     }
 
     private List<TypeParameter> 
@@ -3925,8 +3937,9 @@ public class ExpressionVisitor extends Visitor {
 
     /**
      * Infer type arguments for the qualifying type in a
-     * static method reference or constructor reference
-     * that is directly invoked.
+     * static method reference that is directly invoked.
+     * This method does not correctly handle stuff like
+     * constructors or Java static methods.
      * 
      * @param that the invocation
      * @param type the type whose type arguments we're
@@ -3950,9 +3963,9 @@ public class ExpressionVisitor extends Visitor {
             List<ParameterList> pls = 
                     fun.getParameterLists();
             if (!args.isEmpty() && !pls.isEmpty()) {
-                ParameterList params = pls.get(0);
-                boolean[] specifiedParams = 
-                        specified(pal, params);
+                //a static method ref invocation has exactly
+                //one meaningful argument (the instance of
+                //the receiving type)
                 Tree.PositionalArgument arg = args.get(0);
                 if (arg!=null) {
                     ProducedType at = arg.getTypeModel();
@@ -3961,12 +3974,9 @@ public class ExpressionVisitor extends Visitor {
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: 
                             type.getTypeParameters()) {
-                        boolean findUpperBounds = 
-                                isEffectivelyContravariant(tp,
-                                        invoked, specifiedParams);
                         ProducedType it = 
                                 inferTypeArg(tp, tt, at,
-                                        findUpperBounds, 
+                                        false, //TODO: is this 100% correct?
                                         arg);
                         if (it==null || 
                                 it.containsUnknowns()) {
@@ -3986,6 +3996,21 @@ public class ExpressionVisitor extends Visitor {
         return NO_TYPE_ARGS;
     }
     
+    /**
+     * Determine if a type parameter is contravariant for
+     * the purposes of type argument inference for an 
+     * indirect function reference, that is for a reference
+     * to a value whose type is a type constructor for a
+     * function type.
+     * 
+     * @param tp the type parameter
+     * @param fullType the type of the reference being
+     *        invoked
+     * @param argumentListLength the number of args that 
+     *        were given
+     * 
+     * @return true if we should treat it is contravariant
+     */
     private boolean isEffectivelyContravariant(
             TypeParameter tp, ProducedType fullType, 
             int argumentListLength) {
@@ -4058,7 +4083,9 @@ public class ExpressionVisitor extends Visitor {
     
     /**
      * Determine if a type parameter is contravariant for
-     * the purposes of type argument inference.
+     * the purposes of type argument inference for a direct
+     * invocation of a function or a direct reference to 
+     * the function.
      * 
      * @param tp the type parameter
      * @param invoked the declaration actually being invoked
@@ -4324,14 +4351,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private static boolean[] specified(
-            int count,
-            ParameterList parameters) {
-        List<Parameter> params = 
-                parameters.getParameters();
+            int count, int total) {
         boolean[] specified = 
-                new boolean[params.size()];
+                new boolean[total];
         for (int i=0; 
-                i<count && i<params.size(); 
+                i<count && i<total; 
                 i++) {
             specified[i] = true;
         }
