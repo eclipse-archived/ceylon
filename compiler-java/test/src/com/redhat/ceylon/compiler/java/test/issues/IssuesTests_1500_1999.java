@@ -259,7 +259,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 new String[] { "bug15xx/bug1580/Bug1580.ceylon", "bug15xx/bug1580/module.ceylon" },
                 defaultOptions,
                 null,
-                new CompilerError(21, "Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.XnioProvider' could not be found in module 'org.jboss.xnio.nio' or its imported modules"),
+                new CompilerError(22, "Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.XnioProvider' could not be found in module 'org.jboss.xnio.nio' or its imported modules"),
                 new CompilerError(24, "could not determine type of method or attribute reference: 'instance' of 'NioXnioProvider': Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.Xnio' could not be found in module 'org.jboss.xnio.nio' or its imported modules"));
     }
 

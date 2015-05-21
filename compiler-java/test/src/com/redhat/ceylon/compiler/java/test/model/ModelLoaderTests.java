@@ -1388,7 +1388,7 @@ public class ModelLoaderTests extends CompilerTests {
     public void bogusModelAnnotationsTopLevelAttribute(){
         compile("bogusTopLevelAttributeNoGetter_.java", "bogusTopLevelAttributeMissingType_.java", "bogusTopLevelAttributeInvalidType_.java");
         assertErrors("bogusTopLevelAttributeUser",
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving toplevel attribute com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeNoGetter: getter method missing"),
                 new CompilerError(-1, "Error while resolving type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeMissingType: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Error while parsing type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeInvalidType: Expecting word but got AND"),
@@ -1403,14 +1403,14 @@ public class ModelLoaderTests extends CompilerTests {
     public void bogusModelAnnotationsTopLevelMethod(){
         compile("bogusTopLevelMethodNoMethod_.java", "bogusTopLevelMethodMissingType_.java", "bogusTopLevelMethodInvalidType_.java", "bogusTopLevelMethodNotStatic_.java");
         assertErrors("bogusTopLevelMethodUser",
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNoMethod: static method missing"),
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNotStatic: method is not static"),
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodMissingType:\n"
                         +"   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType:\n"
                         +"   Expecting word but got AND"),
                 // FIXME: this is not great
@@ -1424,8 +1424,8 @@ public class ModelLoaderTests extends CompilerTests {
                 new CompilerError(5, "could not determine type of function or value reference: 'bogusTopLevelMethodMissingType': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"+
                         "   Error while resolving type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodMissingType:\n"+
                         "   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(6, "could not determine type of function or value reference: 'bogusTopLevelMethodInvalidType': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"+
-                        "   Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType:\n"+
+                new CompilerError(6, "could not determine type of function or value reference: 'bogusTopLevelMethodInvalidType': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n" + 
+                        "   Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType:\n" + 
                         "   Expecting word but got AND")
         );
 
@@ -1435,7 +1435,7 @@ public class ModelLoaderTests extends CompilerTests {
     public void bogusModelAnnotationsTopLevelClass(){
         compile("BogusTopLevelClass.java", "BogusTopLevelClass2.java");
         assertErrors("bogusTopLevelClassUser",
-                new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass:\n"
                         +"   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Constructor for 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping constructor."),

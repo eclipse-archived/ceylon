@@ -704,7 +704,7 @@ public class CMRTests extends CompilerTests {
     @Test
     public void testMdlAetherMissingDependencies() throws IOException{
         CompilerError[] expectedErrors = new CompilerError[]{
-        new CompilerError(5, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
+        new CompilerError(6, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
                 +"   Declaration 'org.apache.camel.component.http.HttpComponent' could not be found in module 'org.apache.camel:camel-jetty' or its imported modules"),
         new CompilerError(10, "argument must be assignable to parameter 'arg1' of 'addComponent' in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?': Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"+
                 "   Declaration 'org.apache.camel.component.http.HttpComponent' could not be found in module 'org.apache.camel:camel-jetty' or its imported modules"),
@@ -765,8 +765,8 @@ public class CMRTests extends CompilerTests {
                 "modules/ceylonAetherDuplicateImports/module.ceylon", "modules/ceylonAetherDuplicateImports/foo.ceylon");
         assertEquals(Boolean.FALSE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(22, "duplicate module import: 'org.apache.httpcomponents.httpclient'"),
-                new CompilerError(24, "duplicate module import: 'org.apache.httpcomponents:httpclient'")
+                new CompilerError(23, "duplicate module import: 'org.apache.httpcomponents.httpclient'"),
+                new CompilerError(25, "duplicate module import: 'org.apache.httpcomponents:httpclient'")
         );
     }
 
@@ -784,8 +784,8 @@ public class CMRTests extends CompilerTests {
                 "modules/ceylonAetherConflict/module.ceylon", "modules/ceylonAetherConflict/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
-                new CompilerError(Diagnostic.Kind.WARNING, null, 20, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
-                new CompilerError(Diagnostic.Kind.WARNING, null, 20, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
     }
     
@@ -1153,8 +1153,8 @@ public class CMRTests extends CompilerTests {
         // JavaB/1 shared imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(1, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version '1' and version '2'"),
-                new CompilerError(1, "source code imports two different versions of module 'bug1062.javaA': version '1' and version '2'")
+                new CompilerError(2, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version '1' and version '2'"),
+                new CompilerError(2, "source code imports two different versions of module 'bug1062.javaA': version '1' and version '2'")
                 );
     }
 
