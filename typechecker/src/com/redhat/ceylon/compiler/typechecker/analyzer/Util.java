@@ -842,12 +842,13 @@ public class Util {
                         (Tree.BooleanCondition) c;
                 Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term t = ex.getTerm();
-                    //TODO: eliminate parens
+                    Tree.Term term = 
+                            unwrapExpressionUntilTerm(ex);
                     //TODO: take into account conjunctions/disjunctions
-                    if (t instanceof Tree.BaseMemberExpression) {
+                    if (term instanceof Tree.BaseMemberExpression) {
                         Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) t;
+                                (Tree.BaseMemberExpression) 
+                                    term;
                         Declaration d = bme.getDeclaration();
                         if (isBooleanTrue(d)) {
                             continue;
@@ -879,12 +880,13 @@ public class Util {
                 Tree.Expression ex = 
                         bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term t = ex.getTerm();
-                    //TODO: eliminate parens
+                    Tree.Term term = 
+                            unwrapExpressionUntilTerm(ex);
                     //TODO: take into account conjunctions/disjunctions
-                    if (t instanceof Tree.BaseMemberExpression) {
+                    if (term instanceof Tree.BaseMemberExpression) {
                         Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) t;
+                                (Tree.BaseMemberExpression) 
+                                    term;
                         Declaration d = bme.getDeclaration();
                         if (isBooleanFalse(d)) {
                             return true;
