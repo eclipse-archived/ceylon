@@ -1395,7 +1395,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean hasErasure(ProducedType type) {
-        return hasErasureResolved(type.resolveAliases());
+        return type==null ? false : hasErasureResolved(type.resolveAliases());
     }
     
     private boolean hasErasureResolved(ProducedType type) {
@@ -1462,7 +1462,7 @@ public abstract class AbstractTransformer implements Transformation {
      * that the given type will be turned raw as a return type
      */
     boolean isTurnedToRaw(ProducedType type){
-        return isTurnedToRawResolved(type.resolveAliases());
+        return type==null ? false : isTurnedToRawResolved(type.resolveAliases());
     }
     
     private boolean isTurnedToRawResolved(ProducedType type) {
