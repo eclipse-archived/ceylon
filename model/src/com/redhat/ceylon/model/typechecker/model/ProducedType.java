@@ -2717,8 +2717,9 @@ public class ProducedType extends ProducedReference {
                             for (ProducedType ta: tal) {
                                 sta.add(ta.substitute(substitutions));
                             }
-                            return substituteIntoTypeConstructors(sub, 
-                                    sta, substitutions, unit);
+                            return substituteIntoTypeConstructors(
+                                    sub, sta, substitutions, unit, 
+                                    pt);
                         }
                     }
                 }
@@ -2735,7 +2736,7 @@ public class ProducedType extends ProducedReference {
         private ProducedType substituteIntoTypeConstructors(
                 ProducedType sub, List<ProducedType> sta,
                 Map<TypeParameter, ProducedType> substitutions,
-                Unit unit) {
+                Unit unit, ProducedType tc) {
             TypeDeclaration sd = sub.getDeclaration();
             if (sd instanceof UnionType) {
                 List<ProducedType> list =
@@ -2743,7 +2744,8 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType ct: sd.getCaseTypes()) {
                     addToUnion(list, 
                             substituteIntoTypeConstructors(ct,
-                                    sta, substitutions, unit));
+                                    sta, substitutions, unit,
+                                    tc));
                 }
                 UnionType ut = 
                         new UnionType(unit);
@@ -2756,7 +2758,8 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType st: sd.getSatisfiedTypes()) {
                     addToIntersection(list, 
                             substituteIntoTypeConstructors(st,
-                                    sta, substitutions, unit),
+                                    sta, substitutions, unit,
+                                    tc),
                             unit);
                 }
                 IntersectionType it = 
@@ -2769,7 +2772,24 @@ public class ProducedType extends ProducedReference {
                 ProducedType qt = 
                         sqt==null ? null : 
                         substitute(sqt, substitutions);
-                return sd.getProducedType(qt, sta);
+                ProducedType result = 
+                        sd.getProducedType(qt, sta);
+                Map<TypeParameter, SiteVariance> map = 
+                        new HashMap<TypeParameter, SiteVariance>();
+                List<TypeParameter> sdtps = 
+                        sd.getTypeParameters();
+                List<TypeParameter> tctps = 
+                        tc.getDeclaration()
+                            .getTypeParameters();
+                for (int i = 0; i < tctps.size(); i++) {
+                    TypeParameter tctp = tctps.get(i);
+                    TypeParameter sdtp = sdtps.get(i);
+                    map.put(sdtp, 
+                            tc.getVarianceOverrides()
+                                .get(tctp));
+                }
+                result.setVarianceOverrides(map);
+                return result;
             }
         }
         
