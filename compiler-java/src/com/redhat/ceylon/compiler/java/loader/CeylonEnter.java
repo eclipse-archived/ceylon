@@ -24,11 +24,14 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
+
+import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -100,9 +103,12 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+import com.sun.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.SourceLanguage;
 import com.sun.tools.javac.util.SourceLanguage.Language;
 
@@ -522,13 +528,13 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(Node that, LexError err) {
                     setSource();
-                    int pos = getPosition((err.getLine()), err.getCharacterInLine());
+                    DiagnosticPosition pos = getPosition((err.getLine()), err.getCharacterInLine());
                     logError(pos, "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(Node that, ParseError err) {
                     setSource();
-                    int pos = getPosition((err.getLine()), err.getCharacterInLine());
+                    DiagnosticPosition pos = getPosition((err.getLine()), err.getCharacterInLine());
                     logError(pos, "ceylon", err.getMessage());
                 }
                 @Override
@@ -600,6 +606,10 @@ public class CeylonEnter extends Enter {
     }
 
     protected void logError(int position, String key, String message) {
+        logError(toDiagnosticPosition(position), key, message);
+    }
+
+    protected void logError(DiagnosticPosition position, String key, String message) {
         boolean prev = log.multipleErrors;
         // we want multiple errors for Ceylon
         log.multipleErrors = true;
@@ -611,6 +621,10 @@ public class CeylonEnter extends Enter {
     }
 
     protected void logWarning(int position, String key, String message) {
+        logWarning(toDiagnosticPosition(position), key, message);
+    }
+
+    protected void logWarning(DiagnosticPosition position, String key, String message) {
         boolean prev = log.multipleErrors;
         // we want multiple errors for Ceylon
         log.multipleErrors = true;
@@ -637,6 +651,10 @@ public class CeylonEnter extends Enter {
         }
     }
 
+    protected DiagnosticPosition toDiagnosticPosition(int pos) {
+        return (pos == Position.NOPOS ? null : new SimpleDiagnosticPosition(pos));
+    }
+
     private class JavacAssertionVisitor extends AssertionVisitor {
         private CeylonPhasedUnit cpu;
         protected final boolean runAssertions;
@@ -656,7 +674,12 @@ public class CeylonEnter extends Enter {
             return com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(node);
         }
         
-        protected int getPosition(int line, int characterInLine) {
+        protected DiagnosticPosition getPosition(int line, int characterInLine) {
+            int pos = getPositionAsInt(line, characterInLine);
+            return toDiagnosticPosition(pos);
+        }
+        
+        protected int getPositionAsInt(int line, int characterInLine) {
             if (line<1) {
                 return -1;
             }
@@ -671,12 +694,44 @@ public class CeylonEnter extends Enter {
             }
         }
         
-        protected int getPosition(Node node) {
-            if(node != null && node.getToken() != null)
-                return getPosition(node.getToken().getLine(), 
-                        node.getToken().getCharPositionInLine());
-            else
-                return -1;
+        protected DiagnosticPosition getPosition(Node node) {
+            if(node != null) {
+                Token token = node.getToken();
+                if (token != null) {
+                    final int startOffset = node.getStartIndex();
+                    final int endOffset = node.getStopIndex();
+                    final int startLine = token.getLine();
+                    final int startCol = token.getCharPositionInLine();
+                    
+                    if (startOffset < 0 || endOffset < 0) {
+                        return getPosition(startLine, 
+                                startCol);
+                    } else {
+                        return new DiagnosticPosition() {
+                            @Override
+                            public JCTree getTree() {
+                                return null;
+                            }
+                            
+                            @Override
+                            public int getStartPosition() {
+                                return startOffset;
+                            }
+                            
+                            @Override
+                            public int getPreferredPosition() {
+                                return startOffset;
+                            }
+                            
+                            @Override
+                            public int getEndPosition(Map<JCTree, Integer> endPosTable) {
+                                return endOffset;
+                            }
+                        };
+                    }
+                }
+            }
+            return null;
         }
         
         protected void setSource() {
