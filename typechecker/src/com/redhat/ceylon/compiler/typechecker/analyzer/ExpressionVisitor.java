@@ -10881,7 +10881,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.addError("missing type arguments to: '" + 
+                    that.addError("missing type arguments to generic declaration: '" + 
                             method.getName(unit) + "'");
                 }
             }
