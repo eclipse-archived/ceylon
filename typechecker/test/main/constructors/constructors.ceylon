@@ -1,3 +1,6 @@
+import calendar {
+    Foobar
+}
 @error class WithBothInitAndDefaultConst() {
     shared new WithBothInitAndDefaultConst() {}
 }
@@ -365,4 +368,11 @@ class WithBrokenDelegation<Element> {
 class WithInnerClassExtendingPartialConstructor {
     abstract new Partial() {}   
     @error shared class Inner() extends Partial() {}
+}
+
+class Foobar {
+    abstract new Partial() {}
+    new New() {}
+    @error class First() => Foobar.Partial();
+    @error shared class Second() => Foobar.New();
 }
