@@ -2774,27 +2774,11 @@ public class ProducedType extends ProducedReference {
                         substitute(sqt, substitutions);
                 ProducedType result = 
                         sd.getProducedType(qt, sta);
-                Map<TypeParameter, SiteVariance> map = 
-                        new HashMap<TypeParameter, SiteVariance>();
-                List<TypeParameter> sdtps = 
-                        sd.getTypeParameters();
-                List<TypeParameter> tctps = 
-                        tc.getDeclaration()
-                            .getTypeParameters();
-                for (int i=0; 
-                        i<tctps.size() && i<sdtps.size(); 
-                        i++) {
-                    TypeParameter tctp = tctps.get(i);
-                    TypeParameter sdtp = sdtps.get(i);
-                    map.put(sdtp, 
-                            tc.getVarianceOverrides()
-                                .get(tctp));
-                }
-                result.setVarianceOverrides(map);
+                substituteVarianceOverrides(tc, result);
                 return result;
             }
         }
-        
+
         void addTypeToUnion(ProducedType ct, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 List<ProducedType> types) {
@@ -3047,6 +3031,33 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    private static void substituteVarianceOverrides(
+            ProducedType typeConstructor, 
+            ProducedType result) {
+        Map<TypeParameter, SiteVariance> map = 
+                new HashMap<TypeParameter, SiteVariance>();
+        map.putAll(result.getVarianceOverrides());
+        TypeDeclaration sd = result.getDeclaration();
+        List<TypeParameter> sdtps = 
+                sd.getTypeParameters();
+        List<TypeParameter> tctps = 
+                typeConstructor.getDeclaration()
+                    .getTypeParameters();
+        for (int i=0; 
+                i<tctps.size() && i<sdtps.size(); 
+                i++) {
+            TypeParameter tctp = tctps.get(i);
+            TypeParameter sdtp = sdtps.get(i);
+            SiteVariance var = 
+                    typeConstructor.getVarianceOverrides()
+                    .get(tctp);
+            if (var!=null) {
+                map.put(sdtp, var);
+            }
+        }
+        result.setVarianceOverrides(map);
+    }
+    
     /**
      * Form a union type of all cases of the type, 
      * recursively reducing cases to their cases
@@ -3341,10 +3352,13 @@ public class ProducedType extends ProducedReference {
                 return unknownType();
             }
             else {
-                return et.resolveAliases()
-                        .substitute(getTypeArgumentMap(d, 
+                ProducedType rt = 
+                        et.resolveAliases()
+                          .substitute(getTypeArgumentMap(d, 
                                 aliasedQualifyingType, 
                                 aliasedArgs));
+                substituteVarianceOverrides(this, rt);
+                return rt;
             }
         }
         else {
@@ -3524,18 +3538,21 @@ public class ProducedType extends ProducedReference {
             d instanceof ClassAlias||
             d instanceof InterfaceAlias) {
             if (visited.contains(d)) {
-                return new ArrayList<TypeDeclaration>(singletonList(d));
+                return new ArrayList<TypeDeclaration>(
+                        singletonList(d));
             }
             if (d.getExtendedType()!=null) {
                 List<TypeDeclaration> l = d.getExtendedType()
-                        .isRecursiveTypeAliasDefinition(extend(d, visited));
+                        .isRecursiveTypeAliasDefinition(
+                                extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
             }
             for (ProducedType bt: d.getBrokenSupertypes()) {
                 List<TypeDeclaration> l = 
-                        bt.isRecursiveTypeAliasDefinition(extend(d, visited));
+                        bt.isRecursiveTypeAliasDefinition(
+                                extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
@@ -3544,14 +3561,16 @@ public class ProducedType extends ProducedReference {
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
                 List<TypeDeclaration> l = 
-                        ct.isRecursiveTypeAliasDefinition(visited);
+                        ct.isRecursiveTypeAliasDefinition(
+                                visited);
                 if (!l.isEmpty()) return l;
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
                 List<TypeDeclaration> l = 
-                        st.isRecursiveTypeAliasDefinition(visited);
+                        st.isRecursiveTypeAliasDefinition(
+                                visited);
                 if (!l.isEmpty()) return l;
             }
         }
@@ -3559,14 +3578,16 @@ public class ProducedType extends ProducedReference {
             for (ProducedType at: getTypeArgumentList()) {
                 if (at!=null) {
                     List<TypeDeclaration> l = 
-                            at.isRecursiveTypeAliasDefinition(visited);
+                            at.isRecursiveTypeAliasDefinition(
+                                    visited);
                     if (!l.isEmpty()) return l;
                 }
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null) {
                 List<TypeDeclaration> l = 
-                        qt.isRecursiveTypeAliasDefinition(visited);
+                        qt.isRecursiveTypeAliasDefinition(
+                                visited);
                 if (!l.isEmpty()) return l;
             }
         }
@@ -3580,18 +3601,21 @@ public class ProducedType extends ProducedReference {
             d instanceof ClassAlias||
             d instanceof InterfaceAlias) {
             if (visited.contains(d)) {
-                return new ArrayList<TypeDeclaration>(singletonList(d));
+                return new ArrayList<TypeDeclaration>(
+                        singletonList(d));
             }
             if (d.getExtendedType()!=null) {
                 List<TypeDeclaration> l = d.getExtendedType()
-                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                        .isRecursiveRawTypeDefinition(extend(d, 
+                                visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
             }
             for (ProducedType bt: d.getBrokenSupertypes()) {
                 List<TypeDeclaration> l = 
-                        bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                        bt.isRecursiveRawTypeDefinition(extend(d, 
+                                visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
@@ -3600,24 +3624,28 @@ public class ProducedType extends ProducedReference {
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
                 List<TypeDeclaration> l = 
-                        ct.isRecursiveRawTypeDefinition(visited);
+                        ct.isRecursiveRawTypeDefinition(
+                                visited);
                 if (!l.isEmpty()) return l;
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
                 List<TypeDeclaration> l = 
-                        st.isRecursiveRawTypeDefinition(visited);
+                        st.isRecursiveRawTypeDefinition(
+                                visited);
                 if (!l.isEmpty()) return l;
             }
         }
         else {
             if (visited.contains(d)) {
-                return new ArrayList<TypeDeclaration>(singletonList(d));
+                return new ArrayList<TypeDeclaration>(
+                        singletonList(d));
             }
             if (d.getExtendedType()!=null) {
                 List<TypeDeclaration> i = d.getExtendedType()
-                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                        .isRecursiveRawTypeDefinition(
+                                extend(d, visited));
                 if (!i.isEmpty()) {
                     i.add(0, d);
                     return i;
@@ -3625,14 +3653,16 @@ public class ProducedType extends ProducedReference {
             }
             for (ProducedType bt: d.getBrokenSupertypes()) {
                 List<TypeDeclaration> l = 
-                        bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                        bt.isRecursiveRawTypeDefinition(
+                                extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
             }
             for (ProducedType st: getSatisfiedTypes()) {
                 List<TypeDeclaration> l = 
-                        st.isRecursiveRawTypeDefinition(extend(d, visited));
+                        st.isRecursiveRawTypeDefinition(
+                                extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
