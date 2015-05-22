@@ -84,7 +84,7 @@ public abstract class AppliedClassOrInterface<Type>
         
         com.redhat.ceylon.model.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
-            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
+            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType);
             this.superclass = (ceylon.language.meta.model.ClassModel<?,? super Sequential<? extends Object>>) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
@@ -92,7 +92,7 @@ public abstract class AppliedClassOrInterface<Type>
         ceylon.language.meta.model.InterfaceModel<?>[] interfaces = new ceylon.language.meta.model.InterfaceModel[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
-            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
+            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType);
             interfaces[i++] = (ceylon.language.meta.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
         this.interfaces = Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor$), interfaces);

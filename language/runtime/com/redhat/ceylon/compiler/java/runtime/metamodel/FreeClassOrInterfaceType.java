@@ -71,7 +71,7 @@ public abstract class FreeClassOrInterfaceType
         
         com.redhat.ceylon.model.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
-            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
+            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType);
             this.superclass = (ceylon.language.meta.declaration.OpenClassType) Metamodel.getMetamodel(superTypeResolved);
         }
         
@@ -80,7 +80,7 @@ public abstract class FreeClassOrInterfaceType
             = new ceylon.language.meta.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
-            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
+            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType);
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
