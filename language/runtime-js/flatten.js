@@ -20,9 +20,14 @@ function flatten(tf, $$$mptypes) {
     for (var i=0;i<argc;i++) {
       t.push(arguments[i]);
     }
-    if (t.length===1 && is$(t.$_get(0),{t:Sequential}) &&mm&&mm.ps.length<=t.$_get(0).size){
+    if (t.length===1 && is$(t.$_get(0),{t:Sequential}) &&mm&&mm.ps.length===1){
+      var p0type=mm.ps[0].$t;
+      if (p0type.t==='T' && p0type.l.length===t.size && p0type.l[p0type.l.length-1].seq) {
+        //Sequenced arg, it's another story
+        return tf(tpl$(t));
+      }
       //It's already a Tuple
-      return tf(t.$_get(0)));
+      return tf(t.$_get(0));
     }
     return tf(tpl$(t));
   };
