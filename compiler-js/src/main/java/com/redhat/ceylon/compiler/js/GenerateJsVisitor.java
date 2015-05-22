@@ -2332,7 +2332,7 @@ public class GenerateJsVisitor extends Visitor
                                 out(",");
                                 if (moval instanceof Method) {
                                     //Add parameters
-                                    TypeUtils.encodeParameterListForRuntime(specStmt,
+                                    TypeUtils.encodeParameterListForRuntime(true, specStmt,
                                             ((Method)moval).getParameterLists().get(0), GenerateJsVisitor.this);
                                     out(",");
                                 } else {

@@ -389,7 +389,7 @@ public class FunctionHelper {
         Tree.ParameterList params;
         void outputMetamodelAndReturn(GenerateJsVisitor gen, ProducedType t) {
             gen.out(name,  ".$crtmm$=function(){return{", MetamodelGenerator.KEY_PARAMS,":");
-            TypeUtils.encodeParameterListForRuntime(n, params.getModel(), gen);
+            TypeUtils.encodeParameterListForRuntime(false, n, params.getModel(), gen);
             if (t != null) {
                 //Add the type to the innermost method
                 gen.out(",", MetamodelGenerator.KEY_TYPE, ":");

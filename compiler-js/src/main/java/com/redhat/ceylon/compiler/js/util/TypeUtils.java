@@ -481,7 +481,8 @@ public class TypeUtils {
         }
     }
 
-    public static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
+    public static void encodeParameterListForRuntime(final boolean resolveTargs,
+            final Node n, final ParameterList plist, final GenerateJsVisitor gen) {
         boolean first = true;
         gen.out("[");
         for (Parameter p : plist.getParameters()) {
@@ -500,7 +501,7 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_DEFAULT, ":1,");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            metamodelTypeNameOrList(n, gen.getCurrentPackage(), ptype, gen);
+            metamodelTypeNameOrList(resolveTargs, n, gen.getCurrentPackage(), ptype, gen);
             if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
                 new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
             }
@@ -562,7 +563,7 @@ public class TypeUtils {
 
     /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
-    private static void encodeTupleAsParameterListForRuntime(final Node node,
+    private static void encodeTupleAsParameterListForRuntime(final boolean resolveTargs, final Node node,
             ProducedType _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
@@ -582,13 +583,15 @@ public class TypeUtils {
                     && tdecl.getCaseTypeDeclarations().size()==2
                     && tdecl.getCaseTypeDeclarations().contains(tuple))) {
                 if (tuple.equals(tdecl)) {
-                    metamodelTypeNameOrList(node, gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
+                            _tuple.getTypeArgumentList().get(1), gen);
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 } else {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
                         if (tuple.equals(mt.getDeclaration())) {
-                            metamodelTypeNameOrList(node, gen.getCurrentPackage(), mt.getTypeArgumentList().get(1), gen);
+                            metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
+                                    mt.getTypeArgumentList().get(1), gen);
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
                         }
@@ -598,11 +601,11 @@ public class TypeUtils {
             } else if (tdecl.inherits(tdecl.getUnit().getSequentialDeclaration())) {
                 ProducedType _t2 = _tuple.getSupertype(tdecl.getUnit().getSequentialDeclaration());
                 //Handle Sequence, for nonempty variadic parameters
-                metamodelTypeNameOrList(node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
+                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
                 _tuple = empty.getType();
             } else if (tdecl instanceof UnionType) {
-                metamodelTypeNameOrList(node, gen.getCurrentPackage(), _tuple, gen);
+                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
                 tdecl = empty; _tuple=null;
             } else {
                 gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
@@ -644,7 +647,7 @@ public class TypeUtils {
             gen.out("[/*WARNING2: missing argument types for Callable*/]");
             return;
         }
-        encodeTupleAsParameterListForRuntime(node, targs.get(1), true, gen);
+        encodeTupleAsParameterListForRuntime(true, node, targs.get(1), true, gen);
     }
 
     public static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
@@ -657,7 +660,8 @@ public class TypeUtils {
     }
 
     /** Output a metamodel map for runtime use. */
-    public static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+    public static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations,
+            final GenerateJsVisitor gen) {
         encodeForRuntime(annotations, d, gen, new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 outputAnnotationsFunction(annotations, d, gen);
@@ -729,12 +733,12 @@ public class TypeUtils {
             com.redhat.ceylon.model.typechecker.model.Class _cd = (com.redhat.ceylon.model.typechecker.model.Class)d;
             if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
-                metamodelTypeNameOrList(that, d.getUnit().getPackage(), _cd.getExtendedType(), gen);
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), _cd.getExtendedType(), gen);
             }
             //Parameter types
             if (_cd.getParameterList()!=null) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
-                encodeParameterListForRuntime(that, _cd.getParameterList(), gen);
+                encodeParameterListForRuntime(false, that, _cd.getParameterList(), gen);
             }
             satisfies = _cd.getSatisfiedTypes();
             caseTypes = _cd.getCaseTypes();
@@ -748,17 +752,17 @@ public class TypeUtils {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(that, d.getUnit().getPackage(), ((MethodOrValue)d).getType(), gen);
+            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), ((MethodOrValue)d).getType(), gen);
             if (d instanceof Method) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
-                encodeParameterListForRuntime(that, ((Method)d).getParameterLists().get(0), gen);
+                encodeParameterListForRuntime(false, that, ((Method)d).getParameterLists().get(0), gen);
                 tparms = ((Method) d).getTypeParameters();
             }
 
         } else if (d instanceof Constructor) {
             gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
-            encodeParameterListForRuntime(that, ((Constructor)d).getParameterLists().get(0), gen);
+            encodeParameterListForRuntime(false, that, ((Constructor)d).getParameterLists().get(0), gen);
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
@@ -817,7 +821,7 @@ public class TypeUtils {
             for (ProducedType st : satisfies) {
                 if (!first)gen.out(",");
                 first=false;
-                metamodelTypeNameOrList(that, d.getUnit().getPackage(), st, gen);
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, gen);
             }
             gen.out("]");
         }
@@ -830,7 +834,7 @@ public class TypeUtils {
                 if (st.getDeclaration().isAnonymous()) {
                     gen.out(gen.getNames().getter(st.getDeclaration(), true));
                 } else {
-                    metamodelTypeNameOrList(that, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, gen);
                 }
             }
             gen.out("]");
@@ -866,7 +870,7 @@ public class TypeUtils {
                 for (ProducedType st : typelist) {
                     if (!first2)gen.out(",");
                     first2=false;
-                    metamodelTypeNameOrList(node, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -879,7 +883,7 @@ public class TypeUtils {
                 for (ProducedType st : typelist) {
                     if (!first3)gen.out(",");
                     first3=false;
-                    metamodelTypeNameOrList(node, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -887,7 +891,7 @@ public class TypeUtils {
             if (tp.getDefaultTypeArgument() != null) {
                 if (comma)gen.out(",");
                 gen.out("def:");
-                metamodelTypeNameOrList(node, d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
+                metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
             }
             gen.out("}");
         }
@@ -897,18 +901,38 @@ public class TypeUtils {
     /** Prints out an object with a type constructor under the property "t" and its type arguments under
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
-     * already existing params. */
-    static void metamodelTypeNameOrList(final Node node,
+     * already existing params.
+     * @param resolveTargsFromScope Indicates whether to resolve a type argument if it's within reach in the
+     * node's scope. This is useful for parameters of JsCallables but must be disabled for metamodel functions.
+     * @param node The node to use as starting point for resolution of other references.
+     * @param pkg The package of the current declaration
+     * @param pt The produced type for which a name must be output.
+     * @param gen The generator to use for output. */
+    static void metamodelTypeNameOrList(final boolean resolveTargsFromScope, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
             pt = node.getUnit().getAnythingDeclaration().getType();
         }
-        if (!outputMetamodelTypeList(node, pkg, pt, gen)) {
+        if (!outputMetamodelTypeList(resolveTargsFromScope, node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
             if (type instanceof TypeParameter) {
-                gen.out("'", type.getNameAsString(), "$", ((TypeParameter)type).getDeclaration().getName(), "'");
+                Declaration tpowner = ((TypeParameter)type).getDeclaration();
+                if (resolveTargsFromScope && tpowner != node.getScope()
+                        && Util.contains((Scope)tpowner, node.getScope())) {
+                    //Attempt to resolve this to an argument if the scope allows for it
+                    if (tpowner instanceof TypeDeclaration) {
+                        Thread.dumpStack();
+                        gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
+                                type.getNameAsString(), "$", tpowner.getName());
+                    } else if (tpowner instanceof Method) {
+                        gen.out(gen.getNames().typeArgsParamName((Method)tpowner), ".",
+                                type.getNameAsString(), "$", tpowner.getName());
+                    }
+                } else {
+                    gen.out("'", type.getNameAsString(), "$", tpowner.getName(), "'");
+                }
             } else if (type instanceof TypeAlias) {
                 outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
             } else {
@@ -921,7 +945,7 @@ public class TypeUtils {
                     for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
                         if (first) first=false; else gen.out(",");
                         gen.out(e.getKey().getNameAsString(), "$", e.getKey().getDeclaration().getName(), ":");
-                        metamodelTypeNameOrList(node, pkg, e.getValue(), gen);
+                        metamodelTypeNameOrList(resolveTargsFromScope, node, pkg, e.getValue(), gen);
                     }
                     gen.out("}");
                 }
@@ -933,7 +957,7 @@ public class TypeUtils {
     /** Appends an object with the type's type and list of union/intersection types; works only with union,
      * intersection and tuple types.
      * @return true if output was generated, false otherwise (it was a regular type) */
-    static boolean outputMetamodelTypeList(final Node node,
+    static boolean outputMetamodelTypeList(final boolean resolveTargs, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
@@ -948,7 +972,7 @@ public class TypeUtils {
                     && cts.contains(type.getUnit().getTupleDeclaration())) {
                 //yup...
                 gen.out("{t:'T',l:");
-                encodeTupleAsParameterListForRuntime(node, pt,false,gen);
+                encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
                 gen.out("}");
                 return true;
             }
@@ -956,7 +980,7 @@ public class TypeUtils {
             subs = type.getCaseTypes();
         } else if (type.getQualifiedNameString().equals("ceylon.language::Tuple")) {
             gen.out("{t:'T',l:");
-            encodeTupleAsParameterListForRuntime(node, pt,false, gen);
+            encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);
             gen.out("}");
             return true;
         } else {
@@ -966,7 +990,7 @@ public class TypeUtils {
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
-            metamodelTypeNameOrList(node, pkg, t, gen);
+            metamodelTypeNameOrList(resolveTargs, node, pkg, t, gen);
             first = false;
         }
         gen.out("]}");

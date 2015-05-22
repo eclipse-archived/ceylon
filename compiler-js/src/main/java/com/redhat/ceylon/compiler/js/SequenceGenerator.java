@@ -167,7 +167,7 @@ public class SequenceGenerator {
             if (m.getParameterLists().size() > 1) {
                 for (int i=tmpvars.size()-1;i>=0;i--) {
                     gen.out(",");
-                    TypeUtils.encodeParameterListForRuntime(that, m.getParameterLists().get(i+1), gen);
+                    TypeUtils.encodeParameterListForRuntime(true, that, m.getParameterLists().get(i+1), gen);
                     gen.out(",");
                     TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, true, null);
                     gen.out(")");

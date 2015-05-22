@@ -93,7 +93,7 @@ public class AttributeGenerator {
                     gen.out(",");
                     if (decl instanceof Method) {
                         //Add parameters
-                        TypeUtils.encodeParameterListForRuntime(attributeNode, ((Method)decl).getParameterLists().get(0), gen);
+                        TypeUtils.encodeParameterListForRuntime(true, attributeNode, ((Method)decl).getParameterLists().get(0), gen);
                     } else {
                         //Type of value must be Callable
                         //And the Args Type Parameters is a Tuple

@@ -278,7 +278,7 @@ public class InvocationGenerator {
                 FunctionHelper.methodArgument(marg, gen);
                 gen.out(",");
                 //Add parameters
-                TypeUtils.encodeParameterListForRuntime(arg, marg.getParameterLists().get(0).getModel(), gen);
+                TypeUtils.encodeParameterListForRuntime(true, arg, marg.getParameterLists().get(0).getModel(), gen);
                 gen.out(",");
                 ProducedType margType = marg.getDeclarationModel().getType().getFullType();
                 TypeUtils.printTypeArguments(arg, margType.getTypeArguments(), gen, false,
@@ -656,7 +656,7 @@ public class InvocationGenerator {
         if (plist == null) {
             gen.out("[]");
         } else {
-            TypeUtils.encodeParameterListForRuntime(term, plist, gen);
+            TypeUtils.encodeParameterListForRuntime(true, term, plist, gen);
         }
     }
 
