@@ -67,7 +67,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -7655,7 +7654,24 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null && 
                     !explicitTypeArguments(type, typeArgs) &&
                     typeArgs.getTypeModels()==null) { //nothing inferred
-                typeArgumentsImplicit(smte);
+                Declaration declaration = 
+                        smte.getDeclaration();
+                Generic dec = (Generic) declaration;
+                StringBuilder params = 
+                        new StringBuilder();
+                for (TypeParameter tp: 
+                    dec.getTypeParameters()) {
+                    if (params.length()>0) {
+                        params.append(", ");
+                    }
+                    params.append("'")
+                    .append(tp.getName())
+                    .append("'");
+                }
+                smte.addError("missing type arguments to generic type qualifying static reference: '" + 
+                        declaration.getName(unit) + 
+                        "' declares type parameters " + 
+                        params);
             }
         }
     }
@@ -7782,35 +7798,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void typeArgumentsImplicit(
-            Tree.StaticMemberOrTypeExpression that) {
-        TypeArguments tas = that.getTypeArguments();
-        if (tas instanceof Tree.InferredTypeArguments) {
-            List<ProducedType> typeArgs = 
-                    tas.getTypeModels();
-            if (typeArgs==null || typeArgs.isEmpty()) {
-                Declaration declaration = 
-                        that.getDeclaration();
-                Generic dec = (Generic) declaration;
-                StringBuilder params = 
-                        new StringBuilder();
-                for (TypeParameter tp: 
-                        dec.getTypeParameters()) {
-                    if (params.length()>0) {
-                        params.append(", ");
-                    }
-                    params.append("'")
-                        .append(tp.getName())
-                        .append("'");
-                }
-                that.addError("missing type arguments to generic declaration: '" + 
-                        declaration.getName(unit) + 
-                        "' declares type parameters " + 
-                        params);
-            }
-        }
-    }
-    
     private void visitQualifiedMemberExpression(
             Tree.QualifiedMemberExpression that,
             ProducedType receivingType, 
@@ -7857,14 +7844,9 @@ public class ExpressionVisitor extends Visitor {
                     that, member, fullType));
             //}
         }
-        else {
-            if (that.getStaticMethodReference()) {
-                handleStaticPrimaryImplicitTypeArguments(
-                        that);
-            }
-            else {
-                typeArgumentsImplicit(that);
-            }
+        if (that.getStaticMethodReference()) {
+            handleStaticPrimaryImplicitTypeArguments(
+                    that);
         }
     }
 
@@ -8045,9 +8027,6 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
             that.setTypeModel(fullType);
-        }
-        else {
-            typeArgumentsImplicit(that);
         }
     }
     
@@ -8684,14 +8663,9 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(accountForStaticReferenceType(
                     that, memberType, fullType));
         }
-        else {
-            if (that.getStaticMethodReference()) {
-                handleStaticPrimaryImplicitTypeArguments(
-                        that);
-            }
-            else {
-                typeArgumentsImplicit(that);
-            }
+        if (that.getStaticMethodReference()) {
+            handleStaticPrimaryImplicitTypeArguments(
+                    that);
         }
     }
     
@@ -8715,9 +8689,6 @@ public class ExpressionVisitor extends Visitor {
             ProducedType fullType = type.getFullType();
             that.setTypeModel(fullType);
             that.setTarget(type);
-        }
-        else {
-            typeArgumentsImplicit(that);
         }
     }
 
