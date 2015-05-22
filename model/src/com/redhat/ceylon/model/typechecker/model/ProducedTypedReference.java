@@ -51,13 +51,18 @@ public class ProducedTypedReference extends ProducedReference {
                 return type;
             }
             else {
+                if (getQualifyingType()!=null &&
+                        getQualifyingType().getDeclaration().getName().startsWith("Array") &&
+                        dec.getName().startsWith("iterator")) {
+                    dec.getActualCompleter();
+                }
                 ProducedType qt = getQualifyingType();
                 if (qt!=null) {
                     type = qt.applyVarianceOverrides(type, 
                             covariant, contravariant);
                 }
                 //the type arguments to the member
-                return type.substitute(getTypeArguments());
+                return type.substitute(this);
             }
         }
     }
@@ -74,7 +79,7 @@ public class ProducedTypedReference extends ProducedReference {
         ProducedType type = getQualifyingType();
         if (type!=null) {
             name.append(type.getProducedTypeName())
-                .append(" ");
+                .append(".");
         }
         name.append(dec.getName());
         if (dec instanceof Generic) {

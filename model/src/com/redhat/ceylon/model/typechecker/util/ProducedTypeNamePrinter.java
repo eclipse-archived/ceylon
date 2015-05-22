@@ -293,7 +293,7 @@ public class ProducedTypeNamePrinter {
                 }
                 ProducedType aliasedType =
                         declaration.getExtendedType()
-                            .substitute(pt.getTypeArguments());
+                            .substitute(pt);
                 name.append(getProducedTypeName(aliasedType, unit));
                 return name.toString();
             }

@@ -167,7 +167,8 @@ public class ModelUtil {
 
     public static boolean argumentSatisfiesEnumeratedConstraint(
             ProducedType receiver, Declaration member, 
-            List<ProducedType> typeArguments, ProducedType argType,
+            List<ProducedType> typeArguments,
+            ProducedType argType,
             TypeParameter param) {
         
         List<ProducedType> caseTypes = param.getCaseTypes();
@@ -180,8 +181,8 @@ public class ModelUtil {
         //of the type parameter then the constraint is satisfied
         for (ProducedType ct: caseTypes) {
             ProducedType cts = 
-                    ct.getProducedType(receiver, 
-                            member, typeArguments);
+                    ct.getProducedType(receiver, member, 
+                            typeArguments, null);
             if (argType.isSubtypeOf(cts)) {
                 return true;
             }
@@ -202,7 +203,8 @@ public class ModelUtil {
                     for (ProducedType ct: caseTypes) {
                         ProducedType cts = 
                                 ct.getProducedType(receiver, 
-                                        member, typeArguments);
+                                        member, 
+                                        typeArguments, null);
                         if (act.isSubtypeOf(cts)) {
                             foundCase = true;
                             break;

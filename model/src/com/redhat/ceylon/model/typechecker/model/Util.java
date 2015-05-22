@@ -5,6 +5,7 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Character.charCount;
 import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
@@ -20,10 +21,13 @@ import com.redhat.ceylon.common.BackendSupport;
 public class Util {
     
     static final List<ProducedType> NO_TYPE_ARGS = 
-            Collections.<ProducedType>emptyList();
+            Collections.<ProducedType>emptyList();    
+    
     static final Map<TypeParameter, ProducedType> EMPTY_TYPE_ARG_MAP = 
             Collections.<TypeParameter,ProducedType>emptyMap();
     
+    static final Map<TypeParameter, SiteVariance> EMPTY_VARIANCE_MAP = 
+            emptyMap();
     /**
      * Is the second scope contained by the first scope?
      */
@@ -872,8 +876,6 @@ public class Util {
             List<ProducedType> typeArguments) {        
     	List<TypeParameter> typeParameters = 
     	        getTypeParameters(declaration);
-		//make sure we collect all type arguments
-		//from the whole qualified type!
         int count = countTypeParameters(receivingType, 
                 typeParameters);
 		if (count==0) {
@@ -893,6 +895,8 @@ public class Util {
 	        int count) {
 	    Map<TypeParameter,ProducedType> map = 
 	            new HashMap<TypeParameter,ProducedType>(count);
+        //make sure we collect all type arguments
+        //from the whole qualified type!
 	    if (receivingType!=null) {
 	        TypeDeclaration rtd = 
 	                receivingType.getDeclaration();
@@ -925,10 +929,74 @@ public class Util {
 	    return map;
     }
 
+    public static Map<TypeParameter,SiteVariance> 
+    getVarianceMap(Declaration declaration, 
+            ProducedType receivingType, 
+            List<SiteVariance> variances) {     
+        if (variances==null) {
+            return EMPTY_VARIANCE_MAP;
+        }
+        else {
+            List<TypeParameter> typeParameters = 
+                    getTypeParameters(declaration);
+            int count = countTypeParameters(receivingType, 
+                    typeParameters);
+            if (count==0) {
+                return EMPTY_VARIANCE_MAP;
+            }
+            else {
+                return aggregateVariances(receivingType, 
+                        variances, typeParameters);
+            }
+        }
+    }
+
+    private static Map<TypeParameter, SiteVariance> 
+    aggregateVariances(ProducedType receivingType, 
+            List<SiteVariance> variances,
+            List<TypeParameter> typeParameters) {
+        Map<TypeParameter,SiteVariance> map = 
+                new HashMap<TypeParameter,SiteVariance>();
+        //make sure we collect all type arguments
+        //from the whole qualified type!
+        if (receivingType!=null) {
+            TypeDeclaration rtd = 
+                    receivingType.getDeclaration();
+            if (rtd instanceof IntersectionType) {
+                for (ProducedType dt: 
+                        rtd.getSatisfiedTypes()) {
+                    while (dt!=null) {
+                        map.putAll(dt.getVarianceOverrides());
+                        dt = dt.getQualifyingType();
+                    }
+                }
+            }
+            else {
+                ProducedType dt = receivingType;
+                while (dt!=null) {
+                    map.putAll(dt.getVarianceOverrides());
+                    dt = dt.getQualifyingType();
+                }
+            }
+        }
+        for (int i=0; 
+                i<typeParameters.size() && 
+                i<variances.size(); 
+                i++) {
+            SiteVariance var = variances.get(i);
+            if (var!=null) {
+                map.put(typeParameters.get(i), var);
+            }
+        }
+        return map;
+    }
+
 	private static int countTypeParameters(
 	        ProducedType receivingType,
             List<TypeParameter> typeParameters) {
         int count = typeParameters.size();
+        //make sure we count all type arguments
+        //from the whole qualified type!
         if (receivingType!=null) {
             TypeDeclaration rtd = 
                     receivingType.getDeclaration();
@@ -988,8 +1056,7 @@ public class Util {
                         .getCaseTypes();
             for ( int i=0,l=caseTypes.size();i<l;i++ ) {
                 ProducedType t = caseTypes.get(i);
-                addToUnion(list, 
-                        t.substitute(pt.getTypeArguments()));
+                addToUnion(list, t.substitute(pt));
             }
         }
         else if (pt.isWellDefined()) {
@@ -1037,7 +1104,7 @@ public class Util {
             for (int i=0,l=satisfiedTypes.size(); i<l; i++) {
                 ProducedType t = satisfiedTypes.get(i);
                 addToIntersection(list, 
-                        t.substitute(pt.getTypeArguments()), 
+                        t.substitute(pt), 
                         unit, reduceDisjointTypes);
             }
         }
@@ -1796,7 +1863,7 @@ public class Util {
             for (ProducedType ct: 
                     pt.getDeclaration().getCaseTypes()) {
                 if (!isCompletelyVisible(member, 
-                        ct.substitute(pt.getTypeArguments()))) {
+                        ct.substitute(pt))) {
                     return false;
                 }
             }
@@ -1806,7 +1873,7 @@ public class Util {
             for (ProducedType ct: 
                     pt.getDeclaration().getSatisfiedTypes()) {
                 if (!isCompletelyVisible(member, 
-                        ct.substitute(pt.getTypeArguments()))) {
+                        ct.substitute(pt))) {
                     return false;
                 }
             }
@@ -2234,4 +2301,5 @@ public class Util {
         }
         return paramsAsArgs;
     }
+
 }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ProducedType.depth;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
+import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
 
@@ -23,6 +24,7 @@ public abstract class ProducedReference {
 
     private Map<TypeParameter, ProducedType> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
+    
     private Declaration declaration;
     private ProducedType qualifyingType;
     
@@ -74,7 +76,7 @@ public abstract class ProducedReference {
     private static Map<TypeParameter, ProducedType> 
     fillInDefaultTypeArguments(Declaration declaration,
             Map<TypeParameter, ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> result = 
+        Map<TypeParameter, ProducedType> typeArgs = 
                 typeArguments;
         Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
@@ -86,17 +88,19 @@ public abstract class ProducedReference {
             if (dta!=null &&
                     !typeArguments.containsKey(pt)) {
                 // only make a copy of typeArguments if required
-                if (typeArguments == result) {
+                if (typeArguments == typeArgs) {
                     // make a copy big enough to fit every type parameter
-                    result = new HashMap
+                    typeArgs = new HashMap
                             <TypeParameter,ProducedType>
-                            (typeParameters.size());
-                    result.putAll(typeArguments);
+                                (typeParameters.size());
+                    typeArgs.putAll(typeArguments);
                 }
-                result.put(pt, dta.substitute(result));
+                typeArgs.put(pt, 
+                        dta.substitute(typeArgs, 
+                                EMPTY_VARIANCE_MAP));
             }
         }
-        return result;
+        return typeArgs;
     }
     
     void setTypeArguments
