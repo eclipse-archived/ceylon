@@ -1,4 +1,4 @@
-import check { check }
+import check { check, fail }
 
 //Tests for spread invocations
 Integer spread1(Integer* a) => a.fold(0)((Integer a, Integer b) => a+b);
@@ -105,6 +105,32 @@ void testSpread() {
   check(l433*.simple(2)==[4,6], "#433 simple spread");
 }
 
+void f553_1([Integer*] xs) {
+  check(xs.size == 3, "#553.1");
+  if (exists f=xs.first) {
+    check(f==1, "#553.4");
+  } else {
+    fail("#553.4 is empty?");
+  }
+}
+void f553_2(Object     xs) {
+  if (is [Integer*] xs) {
+    check(xs.size==3, "#553.2");
+    if (exists f=xs.first) {
+      check(f==1, "#553.3");
+    } else {
+      fail("#553.3 is empty?");
+    }
+  } else {
+    fail("#553.2 should be [Integer*]");
+  }
+}
+[Result*] map559<Result, Element>([Element*] items, Result(Element) f)
+    =>  items.map(f).sequence();
+
+[Result*]([Element*]) mapper559<Element, Result>(Result(Element) f)
+    =>  shuffle(curry(map559<Result, Element>))(f);
+
 void spreadIssues() {
   void exec1(String(String, String) op, [String, String] args) {
     check(op(*args)=="Ceylon", "#486.1");
@@ -147,4 +173,10 @@ void spreadIssues() {
   //508
   exec5((String x, String y) => x.plus(y), identity<[String, String]>, args);
   exec5(uncurry(String.plus), identity<[String, String]>, args);
+  //553
+  value test553 = {1,2,3}.sequence();
+  compose(identity<Anything>, f553_1)(test553);
+  compose(identity<Anything>, f553_2)(test553);
+  //559
+  check(["1","2","3"]==mapper559(Integer.string)([1,2,3]), "#559");
 }
