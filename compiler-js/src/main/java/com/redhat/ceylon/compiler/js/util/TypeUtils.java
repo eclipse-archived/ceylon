@@ -919,8 +919,7 @@ public class TypeUtils {
             TypeDeclaration type = pt.getDeclaration();
             if (type instanceof TypeParameter) {
                 Declaration tpowner = ((TypeParameter)type).getDeclaration();
-                if (resolveTargsFromScope && tpowner != node.getScope()
-                        && Util.contains((Scope)tpowner, node.getScope())) {
+                if (resolveTargsFromScope && Util.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
