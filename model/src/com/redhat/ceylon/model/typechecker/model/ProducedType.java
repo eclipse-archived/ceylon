@@ -2781,7 +2781,9 @@ public class ProducedType extends ProducedReference {
                 List<TypeParameter> tctps = 
                         tc.getDeclaration()
                             .getTypeParameters();
-                for (int i = 0; i < tctps.size(); i++) {
+                for (int i=0; 
+                        i<tctps.size() && i<sdtps.size(); 
+                        i++) {
                     TypeParameter tctp = tctps.get(i);
                     TypeParameter sdtp = sdtps.get(i);
                     map.put(sdtp, 
