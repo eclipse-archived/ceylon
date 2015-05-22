@@ -51,11 +51,6 @@ public class ProducedTypedReference extends ProducedReference {
                 return type;
             }
             else {
-                if (getQualifyingType()!=null &&
-                        getQualifyingType().getDeclaration().getName().startsWith("Array") &&
-                        dec.getName().startsWith("iterator")) {
-                    dec.getActualCompleter();
-                }
                 ProducedType qt = getQualifyingType();
                 if (qt!=null) {
                     type = qt.applyVarianceOverrides(type, 
