@@ -1993,7 +1993,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AnyMethod that) {
         Backend ib = inBackend;
         inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), unit));
+                getNativeBackend(that.getAnnotationList(), 
+                        unit));
         super.visit(that);
         inBackend = ib;
     }
@@ -2001,7 +2002,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AnyAttribute that) {
         Backend ib = inBackend;
         inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), unit));
+                getNativeBackend(that.getAnnotationList(), 
+                        unit));
         super.visit(that);
         inBackend = ib;
     }
@@ -2009,7 +2011,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ClassOrInterface that) {
         Backend ib = inBackend;
         inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), unit));
+                getNativeBackend(that.getAnnotationList(), 
+                        unit));
         super.visit(that);
         inBackend = ib;
         validateEnumeratedSupertypeArguments(that, 
@@ -2018,7 +2021,8 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+                beginReturnScope(new Tree.VoidModifier(
+                        that.getToken()));
         Class c = that.getDeclarationModel();
         Declaration od = 
                 beginReturnDeclaration(c);
@@ -2040,7 +2044,8 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectDefinition that) {
         Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+                beginReturnScope(new Tree.VoidModifier(
+                        that.getToken()));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2051,7 +2056,8 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectArgument that) {
         Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+                beginReturnScope(new Tree.VoidModifier(
+                        that.getToken()));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2062,7 +2068,8 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ObjectExpression that) {
         Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+                beginReturnScope(new Tree.VoidModifier(
+                        that.getToken()));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2080,7 +2087,8 @@ public class ExpressionVisitor extends Visitor {
             if (c.isAbstract()) {
                 if (!alias.isFormal() && 
                         !alias.isAbstract()) {
-                    that.addError("alias of abstract class must be annotated abstract", 310);
+                    that.addError("alias of abstract class must be annotated abstract", 
+                            310);
                 }
             }
             if (c.isAbstraction()) {
@@ -2094,8 +2102,12 @@ public class ExpressionVisitor extends Visitor {
                 ParameterList cpl = c.getParameterList();
                 ParameterList apl = alias.getParameterList();
                 if (cpl!=null && apl!=null) {
-                    int cps = cpl.getParameters().size();
-                    int aps = apl.getParameters().size();
+                    List<Parameter> cplps = 
+                            cpl.getParameters();
+                    List<Parameter> aplps = 
+                            apl.getParameters();
+                    int cps = cplps.size();
+                    int aps = aplps.size();
                     if (cps!=aps) {
                         that.getParameterList()
                                 .addUnsupportedError("wrong number of initializer parameters declared by class alias: '" + 
@@ -2103,15 +2115,14 @@ public class ExpressionVisitor extends Visitor {
                     }
                     
                     for (int i=0; i<cps && i<aps; i++) {
-                        Parameter ap = 
-                                apl.getParameters().get(i);
-                        Parameter cp = 
-                                cpl.getParameters().get(i);
+                        Parameter ap = aplps.get(i);
+                        Parameter cp = cplps.get(i);
                         ProducedType pt = 
                                 at.getTypedParameter(cp)
                                     .getType();
                         //TODO: properly check type of functional parameters!!
-                        checkAssignableWithWarning(ap.getType(), 
+                        checkAssignableWithWarning(
+                                ap.getType(), 
                                 pt, that, 
                                 "alias parameter '" + 
                                 ap.getName() + "' must be assignable to corresponding class parameter '" +
@@ -2139,13 +2150,15 @@ public class ExpressionVisitor extends Visitor {
                             pal.getPositionalArguments();
                     int cps = cpl.getParameters().size();
                     int aps = apl.getParameters().size();
-                    if (cps!=pas.size()) {
+                    int size = pas.size();
+                    
+                    if (cps != size) {
                         pal.addUnsupportedError("wrong number of arguments for aliased class: '" + 
                                 that.getDeclarationModel().getName() + 
                                 "' has " + cps + " parameters");
                     }
                     for (int i=0; 
-                            i<pas.size() && i<cps && i<aps; 
+                            i<size && i<cps && i<aps; 
                             i++) {
                         Tree.PositionalArgument pa = 
                                 pas.get(i);
@@ -2361,10 +2374,6 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
-//                if (expressionType.getDeclaration() instanceof Interface && 
-//                        expressionType.getDeclaration().equals(unit.getSequentialDeclaration())) {
-//                    expressionType = unit.getEmptyType(unit.getSequenceType(expressionType.getTypeArgumentList().get(0)));
-//                }
                 ProducedType t;
                 if (unit.isPossiblyEmptyType(expressionType)) {
                     t = unit.getNonemptyDefiniteType(expressionType);
@@ -2735,10 +2744,9 @@ public class ExpressionVisitor extends Visitor {
                     unit.getCallableArgumentTypes(pt);
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
-            for (int i=0; 
-                    i<paramTypes.size() && 
-                    i<args.size(); 
-                    i++) {
+            int argCount = args.size();
+            int paramsSize = paramTypes.size();
+            for (int i=0; i<paramsSize && i<argCount; i++) {
                 ProducedType paramType = paramTypes.get(i);
                 Tree.PositionalArgument arg = args.get(i);
                 if (arg instanceof Tree.ListedArgument &&
@@ -2788,10 +2796,9 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
             int j=0;
-            for (int i=0; 
-                    i<args.size() && 
-                    j<params.size(); 
-                    i++) {
+            int argCount = args.size();
+            int paramsSize = params.size();
+            for (int i=0; i<argCount && j<paramsSize; i++) {
                 Parameter param = params.get(j);
                 Tree.PositionalArgument arg = args.get(i);
                 arg.setParameter(param);
@@ -3274,16 +3281,7 @@ public class ExpressionVisitor extends Visitor {
     private ProducedReference getProducedReference(
             Tree.StaticMemberOrTypeExpression smte) {
         //TODO: this might not be right for static refs
-        ProducedType qt;
-        if (smte instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.QualifiedMemberOrTypeExpression qte = 
-                    (Tree.QualifiedMemberOrTypeExpression) 
-                        smte;
-            qt = qte.getPrimary().getTypeModel();
-        }
-        else {
-            qt = null;
-        }
+        ProducedType qt = getQualifyingType(smte);
         Declaration dec = smte.getDeclaration();
         if (smte.getStaticMethodReferencePrimary()) {
             //TODO: why this special case, exactly?
@@ -3306,6 +3304,19 @@ public class ExpressionVisitor extends Visitor {
                 list = NO_TYPE_ARGS;
             }
             return dec.getProducedReference(qt,list);
+        }
+    }
+
+    private static ProducedType getQualifyingType(
+            Tree.StaticMemberOrTypeExpression smte) {
+        if (smte instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qte = 
+                    (Tree.QualifiedMemberOrTypeExpression) 
+                        smte;
+            return qte.getPrimary().getTypeModel();
+        }
+        else {
+            return null;
         }
     }
 
@@ -3466,9 +3477,11 @@ public class ExpressionVisitor extends Visitor {
                     ClassOrInterface etd = 
                             ci.getExtendedTypeDeclaration();
                     if (etd!=null) {
-                        //TODO: might be better to pass the signature here
-                        //      in order to avoid an error when a different
-                        //      overloaded version has been refined
+                        //TODO: might be better to pass the 
+                        //      signature here in order to 
+                        //      avoid an error when a 
+                        //      different overloaded version 
+                        //      has been refined
                         Declaration etm = 
                                 etd.getMember(name, null, false);
                         if (etm!=null && 
@@ -3487,9 +3500,11 @@ public class ExpressionVisitor extends Visitor {
                     }
                     for (TypeDeclaration std: 
                             ci.getSatisfiedTypeDeclarations()) {
-                        //TODO: might be better to pass the signature here
-                        //      in order to avoid an error when a different
-                        //      overloaded version has been refined
+                        //TODO: might be better to pass the 
+                        //      signature here in order to 
+                        //      avoid an error when a 
+                        //      different overloaded version 
+                        //      has been refined
                         Declaration stm = 
                                 std.getMember(name, null, false);
                         if (stm!=null && 
@@ -3785,6 +3800,10 @@ public class ExpressionVisitor extends Visitor {
             for (TypeParameter tp: typeParameters) {
                 List<ProducedType> paramTypes = 
                         unit.getCallableArgumentTypes(type);
+                ProducedType paramTypesAsTuple =
+                        unit.getCallableTuple(type);
+                boolean sequenced = 
+                        unit.isTupleLengthUnbounded(paramTypesAsTuple);
                 int argCount = 
                         pal.getPositionalArguments()
                             .size();
@@ -3793,7 +3812,9 @@ public class ExpressionVisitor extends Visitor {
                                 type, argCount);
                 ProducedType it = 
                         inferTypeArgumentFromPositionalArgs(
-                                tp, paramTypes, receiverType, 
+                                tp, paramTypes, 
+                                paramTypesAsTuple, 
+                                sequenced, receiverType, 
                                 pal, findUpperBounds);
                 typeArguments.add(it);
             }
@@ -4231,11 +4252,11 @@ public class ExpressionVisitor extends Visitor {
                 new ArrayList<ProducedType>
                     (sts.size()+1);
         addToIntersection(list, ta, unit);
-        //Intersect the inferred type with any 
-        //upper bound constraints on the type.
+        //Intersect the inferred type with any upper bound 
+        //constraints on the type:
         for (ProducedType st: sts) {
-            //TODO: substitute in the other inferred type args
-            //      of the invocation
+            //TODO: substitute in the other inferred type 
+            //      args of the invocation
             //TODO: st.getProducedType(receiver, dec, typeArgs);
             if (!st.involvesTypeParameters()) {
                 addToIntersection(list, st, unit);
@@ -4517,28 +4538,73 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType inferTypeArgumentFromPositionalArgs(
             TypeParameter tp, 
-            List<ProducedType> parameterTypes, 
-            ProducedType qt, 
+            List<ProducedType> paramTypes,
+            ProducedType paramTypesAsTuple,
+            boolean sequenced, ProducedType qt, 
             Tree.PositionalArgumentList pal, 
             boolean findingUpperBounds) {
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
         List<ProducedType> inferredTypes = 
                 new ArrayList<ProducedType>();
-        for (int i=0; i<parameterTypes.size(); i++) {
-            ProducedType pt = parameterTypes.get(i);
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            if (args.size()>i) {
-                Tree.PositionalArgument a = args.get(i);
-                ProducedType at = a.getTypeModel();
+        int paramSize = paramTypes.size();
+        int argCount = args.size();
+        
+        for (int i=0; i<paramSize && i<argCount; i++) {
+            ProducedType pt = paramTypes.get(i);
+            Tree.PositionalArgument arg = args.get(i);
+            ProducedType at = arg.getTypeModel();
+            if (arg instanceof Tree.SpreadArgument) {
+                ProducedType tt = 
+                        getTailType(paramTypesAsTuple, i);
                 addToUnionOrIntersection(
                         findingUpperBounds, 
                         inferredTypes,
-                        inferTypeArg(tp, pt, at, 
+                        inferTypeArg(tp, tt, at, 
                                 findingUpperBounds, 
                                 pal));
             }
-            //TODO: comprehensions, spreads, sequenced args!
+            else if (arg instanceof Tree.Comprehension) {
+                if (sequenced && i==paramSize-1) {
+                    ProducedType set = 
+                            pt==null ? null : 
+                                unit.getIteratedType(pt);
+                    addToUnionOrIntersection(
+                            findingUpperBounds, 
+                            inferredTypes,
+                            inferTypeArg(tp, set, at, 
+                                    findingUpperBounds, 
+                                    pal));
+                }
+                break;
+            }
+            else {
+                if (sequenced && i==paramSize-1) {
+                    for (int j=i; j<argCount; j++) {
+                        ProducedType spt = 
+                                unit.getSequentialElementType(pt);
+                        ProducedType vat = 
+                                args.get(j)
+                                    .getTypeModel();
+                        addToUnionOrIntersection(
+                                findingUpperBounds, 
+                                inferredTypes,
+                                inferTypeArg(tp, spt, vat, 
+                                        findingUpperBounds, 
+                                        pal));
+                    }
+                }
+                else {
+                    addToUnionOrIntersection(
+                            findingUpperBounds, 
+                            inferredTypes,
+                            inferTypeArg(tp, pt, at, 
+                                    findingUpperBounds, 
+                                    pal));
+                }
+            }
         }
+        
         return formUnionOrIntersection(
                 findingUpperBounds, inferredTypes);
     }
@@ -4584,8 +4650,8 @@ public class ExpressionVisitor extends Visitor {
             boolean findingUpperBounds,
             List<ProducedType> inferredTypes) {
             ProducedType sat = c.getTypeModel();
-            if (sat!=null) {
-                ProducedType pt = parameter.getType();
+            ProducedType pt = parameter.getType();
+            if (sat!=null && pt!=null) {
                 ProducedType spt = 
                         unit.getIteratedType(pt);
                 addToUnionOrIntersection(
@@ -5462,9 +5528,12 @@ public class ExpressionVisitor extends Visitor {
                 pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
         Declaration target = pr.getDeclaration();
-        for (int i=0; i<params.size(); i++) {
+        int argCount = args.size();
+        int paramsSize = params.size();
+        
+        for (int i=0; i<paramsSize; i++) {
             Parameter p = params.get(i);
-            if (i>=args.size()) {
+            if (i>=argCount) {
                 if (!p.isDefaulted() && 
                         (!p.isSequenced() || 
                          p.isAtLeastOne())) {
@@ -5488,7 +5557,7 @@ public class ExpressionVisitor extends Visitor {
                 if (a instanceof Tree.SpreadArgument) {
                     checkSpreadArgument(pr, p, a, 
                             (Tree.SpreadArgument) a, 
-                            params.subList(i, params.size()));
+                            params.subList(i, paramsSize));
                     break;
                 }
                 else if (a instanceof Tree.Comprehension) {
@@ -5508,7 +5577,7 @@ public class ExpressionVisitor extends Visitor {
                     if (p.isSequenced()) {
                         checkSequencedPositionalArgument(p, pr, 
                                 args.subList(i, 
-                                        args.size()));
+                                        argCount));
                         return; //Note: early return!
                     }
                     else {
@@ -5519,7 +5588,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        for (int i=params.size(); i<args.size(); i++) {
+        for (int i=paramsSize; i<argCount; i++) {
             Tree.PositionalArgument arg = args.get(i);
             if (arg instanceof Tree.SpreadArgument) {
                 if (unit.isEmptyType(arg.getTypeModel())) {
@@ -5529,7 +5598,7 @@ public class ExpressionVisitor extends Visitor {
             arg.addError("no matching parameter declared by '" +
                     target.getName(unit) + "': '" + 
                     target.getName(unit) + "' has " + 
-                    params.size() + " parameters", 
+                    paramsSize + " parameters", 
                     2000);
         }
         
@@ -5605,18 +5674,21 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         
-        for (int i=0; i<paramTypes.size(); i++) {
+        int paramsSize = paramTypes.size();
+        int argCount = args.size();
+        
+        for (int i=0; i<paramsSize; i++) {
             if (isTypeUnknown(paramTypes.get(i))) {
                 that.addError("parameter types cannot be determined from function reference");
                 return;
             }
         }
         
-        for (int i=0; i<paramTypes.size(); i++) {
-            if (i>=args.size()) {
+        for (int i=0; i<paramsSize; i++) {
+            if (i>=argCount) {
                 if (i<firstDefaulted && 
                         (!sequenced || atLeastOne || 
-                                i!=paramTypes.size()-1)) {
+                                i!=paramsSize-1)) {
                     pal.addError("missing argument for required parameter " + i);
                 }
             }
@@ -5635,7 +5707,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType paramType = 
                             paramTypes.get(i);
                     if (sequenced && 
-                            i==paramTypes.size()-1) {
+                            i==paramsSize-1) {
                         Tree.Comprehension c = 
                                 (Tree.Comprehension) arg;
                         checkComprehensionIndirectArgument(c, 
@@ -5648,9 +5720,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     ProducedType paramType = paramTypes.get(i);
-                    if (sequenced && i==paramTypes.size()-1) {
+                    if (sequenced && i==paramsSize-1) {
                         List<Tree.PositionalArgument> sublist = 
-                                args.subList(i, args.size());
+                                args.subList(i, argCount);
                         checkSequencedIndirectArgument(sublist, 
                                 paramType);
                         return; //Note: early return!
@@ -5665,7 +5737,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        for (int i=paramTypes.size(); i<args.size(); i++) {
+        for (int i=paramsSize; i<argCount; i++) {
             Tree.PositionalArgument arg = args.get(i);
             if (arg instanceof Tree.SpreadArgument) {
                 if (unit.isEmptyType(arg.getTypeModel())) {
@@ -5673,7 +5745,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             arg.addError("no matching parameter: function reference has " + 
-                    paramTypes.size() + " parameters", 
+                    paramsSize + " parameters", 
                     2000);
         }
         

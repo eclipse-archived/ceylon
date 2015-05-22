@@ -178,3 +178,16 @@ void moreRefPassing() {
     Integer sum2 = [1,2,3].fold(0)(Holder().pl);
     {Singleton<Integer|String>*} it2 = [1,2,""].map(Holder().sing);
 }
+
+void moreTypeArgInference() {
+    value conc = concatenate;
+    @type:"Sequential<Integer|String|Float>" 
+    value stream1 = conc({1,2}, {""}, {0.0}, {});
+    @type:"Sequential<Integer|String>"
+    value stream2 = conc(for (s in {{1,2}, {""}}) s);
+    @type:"Sequential<String>"
+    value stream3 = conc(for (s in {{1,2}, {""}}) s*.string);
+    value add = plus;
+    @type:"Float" value sum1 = add(*[1.0,2.0]);
+    @type:"Integer" value sum2 = add(0,2);
+}
