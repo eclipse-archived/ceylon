@@ -67,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -7781,18 +7782,21 @@ public class ExpressionVisitor extends Visitor {
 
     private void typeArgumentsImplicit(
             Tree.StaticMemberOrTypeExpression that) {
-        if (that.getTypeArguments() 
-                instanceof Tree.InferredTypeArguments) {
-            Declaration declaration = that.getDeclaration();
-            Generic dec = (Generic) declaration;
-            StringBuilder params = new StringBuilder();
-            for (TypeParameter tp: dec.getTypeParameters()) {
-                if (params.length()>0) params.append(", ");
-                params.append("'").append(tp.getName()).append("'");
+        TypeArguments tas = that.getTypeArguments();
+        if (tas instanceof Tree.InferredTypeArguments) {
+            List<ProducedType> typeArgs = tas.getTypeModels();
+            if (typeArgs==null || typeArgs.isEmpty()) {
+                Declaration declaration = that.getDeclaration();
+                Generic dec = (Generic) declaration;
+                StringBuilder params = new StringBuilder();
+                for (TypeParameter tp: dec.getTypeParameters()) {
+                    if (params.length()>0) params.append(", ");
+                    params.append("'").append(tp.getName()).append("'");
+                }
+                that.addError("missing type arguments to generic declaration: '" + 
+                        declaration.getName(unit) + 
+                        "' declares type parameters " + params);
             }
-            that.addError("missing type arguments to generic declaration: '" + 
-                    declaration.getName(unit) + 
-                    "' declares type parameters " + params);
         }
     }
     
