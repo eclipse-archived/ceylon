@@ -114,11 +114,11 @@ void testMissingTypeArgs() {
     value genericRef = Array;
     value nonGenericRef = Array<String>.clone;
     value char = Integer.character;
-    @error:"missing argument for required parameter" value nochar = Integer.character();
+    @error:"missing argument to required parameter" value nochar = Integer.character();
     @error:"does not accept type arguments" value notchar = Integer<>.character;
     @error:"does not accept type arguments" value nottachar = Integer.character<>;
     value and = Integer.and;
-    @error:"missing argument for required parameter" value noand = Integer.and();
+    @error:"missing argument to required parameter" value noand = Integer.and();
     @error:"does not accept type arguments" value notand = Integer<>.and;
     @error:"does not accept type arguments" value nottaand = Integer.and<>;
 }
