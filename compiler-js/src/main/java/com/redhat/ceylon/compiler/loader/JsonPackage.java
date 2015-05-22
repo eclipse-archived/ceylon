@@ -897,10 +897,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 }
             }
             if (!concretes.isEmpty()) {
-                ProducedType rval = td.getType().substitute(concretes);
-                if (variances != null) {
-                    rval.setVarianceOverrides(variances);
-                }
+                ProducedType rval = td.getType()
+                        .substitute(concretes, variances);
                 return rval;
             }
         }

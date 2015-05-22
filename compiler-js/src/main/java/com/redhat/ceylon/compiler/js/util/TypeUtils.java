@@ -923,7 +923,6 @@ public class TypeUtils {
                         && Util.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
-                        Thread.dumpStack();
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
                                 type.getNameAsString(), "$", tpowner.getName());
                     } else if (tpowner instanceof Method) {
