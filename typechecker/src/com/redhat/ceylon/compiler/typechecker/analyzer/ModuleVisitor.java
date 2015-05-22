@@ -311,7 +311,7 @@ public class ModuleVisitor extends Visitor {
                         if (moduleImport == null) {
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
-                            moduleImport = new ModuleImport(importedModule, optional, export);
+                            moduleImport = new ModuleImport(importedModule, optional, export, be);
                             moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);
