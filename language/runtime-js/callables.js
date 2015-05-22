@@ -65,6 +65,11 @@ function spread$(a,f,targs) {
       var typecheck;
       if (a1t && targs && targs.Arguments$Callable) {
         typecheck=targs.Arguments$Callable;
+        if (typecheck && typecheck.t && typecheck.t==='T' && typecheck.l
+            && typecheck.l.length===1 && typecheck.l[0].seq) {
+          //after all, it is NOT a spread
+          return arg;
+        }
       } else if (a1t && arg[0].$$targs$$) {
         if (arg[0].$$targs$$.First$Tuple) {
           typecheck={t:Tuple,a:arg[0].$$targs$$};
