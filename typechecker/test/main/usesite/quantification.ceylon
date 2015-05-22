@@ -8,6 +8,12 @@ void quantificationOverId() {
     String y2 = x2;
     @error String y3 = x3;
     Anything y4 = x3;
+    Invariant<A<in Integer>> iaii = nothing;
+    Invariant<Anything> ia = iaii;
+    Invariant<A<out Integer>> iaoi = nothing;
+    Invariant<Integer> ii = iaoi;
+    Invariant<A<out Integer>> iai = nothing;
+    Invariant<Integer> ii2 = iai;
 
     @error alias B<in T> => T;
     B<String> z1 = nothing;
