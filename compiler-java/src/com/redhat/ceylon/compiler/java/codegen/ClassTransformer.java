@@ -2187,7 +2187,12 @@ public class ClassTransformer extends AbstractTransformer {
             java.util.List<ProducedType> satisfiedTypes = tp.getType().getSatisfiedTypes();
             ArrayList<ProducedType> bounds = new ArrayList<>(satisfiedTypes.size());
             for (ProducedType bound : satisfiedTypes) {
-                bounds.add(bound.getType().substitute(typedMember.getTypeArguments()));
+                if (typedMember instanceof ProducedType) {
+                    bounds.add(bound.substitute((ProducedType) typedMember));
+                }
+                else if (typedMember instanceof ProducedTypedReference) {
+                    bounds.add(bound.substitute((ProducedTypedReference) typedMember));
+                }
             }
             producedTypeParameterBounds.add(bounds);
         }

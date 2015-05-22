@@ -165,7 +165,7 @@ abstract class Invocation {
                 TypeDeclaration container = (TypeDeclaration) method.getContainer();
                 ProducedType qualifyingType = producedReference.getQualifyingType();
                 ProducedType supertype = qualifyingType.getSupertype(container);
-                return paramType.substitute(supertype.getTypeArguments());
+                return paramType.substitute(supertype);
             }
         }
         return paramType;

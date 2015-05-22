@@ -1749,17 +1749,16 @@ public abstract class AbstractTransformer implements Transformation {
                 }
                 // otherwise just go on
             }
-            JCExpression jta;
             
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;
                 for(ProducedType bound : tp.getSatisfiedTypes()){
-                    bound = bound.substitute(tas);
+                    bound = bound.substitute(simpleType);
                     needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
                 }
                 if(needsCastForBounds){
                     // replace with the first bound
-                    ta = tp.getSatisfiedTypes().get(0).substitute(tas);
+                    ta = tp.getSatisfiedTypes().get(0).substitute(simpleType);
                     if(tp.getSatisfiedTypes().size() > 1
                             || isBoundsSelfDependant(tp)
                             || willEraseToObject(ta)
@@ -2328,12 +2327,12 @@ public abstract class AbstractTransformer implements Transformation {
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;
                 for(ProducedType bound : tp.getSatisfiedTypes()){
-                    bound = bound.substitute(tas);
+                    bound = bound.substitute(tas, null);
                     needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
                 }
                 if(needsCastForBounds){
                     // replace with the first bound
-                    ta = tp.getSatisfiedTypes().get(0).substitute(tas);
+                    ta = tp.getSatisfiedTypes().get(0).substitute(tas, null);
                     if(tp.getSatisfiedTypes().size() > 1
                             || isBoundsSelfDependant(tp)
                             || willEraseToObject(ta)
@@ -2442,7 +2441,7 @@ public abstract class AbstractTransformer implements Transformation {
     boolean hasSubstitutedBounds(ProducedType pt){
         TypeDeclaration declaration = pt.getDeclaration();
         java.util.List<TypeParameter> tps = declaration.getTypeParameters();
-        Map<TypeParameter, ProducedType> tas = pt.getTypeArguments();
+        final Map<TypeParameter, ProducedType> tas = pt.getTypeArguments();
         boolean isCallable = isCeylonCallable(pt);
         for(TypeParameter tp : tps){
             ProducedType ta = tas.get(tp);
@@ -2451,7 +2450,7 @@ public abstract class AbstractTransformer implements Transformation {
                 continue;
             if(!tp.getSatisfiedTypes().isEmpty()){
                 for(ProducedType bound : tp.getSatisfiedTypes()){
-                    bound = bound.substitute(tas);
+                    bound = bound.substitute(pt);
                     if(expressionGen().needsCast(ta, bound, false, false, false))
                         return true;
                 }
@@ -2747,7 +2746,7 @@ public abstract class AbstractTransformer implements Transformation {
                 ProducedType self = upperBound.getDeclaration().getSelfType();
                 if (self != null) {
                     // make sure we apply the type arguments
-                    ProducedType selfUpperBound = self.substitute(upperBound.getTypeArguments());
+                    ProducedType selfUpperBound = self.substitute(upperBound);
                     if (!willEraseToObject(selfUpperBound)
                             && (willEraseToObject(type) || expressionGen().needsCast(type, selfUpperBound, false, false, false))) {
                         return selfUpperBound;
@@ -2771,13 +2770,13 @@ public abstract class AbstractTransformer implements Transformation {
             if(targetType != null
                     && !declaration.isStaticallyImportable()){
                 ClassOrInterface methodContainer = (ClassOrInterface) declaration.getContainer();
-                Map<TypeParameter, ProducedType> typeArguments = targetType.getSupertype(methodContainer).getTypeArguments();
+                ProducedType supertype = targetType.getSupertype(methodContainer);
                 // we need type arguments that may come from the method container
-                bound = bound.substitute(typeArguments);
+                bound = bound.substitute(supertype);
             }
         }
         // and those that may come from the method call itself
-        return bound.substitute(target.getTypeArguments());
+        return bound.substitute(target.getTypeArguments(), null);
     }
 
 
@@ -4769,11 +4768,11 @@ public abstract class AbstractTransformer implements Transformation {
                         TypeDeclaration methodContainer = (TypeDeclaration) method.getContainer();
                         TypeDeclaration refinedMethodContainer = (TypeDeclaration) refinedMethod.getContainer();
                         // find the supertype that gave us that method and its type arguments
-                        Map<TypeParameter, ProducedType> typeArguments = methodContainer.getType().getSupertype(refinedMethodContainer).getTypeArguments();
+                        ProducedType supertype = methodContainer.getType().getSupertype(refinedMethodContainer);
                         satisfiedTypesForBounds = new ArrayList<ProducedType>(refinedTP.getSatisfiedTypes().size());
                         for(ProducedType satisfiedType : refinedTP.getSatisfiedTypes()){
                             // substitute the refined type parameter bounds with the right type arguments
-                            satisfiedTypesForBounds.add(satisfiedType.substitute(typeArguments));
+                            satisfiedTypesForBounds.add(satisfiedType.substitute(supertype));
                         }
                         typeParameterForBounds = refinedTP;
                     }
