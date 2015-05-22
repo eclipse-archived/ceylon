@@ -11,7 +11,7 @@ void quantificationOverId() {
 
     @error alias B<in T> => T;
     B<String> z1 = nothing;
-    @error String w1 = z1;
+    String w1 = z1;
 
     alias C<out T> => T;
     C<String> z2 = nothing;
