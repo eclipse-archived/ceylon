@@ -7753,8 +7753,9 @@ public class ExpressionVisitor extends Visitor {
                         member.setOtherInstanceAccess(true);
                     }
                     if (error) {
-                        checkQualifiedVisibility(that, member, 
-                                name, container, selfReference);
+                        checkQualifiedVisibility(that, 
+                                member, name, container, 
+                                selfReference);
                         checkSuperMember(that);
                     }
                 }
@@ -7774,8 +7775,9 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that) {
-        Tree.Term t = eliminateParensAndWidening(that.getPrimary());
-        if (t instanceof Tree.Super) {
+        Tree.Term term = 
+                eliminateParensAndWidening(that.getPrimary());
+        if (term instanceof Tree.Super) {
             checkSuperInvocation(that);
         }
     }
@@ -7784,18 +7786,27 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that) {
         TypeArguments tas = that.getTypeArguments();
         if (tas instanceof Tree.InferredTypeArguments) {
-            List<ProducedType> typeArgs = tas.getTypeModels();
+            List<ProducedType> typeArgs = 
+                    tas.getTypeModels();
             if (typeArgs==null || typeArgs.isEmpty()) {
-                Declaration declaration = that.getDeclaration();
+                Declaration declaration = 
+                        that.getDeclaration();
                 Generic dec = (Generic) declaration;
-                StringBuilder params = new StringBuilder();
-                for (TypeParameter tp: dec.getTypeParameters()) {
-                    if (params.length()>0) params.append(", ");
-                    params.append("'").append(tp.getName()).append("'");
+                StringBuilder params = 
+                        new StringBuilder();
+                for (TypeParameter tp: 
+                        dec.getTypeParameters()) {
+                    if (params.length()>0) {
+                        params.append(", ");
+                    }
+                    params.append("'")
+                        .append(tp.getName())
+                        .append("'");
                 }
                 that.addError("missing type arguments to generic declaration: '" + 
                         declaration.getName(unit) + 
-                        "' declares type parameters " + params);
+                        "' declares type parameters " + 
+                        params);
             }
         }
     }
