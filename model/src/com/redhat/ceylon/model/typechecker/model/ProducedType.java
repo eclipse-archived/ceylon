@@ -2837,7 +2837,44 @@ public class ProducedType extends ProducedReference {
                 ta.setScope(d.getScope());
                 ta.setContainer(d.getContainer());
                 ta.setUnit(d.getUnit());
-                ta.setTypeParameters(d.getTypeParameters());
+                List<TypeParameter> tps = 
+                        new ArrayList<TypeParameter>();
+                for (TypeParameter tp: 
+                        d.getTypeParameters()) {
+                    TypeParameter stp = 
+                            new TypeParameter();
+                    stp.setName(tp.getName());
+                    stp.setScope(tp.getScope());
+                    stp.setContainer(tp.getContainer());
+                    stp.setUnit(tp.getUnit());
+                    stp.setDeclaration(ta);
+                    List<ProducedType> sts = 
+                            tp.getSatisfiedTypes();
+                    List<ProducedType> ssts = 
+                            new ArrayList<ProducedType>
+                                (sts.size());
+                    for (ProducedType st: sts) {
+                        ssts.add(st.substitute(
+                                substitutions, 
+                                overrides));
+                    }
+                    stp.setSatisfiedTypes(ssts);
+                    List<ProducedType> cts = 
+                            tp.getCaseTypes();
+                    if (cts!=null) {
+                        List<ProducedType> scts = 
+                                new ArrayList<ProducedType>
+                                    (cts.size());
+                        for (ProducedType ct: cts) {
+                            scts.add(ct.substitute(
+                                    substitutions, 
+                                    overrides));
+                        }
+                        stp.setCaseTypes(scts);
+                    }
+                    tps.add(stp);
+                }
+                ta.setTypeParameters(tps);
                 ProducedType type = ta.getType();
                 ProducedType qt = pt.getQualifyingType();
                 if (qt!=null) {
