@@ -157,5 +157,9 @@ void testVariances() {
     @error <T> => Inv<T> inv3 = cov;
     @error value x = <out T>(T t) => Inv<T>(t);
     @error function y<out T>(T t) => Inv<T>(t);
+
+    TC<in Nothing> some<X,TC>(TC<X> t) given TC<Y> => t;    
+    @error Array<Nothing> a1 = some<String,Array>(Array {"hello", "world"});
+    Array<in Nothing> a2 = some<String,Array>(Array {"hello", "world"});
 }
 
