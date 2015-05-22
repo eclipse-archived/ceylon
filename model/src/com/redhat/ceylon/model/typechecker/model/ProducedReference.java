@@ -134,7 +134,8 @@ public abstract class ProducedReference {
                         new UnknownType(unit).getType());
             }
             else {
-                return unit.getCallableType(this, wrappedType);
+                return unit.getCallableType(this, 
+                        wrappedType);
             }
         }
         else {

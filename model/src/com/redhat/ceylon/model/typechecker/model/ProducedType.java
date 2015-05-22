@@ -968,24 +968,33 @@ public class ProducedType extends ProducedReference {
      * types, even when there are no substitutions. 
      */
     public ProducedType substitute(
-            Map<TypeParameter,ProducedType> substitutions, 
+            Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
         if (!substitutions.isEmpty()) {
             return new Substitution()
-                .substitute(this, substitutions, overrides)
+                .substitute(this, 
+                        substitutions, overrides,
+                        true)
                 .simple();
         }
         else {
             return this;
         }
     }
+    
+    private ProducedType substituteInternal(ProducedType source) {
+        return substituteInternal(source.getTypeArguments(), 
+                source.getVarianceOverrides());
+    }
 
     private ProducedType substituteInternal(
-            Map<TypeParameter,ProducedType> substitutions, 
+            Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
         if (!substitutions.isEmpty()) {
             return new InternalSubstitution()
-                .substitute(this, substitutions, overrides);
+                .substitute(this, 
+                        substitutions, overrides, 
+                        true);
         }
         else {
             return this;
@@ -1107,7 +1116,7 @@ public class ProducedType extends ProducedReference {
                         variances);
         return new Substitution()
                     .substitute(this, typeArgMap, 
-                            varianceMap);
+                            varianceMap, true);
     }
 
     public ProducedType getType() {
@@ -2487,20 +2496,14 @@ public class ProducedType extends ProducedReference {
     private List<ProducedType> getInternalSatisfiedTypes() {
         TypeDeclaration dec = getDeclaration();
         List<ProducedType> sts = dec.getSatisfiedTypes();
-        Map<TypeParameter, ProducedType> args = 
-                getTypeArguments();
-        if (args.isEmpty()) {
+        if (getTypeArguments().isEmpty()) {
             return sts;
         }
         List<ProducedType> satisfiedTypes = 
                 new ArrayList<ProducedType>
                     (sts.size());
         for (ProducedType st: sts) {
-            Map<TypeParameter, SiteVariance> vos = 
-                    getVarianceOverrides();
-            ProducedType t = 
-                    st.substituteInternal(args, vos);
-            satisfiedTypes.add(t);
+            satisfiedTypes.add(st.substituteInternal(this));
         }
         return satisfiedTypes;
     }
@@ -2512,14 +2515,10 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
-            Map<TypeParameter, ProducedType> args = 
-                    getTypeArguments();
-            if (args.isEmpty()) {
+            if (getTypeArguments().isEmpty()) {
                 return et;
             }
-            Map<TypeParameter, SiteVariance> vos = 
-                    getVarianceOverrides();
-            return et.substituteInternal(args, vos);
+            return et.substituteInternal(this);
         }
     }
 
@@ -2530,20 +2529,14 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
-            Map<TypeParameter, ProducedType> args = 
-                    getTypeArguments();
-            if (args.isEmpty()) {
+            if (getTypeArguments().isEmpty()) {
                 return cts;
             }
             List<ProducedType> caseTypes = 
                     new ArrayList<ProducedType>
                         (cts.size());
-            Map<TypeParameter, SiteVariance> vos = 
-                    getVarianceOverrides();
             for (ProducedType ct: cts) {
-                ProducedType t = 
-                        ct.substituteInternal(args, vos);
-                caseTypes.add(t);
+                caseTypes.add(ct.substituteInternal(this));
             }
             return caseTypes;
         }
@@ -2611,7 +2604,8 @@ public class ProducedType extends ProducedReference {
         
         ProducedType substitute(final ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions, 
-                Map<TypeParameter, SiteVariance> overrides) {
+                Map<TypeParameter, SiteVariance> overrides, 
+                boolean toplevel) {
             TypeDeclaration dec;
             TypeDeclaration ptd = pt.getDeclaration();
             Unit unit = ptd.getUnit();
@@ -2625,7 +2619,7 @@ public class ProducedType extends ProducedReference {
                             (cts.size());
                 for (ProducedType ct: cts) {
                     addTypeToUnion(ct, substitutions, 
-                            overrides, types);
+                            overrides, toplevel, types);
                 }
                 ut.setCaseTypes(types);
                 dec = ut;
@@ -2640,45 +2634,74 @@ public class ProducedType extends ProducedReference {
                             (sts.size());
                 for (ProducedType ct: sts) {
                     addTypeToIntersection(ct, substitutions, 
-                            overrides, types);
+                            overrides, toplevel, types);
                 }
                 it.setSatisfiedTypes(types);
                 dec = it.canonicalize();
             }
-            else {
-                if (ptd instanceof TypeParameter) {
-                    ProducedType sub = 
-                            substitutions.get(ptd);
-                    if (sub!=null) {
-                        if (ptd.getTypeParameters().isEmpty() || 
-                            pt.isTypeConstructor()) {
-                            return sub;
+            else if (ptd instanceof TypeParameter) {
+                ProducedType sub = substitutions.get(ptd);
+                if (sub==null) {
+                    //nothing to substitute
+                    return pt;
+                }
+                else {
+                    if (//a regular type parameter
+                        ptd.getTypeParameters().isEmpty() ||
+                        //an unapplied generic type 
+                        //parameter (a type constructor 
+                        //parameter) in a higher-order
+                        //abstraction
+                        pt.isTypeConstructor()) {
+                        //no type arguments or qualifying 
+                        //type to substitute
+                        if (overrides!=null &&
+                                overrides.get(ptd)==IN) {
+                            //a special case where the type
+                            //parameter occurs outside of
+                            //any type argument list, in
+                            //which case "in T" is just
+                            //replaced with Anything
+                            return unit.getAnythingDeclaration()
+                                    .getType();
                         }
                         else {
-                            //needed for higher-order generics
-                            List<ProducedType> tal = 
-                                    pt.getTypeArgumentList();
-                            List<ProducedType> sta = 
-                                    new ArrayList<ProducedType>
-                                        (tal.size());
-                            for (ProducedType ta: tal) {
-                                sta.add(ta.substitute(
-                                        substitutions,
-                                        overrides));
-                            }
-                            return substituteIntoTypeConstructors(
-                                    sub, sta, substitutions, 
-                                    overrides, unit, pt);
+                            return sub;
                         }
                     }
+                    else {
+                        //an applied generic type parameter 
+                        //in a higher-order generic 
+                        //abstraction - in this case we need
+                        //to substitute both the type 
+                        //constructor and its arguments
+                        List<ProducedType> tal = 
+                                pt.getTypeArgumentList();
+                        List<ProducedType> sta = 
+                                new ArrayList<ProducedType>
+                                    (tal.size());
+                        for (ProducedType ta: tal) {
+                            sta.add(ta.substitute(
+                                    substitutions,
+                                    overrides));
+                        }
+                        return substituteIntoTypeConstructors(
+                                sub, sta, substitutions, 
+                                overrides, unit, pt);
+                    }
                 }
+            }
+            else {
                 dec = ptd;
             }
             if (pt.isTypeConstructor()) {
+                //a type constructor occurring in a higher
+                //rank generic abstraction
                 return substitutedTypeConstructor(pt, 
                         substitutions, overrides);
             }
             else {
+                //a plain olde type
                 return substitutedType(dec, pt, 
                         substitutions, overrides);
             }
@@ -2722,7 +2745,9 @@ public class ProducedType extends ProducedReference {
             else {
                 ProducedType sqt = sub.getQualifyingType();
                 ProducedType qt = sqt==null ? null : 
-                    substitute(sqt, substitutions, overrides);
+                    substitute(sqt, 
+                            substitutions, overrides, 
+                            false);
                 ProducedType result = 
                         sd.getProducedType(qt, sta);
                 substituteVarianceOverridesInTypeConstructor(
@@ -2731,29 +2756,56 @@ public class ProducedType extends ProducedReference {
             }
         }
 
+        private void substituteVarianceOverridesInTypeConstructor(
+                ProducedType typeConstructor, 
+                ProducedType result) {
+            TypeDeclaration sd = result.getDeclaration();
+            Map<TypeParameter, SiteVariance> map = 
+                    new HashMap<TypeParameter, SiteVariance>();
+            map.putAll(result.getVarianceOverrides());
+            List<TypeParameter> sdtps = 
+                    sd.getTypeParameters();
+            List<TypeParameter> tctps = 
+                    typeConstructor.getDeclaration()
+                        .getTypeParameters();
+            for (int i=0; 
+                    i<tctps.size() && i<sdtps.size(); 
+                    i++) {
+                TypeParameter tctp = tctps.get(i);
+                TypeParameter sdtp = sdtps.get(i);
+                SiteVariance var = 
+                        typeConstructor.getVarianceOverrides()
+                            .get(tctp);
+                if (var!=null) {
+                    map.put(sdtp, var);
+                }
+            }
+            result.setVarianceOverrides(map);
+        }
+        
         void addTypeToUnion(ProducedType ct, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides, 
-                List<ProducedType> types) {
+                boolean toplevel, List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
             else {
                 addToUnion(types, substitute(ct, 
-                        substitutions, overrides));
+                        substitutions, overrides, toplevel));
             }
         }
 
         void addTypeToIntersection(ProducedType ct, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides, 
-                List<ProducedType> types) {
+                boolean toplevel, List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
             else {
                 addToIntersection(types, substitute(ct, 
-                        substitutions, overrides), 
+                        substitutions, overrides, toplevel), 
                         ct.getDeclaration().getUnit());
             }
         }
@@ -2771,7 +2823,7 @@ public class ProducedType extends ProducedReference {
                     pt.getTypeConstructorParameter());
             if (qt!=null) {
                 type.setQualifyingType(substitute(qt, 
-                        substitutions, overrides));
+                        substitutions, overrides, false));
             }
             Map<TypeParameter, ProducedType> typeArguments = 
                     pt.getTypeArguments();
@@ -2793,7 +2845,7 @@ public class ProducedType extends ProducedReference {
                 if (arg!=null) {
                     ProducedType sarg = 
                             substitute(arg, substitutions, 
-                                    overrides);
+                                    overrides, false);
                     typeArgs.put(tp, sarg);
                     if (overridesExist) {
                         TypeDeclaration atp = 
@@ -2820,10 +2872,10 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, SiteVariance> overrides) {
             TypeDeclaration d = pt.getDeclaration();            
             if (d.isAlias() && substitutions!=null) {
-                //really this stuff is unnecessary, since
-                //we're going to disallow rank-N polymorphic
-                //types, but it helps give the right result
-                //for subtyping of such types
+                //necessary for subtyping of rank > 2 
+                //polymorphic types and of any higher rank
+                //parameter of a generic function ... and
+                //possibly also other cases
                 ProducedType et = 
                         d.getExtendedType();
                 if (et==null) {
@@ -2839,6 +2891,11 @@ public class ProducedType extends ProducedReference {
                 ta.setUnit(d.getUnit());
                 List<TypeParameter> tps = 
                         new ArrayList<TypeParameter>();
+                //compute the right bounds for a higher
+                //rank parameter of a generic function
+                //by substituting the type arguments of
+                //the function into the bounds of the
+                //parameter
                 for (TypeParameter tp: 
                         d.getTypeParameters()) {
                     TypeParameter stp = 
@@ -2907,26 +2964,26 @@ public class ProducedType extends ProducedReference {
     
         private void addType(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
-                List<ProducedType> types,
-                Map<TypeParameter, SiteVariance> variances) {
+                Map<TypeParameter, SiteVariance> variances, 
+                boolean toplevel, List<ProducedType> types) {
             if (ct!=null) {
                 types.add(substitute(ct, substitutions, 
-                        variances));
+                        variances, toplevel));
             }
         }
         
         @Override void addTypeToUnion(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances,
-                List<ProducedType> types) {
-            addType(ct, substitutions, types, variances);
+                boolean toplevel, List<ProducedType> types) {
+            addType(ct, substitutions, variances, toplevel, types);
         }
 
         @Override void addTypeToIntersection(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances,
-                List<ProducedType> types) {
-            addType(ct, substitutions, types, variances);
+                boolean toplevel, List<ProducedType> types) {
+            addType(ct, substitutions, variances, toplevel, types);
         }
         
     }
@@ -3041,33 +3098,6 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-    private static void substituteVarianceOverridesInTypeConstructor(
-            ProducedType typeConstructor, 
-            ProducedType result) {
-        TypeDeclaration sd = result.getDeclaration();
-        Map<TypeParameter, SiteVariance> map = 
-                new HashMap<TypeParameter, SiteVariance>();
-        map.putAll(result.getVarianceOverrides());
-        List<TypeParameter> sdtps = 
-                sd.getTypeParameters();
-        List<TypeParameter> tctps = 
-                typeConstructor.getDeclaration()
-                    .getTypeParameters();
-        for (int i=0; 
-                i<tctps.size() && i<sdtps.size(); 
-                i++) {
-            TypeParameter tctp = tctps.get(i);
-            TypeParameter sdtp = sdtps.get(i);
-            SiteVariance var = 
-                    typeConstructor.getVarianceOverrides()
-                        .get(tctp);
-            if (var!=null) {
-                map.put(sdtp, var);
-            }
-        }
-        result.setVarianceOverrides(map);
-    }
-    
     /**
      * Form a union type of all cases of the type, 
      * recursively reducing cases to their cases
@@ -3377,13 +3407,17 @@ public class ProducedType extends ProducedReference {
     
     private ProducedType simple() {
         TypeDeclaration d = getDeclaration();
-        if (d instanceof UnionType && 
-                d.getCaseTypes().size()==1) {
-            return d.getCaseTypes().get(0);
+        if (d instanceof UnionType) {
+            List<ProducedType> cts = d.getCaseTypes();
+            if (cts.size()==1) {
+                return cts.get(0);
+            }
         }
-        if (d instanceof IntersectionType && 
-                d.getSatisfiedTypes().size()==1) {
-            return d.getSatisfiedTypes().get(0);
+        if (d instanceof IntersectionType) {
+            List<ProducedType> sts = d.getSatisfiedTypes();
+            if (sts.size()==1) {
+                return sts.get(0);
+            }
         }
         List<ProducedType> args = getTypeArgumentList();
         List<ProducedType> simpleArgs;
@@ -3400,12 +3434,12 @@ public class ProducedType extends ProducedReference {
                         (args.size());
             for (ProducedType arg: args) {
                 ProducedType sarg = 
-                        arg==null ? null : 
-                            arg.simple();
+                        arg==null ? null : arg.simple();
                 simpleArgs.add(sarg);
             }
         }
-        ProducedType sqt = qt==null ? null : qt.simple();
+        ProducedType sqt = 
+                qt==null ? null : qt.simple();
         ProducedType ret = 
                 d.getProducedType(sqt, simpleArgs);
         ret.setUnderlyingType(getUnderlyingType());
