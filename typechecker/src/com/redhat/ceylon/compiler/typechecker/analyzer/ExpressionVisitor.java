@@ -4448,7 +4448,8 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType inferTypeArgumentFromPositionalArgs(
             TypeParameter tp, 
-            ParameterList parameters, ProducedType qt, 
+            ParameterList parameters, 
+            ProducedType receiverType, 
             Tree.PositionalArgumentList pal, 
             Declaration invoked) {
         boolean findingUpperBounds = 
@@ -4471,7 +4472,8 @@ public class ExpressionVisitor extends Visitor {
                             params.subList(i, 
                                     params.size());
                     ProducedType ptt = 
-                            unit.getParameterTypesAsTupleType(subList, qt);
+                            unit.getParameterTypesAsTupleType(
+                                    subList, receiverType);
                     addToUnionOrIntersection(
                             findingUpperBounds, 
                             inferredTypes, 
@@ -4507,17 +4509,17 @@ public class ExpressionVisitor extends Visitor {
                         Scope container = 
                                 parameter.getDeclaration()
                                     .getContainer();
-                        ProducedType dt = qt;
+                        ProducedType dt = receiverType;
                         if (container instanceof TypeDeclaration) {
                             TypeDeclaration td = 
                                     (TypeDeclaration) container;
                             ProducedType supertype = 
-                                    qt.getSupertype(td);
+                                    receiverType.getSupertype(td);
                             dt = supertype==null ? 
-                                    qt : supertype;
+                                    receiverType : supertype;
                         }
                         else {
-                            dt = qt;
+                            dt = receiverType;
                         }
                         ProducedType pt = 
                                 dt.getTypedParameter(parameter)
@@ -5532,57 +5534,86 @@ public class ExpressionVisitor extends Visitor {
         int paramsSize = params.size();
         
         for (int i=0; i<paramsSize; i++) {
-            Parameter p = params.get(i);
+            Parameter param = params.get(i);
             if (i>=argCount) {
-                if (!p.isDefaulted() && 
-                        (!p.isSequenced() || 
-                         p.isAtLeastOne())) {
+                if (!param.isDefaulted() && 
+                        (!param.isSequenced() || 
+                         param.isAtLeastOne())) {
                     Node errorNode = 
                             that instanceof Tree.Annotation && 
                             args.isEmpty() ? that : pal;
-                    errorNode.addError("missing argument to required parameter '" + 
-                            p.getName() + "' of '" + 
-                            target.getName(unit) + "'");
+                    StringBuilder message = 
+                            new StringBuilder();
+                    if (i+1<paramsSize) {
+                        message.append("missing arguments to required parameters '");
+                        appendParam(pr, param, message);
+                        int count = 1;
+                        for (int j=i+1; j<paramsSize; j++) {
+                            Parameter p = params.get(j);
+                            if (p.isDefaulted() ||
+                                    p.isSequenced() &&
+                                    !p.isAtLeastOne()) {
+                                break;
+                            }
+                            message.append(", ");
+                            appendParam(pr, p, message);
+                            count++;
+                        }
+                        message.append("'")
+                            .insert(20, " " + count);
+                    }
+                    else {
+                        message.append("missing argument to required parameter '");
+                        appendParam(pr, param, message);
+                        message.append("'");
+                    }
+                    message.append(" of '")
+                        .append(target.getName(unit))
+                        .append("'");
+                    errorNode.addError(message.toString());
+                    break;
                 }
             } 
             else {
-                Tree.PositionalArgument a = args.get(i);
+                Tree.PositionalArgument arg = args.get(i);
+                ProducedType pt = param.getType();
                 if (!dynamic && 
                         !isNativeForWrongBackend() &&
-                        isTypeUnknown(p.getType())) {
-                    a.addError("parameter type could not be determined: " + 
-                            paramdesc(p) +
-                            getTypeUnknownError(p.getType()));
+                        isTypeUnknown(pt)) {
+                    arg.addError("parameter type could not be determined: " + 
+                            paramdesc(param) +
+                            getTypeUnknownError(pt));
                 }
-                if (a instanceof Tree.SpreadArgument) {
-                    checkSpreadArgument(pr, p, a, 
-                            (Tree.SpreadArgument) a, 
+                if (arg instanceof Tree.SpreadArgument) {
+                    checkSpreadArgument(pr, param, arg, 
+                            (Tree.SpreadArgument) arg, 
                             params.subList(i, paramsSize));
                     break;
                 }
-                else if (a instanceof Tree.Comprehension) {
-                    if (p.isSequenced()) {
-                        checkComprehensionPositionalArgument(p, pr, 
-                                (Tree.Comprehension) a, 
-                                p.isAtLeastOne());
+                else if (arg instanceof Tree.Comprehension) {
+                    if (param.isSequenced()) {
+                        checkComprehensionPositionalArgument(
+                                param, pr, 
+                                (Tree.Comprehension) arg, 
+                                param.isAtLeastOne());
                     }
                     else {
-                        a.addError("not a variadic parameter: parameter '" + 
-                                p.getName() + "' of '" + 
+                        arg.addError("not a variadic parameter: parameter '" + 
+                                param.getName() + "' of '" + 
                                 target.getName() + "'");
                     }
                     break;
                 }
                 else {
-                    if (p.isSequenced()) {
-                        checkSequencedPositionalArgument(p, pr, 
-                                args.subList(i, 
-                                        argCount));
+                    if (param.isSequenced()) {
+                        checkSequencedPositionalArgument(
+                                param, pr, 
+                                args.subList(i, argCount));
                         return; //Note: early return!
                     }
                     else {
-                        checkPositionalArgument(p, pr, 
-                                (Tree.ListedArgument) a);
+                        checkPositionalArgument(param, pr, 
+                                (Tree.ListedArgument) arg);
                     }
                 }
             }
@@ -5604,6 +5635,24 @@ public class ExpressionVisitor extends Visitor {
         
         checkJavaAnnotationElements(args, params, target);
     
+    }
+
+    private void appendParam(ProducedReference pr, 
+            Parameter param, StringBuilder missing) {
+        ProducedType pt = 
+                pr.getTypedParameter(param)
+                    .getFullType();
+        if (!isTypeUnknown(pt)) {
+            if (param.isSequenced()) {
+                pt = unit.getSequentialElementType(pt);
+            }
+            missing.append(pt.getProducedTypeName(unit));
+            if (param.isSequenced()) {
+                missing.append(param.isAtLeastOne()?"+":"*");
+            }
+            missing.append(" ");
+        }
+        missing.append(param.getName());
     }
 
     private void checkJavaAnnotationElements(
@@ -5637,7 +5686,8 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkSpreadArgument(ProducedReference pr, 
             Parameter p, Tree.PositionalArgument a, 
-            Tree.SpreadArgument arg, List<Parameter> psl) {
+            Tree.SpreadArgument arg, 
+            List<Parameter> params) {
         a.setParameter(p);
         ProducedType rat = arg.getTypeModel();
         if (!isTypeUnknown(rat)) {
@@ -5652,7 +5702,8 @@ public class ExpressionVisitor extends Visitor {
                         spreadType(rat, unit, true);
                 //checkSpreadArgumentSequential(arg, at);
                 ProducedType ptt = 
-                        unit.getParameterTypesAsTupleType(psl, pr);
+                        unit.getParameterTypesAsTupleType(
+                                params, pr);
                 if (!isTypeUnknown(at) && 
                         !isTypeUnknown(ptt)) {
                     checkAssignable(at, ptt, arg, 
@@ -5662,6 +5713,24 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void appendParamType(ProducedType pt,
+            boolean sequenced, StringBuilder missing) {
+        if (!isTypeUnknown(pt)) {
+            boolean atLeastOne;
+            if (sequenced) {
+                atLeastOne = unit.isSequenceType(pt);
+                pt = unit.getSequentialElementType(pt);
+            }
+            else {
+                atLeastOne = false;
+            }
+            missing.append(pt.getProducedTypeName(unit));
+            if (sequenced) {
+                missing.append(atLeastOne?"+":"*");
+            }
+        }
+    }
+
     private void checkIndirectInvocationArguments(
             Tree.InvocationExpression that, 
             ProducedType paramTypesAsTuple, 
@@ -5684,13 +5753,38 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
+        int lastRequired = 
+                lastRequired(paramsSize, firstDefaulted, 
+                        sequenced, atLeastOne);
+        
         for (int i=0; i<paramsSize; i++) {
+            ProducedType paramType = paramTypes.get(i);
             if (i>=argCount) {
-                if (i<firstDefaulted && 
-                        (!sequenced || atLeastOne || 
-                                i!=paramsSize-1)) {
-                    pal.addError("missing argument for required parameter " + i);
+                StringBuilder missingTypes = 
+                        new StringBuilder();
+                appendParamType(paramType, 
+                        sequenced && i==paramsSize-1, 
+                        missingTypes);
+                if (i==lastRequired) {
+                    pal.addError("missing argument to required parameter of type '" + 
+                            missingTypes + 
+                            "' in indirect invocation");
+                    
                 }
+                else if (i<lastRequired) {
+                    for (int j=i+1; j<=lastRequired; j++) {
+                        missingTypes.append(", ");
+                        appendParamType(paramTypes.get(j), 
+                                sequenced && j==paramsSize-1,
+                                missingTypes);
+                    }
+                    pal.addError("missing arguments to " + 
+                            (lastRequired-i+1) + 
+                            " required parameters of types '" + 
+                            missingTypes + 
+                            "' in indirect invocation");
+                }
+                break;
             }
             else {
                 Tree.PositionalArgument arg = args.get(i);
@@ -5704,8 +5798,6 @@ public class ExpressionVisitor extends Visitor {
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
-                    ProducedType paramType = 
-                            paramTypes.get(i);
                     if (sequenced && 
                             i==paramsSize-1) {
                         Tree.Comprehension c = 
@@ -5719,7 +5811,6 @@ public class ExpressionVisitor extends Visitor {
                     break;
                 }
                 else {
-                    ProducedType paramType = paramTypes.get(i);
                     if (sequenced && i==paramsSize-1) {
                         List<Tree.PositionalArgument> sublist = 
                                 args.subList(i, argCount);
@@ -5749,6 +5840,18 @@ public class ExpressionVisitor extends Visitor {
                     2000);
         }
         
+    }
+
+    private static int lastRequired(int paramsSize,
+            int firstDefaulted, boolean sequenced, 
+            boolean atLeastOne) {
+        if (firstDefaulted<paramsSize) {
+            return firstDefaulted-1;
+        }
+        else  {
+            return sequenced && !atLeastOne ?
+                    paramsSize-2 : paramsSize-1;
+        }
     }
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
@@ -5820,7 +5923,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSequencedPositionalArgument(Parameter p, 
+    private void checkSequencedPositionalArgument(
+            Parameter p, 
             ProducedReference pr, 
             List<Tree.PositionalArgument> args) {
         ProducedType paramType = 
