@@ -21,6 +21,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,7 @@ import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -706,15 +708,20 @@ public class RefinementVisitor extends Visitor {
             substitution.put(refiningTypeParam, 
                     refinedTypeParam.getType());
         }
+        Map<TypeParameter, SiteVariance> noVariances = 
+                emptyMap();
         TypeDeclaration rc = 
                 (TypeDeclaration) 
                     refined.getContainer();
         //we substitute the type arguments of the subtype's
         //instantiation of the supertype into the bounds of 
         //the refined declaration
+        ProducedType supertype = 
+                ci.getType().getSupertype(rc);
         Map<TypeParameter, ProducedType> args = 
-                ci.getType().getSupertype(rc)
-                    .getTypeArguments();
+                supertype.getTypeArguments();
+        Map<TypeParameter, SiteVariance> variances = 
+                supertype.getVarianceOverrides();
 		List<ProducedType> typeArgs = 
 		        new ArrayList<ProducedType>(max); 
 		for (int i=0; i<max; i++) {
@@ -729,8 +736,9 @@ public class RefinementVisitor extends Visitor {
             List<ProducedType> refiningBounds = 
                     refiningTypeParam.getSatisfiedTypes();
             for (ProducedType t: refiningBounds) {
-	            ProducedType refiningBound = 
-	                    t.substitute(substitution);
+                ProducedType refiningBound = 
+	                    t.substitute(substitution, 
+	                            noVariances);
 	            //for every type constraint of the refining member, there must
 	            //be at least one type constraint of the refined member which
 	            //is assignable to it, guaranteeing that the intersection of
@@ -741,7 +749,7 @@ public class RefinementVisitor extends Visitor {
 	            //      not be as helpful, but it might be less restrictive)
 	            boolean ok = false;
 	            for (ProducedType refinedBound: refinedBounds) {
-	                if (refinedBound.substitute(args)
+	                if (refinedBound.substitute(args, variances)
 	                        .isSubtypeOf(refiningBound)) {
 	                    ok = true;
 	                }
@@ -753,15 +761,17 @@ public class RefinementVisitor extends Visitor {
 	                        refinedTypeParam.getName() + 
 	                        "' of " + message(refined) + 
 	                        " does not satisfy: '" + 
-	                        t.getProducedTypeName(that.getUnit()) + "'");
+	                        t.getProducedTypeName(that.getUnit()) + 
+	                        "'");
 	            }
 	        }
             for (ProducedType refinedBound: refinedBounds) {
                 boolean ok = false;
                 for (ProducedType refiningBound: refiningBounds) {
                     ProducedType bound = 
-                            refiningBound.substitute(substitution);
-                    if (refinedBound.substitute(args)
+                            refiningBound.substitute(substitution, 
+                                    noVariances);
+                    if (refinedBound.substitute(args, variances)
                             .isSubtypeOf(bound)) {
                         ok = true;
                     }
@@ -773,7 +783,8 @@ public class RefinementVisitor extends Visitor {
                             " with upper bound which member type parameter '" + 
                             refiningTypeParam.getName() + 
                             "' does not satisfy not yet supported: '" + 
-                            refinedBound.getProducedTypeName(that.getUnit()) + "'");
+                            refinedBound.getProducedTypeName(that.getUnit()) + 
+                            "'");
                 }
             }
 	        typeArgs.add(refinedProducedType);

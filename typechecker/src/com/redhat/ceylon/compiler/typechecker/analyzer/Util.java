@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
@@ -15,8 +17,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -173,14 +175,17 @@ public class Util {
             
             //accumulate substitutions in case we need
             //them below for calculating default args
-            Map<TypeParameter,ProducedType> typeArgMap = 
+            Map<TypeParameter,ProducedType> typeArgs = 
                     new HashMap<TypeParameter,ProducedType>();
+            Map<TypeParameter,SiteVariance> vars = 
+                    new HashMap<TypeParameter,SiteVariance>();
             if (qt!=null) {
-                typeArgMap.putAll(qt.getTypeArguments());
+                typeArgs.putAll(qt.getTypeArguments());
+                vars.putAll(qt.getVarianceOverrides());
             }
             
 //            if (tas instanceof Tree.TypeArgumentList) {
-            TypeArgumentList tal = 
+            Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
             int size = typeParameters.size();
             List<ProducedType> typeArguments = 
@@ -188,7 +193,7 @@ public class Util {
             List<Tree.Type> types = tal.getTypes();
             int count = types.size();
             for (int i=0; i<count; i++) {
-                Type type = types.get(i);
+                Tree.Type type = types.get(i);
                 ProducedType t = 
                         type.getTypeModel();
                 if (t==null) {
@@ -200,9 +205,21 @@ public class Util {
                         TypeParameter tp = 
                                 typeParameters.get(i);
                         if (tp.isTypeConstructor()) {
-                            setTypeConstructor(type,tp);
+                            setTypeConstructor(type, tp);
                         }
-                        typeArgMap.put(tp, t);
+                        typeArgs.put(tp, t);
+                        if (type instanceof Tree.StaticType) {
+                            Tree.StaticType st = 
+                                    (Tree.StaticType) type;
+                            TypeVariance tv = 
+                                    st.getTypeVariance();
+                            if (tv!=null) {
+                                boolean contra = 
+                                        tv.getText()
+                                          .equals("in");
+                                vars.put(tp, contra?IN:OUT);
+                            }
+                        }
                     }
                 }
             }
@@ -242,9 +259,9 @@ public class Util {
             	}
             	else {
             	    ProducedType da = 
-            	            dta.substitute(typeArgMap);
+            	            dta.substitute(typeArgs, vars);
             		typeArguments.add(da);
-            		typeArgMap.put(tp, da);
+            		typeArgs.put(tp, da);
             	}
 //                }
             }

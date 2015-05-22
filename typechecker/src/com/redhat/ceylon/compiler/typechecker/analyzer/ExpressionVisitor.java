@@ -52,6 +52,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,7 @@ import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -4740,6 +4742,8 @@ public class ExpressionVisitor extends Visitor {
                     paramType.getDeclaration();
             Map<TypeParameter, ProducedType> paramTypeArgs = 
                     paramType.getTypeArguments();
+            Map<TypeParameter, SiteVariance> paramVariances = 
+                    paramType.getVarianceOverrides();
             TypeDeclaration atd = argType.getDeclaration();
             if (paramTypeDec instanceof TypeParameter &&
                     paramTypeDec.equals(tp)) {
@@ -4843,8 +4847,6 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType pt = paramType;
                 ProducedType apt = argType;
                 if (atd instanceof UnionType) {
-                    Map<TypeParameter, ProducedType> args = 
-                            argType.getTypeArguments();
                     for (ProducedType act: 
                             atd.getCaseTypes()) {
                         //some element of the argument union 
@@ -4852,7 +4854,7 @@ public class ExpressionVisitor extends Visitor {
                         //parameter union, so throw it away 
                         //from both unions
                         if (!act.involvesDeclaration(tp) && //in a recursive generic function, T can get assigned to T
-                                act.substitute(args)
+                                act.substitute(argType)
                                     .isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);
                             apt = apt.shallowMinus(act);
@@ -4874,6 +4876,8 @@ public class ExpressionVisitor extends Visitor {
                 	//just one type parameter left in the union
                     Map<TypeParameter, ProducedType> args = 
                             pt.getTypeArguments();
+                    Map<TypeParameter, SiteVariance> variances = 
+                            pt.getVarianceOverrides();
                     List<ProducedType> cts = 
                             ptd.getCaseTypes();
                     List<ProducedType> list = 
@@ -4883,7 +4887,9 @@ public class ExpressionVisitor extends Visitor {
                         addToUnionOrIntersection(
                                 findingUpperBounds, list, 
                                 inferTypeArg(tp, 
-                                        ct.substitute(args), apt, 
+                                        ct.substitute(args, 
+                                                variances), 
+                                        apt, 
                                         covariant, contravariant,
                                         findingUpperBounds,
                                         visited, argNode));
@@ -4920,7 +4926,8 @@ public class ExpressionVisitor extends Visitor {
                     addToUnionOrIntersection(
                             findingUpperBounds, list, 
                             inferTypeArg(tp, 
-                                    ct.substitute(paramTypeArgs), 
+                                    ct.substitute(paramTypeArgs,
+                                            paramVariances), 
                                     argType, 
                                     covariant, contravariant,
                                     findingUpperBounds,
@@ -4940,7 +4947,8 @@ public class ExpressionVisitor extends Visitor {
                     addToUnion(list, 
                             inferTypeArg(tp, 
                             paramType, 
-                            ct.substitute(paramTypeArgs),
+                            ct.substitute(paramTypeArgs,
+                                    paramVariances),
                             covariant, contravariant,
                             findingUpperBounds,
                             visited, argNode));
@@ -4958,7 +4966,8 @@ public class ExpressionVisitor extends Visitor {
                     addToIntersection(list, 
                             inferTypeArg(tp,
                                     paramType, 
-                                    st.substitute(paramTypeArgs), 
+                                    st.substitute(paramTypeArgs, 
+                                            paramVariances), 
                                     covariant, contravariant,
                                     findingUpperBounds,
                                     visited, argNode), 
@@ -9470,7 +9479,7 @@ public class ExpressionVisitor extends Visitor {
                                     for (ProducedType ut: 
                                             ct.getDeclaration()
                                                 .getCaseTypes()) {
-                                        if (ut.substitute(ct.getTypeArguments())
+                                        if (ut.substitute(ct)
                                                 .isSubtypeOf(ect)) {
                                             ccv.getVariable()
                                                 .getType()
@@ -9629,7 +9638,8 @@ public class ExpressionVisitor extends Visitor {
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         ProducedType bound =
                                 st.getProducedType(receiver, 
-                                        dec, typeArguments);
+                                        dec, typeArguments, 
+                                        null);
                         if (!assignedType.isSubtypeOf(bound)) {
                             if (argTypeMeaningful) {
                                 if (explicit) {
@@ -9756,8 +9766,10 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Map<TypeParameter, ProducedType> args = 
-                    getTypeArgumentMap(tcd, 
-                            null, typeArguments);
+                    getTypeArgumentMap(tcd, null, 
+                            typeArguments);
+            Map<TypeParameter, SiteVariance> variances =
+                    Collections.emptyMap(); //TODO!!!!!
             for (int i=0; i<size; i++) {
                 ProducedType arg = 
                         typeArguments.get(i);
@@ -9767,7 +9779,7 @@ public class ExpressionVisitor extends Visitor {
                         param.getSatisfiedTypes();
                 for (ProducedType st: sts) {
                     ProducedType bound = 
-                            st.substitute(args);
+                            st.substitute(args, variances);
                     if (explicit) {
                         checkAssignable(arg, bound, 
                                 typeArgNode(tas, i, parent), 
@@ -9777,7 +9789,8 @@ public class ExpressionVisitor extends Visitor {
                                 bound.getProducedTypeName(unit) +
                                 "' of type parameter '" +
                                 param.getName() + "' of '" +
-                                param.getDeclaration().getName(unit) + 
+                                param.getDeclaration()
+                                    .getName(unit) + 
                                 "'");
                     }
                     else {
@@ -9788,18 +9801,21 @@ public class ExpressionVisitor extends Visitor {
                                 bound.getProducedTypeName(unit) +
                                 "' of type parameter '" +
                                 param.getName() + "' of '" +
-                                param.getDeclaration().getName(unit) + 
+                                param.getDeclaration()
+                                    .getName(unit) + 
                                 "'");
                     }
                 }
-                if (!satisfiesEnumeratedConstraint(args, arg, param)) {
+                if (!satisfiesEnumeratedConstraint(param, 
+                        arg, args, variances)) {
                     if (explicit) {
                         typeArgNode(tas, i, parent)
                             .addError("type argument '" + 
                                     arg.getProducedTypeName(unit) +
                                     "' is not one of the enumerated cases of the type parameter '" +
                                     param.getName() + "' of '" +
-                                    param.getDeclaration().getName(unit) + 
+                                    param.getDeclaration()
+                                        .getName(unit) + 
                                     "'");
                     }
                     else {
@@ -9807,7 +9823,8 @@ public class ExpressionVisitor extends Visitor {
                                 arg.getProducedTypeName(unit) +
                                 "' is not one of the enumerated cases of the type parameter '" +
                                 param.getName() + "' of '" +
-                                param.getDeclaration().getName(unit) + 
+                                param.getDeclaration()
+                                    .getName(unit) + 
                                 "'");
 
                     }
@@ -9817,14 +9834,16 @@ public class ExpressionVisitor extends Visitor {
     }
 
     boolean satisfiesEnumeratedConstraint(
-            Map<TypeParameter, ProducedType> args,
-            ProducedType arg, TypeParameter param) {
+            TypeParameter param,
+            ProducedType arg,
+            Map<TypeParameter, ProducedType> args, 
+            Map<TypeParameter, SiteVariance> variances) {
         List<ProducedType> cts = 
                 param.getCaseTypes();
         if (cts!=null) {
             for (ProducedType ct: cts) {
                 ProducedType bound = 
-                        ct.substitute(args);
+                        ct.substitute(args, variances);
                 if (arg.isSubtypeOf(bound)) {
                     return true;
                 }
@@ -9834,7 +9853,8 @@ public class ExpressionVisitor extends Visitor {
                     boolean foundCase = false;
                     for (ProducedType ct: cts) {
                         ProducedType bound = 
-                                ct.substitute(args);
+                                ct.substitute(args, 
+                                        variances);
                         if (act.isSubtypeOf(bound)) {
                             foundCase = true;
                         }
