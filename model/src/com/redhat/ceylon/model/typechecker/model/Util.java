@@ -2049,8 +2049,8 @@ public class Util {
         return unit.getNothingDeclaration().getType();
     }
     
-    public static boolean areConsistentSupertypes(ProducedType st1, 
-            ProducedType st2, Unit unit) {
+    public static boolean areConsistentSupertypes(
+            ProducedType st1, ProducedType st2, Unit unit) {
         //can't inherit two instantiations of an invariant type
         //Note: I don't think we need to check type parameters of 
         //      the qualifying type, since you're not allowed to
@@ -2075,8 +2075,17 @@ public class Util {
         }
         return !intersectionType(st1, st2, unit).isNothing();
     }
-
-    public static ProducedType intersectionOfSupertypes(TypeDeclaration td) {
+    
+    /**
+     * The intersection of the types inherited of the given
+     * declaration. No need to worry about canonicalization
+     * because:
+     * 
+     * 1. an inherited type can't be a union, and
+     * 2. they are prevented from being disjoint types.
+     */
+    public static ProducedType intersectionOfSupertypes(
+            TypeDeclaration td) {
         List<ProducedType> satisfiedTypes = 
                 td.getSatisfiedTypes();
         int capacity = satisfiedTypes.size()+1;
@@ -2093,7 +2102,11 @@ public class Util {
         return it.getType();
     }
 
-    public static ProducedType unionOfCaseTypes(TypeDeclaration td) {
+    /**
+     * The union of the case types of the given declaration.
+     */
+    public static ProducedType unionOfCaseTypes(
+            TypeDeclaration td) {
         List<ProducedType> caseTypes = td.getCaseTypes();
         Unit unit = td.getUnit();
         if (caseTypes==null) {

@@ -3799,7 +3799,7 @@ public class ProducedType extends ProducedReference {
                 //      when the upper bound involves
                 //      the type parameter covariantly
                 return applyVarianceOverridesInternal(
-                        getUpperBoundIntersection(tp), 
+                        intersectionOfSupertypes(tp), 
                         covariant, contravariant, 
                         overrides);
             }
@@ -3916,28 +3916,6 @@ public class ProducedType extends ProducedReference {
             result.setVarianceOverrides(varianceResults);
             return result;
         }
-    }
-
-    /**
-     * An intersection of all the upper bounds on the
-     * given type parameter. 
-     */
-    private static ProducedType getUpperBoundIntersection(
-            TypeParameter tp) {
-        List<ProducedType> sts = tp.getSatisfiedTypes();
-        List<ProducedType> list = 
-                new ArrayList<ProducedType>
-                    (sts.size());
-        Unit unit = tp.getUnit();
-        for (ProducedType st: sts) {
-            if (!st.isAnything()) {
-                list.add(st);
-            }
-        }
-        IntersectionType it = 
-                new IntersectionType(unit);
-        it.setSatisfiedTypes(list);
-        return it.getType();
     }
     
     @Override
