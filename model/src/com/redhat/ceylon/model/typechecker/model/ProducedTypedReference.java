@@ -37,29 +37,22 @@ public class ProducedTypedReference extends ProducedReference {
     }
     
     public ProducedType getType() {
-        TypedDeclaration dec = getDeclaration();
-        if (dec==null) {
+        TypedDeclaration declaration = getDeclaration();
+        if (declaration==null) {
             return null;
         }
         else {
-            ProducedType type = dec.getType();
-            if (type==null) {
-                return null;
-            }
-            // FIXME: perhaps this should be in type.substitute?
-            else if (type.isUnknown()) {
-                return type;
-            }
-            else {
-                ProducedType qt = getQualifyingType();
-                if (qt!=null) {
-                    type = qt.applyVarianceOverrides(type, 
-                            covariant, contravariant);
-                }
-                //the type arguments to the member
-                return type.substitute(this);
-            }
+            ProducedType type = declaration.getType();
+            return type==null ? null : type.substitute(this);
         }
+    }
+    
+    public boolean isContravariant() {
+        return contravariant;
+    }
+    
+    public boolean isCovariant() {
+        return covariant;
     }
     
     @Override

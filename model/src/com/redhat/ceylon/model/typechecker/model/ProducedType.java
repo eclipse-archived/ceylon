@@ -951,13 +951,42 @@ public class ProducedType extends ProducedReference {
         }
     }
     
+    /**
+     * Substitute the type arguments and use-site variances
+     * given in the given type into this type, which is
+     * usually a supertype of the given type.
+     * 
+     * @param source the type carrying type arguments and 
+     *        use-site variances to apply
+     *        
+     * @return this type after application of use-site 
+     *         variances and substitution of type arguments
+     */
     public ProducedType substitute(ProducedType source) {
         return substitute(source.getTypeArguments(), 
                 source.getVarianceOverrides());
     }
     
+    /**
+     * Substitute the type arguments and use-site variances
+     * given in the qualifying type and type arguments of
+     * the given member reference into this type (which is
+     * always the type of the member reference). 
+     * 
+     * @param source the member reference carrying type
+     *        arguments and use-site variances to apply
+     *        
+     * @return this type after application of use-site 
+     *         variances and substitution of type arguments
+     */
     public ProducedType substitute(ProducedTypedReference source) {
-        return substitute(source.getTypeArguments(), null);
+        ProducedType receiver =
+                source.getQualifyingType();
+        return substitute(source.getTypeArguments(),
+                receiver==null ? null :
+                    receiver.collectVarianceOverrides(),
+                    source.isCovariant(),
+                    source.isContravariant());
     }
     
     /**
@@ -970,11 +999,19 @@ public class ProducedType extends ProducedReference {
     public ProducedType substitute(
             Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
+        return substitute(substitutions, overrides, 
+                true, false);
+    }
+    
+    public ProducedType substitute(
+            Map<TypeParameter, ProducedType> substitutions, 
+            Map<TypeParameter, SiteVariance> overrides,
+            boolean covariant, boolean contravariant) {
         if (!substitutions.isEmpty()) {
             ProducedType type = this;
             if (overrides!=null) {
                 type = applyVarianceOverridesInternal(this, 
-                        true, false, overrides);
+                        covariant, contravariant, overrides);
             }
             return new Substitution()
                 .substitute(type, substitutions, overrides)
@@ -3778,44 +3815,6 @@ public class ProducedType extends ProducedReference {
     }
     
     /**
-     * Given the use site variance overrides in this type,
-     * adjust the given type, understood to occur in the
-     * schema of the declaration of this type, to account
-     * for these variances.
-     * 
-     * Performs replacement of type parameters with their
-     * bounds when the use-site variance is opposite to the
-     * variance of the position in which the type parameter
-     * occurs, adds use-site variance annotations to the 
-     * given type, etc.
-     * 
-     * This operation must happen when obtaining a member 
-     * reference from a type with use-site variance 
-     * annotations.
-     * 
-     * @param type a type that occurs in the schema of the
-     *        declaration of this type
-     * @param covariant true if the given type occurs in a 
-     *        covariant position
-     * @param contravariant false if the given type occurs 
-     *        in a contravariant position
-     *        
-     * @return the new type after application of the rules
-     *         for use-site variance substitution
-     */
-    ProducedType applyVarianceOverrides(ProducedType type,
-            boolean covariant, boolean contravariant) {
-        Map<TypeParameter, SiteVariance> overrides = 
-                collectVarianceOverrides();
-        ProducedType result = 
-                applyVarianceOverridesInternal(type, 
-                        covariant, contravariant, 
-                        overrides);
-        result.setUnderlyingType(type.getUnderlyingType());
-        return result;
-    }
-
-    /**
      * Given a set of use site variance overrides, adjust 
      * the given type to account for these variances.
      * 
@@ -3986,6 +3985,7 @@ public class ProducedType extends ProducedReference {
                     dec.getProducedType(type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);
+            result.setUnderlyingType(type.getUnderlyingType());
             return result;
         }
     }
