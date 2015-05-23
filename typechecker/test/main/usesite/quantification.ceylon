@@ -24,6 +24,23 @@ void quantificationOverId() {
     String w2 = z1;
 }
 
+void quantificationOverIdWithBounds() {
+    alias A<T> given T satisfies Summable<T> => T;
+    A<String> x1 = nothing;
+    A<out String> x2 = nothing;
+    A<in String> x3 = nothing;
+    String y1 = x1;
+    String y2 = x2;
+    @error String y3 = x3;
+    Summable<in String> y4 = x3;
+    Invariant<A<in Integer>> iaii = nothing;
+    Invariant<Summable<in Integer>> ia = iaii;
+    Invariant<A<out Integer>> iaoi = nothing;
+    Invariant<Integer> ii = iaoi;
+    Invariant<A<out Integer>> iai = nothing;
+    Invariant<Integer> ii2 = iai;
+}
+
 interface Invariant<T> {}
 
 void quantificationOverInv() {
