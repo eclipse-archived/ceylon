@@ -24,6 +24,23 @@ void quantificationOverId() {
     String w2 = z1;
 }
 
+void quantificationOverIdWithSimpleBounds() {
+    alias A<T> given T satisfies Object => T;
+    A<String> x1 = nothing;
+    A<out String> x2 = nothing;
+    A<in String> x3 = nothing;
+    String y1 = x1;
+    String y2 = x2;
+    @error String y3 = x3;
+    Object y4 = x3;
+    Invariant<A<in Integer>> iaii = nothing;
+    Invariant<Object> ia = iaii;
+    Invariant<A<out Integer>> iaoi = nothing;
+    Invariant<Integer> ii = iaoi;
+    Invariant<A<out Integer>> iai = nothing;
+    Invariant<Integer> ii2 = iai;
+}
+
 void quantificationOverIdWithBounds() {
     alias A<T> given T satisfies Summable<T> => T;
     A<String> x1 = nothing;
@@ -63,6 +80,29 @@ void quantificationOverCo() {
     Covariant<String> y1 = x1;
     Covariant<String> y2 = x2;
     @error Covariant<String> y3 = x3;
+    Covariant<Anything> y4 = x3;
+}
+
+void quantificationOverCoWithSimpleBounds() {
+    alias A<T> given T satisfies Object => Covariant<T>;
+    A<String> x1 = nothing;
+    A<out String> x2 = nothing;
+    A<in String> x3 = nothing;
+    Covariant<String> y1 = x1;
+    Covariant<String> y2 = x2;
+    @error Covariant<String> y3 = x3;
+    Covariant<Object> y4 = x3;
+}
+
+void quantificationOverCoWithBounds() {
+    alias A<T> given T satisfies Summable<T> => Covariant<T>;
+    A<String> x1 = nothing;
+    A<out String> x2 = nothing;
+    A<in String> x3 = nothing;
+    Covariant<String> y1 = x1;
+    Covariant<String> y2 = x2;
+    @error Covariant<String> y3 = x3;
+    Covariant<Summable<in String>> y4 = x3;
 }
 
 interface Contravariant<in T> {}
