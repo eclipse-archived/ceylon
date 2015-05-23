@@ -355,17 +355,70 @@ public class Util {
                 type.getProducedTypeName(unit);
         String otherTypeName = 
                 otherType.getProducedTypeName(unit);
+        String expandedTypeName;
+        String expandedOtherTypeName;
         if (otherTypeName.equals(typeName)) {
-            typeName = type.getProducedTypeQualifiedName();
-            otherTypeName = otherType.getProducedTypeQualifiedName();
+            typeName = 
+                    type.getProducedTypeQualifiedName();
+            otherTypeName = 
+                    otherType.getProducedTypeQualifiedName();
+            expandedTypeName = 
+                    type.resolveAliases()
+                        .getProducedTypeQualifiedName();
+            expandedOtherTypeName = 
+                    otherType.resolveAliases()
+                        .getProducedTypeQualifiedName();
         }
-        return ": '" + typeName + "'" + problem + "'" + otherTypeName + "'"
-                + (unknownTypeError != null ? ": " + unknownTypeError : "");
+        else {
+            expandedTypeName = 
+                    type.resolveAliases()
+                        .getProducedTypeName(unit);
+            expandedOtherTypeName = 
+                    otherType.resolveAliases()
+                        .getProducedTypeName(unit);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(": '")
+          .append(typeName)
+          .append("'");
+        if (!typeName.equals(expandedTypeName)) {
+            sb.append(" ('")
+              .append(expandedTypeName)
+              .append("')");
+        }
+        sb.append(problem);
+        sb.append("'")
+          .append(otherTypeName)
+          .append("'");
+        if (!otherTypeName.equals(expandedOtherTypeName)) {
+            sb.append(" ('")
+              .append(expandedOtherTypeName)
+              .append("')");
+        }
+        if (unknownTypeError!=null) {
+            sb.append(": ")
+              .append(unknownTypeError);
+        }
+        return sb.toString();
     }
     
-    private static String message(ProducedType type, String problem, Unit unit) {
+    private static String message(ProducedType type, 
+            String problem, Unit unit) {
         String typeName = type.getProducedTypeName(unit);
-        return ": '" + typeName + "'" + problem;
+        String expandedTypeName = 
+                type.resolveAliases()
+                    .getProducedTypeName(unit);
+        StringBuilder sb = new StringBuilder();
+        sb.append(": '")
+          .append(typeName)
+          .append("'");
+        if (!typeName.equals(expandedTypeName)) {
+            sb.append(" ('")
+              .append(expandedTypeName)
+              .append("')");
+        }
+        sb.append(problem);
+        return sb.toString();
     }
     
     static boolean checkCallable(ProducedType type, Node node, String message) {
