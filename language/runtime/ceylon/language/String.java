@@ -303,7 +303,7 @@ public final class String
         try {
             offset = value.offsetByCodePoints(0, index);
         }
-        catch (IndexOutOfBoundsException e) {
+        catch (StringIndexOutOfBoundsException e) {
             return null;
         }
         int codePoint = value.codePointAt(offset);
