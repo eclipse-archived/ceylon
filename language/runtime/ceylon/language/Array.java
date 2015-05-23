@@ -1227,6 +1227,19 @@ public final class Array<Element>
         }
     }
     
+    @Override
+    public Entry<? extends Boolean, ? extends Element> lookup(Integer key) {
+        long ind = key.longValue();
+        boolean defined = ind >= 0 && ind < size;
+        Element item = defined ? 
+                unsafeItem((int) ind) : null;
+        return new Entry<Boolean,Element>(
+                Integer.$TypeDescriptor$, 
+                $reifiedElement,
+                Boolean.instance(defined), 
+                item);
+    }
+    
     // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")
     @Ignore

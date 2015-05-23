@@ -35,6 +35,34 @@ shared interface Correspondence<in Key, out Item=Anything>
          `value Correspondence.keys`)
     shared formal Boolean defines(Key key);
     
+    "Return a boolean value indicating whether there is an
+     item with the given [[key]], together with the 
+     [[item|Item]] for that key, if any.
+     
+         value found -> item = map.lookup(key);
+         if (found) {
+             print(item);
+         }
+     
+     This operation is useful for correspondences which 
+     contain [[null]] items, where a null return value for 
+     [[get]] does not distinguish between:
+     
+     - the case that there is no item for the given key, and
+     - the case that `null` is the item for the given key."
+    shared default
+    see (`function defines`, `function get`)
+    Boolean->Item? lookup(Key key)
+            => if (defines(key))
+               then true -> get(key)
+               else false -> null;
+    
+    /*<\Itrue->Item>|<\Ifalse->Null> lookup(Object key)
+            => if (defines(key), 
+                   is Item item = get(key))
+            then true->item 
+            else false->null;*/
+    
     "The `Category` of all keys for which a value is defined
      by this `Correspondence`."
     see (`function Correspondence.defines`)

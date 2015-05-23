@@ -299,11 +299,13 @@ public final class String
     @Ignore
     public static Character getFromFirst(java.lang.String value, long key) {
         int index = Util.toInt(key);
-        int length = value.length();
-        if (index < 0 || index >= length) {
+        int offset;
+        try {
+            offset = value.offsetByCodePoints(0, index);
+        }
+        catch (IndexOutOfBoundsException e) {
             return null;
         }
-        int offset = value.offsetByCodePoints(0, index);
         int codePoint = value.codePointAt(offset);
         return Character.instance(codePoint);
     }
@@ -317,6 +319,22 @@ public final class String
     @Ignore
     public static boolean defines(java.lang.String value, long key) {
         return key >= 0 && key < getSize(value);
+    }
+    
+    @Override
+    public Entry<? extends Boolean, ? extends Character> lookup(Integer key) {
+        return lookup(value, key.value);
+    }
+
+    @Ignore
+    public static Entry<? extends Boolean,? extends Character> 
+    lookup(java.lang.String value, long index) {
+        Character item = getFromFirst(value, index);
+        return new Entry<Boolean,Character>(
+                Boolean.$TypeDescriptor$,
+                Character.$TypeDescriptor$,
+                Boolean.instance(item!=null), 
+                item);
     }
 
     @Override

@@ -1023,6 +1023,19 @@ public final class Tuple<Element, First extends Element,
     public Element get(Integer index) {
         return getFromFirst(index.value);
     }
+    
+    @Override @Ignore
+    public Entry<? extends Boolean,? extends Element> 
+    lookup(Integer index) {
+        boolean defined = defines(index);
+        Element item = defined ? 
+                getFromFirst(index.value) : null;
+        return new Entry<Boolean,Element>(
+                Boolean.$TypeDescriptor$,
+                $getReifiedElement$(),
+                Boolean.instance(defined), 
+                item);
+    }
 
     @Override @Ignore
     public boolean includes(List<? extends java.lang.Object> list) {
