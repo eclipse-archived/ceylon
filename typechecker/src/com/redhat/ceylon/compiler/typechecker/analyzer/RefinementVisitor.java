@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -548,7 +549,7 @@ public class RefinementVisitor extends Visitor {
         	typeArgs = emptyList();
         }
         
-        ProducedType cit = ci.getType();
+        ProducedType cit = ci.getCompleteType();
         ProducedReference refinedMember = 
                 cit.getTypedReference(refined, typeArgs);
         ProducedReference refiningMember = 
@@ -1152,10 +1153,11 @@ public class RefinementVisitor extends Visitor {
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = 
                     (Tree.BaseMemberExpression) me;
+            Unit unit = that.getUnit();
             Declaration d = 
                     getTypedDeclaration(bme.getScope(), 
                             name(bme.getIdentifier()), 
-                            sig, false, that.getUnit());
+                            sig, false, unit);
             if (d instanceof TypedDeclaration) {
                 that.setDeclaration((TypedDeclaration) d);
                 Scope cs = getRealScope(that.getScope().getContainer());
@@ -1168,7 +1170,8 @@ public class RefinementVisitor extends Visitor {
                         // refinement of an inherited member
                         if (d.getContainer()==that.getScope()) {
                             that.addError("parameter declaration hides refining member: '" +
-                                    d.getName(that.getUnit()) + "' (rename parameter)");
+                                    d.getName(unit) + 
+                                    "' (rename parameter)");
                         }
                         else if (d instanceof Value) {
                             refineValue((Value) d, bme, that, ci);
@@ -1179,7 +1182,7 @@ public class RefinementVisitor extends Visitor {
                         else {
                             //TODO!
                             bme.addError("not a reference to a formal attribute: '" + 
-                                    d.getName(that.getUnit()) + "'");
+                                    d.getName(unit) + "'");
                         }
                     }
                 }
@@ -1209,7 +1212,8 @@ public class RefinementVisitor extends Visitor {
         v.getAnnotations().add(new Annotation("shared"));
         v.getAnnotations().add(new Annotation("actual"));
         v.setRefinedDeclaration(sv.getRefinedDeclaration());
-        v.setUnit(that.getUnit());
+        Unit unit = that.getUnit();
+        v.setUnit(unit);
         v.setContainer(c);
         v.setScope(c);
         v.setShortcutRefinement(true);
@@ -1218,8 +1222,8 @@ public class RefinementVisitor extends Visitor {
         that.setRefinement(true);
         that.setDeclaration(v);
         that.setRefined(sv);
-        that.getUnit().addDeclaration(v);
-        v.setType(new LazyProducedType(that.getUnit()) {
+        unit.addDeclaration(v);
+        v.setType(new LazyProducedType(unit) {
             @Override
             public ProducedType initQualifyingType() {
                 return rv.getType().getQualifyingType();
@@ -1265,6 +1269,7 @@ public class RefinementVisitor extends Visitor {
             tpls = Collections.emptyList();
         }
         int i=0;
+        TypecheckerUnit unit = that.getUnit();
         for (ParameterList pl: sm.getParameterLists()) {
             ParameterList l = new ParameterList();
             Tree.ParameterList tpl = tpls.size()<=i ? 
@@ -1288,7 +1293,7 @@ public class RefinementVisitor extends Visitor {
                     v.setContainer(m);
                     v.setScope(m);
                     l.getParameters().add(vp);
-                    v.setType(new LazyProducedType(that.getUnit()) {
+                    v.setType(new LazyProducedType(unit) {
                         @Override
                         public ProducedType initQualifyingType() {
                             return rm.getTypedParameter(p)
@@ -1330,7 +1335,7 @@ public class RefinementVisitor extends Visitor {
         m.getAnnotations().add(new Annotation("shared"));
         m.getAnnotations().add(new Annotation("actual"));
         m.setRefinedDeclaration(root);
-        m.setUnit(that.getUnit());
+        m.setUnit(unit);
         m.setContainer(c);
         m.setShortcutRefinement(true);
         m.setDeclaredVoid(sm.isDeclaredVoid());
@@ -1339,11 +1344,11 @@ public class RefinementVisitor extends Visitor {
         that.setRefinement(true);
         that.setDeclaration(m);
         that.setRefined(sm);
-        that.getUnit().addDeclaration(m);
+        unit.addDeclaration(m);
         if (that.getScope() instanceof Specification){
             ((Specification) that.getScope()).setDeclaration(m);
         }
-        m.setType(new LazyProducedType(that.getUnit()) {
+        m.setType(new LazyProducedType(unit) {
             @Override
             public ProducedType initQualifyingType() {
                 ProducedType type = rm.getType();

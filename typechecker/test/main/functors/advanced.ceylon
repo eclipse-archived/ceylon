@@ -140,3 +140,22 @@ void testEnumeratedConstraints() {
     value j5 = J<<T>=>T[],String>([""]);
     @error value j6 = J<List,String>([""]);
 }
+
+
+interface Inter<Box> given Box<out E> {
+    shared formal Box<Element> echo<Element>(Box<Element> b);
+}
+
+class Class<B>() given B<out E> {
+    shared Inter<B> o1 
+            => object satisfies Inter<B> {
+        shared actual B<CE> echo<CE>(B<CE> b) 
+                => b; // ok         
+    };
+    
+    shared Inter<B> o2()
+            => object satisfies Inter<B> {
+        shared actual B<CE> echo<CE>(B<CE> b) 
+                => b;      
+    };
+}
