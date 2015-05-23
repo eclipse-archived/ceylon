@@ -2025,7 +2025,37 @@ public final class Array<Element>
     public boolean equals(
             @Name("that")
             java.lang.Object that) {
-        // overridden so the native model is identical to the ceylon model
+        if (that instanceof Array) {
+            java.lang.Object x = ((Array<?>) that).array;
+            java.lang.Object y = ((Array<?>) this).array;
+            if (x instanceof double[] && y instanceof double[]) {
+                return Arrays.equals((double[]) x, (double[]) y);
+            }
+            else if (x instanceof float[] && y instanceof float[]) {
+                return Arrays.equals((float[]) x, (float[]) y);
+            }
+            else if (x instanceof long[] && y instanceof long[]) {
+                return Arrays.equals((long[]) x, (long[]) y);
+            }
+            else if (x instanceof int[] && y instanceof int[]) {
+                return Arrays.equals((int[]) x, (int[]) y);
+            }
+            else if (x instanceof short[] && y instanceof short[]) {
+                return Arrays.equals((short[]) x, (short[]) y);
+            }
+            else if (x instanceof byte[] && y instanceof byte[]) {
+                return Arrays.equals((byte[]) x, (byte[]) y);
+            }
+            else if (x instanceof boolean[] && y instanceof boolean[]) {
+                return Arrays.equals((boolean[]) x, (boolean[]) y);
+            }
+            else if (x instanceof char[] && y instanceof char[]) {
+                return Arrays.equals((char[]) x, (char[]) y);
+            }
+            else if (x instanceof Object[] && y instanceof Object[]) {
+                return Arrays.equals((Object[]) x, (Object[]) y);
+            }
+        }
         return super.equals(that);
     }
     
@@ -2033,6 +2063,7 @@ public final class Array<Element>
     @Transient
     public int hashCode() {
         // overridden so the native model is identical to the ceylon model
+        //TODO: optimize hash computation to avoid boxing!!
         return super.hashCode();
     }
     
