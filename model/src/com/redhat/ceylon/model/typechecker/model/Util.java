@@ -1046,7 +1046,7 @@ public class Util {
      */
     public static void addToUnion(List<ProducedType> list, 
             ProducedType pt) {
-        if (pt==null) {
+        if (pt==null || !list.isEmpty() && pt.isNothing()) {
             return;
         }
         if (pt.getDeclaration() instanceof UnionType) {
@@ -1093,7 +1093,7 @@ public class Util {
     public static void addToIntersection(List<ProducedType> list, 
             ProducedType pt, Unit unit, 
             boolean reduceDisjointTypes) {
-        if (pt==null) {
+        if (pt==null || !list.isEmpty() && pt.isAnything()) {
             return;
         }
         TypeDeclaration ptd = pt.getDeclaration();
@@ -1684,7 +1684,7 @@ public class Util {
                         new IntersectionType(objectDecl.getUnit());
                 it.getSatisfiedTypes().add(type);
                 it.getSatisfiedTypes().add(objectDecl.getType());
-                return it.getType();
+                return it.canonicalize().getType();
             }
             for(ProducedType sat : satisfiedTypes){
                 if (sat.getDeclaration() instanceof ClassOrInterface && 

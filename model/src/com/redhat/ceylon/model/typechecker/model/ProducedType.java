@@ -361,7 +361,7 @@ public class ProducedType extends ProducedReference {
                 if (contravariant && otherCovariant) {
                     //Inv<in Nothing> == Inv<out Anything> 
                     if (!arg.isNothing() ||
-                            !getUpperBoundIntersection(p)
+                            !intersectionOfSupertypes(p)
                                 .isSubtypeOf(otherArg)) {
                         return false;
                     }
@@ -369,7 +369,7 @@ public class ProducedType extends ProducedReference {
                 else if (covariant && otherContravariant) {
                     //Inv<out Anything> == Inv<in Nothing>
                     if (!otherArg.isNothing() ||
-                            !getUpperBoundIntersection(p)
+                            !intersectionOfSupertypes(p)
                                 .isSubtypeOf(arg)) {
                         return false;
                     }
@@ -971,10 +971,13 @@ public class ProducedType extends ProducedReference {
             Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
         if (!substitutions.isEmpty()) {
+            ProducedType type = this;
+            if (overrides!=null) {
+                type = applyVarianceOverridesInternal(this, 
+                        true, false, overrides);
+            }
             return new Substitution()
-                .substitute(this, 
-                        substitutions, overrides,
-                        true, false)
+                .substitute(type, substitutions, overrides)
                 .simple();
         }
         else {
@@ -991,10 +994,13 @@ public class ProducedType extends ProducedReference {
             Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
         if (!substitutions.isEmpty()) {
+            ProducedType type = this;
+            if (overrides!=null) {
+                type = applyVarianceOverridesInternal(this, 
+                        true, false, overrides);
+            }
             return new InternalSubstitution()
-                .substitute(this, 
-                        substitutions, overrides, 
-                        true, false);
+                .substitute(type, substitutions, overrides);
         }
         else {
             return this;
@@ -1115,9 +1121,7 @@ public class ProducedType extends ProducedReference {
                 getVarianceMap(member, receivingType, 
                         variances);
         return new Substitution()
-                    .substitute(this, 
-                            typeArgMap, varianceMap, 
-                            true, false);
+                    .substitute(this, typeArgMap, varianceMap);
     }
 
     public ProducedType getType() {
@@ -2615,8 +2619,7 @@ public class ProducedType extends ProducedReference {
         
         ProducedType substitute(final ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions, 
-                Map<TypeParameter, SiteVariance> overrides, 
-                boolean covariant, boolean contravariant) {
+                Map<TypeParameter, SiteVariance> overrides) {
             TypeDeclaration dec;
             TypeDeclaration ptd = pt.getDeclaration();
             Unit unit = ptd.getUnit();
@@ -2631,7 +2634,6 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType ct: cts) {
                     addTypeToUnion(ct, 
                             substitutions, overrides, 
-                            covariant, contravariant, 
                             types);
                 }
                 ut.setCaseTypes(types);
@@ -2648,7 +2650,6 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType ct: sts) {
                     addTypeToIntersection(ct, 
                             substitutions, overrides, 
-                            covariant, contravariant, 
                             types);
                 }
                 it.setSatisfiedTypes(types);
@@ -2673,36 +2674,9 @@ public class ProducedType extends ProducedReference {
                     }
                     else if (tp.getTypeParameters().isEmpty()) {
                         //a regular type parameter
-                        if (covariant &&
-                                overrides!=null &&
-                                overrides.get(tp)==IN) {
-                            //the type parameter occurs in a 
-                            //covariant location and the 
-                            //argument is contravariant - 
-                            //the argument "in T" is just
-                            //discarded, and we use Anything 
-                            //or the upper bound
-                            return intersectionOfSupertypes(ptd)
-                                    //the bounds could involve
-                                    //the type parameters being
-                                    //substituted
-                                    .substitute(substitutions, overrides);
-                        }
-                        else if (contravariant &&
-                                overrides!=null &&
-                                overrides.get(tp)==OUT) {
-                            //the type parameter occurs in a 
-                            //contravariant location and the 
-                            //argument is covariant - the 
-                            //argument "out T" is just
-                            //discarded, and we use Nothing 
-                            return unit.getNothingType();
-                        }
-                        else {
-                            //easy, no type arguments or 
-                            //qualifying type to substitute
-                            return sub;
-                        }
+                        //easy, no type arguments or 
+                        //qualifying type to substitute
+                        return sub;
                     }
                     else {
                         //an applied generic type parameter 
@@ -2781,8 +2755,7 @@ public class ProducedType extends ProducedReference {
                 ProducedType sqt = sub.getQualifyingType();
                 ProducedType qt = sqt==null ? null : 
                     substitute(sqt, 
-                            substitutions, overrides, 
-                            false, false);
+                            substitutions, overrides);
                 ProducedType result = 
                         sd.getProducedType(qt, sta);
                 substituteVarianceOverridesInTypeConstructor(
@@ -2821,37 +2794,32 @@ public class ProducedType extends ProducedReference {
         void addTypeToUnion(ProducedType ct, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides, 
-                boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
             else {
                 addToUnion(types, substitute(ct, 
-                        substitutions, overrides, 
-                        covariant, contravariant));
+                        substitutions, overrides));
             }
         }
 
         void addTypeToIntersection(ProducedType ct, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides, 
-                boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
             else {
                 addToIntersection(types, substitute(ct, 
-                        substitutions, overrides, 
-                        covariant, contravariant), 
+                        substitutions, overrides), 
                         ct.getDeclaration().getUnit());
             }
         }
         
         private ProducedType substitutedType(
-                TypeDeclaration dec, 
-                ProducedType pt,
+                TypeDeclaration dec, ProducedType pt,
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides) {
             ProducedType qt = pt.getQualifyingType();
@@ -2862,56 +2830,24 @@ public class ProducedType extends ProducedReference {
                     pt.getTypeConstructorParameter());
             if (qt!=null) {
                 type.setQualifyingType(substitute(qt, 
-                        substitutions, overrides,
-                        false, false));
+                        substitutions, overrides));
             }
             Map<TypeParameter, ProducedType> typeArguments = 
                     pt.getTypeArguments();
             Map<TypeParameter, ProducedType> typeArgs = 
                     new HashMap<TypeParameter, ProducedType>
                         (typeArguments.size());
-            boolean overridesExist = 
-                    overrides!=null &&
-                        !overrides.isEmpty();
-            Map<TypeParameter, SiteVariance> variances = 
-                    overridesExist ?
-                        new HashMap<TypeParameter, SiteVariance>
-                            (pt.getVarianceOverrides()) :
-                        pt.getVarianceOverrides();
-            //TODO: would it be better to use the type
-            //      argument list instead of the map here?
             for (Map.Entry<TypeParameter, ProducedType> e: 
                     typeArguments.entrySet()) {
                 TypeParameter tp = e.getKey();
                 ProducedType arg = e.getValue();
                 if (arg!=null) {
-                    boolean covariant = 
-                            pt.isCovariant(tp);
-                    boolean contravariant = 
-                            pt.isContravariant(tp);
-                    ProducedType sarg =
-                            substitute(arg, 
-                                    substitutions, 
-                                    overrides, 
-                                    covariant, 
-                                    contravariant);
-                    typeArgs.put(tp, sarg);
-                    if (overridesExist && 
-                            !covariant && !contravariant) {
-                        TypeDeclaration argDec =
-                                arg.getDeclaration();
-                        if (argDec instanceof TypeParameter) {
-                            SiteVariance var = 
-                                    overrides.get(argDec);
-                            if (var!=null) {
-                                variances.put(tp, var);
-                            }
-                        }
-                    }
+                    typeArgs.put(tp, substitute(arg, 
+                            substitutions, overrides));
                 }
             }
             type.setTypeArguments(typeArgs);
-            type.setVarianceOverrides(variances);
+            type.setVarianceOverrides(pt.getVarianceOverrides());
             type.setUnderlyingType(pt.getUnderlyingType());
             return type;
         }
@@ -3015,31 +2951,25 @@ public class ProducedType extends ProducedReference {
         private void addType(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances, 
-                boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
             if (ct!=null) {
                 types.add(substitute(ct, 
-                        substitutions, variances, 
-                        covariant, contravariant));
+                        substitutions, variances));
             }
         }
         
         @Override void addTypeToUnion(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances,
-                boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
-            addType(ct, substitutions, variances, 
-                    covariant, contravariant, types);
+            addType(ct, substitutions, variances, types);
         }
 
         @Override void addTypeToIntersection(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances,
-                boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
-            addType(ct, substitutions, variances, 
-                    covariant, contravariant, types);
+            addType(ct, substitutions, variances, types);
         }
         
     }
@@ -3841,6 +3771,18 @@ public class ProducedType extends ProducedReference {
             boolean covariant, boolean contravariant) {
         Map<TypeParameter, SiteVariance> overrides = 
                 collectVarianceOverrides();
+        ProducedType result = 
+                applyVarianceOverridesInternal(type, 
+                        covariant, contravariant, 
+                        overrides);
+        result.setUnderlyingType(getUnderlyingType());
+        return result;
+    }
+
+    private static ProducedType applyVarianceOverridesInternal(
+            ProducedType type, 
+            boolean covariant, boolean contravariant, 
+            Map<TypeParameter, SiteVariance> overrides) {
         if (overrides.isEmpty()) {
             return type;
         }
@@ -3849,11 +3791,17 @@ public class ProducedType extends ProducedReference {
         if (dec instanceof TypeParameter) {
             SiteVariance siteVariance = overrides.get(dec);
             if (contravariant && siteVariance==OUT) {
-                return nothingType();
+                return unit.getNothingType();
             }
             else if (covariant && siteVariance==IN) {
                 TypeParameter tp = (TypeParameter) dec;
-                return type.getUpperBoundIntersection(tp);
+                //TODO: BUG HERE! This can cause a stack
+                //      when the upper bound involves
+                //      the type parameter covariantly
+                return applyVarianceOverridesInternal(
+                        getUpperBoundIntersection(tp), 
+                        covariant, contravariant, 
+                        overrides);
             }
             else {
                 return type;
@@ -3864,8 +3812,9 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>();
             for (ProducedType ut: type.getCaseTypes()) {
                 addToUnion(list, 
-                        applyVarianceOverrides(ut, 
-                                covariant, contravariant));
+                        applyVarianceOverridesInternal(ut, 
+                                covariant, contravariant,
+                                overrides));
             }
             UnionType unionType = 
                     new UnionType(unit);
@@ -3877,8 +3826,9 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>();
             for (ProducedType it: type.getSatisfiedTypes()) {
                 addToIntersection(list, 
-                        applyVarianceOverrides(it, 
-                                covariant, contravariant),
+                        applyVarianceOverridesInternal(it, 
+                                covariant, contravariant,
+                                overrides),
                         unit);
             }
             IntersectionType intersectionType = 
@@ -3913,13 +3863,17 @@ public class ProducedType extends ProducedReference {
                         arg.getDeclaration();
                 TypeParameter param = params.get(i);
                 if (type.isCovariant(param)) {
-                    resultArgs.add(applyVarianceOverrides(arg, 
-                            covariant, contravariant));
+                    resultArgs.add(
+                            applyVarianceOverridesInternal(arg, 
+                                    covariant, contravariant,
+                                    overrides));
                 }
                 else if (type.isContravariant(param)) {
 //                    if (covariant||contravariant) {
-                        resultArgs.add(applyVarianceOverrides(arg, 
-                                !covariant, !contravariant));
+                    resultArgs.add(
+                            applyVarianceOverridesInternal(arg, 
+                                    !covariant, !contravariant,
+                                    overrides));
 //                    }
 //                    else {
 //                        resultArgs.add(applyVarianceOverrides(arg, 
@@ -3930,7 +3884,7 @@ public class ProducedType extends ProducedReference {
                     if (contravariant) {
                         if (argDec instanceof TypeParameter &&
                                 overrides.containsKey(argDec)) {
-                            return nothingType();
+                            return unit.getNothingType();
                         }
                     }
                     else if (covariant) {
@@ -3943,8 +3897,9 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     ProducedType resultArg = 
-                            applyVarianceOverrides(arg, 
-                                    covariant, contravariant);
+                            applyVarianceOverridesInternal(arg, 
+                                    covariant, contravariant,
+                                    overrides);
                     if (resultArg.isNothing()) {
                         return resultArg;
                     }
@@ -3959,19 +3914,25 @@ public class ProducedType extends ProducedReference {
                     dec.getProducedType(type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);
-            result.setUnderlyingType(getUnderlyingType());
             return result;
         }
     }
 
-    private ProducedType getUpperBoundIntersection(TypeParameter tp) {
+    /**
+     * An intersection of all the upper bounds on the
+     * given type parameter. 
+     */
+    private static ProducedType getUpperBoundIntersection(
+            TypeParameter tp) {
         List<ProducedType> sts = tp.getSatisfiedTypes();
         List<ProducedType> list = 
                 new ArrayList<ProducedType>
                     (sts.size());
         Unit unit = tp.getUnit();
         for (ProducedType st: sts) {
-            addToIntersection(list, st, unit);
+            if (!st.isAnything()) {
+                list.add(st);
+            }
         }
         IntersectionType it = 
                 new IntersectionType(unit);

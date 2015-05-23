@@ -991,7 +991,7 @@ public class Unit {
     			IntersectionType it = 
     			        new IntersectionType(this);
     			it.setSatisfiedTypes(list);
-    			return it.getType();
+    			return it.canonicalize().getType();
     		}
     		else {
                 List<ProducedType> typeArgList = 
