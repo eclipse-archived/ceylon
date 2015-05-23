@@ -105,6 +105,25 @@ void quantificationOverCoWithBounds() {
     Covariant<Summable<in String>> y4 = x3;
 }
 
+void quantificationOverCoWithTrickyBounds() {
+    //BLOWS UP THE TYPECHECKER!
+    /*alias B<T> given T satisfies {T*} => T;
+    B<in String> a = nothing;
+    {String*} b = a;*/
+    
+    alias A<T> 
+            given T satisfies Correspondence<Integer,Character> & 
+                              {Character*} 
+            => Covariant<T|Integer>;
+    A<String> x1 = nothing;
+    A<out String> x2 = nothing;
+    A<in String> x3 = nothing;
+    Covariant<String|Integer> y1 = x1;
+    Covariant<String|Integer> y2 = x2;
+    @error Covariant<String|Integer> y3 = x3;
+    Covariant<Correspondence<Integer,Character>&{Character*}|Integer> y4 = x3;
+}
+
 interface Contravariant<in T> {}
 
 void quantificationOverContra() {
