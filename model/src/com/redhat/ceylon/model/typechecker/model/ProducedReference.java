@@ -54,12 +54,14 @@ public abstract class ProducedReference {
             if (typeArgumentsWithDefaults == null ||
                     !ProducedTypeCache.isEnabled()) {
                 if (depth.get()>50) {
-                    throw new RuntimeException("undecidable default type arguments");
+                    throw new RuntimeException(
+                            "undecidable default type arguments");
                 }
                 depth.set(depth.get()+1);
                 try {
                     typeArgumentsWithDefaults = 
-                            fillInDefaultTypeArguments(declaration,
+                            fillInDefaultTypeArguments(
+                                    declaration,
                                     typeArguments);
                 }
                 finally { 

@@ -2269,20 +2269,25 @@ public class ProducedType extends ProducedReference {
     }
 
     public boolean involvesDeclaration(TypeDeclaration td) {
+        return involvesDeclaration(td, 
+                new ArrayList<ProducedType>());
+    }
+    private boolean involvesDeclaration(TypeDeclaration td,
+            List<ProducedType> visited) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnknownType) {
             return false;
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: d.getCaseTypes()) {
-                if (ct.involvesDeclaration(td)) {
+                if (ct.involvesDeclaration(td, visited)) {
                     return true;
                 }
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: d.getSatisfiedTypes()) {
-                if (st.involvesDeclaration(td)) {
+                if (st.involvesDeclaration(td, visited)) {
                     return true;
                 }
             }
@@ -2291,18 +2296,23 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else {
+            if (visited.contains(this)) { //might be quicker to check only for ==
+                return false;
+            }
+            visited.add(this);
+            
             if (d.equals(td)) {
                 return true;
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && 
-                    qt.involvesDeclaration(td)) {
+                    qt.involvesDeclaration(td, visited)) {
                 return true;
             }
             List<ProducedType> tas = getTypeArgumentList();
             for (ProducedType at: tas) {
                 if (at==null || //take note!
-                        at.involvesDeclaration(td)) {
+                        at.involvesDeclaration(td, visited)) {
                     return true;
                 }
             }
@@ -3930,6 +3940,9 @@ public class ProducedType extends ProducedReference {
 
     @Override
     public boolean equals(Object obj) {
+        if (this==obj) {
+            return true;
+        }
         if (obj == null || 
                 !(obj instanceof ProducedType)) {
             return false;
