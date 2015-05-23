@@ -74,16 +74,33 @@ public abstract class Declaration
 	}
 
     String toStringName() {
-        Scope c = getContainer();
         String name = getName();
         if (name==null) name = "";
+        Scope c = getContainer();
         if (c instanceof Declaration) {
-            return ((Declaration)c).toStringName() + 
-                    "." + name;
+            Declaration d = (Declaration) c;
+            name = d.toStringName() + "." + name;
         }
-        else {
-            return name;
+        if (this instanceof Generic) {
+            Generic g = (Generic) this;
+            if (!g.getTypeParameters().isEmpty()) {
+                StringBuilder params = new StringBuilder();
+                params.append("<");
+                boolean first = true;
+                for (TypeParameter tp: g.getTypeParameters()) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        params.append(",");
+                    }
+                    params.append(tp.getName());
+                }
+                params.append(">");
+                name += params;
+            }
         }
+        return name;
     }
     
     @Override

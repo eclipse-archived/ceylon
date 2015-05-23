@@ -134,4 +134,37 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     public boolean isNamed() {
         return !anonymous;
     }
+
+    @Override
+    public String toString() {
+        ProducedType type = getType();
+        if (type==null) {
+            return super.toString();
+        }
+        else {
+            StringBuilder params = new StringBuilder();
+            for (ParameterList pl: getParameterLists()) {
+                params.append("(");
+                boolean first = true;
+                for (Parameter p: pl.getParameters()) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        params.append(", ");
+                    }
+                    if (p.getType()!=null) {
+                        params.append(p.getType().getProducedName());
+                        params.append(" ");
+                    }
+                    params.append(p.getName());
+                }
+                params.append(")");
+            }
+            return getClass().getSimpleName() + 
+                    "[" + toStringName() + params + " => " + 
+                          type.getProducedTypeName() + "]";
+        }
+    }
+
 }

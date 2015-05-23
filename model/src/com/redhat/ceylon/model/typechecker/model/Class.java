@@ -1,7 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import com.redhat.ceylon.model.typechecker.model.Util;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -210,5 +208,31 @@ public class Class extends ClassOrInterface implements Functional {
         this.javaEnum = javaEnum;
     }
     
+    @Override
+    public String toString() {
+        StringBuilder params = new StringBuilder();
+        ParameterList list = getParameterList();
+        if (list!=null) {
+            params.append("(");
+            boolean first = true;
+            for (Parameter p: list.getParameters()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    params.append(", ");
+                }
+                if (p.getType()!=null) {
+                    params.append(p.getType().getProducedName());
+                    params.append(" ");
+                }
+                params.append(p.getName());
+            }
+            params.append(")");
+        }
+        return getClass().getSimpleName() + 
+                "[" + toStringName() + 
+                      params + "]";
+    }
 
 }

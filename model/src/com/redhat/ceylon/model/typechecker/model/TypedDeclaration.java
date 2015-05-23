@@ -56,7 +56,7 @@ public abstract class TypedDeclaration extends Declaration {
         }
         else {
             return getClass().getSimpleName() + 
-                    "[" + toStringName() + ":" + 
+                    "[" + toStringName() + " => " + 
                           type.getProducedTypeName() + "]";
         }
     }
