@@ -3777,6 +3777,32 @@ public class ProducedType extends ProducedReference {
         }
     }
     
+    /**
+     * Given the use site variance overrides in this type,
+     * adjust the given type, understood to occur in the
+     * schema of the declaration of this type, to account
+     * for these variances.
+     * 
+     * Performs replacement of type parameters with their
+     * bounds when the use-site variance is opposite to the
+     * variance of the position in which the type parameter
+     * occurs, adds use-site variance annotations to the 
+     * given type, etc.
+     * 
+     * This operation must happen when obtaining a member 
+     * reference from a type with use-site variance 
+     * annotations.
+     * 
+     * @param type a type that occurs in the schema of the
+     *        declaration of this type
+     * @param covariant true if the given type occurs in a 
+     *        covariant position
+     * @param contravariant false if the given type occurs 
+     *        in a contravariant position
+     *        
+     * @return the new type after application of the rules
+     *         for use-site variance substitution
+     */
     ProducedType applyVarianceOverrides(ProducedType type,
             boolean covariant, boolean contravariant) {
         Map<TypeParameter, SiteVariance> overrides = 
@@ -3789,6 +3815,31 @@ public class ProducedType extends ProducedReference {
         return result;
     }
 
+    /**
+     * Given a set of use site variance overrides, adjust 
+     * the given type to account for these variances.
+     * 
+     * Performs replacement of type parameters with their
+     * bounds when the use-site variance is opposite to the
+     * variance of the position in which the type parameter
+     * occurs, adds use-site variance annotations to the 
+     * given type, etc.
+     * 
+     * This operation must happen before any substitution 
+     * operation, as a pre-processing phase before we
+     * actually subtitute the type arguments.
+     * 
+     * @param type the type to which we're applying the 
+     *        variance overrides
+     * @param covariant true if the given type occurs in a 
+     *        covariant position
+     * @param contravariant false if the given type occurs 
+     *        in a contravariant position
+     * @param overrides the variance overrides
+     *        
+     * @return the new type after application of the rules
+     *         for use-site variance substitution
+     */
     private static ProducedType applyVarianceOverridesInternal(
             ProducedType type, 
             boolean covariant, boolean contravariant, 
@@ -3801,10 +3852,21 @@ public class ProducedType extends ProducedReference {
         if (dec instanceof TypeParameter) {
             SiteVariance siteVariance = overrides.get(dec);
             if (contravariant && siteVariance==OUT) {
+                //if a type parameter occurs in a 
+                //contravariant position, and the specified
+                //use-site variance is "out", replace the
+                //type parameter with its lower bound
+                //Nothing, throwing away the use-site 
+                //upper bound
                 return unit.getNothingType();
             }
             else if (covariant && siteVariance==IN) {
                 TypeParameter tp = (TypeParameter) dec;
+                //if a type parameter occurs in a 
+                //covariant position, and the specified
+                //use-site variance is "in", replace the
+                //type parameter with its upper bounds,
+                //throwing away the use-site lower bound
                 //TODO: BUG HERE! This can cause a stack
                 //      when the upper bound involves
                 //      the type parameter covariantly
