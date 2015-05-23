@@ -252,10 +252,25 @@ public abstract class Declaration
         return getContainer() instanceof Interface;
     }
 
+    /**
+     * Is this declaration nested inside a class or 
+     * interface body. It might not be enough to make it
+     * a "member" in the strict language spec sense of
+     * the word.
+     *  
+     * @see Declaration#isMember()
+     */
     public boolean isClassOrInterfaceMember() {
         return getContainer() instanceof ClassOrInterface;
     }
     
+    /**
+     * Is this declaration a member in the strict language
+     * spec sense of the word, that is, is it a polymorphic
+     * kind of declaration (an attribute, method, or class)
+     * 
+     * @see Declaration#isClassOrInterfaceMember()
+     */
     public boolean isMember() {
     	return false;
     }
@@ -416,6 +431,18 @@ public abstract class Declaration
         return container;
     }
     
+    ProducedType getMemberContainerType() {
+        if (isMember()) {
+            ClassOrInterface container = 
+                    (ClassOrInterface) 
+                        getContainer();
+            return container.getType();
+        }
+        else {
+            return null;
+        }
+    }
+
     @Override
     public int hashCode() {
         int ret = 17;

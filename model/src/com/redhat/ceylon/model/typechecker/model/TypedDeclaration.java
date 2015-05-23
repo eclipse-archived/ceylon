@@ -103,17 +103,13 @@ public abstract class TypedDeclaration extends Declaration {
      * itself.
      */
     public ProducedTypedReference getTypedReference() {
-    	ProducedTypedReference ptr = 
-    	        new ProducedTypedReference(true, false);
-        if (isMember()) {
-            ClassOrInterface container = 
-                    (ClassOrInterface) getContainer();
-            ptr.setQualifyingType(container.getType());
-        }
+        ProducedTypedReference ptr = 
+                new ProducedTypedReference(true, false);
+        ptr.setQualifyingType(getMemberContainerType());
         ptr.setDeclaration(this);
         ptr.setTypeArguments(getTypeArgumentMap(this, 
                 ptr.getQualifyingType(), 
-        		Collections.<ProducedType>emptyList()));
+                Collections.<ProducedType>emptyList()));
         return ptr;
     }
 

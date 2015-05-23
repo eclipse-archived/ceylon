@@ -244,16 +244,12 @@ public abstract class TypeDeclaration extends Declaration
 
     @Override
     public ProducedType getReference() {
-    	ProducedType pt = new ProducedType();
-        if (isMember()) {
-            ClassOrInterface ci = 
-                    (ClassOrInterface) getContainer();
-            pt.setQualifyingType(ci.getType());
-        }
+        ProducedType pt = new ProducedType();
+        pt.setQualifyingType(getMemberContainerType());
         pt.setDeclaration(this);
         pt.setTypeArguments(getTypeArgumentMap(this, 
                 pt.getQualifyingType(), 
-        		Collections.<ProducedType>emptyList()));
+                Collections.<ProducedType>emptyList()));
         return pt;
     }
 
@@ -287,7 +283,7 @@ public abstract class TypeDeclaration extends Declaration
             return pt;
     	}
     }
-
+    
     /**
      * The type of the declaration as seen from
      * within the body of the declaration itself.
@@ -301,12 +297,7 @@ public abstract class TypeDeclaration extends Declaration
      */
     public ProducedType getType() {
         ProducedType type = new ProducedType();
-        if (isMember()) {
-            ClassOrInterface ci = 
-                    (ClassOrInterface) 
-                        getContainer();
-            type.setQualifyingType(ci.getType());
-        }
+        type.setQualifyingType(getMemberContainerType());
         type.setDeclaration(this);
         //each type parameter is its own argument
         List<TypeParameter> typeParameters = 
@@ -316,7 +307,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             Map<TypeParameter,ProducedType> map = 
-            		new HashMap<TypeParameter,ProducedType>();
+                    new HashMap<TypeParameter,ProducedType>();
             for (TypeParameter p: typeParameters) {
                 ProducedType pta = new ProducedType();
                 if (p.isTypeConstructor()) {
