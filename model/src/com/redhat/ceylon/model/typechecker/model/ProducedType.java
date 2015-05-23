@@ -2656,26 +2656,35 @@ public class ProducedType extends ProducedReference {
                     return pt;
                 }
                 else {
-                    if (//a regular type parameter
-                        ptd.getTypeParameters().isEmpty() ||
+                    if (pt.isTypeConstructor()) {
                         //an unapplied generic type 
                         //parameter (a type constructor 
                         //parameter) in a higher-order
-                        //abstraction
-                        pt.isTypeConstructor()) {
-                        //no type arguments or qualifying 
-                        //type to substitute
-                        if (overrides!=null &&
+                        //abstraction - in this case, the 
+                        //argument itself must be an 
+                        //assignable type constructor
+                        return sub;
+                    }
+                    if (ptd.getTypeParameters().isEmpty()) {
+                        //a regular type parameter
+                        if (toplevel &&
+                                overrides!=null &&
                                 overrides.get(ptd)==IN) {
                             //a special case where the type
                             //parameter occurs outside of
                             //any type argument list, in
                             //which case "in T" is just
-                            //replaced with Anything
-                            return unit.getAnythingDeclaration()
-                                    .getType();
+                            //replaced with Anything or the
+                            //upper bound
+                            return intersectionOfSupertypes(ptd)
+                                    //the bounds could involve
+                                    //the type parameters being
+                                    //substituted
+                                    .substitute(substitutions, overrides);
                         }
                         else {
+                            //easy, no type arguments or 
+                            //qualifying type to substitute
                             return sub;
                         }
                     }
