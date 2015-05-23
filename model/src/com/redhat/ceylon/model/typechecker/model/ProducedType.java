@@ -3775,7 +3775,7 @@ public class ProducedType extends ProducedReference {
                 applyVarianceOverridesInternal(type, 
                         covariant, contravariant, 
                         overrides);
-        result.setUnderlyingType(getUnderlyingType());
+        result.setUnderlyingType(type.getUnderlyingType());
         return result;
     }
 
