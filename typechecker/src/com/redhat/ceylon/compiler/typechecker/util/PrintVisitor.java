@@ -67,28 +67,31 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
     private void print(Node node) {
         print(node.getText()); 
         print (" [" + node.getNodeType() + "]");
+        if (node.getToken()!=null) {
+            print(" (" + node.getLocation() + ")");
+        }
         if (node instanceof Tree.Term) {
             ProducedType type = ((Tree.Term) node).getTypeModel();
             if (type!=null) {
-                print(" <" + type.getProducedTypeName() + ">");
+                print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.ComprehensionClause) {
             ProducedType type = ((Tree.ComprehensionClause) node).getTypeModel();
             if (type!=null) {
-                print(" <" + type.getProducedTypeName() + ">");
+                print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.Type) {
             ProducedType type = ((Tree.Type) node).getTypeModel();
             if (type!=null) {
-                print(" <" + type.getProducedTypeName() + ">");
+                print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.TypeArguments) {
             List<ProducedType> types = ((Tree.TypeArguments) node).getTypeModels();
             if (types!=null && !types.isEmpty()) {
-                print(" <");
+                print(" : ");
                 int i=0;
                 for (ProducedType pt: types) {
                     if (pt!=null) {
@@ -98,32 +101,29 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                         print(", ");
                     }
                 }
-                print(">");
+                print("");
             }
-        }
-        if (node.getToken()!=null) {
-            print(" (" + node.getLocation() + ")");
         }
         if (node instanceof Tree.MemberOrTypeExpression) {
             ProducedReference t = ((Tree.MemberOrTypeExpression) node).getTarget();
             Declaration d = ((Tree.MemberOrTypeExpression) node).getDeclaration();
             if (t!=null) {
-                print(" (" + t.getProducedName() + ")");
+                print(" : " + t.getProducedName() + "");
             }
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.Outer) {
             Declaration d = ((Tree.Outer) node).getDeclarationModel();
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.SelfExpression) {
             Declaration d = ((Tree.SelfExpression) node).getDeclarationModel();
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.Declaration) {
@@ -132,49 +132,49 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 if (d.isCaptured()) {
                     print("[captured]");
                 }
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.SpecifierStatement) {
             Declaration d = ((Tree.SpecifierStatement) node).getDeclaration();
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.SimpleType) {
             Declaration d = ((Tree.SimpleType) node).getDeclarationModel();
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.ImportMemberOrType) {
             Declaration d = ((Tree.ImportMemberOrType) node).getDeclarationModel();
             if (d!=null) {
-                print(" ~ " + d);
+                print(" : " + d);
             }
         }
         if (node instanceof Tree.Return) {
         	Declaration d = ((Tree.Return) node).getDeclaration();
 			if (d!=null) {
-				print(" ~ " + d);
+				print(" : " + d);
 			}
         }
         if (node instanceof Tree.PositionalArgument) {
         	Parameter p = ((Tree.PositionalArgument) node).getParameter();
 			if (p!=null) {
-				print(" ~ " + p);
+				print(" : " + p);
 			}
         }
         if (node instanceof Tree.NamedArgument) {
         	Parameter p = ((Tree.NamedArgument) node).getParameter();
 			if (p!=null) {
-				print(" ~ " + p);
+				print(" : " + p);
 			}
         }
         if (node instanceof Tree.SequencedArgument) {
         	Parameter p = ((Tree.SequencedArgument) node).getParameter();
 			if (p!=null) {
-				print(" ~ " + p);
+				print(" : " + p);
 			}
         }
         if (!node.getErrors().isEmpty()) {
