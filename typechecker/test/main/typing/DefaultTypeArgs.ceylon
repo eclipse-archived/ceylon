@@ -73,3 +73,9 @@ class DefaultTypeArgs() {
     @error void x() => FooBar<Float>().b.c = "aaa";
     
 }
+
+interface Circularity {
+    class Foo<F>(){}
+    class Bar<B=Baz<>>() => Foo<B>();
+    class Baz<@error B=Baz<>>() => Foo<B>();
+}
