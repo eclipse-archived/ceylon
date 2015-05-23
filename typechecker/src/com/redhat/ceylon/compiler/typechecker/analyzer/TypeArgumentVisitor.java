@@ -240,8 +240,20 @@ public class TypeArgumentVisitor extends Visitor {
                     !that.getMetamodel()) {
                 String name = dec.getName(that.getUnit());
                 if (!params.get(0).isDefaulted()) {
+                    StringBuilder paramList = 
+                            new StringBuilder();
+                    for (TypeParameter tp: 
+                            dec.getTypeParameters()) {
+                        if (paramList.length()>0) {
+                            paramList.append(", ");
+                        }
+                        paramList.append("'")
+                            .append(tp.getName())
+                            .append("'");
+                    }
                     that.addError("missing type arguments to generic type: '" + 
-                            name + "' declares required type parameters");
+                            name + "' declares type parameters " + 
+                            paramList);
 
                 }
                 else {

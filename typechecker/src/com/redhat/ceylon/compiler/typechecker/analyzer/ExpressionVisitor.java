@@ -5280,16 +5280,48 @@ public class ExpressionVisitor extends Visitor {
                 foundParameters.add(sp);
             }
         }
-            
+        
+        checkForMissingNamedParameters(pl, pr, nal, 
+                foundParameters);
+    }
+
+    private void checkForMissingNamedParameters(ParameterList pl, ProducedReference pr,
+            Tree.NamedArgumentList nal, Set<Parameter> foundParameters) {
+        StringBuilder missing = null;
+        int count = 0;
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
                     !p.isDefaulted() && 
                     (!p.isSequenced() || p.isAtLeastOne())) {
-                nal.addError("missing named argument to parameter '" + 
-                        p.getName() + "' of '" + 
-                        pr.getDeclaration().getName(unit) + "'",
-                        11000);
+                count++;
+                ProducedType type = 
+                        pr.getTypedParameter(p)
+                            .getFullType();
+                if (missing==null) {
+                    missing = new StringBuilder();
+                }
+                else {
+                    missing.append(", ");
+                }
+                if (type!=null) {
+                    missing.append(type.getProducedTypeName(unit))
+                        .append(" ");
+                }
+                missing.append(p.getName());
             }
+        }
+        if (count==1) {
+            nal.addError("missing named argument to required parameter '" + 
+                    missing + "' of '" + 
+                    pr.getDeclaration().getName(unit) + "'",
+                    11000);
+        }
+        else if (count>1) {
+            nal.addError("missing named arguments to " + 
+                    count + " required parameters '" + 
+                    missing + "' of '" + 
+                    pr.getDeclaration().getName(unit) + "'",
+                    11000);
         }
     }
     
@@ -5545,15 +5577,14 @@ public class ExpressionVisitor extends Visitor {
         for (int i=0; i<paramsSize; i++) {
             Parameter param = params.get(i);
             if (i>=argCount) {
-                if (!param.isDefaulted() && 
-                        (!param.isSequenced() || 
-                         param.isAtLeastOne())) {
+                if (isRequired(param)) {
                     Node errorNode = 
                             that instanceof Tree.Annotation && 
                             args.isEmpty() ? that : pal;
                     StringBuilder message = 
                             new StringBuilder();
-                    if (i+1<paramsSize) {
+                    if (i+1<paramsSize &&
+                            isRequired(params.get(i+1))) {
                         message.append("missing arguments to required parameters '");
                         appendParam(pr, param, message);
                         int count = 1;
@@ -5644,6 +5675,11 @@ public class ExpressionVisitor extends Visitor {
         
         checkJavaAnnotationElements(args, params, target);
     
+    }
+
+    private static boolean isRequired(Parameter param) {
+        return !param.isDefaulted() && 
+                (!param.isSequenced() || param.isAtLeastOne());
     }
 
     private void appendParam(ProducedReference pr, 
@@ -7657,21 +7693,21 @@ public class ExpressionVisitor extends Visitor {
                 Declaration declaration = 
                         smte.getDeclaration();
                 Generic dec = (Generic) declaration;
-                StringBuilder params = 
+                StringBuilder paramList = 
                         new StringBuilder();
                 for (TypeParameter tp: 
                     dec.getTypeParameters()) {
-                    if (params.length()>0) {
-                        params.append(", ");
+                    if (paramList.length()>0) {
+                        paramList.append(", ");
                     }
-                    params.append("'")
-                    .append(tp.getName())
-                    .append("'");
+                    paramList.append("'")
+                        .append(tp.getName())
+                        .append("'");
                 }
                 smte.addError("missing type arguments to generic type qualifying static reference: '" + 
                         declaration.getName(unit) + 
                         "' declares type parameters " + 
-                        params);
+                        paramList);
             }
         }
     }
@@ -9680,14 +9716,27 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (explicit) {
+                StringBuilder paramList = 
+                        new StringBuilder();
+                for (TypeParameter tp: 
+                        g.getTypeParameters()) {
+                    if (paramList.length()>0) {
+                        paramList.append(", ");
+                    }
+                    paramList.append("'")
+                        .append(tp.getName())
+                        .append("'");
+                }
                 String help;
                 if (args<min) {
                     help = " requires at least " + min + 
-                            " type arguments";
+                            " type arguments to " +
+                            paramList;
                 }
                 else if (args>max) {
                     help = " allows at most " + max + 
-                            " type arguments";
+                            " type arguments to " + 
+                            paramList;
                 }
                 else {
                     help = "";
