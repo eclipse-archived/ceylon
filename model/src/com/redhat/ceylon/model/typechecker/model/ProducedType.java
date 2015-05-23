@@ -2659,10 +2659,18 @@ public class ProducedType extends ProducedReference {
                 TypeParameter tp = (TypeParameter) ptd;
                 ProducedType sub = substitutions.get(tp);
                 if (sub==null) {
-                    //if this is a type constructor, we 
-                    //still might need to substitute into
-                    //its arguments!
-                    dec = ptd;
+                    if (tp.isTypeConstructor()) {
+                        //if this is an applied type 
+                        //constructor parameter, we still 
+                        //might need to substitute into its 
+                        //arguments!
+                        dec = tp;
+                    }
+                    else {
+                        //a regular type parameter, easy,
+                        //nothing more to do with it
+                        return pt;
+                    }
                 }
                 else {
                     if (pt.isTypeConstructor()) {
