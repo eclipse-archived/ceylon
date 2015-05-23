@@ -549,7 +549,7 @@ public class RefinementVisitor extends Visitor {
         	typeArgs = emptyList();
         }
         
-        ProducedType cit = ci.getCompleteType();
+        ProducedType cit = ci.getType();
         ProducedReference refinedMember = 
                 cit.getTypedReference(refined, typeArgs);
         ProducedReference refiningMember = 
